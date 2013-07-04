@@ -238,6 +238,7 @@ function commonConnect(serverport, deeplog) {
 	socket.on('exception', function(throwableObject) {
 		//if (deeplog) deeplog.add(1, JSON.stringify(throwableObject));
 		console.error(throwableObject);
+		replaceSandclockWithError($("#translations"));
 	});
 	socket.on('statusHtml', function(message) {
 		//message = message.replace(/Eyal[.]txt/ig,".txt");  // ANON
@@ -249,6 +250,10 @@ function commonConnect(serverport, deeplog) {
 		console.log("CLIENT: good bye, server!");
 	});
 	
+	socket.on('acknowledgement', function() {
+			$("#acknowledgement").html("<img src='images/V.png' /"+">");
+	});
+
 	return socket;
 }
 
@@ -256,6 +261,38 @@ function commonConnect(serverport, deeplog) {
 function abort(socket) {
 	socket.emit('abort',null);
 	console.log("CLIENT: sent 'abort' to the server");
+}
+
+
+
+
+/** Convert the translations received from the server to HTML */
+function translationsToHtml(translations) {
+	if (translations==null)
+		return "null";
+	if (translations.length==0)
+		return "no translations";
+	var html = "";
+	for (i=0; i<translations.length; ++i) {
+		var translation = translations[i];
+		//var translationObject = JSON.parse(translation);
+		//console.dir(translationObject);
+		
+		html += "<tr>" +
+			"<td>"+"<a class='delete' title='Delete this translation' />"+"</td>"+
+			"<td class='translation'>"+translation+"</td>"+
+		"</tr>\n";
+	}
+	return "<table>\n"+html+"</table>\n";
+}
+
+/* Explanations to HTML */
+function explanationsToHtml(translations) {
+	//delete translations.text;
+	//delete translations.translations;
+	return "<pre>"+
+		JSON.stringify(translations,null,"\t").replace(/\\/g,"")+
+	"</pre>";
 }
 
 

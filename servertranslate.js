@@ -88,6 +88,11 @@ io.configure(function () {
 io.sockets.on('connection', function (socket) {
 	logger.writeEventLog("events", "CONNECT<", socket.id);
 	
+	socket.on('register_as_human_translator', function() {
+		socket.join('human_translators');
+		logger.writeEventLog("events", "HUMANTRANSLATOR<", socket.id);
+	});
+
 	socket.on('disconnect', function () { 
 		logger.writeEventLog("events", "DISCONNECT<", socket.id);
 	});
@@ -106,15 +111,43 @@ io.sockets.on('connection', function (socket) {
 				translations: classification,
 			}
 		}
-		logger.writeEventLog("events", "translate>"+socket.id, classification.translations);
-		socket.emit('translation', classification);
-		fs.appendFile(logger.cleanPathToLog("translations.log"), "AUTOMATIC "+classification.text + "  /  " +classification.translations.join(" AND ")+"\n");
+		fs.appendFile(logger.cleanPathToLog("translations_automatic.log"), classification.text + "  /  " +classification.translations.join(" AND ")+"\n");
+		
+		var humanTranslators = io.sockets.clients('human_translators');
+		if (humanTranslators.length>0) {
+			logger.writeEventLog("events", "translate>"+_(humanTranslators).pluck("id"), classification.translations);
+			io.sockets.in('human_translators').emit('translation', classification);
+			socket.join(request.text);  // the current client is waiting for translation of the given text
+		} else {
+			logger.writeEventLog("events", "translate>"+socket.id, classification.translations);
+			socket.emit('translation', classification);
+		}
 	});
 	
 	socket.on('delete', function (request) {
 		logger.writeEventLog("events", "DELETE<"+socket.id, request);
 	});
+	socket.on('undelete', function (request) {
+		logger.writeEventLog("events", "UNDELETE<"+socket.id, request);
+	});
 	
+	socket.on('approve', function (request) {
+		logger.writeEventLog("events", "APPROVE<"+socket.id, request);
+		fs.appendFile(logger.cleanPathToLog("translations_manual.log"), request.text + "  /  " +request.translations.join(" AND ")+"\n");
+
+		//while(!_(request.translations).isEqual(classifier.classify(request.text))) {
+		//	classifier.trainOnline(request.text, request.translations);
+		//}
+		request.explanation="approved by a human translator";
+		socket.emit('acknowledgement');
+		
+		var socketsWaitingForTranslation = io.sockets.clients(request.text).filter(function(s){return s.id!=socket.id});
+		logger.writeEventLog("events", "approve>"+_(socketsWaitingForTranslation).pluck("id"), request);
+		socketsWaitingForTranslation.forEach(function(s) {
+			s.emit('translation', request);
+			s.leave(request.text)
+		}); // remove all clients from waiting to that text
+	});
 });
 
 

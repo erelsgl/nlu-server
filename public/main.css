@@ -55,22 +55,15 @@ a img {border: none}
 .level7 {background: #eee}
 .log .content .show {font-weight:bold}
 
-#translations, #explanations {
-	text-align: left;	
-}
+#translations, #explanations {	text-align: left;	}
+#explanations {	font-size:10px;	}
 
 td.label { vertical-align:top;  color: green; }
 
-a.delete {
- margin-bottom: 10px;
- width: 18px;
- height:18px;
- display:block;
- background:transparent url('images/delete.png') center top no-repeat;
-}
+a.delete { margin-bottom: 10px; width: 18px; height:18px; display:block; background:transparent url('images/delete.png') center top no-repeat;}
+a.delete:hover {  background-image: url('images/delete_sharp.png') ; }
+.deleted {	text-decoration: line-through }
 
-a.delete:hover {
-   background-image: url('images/delete_sharp.png') ;
-}
-
+input#text {width: 90%; }
+td#text {width: 90%;font-weight: bold;}
 

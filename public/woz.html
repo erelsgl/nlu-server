@@ -31,21 +31,21 @@ var startTime;
 
 /* initialization */
 
-var socket=null, deeplog=null;
+var socket=null, form=null, deeplog=null;
 $(document).ready(function() {
   deeplog = new DeepLog($("#deeplog"));
-  $("#form").deserialize(location.search.substr(1));
+  form = $('#form'); form.deserialize(location.search.substr(1));
   socket = commonConnect(serverport, deeplog);
 
   socket.on('connect', function() {
-   if ($("#text").val().length) 
-      translate();
+		socket.emit("register_as_human_translator");
   });
 
   socket.on('translation', function(translation) {
     console.log("CLIENT: got a translation for "+translation.text);
 		$("#acknowledgement").html("");
     
+		$("#text").html(translation.text);
     $("#translations").html(translationsToHtml(translation.translations));
 		$("a.delete").click(function() {
 			var translationElement = $(this).parent().next();
@@ -73,12 +73,17 @@ $(document).ready(function() {
     deeplog.replace(DEPTH_OF_CLIENT_LOG_MESSAGES, endMessage);
 
   });
+
+	
+	socket.on('acknowledgement', function() {
+			$("#acknowledgement").html("<img src='images/V.png' /"+">");
+	});
 });
 
 
 /** Ask the server for a translation */
 function translate() {
-  var request = formToObject($('#form'));
+  var request = formToObject(form);
   $("#translations").html("<img src='images/ajax_loader.gif' /"+">");
 	$("#acknowledgement").html("");
   startTime = new Date();
@@ -98,12 +103,46 @@ function approve() {
 		text: $("input#text").val(),
 		translations: $(".translation").not(".deleted").map(function() { return $(this).text(); }).get(),
 	});
+ 
+  //deeplog.add(DEPTH_OF_CLIENT_LOG_MESSAGES, 
+	//	formatLogMessageForDeepLog(
+	//		{sender:"Client", message: "translate "+(request.testCorpus? request.testCorpus: "'"+request.text+"'")}));
+ // console.log("CLIENT: sent a request to translate: "+JSON.stringify(request));
 }
 
 
+/** Convert the translations received from the server to HTML */
+function translationsToHtml(translations) {
+	if (translations==null)
+		return "null";
+	if (translations.length==0)
+		return "no translations";
+	var html = "";
+	for (i=0; i<translations.length; ++i) {
+		var translation = translations[i];
+		//var translationObject = JSON.parse(translation);
+		//console.dir(translationObject);
+		
+		html += "<tr>" +
+			"<td>"+"<a class='delete' title='Delete this translation' />"+"</td>"+
+			"<td class='translation'>"+translation+"</td>"+
+		"</tr>\n";
+	}
+	return "<table>\n"+html+"</table>\n";
+}
+
+/* Explanations to HTML */
+function explanationsToHtml(translations) {
+	//delete translations.text;
+	//delete translations.translations;
+	return "<pre>"+
+		JSON.stringify(translations,null,"\t").replace(/\\/g,"")+
+	"</pre>";
+}
+
 </script>
 
-<h1>Correct Translations</h1>
+<h1>Wizard-of-Oz interface</h1>
 
 <form name='form' id='form' method='get' action=''>
   <input type='hidden' name='forward' value='true' />
@@ -113,8 +152,7 @@ function approve() {
 
             <tr>
                 <td class='label'>Human Utterance</td>
-                <td><input class='sentence' name="text" id="text" type="text" value="I agree to offer a wage of 20000 NIS and 10% pension without a car"/></td>
-                <td><button id='translateButton' type='submit' onClick='translate(); return false;'>translate</button></td>
+                <td id="text"></td>
             </tr>
 
             <tr>
@@ -123,6 +161,7 @@ function approve() {
             </tr>
 
 						<tr>
+							<td></td>
 							<td><button id='approveButton' type='submit' onClick='approve(); return false;'>approve</button>
                 <div id='acknowledgement' />
 							</td>

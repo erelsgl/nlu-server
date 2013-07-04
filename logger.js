@@ -92,9 +92,13 @@ exports.writeEventLog = function(logFileName, event, object) {
     } catch (ex) { // probably a circular-reference problem
       json = JSON.stringify(jsonref.ref(object));
     }
-    var msg = new Date().toISOString() + " " + event + " " + json+"\n";
-    console.log(msg.substr(0,exports.MAX_LENGTH_OF_CONSOLE_MESSAGE)+"... ");
-    fs.appendFile(cleanPathToLog(logFileName+".log"), msg, function (err) {
+    var msg = new Date().toISOString() + " " + event + " " + json;
+    var msgForConsole=msg;
+    if (msgForConsole.length>exports.MAX_LENGTH_OF_CONSOLE_MESSAGE)
+    	msgForConsole = msgForConsole.substr(0,exports.MAX_LENGTH_OF_CONSOLE_MESSAGE)+"... ";
+    
+    console.log(msgForConsole);
+    fs.appendFile(cleanPathToLog(logFileName+".log"), msg+"\n", function (err) {
         if (err) throw (err);
     });
 }
