@@ -1,4 +1,7 @@
-machine-learning-server
-=======================
+translation server
+==================
 
-A web-server for testing machine learning algorithms
+This folder (server/**) contains a standalone application - 
+a server for text categorization.
+
+ 
