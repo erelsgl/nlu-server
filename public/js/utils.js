@@ -96,12 +96,15 @@ function objectToUrlQueryString(fields) {
 
 
 
-function setOptionsFromArray(idOfSelectElement, arrayOfOptions) {
+function setOptionsFromArray(idOfSelectElement, arrayOfOptions, titleForDefaultOption) {
 	var selectElement = $(document.getElementById(idOfSelectElement));
 	selectElement.html("");
+	if (titleForDefaultOption) {
+		selectElement.append($('<option>', { value : "" })
+				.text(titleForDefaultOption));
+	}
 	$.each(arrayOfOptions, function(key, value) {
-		selectElement
-		.append($('<option>', { value : value })
+		selectElement.append($('<option>', { value : value })
 				.text(value));
 	});
 }
@@ -263,27 +266,24 @@ function abort(socket) {
 	console.log("CLIENT: sent 'abort' to the server");
 }
 
-
+function translationToHtml(translation, withDelete) {
+	return "<tr>" +
+			(withDelete? "<td>"+"<a class='delete' title='Delete this translation' />"+"</td>": "")+
+			"<td class='translation'>"+translation+"</td>"+
+		"</tr>\n";
+}
 
 
 /** Convert the translations received from the server to HTML */
-function translationsToHtml(translations) {
+function translationsToHtml(translations, withDelete) {
 	if (translations==null)
 		return "null";
 	if (translations.length==0)
 		return "no translations";
 	var html = "";
-	for (i=0; i<translations.length; ++i) {
-		var translation = translations[i];
-		//var translationObject = JSON.parse(translation);
-		//console.dir(translationObject);
-		
-		html += "<tr>" +
-			"<td>"+"<a class='delete' title='Delete this translation' />"+"</td>"+
-			"<td class='translation'>"+translation+"</td>"+
-		"</tr>\n";
-	}
-	return "<table>\n"+html+"</table>\n";
+	for (i=0; i<translations.length; ++i)
+		html += translationToHtml(translations[i],withDelete);
+	return "<table id='translationsTable'>\n"+html+"</table>\n";
 }
 
 /* Explanations to HTML */

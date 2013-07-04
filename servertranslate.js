@@ -56,6 +56,8 @@ app.configure('development', function(){
 //
 
 var classifier = serialize.loadSync(pathToClassifier, __dirname+"/../machine-learning/demos");
+var classes = classifier.getAllClasses();
+classes.sort();
 
 
 
@@ -90,7 +92,15 @@ io.sockets.on('connection', function (socket) {
 	
 	socket.on('register_as_human_translator', function() {
 		socket.join('human_translators');
+		socket.human_translator = true;
 		logger.writeEventLog("events", "HUMANTRANSLATOR<", socket.id);
+		socket.emit('classes', classes);
+	});
+	
+	socket.on('register_as_private_translator', function() {
+		socket.private_translator = true;
+		logger.writeEventLog("events", "PRIVATETRANSLATOR<", socket.id);
+		socket.emit('classes', classes);
 	});
 
 	socket.on('disconnect', function () { 
@@ -114,7 +124,7 @@ io.sockets.on('connection', function (socket) {
 		fs.appendFile(logger.cleanPathToLog("translations_automatic.log"), classification.text + "  /  " +classification.translations.join(" AND ")+"\n");
 		
 		var humanTranslators = io.sockets.clients('human_translators');
-		if (humanTranslators.length>0) {
+		if (humanTranslators.length>0 && !socket.private_translator) {
 			logger.writeEventLog("events", "translate>"+_(humanTranslators).pluck("id"), classification.translations);
 			io.sockets.in('human_translators').emit('translation', classification);
 			socket.join(request.text);  // the current client is waiting for translation of the given text
@@ -124,13 +134,13 @@ io.sockets.on('connection', function (socket) {
 		}
 	});
 	
-	socket.on('delete', function (request) {
+	socket.on('delete_translation', function (request) {
 		logger.writeEventLog("events", "DELETE<"+socket.id, request);
 	});
-	socket.on('undelete', function (request) {
-		logger.writeEventLog("events", "UNDELETE<"+socket.id, request);
+	socket.on('append_translation', function (request) {
+		logger.writeEventLog("events", "APPEND<"+socket.id, request);
 	});
-	
+
 	socket.on('approve', function (request) {
 		logger.writeEventLog("events", "APPROVE<"+socket.id, request);
 		fs.appendFile(logger.cleanPathToLog("translations_manual.log"), request.text + "  /  " +request.translations.join(" AND ")+"\n");
@@ -142,8 +152,8 @@ io.sockets.on('connection', function (socket) {
 		socket.emit('acknowledgement');
 		
 		var socketsWaitingForTranslation = io.sockets.clients(request.text).filter(function(s){return s.id!=socket.id});
-		logger.writeEventLog("events", "approve>"+_(socketsWaitingForTranslation).pluck("id"), request);
 		socketsWaitingForTranslation.forEach(function(s) {
+			logger.writeEventLog("events", "approve>"+s.id, request);
 			s.emit('translation', request);
 			s.leave(request.text)
 		}); // remove all clients from waiting to that text

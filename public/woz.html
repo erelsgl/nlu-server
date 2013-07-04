@@ -46,98 +46,59 @@ $(document).ready(function() {
 		$("#acknowledgement").html("");
     
 		$("#text").html(translation.text);
-    $("#translations").html(translationsToHtml(translation.translations));
-		$("a.delete").click(function() {
-			var translationElement = $(this).parent().next();
-			var translation = translationElement.text();
-			translationElement.toggleClass('deleted');
-			$("#acknowledgement").html("");
-			if (translationElement.hasClass('deleted')) {
-				socket.emit("delete", {
-					text: translation.text, 
-					translation_to_delete: translation
-				});
-			} else {
-				socket.emit("undelete", {
-					text: translation.text, 
-					translation_to_undelete: translation
-				});
-			}
-		});
+    $("#translations").html(translationsToHtml(translation.translations, /*withDelete=*/true));
     $("#explanations").html(explanationsToHtml(translation));
-    
     var elapsedTime = new Date() - startTime;
     var endMessage = formatLogMessageWithTimeAndResult("Client", ""+elapsedTime+" ms", 
 "translate '"+translation.text+"'", translation.translations);
     //console.log(endMessage);
     deeplog.replace(DEPTH_OF_CLIENT_LOG_MESSAGES, endMessage);
-
   });
 
-	
-	socket.on('acknowledgement', function() {
-			$("#acknowledgement").html("<img src='images/V.png' /"+">");
+	socket.on('classes', function(classes) {
+			setOptionsFromArray(
+					/*idOfContainingElement=*/"classToAdd", 
+					/*arrayOfOptions=*/classes,
+					/*titleForDefaultOption=*/"-- Add class --");		
 	});
+
+	$("#translations").on("click", "a.delete", function() {
+			var translationElement = $(this).parent().next();
+			var translation = translationElement.text();
+			translationElement.toggleClass('deleted');
+			$("#acknowledgement").html("");
+			if (translationElement.hasClass('deleted')) {
+				socket.emit("delete_translation", {
+					text: $("input#text").val(), 
+					translation_to_delete: translation
+				});
+			} else {
+				socket.emit("append_translation", {
+					text: $("input#text").val(), 
+					translation_to_add: translation
+				});
+			}
+	});
+
+	$("select#classToAdd").change(function() {
+		var translation = $(this).val();
+		$("#translationsTable").append(translationToHtml(translation, /*withDelete=*/true));
+		socket.emit('append_translation', {
+			text: $("input#text").val(),
+			translation_to_add: translation,
+		});	
+	});
+
 });
 
 
-/** Ask the server for a translation */
-function translate() {
-  var request = formToObject(form);
-  $("#translations").html("<img src='images/ajax_loader.gif' /"+">");
-	$("#acknowledgement").html("");
-  startTime = new Date();
-  socket.emit('translate', request);
-  
-  deeplog.add(DEPTH_OF_CLIENT_LOG_MESSAGES, 
-		formatLogMessageForDeepLog(
-			{sender:"Client", message: "translate "+(request.testCorpus? request.testCorpus: "'"+request.text+"'")}));
-  console.log("CLIENT: sent a request to translate: "+JSON.stringify(request));
-}
-
 /** Tell the server that the current translation is approved */
-
 function approve() {
-  $("#acknowledgement").html("<img src='images/ajax_loader.gif' /"+">");
-  socket.emit('approve', {
+	$("#acknowledgement").html("<img src='images/ajax_loader.gif' /"+">");
+	socket.emit('approve', {
 		text: $("input#text").val(),
 		translations: $(".translation").not(".deleted").map(function() { return $(this).text(); }).get(),
 	});
- 
-  //deeplog.add(DEPTH_OF_CLIENT_LOG_MESSAGES, 
-	//	formatLogMessageForDeepLog(
-	//		{sender:"Client", message: "translate "+(request.testCorpus? request.testCorpus: "'"+request.text+"'")}));
- // console.log("CLIENT: sent a request to translate: "+JSON.stringify(request));
-}
-
-
-/** Convert the translations received from the server to HTML */
-function translationsToHtml(translations) {
-	if (translations==null)
-		return "null";
-	if (translations.length==0)
-		return "no translations";
-	var html = "";
-	for (i=0; i<translations.length; ++i) {
-		var translation = translations[i];
-		//var translationObject = JSON.parse(translation);
-		//console.dir(translationObject);
-		
-		html += "<tr>" +
-			"<td>"+"<a class='delete' title='Delete this translation' />"+"</td>"+
-			"<td class='translation'>"+translation+"</td>"+
-		"</tr>\n";
-	}
-	return "<table>\n"+html+"</table>\n";
-}
-
-/* Explanations to HTML */
-function explanationsToHtml(translations) {
-	//delete translations.text;
-	//delete translations.translations;
-	return "<pre>"+
-		JSON.stringify(translations,null,"\t").replace(/\\/g,"")+
-	"</pre>";
 }
 
 </script>
@@ -155,22 +116,22 @@ function explanationsToHtml(translations) {
                 <td id="text"></td>
             </tr>
 
-            <tr>
-             <td class='label'>Translations</td>
-             <td id='translations'>-</td>
-            </tr>
+						<tr>
+						 <td class='label'>Translations</td>
+						 <td id='translations'>-</td>
+						</tr>
+
+						<tr>
+						 <td></td>
+						 <td><select id='classToAdd'></select></td>
+						</tr>
 
 						<tr>
 							<td></td>
 							<td><button id='approveButton' type='submit' onClick='approve(); return false;'>approve</button>
-                <div id='acknowledgement' />
+								<div id='acknowledgement' />
 							</td>
 						</tr>
- 
-            <tr>
-             <td class='label'>Explanations</td>
-             <td colspan='2' id='explanations'>-</td>
-            </tr>
        
      </table><!-- main_table -->
 </form>

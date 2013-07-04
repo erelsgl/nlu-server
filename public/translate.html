@@ -51,7 +51,6 @@ $(document).ready(function() {
     var elapsedTime = new Date() - startTime;
     var endMessage = formatLogMessageWithTimeAndResult("Client", ""+elapsedTime+" ms", 
 "translate '"+translation.text+"'", translation.translations);
-    //console.log(endMessage);
     deeplog.replace(DEPTH_OF_CLIENT_LOG_MESSAGES, endMessage);
 
   });

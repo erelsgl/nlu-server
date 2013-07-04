@@ -33,68 +33,84 @@ var startTime;
 
 var socket=null, deeplog=null;
 $(document).ready(function() {
-  deeplog = new DeepLog($("#deeplog"));
-  $("#form").deserialize(location.search.substr(1));
-  socket = commonConnect(serverport, deeplog);
+	deeplog = new DeepLog($("#deeplog"));
+	$("#form").deserialize(location.search.substr(1));
+	socket = commonConnect(serverport, deeplog);
 
-  socket.on('connect', function() {
-   if ($("#text").val().length) 
-      translate();
-  });
+	socket.on('connect', function() {
+		socket.emit("register_as_private_translator");
+		if ($("#text").val().length) 
+			translate();
+	});
 
-  socket.on('translation', function(translation) {
-    console.log("CLIENT: got a translation for "+translation.text);
+	socket.on('translation', function(translation) {
+		console.log("CLIENT: got a translation for "+translation.text);
 		$("#acknowledgement").html("");
-    
-    $("#translations").html(translationsToHtml(translation.translations));
-		$("a.delete").click(function() {
+		
+		$("#translations").html(translationsToHtml(translation.translations, /*with delete=*/true));
+		$("#explanations").html(explanationsToHtml(translation));
+		var elapsedTime = new Date() - startTime;
+		var endMessage = formatLogMessageWithTimeAndResult("Client", ""+elapsedTime+" ms", 
+"translate '"+translation.text+"'", translation.translations);
+		//console.log(endMessage);
+		deeplog.replace(DEPTH_OF_CLIENT_LOG_MESSAGES, endMessage);
+	});
+
+	socket.on('classes', function(classes) {
+			setOptionsFromArray(
+					/*idOfContainingElement=*/"classToAdd", 
+					/*arrayOfOptions=*/classes,
+					/*titleForDefaultOption=*/"-- Add class --");		
+	});
+
+	$("#translations").on("click", "a.delete", function() {
 			var translationElement = $(this).parent().next();
 			var translation = translationElement.text();
 			translationElement.toggleClass('deleted');
 			$("#acknowledgement").html("");
 			if (translationElement.hasClass('deleted')) {
-				socket.emit("delete", {
-					text: translation.text, 
+				socket.emit("delete_translation", {
+					text: $("input#text").val(), 
 					translation_to_delete: translation
 				});
 			} else {
-				socket.emit("undelete", {
-					text: translation.text, 
-					translation_to_undelete: translation
+				socket.emit("append_translation", {
+					text: $("input#text").val(), 
+					translation_to_add: translation
 				});
 			}
-		});
-    $("#explanations").html(explanationsToHtml(translation));
-    
-    var elapsedTime = new Date() - startTime;
-    var endMessage = formatLogMessageWithTimeAndResult("Client", ""+elapsedTime+" ms", 
-"translate '"+translation.text+"'", translation.translations);
-    //console.log(endMessage);
-    deeplog.replace(DEPTH_OF_CLIENT_LOG_MESSAGES, endMessage);
+	});
 
-  });
+	$("select#classToAdd").change(function() {
+		var translation = $(this).val();
+		$("#translationsTable").append(translationToHtml(translation, /*withDelete=*/true));
+		socket.emit('append_translation', {
+			text: $("input#text").val(),
+			translation_to_add: translation,
+		});	
+	});
 });
 
 
 /** Ask the server for a translation */
 function translate() {
-  var request = formToObject($('#form'));
-  $("#translations").html("<img src='images/ajax_loader.gif' /"+">");
+	var request = formToObject($('#form'));
+	$("#translations").html("<img src='images/ajax_loader.gif' /"+">");
 	$("#acknowledgement").html("");
-  startTime = new Date();
-  socket.emit('translate', request);
-  
-  deeplog.add(DEPTH_OF_CLIENT_LOG_MESSAGES, 
+	startTime = new Date();
+	socket.emit('translate', request);
+	
+	deeplog.add(DEPTH_OF_CLIENT_LOG_MESSAGES, 
 		formatLogMessageForDeepLog(
 			{sender:"Client", message: "translate "+(request.testCorpus? request.testCorpus: "'"+request.text+"'")}));
-  console.log("CLIENT: sent a request to translate: "+JSON.stringify(request));
+	console.log("CLIENT: sent a request to translate: "+JSON.stringify(request));
 }
 
 /** Tell the server that the current translation is approved */
 
 function approve() {
-  $("#acknowledgement").html("<img src='images/ajax_loader.gif' /"+">");
-  socket.emit('approve', {
+	$("#acknowledgement").html("<img src='images/ajax_loader.gif' /"+">");
+	socket.emit('approve', {
 		text: $("input#text").val(),
 		translations: $(".translation").not(".deleted").map(function() { return $(this).text(); }).get(),
 	});
@@ -106,37 +122,43 @@ function approve() {
 <h1>Correct Translations</h1>
 
 <form name='form' id='form' method='get' action=''>
-  <input type='hidden' name='forward' value='true' />
-  <input type='hidden' name='explain' value='4' />
-      
-      <table id='main_table' style="width:100%;">
-
-            <tr>
-                <td class='label'>Human Utterance</td>
-                <td><input class='sentence' name="text" id="text" type="text" value="I agree to offer a wage of 20000 NIS and 10% pension without a car"/></td>
-                <td><button id='translateButton' type='submit' onClick='translate(); return false;'>translate</button></td>
-            </tr>
-
-            <tr>
-             <td class='label'>Translations</td>
-             <td id='translations'>-</td>
-            </tr>
+	<input type='hidden' name='forward' value='true' />
+	<input type='hidden' name='explain' value='4' />
+			
+			<table id='main_table' style="width:100%;">
 
 						<tr>
+								<td class='label'>Human Utterance</td>
+								<td><input class='sentence' name="text" id="text" type="text" value="I agree to offer a wage of 20000 NIS and 10% pension without a car"/></td>
+								<td><button id='translateButton' type='submit' onClick='translate(); return false;'>translate</button></td>
+						</tr>
+
+						<tr>
+						 <td class='label'>Translations</td>
+						 <td id='translations'>-</td>
+						</tr>
+
+						<tr>
+						 <td class='label'></td>
+						 <td><select id='classToAdd'></select></td>
+						</tr>
+
+						<tr>
+							<td></td>
 							<td><button id='approveButton' type='submit' onClick='approve(); return false;'>approve</button>
-                <div id='acknowledgement' />
+								<div id='acknowledgement' />
 							</td>
 						</tr>
  
-            <tr>
-             <td class='label'>Explanations</td>
-             <td colspan='2' id='explanations'>-</td>
-            </tr>
-       
-     </table><!-- main_table -->
+						<tr>
+						 <td class='label'>Explanations</td>
+						 <td colspan='2' id='explanations'>-</td>
+						</tr>
+			 
+		 </table><!-- main_table -->
 </form>
-       
-  
+			 
+	
 
 
 	<ul id='deeplog'></ul>
