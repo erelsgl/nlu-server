@@ -111,7 +111,7 @@ function translate() {
 function approve() {
 	$("#acknowledgement").html("<img src='images/ajax_loader.gif' /"+">");
 	socket.emit('approve', {
-		text: $("input#text").val(),
+		text: $("#text").val(),
 		translations: $(".translation").not(".deleted").map(function() { return $(this).text(); }).get(),
 	});
 }

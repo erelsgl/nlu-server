@@ -64,6 +64,9 @@ a.delete { margin-bottom: 10px; width: 18px; height:18px; display:block; backgro
 a.delete:hover {  background-image: url('images/delete_sharp.png') ; }
 .deleted {	text-decoration: line-through }
 
-input#text {width: 90%; }
-td#text {width: 90%;font-weight: bold;}
+#main_table {text-align: left} 
+
+#text {width: 90%; font-weight: bold; }
+
+
 

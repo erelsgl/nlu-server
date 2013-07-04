@@ -13,6 +13,7 @@ var express = require('express')
 	, logger = require('./logger')
 	, _ = require('underscore')._
 	, serialize =require('../machine-learning/serialize') 
+	, timer = require('./timer');
 	;
 
 //var pathToClassifier = "trainedClassifiers/NegotiationWinnowSingleclass.json";
@@ -74,7 +75,7 @@ httpserver.listen(app.get('port'), function(){
 	serverStartTime = new Date();
 });
 
-
+var TIMEOUT_SECONDS=10;
 
 //
 // Step 5: define a SOCKET.IO server that listens to the http server:
@@ -109,7 +110,7 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('translate', function (request) {
 		logger.writeEventLog("events", "TRANSLATE<"+socket.id, request);
-		
+
 		var classification = classifier.classify(request.text, parseInt(request.explain));
 		if (request.explain) {
 			classification.text = request.text;
@@ -128,6 +129,15 @@ io.sockets.on('connection', function (socket) {
 			logger.writeEventLog("events", "translate>"+_(humanTranslators).pluck("id"), classification.translations);
 			io.sockets.in('human_translators').emit('translation', classification);
 			socket.join(request.text);  // the current client is waiting for translation of the given text
+			
+			socket.timer = new timer.Timer(TIMEOUT_SECONDS, -1, 0, function(timeSeconds) {
+				io.sockets.in('human_translators').emit('time_left', {text: request.text, timeSeconds: timeSeconds});
+				if (timeSeconds<=0) {
+					logger.writeEventLog("events", "translate>"+socket.id, classification.translations);
+					socket.emit('translation', classification);
+					socket.timer.stop();
+				}
+			});
 		} else {
 			logger.writeEventLog("events", "translate>"+socket.id, classification.translations);
 			socket.emit('translation', classification);
@@ -155,7 +165,9 @@ io.sockets.on('connection', function (socket) {
 		socketsWaitingForTranslation.forEach(function(s) {
 			logger.writeEventLog("events", "approve>"+s.id, request);
 			s.emit('translation', request);
-			s.leave(request.text)
+			s.leave(request.text);
+			if (s.timer)
+				s.timer.stop();
 		}); // remove all clients from waiting to that text
 	});
 });
