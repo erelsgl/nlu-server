@@ -66,7 +66,7 @@ a.delete:hover {  background-image: url('images/delete_sharp.png') ; }
 
 #main_table {text-align: left} 
 
-#text {width: 90%; font-weight: bold; }
+#text {width: 90%; font-weight: bold; color: black; background: white; }
 
 
 

@@ -45,7 +45,7 @@ $(document).ready(function() {
     console.log("CLIENT: got a translation for "+translation.text);
 		$("#acknowledgement").html("");
     
-		$("#text").html(translation.text);
+		$("#text").val(translation.text);
     $("#translations").html(translationsToHtml(translation.translations, /*withDelete=*/true));
     $("#explanations").html(explanationsToHtml(translation));
     var elapsedTime = new Date() - startTime;
@@ -73,12 +73,12 @@ $(document).ready(function() {
 			$("#acknowledgement").html("");
 			if (translationElement.hasClass('deleted')) {
 				socket.emit("delete_translation", {
-					text: $("input#text").val(), 
+					text: $("#text").val(), 
 					translation_to_delete: translation
 				});
 			} else {
 				socket.emit("append_translation", {
-					text: $("input#text").val(), 
+					text: $("#text").val(), 
 					translation_to_add: translation
 				});
 			}
@@ -89,7 +89,7 @@ $(document).ready(function() {
 		if (translation.length<1) return;
 		$("#translationsTable").append(translationToHtml(translation, /*withDelete=*/true));
 		socket.emit('append_translation', {
-			text: $("input#text").val(),
+			text: $("#text").val(),
 			translation_to_add: translation,
 		});	
 	});
@@ -101,7 +101,7 @@ $(document).ready(function() {
 function approve() {
 	$("#acknowledgement").html("<img src='images/ajax_loader.gif' /"+">");
 	socket.emit('approve', {
-		text: $("#text").text(),
+		text: $("#text").val(),
 		translations: $(".translation").not(".deleted").map(function() { return $(this).text(); }).get(),
 	});
 }
@@ -118,7 +118,7 @@ function approve() {
 
             <tr>
                 <td class='label'>Human Utterance</td>
-                <td id="text"></td>
+                <td><input id="text" disabled="disabled" /></td>
             </tr>
 
 						<tr>

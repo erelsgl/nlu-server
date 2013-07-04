@@ -88,6 +88,14 @@ io.configure(function () {
 	io.set("polling duration", 10); 
 });
 
+var mapTextToTimer = {};
+var stopTimer = function(timerText) {
+	if (mapTextToTimer[timerText])  {
+		mapTextToTimer[timerText].stop();
+		delete mapTextToTimer[timerText];
+	}
+}
+
 io.sockets.on('connection', function (socket) {
 	logger.writeEventLog("events", "CONNECT<", socket.id);
 	
@@ -129,8 +137,8 @@ io.sockets.on('connection', function (socket) {
 			logger.writeEventLog("events", "translate>"+_(humanTranslators).pluck("id"), classification.translations);
 			io.sockets.in('human_translators').emit('translation', classification);
 			socket.join(request.text);  // the current client is waiting for translation of the given text
-			
-			socket.timer = new timer.Timer(TIMEOUT_SECONDS, -1, 0, function(timeSeconds) {
+
+			mapTextToTimer[request.text] = socket.timer = new timer.Timer(TIMEOUT_SECONDS, -1, 0, function(timeSeconds) {
 				io.sockets.in('human_translators').emit('time_left', {text: request.text, timeSeconds: timeSeconds});
 				if (timeSeconds<=0) {
 					logger.writeEventLog("events", "translate>"+socket.id, classification.translations);
@@ -146,9 +154,12 @@ io.sockets.on('connection', function (socket) {
 	
 	socket.on('delete_translation', function (request) {
 		logger.writeEventLog("events", "DELETE<"+socket.id, request);
+		if (mapTextToTimer[request.text])  mapTextToTimer[request.text].stop();
 	});
+
 	socket.on('append_translation', function (request) {
 		logger.writeEventLog("events", "APPEND<"+socket.id, request);
+		if (mapTextToTimer[request.text])  mapTextToTimer[request.text].stop();
 	});
 
 	socket.on('approve', function (request) {

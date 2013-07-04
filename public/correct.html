@@ -70,12 +70,12 @@ $(document).ready(function() {
 			$("#acknowledgement").html("");
 			if (translationElement.hasClass('deleted')) {
 				socket.emit("delete_translation", {
-					text: $("input#text").val(), 
+					text: $("#text").val(), 
 					translation_to_delete: translation
 				});
 			} else {
 				socket.emit("append_translation", {
-					text: $("input#text").val(), 
+					text: $("#text").val(), 
 					translation_to_add: translation
 				});
 			}
@@ -85,7 +85,7 @@ $(document).ready(function() {
 		var translation = $(this).val();
 		$("#translationsTable").append(translationToHtml(translation, /*withDelete=*/true));
 		socket.emit('append_translation', {
-			text: $("input#text").val(),
+			text: $("#text").val(),
 			translation_to_add: translation,
 		});	
 	});
