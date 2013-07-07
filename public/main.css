@@ -68,5 +68,8 @@ a.delete:hover {  background-image: url('images/delete_sharp.png') ; }
 
 #text {width: 90%; font-weight: bold; color: black; background: white; }
 
-
+body#translations table {border-collapse: collapse; }
+	body#translations table tr.identical { color: green; }
+	body#translations table tr.different { color: red; }
+		body#translations table tr td { border: 1px solid black; }
 

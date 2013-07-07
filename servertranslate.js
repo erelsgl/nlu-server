@@ -17,7 +17,7 @@ var express = require('express')
 	;
 
 //var pathToClassifier = "trainedClassifiers/NegotiationWinnowSingleclass.json";
-var pathToClassifier = "trainedClassifiers/NegotiationWinnowSingleAndMulticlass.json";
+var pathToClassifier = "trainedClassifiers/NegotiationWinnowBigram.json";
 
 
 //
@@ -25,7 +25,6 @@ var pathToClassifier = "trainedClassifiers/NegotiationWinnowSingleAndMulticlass.
 //
 
 var app = express();
-var staticMiddleware = express.static(path.join(__dirname, 'public'));
 app.configure(function(){
 	// Settings:
 	app.set('port', process.env.PORT || 9995);
@@ -42,7 +41,9 @@ app.configure(function(){
 	});
 
 	app.use(app.router);
-	app.use(staticMiddleware);
+	
+	app.use(express.static(path.join(__dirname, 'public')));
+	app.use(express.static(path.join(__dirname, 'logs')));
 
 	// Application local variables are provided to all templates rendered within the application:
 	app.locals.pretty = true;
@@ -62,7 +63,6 @@ classes.sort();
 
 
 
-
 //
 // Step 4: define an HTTP server over the express application:
 //
@@ -75,7 +75,42 @@ httpserver.listen(app.get('port'), function(){
 	serverStartTime = new Date();
 });
 
-var TIMEOUT_SECONDS=10;
+var TIMEOUT_SECONDS=5;
+
+
+
+
+/**
+ * Read the file in the given path, which should be of the following format:
+ * sentence1 / translation1
+ * sentence2 / translation2
+ * ...
+ * and return it as an object: {sentence1: translation1, sentence2: translation2, ...}
+ */
+function readTranslations(filePath) {
+	var translations = {};
+	fs.readFileSync(filePath, 'utf8').split(/[\n\r]+/).forEach(function(line) {
+		var parts = line.split(/\s*\/\s*/);
+		if (parts.length<2) return;
+		translations[parts[0]] = parts[1];
+	});
+	return translations;
+}
+
+app.get("/translations", function(req,res) {
+	var automatic = readTranslations(__dirname+"/logs/translations_automatic.log");
+	var manual    = readTranslations(__dirname+"/logs/translations_manual.log");
+	res.write("<link rel='stylesheet' href='main.css' />");
+	res.write("<body id='translations'>");
+	res.write("<table>");
+	res.write("<tr><th>sentence</th><th>automatic</th><th>manual</th></tr>");
+	for (var sentence in automatic) {
+		var trClass = (automatic[sentence]==manual[sentence] || (!automatic[sentence] &&!manual[sentence]) )? "identical": "different";
+		res.write("<tr class='"+trClass+"'><td>"+sentence+"</td><td>"+automatic[sentence]+"</td><td>"+manual[sentence]+"</td></tr>");
+	} 
+	res.write("</table>");
+	res.end();
+});
 
 //
 // Step 5: define a SOCKET.IO server that listens to the http server:
@@ -96,16 +131,25 @@ var stopTimer = function(timerText) {
 	}
 }
 
+
+
+var registeredPublicTranslators = {};
+var activePublicTranslators = {};
+
 io.sockets.on('connection', function (socket) {
 	logger.writeEventLog("events", "CONNECT<", socket.id);
 	
-	socket.on('register_as_human_translator', function() {
-		socket.join('human_translators');
-		socket.human_translator = true;
-		logger.writeEventLog("events", "HUMANTRANSLATOR<", socket.id);
+	// Public translator accepts translations from other users for correction (a "wizard-of-oz"):
+	socket.on('register_as_public_translator', function() {
+		socket.public_translator = true;
+		registeredPublicTranslators[socket.id] = socket;
+		activePublicTranslators[socket.id] = socket;
+		logger.writeEventLog("events", "PUBLICTRANSLATOR<", socket.id);
 		socket.emit('classes', classes);
 	});
 	
+	// Private translator corrects his own translations, without the help of a public translator:
+	socket.private_translator = false;
 	socket.on('register_as_private_translator', function() {
 		socket.private_translator = true;
 		logger.writeEventLog("events", "PRIVATETRANSLATOR<", socket.id);
@@ -114,8 +158,11 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('disconnect', function () { 
 		logger.writeEventLog("events", "DISCONNECT<", socket.id);
+		delete registeredPublicTranslators[socket.id];
+		delete activePublicTranslators[socket.id];
 	});
 
+	// A human asks for a translation: 
 	socket.on('translate', function (request) {
 		logger.writeEventLog("events", "TRANSLATE<"+socket.id, request);
 
@@ -131,40 +178,56 @@ io.sockets.on('connection', function (socket) {
 			}
 		}
 		fs.appendFile(logger.cleanPathToLog("translations_automatic.log"), classification.text + "  /  " +classification.translations.join(" AND ")+"\n");
-		
-		var humanTranslators = io.sockets.clients('human_translators');
-		if (humanTranslators.length>0 && !socket.private_translator) {
-			logger.writeEventLog("events", "translate>"+_(humanTranslators).pluck("id"), classification.translations);
-			io.sockets.in('human_translators').emit('translation', classification);
-			socket.join(request.text);  // the current client is waiting for translation of the given text
 
-			mapTextToTimer[request.text] = socket.timer = new timer.Timer(TIMEOUT_SECONDS, -1, 0, function(timeSeconds) {
-				io.sockets.in('human_translators').emit('time_left', {text: request.text, timeSeconds: timeSeconds});
-				if (timeSeconds<=0) {
-					logger.writeEventLog("events", "translate>"+socket.id, classification.translations);
-					socket.emit('translation', classification);
-					socket.timer.stop();
-				}
-			});
-		} else {
-			logger.writeEventLog("events", "translate>"+socket.id, classification.translations);
-			socket.emit('translation', classification);
+		// send the translation to all registered public translators:
+		for (var id in registeredPublicTranslators) { 
+			logger.writeEventLog("events", "translate-toapprove>"+id, classification.translations);
+			registeredPublicTranslators[id].emit('translation', classification);
 		}
+
+
+		if (socket.private_translator || !Object.keys(activePublicTranslators).length) {
+			// there are no active public translators - send the translation directly to the asker:
+			logger.writeEventLog("events", "translate-direct>"+socket.id, classification.translations);
+			socket.emit('translation', classification);
+		} else {
+			// the current client is waiting for translation of the given text by the public translators:
+			socket.join(request.text);
+			
+			mapTextToTimer[request.text] = new timer.Timer(TIMEOUT_SECONDS, -1, 0, function(timeSeconds) {
+					for (var id in registeredPublicTranslators)
+						registeredPublicTranslators[id].emit('time_left', {text: request.text, timeSeconds: timeSeconds});
+					if (timeSeconds<=0) { // timeout - no public translator responded - send the automatic translation to the asker:
+						logger.writeEventLog("events", "translate-timeout>"+socket.id, classification.translations);
+						socket.emit('translation', classification);
+						mapTextToTimer[request.text].stop();
+						activePublicTranslators = {};  // in case of timeout, all public translators are considered inactive.
+					}
+			});
+		}		
+
 	});
 	
+	// A human translator (public or private) says that a certain automatic translation is incorrect: 
 	socket.on('delete_translation', function (request) {
+		if (socket.public_translator) activePublicTranslators[socket.id] = socket;
+		if (mapTextToTimer[request.text])  mapTextToTimer[request.text].stop();
 		logger.writeEventLog("events", "DELETE<"+socket.id, request);
-		if (mapTextToTimer[request.text])  mapTextToTimer[request.text].stop();
 	});
 
+	// A human translator (public or private) says that a certain automatic translation is missing: 
 	socket.on('append_translation', function (request) {
-		logger.writeEventLog("events", "APPEND<"+socket.id, request);
+		if (socket.public_translator) activePublicTranslators[socket.id] = socket;
 		if (mapTextToTimer[request.text])  mapTextToTimer[request.text].stop();
+		logger.writeEventLog("events", "APPEND<"+socket.id, request);
 	});
 
+	// A human translator (public or private) says that the current automatic translation (with the previously made corrections) is correct: 
 	socket.on('approve', function (request) {
-		logger.writeEventLog("events", "APPROVE<"+socket.id, request);
+		if (socket.public_translator) activePublicTranslators[socket.id] = socket;
+		if (mapTextToTimer[request.text])  mapTextToTimer[request.text].stop();
 		fs.appendFile(logger.cleanPathToLog("translations_manual.log"), request.text + "  /  " +request.translations.join(" AND ")+"\n");
+		logger.writeEventLog("events", "APPROVE<"+socket.id, request);
 
 		//while(!_(request.translations).isEqual(classifier.classify(request.text))) {
 		//	classifier.trainOnline(request.text, request.translations);
@@ -173,12 +236,10 @@ io.sockets.on('connection', function (socket) {
 		socket.emit('acknowledgement');
 		
 		var socketsWaitingForTranslation = io.sockets.clients(request.text).filter(function(s){return s.id!=socket.id});
-		socketsWaitingForTranslation.forEach(function(s) {
-			logger.writeEventLog("events", "approve>"+s.id, request);
-			s.emit('translation', request);
-			s.leave(request.text);
-			if (s.timer)
-				s.timer.stop();
+		socketsWaitingForTranslation.forEach(function(waitingSocket) {
+			logger.writeEventLog("events", "approve>"+waitingSocket.id, request);
+			waitingSocket.emit('translation', request);
+			waitingSocket.leave(request.text);
 		}); // remove all clients from waiting to that text
 	});
 });

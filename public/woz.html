@@ -38,7 +38,7 @@ $(document).ready(function() {
   socket = commonConnect(serverport, deeplog);
 
   socket.on('connect', function() {
-		socket.emit("register_as_human_translator");
+		socket.emit("register_as_public_translator");
   });
 
   socket.on('translation', function(translation) {

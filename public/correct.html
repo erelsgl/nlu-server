@@ -83,6 +83,7 @@ $(document).ready(function() {
 
 	$("select#classToAdd").change(function() {
 		var translation = $(this).val();
+		if (translation.length<1) return;
 		$("#translationsTable").append(translationToHtml(translation, /*withDelete=*/true));
 		socket.emit('append_translation', {
 			text: $("#text").val(),
