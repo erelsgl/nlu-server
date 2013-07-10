@@ -57,7 +57,8 @@ app.configure('development', function(){
 // Step 2: Load the classifier
 //
 
-var classifier = serialize.loadSync(pathToClassifier, __dirname+"/../machine-learning/demos");
+var classifier = serialize.fromString(
+	fs.readFileSync(pathToClassifier), __dirname+"/../machine-learning/demos");
 var classes = classifier.getAllClasses();
 classes.sort();
 

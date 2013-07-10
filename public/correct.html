@@ -31,19 +31,19 @@ var startTime;
 
 /* initialization */
 
-var socket=null, deeplog=null;
+var translationSocket=null, deeplog=null;
 $(document).ready(function() {
 	deeplog = new DeepLog($("#deeplog"));
 	$("#form").deserialize(location.search.substr(1));
-	socket = commonConnect(serverport, deeplog);
+	translationSocket = commonConnect(serverport, deeplog);
 
-	socket.on('connect', function() {
-		socket.emit("register_as_private_translator");
+	translationSocket.on('connect', function() {
+		translationSocket.emit("register_as_private_translator");
 		if ($("#text").val().length) 
 			translate();
 	});
 
-	socket.on('translation', function(translation) {
+	translationSocket.on('translation', function(translation) {
 		console.log("CLIENT: got a translation for "+translation.text);
 		$("#acknowledgement").html("");
 		
@@ -56,7 +56,7 @@ $(document).ready(function() {
 		deeplog.replace(DEPTH_OF_CLIENT_LOG_MESSAGES, endMessage);
 	});
 
-	socket.on('classes', function(classes) {
+	translationSocket.on('classes', function(classes) {
 			setOptionsFromArray(
 					/*idOfContainingElement=*/"classToAdd", 
 					/*arrayOfOptions=*/classes,
@@ -69,12 +69,12 @@ $(document).ready(function() {
 			translationElement.toggleClass('deleted');
 			$("#acknowledgement").html("");
 			if (translationElement.hasClass('deleted')) {
-				socket.emit("delete_translation", {
+				translationSocket.emit("delete_translation", {
 					text: $("#text").val(), 
 					translation_to_delete: translation
 				});
 			} else {
-				socket.emit("append_translation", {
+				translationSocket.emit("append_translation", {
 					text: $("#text").val(), 
 					translation_to_add: translation
 				});
@@ -85,7 +85,7 @@ $(document).ready(function() {
 		var translation = $(this).val();
 		if (translation.length<1) return;
 		$("#translationsTable").append(translationToHtml(translation, /*withDelete=*/true));
-		socket.emit('append_translation', {
+		translationSocket.emit('append_translation', {
 			text: $("#text").val(),
 			translation_to_add: translation,
 		});	
@@ -99,7 +99,7 @@ function translate() {
 	$("#translations").html("<img src='images/ajax_loader.gif' /"+">");
 	$("#acknowledgement").html("");
 	startTime = new Date();
-	socket.emit('translate', request);
+	translationSocket.emit('translate', request);
 	
 	deeplog.add(DEPTH_OF_CLIENT_LOG_MESSAGES, 
 		formatLogMessageForDeepLog(
@@ -111,7 +111,7 @@ function translate() {
 
 function approve() {
 	$("#acknowledgement").html("<img src='images/ajax_loader.gif' /"+">");
-	socket.emit('approve', {
+	translationSocket.emit('approve', {
 		text: $("#text").val(),
 		translations: $(".translation").not(".deleted").map(function() { return $(this).text(); }).get(),
 	});
@@ -164,7 +164,7 @@ function approve() {
 
 	<ul id='deeplog'></ul>
 
-	<p><button onClick='abort(socket); return false;'>Abort</button></p>
+	<p><button onClick='abort(translationSocket); return false;'>Abort</button></p>
 
 	<div style='display:none;' id='credits'>
 		<div>Development: Erel Segal the Levite (erelsgl@gmail.com)</div>
