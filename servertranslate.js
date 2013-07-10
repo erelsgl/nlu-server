@@ -12,12 +12,12 @@ var express = require('express')
 	, util = require('util')
 	, logger = require('./logger')
 	, _ = require('underscore')._
-	, serialize =require('../machine-learning/serialize') 
+	, serialize =require('../machine-learning/utils/serialize') 
 	, timer = require('./timer');
 	;
 
 //var pathToClassifier = "trainedClassifiers/NegotiationWinnowSingleclass.json";
-var pathToClassifier = "trainedClassifiers/NegotiationWinnowBigram.json";
+var pathToClassifier = "trainedClassifiers/NegotiationWinnowBigramGrammar.json";
 
 
 //
