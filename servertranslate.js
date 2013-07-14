@@ -81,34 +81,20 @@ var TIMEOUT_SECONDS=5;
 
 
 
-/**
- * Read the file in the given path, which should be of the following format:
- * sentence1 / translation1
- * sentence2 / translation2
- * ...
- * and return it as an object: {sentence1: translation1, sentence2: translation2, ...}
- */
-function readTranslations(filePath) {
-	var translations = {};
-	fs.readFileSync(filePath, 'utf8').split(/[\n\r]+/).forEach(function(line) {
-		var parts = line.split(/\s*\/\s*/);
-		if (parts.length<2) return;
-		translations[parts[0]] = parts[1];
-	});
-	return translations;
-}
-
 app.get("/translations", function(req,res) {
-	var automatic = readTranslations(__dirname+"/logs/translations_automatic.log");
-	var manual    = readTranslations(__dirname+"/logs/translations_manual.log");
-	res.write("<link rel='stylesheet' href='main.css' />");
-	res.write("<body id='translations'>");
-	res.write("<table>");
-	res.write("<tr><th>sentence</th><th>automatic</th><th>manual</th></tr>");
-	for (var sentence in automatic) {
-		var trClass = (automatic[sentence]==manual[sentence] || (!automatic[sentence] &&!manual[sentence]) )? "identical": "different";
-		res.write("<tr class='"+trClass+"'><td>"+sentence+"</td><td>"+automatic[sentence]+"</td><td>"+manual[sentence]+"</td></tr>");
-	} 
+	res.write("<link rel='stylesheet' href='main.css' />\n");
+	res.write("<body id='translations'>\n");
+	res.write("<table>\n");
+	res.write("<tr><th>userid</th><th>time</th><th>text</th><th>automatic</th><th>manual</th><th>correct?</th></tr>\n");
+	fs.readFileSync(__dirname+"/logs/translations_all.log", 'utf8').split(/[\n\r]+/).forEach(function(line) {
+		var parts = line.split(/\s*\/\s*/);
+		if (parts.length<5) return;
+		var userid=parts[0], time=parts[1], text=parts[2], automatic=parts[3], manual=parts[4], is_correct=parts[5];
+		time = new Date(time).toISOString().replace(/T/,' ').replace(/[.]000Z/,'');
+		var trClass = (automatic==manual || (!automatic && !manual) )? "identical": "different";
+		res.write("<tr class='"+trClass+"'><td>"+userid+"</td><td>"+time+"</td><td>"+text+"</td><td>"+automatic+"</td><td>"+manual+"</td><td>"+is_correct+"</td></tr>\n");
+		
+	});
 	res.write("</table>");
 	res.end();
 });
@@ -227,7 +213,24 @@ io.sockets.on('connection', function (socket) {
 	socket.on('approve', function (request) {
 		if (socket.public_translator) activePublicTranslators[socket.id] = socket;
 		if (mapTextToTimer[request.text])  mapTextToTimer[request.text].stop();
-		fs.appendFile(logger.cleanPathToLog("translations_manual.log"), request.text + "  /  " +request.translations.join(" AND ")+"\n");
+		
+		request.translations.sort();
+		var automatic_translations = classifier.classify(request.text);
+		automatic_translations.sort();
+		var is_correct = _(automatic_translations).isEqual(request.translations);
+		
+		fs.appendFile(logger.cleanPathToLog("translations_manual.log"), 
+			request.text + "  /  " +
+			request.translations.join(" AND ")+"\n");
+
+		fs.appendFile(logger.cleanPathToLog("translations_all.log"), 
+			socket.id + "  /  "+
+			new Date() + "  /  "+
+			request.text + "  /  " +
+			automatic_translations.join(" AND ")+"  /  "+
+			request.translations.join(" AND ")+"  /  "+
+			is_correct+"\n"
+			);
 		logger.writeEventLog("events", "APPROVE<"+socket.id, request);
 
 		//while(!_(request.translations).isEqual(classifier.classify(request.text))) {
