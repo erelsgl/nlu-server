@@ -279,7 +279,6 @@
 , {"input":"10 hours","output":"{\"Offer\": {\"Working Hours\": \"10 hours\"}}"}
 , {"input":"with leased car","output":"{\"Offer\": {\"Leased Car\": \"With leased car\"}}"}
 , {"input":"12000","output":"{\"Offer\": {\"Salary\": \"12,000 NIS\"}}"}
-, {"input":"There are thousands like you","output":"{\"Reject\": \"previous\"}"}
 , {"input":"i can live with 9 hours","output":"{\"Offer\": {\"Working Hours\": \"9 hours\"}}"}
 , {"input":"Fast promotion track","output":"{\"Offer\": {\"Promotion Possibilities\": \"Fast promotion track\"}}"}
 , {"input":"Pension Fund 20%","output":"{\"Offer\": {\"Pension Fund\": \"20%\"}}"}

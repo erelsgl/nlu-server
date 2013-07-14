@@ -12,12 +12,12 @@ var express = require('express')
 	, util = require('util')
 	, logger = require('./logger')
 	, _ = require('underscore')._
-	, serialize =require('../machine-learning/utils/serialize') 
+	, serialize =require('../machine-learning/utils/serialize')
 	, timer = require('./timer');
 	;
 
-//var pathToClassifier = "trainedClassifiers/NegotiationWinnowSingleclass.json";
-var pathToClassifier = "trainedClassifiers/NegotiationWinnowBigramGrammar.json";
+//var pathToClassifier = __dirname+"/trainedClassifiers/NegotiationWinnowBigram.json";
+var pathToClassifier = "trainedClassifiers/TextCategorizationDemo.json";
 
 
 //
@@ -58,7 +58,7 @@ app.configure('development', function(){
 //
 
 var classifier = serialize.fromString(
-	fs.readFileSync(pathToClassifier), __dirname+"/../machine-learning/demos");
+	fs.readFileSync(pathToClassifier), __dirname);
 var classes = classifier.getAllClasses();
 classes.sort();
 

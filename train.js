@@ -9,47 +9,17 @@ var mlutils = require('../machine-learning/utils');
 var _ = require('underscore')._;
 var fs = require('fs');
 
-console.log("text categorization demo start");
+console.log("machine learning trainer start");
 
 var domainDataset = JSON.parse(fs.readFileSync("datasets/Dataset0Domain.json"));
 var grammarDataset = JSON.parse(fs.readFileSync("datasets/Dataset0Grammar.json"));
 var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Dataset1Woz.json"));
 var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Dataset1Woz1class.json"));
 
-var createBayesianClassifier = function() {
-	var classifiers = require('../machine-learning/classifiers');
-	return new classifiers.BinaryClassifierSet({
-		binaryClassifierType: classifiers.Bayesian,
-	});
-}
-
-var createPerceptronClassifier = function() {
-	var classifiers = require('../machine-learning/classifiers');
-	var FeatureExtractor = require('../machine-learning/features');
-	
-	return new classifiers.EnhancedClassifier({
-		classifierType: classifiers.BinaryClassifierSet,
-		classifierOptions: {
-				binaryClassifierType: classifiers.Perceptron,
-				binaryClassifierOptions: {
-					learning_rate: 1,
-					retrain_count: 5,
-					do_averaging: true,      // common practice in perceptrons
-					do_normalization: false, 
-				},
-		},
-		featureExtractor: [
-					FeatureExtractor.WordsFromText(1),
-					//FeatureExtractor.WordsFromText(2),
-					//FeatureExtractor.LettersFromText(3), 
-					//FeatureExtractor.LettersFromText(4),
-		],
-	});
-}
-
 var createWinnowClassifier = function() {
 	var classifiers = require('../machine-learning/classifiers');
 	var FeatureExtractor = require('../machine-learning/features');
+	var fs = require('fs');
 
 	return new classifiers.EnhancedClassifier({
 		classifierType: classifiers.BinaryClassifierSet,
@@ -62,42 +32,19 @@ var createWinnowClassifier = function() {
 				},
 		},
 		featureExtractor: [
-					FeatureExtractor.WordsFromText(1),
-					FeatureExtractor.WordsFromText(2),
-					//FeatureExtractor.LettersFromText(3), 
-					//FeatureExtractor.LettersFromText(4),
-		],		
-	});
-}
-
-var createSvmClassifier = function() {
-	var classifiers = require('../machine-learning/classifiers');
-	var FeatureExtractor = require('../machine-learning/features');
-	
-	return new classifiers.EnhancedClassifier({
-		classifierType: classifiers.BinaryClassifierSet,
-		classifierOptions: {
-				binaryClassifierType: classifiers.SVM,
-				binaryClassifierOptions: {
-					C: 1.0,
-				},
-		},
-		featureExtractor: [
-					FeatureExtractor.WordsFromText(1),
-					FeatureExtractor.WordsFromText(2),
-					//FeatureExtractor.LettersFromText(2), 
-					//FeatureExtractor.LettersFromText(4),
+			FeatureExtractor.WordsFromText(1,false/*,4,0.8*/),
+			FeatureExtractor.WordsFromText(2,false/*,4,0.6*/),
 		],
-		featureLookupTable: new FeatureExtractor.FeatureLookupTable(),
+		featureExtractorForClassification: [
+			FeatureExtractor.Hypernyms(JSON.parse(fs.readFileSync("knowledgeresources/hypernyms.json"))),
+		],
 	});
 }
 
 var createNewClassifier = createWinnowClassifier;
-//var createNewClassifier = createSvmClassifier;
-//var createNewClassifier = createPerceptronClassifier;
 
-var do_cross_dataset_testing = true;
-var do_cross_validation = true;
+var do_cross_dataset_testing = false;
+var do_cross_validation = false;
 var do_serialization = true;
 
 var verbosity = 0;
@@ -176,9 +123,16 @@ if (do_serialization) {
 	resultsBeforeReload = [];
 	var currentStats = new PrecisionRecall();
 	for (var i=0; i<dataset.length; ++i) {
-		var expectedClasses = dataset[i].output;
-		var actualClasses = classifier.classify(dataset[i].input);
-		if (verbosity>0) console.log(dataset[i].input+": "+actualClasses);
+		var expectedClasses = dataset[i].output; 
+		if (!_(expectedClasses).isArray())
+			expectedClasses = [expectedClasses];
+		else
+			expectedClasses.sort(); 
+		var actualClasses = classifier.classify(dataset[i].input);  
+		actualClasses.sort();
+		if (!_(expectedClasses).isEqual(actualClasses)) {
+			console.log("\t"+dataset[i].input+": expected "+expectedClasses+" but got "+actualClasses);
+		}
 		currentStats.addCases(expectedClasses, actualClasses, verbosity-1);
 		resultsBeforeReload[i] = actualClasses;
 	}
@@ -193,8 +147,8 @@ if (do_serialization) {
 
 	console.log("\ntest on training data after reload:")
 	for (var i=0; i<dataset.length; ++i) {
-		var expectedClasses = dataset[i].output;
 		var actualClasses = classifier2.classify(dataset[i].input);
+		actualClasses.sort();
 		if (!_(resultsBeforeReload[i]).isEqual(actualClasses)) {
 			throw new Error("Reload does not reproduce the original classifier! before reload="+resultsBeforeReload[i]+", after reload="+actualClasses);
 		}
@@ -202,4 +156,4 @@ if (do_serialization) {
 	}
 } // do_serialization
 
-console.log("text categorization demo end");
+console.log("machine learning trainer end");
