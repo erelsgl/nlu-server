@@ -17,7 +17,7 @@ var express = require('express')
 	;
 
 //var pathToClassifier = __dirname+"/trainedClassifiers/NegotiationWinnowBigram.json";
-var pathToClassifier = "trainedClassifiers/TextCategorizationDemo.json";
+var pathToClassifier = __dirname+"/trainedClassifiers/TextCategorizationDemo.json";
 
 
 //

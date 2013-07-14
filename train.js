@@ -17,8 +17,8 @@ var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Dataset1Woz.jso
 var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Dataset1Woz1class.json"));
 
 var createWinnowClassifier = function() {
-	var classifiers = require('../machine-learning/classifiers');
-	var FeatureExtractor = require('../machine-learning/features');
+	var classifiers = require(__dirname+'/../machine-learning/classifiers');
+	var FeatureExtractor = require(__dirname+'/../machine-learning/features');
 	var fs = require('fs');
 
 	return new classifiers.EnhancedClassifier({
@@ -36,7 +36,7 @@ var createWinnowClassifier = function() {
 			FeatureExtractor.WordsFromText(2,false/*,4,0.6*/),
 		],
 		featureExtractorForClassification: [
-			FeatureExtractor.Hypernyms(JSON.parse(fs.readFileSync("knowledgeresources/hypernyms.json"))),
+			FeatureExtractor.Hypernyms(JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/hypernyms.json'))),
 		],
 	});
 }
