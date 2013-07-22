@@ -16,8 +16,8 @@ var express = require('express')
 	, timer = require('./timer');
 	;
 
-//var pathToClassifier = __dirname+"/trainedClassifiers/NegotiationWinnowBigram.json";
-var pathToClassifier = __dirname+"/trainedClassifiers/TextCategorizationDemo.json";
+var pathToClassifier = __dirname+"/trainedClassifiers/NegotiationWinnowBigram.json";
+//var pathToClassifier = __dirname+"/trainedClassifiers/TextCategorizationDemo.json";
 
 
 //
@@ -76,7 +76,7 @@ httpserver.listen(app.get('port'), function(){
 	serverStartTime = new Date();
 });
 
-var TIMEOUT_SECONDS=5;
+var TIMEOUT_SECONDS=10;
 
 
 
@@ -195,28 +195,46 @@ io.sockets.on('connection', function (socket) {
 
 	});
 	
+	function onTranslatorAction(socket, request) {
+		if (socket.public_translator)    // remember that there is an active public translator
+			activePublicTranslators[socket.id] = socket;
+		if (request && mapTextToTimer[request.text])    // stop the timer
+			mapTextToTimer[request.text].stop();
+	}
+	
 	// A human translator (public or private) says that a certain automatic translation is incorrect: 
 	socket.on('delete_translation', function (request) {
-		if (socket.public_translator) activePublicTranslators[socket.id] = socket;
-		if (mapTextToTimer[request.text])  mapTextToTimer[request.text].stop();
+		onTranslatorAction(socket, request);
 		logger.writeEventLog("events", "DELETE<"+socket.id, request);
 	});
 
 	// A human translator (public or private) says that a certain automatic translation is missing: 
 	socket.on('append_translation', function (request) {
-		if (socket.public_translator) activePublicTranslators[socket.id] = socket;
-		if (mapTextToTimer[request.text])  mapTextToTimer[request.text].stop();
+		onTranslatorAction(socket, request);
 		logger.writeEventLog("events", "APPEND<"+socket.id, request);
+	});
+	
+	// A human translator asks to stop the timer of a certain translation: 
+	socket.on('stop_timer', function(request) {
+		onTranslatorAction(socket, request);
+		logger.writeEventLog("events", "STOPTIMER<"+socket.id, request);
 	});
 
 	// A human translator (public or private) says that the current automatic translation (with the previously made corrections) is correct: 
 	socket.on('approve', function (request) {
-		if (socket.public_translator) activePublicTranslators[socket.id] = socket;
-		if (mapTextToTimer[request.text])  mapTextToTimer[request.text].stop();
+		onTranslatorAction(socket, request);
 		
 		request.translations.sort();
-		var automatic_translations = classifier.classify(request.text);
-		automatic_translations.sort();
+		var automatic_translations = null;
+		try {
+			automatic_translations = classifier.classify(request.text);
+			automatic_translations.sort();
+		} catch (err) {
+			console.error("Error in automatic classification!");
+			console.dir(request);
+			console.error(err.stack.replace(/\n/g,"\n"));
+			automatic_translations = [];
+		}
 		var is_correct = _(automatic_translations).isEqual(request.translations);
 		
 		fs.appendFile(logger.cleanPathToLog("translations_manual.log"), 

@@ -64,9 +64,11 @@ a.delete { margin-bottom: 10px; width: 18px; height:18px; display:block; backgro
 a.delete:hover {  background-image: url('images/delete_sharp.png') ; }
 .deleted {	text-decoration: line-through }
 
-#main_table {text-align: left} 
+.translation_table {text-align: left; width:100%;} 
 
-#text {width: 90%; font-weight: bold; color: black; background: white; }
+#text, #forms input {width: 90%; font-weight: bold; color: black; background: white; }
+
+#forms div.log {text-align: left; border-bottom: 1px solid black; font-size:10px;}
 
 body#translations table {border-collapse: collapse; }
 	body#translations table tr.identical { color: green; }

@@ -52,8 +52,9 @@ $(document).ready(function() {
     var endMessage = formatLogMessageWithTimeAndResult("Client", ""+elapsedTime+" ms", 
 "translate '"+translation.text+"'", translation.translations);
     deeplog.replace(DEPTH_OF_CLIENT_LOG_MESSAGES, endMessage);
-
   });
+
+	$("#form").submit(translate);
 });
 
 
@@ -68,6 +69,7 @@ function translate() {
 		formatLogMessageForDeepLog(
 			{sender:"Client", message: "translate "+(request.testCorpus? request.testCorpus: "'"+request.text+"'")}));
   console.log("CLIENT: sent a request to translate: "+JSON.stringify(request));
+	return false;
 }
 
 </script>
@@ -75,12 +77,12 @@ function translate() {
 <form name='form' id='form' method='get' action=''>
    <h1>Translate Text to Semantic Representation</h1>
       
-      <table id='main_table' style="width:100%;">
+      <table class='translation_table'>
 
             <tr>
                 <td class='label'>Human Utterance</td>
                 <td><input class='sentence' name="text" id="text" type="text" size="80" value="I agree to offer a wage of 20000 NIS and 10% pension without a car"/></td>
-                <td><button type='submit' onClick='translate(); return false;'>translate</button></td>
+                <td><button type='submit' class='translate'>translate</button></td>
                 <td><input type='hidden' name='forward' value='true' /></td>
                 <td><input type='hidden' name='explain' value='4' /></td>
             </tr>

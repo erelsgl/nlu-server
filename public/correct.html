@@ -45,7 +45,7 @@ $(document).ready(function() {
 
 	translationSocket.on('translation', function(translation) {
 		console.log("CLIENT: got a translation for "+translation.text);
-		$("#acknowledgement").html("");
+		$(".acknowledgement").html("");
 		
 		$("#translations").html(translationsToHtml(translation.translations, /*with delete=*/true));
 		$("#explanations").html(explanationsToHtml(translation));
@@ -67,7 +67,7 @@ $(document).ready(function() {
 			var translationElement = $(this).parent().next();
 			var translation = translationElement.text();
 			translationElement.toggleClass('deleted');
-			$("#acknowledgement").html("");
+			$(".acknowledgement").html("");
 			if (translationElement.hasClass('deleted')) {
 				translationSocket.emit("delete_translation", {
 					text: $("#text").val(), 
@@ -84,12 +84,17 @@ $(document).ready(function() {
 	$("select#classToAdd").change(function() {
 		var translation = $(this).val();
 		if (translation.length<1) return;
-		$("#translationsTable").append(translationToHtml(translation, /*withDelete=*/true));
+		$(".translationsTable").append(translationToHtml(translation, /*withDelete=*/true));
 		translationSocket.emit('append_translation', {
 			text: $("#text").val(),
 			translation_to_add: translation,
 		});	
 	});
+	
+	socket.on('acknowledgement', function() {
+			$(".acknowledgement").html("<img src='images/V.png' /"+">");
+	});
+
 });
 
 
@@ -97,7 +102,7 @@ $(document).ready(function() {
 function translate() {
 	var request = formToObject($('#form'));
 	$("#translations").html("<img src='images/ajax_loader.gif' /"+">");
-	$("#acknowledgement").html("");
+	$(".acknowledgement").html("");
 	startTime = new Date();
 	translationSocket.emit('translate', request);
 	
@@ -110,7 +115,7 @@ function translate() {
 /** Tell the server that the current translation is approved */
 
 function approve() {
-	$("#acknowledgement").html("<img src='images/ajax_loader.gif' /"+">");
+	$(".acknowledgement").html("<img src='images/ajax_loader.gif' /"+">");
 	translationSocket.emit('approve', {
 		text: $("#text").val(),
 		translations: $(".translation").not(".deleted").map(function() { return $(this).text(); }).get(),
@@ -126,7 +131,7 @@ function approve() {
 	<input type='hidden' name='forward' value='true' />
 	<input type='hidden' name='explain' value='4' />
 			
-			<table id='main_table' style="width:100%;">
+			<table class='translation_table'>
 
 						<tr>
 								<td class='label'>Human Utterance</td>
@@ -147,7 +152,7 @@ function approve() {
 						<tr>
 							<td></td>
 							<td><button id='approveButton' type='submit' onClick='approve(); return false;'>approve</button>
-								<div id='acknowledgement' />
+								<div class='acknowledgement' />
 							</td>
 						</tr>
  

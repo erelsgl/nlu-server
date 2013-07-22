@@ -5,7 +5,7 @@
 <link type="text/css" rel="stylesheet" href="main.css" />
 <meta charset='utf-8' />
 
-<title>Translate Text to Semantic Representation</title>
+<title>Wizard-of-Oz interface</title>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
@@ -26,12 +26,15 @@
 /* translations */
 
 var DEPTH_OF_CLIENT_LOG_MESSAGES=2;
-var startTime;
 
 
 /* initialization */
 
 var socket=null, form=null, deeplog=null;
+var availableClasses = null;
+var mapTextToTranslationForm = {};
+var queueOfApprovedForms = [];
+var currentAcknowledgementElement = null;
 $(document).ready(function() {
   deeplog = new DeepLog($("#deeplog"));
   form = $('#form'); form.deserialize(location.search.substr(1));
@@ -41,108 +44,136 @@ $(document).ready(function() {
 		socket.emit("register_as_public_translator");
   });
 
+	socket.on('classes', function(classes) {
+		availableClasses = classes;
+	});
+
   socket.on('translation', function(translation) {
     console.log("CLIENT: got a translation for "+translation.text);
-		$("#acknowledgement").html("");
-    
-		$("#text").val(translation.text);
-    $("#translations").html(translationsToHtml(translation.translations, /*withDelete=*/true));
-    $("#explanations").html(explanationsToHtml(translation));
-    var elapsedTime = new Date() - startTime;
-    var endMessage = formatLogMessageWithTimeAndResult("Client", ""+elapsedTime+" ms", 
-"translate '"+translation.text+"'", translation.translations);
-    //console.log(endMessage);
-    deeplog.replace(DEPTH_OF_CLIENT_LOG_MESSAGES, endMessage);
+
+		var newForm = $(
+			"<form method='get' action=''>"+
+				"<table class='translation_table'>"+
+					"<tr>"+
+						"<td class='label'>Human Utterance</td>"+
+						"<td><input class='text' name='text' disabled='disabled' value='"+translation.text+"' /"+"></td>"+
+					"</tr>"+
+					"<tr>"+
+						"<td class='label'>Translations</td>"+
+						"<td id='translations'>"+
+							translationsToHtml(translation.translations, /*withDelete=*/true)+
+						"</td>"+
+					"</tr>"+
+					"<tr>"+
+						"<td></td>"+
+						"<td><select class='classToAdd'></select></td>"+
+					"</tr>"+
+					"<tr>"+
+						"<td></td>"+
+						"<td>"+
+							"<button class='approve' type='submit'>approve</button>"+
+							"<button class='stop_timer'>stop timer</button>"+
+							"<div class='acknowledgement' /"+">"+
+						"<"+"/td>"+
+					"<"+"/tr>"+
+		//			"<tr><td colspan='2'><hr/"+"></td></tr>"+
+				"<"+"/table><!-- translation_table -->"+
+				"<hr/"+">"+
+			"</"+"form>");
+
+		$("#forms").append(newForm);
+		if (!mapTextToTranslationForm[translation.text])
+			mapTextToTranslationForm[translation.text]=[];
+		mapTextToTranslationForm[translation.text].push(newForm);
+
+		setOptionsFromArray(
+				newForm.find(".classToAdd"), 
+				/*arrayOfOptions=*/availableClasses,
+				/*titleForDefaultOption=*/"-- Add class --");
   });
 
-	socket.on('classes', function(classes) {
-			setOptionsFromArray(
-					/*idOfContainingElement=*/"classToAdd", 
-					/*arrayOfOptions=*/classes,
-					/*titleForDefaultOption=*/"-- Add class --");		
-	});
-
 	socket.on('time_left', function(text_and_time) {
-			$("#acknowledgement").html("<b>Time left: "+text_and_time.timeSeconds+" seconds</b>");
+		mapTextToTranslationForm[text_and_time.text].forEach(function(form) {
+			form.find(".acknowledgement").html("<b>Time left: "+text_and_time.timeSeconds+" seconds</b>");
+		});
 	});
 
-	$("#translations").on("click", "a.delete", function() {
+	socket.on('acknowledgement', function() {
+			if (currentAcknowledgementElement)
+				currentAcknowledgementElement.html("<img src='images/V.png' /"+">");
+	});
+
+
+	$("#forms").on("click", "a.delete", function() {
 			var translationElement = $(this).parent().next();
 			var translation = translationElement.text();
+			var form = translationElement.closest("form");
+			var text = form.find(".text").val();
 			translationElement.toggleClass('deleted');
-			$("#acknowledgement").html("");
+			form.find(".acknowledgement").html("");
 			if (translationElement.hasClass('deleted')) {
 				socket.emit("delete_translation", {
-					text: $("#text").val(), 
+					text: text, 
 					translation_to_delete: translation
 				});
 			} else {
 				socket.emit("append_translation", {
-					text: $("#text").val(), 
+					text: text.val(), 
 					translation_to_add: translation
 				});
 			}
 	});
 
-	$("select#classToAdd").change(function() {
+	$("#forms").on("change", "select.classToAdd", function() {
 		var translation = $(this).val();
 		if (translation.length<1) return;
-		$("#translationsTable").append(translationToHtml(translation, /*withDelete=*/true));
+
+		var form = $(this).closest("form");
+		var text = form.find(".text").val();
+		form.find(".translationsTable").append(translationToHtml(translation, /*withDelete=*/true));
 		socket.emit('append_translation', {
-			text: $("#text").val(),
+			text: text,
 			translation_to_add: translation,
 		});	
 	});
 
+	$("#forms").on("submit", "form", function() {
+		var form = $(this);
+		var text = form.find(".text").val();
+		var translations = form.find(".translation").not(".deleted").map(function() { return $(this).text(); }).get();
+		currentAcknowledgementElement = form.find(".acknowledgement");
+		currentAcknowledgementElement.html("<img src='images/ajax_loader.gif' /"+">");
+		socket.emit('approve', {
+			text: text,
+			translations: translations,
+		});
+
+		mapTextToTranslationForm[text].forEach(function(form) {
+			form.children().hide();
+			form.prepend("<div class='log'>"+new Date().toISOString()+": <b>"+text+"</b>&rarr;"+JSON.stringify(translations).replace(/\\\"/g,"'")+"</div>");
+		});
+		return false;
+	});
+
+	$("#forms").on("click", ".stop_timer", function() {
+		var form = $(this).closest("form");
+		socket.emit("stop_timer", {
+			"text": form.find(".text").val()
+		});
+		return false;
+	});
 });
 
 
 /** Tell the server that the current translation is approved */
-function approve() {
-	$("#acknowledgement").html("<img src='images/ajax_loader.gif' /"+">");
-	socket.emit('approve', {
-		text: $("#text").val(),
-		translations: $(".translation").not(".deleted").map(function() { return $(this).text(); }).get(),
-	});
-}
 
 </script>
 
 <h1>Wizard-of-Oz interface</h1>
 
-<form name='form' id='form' method='get' action=''>
-  <input type='hidden' name='forward' value='true' />
-  <input type='hidden' name='explain' value='4' />
-      
-      <table id='main_table' style="width:100%;">
+	<div id='forms'>
 
-            <tr>
-                <td class='label'>Human Utterance</td>
-                <td><input id="text" disabled="disabled" /></td>
-            </tr>
-
-						<tr>
-						 <td class='label'>Translations</td>
-						 <td id='translations'>-</td>
-						</tr>
-
-						<tr>
-						 <td></td>
-						 <td><select id='classToAdd'></select></td>
-						</tr>
-
-						<tr>
-							<td></td>
-							<td><button id='approveButton' type='submit' onClick='approve(); return false;'>approve</button>
-								<div id='acknowledgement' />
-							</td>
-						</tr>
-       
-     </table><!-- main_table -->
-</form>
-       
-  
-
+	</div>
 
 	<ul id='deeplog'></ul>
 

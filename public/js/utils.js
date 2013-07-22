@@ -97,7 +97,7 @@ function objectToUrlQueryString(fields) {
 
 
 function setOptionsFromArray(idOfSelectElement, arrayOfOptions, titleForDefaultOption) {
-	var selectElement = $(document.getElementById(idOfSelectElement));
+	var selectElement = (idOfSelectElement instanceof String? $(document.getElementById(idOfSelectElement)): idOfSelectElement);
 	selectElement.html("");
 	if (titleForDefaultOption) {
 		selectElement.append($('<option>', { value : "" })
@@ -252,10 +252,6 @@ function commonConnect(serverport, deeplog) {
 		deeplog.add(1, "Disconnected from server.");
 		console.log("CLIENT: good bye, server!");
 	});
-	
-	socket.on('acknowledgement', function() {
-			$("#acknowledgement").html("<img src='images/V.png' /"+">");
-	});
 
 	return socket;
 }
@@ -276,15 +272,17 @@ function translationToHtml(translation, withDelete) {
 
 /** Convert the translations received from the server to HTML */
 function translationsToHtml(translations, withDelete) {
-	if (translations==null)
-		return "null";
-	if (translations.length==0)
-		return "no translations";
-	var html = "";
-	for (i=0; i<translations.length; ++i)
-		html += translationToHtml(translations[i],withDelete);
-	return "<table id='translationsTable'>\n"+html+"</table>\n";
+	if (translations==null || translations.length==0) {
+		return "<p>No translations.</p>\n"+
+			"<table class='translationsTable'></table>\n";
+	} else {
+		var html = "";
+		for (i=0; i<translations.length; ++i)
+			html += translationToHtml(translations[i],withDelete);
+		return "<table class='translationsTable'>\n"+html+"</table>\n";
+	}
 }
+
 
 /* Explanations to HTML */
 function explanationsToHtml(translations) {

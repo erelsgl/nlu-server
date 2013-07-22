@@ -2,4 +2,5 @@
   {"regexp": "\\bno (\\w+)\\b", "feature": "without $1", "confidence": 0.7}
 , {"regexp": "\\bpre(\\w+)\\b", "feature": "per$1", "confidence": 0.5}
 , {"regexp": "\\bdisagree\\b", "feature": "reject", "confidence": 0.9}
+, {"regexp": "\\bdisagree to\\b", "feature": "reject", "confidence": 0.9}
 ]
