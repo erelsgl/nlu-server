@@ -12,12 +12,12 @@ var express = require('express')
 	, util = require('util')
 	, logger = require('./logger')
 	, _ = require('underscore')._
-	, serialize =require('../machine-learning/utils/serialize')
+	, mlutils = require('../machine-learning/utils')
 	, timer = require('./timer');
 	;
 
-var pathToClassifier = __dirname+"/trainedClassifiers/NegotiationWinnowBigram.json";
-//var pathToClassifier = __dirname+"/trainedClassifiers/TextCategorizationDemo.json";
+//var pathToClassifier = __dirname+"/trainedClassifiers/NegotiationWinnowBigram.json";
+var pathToClassifier = __dirname+"/trainedClassifiers/TextCategorizationDemo.json";
 
 
 //
@@ -57,7 +57,7 @@ app.configure('development', function(){
 // Step 2: Load the classifier
 //
 
-var classifier = serialize.fromString(
+var classifier = mlutils.serialize.fromString(
 	fs.readFileSync(pathToClassifier), __dirname);
 var classes = classifier.getAllClasses();
 classes.sort();
@@ -250,10 +250,13 @@ io.sockets.on('connection', function (socket) {
 			is_correct+"\n"
 			);
 		logger.writeEventLog("events", "APPROVE<"+socket.id, request);
+		
+		if (request.train) {
+			//while(!_(request.translations).isEqual(classifier.classify(request.text))) {
+			//	classifier.trainOnline(request.text, request.translations);
+			//}
+		}
 
-		//while(!_(request.translations).isEqual(classifier.classify(request.text))) {
-		//	classifier.trainOnline(request.text, request.translations);
-		//}
 		request.explanation="approved by a human translator";
 		socket.emit('acknowledgement');
 		

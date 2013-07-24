@@ -174,8 +174,8 @@
 , {"input":"without a leased car","output":"{\"Offer\": {\"Leased Car\": \"Without leased car\"}}"}
 , {"input":"with 10% pension","output":"{\"Offer\": {\"Pension Fund\": \"10%\"}}"}
 , {"input":"I offer 12000 NIS per month","output":"{\"Offer\": {\"Salary\": \"12,000 NIS\"}}"}
-, {"input":"hi I need a good programmer that will be able to hard and long hours","output":"{\"Offer\": {\"Job Description\": \"Programmer\"}}"}
-, {"input":"hi I need a good programmer that will be able to hard and long hours","output":"{\"Offer\": {\"Working Hours\": \"10 hours\"}}"}
+, {"input":"hi I need a good programmer","output":"{\"Offer\": {\"Job Description\": \"Programmer\"}}"}
+, {"input":"hi I need hard and long hours","output":"{\"Offer\": {\"Working Hours\": \"10 hours\"}}"}
 , {"input":"let's start with 7000 NIS","output":"{\"Offer\": {\"Salary\": \"7,000 NIS\"}}"}
 , {"input":"I would like to suggest you to work as a programmer","output":"{\"Offer\": {\"Job Description\": \"Programmer\"}}"}
 , {"input":"I would like to suggest you to work for 12000","output":"{\"Offer\": {\"Salary\": \"12,000 NIS\"}}"}

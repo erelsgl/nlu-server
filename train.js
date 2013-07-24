@@ -32,19 +32,20 @@ var createWinnowClassifier = function() {
 				},
 		},
 		featureExtractor: [
-			FeatureExtractor.WordsFromText(1,false/*,4,0.8*/),
+			//FeatureExtractor.WordsFromText(1,false/*,4,0.8*/),
 			FeatureExtractor.WordsFromText(2,false/*,4,0.6*/),
 		],
 		featureExtractorForClassification: [
 			FeatureExtractor.Hypernyms(JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/hypernyms.json'))),
 		],
+		pastTrainingSamples: [], // to enable retraining
 	});
 }
 
 var createNewClassifier = createWinnowClassifier;
 
-var do_cross_dataset_testing = false;
-var do_cross_validation = false;
+var do_cross_dataset_testing = true;
+var do_cross_validation = true;
 var do_serialization = true;
 
 var verbosity = 0;
@@ -89,17 +90,17 @@ if (do_cross_validation) {
 	var macroAverage = new PrecisionRecall();
 	
 	var devSet = collectedDatasetMulti.concat(collectedDatasetSingle);
-
+	var startTime = new Date();
 	console.log("\nstart "+numOfFolds+"-fold cross-validation on "+grammarDataset.length+" grammar samples and "+devSet.length+" collected samples");
 	partitions.partitions(devSet, numOfFolds, function(trainSet, testSet, index) {
-		console.log("partition #"+index);
+		console.log("partition #"+index+": "+(new Date()-startTime)+" [ms]");
 		trainAndTest(createNewClassifier,
 			trainSet.concat(grammarDataset), testSet, verbosity,
 			microAverage, macroAverage
 		);
 	});
 	_(macroAverage).each(function(value,key) { macroAverage[key]=value/numOfFolds; });
-	console.log("\nend "+numOfFolds+"-fold cross-validation");
+	console.log("\nend "+numOfFolds+"-fold cross-validation: "+(new Date()-startTime)+" [ms]");
 
 	if (verbosity>0) {console.log("\n\nMACRO AVERAGE FULL STATS:"); console.dir(macroAverage.fullStats());}
 	console.log("\nMACRO AVERAGE SUMMARY: "+macroAverage.shortStats());
@@ -120,24 +121,14 @@ if (do_serialization) {
 	console.log("end training on "+dataset.length+" samples, "+(new Date()-startTime)+" [ms]");
 
 	console.log("\ntest on training data:")
-	resultsBeforeReload = [];
-	var currentStats = new PrecisionRecall();
+	mlutils.testLite(classifier, dataset);
+	
+	var resultsBeforeReload = [];
 	for (var i=0; i<dataset.length; ++i) {
-		var expectedClasses = dataset[i].output; 
-		if (!_(expectedClasses).isArray())
-			expectedClasses = [expectedClasses];
-		else
-			expectedClasses.sort(); 
 		var actualClasses = classifier.classify(dataset[i].input);  
 		actualClasses.sort();
-		if (!_(expectedClasses).isEqual(actualClasses)) {
-			console.log("\t"+dataset[i].input+": expected "+expectedClasses+" but got "+actualClasses);
-		}
-		currentStats.addCases(expectedClasses, actualClasses, verbosity-1);
 		resultsBeforeReload[i] = actualClasses;
 	}
-	currentStats.calculateStats();
-	console.log(currentStats.shortStats());
 	
 	fs.writeFileSync("trainedClassifiers/TextCategorizationDemo.json", 
 		mlutils.serialize.toString(createNewClassifier, classifier), 'utf8');
