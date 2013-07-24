@@ -248,6 +248,7 @@ function commonConnect(serverport, deeplog) {
 		deeplog.add(2, "Server status");
 		deeplog.add(3, message);
 	});
+	
 	socket.on('disconnect', function(data) {
 		deeplog.add(1, "Disconnected from server.");
 		console.log("CLIENT: good bye, server!");

@@ -26,7 +26,7 @@ var createWinnowClassifier = function() {
 		classifierOptions: {
 				binaryClassifierType: classifiers.Winnow,
 				binaryClassifierOptions: {
-					retrain_count: 25,
+					retrain_count: 10,  /* much better than 5 */
 					do_averaging: false,
 					margin: 1,
 				},
@@ -130,11 +130,11 @@ if (do_serialization) {
 		resultsBeforeReload[i] = actualClasses;
 	}
 	
-	fs.writeFileSync("trainedClassifiers/TextCategorizationDemo.json", 
+	fs.writeFileSync("trainedClassifiers/MostRecentClassifier.json", 
 		mlutils.serialize.toString(createNewClassifier, classifier), 'utf8');
 
 	var classifier2 = mlutils.serialize.fromString(
-		fs.readFileSync("trainedClassifiers/TextCategorizationDemo.json"), __dirname);
+		fs.readFileSync("trainedClassifiers/MostRecentClassifier.json"), __dirname);
 
 	console.log("\ntest on training data after reload:")
 	for (var i=0; i<dataset.length; ++i) {

@@ -75,3 +75,9 @@ body#translations table {border-collapse: collapse; }
 	body#translations table tr.different { color: red; }
 		body#translations table tr td { border: 1px solid black; }
 
+
+body#correct { font-size: 14pt;}
+	body#correct td {vertical-align: top;}
+	body#correct #precisionrecall {font-size: 12pt; }
+	body#correct input, body#correct button {font-size: 14pt;}
+	body#correct tr.top > td  {padding-top: 2em;}

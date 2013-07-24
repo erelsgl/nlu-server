@@ -16,8 +16,15 @@ var express = require('express')
 	, timer = require('./timer');
 	;
 
-//var pathToClassifier = __dirname+"/trainedClassifiers/NegotiationWinnowBigram.json";
-var pathToClassifier = __dirname+"/trainedClassifiers/TextCategorizationDemo.json";
+var pathToClassifier = null;
+//var pathToBaseClassifier = __dirname+"/trainedClassifiers/NegotiationWinnowBigram.json";
+var pathToBaseClassifier = __dirname+"/trainedClassifiers/MostRecentClassifier.json";
+var pathToRetrainedClassifier = __dirname+"/trainedClassifiers/RetrainedClassifier.json";
+if (fs.existsSync(pathToRetrainedClassifier)) {
+	pathToClassifier = pathToRetrainedClassifier;
+} else {
+	pathToClassifier = pathToBaseClassifier;
+}
 
 
 //
@@ -62,6 +69,7 @@ var classifier = mlutils.serialize.fromString(
 var classes = classifier.getAllClasses();
 classes.sort();
 
+var precisionrecall = mlutils.test(classifier, classifier.pastTrainingSamples).calculateStats().shortStats();
 
 
 //
@@ -124,7 +132,8 @@ var registeredPublicTranslators = {};
 var activePublicTranslators = {};
 
 io.sockets.on('connection', function (socket) {
-	logger.writeEventLog("events", "CONNECT<", socket.id);
+	var address = socket.handshake.address;
+	logger.writeEventLog("events", "CONNECT "+address.address + ":" + address.port+"<", socket.id);
 	
 	// Public translator accepts translations from other users for correction (a "wizard-of-oz"):
 	socket.on('register_as_public_translator', function() {
@@ -133,6 +142,7 @@ io.sockets.on('connection', function (socket) {
 		activePublicTranslators[socket.id] = socket;
 		logger.writeEventLog("events", "PUBLICTRANSLATOR<", socket.id);
 		socket.emit('classes', classes);
+		socket.emit('precisionrecall', precisionrecall);
 	});
 	
 	// Private translator corrects his own translations, without the help of a public translator:
@@ -141,6 +151,7 @@ io.sockets.on('connection', function (socket) {
 		socket.private_translator = true;
 		logger.writeEventLog("events", "PRIVATETRANSLATOR<", socket.id);
 		socket.emit('classes', classes);
+		socket.emit('precisionrecall', precisionrecall);
 	});
 
 	socket.on('disconnect', function () { 
@@ -251,10 +262,19 @@ io.sockets.on('connection', function (socket) {
 			);
 		logger.writeEventLog("events", "APPROVE<"+socket.id, request);
 		
-		if (request.train) {
-			//while(!_(request.translations).isEqual(classifier.classify(request.text))) {
-			//	classifier.trainOnline(request.text, request.translations);
-			//}
+		if (!is_correct && request.train) {
+			logger.writeEventLog("events", "++TRAIN<"+socket.id, request);
+			classifier.trainOnline(request.text, request.translations);
+			classifier.retrain();  // EREL: I hope some day we can remove this line and have a truly online classifier.
+			
+			if (classifier.pastTrainingSamples.length % 2 == 0) {  // write every OTHER sample
+				fs.writeFile(pathToRetrainedClassifier, mlutils.serialize.toString(classifier.createNewClassifierString, classifier), 'utf-8', function(err) {
+					logger.writeEventLog("events", "+++SAVE<"+socket.id, err);
+				});
+			}
+			
+			precisionrecall = mlutils.test(classifier, classifier.pastTrainingSamples).calculateStats().shortStats();
+			socket.emit('precisionrecall', precisionrecall);
 		}
 
 		request.explanation="approved by a human translator";

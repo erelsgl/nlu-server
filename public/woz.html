@@ -7,7 +7,7 @@
 
 <title>Wizard-of-Oz interface</title>
 
-<script src="/socket.io/socket.io.js"></script>
+<script src="/translationSocket.io/translationSocket.io.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js"></script>
 <script src="js/jquery.deserialize.js"></script>
@@ -30,7 +30,7 @@ var DEPTH_OF_CLIENT_LOG_MESSAGES=2;
 
 /* initialization */
 
-var socket=null, form=null, deeplog=null;
+var translationSocket=null, form=null, deeplog=null;
 var availableClasses = null;
 var mapTextToTranslationForm = {};
 var queueOfApprovedForms = [];
@@ -38,25 +38,28 @@ var currentAcknowledgementElement = null;
 $(document).ready(function() {
   deeplog = new DeepLog($("#deeplog"));
   form = $('#form'); form.deserialize(location.search.substr(1));
-  socket = commonConnect(serverport, deeplog);
+  translationSocket = commonConnect(serverport, deeplog);
 
-  socket.on('connect', function() {
-		socket.emit("register_as_public_translator");
+  translationSocket.on('connect', function() {
+		translationSocket.emit("register_as_public_translator");
   });
 
-	socket.on('classes', function(classes) {
+	translationSocket.on('classes', function(classes) {
 		availableClasses = classes;
 	});
 
-  socket.on('translation', function(translation) {
-    console.log("CLIENT: got a translation for "+translation.text);
+	translationSocket.on('translation', function(translation) {
+		console.log("CLIENT: got a translation for "+translation.text);
+		deeplog.add(2, "Server: translation of '"+translation.text+"' is "+translation.translations);
 
 		var newForm = $(
 			"<form method='get' action=''>"+
 				"<table class='translation_table'>"+
 					"<tr>"+
 						"<td class='label'>Human Utterance</td>"+
-						"<td><input class='text' name='text' disabled='disabled' value='"+translation.text+"' /"+"></td>"+
+						"<td><input class='text' name='text' disabled='disabled' value='"+
+								translation.text.htmlspecialchars()+
+						"' /"+"></td>"+
 					"</tr>"+
 					"<tr>"+
 						"<td class='label'>Translations</td>"+
@@ -92,17 +95,22 @@ $(document).ready(function() {
 				/*titleForDefaultOption=*/"-- Add class --");
   });
 
-	socket.on('time_left', function(text_and_time) {
+	translationSocket.on('time_left', function(text_and_time) {
 		mapTextToTranslationForm[text_and_time.text].forEach(function(form) {
 			form.find(".acknowledgement").html("<b>Time left: "+text_and_time.timeSeconds+" seconds</b>");
 		});
 	});
 
-	socket.on('acknowledgement', function() {
+	translationSocket.on('acknowledgement', function() {
 			if (currentAcknowledgementElement)
 				currentAcknowledgementElement.html("<img src='images/V.png' /"+">");
 	});
-
+	
+	
+	translationSocket.on('precisionrecall', function(precisionrecall) {
+		deeplog.add(2, precisionrecall);
+		$("#forms").append("<div class='log'>"+new Date().toISOString()+": "+precisionrecall+"</div>");
+	});
 
 	$("#forms").on("click", "a.delete", function() {
 			var translationElement = $(this).parent().next();
@@ -112,12 +120,12 @@ $(document).ready(function() {
 			translationElement.toggleClass('deleted');
 			form.find(".acknowledgement").html("");
 			if (translationElement.hasClass('deleted')) {
-				socket.emit("delete_translation", {
+				translationSocket.emit("delete_translation", {
 					text: text, 
 					translation_to_delete: translation
 				});
 			} else {
-				socket.emit("append_translation", {
+				translationSocket.emit("append_translation", {
 					text: text.val(), 
 					translation_to_add: translation
 				});
@@ -131,7 +139,7 @@ $(document).ready(function() {
 		var form = $(this).closest("form");
 		var text = form.find(".text").val();
 		form.find(".translationsTable").append(translationToHtml(translation, /*withDelete=*/true));
-		socket.emit('append_translation', {
+		translationSocket.emit('append_translation', {
 			text: text,
 			translation_to_add: translation,
 		});	
@@ -143,21 +151,21 @@ $(document).ready(function() {
 		var translations = form.find(".translation").not(".deleted").map(function() { return $(this).text(); }).get();
 		currentAcknowledgementElement = form.find(".acknowledgement");
 		currentAcknowledgementElement.html("<img src='images/ajax_loader.gif' /"+">");
-		socket.emit('approve', {
+		translationSocket.emit('approve', {
 			text: text,
 			translations: translations,
 		});
+		deeplog.add(3, "Client: translation of '"+text+"' is "+translations);
 
 		mapTextToTranslationForm[text].forEach(function(form) {
-			form.children().hide();
-			form.prepend("<div class='log'>"+new Date().toISOString()+": <b>"+text+"</b>&rarr;"+JSON.stringify(translations).replace(/\\\"/g,"'")+"</div>");
+			form.replaceWith("<div class='log'>"+new Date().toISOString()+": <b>"+text+"</b>&rarr;"+JSON.stringify(translations).replace(/\\\"/g,"'")+"</div>");
 		});
 		return false;
 	});
 
 	$("#forms").on("click", ".stop_timer", function() {
 		var form = $(this).closest("form");
-		socket.emit("stop_timer", {
+		translationSocket.emit("stop_timer", {
 			"text": form.find(".text").val()
 		});
 		return false;
@@ -172,12 +180,11 @@ $(document).ready(function() {
 <h1>Wizard-of-Oz interface</h1>
 
 	<div id='forms'>
-
 	</div>
 
 	<ul id='deeplog'></ul>
 
-	<p><button onClick='abort(socket); return false;'>Abort</button></p>
+	<p><button onClick='abort(translationSocket); return false;'>Abort</button></p>
 
 	<div style='display:none;' id='credits'>
 		<div>Development: Erel Segal the Levite (erelsgl@gmail.com)</div>

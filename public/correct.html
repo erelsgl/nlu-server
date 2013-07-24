@@ -19,7 +19,7 @@
 
 </head>
 
-<body>
+<body id='correct'>
 <script language="javascript" type="text/javascript">
 
 
@@ -34,7 +34,7 @@ var startTime;
 var translationSocket=null, deeplog=null;
 $(document).ready(function() {
 	deeplog = new DeepLog($("#deeplog"));
-	$("#form").deserialize(location.search.substr(1));
+	// $("#form").deserialize(location.search.substr(1));
 	translationSocket = commonConnect(serverport, deeplog);
 
 	translationSocket.on('connect', function() {
@@ -58,7 +58,7 @@ $(document).ready(function() {
 
 	translationSocket.on('classes', function(classes) {
 			setOptionsFromArray(
-					/*idOfContainingElement=*/"classToAdd", 
+					$("#classToAdd"), 
 					/*arrayOfOptions=*/classes,
 					/*titleForDefaultOption=*/"-- Add class --");		
 	});
@@ -91,10 +91,20 @@ $(document).ready(function() {
 		});	
 	});
 	
-	socket.on('acknowledgement', function() {
+	translationSocket.on('acknowledgement', function() {
 			$(".acknowledgement").html("<img src='images/V.png' /"+">");
 	});
 
+	translationSocket.on('precisionrecall', function(precisionrecall) {
+		deeplog.add(3, precisionrecall);
+		$("#precisionrecall").text(precisionrecall);
+	});
+	
+	if (/expert/.test(location.search)) {
+		$(".explanations").hide();
+		$(".precisionrecall").hide();
+		$("#deeplog").hide();
+	}	
 });
 
 
@@ -106,26 +116,31 @@ function translate() {
 	startTime = new Date();
 	translationSocket.emit('translate', request);
 	
-	deeplog.add(DEPTH_OF_CLIENT_LOG_MESSAGES, 
-		formatLogMessageForDeepLog(
-			{sender:"Client", message: "translate "+(request.testCorpus? request.testCorpus: "'"+request.text+"'")}));
+	deeplog.add(2, "Client: translate '"+request.text+"'");
 	console.log("CLIENT: sent a request to translate: "+JSON.stringify(request));
 }
 
 /** Tell the server that the current translation is approved */
 
 function approve() {
+	var text = $("#text").val();
+	var translations = $(".translation").not(".deleted").map(function() { return $(this).text(); }).get();
+	var train = $("#train").is(':checked');
 	$(".acknowledgement").html("<img src='images/ajax_loader.gif' /"+">");
+	deeplog.add(3, 
+		"Client: translation of '"+text+"' is "+translations+(train? " (train)": "(don't train)"));
+	
 	translationSocket.emit('approve', {
-		text: $("#text").val(),
-		translations: $(".translation").not(".deleted").map(function() { return $(this).text(); }).get(),
+		text: text,
+		translations: translations,
+		train: train,
 	});
 }
 
 
 </script>
 
-<h1>Correct Translations</h1>
+<h1>Expert Trainer for NLU Component</h1>
 
 <form name='form' id='form' method='get' action=''>
 	<input type='hidden' name='forward' value='true' />
@@ -133,13 +148,13 @@ function approve() {
 			
 			<table class='translation_table'>
 
-						<tr>
+						<tr class='top'>
 								<td class='label'>Human Utterance</td>
-								<td><input class='sentence' name="text" id="text" type="text" value="I agree to offer a wage of 20000 NIS and 10% pension without a car"/></td>
+								<td><input class='sentence' name="text" id="text" type="text" value="20000"/></td>
 								<td><button id='translateButton' type='submit' onClick='translate(); return false;'>translate</button></td>
 						</tr>
 
-						<tr>
+						<tr class='top'>
 						 <td class='label'>Translations</td>
 						 <td id='translations'>-</td>
 						</tr>
@@ -151,16 +166,23 @@ function approve() {
 
 						<tr>
 							<td></td>
-							<td><button id='approveButton' type='submit' onClick='approve(); return false;'>approve</button>
+							<td>
+								<button id='approveButton' type='submit' onClick='approve(); return false;'>approve</button>
+								<input type='checkbox' id='train' /> Train
 								<div class='acknowledgement' />
 							</td>
 						</tr>
  
-						<tr>
-						 <td class='label'>Explanations</td>
-						 <td colspan='2' id='explanations'>-</td>
+						<tr class='top'>
+						 <td class='label precisionrecall'>Performance on Training Data</td>
+						 <td colspan='2' id='precisionrecall' class='precisionrecall'>-</td>
 						</tr>
-			 
+ 
+						<tr class='top'>
+						 <td class='label explanations'>Explanations</td>
+						 <td colspan='2' id='explanations' class='explanations'>-</td>
+						</tr>
+
 		 </table><!-- main_table -->
 </form>
 			 
@@ -168,8 +190,6 @@ function approve() {
 
 
 	<ul id='deeplog'></ul>
-
-	<p><button onClick='abort(translationSocket); return false;'>Abort</button></p>
 
 	<div style='display:none;' id='credits'>
 		<div>Development: Erel Segal the Levite (erelsgl@gmail.com)</div>
