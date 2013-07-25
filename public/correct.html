@@ -31,7 +31,7 @@ var startTime;
 
 /* initialization */
 
-var translationSocket=null, deeplog=null;
+var translationSocket=null, deeplog=null, expert=false;
 $(document).ready(function() {
 	deeplog = new DeepLog($("#deeplog"));
 	// $("#form").deserialize(location.search.substr(1));
@@ -96,14 +96,15 @@ $(document).ready(function() {
 	});
 
 	translationSocket.on('precisionrecall', function(precisionrecall) {
-		deeplog.add(3, precisionrecall);
-		$("#precisionrecall").text(precisionrecall);
+		deeplog.add(3, "Performance on training data: "+precisionrecall.shortStatsString);
+		$("#precisionrecall").text(precisionrecall.shortStatsString);
 	});
 	
-	if (/expert/.test(location.search)) {
+	expert = /expert/.test(location.search);
+	
+	if (expert) {
 		$(".explanations").hide();
-		$(".precisionrecall").hide();
-		$("#deeplog").hide();
+		//$("#deeplog").hide();
 	}	
 });
 
@@ -174,7 +175,7 @@ function approve() {
 						</tr>
  
 						<tr class='top'>
-						 <td class='label precisionrecall'>Performance on Training Data</td>
+						 <td class='label precisionrecall'>Training Statistics</td>
 						 <td colspan='2' id='precisionrecall' class='precisionrecall'>-</td>
 						</tr>
  

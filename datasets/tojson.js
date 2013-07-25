@@ -3,7 +3,7 @@
  */
 
 var fs = require('fs');
-var hash = require('./hash');
+var hash = require('../../machine-learning/utils/hash');
 
 /**
  * Read a dataset from a text file.
@@ -22,6 +22,7 @@ var hash = require('./hash');
  * sorted array of all different classes.
  */
 var read = function(pathToFile) {
+	console.log("read "+pathToFile);
 	var dataset=[];
 	var allClasses = {};
 	var datasetHash = hash.fromString(fs.readFileSync(pathToFile, 'utf8'));
@@ -47,10 +48,9 @@ var write = function(json) {
 	console.log("]");
 }
 
-
-if (process.argc<1) {
+if (process.argv.length<3) {
 	console.error("SYNTAX: node tojson <input>");
+} else {
+	var pathToFile = process.argv[2];
+	write(read(pathToFile));
 }
-	
-var pathToFile = process.argv[2];
-write(read(pathToFile));

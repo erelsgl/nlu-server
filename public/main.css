@@ -80,4 +80,5 @@ body#correct { font-size: 14pt;}
 	body#correct td {vertical-align: top;}
 	body#correct #precisionrecall {font-size: 12pt; }
 	body#correct input, body#correct button {font-size: 14pt;}
-	body#correct tr.top > td  {padding-top: 2em;}
+	body#correct tr.top > td  {padding-top: 18px;}
+	body#correct #deeplog {font-size:12px;} 

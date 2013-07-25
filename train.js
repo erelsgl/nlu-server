@@ -15,6 +15,7 @@ var domainDataset = JSON.parse(fs.readFileSync("datasets/Dataset0Domain.json"));
 var grammarDataset = JSON.parse(fs.readFileSync("datasets/Dataset0Grammar.json"));
 var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Dataset1Woz.json"));
 var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Dataset1Woz1class.json"));
+var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Dataset2Woz.json"));
 
 var createWinnowClassifier = function() {
 	var classifiers = require(__dirname+'/../machine-learning/classifiers');
@@ -112,7 +113,7 @@ if (do_cross_validation) {
 
 if (do_serialization) {
 	var classifier = createNewClassifier();
-	var dataset = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle);
+	var dataset = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2);
 
 	//dataset = dataset.slice(0,20);
 	console.log("\nstart training on "+dataset.length+" samples");
@@ -131,7 +132,7 @@ if (do_serialization) {
 	}
 	
 	fs.writeFileSync("trainedClassifiers/MostRecentClassifier.json", 
-		mlutils.serialize.toString(createNewClassifier, classifier), 'utf8');
+		mlutils.serialize.toString(classifier, createNewClassifier), 'utf8');
 
 	var classifier2 = mlutils.serialize.fromString(
 		fs.readFileSync("trainedClassifiers/MostRecentClassifier.json"), __dirname);

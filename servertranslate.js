@@ -69,7 +69,7 @@ var classifier = mlutils.serialize.fromString(
 var classes = classifier.getAllClasses();
 classes.sort();
 
-var precisionrecall = mlutils.test(classifier, classifier.pastTrainingSamples).calculateStats().shortStats();
+var precisionrecall = mlutils.test(classifier, classifier.pastTrainingSamples).calculateStats();
 
 
 //
@@ -265,15 +265,22 @@ io.sockets.on('connection', function (socket) {
 		if (!is_correct && request.train) {
 			logger.writeEventLog("events", "++TRAIN<"+socket.id, request);
 			classifier.trainOnline(request.text, request.translations);
-			classifier.retrain();  // EREL: I hope some day we can remove this line and have a truly online classifier.
+			
+			// EREL: I hope some day we can remove these lines and have a truly online classifier.
+			var newClassifier = classifier.createNewClassifierFunction();
+			newClassifier.trainBatch(classifier.pastTrainingSamples);
+			newClassifier.createNewClassifierFunction = classifier.createNewClassifierFunction;
+			newClassifier.createNewClassifierString = classifier.createNewClassifierString;
+			classifier = newClassifier;
+			//classifier.retrain();  
 			
 			if (classifier.pastTrainingSamples.length % 2 == 0) {  // write every OTHER sample
-				fs.writeFile(pathToRetrainedClassifier, mlutils.serialize.toString(classifier.createNewClassifierString, classifier), 'utf-8', function(err) {
+				fs.writeFile(pathToRetrainedClassifier, mlutils.serialize.toString(classifier), 'utf-8', function(err) {
 					logger.writeEventLog("events", "+++SAVE<"+socket.id, err);
 				});
 			}
 			
-			precisionrecall = mlutils.test(classifier, classifier.pastTrainingSamples).calculateStats().shortStats();
+			precisionrecall = mlutils.test(classifier, classifier.pastTrainingSamples).calculateStats();
 			socket.emit('precisionrecall', precisionrecall);
 		}
 
