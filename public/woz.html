@@ -7,7 +7,7 @@
 
 <title>Wizard-of-Oz interface</title>
 
-<script src="/translationSocket.io/translationSocket.io.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js"></script>
 <script src="js/jquery.deserialize.js"></script>
@@ -35,6 +35,12 @@ var availableClasses = null;
 var mapTextToTranslationForm = {};
 var queueOfApprovedForms = [];
 var currentAcknowledgementElement = null;
+
+if (window.audioContext || window.webkitAudioContext) {
+	var audioContext = new(window.audioContext || window.webkitAudioContext);
+}
+
+
 $(document).ready(function() {
   deeplog = new DeepLog($("#deeplog"));
   form = $('#form'); form.deserialize(location.search.substr(1));
@@ -89,6 +95,16 @@ $(document).ready(function() {
 			mapTextToTranslationForm[translation.text]=[];
 		mapTextToTranslationForm[translation.text].push(newForm);
 
+		if (audioContext) {
+			var oscillator = audioContext.createOscillator();
+			oscillator.type = 0;   // 0-4 are valid sound types
+			oscillator.connect(audioContext.destination);
+			oscillator.noteOn(0);
+			setTimeout(function () {
+				oscillator.noteOff(0);
+			}, 100 /*milliseconds*/);
+		}
+
 		setOptionsFromArray(
 				newForm.find(".classToAdd"), 
 				/*arrayOfOptions=*/availableClasses,
@@ -108,8 +124,8 @@ $(document).ready(function() {
 	
 	
 	translationSocket.on('precisionrecall', function(precisionrecall) {
-		deeplog.add(2, precisionrecall);
-		$("#forms").append("<div class='log'>"+new Date().toISOString()+": "+precisionrecall+"</div>");
+		deeplog.add(3, precisionrecall.shortStatsString);
+		$("#forms").append("<div class='log'>"+new Date().toISOString()+": "+precisionrecall.shortStatsString+"</div>");
 	});
 
 	$("#forms").on("click", "a.delete", function() {
