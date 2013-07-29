@@ -7,6 +7,7 @@
 		    <fileset dir=".">
 		    	  <include name="**"/>		    	
 		    	  <exclude name="**/logs/**"/>		    	
+		    	  <exclude name="**/RetrainedClassifier.json/**"/>		    	
 		  	</fileset>
 		  </copy>
 	</target>

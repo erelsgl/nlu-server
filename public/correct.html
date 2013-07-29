@@ -91,6 +91,9 @@ $(document).ready(function() {
 		});	
 	});
 	
+	$("#translateButton").click(translate);	
+	$("#approveButton").click(approve);	
+	
 	translationSocket.on('acknowledgement', function() {
 			$(".acknowledgement").html("<img src='images/V.png' /"+">");
 	});
@@ -119,6 +122,7 @@ function translate() {
 	
 	deeplog.add(2, "Client: translate '"+request.text+"'");
 	console.log("CLIENT: sent a request to translate: "+JSON.stringify(request));
+	return false;
 }
 
 /** Tell the server that the current translation is approved */
@@ -136,6 +140,7 @@ function approve() {
 		translations: translations,
 		train: train,
 	});
+	return false;
 }
 
 
@@ -152,7 +157,7 @@ function approve() {
 						<tr class='top'>
 								<td class='label'>Human Utterance</td>
 								<td><input class='sentence' name="text" id="text" type="text" value="hi"/></td>
-								<td><button id='translateButton' type='submit' onClick='translate(); return false;'>translate</button></td>
+								<td><button id='translateButton'>translate</button></td>
 						</tr>
 
 						<tr class='top'>
@@ -168,7 +173,7 @@ function approve() {
 						<tr>
 							<td></td>
 							<td>
-								<button id='approveButton' type='submit' onClick='approve(); return false;'>approve</button>
+								<button id='approveButton'>approve</button>
 								<input type='checkbox' id='train' /> Train
 								<div class='acknowledgement' />
 							</td>

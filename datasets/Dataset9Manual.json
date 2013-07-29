@@ -5,4 +5,5 @@
 , {"input":"I disagree to your offer","output":["{\"Reject\": \"previous\"}"]}
 , {"input":"I cannot accept your offer","output":["{\"Reject\": \"previous\"}"]}
 , {"input":"I can not accept your offer","output":["{\"Reject\": \"previous\"}"]}
+, {"input":"I can't accept your offer","output":["{\"Reject\": \"previous\"}"]}
 ]

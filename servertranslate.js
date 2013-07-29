@@ -260,20 +260,30 @@ io.sockets.on('connection', function (socket) {
 			request.translations.join(" AND ")+"  /  "+
 			is_correct+"\n"
 			);
+		request.explanation="approved by a human translator";
+		socket.emit('acknowledgement');
 		logger.writeEventLog("events", "APPROVE<"+socket.id, request);
 		
-		if (!is_correct && request.train) {
-			logger.writeEventLog("events", "++TRAIN<"+socket.id, request);
+		var socketsWaitingForTranslation = io.sockets.clients(request.text).filter(function(s){return s.id!=socket.id});
+		socketsWaitingForTranslation.forEach(function(waitingSocket) {
+			waitingSocket.emit('translation', request);
+			waitingSocket.leave(request.text);
+			logger.writeEventLog("events", "approve>"+waitingSocket.id, request);
+		}); // remove all clients from waiting to that text
+		
+		if (request.train) {
 			classifier.trainOnline(request.text, request.translations);
 			
-			// EREL: I hope some day we can remove these lines and have a truly online classifier.
-			var newClassifier = classifier.createNewClassifierFunction();
-			newClassifier.trainBatch(classifier.pastTrainingSamples);
-			newClassifier.createNewClassifierFunction = classifier.createNewClassifierFunction;
-			newClassifier.createNewClassifierString = classifier.createNewClassifierString;
-			classifier = newClassifier;
-			//classifier.retrain();  
-			
+			if (!is_correct) { 
+				// EREL: I hope some day we can remove these lines and have a truly online classifier.
+				var newClassifier = classifier.createNewClassifierFunction();
+				newClassifier.trainBatch(classifier.pastTrainingSamples);
+				newClassifier.createNewClassifierFunction = classifier.createNewClassifierFunction;
+				newClassifier.createNewClassifierString = classifier.createNewClassifierString;
+				classifier = newClassifier;
+				//classifier.retrain();  
+				logger.writeEventLog("events", "++TRAIN<"+socket.id, request);
+			}
 			if (classifier.pastTrainingSamples.length % 2 == 0) {  // write every OTHER sample
 				fs.writeFile(pathToRetrainedClassifier, mlutils.serialize.toString(classifier), 'utf-8', function(err) {
 					logger.writeEventLog("events", "+++SAVE<"+socket.id, err);
@@ -283,16 +293,6 @@ io.sockets.on('connection', function (socket) {
 			precisionrecall = mlutils.test(classifier, classifier.pastTrainingSamples).calculateStats();
 			socket.emit('precisionrecall', precisionrecall);
 		}
-
-		request.explanation="approved by a human translator";
-		socket.emit('acknowledgement');
-		
-		var socketsWaitingForTranslation = io.sockets.clients(request.text).filter(function(s){return s.id!=socket.id});
-		socketsWaitingForTranslation.forEach(function(waitingSocket) {
-			logger.writeEventLog("events", "approve>"+waitingSocket.id, request);
-			waitingSocket.emit('translation', request);
-			waitingSocket.leave(request.text);
-		}); // remove all clients from waiting to that text
 	});
 });
 

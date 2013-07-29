@@ -16,6 +16,7 @@ var grammarDataset = JSON.parse(fs.readFileSync("datasets/Dataset0Grammar.json")
 var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Dataset1Woz.json"));
 var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Dataset1Woz1class.json"));
 var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Dataset2Woz.json"));
+var collectedDatasetMulti3 = JSON.parse(fs.readFileSync("datasets/Dataset3Woz.json"));
 
 var createWinnowClassifier = function() {
 	var classifiers = require(__dirname+'/../machine-learning/classifiers');
@@ -27,14 +28,18 @@ var createWinnowClassifier = function() {
 		classifierOptions: {
 				binaryClassifierType: classifiers.Winnow,
 				binaryClassifierOptions: {
-					retrain_count: 10,  /* much better than 5 */
+					retrain_count: 12,  /* much better than 5, better than 10 */
 					do_averaging: false,
 					margin: 1,
 				},
 		},
+		normalizer: FeatureExtractor.RegexpNormalizer(
+			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
+		),
 		featureExtractor: [
 			//FeatureExtractor.WordsFromText(1,false/*,4,0.8*/),
 			FeatureExtractor.WordsFromText(2,false/*,4,0.6*/),
+			//FeatureExtractor.WordsFromText(3,false/*,4,0.6*/),
 		],
 		featureExtractorForClassification: [
 			FeatureExtractor.Hypernyms(JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/hypernyms.json'))),
@@ -113,7 +118,7 @@ if (do_cross_validation) {
 
 if (do_serialization) {
 	var classifier = createNewClassifier();
-	var dataset = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2);
+	var dataset = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetMulti3);
 
 	//dataset = dataset.slice(0,20);
 	console.log("\nstart training on "+dataset.length+" samples");

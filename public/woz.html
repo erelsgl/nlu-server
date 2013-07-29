@@ -82,6 +82,7 @@ $(document).ready(function() {
 						"<td>"+
 							"<button class='approve' type='submit'>approve</button>"+
 							"<button class='stop_timer'>stop timer</button>"+
+							"<input type='checkbox' class='train' />Train"+
 							"<div class='acknowledgement' /"+">"+
 						"<"+"/td>"+
 					"<"+"/tr>"+
@@ -164,12 +165,14 @@ $(document).ready(function() {
 	$("#forms").on("submit", "form", function() {
 		var form = $(this);
 		var text = form.find(".text").val();
+		var train = form.find(".train").is(':checked');
 		var translations = form.find(".translation").not(".deleted").map(function() { return $(this).text(); }).get();
 		currentAcknowledgementElement = form.find(".acknowledgement");
 		currentAcknowledgementElement.html("<img src='images/ajax_loader.gif' /"+">");
 		translationSocket.emit('approve', {
 			text: text,
 			translations: translations,
+			train: train,
 		});
 		deeplog.add(3, "Client: translation of '"+text+"' is "+translations);
 

@@ -1,0 +1,28 @@
+[
+  {"source": "won't", "target": "will not"}
+, {"source": "don't", "target": "do not"}
+, {"source": "doesn't", "target": "does not"}
+, {"source": "doesn't", "target": "does not"}
+, {"source": "didn't", "target": "did not"}
+, {"source": "wouldn't", "target": "would not"}
+, {"source": "shouldn't", "target": "should not"}
+, {"source": "can't", "target": "can not"}
+, {"source": "cannot", "target": "can not"}
+, {"source": "there'st", "target": "there is"}
+, {"source": "that's", "target": "that is"}
+, {"source": "it's", "target": "it is"}
+, {"source": "kilograms", "target": "kg"}
+, {"source": "kilogram", "target": "kg"}
+, {"source": "grams", "target": "gram"}
+, {"source": "kilometers", "target": "km"}
+, {"source": "kilometer", "target": "km"}
+, {"source": "centimeters", "target": "cm"}
+, {"source": "centimeter", "target": "cm"}
+, {"source": "kilometers per hour", "target": "kmh"}
+, {"source": "kilometers per hour", "target": "kmh"}
+, {"source": "kilometers per hour", "target": "kmh"}
+, {"source": "miles per hour", "target": "mph"}
+, {"source": "'re", "target": " are"}
+, {"source": "'ve", "target": " have"}
+, {"source": "'ll", "target": " will"}
+]

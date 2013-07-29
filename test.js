@@ -11,7 +11,7 @@ var fs = require('fs');
 
 console.log("machine learning tester start");
 
-var pathToClassifier = __dirname+"/trainedClassifiers/TextCategorizationDemo.json";
+var pathToClassifier = __dirname+"/trainedClassifiers/MostRecentClassifier.json";
 var classifier = mlutils.serialize.fromString(fs.readFileSync(pathToClassifier), __dirname);
 
 console.log("\nTEST ON WOZ DATASET: ");
