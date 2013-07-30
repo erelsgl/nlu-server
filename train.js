@@ -91,11 +91,11 @@ if (do_cross_dataset_testing) {
 
 if (do_cross_validation) {
 
-	var numOfFolds = 5; // for k-fold cross-validation
+	var numOfFolds = 3; // for k-fold cross-validation
 	var microAverage = new PrecisionRecall();
 	var macroAverage = new PrecisionRecall();
 	
-	var devSet = collectedDatasetMulti.concat(collectedDatasetSingle);
+	var devSet = collectedDatasetMulti.concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetMulti3);
 	var startTime = new Date();
 	console.log("\nstart "+numOfFolds+"-fold cross-validation on "+grammarDataset.length+" grammar samples and "+devSet.length+" collected samples");
 	partitions.partitions(devSet, numOfFolds, function(trainSet, testSet, index) {

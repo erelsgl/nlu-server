@@ -163,47 +163,59 @@ io.sockets.on('connection', function (socket) {
 	// A human asks for a translation: 
 	socket.on('translate', function (request) {
 		logger.writeEventLog("events", "TRANSLATE<"+socket.id, request);
-
-		var classification = classifier.classify(request.text, parseInt(request.explain));
-		if (request.explain) {
-			classification.text = request.text;
-			classification.translations = classification.classes;
-			delete classification.classes;
-		} else {
-			classification = {
-				text: request.text,
-				translations: classification,
+		
+		if (request.forward) {   // forward translation = classification
+	
+			var classification = classifier.classify(request.text, parseInt(request.explain));
+			if (request.explain) {
+				classification.text = request.text;
+				classification.translations = classification.classes;
+				delete classification.classes;
+			} else {
+				classification = {
+					text: request.text,
+					translations: classification,
+				}
 			}
-		}
-		fs.appendFile(logger.cleanPathToLog("translations_automatic.log"), classification.text + "  /  " +classification.translations.join(" AND ")+"\n");
-
-		// send the translation to all registered public translators:
-		for (var id in registeredPublicTranslators) { 
-			logger.writeEventLog("events", "translate-toapprove>"+id, classification.translations);
-			registeredPublicTranslators[id].emit('translation', classification);
-		}
-
-
-		if (socket.private_translator || !Object.keys(activePublicTranslators).length) {
-			// there are no active public translators - send the translation directly to the asker:
-			logger.writeEventLog("events", "translate-direct>"+socket.id, classification.translations);
+			fs.appendFile(logger.cleanPathToLog("translations_automatic.log"), classification.text + "  /  " +classification.translations.join(" AND ")+"\n");
+	
+			// send the translation to all registered public translators:
+			for (var id in registeredPublicTranslators) { 
+				logger.writeEventLog("events", "translate-toapprove>"+id, classification.translations);
+				registeredPublicTranslators[id].emit('translation', classification);
+			}
+	
+	
+			if (socket.private_translator || !Object.keys(activePublicTranslators).length) {
+				// there are no active public translators - send the translation directly to the asker:
+				logger.writeEventLog("events", "translate-direct>"+socket.id, classification.translations);
+				socket.emit('translation', classification);
+			} else {
+				// the current client is waiting for translation of the given text by the public translators:
+				socket.join(request.text);
+				
+				mapTextToTimer[request.text] = new timer.Timer(TIMEOUT_SECONDS, -1, 0, function(timeSeconds) {
+						for (var id in registeredPublicTranslators)
+							registeredPublicTranslators[id].emit('time_left', {text: request.text, timeSeconds: timeSeconds});
+						if (timeSeconds<=0) { // timeout - no public translator responded - send the automatic translation to the asker:
+							logger.writeEventLog("events", "translate-timeout>"+socket.id, classification.translations);
+							socket.emit('translation', classification);
+							mapTextToTimer[request.text].stop();
+							activePublicTranslators = {};  // in case of timeout, all public translators are considered inactive.
+						}
+				});
+			}		
+		} // end of if (request.forward)
+		
+		else {  // backward translation = generation
+			var classes = request.text;
+			var samples = classifier.backClassify(classes);
+			var classification = {
+				text: request.text,
+				translations: samples,
+			};
 			socket.emit('translation', classification);
-		} else {
-			// the current client is waiting for translation of the given text by the public translators:
-			socket.join(request.text);
-			
-			mapTextToTimer[request.text] = new timer.Timer(TIMEOUT_SECONDS, -1, 0, function(timeSeconds) {
-					for (var id in registeredPublicTranslators)
-						registeredPublicTranslators[id].emit('time_left', {text: request.text, timeSeconds: timeSeconds});
-					if (timeSeconds<=0) { // timeout - no public translator responded - send the automatic translation to the asker:
-						logger.writeEventLog("events", "translate-timeout>"+socket.id, classification.translations);
-						socket.emit('translation', classification);
-						mapTextToTimer[request.text].stop();
-						activePublicTranslators = {};  // in case of timeout, all public translators are considered inactive.
-					}
-			});
-		}		
-
+		} // end of if (!request.forward)
 	});
 	
 	function onTranslatorAction(socket, request) {
