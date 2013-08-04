@@ -40,6 +40,7 @@ if (window.audioContext || window.webkitAudioContext) {
 	var audioContext = new(window.audioContext || window.webkitAudioContext);
 }
 
+var classifierName='Employer';
 
 $(document).ready(function() {
   deeplog = new DeepLog($("#deeplog"));
@@ -47,7 +48,7 @@ $(document).ready(function() {
   translationSocket = commonConnect(serverport, deeplog);
 
   translationSocket.on('connect', function() {
-		translationSocket.emit("register_as_public_translator");
+		translationSocket.emit("register_as_public_translator", {classifierName: classifierName});
   });
 
 	translationSocket.on('classes', function(classes) {
@@ -60,6 +61,8 @@ $(document).ready(function() {
 
 		var newForm = $(
 			"<form method='get' action=''>"+
+			"<input type='hidden' name='forward' value='true' />"+
+			"<input type='hidden' name='classifierName' value='"+classifierName+"' />"+
 				"<table class='translation_table'>"+
 					"<tr>"+
 						"<td class='label'>Human Utterance</td>"+

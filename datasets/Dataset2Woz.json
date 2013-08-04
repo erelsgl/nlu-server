@@ -66,7 +66,6 @@
 , {"input":"I want 7000","output":[{"Offer":{"Salary":"7,000 NIS"}}]}
 , {"input":"OK, I accept","output":[{"Accept":"previous"}]}
 , {"input":"Hi, let's begin our negotiation.","output":[{"Greet":true}]}
-, {"input":"My name is Akbar.","output":[{"Greet":true}]}
 , {"input":"This is my offer.","output":[{"Insist":"previous"}]}
 , {"input":"I accept this.","output":[{"Accept":"previous"}]}
 , {"input":"I need higher salary.","output":[{"Reject":"Salary"}]}

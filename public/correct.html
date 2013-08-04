@@ -38,7 +38,7 @@ $(document).ready(function() {
 	translationSocket = commonConnect(serverport, deeplog);
 
 	translationSocket.on('connect', function() {
-		translationSocket.emit("register_as_private_translator");
+		translationSocket.emit("register_as_private_translator", {classifierName: classifierName});
 		if ($("#text").val().length) 
 			translate();
 	});
@@ -115,6 +115,8 @@ $(document).ready(function() {
 /** Ask the server for a translation */
 function translate() {
 	var request = formToObject($('#form'));
+	request.classifierName = classifierName; 
+
 	$("#translations").html("<img src='images/ajax_loader.gif' /"+">");
 	$(".acknowledgement").html("");
 	startTime = new Date();
@@ -136,6 +138,7 @@ function approve() {
 		"Client: translation of '"+text+"' is "+translations+(train? " (train)": "(don't train)"));
 	
 	translationSocket.emit('approve', {
+		classifierName: classifierName, 
 		text: text,
 		translations: translations,
 		train: train,
@@ -143,14 +146,15 @@ function approve() {
 	return false;
 }
 
+var classifierName='Employer';
 
 </script>
 
 <h1>Expert Trainer for NLU Component</h1>
 
 <form name='form' id='form' method='get' action=''>
-	<input type='hidden' name='forward' value='true' />
 	<input type='hidden' name='explain' value='4' />
+	<input type='hidden' name='forward' value='true' />
 			
 			<table class='translation_table'>
 

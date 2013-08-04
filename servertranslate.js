@@ -16,16 +16,6 @@ var express = require('express')
 	, timer = require('./timer');
 	;
 
-var pathToClassifier = null;
-//var pathToBaseClassifier = __dirname+"/trainedClassifiers/NegotiationWinnowBigram.json";
-var pathToBaseClassifier = __dirname+"/trainedClassifiers/MostRecentClassifier.json";
-var pathToRetrainedClassifier = __dirname+"/trainedClassifiers/RetrainedClassifier.json";
-if (fs.existsSync(pathToRetrainedClassifier)) {
-	pathToClassifier = pathToRetrainedClassifier;
-} else {
-	pathToClassifier = pathToBaseClassifier;
-}
-
 
 //
 // Step 1: Configure an application with EXPRESS
@@ -61,15 +51,27 @@ app.configure('development', function(){
 });
 
 //
-// Step 2: Load the classifier
+// Step 2: Load the activeClassifiers
 //
 
-var classifier = mlutils.serialize.fromString(
-	fs.readFileSync(pathToClassifier), __dirname);
-var classes = classifier.getAllClasses();
-classes.sort();
+var activeClassifiers = {};
+var classifierNames = ["Employer", "Candidate"];
+classifierNames.forEach(function(classifierName) {
+	var pathToBaseClassifier = __dirname+"/trainedClassifiers/"+classifierName+"/MostRecentClassifier.json";
+	var pathToRetrainedClassifier = __dirname+"/trainedClassifiers/"+classifierName+"/RetrainedClassifier.json";
+	var pathToClassifier = (fs.existsSync(pathToRetrainedClassifier)?
+		pathToRetrainedClassifier:
+		pathToBaseClassifier);
+	
+	activeClassifiers[classifierName] = mlutils.serialize.fromString(
+		fs.readFileSync(pathToClassifier), __dirname);
+	activeClassifiers[classifierName].pathToRetrainedClassifier = pathToRetrainedClassifier;
+	activeClassifiers[classifierName].classes = activeClassifiers[classifierName].getAllClasses();
+	activeClassifiers[classifierName].classes.sort();
 
-var precisionrecall = mlutils.test(classifier, classifier.pastTrainingSamples).calculateStats();
+	activeClassifiers[classifierName].precisionrecall = mlutils.test(activeClassifiers[classifierName], activeClassifiers[classifierName].pastTrainingSamples).calculateStats();
+});
+
 
 
 //
@@ -136,22 +138,36 @@ io.sockets.on('connection', function (socket) {
 	logger.writeEventLog("events", "CONNECT "+address.address + ":" + address.port+"<", socket.id);
 	
 	// Public translator accepts translations from other users for correction (a "wizard-of-oz"):
-	socket.on('register_as_public_translator', function() {
+	socket.on('register_as_public_translator', function(request) {
+		if (!request || !request.classifierName) {
+			console.error("classifierName not found!");
+			console.dir(request);
+			return;
+		}
+		var activeClassifier = activeClassifiers[request.classifierName];
+	
 		socket.public_translator = true;
 		registeredPublicTranslators[socket.id] = socket;
 		activePublicTranslators[socket.id] = socket;
 		logger.writeEventLog("events", "PUBLICTRANSLATOR<", socket.id);
-		socket.emit('classes', classes);
-		socket.emit('precisionrecall', precisionrecall);
+		socket.emit('classes', activeClassifier.classes);
+		socket.emit('precisionrecall', activeClassifier.precisionrecall);
 	});
 	
 	// Private translator corrects his own translations, without the help of a public translator:
 	socket.private_translator = false;
-	socket.on('register_as_private_translator', function() {
+	socket.on('register_as_private_translator', function(request) {
+		if (!request || !request.classifierName) {
+			console.error("classifierName not found!");
+			console.dir(request);
+			return;
+		}
+		var activeClassifier = activeClassifiers[request.classifierName];
+	
 		socket.private_translator = true;
 		logger.writeEventLog("events", "PRIVATETRANSLATOR<", socket.id);
-		socket.emit('classes', classes);
-		socket.emit('precisionrecall', precisionrecall);
+		socket.emit('classes', activeClassifier.classes);
+		socket.emit('precisionrecall', activeClassifier.precisionrecall);
 	});
 
 	socket.on('disconnect', function () { 
@@ -162,11 +178,18 @@ io.sockets.on('connection', function (socket) {
 
 	// A human asks for a translation: 
 	socket.on('translate', function (request) {
+		if (!request.classifierName) {
+			console.error("classifierName not found!");
+			console.dir(request);
+			return;
+		}
+		var activeClassifier = activeClassifiers[request.classifierName];
+
 		logger.writeEventLog("events", (request.forward? "TRANSLATE<": "GENERATE<")+socket.id, request);
 		
 		if (request.forward) {   // forward translation = classification
 	
-			var classification = classifier.classify(request.text, parseInt(request.explain));
+			var classification = activeClassifier.classify(request.text, parseInt(request.explain));
 			if (request.explain) {
 				classification.text = request.text;
 				classification.translations = classification.classes;
@@ -212,13 +235,13 @@ io.sockets.on('connection', function (socket) {
 		else {  // backward translation = generation:
 			var classes = request.text;
 			if (request.multiple) {  // return multiple samples per class
-				var samples = classifier.backClassify(classes);
+				var samples = activeClassifier.backClassify(classes);
 			} else {  // return a single sample per class, selected at random
 				if (!(classes instanceof Array))
 					classes = [classes];
 				var samples = [];
 				classes.forEach(function(theClass) {
-					var samplesOfClass = classifier.backClassify(theClass);
+					var samplesOfClass = activeClassifier.backClassify(theClass);
 					var randomIndex = Math.floor(Math.random()*samplesOfClass.length);
 					//console.dir(samplesOfClass);
 					//console.log("randomIndex="+randomIndex);
@@ -263,12 +286,18 @@ io.sockets.on('connection', function (socket) {
 
 	// A human translator (public or private) says that the current automatic translation (with the previously made corrections) is correct: 
 	socket.on('approve', function (request) {
+		if (!request.classifierName) {
+			console.error("classifierName not found!");
+			console.dir(request);
+			return;
+		}
+		var activeClassifier = activeClassifiers[request.classifierName];
 		onTranslatorAction(socket, request);
 		
 		request.translations.sort();
 		var automatic_translations = null;
 		try {
-			automatic_translations = classifier.classify(request.text);
+			automatic_translations = activeClassifier.classify(request.text);
 			automatic_translations.sort();
 		} catch (err) {
 			console.error("Error in automatic classification!");
@@ -302,26 +331,27 @@ io.sockets.on('connection', function (socket) {
 		}); // remove all clients from waiting to that text
 		
 		if (request.train) {
-			classifier.trainOnline(request.text, request.translations);
+			activeClassifier.trainOnline(request.text, request.translations);
 			
 			if (!is_correct) { 
 				// EREL: I hope some day we can remove these lines and have a truly online classifier.
-				var newClassifier = classifier.createNewClassifierFunction();
-				newClassifier.trainBatch(classifier.pastTrainingSamples);
-				newClassifier.createNewClassifierFunction = classifier.createNewClassifierFunction;
-				newClassifier.createNewClassifierString = classifier.createNewClassifierString;
-				classifier = newClassifier;
-				//classifier.retrain();  
+				var newClassifier = activeClassifier.createNewClassifierFunction();
+				newClassifier.trainBatch(activeClassifier.pastTrainingSamples);
+				newClassifier.createNewClassifierFunction = activeClassifier.createNewClassifierFunction;
+				newClassifier.createNewClassifierString = activeClassifier.createNewClassifierString;
+				newClassifier.pathToRetrainedClassifier = activeClassifier.pathToRetrainedClassifier;
+				activeClassifiers[request.classifierName] = activeClassifier = newClassifier;
+				//activeClassifier.retrain();  
 				logger.writeEventLog("events", "++TRAIN<"+socket.id, request);
 			}
-			if (classifier.pastTrainingSamples.length % 2 == 0) {  // write every OTHER sample
-				fs.writeFile(pathToRetrainedClassifier, mlutils.serialize.toString(classifier), 'utf-8', function(err) {
+			if (activeClassifier.pastTrainingSamples.length % 2 == 0) {  // write every OTHER sample
+				fs.writeFile(activeClassifier.pathToRetrainedClassifier, mlutils.serialize.toString(activeClassifier), 'utf-8', function(err) {
 					logger.writeEventLog("events", "+++SAVE<"+socket.id, err);
 				});
 			}
 			
-			precisionrecall = mlutils.test(classifier, classifier.pastTrainingSamples).calculateStats();
-			socket.emit('precisionrecall', precisionrecall);
+			activeClassifier.precisionrecall = mlutils.test(activeClassifier, activeClassifier.pastTrainingSamples).calculateStats();
+			socket.emit('precisionrecall', activeClassifier.precisionrecall);
 		}
 	});
 });
