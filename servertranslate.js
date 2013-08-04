@@ -162,7 +162,7 @@ io.sockets.on('connection', function (socket) {
 
 	// A human asks for a translation: 
 	socket.on('translate', function (request) {
-		logger.writeEventLog("events", "TRANSLATE<"+socket.id, request);
+		logger.writeEventLog("events", (request.forward? "TRANSLATE<": "GENERATE<")+socket.id, request);
 		
 		if (request.forward) {   // forward translation = classification
 	
@@ -170,11 +170,13 @@ io.sockets.on('connection', function (socket) {
 			if (request.explain) {
 				classification.text = request.text;
 				classification.translations = classification.classes;
+				classification.forward = request.forward;
 				delete classification.classes;
 			} else {
 				classification = {
 					text: request.text,
 					translations: classification,
+					forward: request.forward,
 				}
 			}
 			fs.appendFile(logger.cleanPathToLog("translations_automatic.log"), classification.text + "  /  " +classification.translations.join(" AND ")+"\n");
@@ -207,13 +209,29 @@ io.sockets.on('connection', function (socket) {
 			}		
 		} // end of if (request.forward)
 		
-		else {  // backward translation = generation
+		else {  // backward translation = generation:
 			var classes = request.text;
-			var samples = classifier.backClassify(classes);
+			if (request.multiple) {  // return multiple samples per class
+				var samples = classifier.backClassify(classes);
+			} else {  // return a single sample per class, selected at random
+				if (!(classes instanceof Array))
+					classes = [classes];
+				var samples = [];
+				classes.forEach(function(theClass) {
+					var samplesOfClass = classifier.backClassify(theClass);
+					var randomIndex = Math.floor(Math.random()*samplesOfClass.length);
+					//console.dir(samplesOfClass);
+					//console.log("randomIndex="+randomIndex);
+					var randomSample = samplesOfClass[randomIndex];
+					samples.push(randomSample);
+				});
+			}
 			var classification = {
 				text: request.text,
 				translations: samples,
+				forward: request.forward,
 			};
+			logger.writeEventLog("events", "generate-direct>"+socket.id, classification.translations);
 			socket.emit('translation', classification);
 		} // end of if (!request.forward)
 	});

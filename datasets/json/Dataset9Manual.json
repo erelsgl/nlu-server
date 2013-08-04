@@ -1,0 +1,9 @@
+[
+  {"input":"I offer without car","output":["{\"Offer\": {\"Leased Car\": \"Without leased car\"}}"]}
+, {"input":"I offer no car","output":["{\"Offer\": {\"Leased Car\": \"Without leased car\"}}"]}
+, {"input":"I disagree your offer","output":["{\"Reject\": \"previous\"}"]}
+, {"input":"I disagree to your offer","output":["{\"Reject\": \"previous\"}"]}
+, {"input":"I cannot accept your offer","output":["{\"Reject\": \"previous\"}"]}
+, {"input":"I can not accept your offer","output":["{\"Reject\": \"previous\"}"]}
+, {"input":"I can't accept your offer","output":["{\"Reject\": \"previous\"}"]}
+]

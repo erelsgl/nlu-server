@@ -11,7 +11,7 @@ var fs = require('fs');
 
 console.log("machine learning trainer start");
 
-var domainDataset = JSON.parse(fs.readFileSync("datasets/Dataset0Domain.json"));
+//var domainDataset = JSON.parse(fs.readFileSync("datasets/Dataset0Domain.json"));
 var grammarDataset = JSON.parse(fs.readFileSync("datasets/Dataset0Grammar.json"));
 var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Dataset1Woz.json"));
 var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Dataset1Woz1class.json"));
@@ -62,10 +62,10 @@ var PrecisionRecall = mlutils.PrecisionRecall;
 var trainAndTest = mlutils.trainAndTest;
 
 if (do_cross_dataset_testing) {
-	console.log("\nTrain on domain data, test on woz single class: "+
-		trainAndTest(createNewClassifier, domainDataset, collectedDatasetSingle, verbosity).shortStats());
-	console.log("\nTrain on domain data, test on woz multi class: "+
-		trainAndTest(createNewClassifier, domainDataset, collectedDatasetMulti, verbosity).shortStats());
+	//console.log("\nTrain on domain data, test on woz single class: "+
+	//	trainAndTest(createNewClassifier, domainDataset, collectedDatasetSingle, verbosity).shortStats());
+	//console.log("\nTrain on domain data, test on woz multi class: "+
+	//	trainAndTest(createNewClassifier, domainDataset, collectedDatasetMulti, verbosity).shortStats());
 	console.log("\nTrain on grammar data, test on woz single class: "+
 		trainAndTest(createNewClassifier, grammarDataset, collectedDatasetSingle, verbosity).shortStats());
 	console.log("\nTrain on grammar data, test on woz multi class: "+
@@ -126,7 +126,7 @@ if (do_serialization) {
 	classifier.trainBatch(dataset);
 	console.log("end training on "+dataset.length+" samples, "+(new Date()-startTime)+" [ms]");
 
-	console.log("\ntest on training data:")
+	console.log("\ntest on training data:");
 	mlutils.testLite(classifier, dataset);
 	
 	var resultsBeforeReload = [];
