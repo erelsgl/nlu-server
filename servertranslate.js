@@ -148,21 +148,24 @@ io.sockets.on('connection', function (socket) {
 			return;
 		}
 		var activeClassifier = activeClassifiers[request.classifierName];
-	
+
 		socket.public_translator = true;
 		registeredPublicTranslators[socket.id] = socket;
 		activePublicTranslators[socket.id] = socket;
 		logger.writeEventLog("events", "PUBLICTRANSLATOR<", socket.id);
+
+		//classifierNames.forEach(function(classifierName) {
+		//	var activeClassifier=activeClassifiers[classifierName];
 		socket.emit('classes', activeClassifier.classes);
 		socket.emit('precisionrecall', activeClassifier.precisionrecall);
+		//});
 	});
 	
 	// Private translator corrects his own translations, without the help of a public translator:
 	socket.private_translator = false;
 	socket.on('register_as_private_translator', function(request) {
-		if (!request || !request.classifierName) {
-			console.error("classifierName not found!");
-			console.dir(request);
+		if (!request || !request.classifierName || !activeClassifiers[request.classifierName]) {
+			console.error("classifierName not found! request="+JSON.stringify(request));
 			return;
 		}
 		var activeClassifier = activeClassifiers[request.classifierName];
@@ -197,12 +200,14 @@ io.sockets.on('connection', function (socket) {
 				classification.text = request.text;
 				classification.translations = classification.classes;
 				classification.forward = request.forward;
+				classification.classifierName = request.classifierName;
 				delete classification.classes;
 			} else {
 				classification = {
 					text: request.text,
 					translations: classification,
 					forward: request.forward,
+					classifierName: request.classifierName,
 				}
 			}
 			fs.appendFile(logger.cleanPathToLog("translations_automatic.log"), classification.text + "  /  " +classification.translations.join(" AND ")+"\n");
