@@ -146,12 +146,14 @@ $(document).ready(function() {
 			if (translationElement.hasClass('deleted')) {
 				translationSocket.emit("delete_translation", {
 					text: text, 
-					translation_to_delete: translation
+					translation_to_delete: translation,
+					classifierName: classifierName,
 				});
 			} else {
 				translationSocket.emit("append_translation", {
 					text: text.val(), 
-					translation_to_add: translation
+					translation_to_add: translation,
+					classifierName: classifierName,
 				});
 			}
 	});
@@ -166,6 +168,7 @@ $(document).ready(function() {
 		translationSocket.emit('append_translation', {
 			text: text,
 			translation_to_add: translation,
+			classifierName: classifierName,
 		});	
 	});
 
@@ -195,7 +198,8 @@ $(document).ready(function() {
 	$("#forms").on("click", ".stop_timer", function() {
 		var form = $(this).closest("form");
 		translationSocket.emit("stop_timer", {
-			"text": form.find(".text").val()
+			text: form.find(".text").val(),
+			classifierName: classifierName,
 		});
 		return false;
 	});

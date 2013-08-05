@@ -28,6 +28,11 @@
 var DEPTH_OF_CLIENT_LOG_MESSAGES=2;
 var startTime;
 
+var classifierName='Employer';
+var matches = /name=([^&]+)/.exec(location.search);
+if (matches)
+	classifierName=matches[1];
+
 
 /* initialization */
 
@@ -61,6 +66,7 @@ $(document).ready(function() {
 /** Ask the server for a translation */
 function translate() {
   var request = formToObject($('#form'));
+  request.classifierName = classifierName;
   $("#translations").html("<img src='images/ajax_loader.gif' />");
   startTime = new Date();
   translationSocket.emit('translate', request);
@@ -85,7 +91,6 @@ function translate() {
                 <td><input type='checkbox' name='forward' checked='checked' />Forward</td>
                 <td><button type='submit' class='translate'>translate</button></td>
                 <td><input type='hidden' name='explain' value='4' /></td>
-                <td><input type='hidden' name='classifierName' value='Employer' /></td>
             </tr>
 
             <tr>

@@ -11,12 +11,12 @@ var fs = require('fs');
 
 console.log("machine learning trainer start");
 
-//var domainDataset = JSON.parse(fs.readFileSync("datasets/Dataset0Domain.json"));
-var grammarDataset = JSON.parse(fs.readFileSync("datasets/Dataset0Grammar.json"));
-var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Dataset1Woz.json"));
-var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Dataset1Woz1class.json"));
-var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Dataset2Woz.json"));
-var collectedDatasetMulti3 = JSON.parse(fs.readFileSync("datasets/Dataset3Woz.json"));
+//var domainDataset = JSON.parse(fs.readFileSync("datasets/Employer/Dataset0Domain.json"));
+var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/Dataset0Grammar.json"));
+var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz.json"));
+var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz1class.json"));
+var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2Woz.json"));
+var collectedDatasetMulti3 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset3Woz.json"));
 
 var createWinnowClassifier = function() {
 	var classifiers = require(__dirname+'/../machine-learning/classifiers');
@@ -51,7 +51,7 @@ var createWinnowClassifier = function() {
 var createNewClassifier = createWinnowClassifier;
 
 var do_cross_dataset_testing = true;
-var do_cross_validation = true;
+var do_cross_validation = false;
 var do_serialization = true;
 
 var verbosity = 0;
@@ -117,42 +117,78 @@ if (do_cross_validation) {
 } // do_cross_validation
 
 if (do_serialization) {
-	var classifier = createNewClassifier();
-	var dataset = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetMulti3);
-
-	//dataset = dataset.slice(0,20);
-	console.log("\nstart training on "+dataset.length+" samples");
-	var startTime = new Date();
-	classifier.trainBatch(dataset);
-	console.log("end training on "+dataset.length+" samples, "+(new Date()-startTime)+" [ms]");
-
-	console.log("\ntest on training data:");
-	mlutils.testLite(classifier, dataset);
+	["Employer","Candidate"].forEach(function(classifierName) {
+		console.log("\nBuilding classifier for "+classifierName);
+		var classifier = createNewClassifier();
+		
+		var grammarDataset = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset0Grammar.json"));
+		var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz.json"));
+		var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz1class.json"));
+		var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset2Woz.json"));
+		var collectedDatasetMulti3 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset3Woz.json"));
+		
+		var dataset = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetMulti3);
 	
-	var resultsBeforeReload = [];
-	for (var i=0; i<dataset.length; ++i) {
-		var actualClasses = classifier.classify(dataset[i].input);  
-		actualClasses.sort();
-		resultsBeforeReload[i] = actualClasses;
-	}
+		//dataset = dataset.slice(0,20);
+		console.log("\nstart training on "+dataset.length+" samples");
+		var startTime = new Date();
+		classifier.trainBatch(dataset);
+		console.log("end training on "+dataset.length+" samples, "+(new Date()-startTime)+" [ms]");
 	
-	fs.writeFileSync("trainedClassifiers/Employer/MostRecentClassifier.json", 
-		mlutils.serialize.toString(classifier, createNewClassifier), 'utf8');
-	fs.writeFileSync("trainedClassifiers/Candidate/MostRecentClassifier.json", 
-		mlutils.serialize.toString(classifier, createNewClassifier), 'utf8');
-
-	var classifier2 = mlutils.serialize.fromString(
-		fs.readFileSync("trainedClassifiers/Employer/MostRecentClassifier.json"), __dirname);
-
-	console.log("\ntest on training data after reload:")
-	for (var i=0; i<dataset.length; ++i) {
-		var actualClasses = classifier2.classify(dataset[i].input);
-		actualClasses.sort();
-		if (!_(resultsBeforeReload[i]).isEqual(actualClasses)) {
-			throw new Error("Reload does not reproduce the original classifier! before reload="+resultsBeforeReload[i]+", after reload="+actualClasses);
+		console.log("\ntest on training data:");
+		mlutils.testLite(classifier, dataset);
+		
+		var resultsBeforeReload = [];
+		for (var i=0; i<dataset.length; ++i) {
+			var actualClasses = classifier.classify(dataset[i].input);  
+			actualClasses.sort();
+			resultsBeforeReload[i] = actualClasses;
 		}
-		if (verbosity>0) console.log(dataset[i].input+": "+actualClasses);
-	}
+		
+		fs.writeFileSync("trainedClassifiers/Employer/MostRecentClassifier.json", 
+			mlutils.serialize.toString(classifier, createNewClassifier), 'utf8');
+		fs.writeFileSync("trainedClassifiers/Candidate/MostRecentClassifier.json", 
+			mlutils.serialize.toString(classifier, createNewClassifier), 'utf8');
+	
+		var classifier2 = mlutils.serialize.fromString(
+			fs.readFileSync("trainedClassifiers/Employer/MostRecentClassifier.json"), __dirname);
+	
+		console.log("\ntest on training data after reload:")
+		for (var i=0; i<dataset.length; ++i) {
+			var actualClasses = classifier2.classify(dataset[i].input);
+			actualClasses.sort();
+			if (!_(resultsBeforeReload[i]).isEqual(actualClasses)) {
+				throw new Error("Reload does not reproduce the original classifier! before reload="+resultsBeforeReload[i]+", after reload="+actualClasses);
+			}
+			if (verbosity>0) console.log(dataset[i].input+": "+actualClasses);
+		}
+		
+		var resultsBeforeReload = [];
+		for (var i=0; i<dataset.length; ++i) {
+			var actualClasses = classifier.classify(dataset[i].input);  
+			actualClasses.sort();
+			resultsBeforeReload[i] = actualClasses;
+		}
+		
+		fs.writeFileSync("trainedClassifiers/Employer/MostRecentClassifier.json", 
+			mlutils.serialize.toString(classifier, createNewClassifier), 'utf8');
+		fs.writeFileSync("trainedClassifiers/Candidate/MostRecentClassifier.json", 
+			mlutils.serialize.toString(classifier, createNewClassifier), 'utf8');
+	
+		var classifier2 = mlutils.serialize.fromString(
+			fs.readFileSync("trainedClassifiers/Employer/MostRecentClassifier.json"), __dirname);
+	
+		console.log("\ntest on training data after reload:")
+		for (var i=0; i<dataset.length; ++i) {
+			var actualClasses = classifier2.classify(dataset[i].input);
+			actualClasses.sort();
+			if (!_(resultsBeforeReload[i]).isEqual(actualClasses)) {
+				throw new Error("Reload does not reproduce the original classifier! before reload="+resultsBeforeReload[i]+", after reload="+actualClasses);
+			}
+			if (verbosity>0) console.log(dataset[i].input+": "+actualClasses);
+		}
+
+	});
 } // do_serialization
 
 console.log("machine learning trainer end");

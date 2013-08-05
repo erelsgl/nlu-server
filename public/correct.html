@@ -28,6 +28,11 @@
 var DEPTH_OF_CLIENT_LOG_MESSAGES=2;
 var startTime;
 
+var classifierName='Employer';
+var matches = /name=([^&]+)/.exec(location.search);
+if (matches)
+	classifierName=matches[1];
+
 
 /* initialization */
 
@@ -72,12 +77,14 @@ $(document).ready(function() {
 			if (translationElement.hasClass('deleted')) {
 				translationSocket.emit("delete_translation", {
 					text: $("#text").val(), 
-					translation_to_delete: translation
+					translation_to_delete: translation,
+					classifierName: classifierName,
 				});
 			} else {
 				translationSocket.emit("append_translation", {
 					text: $("#text").val(), 
-					translation_to_add: translation
+					translation_to_add: translation,
+					classifierName: classifierName,
 				});
 			}
 	});
@@ -89,6 +96,7 @@ $(document).ready(function() {
 		translationSocket.emit('append_translation', {
 			text: $("#text").val(),
 			translation_to_add: translation,
+			classifierName: classifierName,
 		});	
 	});
 	
@@ -143,15 +151,14 @@ function approve() {
 		"Client: translation of '"+text+"' is "+translations+(train? " (train)": "(don't train)"));
 	
 	translationSocket.emit('approve', {
-		classifierName: classifierName, 
 		text: text,
 		translations: translations,
 		train: train,
+		classifierName: classifierName, 
 	});
 	return false;
 }
 
-var classifierName='Employer';
 
 </script>
 

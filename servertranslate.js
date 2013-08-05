@@ -51,8 +51,11 @@ app.configure('development', function(){
 });
 
 //
-// Step 2: Load the activeClassifiers
+// Step 2: Load the activeClassifiers and prepare the translators
 //
+
+var registeredPublicTranslators = {};
+var activePublicTranslators = {};
 
 var activeClassifiers = {};
 var classifierNames = ["Employer", "Candidate"];
@@ -73,6 +76,9 @@ classifierNames.forEach(function(classifierName) {
 	if (!activeClassifiers[classifierName].classes)
 		throw new Error("Classes of classifier '"+classifierName+"' are null!");
 	console.log("Loaded classifier '"+classifierName+"'");
+	
+	registeredPublicTranslators[classifierName] = {};
+	activePublicTranslators[classifierName] = {};
 });
 
 
@@ -133,9 +139,6 @@ var stopTimer = function(timerText) {
 
 
 
-var registeredPublicTranslators = {};
-var activePublicTranslators = {};
-
 io.sockets.on('connection', function (socket) {
 	var address = socket.handshake.address;
 	logger.writeEventLog("events", "CONNECT "+address.address + ":" + address.port+"<", socket.id);
@@ -150,8 +153,8 @@ io.sockets.on('connection', function (socket) {
 		var activeClassifier = activeClassifiers[request.classifierName];
 
 		socket.public_translator = true;
-		registeredPublicTranslators[socket.id] = socket;
-		activePublicTranslators[socket.id] = socket;
+		registeredPublicTranslators[request.classifierName][socket.id] = socket;
+		activePublicTranslators[request.classifierName][socket.id] = socket;
 		logger.writeEventLog("events", "PUBLICTRANSLATOR<", socket.id);
 
 		//classifierNames.forEach(function(classifierName) {
@@ -178,15 +181,16 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('disconnect', function () { 
 		logger.writeEventLog("events", "DISCONNECT<", socket.id);
-		delete registeredPublicTranslators[socket.id];
-		delete activePublicTranslators[socket.id];
+		classifierNames.forEach(function(classifierName) {
+			delete registeredPublicTranslators[classifierName][socket.id];
+			delete activePublicTranslators[classifierName][socket.id];
+		});
 	});
 
 	// A human asks for a translation: 
 	socket.on('translate', function (request) {
-		if (!request.classifierName) {
-			console.error("classifierName not found!");
-			console.dir(request);
+		if (!request || !request.classifierName || !activeClassifiers[request.classifierName]) {
+			console.error("classifierName not found! request="+JSON.stringify(request));
 			return;
 		}
 		var activeClassifier = activeClassifiers[request.classifierName];
@@ -215,13 +219,13 @@ io.sockets.on('connection', function (socket) {
 	
 			if (!socket.private_translator) {
 				// send the translation to all registered public translators:
-				for (var id in registeredPublicTranslators) { 
+				for (var id in registeredPublicTranslators[request.classifierName]) { 
 					logger.writeEventLog("events", "translate-toapprove>"+id, classification.translations);
-					registeredPublicTranslators[id].emit('translation', classification);
+					registeredPublicTranslators[request.classifierName][id].emit('translation', classification);
 				}
 			}
 	
-			if (socket.private_translator || !Object.keys(activePublicTranslators).length) {
+			if (socket.private_translator || !Object.keys(activePublicTranslators[request.classifierName]).length) {
 				// there are no active public translators - send the translation directly to the asker:
 				logger.writeEventLog("events", "translate-direct>"+socket.id, classification.translations);
 				socket.emit('translation', classification);
@@ -230,13 +234,13 @@ io.sockets.on('connection', function (socket) {
 				socket.join(request.text);
 				
 				mapTextToTimer[request.text] = new timer.Timer(TIMEOUT_SECONDS, -1, 0, function(timeSeconds) {
-						for (var id in registeredPublicTranslators)
-							registeredPublicTranslators[id].emit('time_left', {text: request.text, timeSeconds: timeSeconds});
+						for (var id in registeredPublicTranslators[request.classifierName])
+							registeredPublicTranslators[request.classifierName][id].emit('time_left', {text: request.text, timeSeconds: timeSeconds});
 						if (timeSeconds<=0) { // timeout - no public translator responded - send the automatic translation to the asker:
 							logger.writeEventLog("events", "translate-timeout>"+socket.id, classification.translations);
 							socket.emit('translation', classification);
 							mapTextToTimer[request.text].stop();
-							activePublicTranslators = {};  // in case of timeout, all public translators are considered inactive.
+							activePublicTranslators[request.classifierName] = {};  // in case of timeout, all public translators are considered inactive.
 						}
 				});
 			}		
@@ -271,34 +275,45 @@ io.sockets.on('connection', function (socket) {
 	
 	function onTranslatorAction(socket, request) {
 		if (socket.public_translator)    // remember that there is an active public translator
-			activePublicTranslators[socket.id] = socket;
+			activePublicTranslators[request.classifierName][socket.id] = socket;
 		if (request && mapTextToTimer[request.text])    // stop the timer
 			mapTextToTimer[request.text].stop();
 	}
 	
 	// A human translator (public or private) says that a certain automatic translation is incorrect: 
 	socket.on('delete_translation', function (request) {
+		if (!request || !request.classifierName || !activeClassifiers[request.classifierName]) {
+			console.error("classifierName not found! request="+JSON.stringify(request));
+			return;
+		}
 		onTranslatorAction(socket, request);
 		logger.writeEventLog("events", "DELETE<"+socket.id, request);
 	});
 
 	// A human translator (public or private) says that a certain automatic translation is missing: 
 	socket.on('append_translation', function (request) {
+		if (!request || !request.classifierName || !activeClassifiers[request.classifierName]) {
+			console.error("classifierName not found! request="+JSON.stringify(request));
+			return;
+		}
 		onTranslatorAction(socket, request);
 		logger.writeEventLog("events", "APPEND<"+socket.id, request);
 	});
 	
 	// A human translator asks to stop the timer of a certain translation: 
 	socket.on('stop_timer', function(request) {
+		if (!request || !request.classifierName || !activeClassifiers[request.classifierName]) {
+			console.error("classifierName not found! request="+JSON.stringify(request));
+			return;
+		}
 		onTranslatorAction(socket, request);
 		logger.writeEventLog("events", "STOPTIMER<"+socket.id, request);
 	});
 
 	// A human translator (public or private) says that the current automatic translation (with the previously made corrections) is correct: 
 	socket.on('approve', function (request) {
-		if (!request.classifierName) {
-			console.error("classifierName not found!");
-			console.dir(request);
+		if (!request || !request.classifierName || !activeClassifiers[request.classifierName]) {
+			console.error("classifierName not found! request="+JSON.stringify(request));
 			return;
 		}
 		var activeClassifier = activeClassifiers[request.classifierName];

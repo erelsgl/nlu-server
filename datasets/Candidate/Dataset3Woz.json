@@ -7,19 +7,14 @@
 , {"input":"Salary : 12,000 NIS , Job Description : Programmer , with Leased Car, Pension Fund : 0% , Promotion Possibilities : Fast promotion track , Working Hours : 10 hours","output":[{"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"0%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"10 hours"}}]}
 , {"input":"7k","output":[{"Offer":{"Salary":"7,000 NIS"}}]}
 , {"input":"I wnat 20k","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
-, {"input":"This offer is ridiculous.","output":[{"Reject":"previous"}]}
-, {"input":"I can pay you 12,000NIS if you agree for 10 hours a day.","output":[{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"10 hours"}}]}
+, {"input":"This offer is insulting.","output":[{"Reject":"previous"}]}
 , {"input":"I can accept 7,000NIS if you agree to give me fast promotion.","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"7,000 NIS"}}]}
 , {"input":"I cannot work for 10 hours a day.","output":[{"Reject":"Working Hours"}]}
 , {"input":"I have a baby. I need to go home early.","output":[{"Reject":"Working Hours"}]}
-, {"input":"I am sorry but I cannot pay you 20,000NIS.","output":[{"Reject":"Salary"}]}
-, {"input":"I will look for another candidate.","output":[{"Quit":true}]}
 , {"input":"I can't accept your offer","output":[{"Reject":"previous"}]}
 , {"input":"I don't like your offer","output":[{"Reject":"previous"}]}
 , {"input":"I cannot work for 10 hours a day.","output":[{"Reject":"Working Hours"}]}
-, {"input":"I will agree to the Pension Fund at 20% if you take a 12,000 NIS salary. ","output":[{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Salary":"12,000 NIS"}}]}
 , {"input":"You are going to have to be willing to negotiate more than that","output":[{"Reject":"previous"}]}
-, {"input":"Then I will include the leased car","output":[{"Insist":"previous"},{"Offer":{"Leased Car":"With leased car"}}]}
 , {"input":"No, we agreed fast promotion track","output":[{"Insist":"previous"},{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
 , {"input":"12,000NIS, No leased car Pension fund 10% Fast Track Promotion, 8 hours","output":[{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"8 hours"}}]}
 , {"input":"12,000NIS Leased Car Fast Track Pension Fund 10% 8 hours","output":[{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"8 hours"}}]}
@@ -29,4 +24,11 @@
 , {"input":"What do you want to talk about?","output":{"Query":"issues"}}
 , {"input":"What are you willing to negotiate?","output":{"Query":"compromise"}}
 , {"input":"What items from your offer are you willing to compromise on?","output":{"Query":"compromise"}}
+,	{
+				"input": "I wnat a wage of 20000 NIS",
+				"output": [
+					"{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
+				]
+	}
+
 ]
