@@ -40,16 +40,9 @@ if (window.audioContext || window.webkitAudioContext) {
 	var audioContext = new(window.audioContext || window.webkitAudioContext);
 }
 
-var classifierName='Employer';
-var matches = /name=([^&]+)/.exec(location.search);
-if (matches)
-	classifierName=matches[1];
-
 $(document).ready(function() {
   deeplog = new DeepLog($("#deeplog"));
   form = $('#form'); form.deserialize(location.search.substr(1));
-  $("h1").append("<span> ("+classifierName+")</span>");
-  $("title").prepend(classifierName+" ");
   
   translationSocket = commonConnect(serverport, deeplog);
 

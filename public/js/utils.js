@@ -295,5 +295,13 @@ function explanationsToHtml(translations) {
 }
 
 
+/* handle classifierName parameter */
 
-
+var classifierName='Employer';
+var matches = /name=([^&]+)/.exec(location.search);
+if (matches)
+	classifierName=matches[1];
+$(document).ready(function() {
+  $("h1").append("<span> ("+classifierName+")</span>");
+  $("title").prepend(classifierName+" ");
+});

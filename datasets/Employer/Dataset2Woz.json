@@ -55,7 +55,7 @@
 , {"input":"what about 20000, with car, programmer, 10% pension Found, fast promotion track and 9 hours","output":[{"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}}]}
 , {"input":"i'm insist","output":[{"Insist":"previous"}]}
 , {"input":"I cannot accpet","output":[{"Reject":"previous"}]}
-, {"input":"I want 7000","output":[{"Offer":{"Salary":"7,000 NIS"}}]}
+, {"input":"I offer 7000","output":[{"Offer":{"Salary":"7,000 NIS"}}]}
 , {"input":"OK, I accept","output":[{"Accept":"previous"}]}
 , {"input":"Hi, let's begin our negotiation.","output":[{"Greet":true}]}
 , {"input":"This is my offer.","output":[{"Insist":"previous"}]}

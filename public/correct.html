@@ -28,12 +28,6 @@
 var DEPTH_OF_CLIENT_LOG_MESSAGES=2;
 var startTime;
 
-var classifierName='Employer';
-var matches = /name=([^&]+)/.exec(location.search);
-if (matches)
-	classifierName=matches[1];
-
-
 /* initialization */
 
 var translationSocket=null, deeplog=null, expert=false;
