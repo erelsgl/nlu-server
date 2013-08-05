@@ -66,10 +66,13 @@ classifierNames.forEach(function(classifierName) {
 	activeClassifiers[classifierName] = mlutils.serialize.fromString(
 		fs.readFileSync(pathToClassifier), __dirname);
 	activeClassifiers[classifierName].pathToRetrainedClassifier = pathToRetrainedClassifier;
+	activeClassifiers[classifierName].precisionrecall = mlutils.test(activeClassifiers[classifierName], activeClassifiers[classifierName].pastTrainingSamples).calculateStats();
+
 	activeClassifiers[classifierName].classes = activeClassifiers[classifierName].getAllClasses();
 	activeClassifiers[classifierName].classes.sort();
-
-	activeClassifiers[classifierName].precisionrecall = mlutils.test(activeClassifiers[classifierName], activeClassifiers[classifierName].pastTrainingSamples).calculateStats();
+	if (!activeClassifiers[classifierName].classes)
+		throw new Error("Classes of classifier '"+classifierName+"' are null!");
+	console.log("Loaded classifier '"+classifierName+"'");
 });
 
 
@@ -138,10 +141,10 @@ io.sockets.on('connection', function (socket) {
 	logger.writeEventLog("events", "CONNECT "+address.address + ":" + address.port+"<", socket.id);
 	
 	// Public translator accepts translations from other users for correction (a "wizard-of-oz"):
+	socket.public_translator = false;
 	socket.on('register_as_public_translator', function(request) {
-		if (!request || !request.classifierName) {
-			console.error("classifierName not found!");
-			console.dir(request);
+		if (!request || !request.classifierName || !activeClassifiers[request.classifierName]) {
+			console.error("classifierName not found! request="+JSON.stringify(request));
 			return;
 		}
 		var activeClassifier = activeClassifiers[request.classifierName];
@@ -204,12 +207,14 @@ io.sockets.on('connection', function (socket) {
 			}
 			fs.appendFile(logger.cleanPathToLog("translations_automatic.log"), classification.text + "  /  " +classification.translations.join(" AND ")+"\n");
 	
-			// send the translation to all registered public translators:
-			for (var id in registeredPublicTranslators) { 
-				logger.writeEventLog("events", "translate-toapprove>"+id, classification.translations);
-				registeredPublicTranslators[id].emit('translation', classification);
-			}
 	
+			if (!socket.private_translator) {
+				// send the translation to all registered public translators:
+				for (var id in registeredPublicTranslators) { 
+					logger.writeEventLog("events", "translate-toapprove>"+id, classification.translations);
+					registeredPublicTranslators[id].emit('translation', classification);
+				}
+			}
 	
 			if (socket.private_translator || !Object.keys(activePublicTranslators).length) {
 				// there are no active public translators - send the translation directly to the asker:
@@ -293,7 +298,7 @@ io.sockets.on('connection', function (socket) {
 		}
 		var activeClassifier = activeClassifiers[request.classifierName];
 		onTranslatorAction(socket, request);
-		
+
 		request.translations.sort();
 		var automatic_translations = null;
 		try {
@@ -340,6 +345,7 @@ io.sockets.on('connection', function (socket) {
 				newClassifier.createNewClassifierFunction = activeClassifier.createNewClassifierFunction;
 				newClassifier.createNewClassifierString = activeClassifier.createNewClassifierString;
 				newClassifier.pathToRetrainedClassifier = activeClassifier.pathToRetrainedClassifier;
+				newClassifier.classes = activeClassifier.classes;
 				activeClassifiers[request.classifierName] = activeClassifier = newClassifier;
 				//activeClassifier.retrain();  
 				logger.writeEventLog("events", "++TRAIN<"+socket.id, request);

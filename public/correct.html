@@ -57,6 +57,7 @@ $(document).ready(function() {
 	});
 
 	translationSocket.on('classes', function(classes) {
+			console.log("Got classes: "+JSON.stringify(classes));
 			setOptionsFromArray(
 					$("#classToAdd"), 
 					/*arrayOfOptions=*/classes,
@@ -134,6 +135,10 @@ function approve() {
 	var translations = $(".translation").not(".deleted").map(function() { return $(this).text(); }).get();
 	var train = $("#train").is(':checked');
 	$(".acknowledgement").html("<img src='images/ajax_loader.gif' /"+">");
+	
+	if (train)
+		$("#precisionrecall").html("<img src='images/ajax_loader.gif' /"+">");
+
 	deeplog.add(3, 
 		"Client: translation of '"+text+"' is "+translations+(train? " (train)": "(don't train)"));
 	

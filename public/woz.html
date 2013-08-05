@@ -56,13 +56,11 @@ $(document).ready(function() {
 	});
 
 	translationSocket.on('translation', function(translation) {
-		console.log("CLIENT: got a translation for "+translation.text);
-		deeplog.add(2, "Server: translation of '"+translation.text+"' is "+translation.translations);
+		console.log("Server: translation of '"+translation.text+"' is: "+translation.translations);
+		deeplog.add(2, "Server: translation of '"+translation.text+"' is: "+translation.translations);
 
 		var newForm = $(
 			"<form method='get' action=''>"+
-			"<input type='hidden' name='forward' value='true' />"+
-			"<input type='hidden' name='classifierName' value='"+classifierName+"' />"+
 				"<table class='translation_table'>"+
 					"<tr>"+
 						"<td class='label'>Human Utterance</td>"+
@@ -168,14 +166,17 @@ $(document).ready(function() {
 	$("#forms").on("submit", "form", function() {
 		var form = $(this);
 		var text = form.find(".text").val();
-		var train = form.find(".train").is(':checked');
 		var translations = form.find(".translation").not(".deleted").map(function() { return $(this).text(); }).get();
+		var forward = true;
+		var train = form.find(".train").is(':checked');
 		currentAcknowledgementElement = form.find(".acknowledgement");
 		currentAcknowledgementElement.html("<img src='images/ajax_loader.gif' /"+">");
 		translationSocket.emit('approve', {
 			text: text,
 			translations: translations,
+			forward: forward,
 			train: train,
+			classifierName: classifierName,
 		});
 		deeplog.add(3, "Client: translation of '"+text+"' is "+translations);
 
