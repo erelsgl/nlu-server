@@ -56,6 +56,7 @@
 , {"input":"i'm insist","output":[{"Insist":"previous"}]}
 , {"input":"I cannot accpet","output":[{"Reject":"previous"}]}
 , {"input":"I offer 7000","output":[{"Offer":{"Salary":"7,000 NIS"}}]}
+, {"input":"fine","output":[{"Accept":"previous"}]}
 , {"input":"OK, I accept","output":[{"Accept":"previous"}]}
 , {"input":"Hi, let's begin our negotiation.","output":[{"Greet":true}]}
 , {"input":"This is my offer.","output":[{"Insist":"previous"}]}

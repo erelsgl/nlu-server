@@ -145,13 +145,11 @@ if (do_serialization) {
 			resultsBeforeReload[i] = actualClasses;
 		}
 		
-		fs.writeFileSync("trainedClassifiers/Employer/MostRecentClassifier.json", 
-			mlutils.serialize.toString(classifier, createNewClassifier), 'utf8');
-		fs.writeFileSync("trainedClassifiers/Candidate/MostRecentClassifier.json", 
+		fs.writeFileSync("trainedClassifiers/"+classifierName+"/MostRecentClassifier.json", 
 			mlutils.serialize.toString(classifier, createNewClassifier), 'utf8');
 	
 		var classifier2 = mlutils.serialize.fromString(
-			fs.readFileSync("trainedClassifiers/Employer/MostRecentClassifier.json"), __dirname);
+			fs.readFileSync("trainedClassifiers/"+classifierName+"/MostRecentClassifier.json"), __dirname);
 	
 		console.log("\ntest on training data after reload:")
 		for (var i=0; i<dataset.length; ++i) {
@@ -162,32 +160,6 @@ if (do_serialization) {
 			}
 			if (verbosity>0) console.log(dataset[i].input+": "+actualClasses);
 		}
-		
-		var resultsBeforeReload = [];
-		for (var i=0; i<dataset.length; ++i) {
-			var actualClasses = classifier.classify(dataset[i].input);  
-			actualClasses.sort();
-			resultsBeforeReload[i] = actualClasses;
-		}
-		
-		fs.writeFileSync("trainedClassifiers/Employer/MostRecentClassifier.json", 
-			mlutils.serialize.toString(classifier, createNewClassifier), 'utf8');
-		fs.writeFileSync("trainedClassifiers/Candidate/MostRecentClassifier.json", 
-			mlutils.serialize.toString(classifier, createNewClassifier), 'utf8');
-	
-		var classifier2 = mlutils.serialize.fromString(
-			fs.readFileSync("trainedClassifiers/Employer/MostRecentClassifier.json"), __dirname);
-	
-		console.log("\ntest on training data after reload:")
-		for (var i=0; i<dataset.length; ++i) {
-			var actualClasses = classifier2.classify(dataset[i].input);
-			actualClasses.sort();
-			if (!_(resultsBeforeReload[i]).isEqual(actualClasses)) {
-				throw new Error("Reload does not reproduce the original classifier! before reload="+resultsBeforeReload[i]+", after reload="+actualClasses);
-			}
-			if (verbosity>0) console.log(dataset[i].input+": "+actualClasses);
-		}
-
 	});
 } // do_serialization
 

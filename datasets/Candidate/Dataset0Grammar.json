@@ -1,27 +1,27 @@
 [
-  {"input":"I offer a pension of 0 percent","output":{"Offer":{"Pension Fund":"0%"}}}
-, {"input":"I offer a pension of 10 percent","output":{"Offer":{"Pension Fund":"10%"}}}
-, {"input":"I offer a pension of 20 percent","output":{"Offer":{"Pension Fund":"20%"}}}
-, {"input":"I offer a monthly salary of 7 thousand NIS","output":{"Offer":{"Salary":"7,000 NIS"}}}
-, {"input":"I offer a monthly salary of 12 thousand NIS","output":{"Offer":{"Salary":"12,000 NIS"}}}
-, {"input":"I offer a monthly salary of 20 thousand NIS","output":{"Offer":{"Salary":"20,000 NIS"}}}
-, {"input":"I offer a workday of 8 hours","output":{"Offer":{"Working Hours":"8 hours"}}}
-, {"input":"I offer a workday of 9 hours","output":{"Offer":{"Working Hours":"9 hours"}}}
-, {"input":"I offer a workday of 10 hours","output":{"Offer":{"Working Hours":"10 hours"}}}
-, {"input":"I offer a company car","output":{"Offer":{"Leased Car":"With leased car"}}}
-, {"input":"I offer a position as a qa","output":{"Offer":{"Job Description":"QA"}}}
-, {"input":"I offer a position as a programmer","output":{"Offer":{"Job Description":"Programmer"}}}
-, {"input":"I offer a position as a team manager","output":{"Offer":{"Job Description":"Team Manager"}}}
-, {"input":"I offer a position as a project manager","output":{"Offer":{"Job Description":"Project Manager"}}}
-, {"input":"I offer a fast promotion track","output":{"Offer":{"Promotion Possibilities":"Fast promotion track"}}}
-, {"input":"I offer a slow promotion track","output":{"Offer":{"Promotion Possibilities":"Slow promotion track"}}}
-, {"input":"I do not offer a company car","output":{"Offer":{"Leased Car":"Without leased car"}}}
-, {"input":"I offer no agreement about the salary","output":{"Offer":{"Salary":"No agreement"}}}
-, {"input":"I offer no agreement about the job description","output":{"Offer":{"Job Description":"No agreement"}}}
-, {"input":"I offer no agreement about the pension fund","output":{"Offer":{"Pension Fund":"No agreement"}}}
-, {"input":"I offer no agreement about the company car","output":{"Offer":{"Leased Car":"No agreement"}}}
-, {"input":"I offer no agreement about the promotion track","output":{"Offer":{"Promotion Possibilities":"No agreement"}}}
-, {"input":"I offer no agreement about the working hours","output":{"Offer":{"Working Hours":"No agreement"}}}
+  {"input":"I want a pension of 0 percent","output":{"Offer":{"Pension Fund":"0%"}}}
+, {"input":"I want a pension of 10 percent","output":{"Offer":{"Pension Fund":"10%"}}}
+, {"input":"I want a pension of 20 percent","output":{"Offer":{"Pension Fund":"20%"}}}
+, {"input":"I want a monthly salary of 7 thousand NIS","output":{"Offer":{"Salary":"7,000 NIS"}}}
+, {"input":"I want a monthly salary of 12 thousand NIS","output":{"Offer":{"Salary":"12,000 NIS"}}}
+, {"input":"I want a monthly salary of 20 thousand NIS","output":{"Offer":{"Salary":"20,000 NIS"}}}
+, {"input":"I want a workday of 8 hours","output":{"Offer":{"Working Hours":"8 hours"}}}
+, {"input":"I want a workday of 9 hours","output":{"Offer":{"Working Hours":"9 hours"}}}
+, {"input":"I want a workday of 10 hours","output":{"Offer":{"Working Hours":"10 hours"}}}
+, {"input":"I want a company car","output":{"Offer":{"Leased Car":"With leased car"}}}
+, {"input":"I want a position as a qa","output":{"Offer":{"Job Description":"QA"}}}
+, {"input":"I want a position as a programmer","output":{"Offer":{"Job Description":"Programmer"}}}
+, {"input":"I want a position as a team manager","output":{"Offer":{"Job Description":"Team Manager"}}}
+, {"input":"I want a position as a project manager","output":{"Offer":{"Job Description":"Project Manager"}}}
+, {"input":"I want a fast promotion track","output":{"Offer":{"Promotion Possibilities":"Fast promotion track"}}}
+, {"input":"I want a slow promotion track","output":{"Offer":{"Promotion Possibilities":"Slow promotion track"}}}
+, {"input":"I do not want a company car","output":{"Offer":{"Leased Car":"Without leased car"}}}
+, {"input":"I want no agreement about the salary","output":{"Offer":{"Salary":"No agreement"}}}
+, {"input":"I want no agreement about the job description","output":{"Offer":{"Job Description":"No agreement"}}}
+, {"input":"I want no agreement about the pension fund","output":{"Offer":{"Pension Fund":"No agreement"}}}
+, {"input":"I want no agreement about the company car","output":{"Offer":{"Leased Car":"No agreement"}}}
+, {"input":"I want no agreement about the promotion track","output":{"Offer":{"Promotion Possibilities":"No agreement"}}}
+, {"input":"I want no agreement about the working hours","output":{"Offer":{"Working Hours":"No agreement"}}}
 , {"input":"I accept your previous offer","output":{"Accept":"previous"}}
 , {"input":"I accept your offer about the salary","output":{"Accept":"Salary"}}
 , {"input":"I accept your offer about the job description","output":{"Accept":"Job Description"}}

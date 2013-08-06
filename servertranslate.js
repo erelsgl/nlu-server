@@ -100,6 +100,7 @@ var TIMEOUT_SECONDS=10;
 
 
 
+// view a table of the previous correct/incorrect translations: 
 app.get("/translations", function(req,res) {
 	res.write("<link rel='stylesheet' href='main.css' />\n");
 	res.write("<body id='translations'>\n");
@@ -118,6 +119,26 @@ app.get("/translations", function(req,res) {
 	res.end();
 });
 
+
+// translation as a web service: 
+app.get("/get", function(req,res) {
+	if (!req.query||!req.query.classifierName||!req.query.text) {
+		res.write("TRANSLATE: /get?classifierName={String}&text={Json}&forward=1");
+		res.write("GENERATE: /get?classifierName={String}&text={Json}[&multiple=1]");
+		res.end();
+		return;
+	}
+	console.dir(req.query);
+	req.query.text = JSON.parse(req.query.text);
+	var id = "WEBSERVICE";
+	translate(req.query, id, /*requester_is_private_translator=*/false, function(classification) {
+		logger.writeEventLog("events", "translate>"+id, classification);
+		res.write(JSON.stringify(classification));
+		res.end();
+	});
+});
+
+
 //
 // Step 5: define a SOCKET.IO server that listens to the http server:
 //
@@ -130,13 +151,122 @@ io.configure(function () {
 });
 
 var mapTextToTimer = {};
-var stopTimer = function(timerText) {
-	if (mapTextToTimer[timerText])  {
-		mapTextToTimer[timerText].stop();
-		delete mapTextToTimer[timerText];
+var stopTimer = function(text) {
+	if (mapTextToTimer[text])  {
+		mapTextToTimer[text].stop();
+		delete mapTextToTimer[text];
 	}
 }
 
+var mapTextToListeners = {};  // callbacks listening to translations of texts  
+var addTextListener = function(text, callback) {
+	if (!mapTextToListeners[text])
+		mapTextToListeners[text]=[];
+	mapTextToListeners[text].push(callback);
+}
+var textListeners = function(text) {
+	if (mapTextToListeners[text])
+		return mapTextToListeners[text];
+	else return [];
+}
+var removeTextListeners = function(text) {
+	if (mapTextToListeners[text])
+		delete mapTextToListeners[text];
+}
+
+/**
+ * Translate text according to the given request.
+ * @param request contains the text, the classifierName, and whether it is forward translation (or backward=generation).
+ * @param requester the id of the requester (e.g. socket.id).
+ * @param requester_is_private_translator boolean 
+ * @param callback call when the translation is ready
+ */
+function translate(request, requester, requester_is_private_translator, callback, socket) {
+		if (!request || !request.classifierName || !activeClassifiers[request.classifierName]) {
+			console.error("classifierName not found! request="+JSON.stringify(request));
+			return;
+		}
+		var activeClassifier = activeClassifiers[request.classifierName];
+
+		logger.writeEventLog("events", (request.forward? "TRANSLATE<": "GENERATE<")+requester, request);
+
+		if (request.forward) {   // forward translation = classification
+	
+			var classification = activeClassifier.classify(request.text, parseInt(request.explain));
+			if (request.explain) {
+				classification.text = request.text;
+				classification.translations = classification.classes;
+				classification.forward = request.forward;
+				classification.classifierName = request.classifierName;
+				delete classification.classes;
+			} else {
+				classification = {
+					text: request.text,
+					translations: classification,
+					forward: request.forward,
+					classifierName: request.classifierName,
+				}
+			}
+			fs.appendFile(logger.cleanPathToLog("translations_automatic.log"), classification.text + "  /  " +classification.translations.join(" AND ")+"\n");
+	
+	
+			if (!requester_is_private_translator) {
+				// send the translation to all registered public translators:
+				for (var id in registeredPublicTranslators[request.classifierName]) { 
+					logger.writeEventLog("events", "translate-toapprove>"+id, classification.translations);
+					registeredPublicTranslators[request.classifierName][id].emit('translation', classification);
+				}
+			}
+	
+			if (requester_is_private_translator || !Object.keys(activePublicTranslators[request.classifierName]).length) {
+				// there are no active public translators - send the translation directly to the asker:
+				logger.writeEventLog("events", "translate-direct>"+requester, classification.translations);
+				callback(classification);
+			} else {
+				// the current client is waiting for translation of the given text by the public translators:
+				addTextListener(request.text, callback);
+				//socket.join(request.text);
+				
+				mapTextToTimer[request.text] = new timer.Timer(TIMEOUT_SECONDS, -1, 0, function(timeSeconds) {
+						for (var id in registeredPublicTranslators[request.classifierName])
+							registeredPublicTranslators[request.classifierName][id].emit('time_left', {text: request.text, timeSeconds: timeSeconds});
+						if (timeSeconds<=0) { // timeout - no public translator responded - send the automatic translation to the asker:
+							logger.writeEventLog("events", "translate-timeout>"+requester, classification.translations);
+							callback(classification);
+							mapTextToTimer[request.text].stop();
+							activePublicTranslators[request.classifierName] = {};  // in case of timeout, all public translators are considered inactive.
+						}
+				});
+			}		
+		} // end of if (request.forward)
+		
+		else {  // backward translation = generation:
+			var classes = request.text;
+			if (request.multiple) {  // return multiple samples per class
+				var samples = activeClassifier.backClassify(classes);
+			} else {  // return a single sample per class, selected at random
+				if (!(classes instanceof Array))
+					classes = [classes];
+				var samples = [];
+				classes.forEach(function(theClass) {
+					var samplesOfClass = activeClassifier.backClassify(theClass);
+					var randomIndex = Math.floor(Math.random()*samplesOfClass.length);
+					//console.dir(samplesOfClass);
+					//console.log("randomIndex="+randomIndex);
+					var randomSample = samplesOfClass[randomIndex];
+					samples.push(randomSample);
+				});
+			}
+			var classification = {
+				text: request.text,
+				translations: samples,
+				forward: request.forward,
+				classifierName: request.classifierName,
+			};
+			logger.writeEventLog("events", "generate-direct>"+requester, classification.translations);
+			callback(classification);
+		} // end of if (!request.forward)
+}
 
 
 io.sockets.on('connection', function (socket) {
@@ -188,89 +318,11 @@ io.sockets.on('connection', function (socket) {
 	});
 
 	// A human asks for a translation: 
-	socket.on('translate', function (request) {
-		if (!request || !request.classifierName || !activeClassifiers[request.classifierName]) {
-			console.error("classifierName not found! request="+JSON.stringify(request));
-			return;
-		}
-		var activeClassifier = activeClassifiers[request.classifierName];
-
-		logger.writeEventLog("events", (request.forward? "TRANSLATE<": "GENERATE<")+socket.id, request);
-		
-		if (request.forward) {   // forward translation = classification
-	
-			var classification = activeClassifier.classify(request.text, parseInt(request.explain));
-			if (request.explain) {
-				classification.text = request.text;
-				classification.translations = classification.classes;
-				classification.forward = request.forward;
-				classification.classifierName = request.classifierName;
-				delete classification.classes;
-			} else {
-				classification = {
-					text: request.text,
-					translations: classification,
-					forward: request.forward,
-					classifierName: request.classifierName,
-				}
-			}
-			fs.appendFile(logger.cleanPathToLog("translations_automatic.log"), classification.text + "  /  " +classification.translations.join(" AND ")+"\n");
-	
-	
-			if (!socket.private_translator) {
-				// send the translation to all registered public translators:
-				for (var id in registeredPublicTranslators[request.classifierName]) { 
-					logger.writeEventLog("events", "translate-toapprove>"+id, classification.translations);
-					registeredPublicTranslators[request.classifierName][id].emit('translation', classification);
-				}
-			}
-	
-			if (socket.private_translator || !Object.keys(activePublicTranslators[request.classifierName]).length) {
-				// there are no active public translators - send the translation directly to the asker:
-				logger.writeEventLog("events", "translate-direct>"+socket.id, classification.translations);
-				socket.emit('translation', classification);
-			} else {
-				// the current client is waiting for translation of the given text by the public translators:
-				socket.join(request.text);
-				
-				mapTextToTimer[request.text] = new timer.Timer(TIMEOUT_SECONDS, -1, 0, function(timeSeconds) {
-						for (var id in registeredPublicTranslators[request.classifierName])
-							registeredPublicTranslators[request.classifierName][id].emit('time_left', {text: request.text, timeSeconds: timeSeconds});
-						if (timeSeconds<=0) { // timeout - no public translator responded - send the automatic translation to the asker:
-							logger.writeEventLog("events", "translate-timeout>"+socket.id, classification.translations);
-							socket.emit('translation', classification);
-							mapTextToTimer[request.text].stop();
-							activePublicTranslators[request.classifierName] = {};  // in case of timeout, all public translators are considered inactive.
-						}
-				});
-			}		
-		} // end of if (request.forward)
-		
-		else {  // backward translation = generation:
-			var classes = request.text;
-			if (request.multiple) {  // return multiple samples per class
-				var samples = activeClassifier.backClassify(classes);
-			} else {  // return a single sample per class, selected at random
-				if (!(classes instanceof Array))
-					classes = [classes];
-				var samples = [];
-				classes.forEach(function(theClass) {
-					var samplesOfClass = activeClassifier.backClassify(theClass);
-					var randomIndex = Math.floor(Math.random()*samplesOfClass.length);
-					//console.dir(samplesOfClass);
-					//console.log("randomIndex="+randomIndex);
-					var randomSample = samplesOfClass[randomIndex];
-					samples.push(randomSample);
-				});
-			}
-			var classification = {
-				text: request.text,
-				translations: samples,
-				forward: request.forward,
-			};
-			logger.writeEventLog("events", "generate-direct>"+socket.id, classification.translations);
+	socket.on('translate', function(request) {
+		translate(request, socket.id, socket.private_translator, function(classification) {
+			logger.writeEventLog("events", "translate>"+socket.id, classification);
 			socket.emit('translation', classification);
-		} // end of if (!request.forward)
+		}, socket);
 	});
 	
 	function onTranslatorAction(socket, request) {
@@ -347,14 +399,19 @@ io.sockets.on('connection', function (socket) {
 		request.explanation="approved by a human translator";
 		socket.emit('acknowledgement');
 		logger.writeEventLog("events", "APPROVE<"+socket.id, request);
-		
+
+		textListeners(request.text).forEach(function(callback) {
+			callback(request);
+		});
+		removeTextListeners(request.text);
+		/*
 		var socketsWaitingForTranslation = io.sockets.clients(request.text).filter(function(s){return s.id!=socket.id});
 		socketsWaitingForTranslation.forEach(function(waitingSocket) {
 			waitingSocket.emit('translation', request);
 			waitingSocket.leave(request.text);
 			logger.writeEventLog("events", "approve>"+waitingSocket.id, request);
 		}); // remove all clients from waiting to that text
-		
+		*/
 		if (request.train) {
 			activeClassifier.trainOnline(request.text, request.translations);
 			
