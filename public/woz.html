@@ -14,6 +14,7 @@
 
 <script src="js/deeplog.js"></script>
 <script src="js/utils.js"></script>
+<script src="js/sound.js"></script>
 
 <script src="translate.port.js"></script>
 
@@ -22,6 +23,8 @@
 <body>
 <script language="javascript" type="text/javascript">
 
+var quiet_mode = (/quiet/.test(location.search));
+	
 
 /* translations */
 
@@ -36,13 +39,10 @@ var mapTextToTranslationForm = {};
 var queueOfApprovedForms = [];
 var currentAcknowledgementElement = null;
 
-if (window.audioContext || window.webkitAudioContext) {
-	var audioContext = new(window.audioContext || window.webkitAudioContext);
-}
-
 $(document).ready(function() {
   deeplog = new DeepLog($("#deeplog"));
   form = $('#form'); form.deserialize(location.search.substr(1));
+  if (quiet_mode) $("h1").after("<h2>Quiet mode</h2>");
   
   translationSocket = commonConnect(serverport, deeplog);
 
@@ -58,8 +58,12 @@ $(document).ready(function() {
 		console.log("Server: translation of '"+translation.text+"' is: "+translation.translations);
 		deeplog.add(2, "Server: translation of '"+translation.text+"' is: "+translation.translations);
 
+		delete translation.explanations;
+		delete translation.positive_explanations;
+		delete translation.negative_explanations;
 		var newForm = $(
 			"<form method='get' action=''>"+
+				"<div class='translation_json' style='display:none'>"+JSON.stringify(translation).htmlspecialchars()+"</div>"+
 				"<table class='translation_table'>"+
 					"<tr>"+
 						"<td class='label'>Human Utterance</td>"+
@@ -86,7 +90,6 @@ $(document).ready(function() {
 							"<div class='acknowledgement' /"+">"+
 						"<"+"/td>"+
 					"<"+"/tr>"+
-		//			"<tr><td colspan='2'><hr/"+"></td></tr>"+
 				"<"+"/table><!-- translation_table -->"+
 				"<hr/"+">"+
 			"</"+"form>");
@@ -96,15 +99,7 @@ $(document).ready(function() {
 			mapTextToTranslationForm[translation.text]=[];
 		mapTextToTranslationForm[translation.text].push(newForm);
 
-		if (audioContext) {
-			var oscillator = audioContext.createOscillator();
-			oscillator.type = 0;   // 0-4 are valid sound types
-			oscillator.connect(audioContext.destination);
-			oscillator.noteOn(0);
-			setTimeout(function () {
-				oscillator.noteOff(0);
-			}, 100 /*milliseconds*/);
-		}
+		if (!quiet_mode) beep(/*type=*/0, /*millis=*/100);
 
 		setOptionsFromArray(
 				newForm.find(".classToAdd"), 
@@ -167,23 +162,18 @@ $(document).ready(function() {
 
 	$("#forms").on("submit", "form", function() {
 		var form = $(this);
-		var text = form.find(".text").val();
-		var translations = form.find(".translation").not(".deleted").map(function() { return $(this).text(); }).get();
-		var forward = true;
-		var train = form.find(".train").is(':checked');
+		var translation_data = JSON.parse(form.find(".translation_json").text());
+		var text = translation_data.text;
+		translation_data.translations = form.find(".translation").not(".deleted").map(function() { return $(this).text(); }).get();
+		translation_data.train = form.find(".train").is(':checked');
 		currentAcknowledgementElement = form.find(".acknowledgement");
 		currentAcknowledgementElement.html("<img src='images/ajax_loader.gif' /"+">");
-		translationSocket.emit('approve', {
-			text: text,
-			translations: translations,
-			forward: forward,
-			train: train,
-			classifierName: classifierName,
-		});
+		translationSocket.emit('approve', translation_data);
 		deeplog.add(3, "Client: translation of '"+text+"' is "+translations);
 
+		// remove all forms with the same tes
 		mapTextToTranslationForm[text].forEach(function(form) {
-			form.replaceWith("<div class='log'>"+new Date().toISOString()+": <b>"+text+"</b>&rarr;"+JSON.stringify(translations).replace(/\\\"/g,"'")+"</div>");
+			form.replaceWith("<div class='log'>"+new Date().toISOString()+": <b>"+text+"</b>&rarr;"+JSON.stringify(translation_data.translations).replace(/\\\"/g,"'")+"</div>");
 		});
 		return false;
 	});

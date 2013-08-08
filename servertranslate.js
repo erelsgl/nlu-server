@@ -104,34 +104,51 @@ var TIMEOUT_SECONDS=10;
 app.get("/translations", function(req,res) {
 	res.write("<link rel='stylesheet' href='main.css' />\n");
 	res.write("<body id='translations'>\n");
-	res.write("<table>\n");
-	res.write("<tr><th>userid</th><th>time</th><th>text</th><th>automatic</th><th>manual</th><th>correct?</th></tr>\n");
-	fs.readFileSync(__dirname+"/logs/translations_all.log", 'utf8').split(/[\n\r]+/).forEach(function(line) {
-		var parts = line.split(/\s*\/\s*/);
-		if (parts.length<5) return;
-		var userid=parts[0], time=parts[1], text=parts[2], automatic=parts[3], manual=parts[4], is_correct=parts[5];
-		time = new Date(time).toISOString().replace(/T/,' ').replace(/[.]000Z/,'');
-		var trClass = (automatic==manual || (!automatic && !manual) )? "identical": "different";
-		res.write("<tr class='"+trClass+"'><td>"+userid+"</td><td>"+time+"</td><td>"+text+"</td><td>"+automatic+"</td><td>"+manual+"</td><td>"+is_correct+"</td></tr>\n");
-		
-	});
-	res.write("</table>");
+	if (Object.keys(req.query).length==0) {  // default table
+		res.write("<table>\n");
+		res.write("<tr><th>userid</th><th>time</th><th>text</th><th>automatic</th><th>manual</th><th>correct?</th></tr>\n");
+		fs.readFileSync(__dirname+"/logs/translations_all.log", 'utf8').split(/[\n\r]+/).forEach(function(line) {
+			var parts = line.split(/\s*\/\s*/);
+			if (parts.length<5) return;
+			var userid=parts[0], time=parts[1], text=parts[2], automatic=parts[3], manual=parts[4], is_correct=parts[5];
+			time = new Date(time).toISOString().replace(/T/,' ').replace(/[.]000Z/,'');
+			var trClass = (automatic==manual || (!automatic && !manual) )? "identical": "different";
+			res.write("<tr class='"+trClass+"'><td>"+userid+"</td><td>"+time+"</td><td>"+text+"</td><td>"+automatic+"</td><td>"+manual+"</td><td>"+is_correct+"</td></tr>\n");
+		});
+		res.write("</table>");
+	} else {
+		var filename = "translations_"+(req.query.manual? "manual": "automatic")+".json";
+		var requests = logger.readJsonLogSync(logger.cleanPathToLog(filename));
+		res.write("<pre>\n");
+		if (req.query.dataset) {
+			requests.forEach(function(request) {
+				var sample = {
+					input: request.text,
+					output: request.translations
+				};
+				res.write(", "+JSON.stringify(sample)+"\n");
+			});
+		} else {
+			res.write(JSON.stringify(requests,null,"\t")+"\n");
+		}
+		res.write("</pre>\n");
+	}
+	res.write("</body>\n");
 	res.end();
 });
 
 
 // translation as a web service: 
 app.get("/get", function(req,res) {
-	if (!req.query||!req.query.classifierName||!req.query.text) {
-		res.write("TRANSLATE: /get?classifierName={String}&text={Json}&forward=1");
-		res.write("GENERATE: /get?classifierName={String}&text={Json}[&multiple=1]");
+	if (!req.query||!req.query.request) {
+		res.write("SYNTAX: /get?request=[JSON]");
 		res.end();
 		return;
 	}
 	console.dir(req.query);
-	req.query.text = JSON.parse(req.query.text);
+	var request = JSON.parse(req.query.request);
 	var id = "WEBSERVICE";
-	translate(req.query, id, /*requester_is_private_translator=*/false, function(classification) {
+	translate(request, id, /*requester_is_private_translator=*/false, function(classification) {
 		logger.writeEventLog("events", "translate>"+id, classification);
 		res.write(JSON.stringify(classification));
 		res.end();
@@ -140,7 +157,7 @@ app.get("/get", function(req,res) {
 
 
 //
-// Step 5: define a SOCKET.IO server that listens to the http server:
+// Step 5: SOCKET.IO server that listens to the http server:
 //
 
 var io = require('socket.io').listen(httpserver);
@@ -150,6 +167,7 @@ io.configure(function () {
 	io.set("polling duration", 10); 
 });
 
+// Timers for translations of texts. When timer runs out, the client receives the automatic translation:  
 var mapTextToTimer = {};
 var stopTimer = function(text) {
 	if (mapTextToTimer[text])  {
@@ -158,7 +176,8 @@ var stopTimer = function(text) {
 	}
 }
 
-var mapTextToListeners = {};  // callbacks listening to translations of texts  
+// Callbacks listening to translations of texts:
+var mapTextToListeners = {};
 var addTextListener = function(text, callback) {
 	if (!mapTextToListeners[text])
 		mapTextToListeners[text]=[];
@@ -194,30 +213,25 @@ function translate(request, requester, requester_is_private_translator, callback
 	
 			var classification = activeClassifier.classify(request.text, parseInt(request.explain));
 			if (request.explain) {
-				classification.text = request.text;
 				classification.translations = classification.classes;
-				classification.forward = request.forward;
-				classification.classifierName = request.classifierName;
 				delete classification.classes;
 			} else {
 				classification = {
-					text: request.text,
-					translations: classification,
-					forward: request.forward,
-					classifierName: request.classifierName,
-				}
+					translations: classification
+				};
 			}
-			fs.appendFile(logger.cleanPathToLog("translations_automatic.log"), classification.text + "  /  " +classification.translations.join(" AND ")+"\n");
-	
-	
+			_(classification).extend(request); // add the text, forward, classifierName, etc.
+			logger.writeJsonLog("translations_automatic", classification);
+
 			if (!requester_is_private_translator) {
 				// send the translation to all registered public translators:
-				for (var id in registeredPublicTranslators[request.classifierName]) { 
+				var relevantPublicTranslators = registeredPublicTranslators[request.classifierName];
+				for (var id in relevantPublicTranslators) { 
 					logger.writeEventLog("events", "translate-toapprove>"+id, classification.translations);
-					registeredPublicTranslators[request.classifierName][id].emit('translation', classification);
+					relevantPublicTranslators[id].emit('translation', classification);
 				}
 			}
-	
+
 			if (requester_is_private_translator || !Object.keys(activePublicTranslators[request.classifierName]).length) {
 				// there are no active public translators - send the translation directly to the asker:
 				logger.writeEventLog("events", "translate-direct>"+requester, classification.translations);
@@ -225,8 +239,8 @@ function translate(request, requester, requester_is_private_translator, callback
 			} else {
 				// the current client is waiting for translation of the given text by the public translators:
 				addTextListener(request.text, callback);
-				//socket.join(request.text);
-				
+
+				// wait for the public translators, but don't wait forever: 
 				mapTextToTimer[request.text] = new timer.Timer(TIMEOUT_SECONDS, -1, 0, function(timeSeconds) {
 						for (var id in registeredPublicTranslators[request.classifierName])
 							registeredPublicTranslators[request.classifierName][id].emit('time_left', {text: request.text, timeSeconds: timeSeconds});
@@ -379,14 +393,13 @@ io.sockets.on('connection', function (socket) {
 		} catch (err) {
 			console.error("Error in automatic classification!");
 			console.dir(request);
-			console.error(err.stack.replace(/\n/g,"\n"));
-			automatic_translations = [];
+			var errorText = err.stack.replace(/\n/g,"\n");s
+			console.error(errorText);
+			automatic_translations = [errorText];
 		}
 		var is_correct = _(automatic_translations).isEqual(request.translations);
 		
-		fs.appendFile(logger.cleanPathToLog("translations_manual.log"), 
-			request.text + "  /  " +
-			request.translations.join(" AND ")+"\n");
+		logger.writeJsonLog("translations_manual", request);
 
 		fs.appendFile(logger.cleanPathToLog("translations_all.log"), 
 			socket.id + "  /  "+
@@ -404,14 +417,7 @@ io.sockets.on('connection', function (socket) {
 			callback(request);
 		});
 		removeTextListeners(request.text);
-		/*
-		var socketsWaitingForTranslation = io.sockets.clients(request.text).filter(function(s){return s.id!=socket.id});
-		socketsWaitingForTranslation.forEach(function(waitingSocket) {
-			waitingSocket.emit('translation', request);
-			waitingSocket.leave(request.text);
-			logger.writeEventLog("events", "approve>"+waitingSocket.id, request);
-		}); // remove all clients from waiting to that text
-		*/
+
 		if (request.train) {
 			activeClassifier.trainOnline(request.text, request.translations);
 			

@@ -6,4 +6,6 @@
 , {"input":"I cannot accept your offer","output":[{"Reject":"previous"}]}
 , {"input":"I can not accept your offer","output":[{"Reject":"previous"}]}
 , {"input":"I can't accept your offer","output":[{"Reject":"previous"}]}
+, {"input":"hi","output":["{\"Greet\":true}"]}
+, {"input":"I want a wage of 20000 NIS and 10% pension with car.","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
 ]
