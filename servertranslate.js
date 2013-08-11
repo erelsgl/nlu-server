@@ -31,7 +31,7 @@ app.configure(function(){
 
 	// Define tasks to do for ANY url:
 	app.use(function(req,res,next) {
-		if (!/[.]js/.test(req.url)  && !/\/images\//.test(req.url) && !/[.]css/.test(req.url)) {
+		if (!/[.]js/.test(req.url) && !/\/images\//.test(req.url) && !/[.]css/.test(req.url)) {
 			logger.writeEventLog("events", req.method+" "+req.url, _.extend({remoteAddress: req.ip}, req.headers));
 		}
 		next(); // go to the next task - routing:
@@ -102,39 +102,31 @@ var TIMEOUT_SECONDS=10;
 
 // view a table of the previous correct/incorrect translations: 
 app.get("/translations", function(req,res) {
-	res.write("<link rel='stylesheet' href='main.css' />\n");
-	res.write("<body id='translations'>\n");
 	if (Object.keys(req.query).length==0) {  // default table
-		res.write("<table>\n");
-		res.write("<tr><th>userid</th><th>time</th><th>text</th><th>automatic</th><th>manual</th><th>correct?</th></tr>\n");
+		var lines = [];
 		fs.readFileSync(__dirname+"/logs/translations_all.log", 'utf8').split(/[\n\r]+/).forEach(function(line) {
 			var parts = line.split(/\s*\/\s*/);
 			if (parts.length<5) return;
-			var userid=parts[0], time=parts[1], text=parts[2], automatic=parts[3], manual=parts[4], is_correct=parts[5];
-			time = new Date(time).toISOString().replace(/T/,' ').replace(/[.]000Z/,'');
-			var trClass = (automatic==manual || (!automatic && !manual) )? "identical": "different";
-			res.write("<tr class='"+trClass+"'><td>"+userid+"</td><td>"+time+"</td><td>"+text+"</td><td>"+automatic+"</td><td>"+manual+"</td><td>"+is_correct+"</td></tr>\n");
+			lines.push({
+				userid: parts[0], 
+				time: new Date(parts[1]).toISOString().replace(/T/,' ').replace(/[.]000Z/,''), 
+				text: parts[2], 
+				automatic: parts[3], 
+				manual: parts[4], 
+				is_correct: parts[5],
+			});
 		});
-		res.write("</table>");
+		res.render("translationsTable", {
+			lines: lines
+		});
 	} else {
 		var filename = "translations_"+(req.query.manual? "manual": "automatic")+".json";
-		var requests = logger.readJsonLogSync(logger.cleanPathToLog(filename));
-		res.write("<pre>\n");
-		if (req.query.dataset) {
-			requests.forEach(function(request) {
-				var sample = {
-					input: request.text,
-					output: request.translations
-				};
-				res.write(", "+JSON.stringify(sample)+"\n");
-			});
-		} else {
-			res.write(JSON.stringify(requests,null,"\t")+"\n");
-		}
-		res.write("</pre>\n");
+		var lines = logger.readJsonLogSync(logger.cleanPathToLog(filename));
+		res.render("translationsJson", {
+			query: req.query,
+			lines: lines
+		});
 	}
-	res.write("</body>\n");
-	res.end();
 });
 
 
@@ -297,15 +289,14 @@ io.sockets.on('connection', function (socket) {
 		var activeClassifier = activeClassifiers[request.classifierName];
 
 		socket.public_translator = true;
+		if (request.source)  // limit the public translator to a specific source:
+			socket.source = request.source;
 		registeredPublicTranslators[request.classifierName][socket.id] = socket;
 		activePublicTranslators[request.classifierName][socket.id] = socket;
 		logger.writeEventLog("events", "PUBLICTRANSLATOR<", socket.id);
 
-		//classifierNames.forEach(function(classifierName) {
-		//	var activeClassifier=activeClassifiers[classifierName];
 		socket.emit('classes', activeClassifier.classes);
 		socket.emit('precisionrecall', activeClassifier.precisionrecall);
-		//});
 	});
 	
 	// Private translator corrects his own translations, without the help of a public translator:
@@ -393,7 +384,7 @@ io.sockets.on('connection', function (socket) {
 		} catch (err) {
 			console.error("Error in automatic classification!");
 			console.dir(request);
-			var errorText = err.stack.replace(/\n/g,"\n");s
+			var errorText = err.stack.replace(/\n/g,"\n");
 			console.error(errorText);
 			automatic_translations = [errorText];
 		}

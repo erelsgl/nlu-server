@@ -82,3 +82,6 @@ body#correct { font-size: 14pt;}
 	body#correct input, body#correct button {font-size: 14pt;}
 	body#correct tr.top > td  {padding-top: 18px;}
 	body#correct #deeplog {font-size:12px;} 
+	
+.translation_json {font-size:10px;}
+td.text {font-weight:bold}

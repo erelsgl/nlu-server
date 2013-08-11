@@ -5,8 +5,10 @@
 	<target name="deploy">
 		  <copy overwrite="true" todir="${target}/machine-learning-server/public">
 		    <fileset dir="./public">
-		    	  <include name="**"/>		    	
-		    	  <exclude name="**/logs/**"/>		    	
+		  	</fileset>
+		  </copy>
+		  <copy overwrite="true" todir="${target}/machine-learning-server/views">
+		    <fileset dir="./views">
 		  	</fileset>
 		  </copy>
 	</target>

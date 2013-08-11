@@ -1,0 +1,22 @@
+doctype 5
+html
+	head
+		title Translations Table 
+		link(rel='stylesheet', href='/main.css')
+	body#translations
+		table
+			tr
+				th userid
+				th time
+				th text
+				th automatic
+				th manual
+				th correct
+			for line in lines
+				tr(class='#{(line.automatic==line.manual || (!line.automatic && !line.manual) )? "identical": "different"}')
+					td #{line.userid}
+					td #{line.time}
+					td #{line.text}
+					td #{line.automatic}
+					td #{line.manual}
+					td #{line.is_correct}

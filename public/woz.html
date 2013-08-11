@@ -53,29 +53,41 @@ $(document).ready(function() {
 	translationSocket.on('classes', function(classes) {
 		availableClasses = classes;
 	});
+	
+	function translationDataToString(translationData) {
+		var reducedTranslationData = translationData;
+		delete reducedTranslationData.explanations;
+		delete reducedTranslationData.positive_explanations;
+		delete reducedTranslationData.negative_explanations;
+		delete reducedTranslationData.translations;
+		delete reducedTranslationData.text;
+		return JSON.stringify(reducedTranslationData).htmlspecialchars();
+	}
 
-	translationSocket.on('translation', function(translation) {
-		console.log("Server: translation of '"+translation.text+"' is: "+translation.translations);
-		deeplog.add(2, "Server: translation of '"+translation.text+"' is: "+translation.translations);
-
-		delete translation.explanations;
-		delete translation.positive_explanations;
-		delete translation.negative_explanations;
+	translationSocket.on('translation', function(translationData) {
+		var text = translationData.text;
+		var translations = translationData.translations;
+		var translationDataString = translationDataToString(translationData);
+		console.log("Server: translation of '"+text+"' is: "+translations);
+		deeplog.add(2, "Server: translation of '"+text+"' is: "+translations);
 		var newForm = $(
 			"<form method='get' action=''>"+
-				"<div class='translation_json' style='display:none'>"+JSON.stringify(translation).htmlspecialchars()+"</div>"+
 				"<table class='translation_table'>"+
 					"<tr>"+
 						"<td class='label'>Human Utterance</td>"+
-						"<td><input class='text' name='text' disabled='disabled' value='"+
-								translation.text.htmlspecialchars()+
-						"' /"+"></td>"+
+						"<td class='text'>"+
+								text.htmlspecialchars()+
+						"</td>"+
 					"</tr>"+
 					"<tr>"+
 						"<td class='label'>Translations</td>"+
 						"<td id='translations'>"+
-							translationsToHtml(translation.translations, /*withDelete=*/true)+
+							translationsToHtml(translations, /*withDelete=*/true)+
 						"</td>"+
+					"</tr>"+
+					"<tr>"+
+						"<td class='label'>Data</td>"+
+						"<td class='translation_json'>"+translationDataString+"</td>"+
 					"</tr>"+
 					"<tr>"+
 						"<td></td>"+
@@ -95,9 +107,9 @@ $(document).ready(function() {
 			"</"+"form>");
 
 		$("#forms").append(newForm);
-		if (!mapTextToTranslationForm[translation.text])
-			mapTextToTranslationForm[translation.text]=[];
-		mapTextToTranslationForm[translation.text].push(newForm);
+		if (!mapTextToTranslationForm[text])
+			mapTextToTranslationForm[text]=[];
+		mapTextToTranslationForm[text].push(newForm);
 
 		if (!quiet_mode) beep(/*type=*/0, /*millis=*/100);
 
@@ -108,9 +120,10 @@ $(document).ready(function() {
   });
 
 	translationSocket.on('time_left', function(text_and_time) {
-		mapTextToTranslationForm[text_and_time.text].forEach(function(form) {
-			form.find(".acknowledgement").html("<b>Time left: "+text_and_time.timeSeconds+" seconds</b>");
-		});
+		if (mapTextToTranslationForm[text_and_time.text])
+			mapTextToTranslationForm[text_and_time.text].forEach(function(form) {
+				form.find(".acknowledgement").html("<b>Time left: "+text_and_time.timeSeconds+" seconds</b>");
+			});
 	});
 
 	translationSocket.on('acknowledgement', function() {
@@ -128,7 +141,7 @@ $(document).ready(function() {
 			var translationElement = $(this).parent().next();
 			var translation = translationElement.text();
 			var form = translationElement.closest("form");
-			var text = form.find(".text").val();
+			var text = form.find(".text").text();
 			translationElement.toggleClass('deleted');
 			form.find(".acknowledgement").html("");
 			if (translationElement.hasClass('deleted')) {
@@ -139,7 +152,7 @@ $(document).ready(function() {
 				});
 			} else {
 				translationSocket.emit("append_translation", {
-					text: text.val(), 
+					text: text, 
 					translation_to_add: translation,
 					classifierName: classifierName,
 				});
@@ -151,7 +164,7 @@ $(document).ready(function() {
 		if (translation.length<1) return;
 
 		var form = $(this).closest("form");
-		var text = form.find(".text").val();
+		var text = form.find(".text").text();
 		form.find(".translationsTable").append(translationToHtml(translation, /*withDelete=*/true));
 		translationSocket.emit('append_translation', {
 			text: text,
@@ -162,26 +175,27 @@ $(document).ready(function() {
 
 	$("#forms").on("submit", "form", function() {
 		var form = $(this);
-		var translation_data = JSON.parse(form.find(".translation_json").text());
-		var text = translation_data.text;
-		translation_data.translations = form.find(".translation").not(".deleted").map(function() { return $(this).text(); }).get();
-		translation_data.train = form.find(".train").is(':checked');
+		var translationData = JSON.parse(form.find(".translation_json").text());
+		var text = translationData.text = form.find(".text").text();
+		translationData.translations = form.find(".translation").not(".deleted").map(function() { return $(this).text(); }).get();
+		translationData.train = form.find(".train").is(':checked');
 		currentAcknowledgementElement = form.find(".acknowledgement");
 		currentAcknowledgementElement.html("<img src='images/ajax_loader.gif' /"+">");
-		translationSocket.emit('approve', translation_data);
+		translationSocket.emit('approve', translationData);
 		deeplog.add(3, "Client: translation of '"+text+"' is "+translations);
 
-		// remove all forms with the same tes
-		mapTextToTranslationForm[text].forEach(function(form) {
-			form.replaceWith("<div class='log'>"+new Date().toISOString()+": <b>"+text+"</b>&rarr;"+JSON.stringify(translation_data.translations).replace(/\\\"/g,"'")+"</div>");
-		});
+		// remove all forms with the same text
+		if (mapTextToTranslationForm[text])
+			mapTextToTranslationForm[text].forEach(function(form) {
+				form.replaceWith("<div class='log'>"+new Date().toISOString()+": <b>"+text+"</b>&rarr;"+JSON.stringify(translationData.translations).replace(/\\\"/g,"'")+"</div>");
+			});
 		return false;
 	});
 
 	$("#forms").on("click", ".stop_timer", function() {
 		var form = $(this).closest("form");
 		translationSocket.emit("stop_timer", {
-			text: form.find(".text").val(),
+			text: form.find(".text").text(),
 			classifierName: classifierName,
 		});
 		return false;
