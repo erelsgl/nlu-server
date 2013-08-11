@@ -48,10 +48,38 @@ var createWinnowClassifier = function() {
 	});
 }
 
-var createNewClassifier = createWinnowClassifier;
+var createPassiveAggressiveClassifier = function() {
+	var classifiers = require(__dirname+'/../machine-learning/classifiers');
+	var FeatureExtractor = require(__dirname+'/../machine-learning/features');
+	var fs = require('fs');
+
+	return new classifiers.EnhancedClassifier({
+		classifierType: classifiers.MultiLabelPassiveAggressive,
+		classifierOptions: {
+			Constant: 5.0,
+			retrain_count: 100,
+		},
+		normalizer: FeatureExtractor.RegexpNormalizer(
+			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
+		),
+		featureExtractor: [
+			//FeatureExtractor.WordsFromText(1,false/*,4,0.8*/),
+			FeatureExtractor.WordsFromText(2,false/*,4,0.6*/),
+			//FeatureExtractor.WordsFromText(3,false/*,4,0.6*/),
+		],
+		featureExtractorForClassification: [
+			FeatureExtractor.Hypernyms(JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/hypernyms.json'))),
+		],
+		pastTrainingSamples: [], // to enable retraining
+	});
+}
+
+//var createNewClassifier = createWinnowClassifier;
+var createNewClassifier = createPassiveAggressiveClassifier;
+
 
 var do_cross_dataset_testing = true;
-var do_cross_validation = false;
+var do_cross_validation = true;
 var do_serialization = true;
 
 var verbosity = 0;
@@ -105,11 +133,11 @@ if (do_cross_validation) {
 			microAverage, macroAverage
 		);
 	});
-	_(macroAverage).each(function(value,key) { macroAverage[key]=value/numOfFolds; });
+	//_(macroAverage).each(function(value,key) { macroAverage[key] = value/numOfFolds; });
 	console.log("\nend "+numOfFolds+"-fold cross-validation: "+(new Date()-startTime)+" [ms]");
 
-	if (verbosity>0) {console.log("\n\nMACRO AVERAGE FULL STATS:"); console.dir(macroAverage.fullStats());}
-	console.log("\nMACRO AVERAGE SUMMARY: "+macroAverage.shortStats());
+	//if (verbosity>0) {console.log("\n\nMACRO AVERAGE FULL STATS:"); console.dir(macroAverage.fullStats());}
+	//console.log("\nMACRO AVERAGE SUMMARY: "+macroAverage.shortStats());
 
 	microAverage.calculateStats();
 	if (verbosity>0) {console.log("\n\nMICRO AVERAGE FULL STATS:"); console.dir(microAverage.fullStats());}
