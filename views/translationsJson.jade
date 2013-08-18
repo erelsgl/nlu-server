@@ -5,11 +5,10 @@ html
 		link(rel='stylesheet', href='/main.css')
 	body#translations
 		div #{lines.length} lines
-		if query.dataset
+		if locals.dataset
 			pre
 				for line in lines
-					if (!query.source||query.source===line.source)
-						| #{", "+JSON.stringify({input: line.text, output: line.translations})+"\n"} 
+					| #{", "+JSON.stringify({input: line.text, output: line.translations})+"\n"} 
 		else
 			pre
 				| #{JSON.stringify(lines,null,"\t")+"\n"}

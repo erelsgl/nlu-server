@@ -43,5 +43,8 @@
 , {"input":"I insist on my offer about the company car","output":{"Insist":"Leased Car"}}
 , {"input":"I insist on my offer about the promotion track","output":{"Insist":"Promotion Possibilities"}}
 , {"input":"I insist on my offer about the working hours","output":{"Insist":"Working Hours"}}
+, {"input":"What is your offer?","output":{"Query":"bid"}}
+, {"input":"What issues should we discuss?","output":{"Query":"issues"}}
+, {"input":"What are you willing to compromise?","output":{"Query":"compromise"}}
 , {"input":"I quit","output":{"Quit":true}}
 ]

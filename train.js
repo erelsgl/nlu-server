@@ -74,8 +74,8 @@ var createPassiveAggressiveClassifier = function() {
 	});
 }
 
-//var createNewClassifier = createWinnowClassifier;
-var createNewClassifier = createPassiveAggressiveClassifier;
+var createNewClassifier = createWinnowClassifier;
+//var createNewClassifier = createPassiveAggressiveClassifier;
 
 
 var do_cross_dataset_testing = true;

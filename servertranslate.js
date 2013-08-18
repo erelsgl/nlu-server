@@ -53,12 +53,13 @@ app.configure('development', function(){
 //
 // Step 2: Load the activeClassifiers and prepare the translators
 //
+var classifierNames = ["Employer", "Candidate"];
 
 var registeredPublicTranslators = {};
 var activePublicTranslators = {};
-
 var activeClassifiers = {};
-var classifierNames = ["Employer", "Candidate"];
+var manualTranslations = {};
+var pendingAutomaticTranslations = {};
 classifierNames.forEach(function(classifierName) {
 	var pathToBaseClassifier = __dirname+"/trainedClassifiers/"+classifierName+"/MostRecentClassifier.json";
 	var pathToRetrainedClassifier = __dirname+"/trainedClassifiers/"+classifierName+"/RetrainedClassifier.json";
@@ -79,8 +80,33 @@ classifierNames.forEach(function(classifierName) {
 	
 	registeredPublicTranslators[classifierName] = {};
 	activePublicTranslators[classifierName] = {};
+	
+	// copy the training samples to the approved translations:
+	manualTranslations[classifierName] = {};
+	activeClassifiers[classifierName].pastTrainingSamples.forEach(function(sample) {
+		manualTranslations[classifierName][sample.input]=sample;
+	});
+	
+	pendingAutomaticTranslations[classifierName] = {};
 });
 
+//
+// Step 3: load additional approved translations from the manual translations file:
+//
+
+var lines = logger.readJsonLogSync(logger.cleanPathToLog("translations_manual.json"));
+lines.forEach(function(sample) {
+	if (sample.classifierName)
+		//if (sample.translations.length>0)
+			manualTranslations[sample.classifierName][sample.text]=sample;
+});
+
+var lines = logger.readJsonLogSync(logger.cleanPathToLog("translations_pending.json"));
+lines.forEach(function(sample) {
+	if (sample.classifierName)
+		if (!manualTranslations[sample.classifierName][sample.text])
+			pendingAutomaticTranslations[sample.classifierName][sample.text]=sample;
+});
 
 
 //
@@ -97,12 +123,15 @@ httpserver.listen(app.get('port'), function(){
 
 var TIMEOUT_SECONDS=10;
 
-
-
+// index page:
+app.get("/", function(req,res) {
+	res.render("index");
+});
 
 // view a table of the previous correct/incorrect translations: 
-app.get("/translations", function(req,res) {
-	if (Object.keys(req.query).length==0) {  // default table
+app.get("/translations/:manualorautomatic/:dataset?", function(req,res) {
+	var manualorautomatic = req.params.manualorautomatic;
+	if (manualorautomatic==='all') {  // default table
 		var lines = [];
 		fs.readFileSync(__dirname+"/logs/translations_all.log", 'utf8').split(/[\n\r]+/).forEach(function(line) {
 			var parts = line.split(/\s*\/\s*/);
@@ -120,10 +149,21 @@ app.get("/translations", function(req,res) {
 			lines: lines
 		});
 	} else {
-		var filename = "translations_"+(req.query.manual? "manual": "automatic")+".json";
+		var filename = "translations_"+manualorautomatic+".json";
 		var lines = logger.readJsonLogSync(logger.cleanPathToLog(filename));
+		if (!_.isEmpty(req.query))
+			lines = _(lines).where(req.query);
+		if (req.params.dataset) {
+			lines = _(lines).select(function(line) {return line.text && 
+				line.translations && 
+				line.translations.length>0 && 
+				line.translations[0]!=="Other" && 
+				(!line.remoteAddress || line.remoteAddress!="127.0.0.1") &&
+				true});
+			lines = _(lines).uniq(/*isSorted=*/false, function(line) {return line.text;});	
+		}
 		res.render("translationsJson", {
-			query: req.query,
+			dataset: req.params.dataset,
 			lines: lines
 		});
 	}
@@ -202,21 +242,35 @@ function translate(request, requester, requester_is_private_translator, callback
 		logger.writeEventLog("events", (request.forward? "TRANSLATE<": "GENERATE<")+requester, request);
 
 		if (request.forward) {   // forward translation = classification
-	
-			var classification = activeClassifier.classify(request.text, parseInt(request.explain));
-			if (request.explain) {
-				classification.translations = classification.classes;
-				delete classification.classes;
+			var classification;
+			var pastManualTranslation = manualTranslations[request.classifierName][request.text];
+			if (pastManualTranslation) {
+				classification = pastManualTranslation;
+				if (request.explain) {
+					classification.explanation = "already approved by a human translator"; 
+				}
+				logger.writeEventLog("events", "translate-pastManualTranslation>"+id, classification.translations);
 			} else {
-				classification = {
-					translations: classification
+				classification = activeClassifier.classify(request.text, parseInt(request.explain));
+				if (request.explain && !(classification instanceof Array)) {
+					classification.translations = classification.classes;
+					delete classification.classes;
+				} else {
+					classification = {
+						translations: classification
+					};
 				};
+				_(classification).extend(request); // add the text, forward, classifierName, etc.
+				logger.writeJsonLog("translations_automatic", classification);
+				
+				if (!pendingAutomaticTranslations[request.classifierName][request.text]) {
+					pendingAutomaticTranslations[request.classifierName][request.text] = classification;
+					logger.writeJsonLog("translations_pending", classification);
+				}
 			}
-			_(classification).extend(request); // add the text, forward, classifierName, etc.
-			logger.writeJsonLog("translations_automatic", classification);
 
-			if (!requester_is_private_translator) {
-				// send the translation to all registered public translators:
+			if (!requester_is_private_translator && !pastManualTranslation) {
+				// send the translation to all registered public translators (active or inactive):
 				var relevantPublicTranslators = registeredPublicTranslators[request.classifierName];
 				for (var id in relevantPublicTranslators) { 
 					logger.writeEventLog("events", "translate-toapprove>"+id, classification.translations);
@@ -224,7 +278,7 @@ function translate(request, requester, requester_is_private_translator, callback
 				}
 			}
 
-			if (requester_is_private_translator || !Object.keys(activePublicTranslators[request.classifierName]).length) {
+			if (requester_is_private_translator || pastManualTranslation || !Object.keys(activePublicTranslators[request.classifierName]).length) {
 				// there are no active public translators - send the translation directly to the asker:
 				logger.writeEventLog("events", "translate-direct>"+requester, classification.translations);
 				callback(classification);
@@ -297,8 +351,16 @@ io.sockets.on('connection', function (socket) {
 
 		socket.emit('classes', activeClassifier.classes);
 		socket.emit('precisionrecall', activeClassifier.precisionrecall);
+		
+		
+		// Send all pending automatic translations:
+		for (text in pendingAutomaticTranslations[request.classifierName]) {
+			classification = pendingAutomaticTranslations[request.classifierName][text];
+			logger.writeEventLog("events", "translate-toapprove>"+socket.id, classification.translations);
+			socket.emit('translation', classification);
+		};
 	});
-	
+
 	// Private translator corrects his own translations, without the help of a public translator:
 	socket.private_translator = false;
 	socket.on('register_as_private_translator', function(request) {
@@ -403,6 +465,9 @@ io.sockets.on('connection', function (socket) {
 		request.explanation="approved by a human translator";
 		socket.emit('acknowledgement');
 		logger.writeEventLog("events", "APPROVE<"+socket.id, request);
+		
+		manualTranslations[request.classifierName][request.text] = request;
+		delete pendingAutomaticTranslations[request.classifierName][request.text];
 
 		textListeners(request.text).forEach(function(callback) {
 			callback(request);

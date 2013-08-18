@@ -56,15 +56,17 @@ $(document).ready(function() {
 	
 	function translationDataToString(translationData) {
 		var reducedTranslationData = translationData;
-		delete reducedTranslationData.explanations;
-		delete reducedTranslationData.positive_explanations;
-		delete reducedTranslationData.negative_explanations;
+		delete reducedTranslationData.explanation;
 		delete reducedTranslationData.translations;
 		delete reducedTranslationData.text;
 		return JSON.stringify(reducedTranslationData).htmlspecialchars();
 	}
 
 	translationSocket.on('translation', function(translationData) {
+		if (!('text' in translationData)) {
+			alert("received translationData with no text: "+JSON.stringify(translationData));
+			return;
+		}
 		var text = translationData.text;
 		var translations = translationData.translations;
 		var translationDataString = translationDataToString(translationData);
