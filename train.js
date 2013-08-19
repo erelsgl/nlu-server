@@ -16,84 +16,34 @@ var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/Dataset0Gramm
 var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz.json"));
 var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz1class.json"));
 var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2Woz.json"));
-var collectedDatasetMulti3 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset3Woz.json"));
+var collectedDatasetMulti3 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset3Expert.json"));
+var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset4WozAmt.json"));
 
-var createWinnowClassifier = function() {
-	var classifiers = require(__dirname+'/../machine-learning/classifiers');
-	var FeatureExtractor = require(__dirname+'/../machine-learning/features');
-	var fs = require('fs');
-
-	return new classifiers.EnhancedClassifier({
-		classifierType: classifiers.BinaryClassifierSet,
-		classifierOptions: {
-				binaryClassifierType: classifiers.Winnow,
-				binaryClassifierOptions: {
-					retrain_count: 12,  /* much better than 5, better than 10 */
-					do_averaging: false,
-					margin: 1,
-				},
-		},
-		normalizer: FeatureExtractor.RegexpNormalizer(
-			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
-		),
-		featureExtractor: [
-			//FeatureExtractor.WordsFromText(1,false/*,4,0.8*/),
-			FeatureExtractor.WordsFromText(2,false/*,4,0.6*/),
-			//FeatureExtractor.WordsFromText(3,false/*,4,0.6*/),
-		],
-		featureExtractorForClassification: [
-			FeatureExtractor.Hypernyms(JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/hypernyms.json'))),
-		],
-		pastTrainingSamples: [], // to enable retraining
-	});
-}
-
-var createPassiveAggressiveClassifier = function() {
-	var classifiers = require(__dirname+'/../machine-learning/classifiers');
-	var FeatureExtractor = require(__dirname+'/../machine-learning/features');
-	var fs = require('fs');
-
-	return new classifiers.EnhancedClassifier({
-		classifierType: classifiers.MultiLabelPassiveAggressive,
-		classifierOptions: {
-			Constant: 5.0,
-			retrain_count: 100,
-		},
-		normalizer: FeatureExtractor.RegexpNormalizer(
-			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
-		),
-		featureExtractor: [
-			//FeatureExtractor.WordsFromText(1,false/*,4,0.8*/),
-			FeatureExtractor.WordsFromText(2,false/*,4,0.6*/),
-			//FeatureExtractor.WordsFromText(3,false/*,4,0.6*/),
-		],
-		featureExtractorForClassification: [
-			FeatureExtractor.Hypernyms(JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/hypernyms.json'))),
-		],
-		pastTrainingSamples: [], // to enable retraining
-	});
-}
-
-var createNewClassifier = createWinnowClassifier;
-//var createNewClassifier = createPassiveAggressiveClassifier;
+var createNewClassifier = require('./createNewClassifier');
 
 
 var do_cross_dataset_testing = true;
-var do_cross_validation = true;
-var do_serialization = true;
+var do_cross_validation = false;
+var do_serialization = false;
 
 var verbosity = 0;
 var explain = 0;
 
 var partitions = mlutils.partitions;
 var PrecisionRecall = mlutils.PrecisionRecall;
-var trainAndTest = mlutils.trainAndTest;
+
+//var trainAndTest = mlutils.trainAndTest;
+
+var trainAndTest = function(createNewClassifier,trainSet,testSet,verbosity) {
+	fs.writeFileSync("./multilabel.test.arff", mlutils.toARFF(trainSet,"multilabel"));
+}
 
 if (do_cross_dataset_testing) {
-	//console.log("\nTrain on domain data, test on woz single class: "+
-	//	trainAndTest(createNewClassifier, domainDataset, collectedDatasetSingle, verbosity).shortStats());
-	//console.log("\nTrain on domain data, test on woz multi class: "+
-	//	trainAndTest(createNewClassifier, domainDataset, collectedDatasetMulti, verbosity).shortStats());
+	var oldData = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetMulti2);
+	var newData = collectedDatasetMulti4;
+	console.log("\nTrain on old data, test on new data: "+
+		trainAndTest(createNewClassifier, oldData, newData, verbosity).shortStats());
+
 	console.log("\nTrain on grammar data, test on woz single class: "+
 		trainAndTest(createNewClassifier, grammarDataset, collectedDatasetSingle, verbosity).shortStats());
 	console.log("\nTrain on grammar data, test on woz multi class: "+
@@ -148,24 +98,23 @@ if (do_serialization) {
 	["Employer","Candidate"].forEach(function(classifierName) {
 		console.log("\nBuilding classifier for "+classifierName);
 		var classifier = createNewClassifier();
-		
+
 		var grammarDataset = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset0Grammar.json"));
 		var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz.json"));
 		var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz1class.json"));
 		var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset2Woz.json"));
-		var collectedDatasetMulti3 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset3Woz.json"));
-		
+		var collectedDatasetMulti3 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset3Expert.json"));
+
 		var dataset = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetMulti3);
-	
-		//dataset = dataset.slice(0,20);
+
 		console.log("\nstart training on "+dataset.length+" samples");
 		var startTime = new Date();
 		classifier.trainBatch(dataset);
 		console.log("end training on "+dataset.length+" samples, "+(new Date()-startTime)+" [ms]");
-	
+
 		console.log("\ntest on training data:");
 		mlutils.testLite(classifier, dataset);
-		
+
 		var resultsBeforeReload = [];
 		for (var i=0; i<dataset.length; ++i) {
 			var actualClasses = classifier.classify(dataset[i].input);  
