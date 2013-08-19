@@ -84,7 +84,11 @@ classifierNames.forEach(function(classifierName) {
 	// copy the training samples to the approved translations:
 	manualTranslations[classifierName] = {};
 	activeClassifiers[classifierName].pastTrainingSamples.forEach(function(sample) {
-		manualTranslations[classifierName][sample.input]=sample;
+		manualTranslations[classifierName][sample.input]= {
+			text: sample.input,
+			translations: sample.output,
+			source: "training data"
+		};
 	});
 	
 	pendingAutomaticTranslations[classifierName] = {};
@@ -244,7 +248,7 @@ function translate(request, requester, requester_is_private_translator, callback
 		if (request.forward) {   // forward translation = classification
 			var classification;
 			var pastManualTranslation = manualTranslations[request.classifierName][request.text];
-			if (pastManualTranslation) {
+			if (pastManualTranslation && pastManualTranslation.translations && pastManualTranslation.translations.length>0) {
 				classification = pastManualTranslation;
 				if (request.explain) {
 					classification.explanation = "already approved by a human translator"; 

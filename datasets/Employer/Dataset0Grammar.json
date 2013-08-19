@@ -43,8 +43,16 @@
 , {"input":"I insist on my offer about the company car","output":{"Insist":"Leased Car"}}
 , {"input":"I insist on my offer about the promotion track","output":{"Insist":"Promotion Possibilities"}}
 , {"input":"I insist on my offer about the working hours","output":{"Insist":"Working Hours"}}
+, {"input":"What is your offer about the salary?","output":{"Query":"Salary"}}
+, {"input":"What is your offer about the job description","output":{"Query":"Job Description"}}
+, {"input":"What is your offer about the pension fund","output":{"Query":"Pension Fund"}}
+, {"input":"What is your offer about the company car","output":{"Query":"Leased Car"}}
+, {"input":"What is your offer about the promotion track","output":{"Query":"Promotion Possibilities"}}
+, {"input":"What is your offer about the working hours","output":{"Query":"Working Hours"}}
 , {"input":"What is your offer?","output":{"Query":"bid"}}
 , {"input":"What issues should we discuss?","output":{"Query":"issues"}}
 , {"input":"What are you willing to compromise?","output":{"Query":"compromise"}}
+, {"input":"Do you accept my offer?","output":{"Query":"accept"}}
+, {"input":"Why do you reject my offer?","output":{"Query":"reject"}}
 , {"input":"I quit","output":{"Quit":true}}
 ]
