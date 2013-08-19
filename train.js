@@ -31,12 +31,7 @@ var explain = 0;
 
 var partitions = mlutils.partitions;
 var PrecisionRecall = mlutils.PrecisionRecall;
-
-//var trainAndTest = mlutils.trainAndTest;
-
-var trainAndTest = function(createNewClassifier,trainSet,testSet,verbosity) {
-	fs.writeFileSync("./multilabel.test.arff", mlutils.toARFF(trainSet,"multilabel"));
-}
+var trainAndTest = mlutils.trainAndTest;
 
 if (do_cross_dataset_testing) {
 	var oldData = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetMulti2);
