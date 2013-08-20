@@ -9,7 +9,7 @@ var mlutils = require('../machine-learning/utils');
 var _ = require('underscore')._;
 var fs = require('fs');
 
-console.log("machine learning trainer start");
+console.log("machine learning trainer start\n");
 
 //var domainDataset = JSON.parse(fs.readFileSync("datasets/Employer/Dataset0Domain.json"));
 var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/Dataset0Grammar.json"));
@@ -19,7 +19,7 @@ var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Employer/Datas
 var collectedDatasetMulti3 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset3Expert.json"));
 var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset4WozAmt.json"));
 
-var createNewClassifier = require('./createNewClassifier');
+var createNewClassifier = require('./createNewClassifier').defaultClassifier;
 
 
 var do_cross_dataset_testing = true;
@@ -32,37 +32,63 @@ var explain = 0;
 var partitions = mlutils.partitions;
 var PrecisionRecall = mlutils.PrecisionRecall;
 var trainAndTest = mlutils.trainAndTest;
+var trainAndCompare = mlutils.trainAndCompare;
 
 if (do_cross_dataset_testing) {
+	verbosity=0;
+	console.log("Train on woz single class, test on woz multi class: "+
+		trainAndTest(createNewClassifier, collectedDatasetSingle, collectedDatasetMulti, verbosity).shortStats())+"\n";
+	process.exit(1);
+	
+	/*
 	var oldData = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetMulti2);
 	var newData = collectedDatasetMulti4;
-	console.log("\nTrain on old data, test on new data: "+
-		trainAndTest(createNewClassifier, oldData, newData, verbosity).shortStats());
+	
+	var newData = [
+	   {"input":"I offer 7000 NIS ",
+	    "output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
+	 , {"input":"I offer 7k NIS ",
+	    "output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
+	    ];*/
+	/*var newData = [
+   {"input":"How about 12k, programmer, with leased car, 10% pension, slow promotion track, and 9 hours?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"]}
+ , {"input":"How about 12k, programmer, 10% pension, slow promotion track, and 8 hours?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
+ , {"input":"How about 12k, programmer, 10% pension, slow promotion track, and 8 hours, no agreement on car?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"No agreement\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
+ , {"input":"How about 12k, programmer, 10% pension, slow promotion track, and 8 hours, without leased car?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
+ , {"input":"How about 7k, programmer, 10% pension, slow promotion track, and 8 hours, with leased car?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
+ , {"input":"How about 7000 salary, programmer, 10% pension, slow promotion track, and 8 hours, with leased car?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}	
+		];*/
+	console.log("Train on old data, test on new data: "+
+		trainAndTest(createNewClassifier, oldData, newData, verbosity).shortStats())+"\n";
 
-	console.log("\nTrain on grammar data, test on woz single class: "+
-		trainAndTest(createNewClassifier, grammarDataset, collectedDatasetSingle, verbosity).shortStats());
-	console.log("\nTrain on grammar data, test on woz multi class: "+
-		trainAndTest(createNewClassifier, grammarDataset, collectedDatasetMulti, verbosity).shortStats());
-	console.log("\nTrain on woz single class, test on woz multi class: "+
-		trainAndTest(createNewClassifier, collectedDatasetSingle, collectedDatasetMulti, verbosity).shortStats());
-	console.log("\nTrain on woz multi class, test on woz single class: "+
-		trainAndTest(createNewClassifier, collectedDatasetMulti, collectedDatasetSingle, verbosity).shortStats());
+	//console.log("Train on old data, compare on new data: "+
+	//	trainAndCompare(require('./createNewClassifier').createWinnowClassifierWithoutNormalizer, require('./createNewClassifier').createWinnowClassifierWithNormalizer, oldData, newData, verbosity+3))+"\n";
+
+	console.log("Train on grammar data, test on woz single class: "+
+		trainAndTest(createNewClassifier, grammarDataset, collectedDatasetSingle, verbosity).shortStats())+"\n";
+	console.log("Train on grammar data, test on woz multi class: "+
+		trainAndTest(createNewClassifier, grammarDataset, collectedDatasetMulti, verbosity).shortStats())+"\n";
+	console.log("Train on woz single class, test on woz multi class: "+
+		trainAndTest(createNewClassifier, collectedDatasetSingle, collectedDatasetMulti, verbosity).shortStats())+"\n";
+	console.log("Train on woz multi class, test on woz single class: "+
+		trainAndTest(createNewClassifier, collectedDatasetMulti, collectedDatasetSingle, verbosity).shortStats())+"\n";
 	
 	collectedDatasetMultiPartition = partitions.partition(collectedDatasetMulti, 0, collectedDatasetMulti.length/2);
 	collectedDatasetSinglePartition = partitions.partition(collectedDatasetSingle, 0, collectedDatasetSingle.length/2);
-	console.log("\nTrain on mixed, test on mixed: "+
+	console.log("Train on mixed, test on mixed: "+
 		trainAndTest(createNewClassifier, 
 			collectedDatasetMultiPartition.train.concat(collectedDatasetSinglePartition.train), 
 			collectedDatasetMultiPartition.test.concat(collectedDatasetSinglePartition.test), 
-			verbosity).shortStats());
-	console.log("\nTrain on mixed, test on mixed (2): "+
+			verbosity).shortStats())+"\n";
+	console.log("Train on mixed, test on mixed (2): "+
 		trainAndTest(createNewClassifier, 
 			collectedDatasetMultiPartition.test.concat(collectedDatasetSinglePartition.test), 
 			collectedDatasetMultiPartition.train.concat(collectedDatasetSinglePartition.train), 
-			verbosity).shortStats());
+			verbosity).shortStats())+"\n";
 } // do_cross_dataset_testing
 
 if (do_cross_validation) {
+	verbosity=0;
 
 	var numOfFolds = 3; // for k-fold cross-validation
 	var microAverage = new PrecisionRecall();
@@ -90,6 +116,7 @@ if (do_cross_validation) {
 } // do_cross_validation
 
 if (do_serialization) {
+	verbosity=0;
 	["Employer","Candidate"].forEach(function(classifierName) {
 		console.log("\nBuilding classifier for "+classifierName);
 		var classifier = createNewClassifier();

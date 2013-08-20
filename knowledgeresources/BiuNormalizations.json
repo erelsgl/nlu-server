@@ -25,4 +25,7 @@
 , {"source": "'re", "target": " are"}
 , {"source": "'ve", "target": " have"}
 , {"source": "'ll", "target": " will"}
+, {"source": "\\b(\\d+) thousands?\\b", "target": "$1000"}
+, {"source": "\\b(\\d+)k\\b", "target": "$1000"}
+, {"source": "\\b(\\d+),000\\b", "target": "$1000"}
 ]

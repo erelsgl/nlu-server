@@ -10,13 +10,15 @@
  * @since 2013-08
  */
 
-var createWinnowClassifier = function() {
+module.exports = {
+
+createWinnowClassifierWithNormalizer: function() {
 	var classifiers = require(__dirname+'/../machine-learning/classifiers');
-	var FeatureExtractor = require(__dirname+'/../machine-learning/features');
+	var FeaturesUnit = require(__dirname+'/../machine-learning/features');
 	var fs = require('fs');
 
 	return new classifiers.EnhancedClassifier({
-		classifierType: classifiers.BinaryClassifierSet,
+		classifierType: classifiers.multilabel.BinaryRelevance,
 		classifierOptions: {
 				binaryClassifierType: classifiers.Winnow,
 				binaryClassifierOptions: {
@@ -25,47 +27,97 @@ var createWinnowClassifier = function() {
 					margin: 1,
 				},
 		},
-		normalizer: FeatureExtractor.RegexpNormalizer(
+		normalizer: FeaturesUnit.RegexpNormalizer(
 			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
 		),
 		featureExtractor: [
-			//FeatureExtractor.WordsFromText(1,false/*,4,0.8*/),
-			FeatureExtractor.WordsFromText(2,false/*,4,0.6*/),
-			//FeatureExtractor.WordsFromText(3,false/*,4,0.6*/),
+			//FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
+			FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),
+			//FeaturesUnit.WordsFromText(3,false/*,4,0.6*/),
 		],
 		featureExtractorForClassification: [
-			FeatureExtractor.Hypernyms(JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/hypernyms.json'))),
+			FeaturesUnit.Hypernyms(JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/hypernyms.json'))),
 		],
 		pastTrainingSamples: [], // to enable retraining
 	});
-}
+},
 
-var createPassiveAggressiveClassifier = function() {
+createWinnowClassifierWithoutNormalizer: function() {
 	var classifiers = require(__dirname+'/../machine-learning/classifiers');
-	var FeatureExtractor = require(__dirname+'/../machine-learning/features');
+	var FeaturesUnit = require(__dirname+'/../machine-learning/features');
+	var fs = require('fs');
+
+	return new classifiers.EnhancedClassifier({
+		classifierType: classifiers.multilabel.BinaryRelevance,
+		classifierOptions: {
+				binaryClassifierType: classifiers.Winnow,
+				binaryClassifierOptions: {
+					retrain_count: 12,  /* much better than 5, better than 10 */
+					do_averaging: false,
+					margin: 1,
+				},
+		},
+		featureExtractor: [
+			//FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
+			FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),
+			//FeaturesUnit.WordsFromText(3,false/*,4,0.6*/),
+		],
+		featureExtractorForClassification: [
+			FeaturesUnit.Hypernyms(JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/hypernyms.json'))),
+		],
+		pastTrainingSamples: [], // to enable retraining
+	});
+},
+
+createWinnowSegmenterWithoutNormalizer: function() {
+	var classifiers = require(__dirname+'/../machine-learning/classifiers');
+	var FeaturesUnit = require(__dirname+'/../machine-learning/features');
+	var fs = require('fs');
+
+	return new classifiers.multilabel.BinarySegmentation({
+		binaryClassifierType: classifiers.Winnow,
+		binaryClassifierOptions: {
+			retrain_count: 12,  /* much better than 5, better than 10 */
+			do_averaging: false,
+			margin: 1,
+		},
+		featureExtractor: [
+			//FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
+			FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),
+			//FeaturesUnit.WordsFromText(3,false/*,4,0.6*/),
+		],
+	});
+},
+
+createPassiveAggressiveClassifier: function() {
+	var classifiers = require(__dirname+'/../machine-learning/classifiers');
+	var FeaturesUnit = require(__dirname+'/../machine-learning/features');
 	var fs = require('fs');
 
 	return new classifiers.EnhancedClassifier({
 		classifierType: classifiers.MultiLabelPassiveAggressive,
 		classifierOptions: {
 			Constant: 5.0,
-			retrain_count: 100,
+			retrain_count: 12,
 		},
-		normalizer: FeatureExtractor.RegexpNormalizer(
+		normalizer: FeaturesUnit.RegexpNormalizer(
 			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
 		),
 		featureExtractor: [
-			//FeatureExtractor.WordsFromText(1,false/*,4,0.8*/),
-			FeatureExtractor.WordsFromText(2,false/*,4,0.6*/),
-			//FeatureExtractor.WordsFromText(3,false/*,4,0.6*/),
+			//FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
+			FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),
+			//FeaturesUnit.WordsFromText(3,false/*,4,0.6*/),
 		],
 		featureExtractorForClassification: [
-			FeatureExtractor.Hypernyms(JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/hypernyms.json'))),
+			FeaturesUnit.Hypernyms(JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/hypernyms.json'))),
 		],
 		pastTrainingSamples: [], // to enable retraining
 	});
 }
 
-//module.exports = createPassiveAggressiveClassifier;
-module.exports = createWinnowClassifier;
+}
 
+//module.exports.defaultClassifier = module.exports.createWinnowClassifierWithNormalizer;
+//module.exports.defaultClassifier = module.exports.createWinnowClassifierWithoutNormalizer;
+module.exports.defaultClassifier = module.exports.createWinnowSegmenterWithoutNormalizer;
+if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
