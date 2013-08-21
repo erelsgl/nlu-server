@@ -23,8 +23,8 @@ var createNewClassifier = require('./createNewClassifier').defaultClassifier;
 
 
 var do_cross_dataset_testing = true;
-var do_cross_validation = false;
-var do_serialization = false;
+var do_cross_validation = true;
+var do_serialization = true;
 
 var verbosity = 0;
 var explain = 0;
@@ -33,16 +33,25 @@ var partitions = mlutils.partitions;
 var PrecisionRecall = mlutils.PrecisionRecall;
 var trainAndTest = mlutils.trainAndTest;
 var trainAndCompare = mlutils.trainAndCompare;
+var trainAndTestLite = mlutils.trainAndTestLite;
 
 if (do_cross_dataset_testing) {
 	verbosity=0;
-	console.log("Train on woz single class, test on woz multi class: "+
-		trainAndTest(createNewClassifier, collectedDatasetSingle, collectedDatasetMulti, verbosity).shortStats())+"\n";
-	process.exit(1);
+	//console.log("Train on woz single class, test on woz multi class: "+
+	//	trainAndTestLite(createNewClassifier, collectedDatasetSingle, collectedDatasetMulti, verbosity).shortStats())+"\n";
+
+	//2-grams:
+	//Longest : Accuracy=54/99=55% HammingGain=235/319=72% Precision=94% Recall=77% F1=85% timePerSample=30[ms]
+	//Shortest: Accuracy=61/99=62% HammingGain=284/340=82% Precision=89% Recall=93% F1=91% timePerSample=25[ms]
+
+	//2-grams and 1-grams:
+	//Longest : Accuracy=79/99=80% HammingGain=297/319=93% Precision=95% Recall=98% F1=96% timePerSample=45[ms]
+	//Shortest: Accuracy=69/99=70% HammingGain=301/337=88% Precision=90% Recall=99% F1=94% timePerSample=33[ms]
+	//null    : Accuracy=78/99=79% HammingGain=276/308=89% Precision=99% Recall=91% F1=95% timePerSample=12[ms]
+	
+	//process.exit(1);
 	
 	/*
-	var oldData = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetMulti2);
-	var newData = collectedDatasetMulti4;
 	
 	var newData = [
 	   {"input":"I offer 7000 NIS ",
@@ -58,6 +67,9 @@ if (do_cross_dataset_testing) {
  , {"input":"How about 7k, programmer, 10% pension, slow promotion track, and 8 hours, with leased car?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
  , {"input":"How about 7000 salary, programmer, 10% pension, slow promotion track, and 8 hours, with leased car?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}	
 		];*/
+
+	var oldData = grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti2);
+	var newData = collectedDatasetMulti4;
 	console.log("Train on old data, test on new data: "+
 		trainAndTest(createNewClassifier, oldData, newData, verbosity).shortStats())+"\n";
 

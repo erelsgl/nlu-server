@@ -22,10 +22,25 @@
 , {"source": "kilometers per hour", "target": "kmh"}
 , {"source": "kilometers per hour", "target": "kmh"}
 , {"source": "miles per hour", "target": "mph"}
+
 , {"source": "'re", "target": " are"}
 , {"source": "'ve", "target": " have"}
 , {"source": "'ll", "target": " will"}
+, {"source": "two", "target": "2"}
+, {"source": "three", "target": "3"}
+, {"source": "four", "target": "4"}
+, {"source": "five", "target": "5"}
+, {"source": "six", "target": "6"}
+, {"source": "seven", "target": "7"}
+, {"source": "eight", "target": "8"}
+, {"source": "nine", "target": "9"}
+, {"source": "ten", "target": "10"}
+, {"source": "eleven", "target": "11"}
+, {"source": "twelve", "target": "12"}
+, {"source": "twenty", "target": "20"}
+, {"source": "\\b(\\d+) hundreds?\\b", "target": "$100"}
 , {"source": "\\b(\\d+) thousands?\\b", "target": "$1000"}
 , {"source": "\\b(\\d+)k\\b", "target": "$1000"}
 , {"source": "\\b(\\d+),000\\b", "target": "$1000"}
+, {"source": "\\b(\\d+) percent\\b", "target": "$1%"}
 ]

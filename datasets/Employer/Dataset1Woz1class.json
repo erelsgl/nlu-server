@@ -39,7 +39,7 @@
 , {"input":"with company car","output":[{"Offer":{"Leased Car":"With leased car"}}]}
 , {"input":"I offer 12000 NIS per month for work as","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
 , {"input":"I need a programmer","output":[{"Offer":{"Job Description":"Programmer"}}]}
-, {"input":"You can not be a","output":[{"Reject":"Job Description"}]}
+, {"input":"You can not be a Programmer","output":[{"Reject":"Job Description"}]}
 , {"input":"how about 12000 NIS","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
 , {"input":"I can offer you the job without pension","output":[{"Offer":{"Pension Fund":"0%"}}]}
 , {"input":"10 hours and we have a deal...","output":[{"Offer":{"Working Hours":"10 hours"}}]}

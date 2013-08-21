@@ -18,6 +18,9 @@ createWinnowClassifierWithNormalizer: function() {
 	var fs = require('fs');
 
 	return new classifiers.EnhancedClassifier({
+		normalizer: FeaturesUnit.RegexpNormalizer(
+			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
+		),
 		classifierType: classifiers.multilabel.BinaryRelevance,
 		classifierOptions: {
 				binaryClassifierType: classifiers.Winnow,
@@ -27,9 +30,6 @@ createWinnowClassifierWithNormalizer: function() {
 					margin: 1,
 				},
 		},
-		normalizer: FeaturesUnit.RegexpNormalizer(
-			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
-		),
 		featureExtractor: [
 			//FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
 			FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),
@@ -69,23 +69,36 @@ createWinnowClassifierWithoutNormalizer: function() {
 	});
 },
 
-createWinnowSegmenterWithoutNormalizer: function() {
+createWinnowSegmenterWithNormalizer: function() {
 	var classifiers = require(__dirname+'/../machine-learning/classifiers');
 	var FeaturesUnit = require(__dirname+'/../machine-learning/features');
 	var fs = require('fs');
 
-	return new classifiers.multilabel.BinarySegmentation({
-		binaryClassifierType: classifiers.Winnow,
-		binaryClassifierOptions: {
-			retrain_count: 12,  /* much better than 5, better than 10 */
-			do_averaging: false,
-			margin: 1,
+	return new classifiers.EnhancedClassifier({
+		normalizer: FeaturesUnit.RegexpNormalizer(
+			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
+		),
+		classifierType: classifiers.multilabel.BinarySegmentation,
+		classifierOptions: {
+			binaryClassifierType: classifiers.Winnow,
+			binaryClassifierOptions: {
+				retrain_count: 12,  /* much better than 5, better than 10 */
+				do_averaging: false,
+				margin: 1,
+			},
+			featureExtractor: [
+				FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
+				FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),
+				//FeaturesUnit.WordsFromText(3,false/*,4,0.6*/),
+			],
+			sentenceSplitter: function(text) {
+				return text.split(/[.,;?!]|and/);
+			},
+			segmentSplitStrategy: 'shortestSegment',
+			//segmentSplitStrategy: 'longestSegment',
+			//segmentSplitStrategy: null,
 		},
-		featureExtractor: [
-			//FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
-			FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),
-			//FeaturesUnit.WordsFromText(3,false/*,4,0.6*/),
-		],
+		pastTrainingSamples: [], // to enable retraining
 	});
 },
 
@@ -119,5 +132,6 @@ createPassiveAggressiveClassifier: function() {
 
 //module.exports.defaultClassifier = module.exports.createWinnowClassifierWithNormalizer;
 //module.exports.defaultClassifier = module.exports.createWinnowClassifierWithoutNormalizer;
-module.exports.defaultClassifier = module.exports.createWinnowSegmenterWithoutNormalizer;
+module.exports.defaultClassifier = module.exports.createWinnowSegmenterWithNormalizer;
+//module.exports.defaultClassifier = module.exports.createWinnowSegmenterWithoutNormalizer;
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");

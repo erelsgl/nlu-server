@@ -248,7 +248,7 @@ function translate(request, requester, requester_is_private_translator, callback
 		if (request.forward) {   // forward translation = classification
 			var classification;
 			var pastManualTranslation = manualTranslations[request.classifierName][request.text];
-			if (pastManualTranslation && pastManualTranslation.translations && pastManualTranslation.translations.length>0) {
+			if (!requester_is_private_translator && pastManualTranslation && pastManualTranslation.translations && pastManualTranslation.translations.length>0) {
 				classification = pastManualTranslation;
 				if (request.explain) {
 					classification.explanation = "already approved by a human translator"; 
