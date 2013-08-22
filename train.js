@@ -68,10 +68,15 @@ if (do_cross_dataset_testing) {
  , {"input":"How about 7000 salary, programmer, 10% pension, slow promotion track, and 8 hours, with leased car?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}	
 		];*/
 
-	var oldData = grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti2);
 	var newData = collectedDatasetMulti4;
-	console.log("Train on old data, test on new data: "+
-		trainAndTest(createNewClassifier, oldData, newData, verbosity).shortStats())+"\n";
+	console.log("Train on grammar, test on new data: "+
+		trainAndTest(createNewClassifier, grammarDataset, newData, verbosity).shortStats())+"\n";
+	console.log("Train on grammar-single1, test on new data: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle), newData, verbosity).shortStats())+"\n";
+	console.log("Train on grammar-single1-multi2, test on new data: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti2), newData, verbosity).shortStats())+"\n";
+	console.log("Train on grammar-single1-multi1-multi2, test on new data: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2), newData, verbosity).shortStats())+"\n";
 
 	//console.log("Train on old data, compare on new data: "+
 	//	trainAndCompare(require('./createNewClassifier').createWinnowClassifierWithoutNormalizer, require('./createNewClassifier').createWinnowClassifierWithNormalizer, oldData, newData, verbosity+3))+"\n";

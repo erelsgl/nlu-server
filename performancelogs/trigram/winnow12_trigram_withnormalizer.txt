@@ -1,0 +1,64 @@
+machine learning trainer start
+
+Train on domain data, test on woz single class: Accuracy=153/300=51% Precision=100% Recall=51% F1=68% timePerSample=0[ms]
+
+Train on domain data, test on woz multi class: Accuracy=12/100=12% Precision=98% Recall=37% F1=54% timePerSample=0[ms]
+
+Train on grammar data, test on woz single class: Accuracy=126/300=42% Precision=99% Recall=42% F1=59% timePerSample=0[ms]
+
+Train on grammar data, test on woz multi class: Accuracy=8/100=8% Precision=97% Recall=34% F1=50% timePerSample=0[ms]
+
+Train on woz single class, test on woz multi class: Accuracy=51/100=51% Precision=99% Recall=67% F1=80% timePerSample=1[ms]
+
+Train on woz multi class, test on woz single class: Accuracy=196/300=65% Precision=67% Recall=98% F1=79% timePerSample=0[ms]
+
+Train on mixed, test on mixed: Accuracy=139/200=70% Precision=90% Recall=81% F1=86% timePerSample=0[ms]
+
+Train on mixed, test on mixed (2): Accuracy=144/200=72% Precision=93% Recall=82% F1=87% timePerSample=0[ms]
+
+start 3-fold cross-validation on 45 grammar samples and 549 collected samples
+partition #0: 1 [ms]
+partition #1: 3279 [ms]
+partition #2: 6541 [ms]
+
+end 3-fold cross-validation: 9827 [ms]
+
+MACRO AVERAGE SUMMARY: NaN
+
+MICRO AVERAGE SUMMARY: Accuracy=390/549=71% Precision=92% Recall=83% F1=87% timePerSample=18[ms]
+
+start training on 594 samples
+end training on 594 samples, 4505 [ms]
+
+test on training data:
+	I offer a company car: expected {"Offer": {"Leased Car": "With leased car"}} but got 
+	I offer no agreement about the salary: expected {"Offer": {"Salary": "No agreement"}} but got 
+	I offer no agreement about the job description: expected {"Offer": {"Job Description": "No agreement"}} but got 
+	I offer no agreement about the pension fund: expected {"Offer": {"Pension Fund": "No agreement"}} but got 
+	I offer no agreement about the company car: expected {"Offer": {"Leased Car": "No agreement"}} but got 
+	I offer no agreement about the promotion track: expected {"Offer": {"Promotion Possibilities": "No agreement"}} but got 
+	I offer no agreement about the working hours: expected {"Offer": {"Working Hours": "No agreement"}} but got 
+	I accept your offer about the salary: expected {"Accept": "Salary"} but got 
+	I accept your offer about the job description: expected {"Accept": "Job Description"} but got 
+	I accept your offer about the pension fund: expected {"Accept": "Pension Fund"} but got 
+	I accept your offer about the company car: expected {"Accept": "Leased Car"} but got 
+	I accept your offer about the promotion track: expected {"Accept": "Promotion Possibilities"} but got 
+	I accept your offer about the working hours: expected {"Accept": "Working Hours"} but got 
+	I reject your offer about the salary: expected {"Reject": "Salary"} but got 
+	I reject your offer about the job description: expected {"Reject": "Job Description"} but got 
+	I reject your offer about the pension fund: expected {"Reject": "Pension Fund"} but got 
+	I reject your offer about the company car: expected {"Reject": "Leased Car"} but got 
+	I reject your offer about the promotion track: expected {"Reject": "Promotion Possibilities"} but got 
+	I reject your offer about the working hours: expected {"Reject": "Working Hours"} but got 
+	I insist on my offer about the salary: expected {"Insist": "Salary"} but got 
+	I insist on my offer about the job description: expected {"Insist": "Job Description"} but got 
+	I insist on my offer about the pension fund: expected {"Insist": "Pension Fund"} but got 
+	I insist on my offer about the company car: expected {"Insist": "Leased Car"} but got 
+	I insist on my offer about the promotion track: expected {"Insist": "Promotion Possibilities"} but got 
+	I insist on my offer about the working hours: expected {"Insist": "Working Hours"} but got 
+	hi ok but 10% pension: expected {"Accept": "previous"},{"Offer": {"Pension Fund": "10%"}} but got {"Offer": {"Pension Fund": "10%"}}
+	10 hours and i will give you fast promotion track: expected {"Accept": "previous"},{"Offer": {"Promotion Possibilities": "Fast promotion track"}},{"Offer": {"Working Hours": "10 hours"}} but got {"Offer": {"Promotion Possibilities": "Fast promotion track"}},{"Offer": {"Working Hours": "10 hours"}}
+SUMMARY: Accuracy=567/594=95% Precision=100% Recall=97% F1=99% timePerSample=1[ms]
+
+test on training data after reload:
+machine learning trainer end

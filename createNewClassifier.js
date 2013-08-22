@@ -42,42 +42,15 @@ createWinnowClassifierWithNormalizer: function() {
 	});
 },
 
-createWinnowClassifierWithoutNormalizer: function() {
+createWinnowSegmenter: function() {
 	var classifiers = require(__dirname+'/../machine-learning/classifiers');
 	var FeaturesUnit = require(__dirname+'/../machine-learning/features');
 	var fs = require('fs');
 
 	return new classifiers.EnhancedClassifier({
-		classifierType: classifiers.multilabel.BinaryRelevance,
-		classifierOptions: {
-				binaryClassifierType: classifiers.Winnow,
-				binaryClassifierOptions: {
-					retrain_count: 12,  /* much better than 5, better than 10 */
-					do_averaging: false,
-					margin: 1,
-				},
-		},
-		featureExtractor: [
-			//FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
-			FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),
-			//FeaturesUnit.WordsFromText(3,false/*,4,0.6*/),
-		],
-		featureExtractorForClassification: [
-			FeaturesUnit.Hypernyms(JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/hypernyms.json'))),
-		],
-		pastTrainingSamples: [], // to enable retraining
-	});
-},
-
-createWinnowSegmenterWithNormalizer: function() {
-	var classifiers = require(__dirname+'/../machine-learning/classifiers');
-	var FeaturesUnit = require(__dirname+'/../machine-learning/features');
-	var fs = require('fs');
-
-	return new classifiers.EnhancedClassifier({
-		normalizer: FeaturesUnit.RegexpNormalizer(
-			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
-		),
+		//normalizer: FeaturesUnit.RegexpNormalizer(
+		//	JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
+		//),
 		classifierType: classifiers.multilabel.BinarySegmentation,
 		classifierOptions: {
 			binaryClassifierType: classifiers.Winnow,
@@ -87,16 +60,14 @@ createWinnowSegmenterWithNormalizer: function() {
 				margin: 1,
 			},
 			featureExtractor: [
-				FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
+				//FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
 				FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),
 				//FeaturesUnit.WordsFromText(3,false/*,4,0.6*/),
 			],
-			sentenceSplitter: function(text) {
-				return text.split(/[.,;?!]|and/);
-			},
-			segmentSplitStrategy: 'shortestSegment',
+			sentenceSplitter: function(text) { return text.split(/[.,;?!]|and/); },
+			//segmentSplitStrategy: 'shortestSegment',
 			//segmentSplitStrategy: 'longestSegment',
-			//segmentSplitStrategy: null,
+			segmentSplitStrategy: null,
 		},
 		pastTrainingSamples: [], // to enable retraining
 	});
@@ -132,6 +103,5 @@ createPassiveAggressiveClassifier: function() {
 
 //module.exports.defaultClassifier = module.exports.createWinnowClassifierWithNormalizer;
 //module.exports.defaultClassifier = module.exports.createWinnowClassifierWithoutNormalizer;
-module.exports.defaultClassifier = module.exports.createWinnowSegmenterWithNormalizer;
-//module.exports.defaultClassifier = module.exports.createWinnowSegmenterWithoutNormalizer;
+module.exports.defaultClassifier = module.exports.createWinnowSegmenter;
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");

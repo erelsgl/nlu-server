@@ -1,0 +1,165 @@
+machine learning trainer start
+
+Train on grammar, test on new data: Accuracy=13/115=11% HammingGain=204/461=42% Precision=92% Recall=46% F1=61% timePerSample=1[ms]
+Train on grammar-single1, test on new data: Accuracy=36/115=31% HammingGain=346/475=71% Precision=92% Recall=78% F1=84% timePerSample=1[ms]
+Train on grammar-single1-multi2, test on new data: Accuracy=52/115=45% HammingGain=382/473=80% Precision=93% Recall=86% F1=89% timePerSample=1[ms]
+Train on grammar-single1-multi1-multi2, test on new data: Accuracy=53/115=46% HammingGain=388/478=80% Precision=92% Recall=87% F1=90% timePerSample=1[ms]
+Train on grammar data, test on woz single class: Accuracy=176/298=59% HammingGain=176/300=58% Precision=99% Recall=59% F1=74% timePerSample=0[ms]
+Train on grammar data, test on woz multi class: Accuracy=14/99=14% HammingGain=167/308=54% Precision=98% Recall=55% F1=70% timePerSample=1[ms]
+Train on woz single class, test on woz multi class: Accuracy=77/99=78% HammingGain=269/307=88% Precision=99% Recall=88% F1=93% timePerSample=1[ms]
+Train on woz multi class, test on woz single class: Accuracy=201/298=67% HammingGain=295/417=59% Precision=71% Recall=99% F1=83% timePerSample=0[ms]
+Train on mixed, test on mixed: Accuracy=141/198=71% HammingGain=267/337=78% Precision=91% Recall=86% F1=88% timePerSample=0[ms]
+Train on mixed, test on mixed (2): Accuracy=143/199=72% HammingGain=245/313=77% Precision=91% Recall=84% F1=88% timePerSample=0[ms]
+
+start 3-fold cross-validation on 56 grammar samples and 555 collected samples
+partition #0: 1 [ms]
+partition #1: 2040 [ms]
+partition #2: 4076 [ms]
+
+end 3-fold cross-validation: 6117 [ms]
+
+MICRO AVERAGE SUMMARY: Accuracy=412/555=74% HammingGain=803/1024=76% Precision=90% Recall=86% F1=88% timePerSample=11[ms]
+
+Building classifier for Employer
+
+start training on 611 samples
+end training on 611 samples, 2754 [ms]
+
+test on training data:
+	"I offer no agreement about the salary": expected {"Offer":{"Salary":"No agreement"}} but got 
+	"I offer no agreement about the job description": expected {"Offer":{"Job Description":"No agreement"}} but got 
+	"I offer no agreement about the pension fund": expected {"Offer":{"Pension Fund":"No agreement"}} but got 
+	"I offer no agreement about the company car": expected {"Offer":{"Leased Car":"No agreement"}} but got 
+	"I offer no agreement about the promotion track": expected {"Offer":{"Promotion Possibilities":"No agreement"}} but got 
+	"I offer no agreement about the working hours": expected {"Offer":{"Working Hours":"No agreement"}} but got 
+	"I accept your offer about the salary": expected {"Accept":"Salary"} but got 
+	"I accept your offer about the job description": expected {"Accept":"Job Description"} but got 
+	"I accept your offer about the pension fund": expected {"Accept":"Pension Fund"} but got 
+	"I accept your offer about the company car": expected {"Accept":"Leased Car"} but got 
+	"I accept your offer about the promotion track": expected {"Accept":"Promotion Possibilities"} but got 
+	"I accept your offer about the working hours": expected {"Accept":"Working Hours"} but got 
+	"I reject your offer about the salary": expected {"Reject":"Salary"} but got 
+	"I reject your offer about the job description": expected {"Reject":"Job Description"} but got 
+	"I reject your offer about the pension fund": expected {"Reject":"Pension Fund"} but got 
+	"I reject your offer about the company car": expected {"Reject":"Leased Car"} but got 
+	"I reject your offer about the promotion track": expected {"Reject":"Promotion Possibilities"} but got 
+	"I reject your offer about the working hours": expected {"Reject":"Working Hours"} but got 
+	"I insist on my offer about the salary": expected {"Insist":"Salary"} but got 
+	"I insist on my offer about the job description": expected {"Insist":"Job Description"} but got 
+	"I insist on my offer about the pension fund": expected {"Insist":"Pension Fund"} but got 
+	"I insist on my offer about the company car": expected {"Insist":"Leased Car"} but got 
+	"I insist on my offer about the promotion track": expected {"Insist":"Promotion Possibilities"} but got 
+	"I insist on my offer about the working hours": expected {"Insist":"Working Hours"} but got 
+	"What is your offer about the salary?": expected {"Query":"Salary"} but got 
+	"What is your offer about the job description": expected {"Query":"Job Description"} but got 
+	"What is your offer about the pension fund": expected {"Query":"Pension Fund"} but got 
+	"What is your offer about the company car": expected {"Query":"Leased Car"} but got 
+	"What is your offer about the promotion track": expected {"Query":"Promotion Possibilities"} but got 
+	"What is your offer about the working hours": expected {"Query":"Working Hours"} but got 
+	"What is your offer?": expected {"Query":"bid"} but got 
+	"You can not be a Team Manager. I need a programmer": expected {"Offer":{"Job Description":"Programmer"}},{"Reject":"Job Description"} but got {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Job Description":"Team Manager"}},{"Reject":"Job Description"}
+	"hi ok but 10% pension": expected {"Accept":"previous"},{"Greet":true},{"Offer":{"Pension Fund":"10%"}} but got {"Offer":{"Pension Fund":"10%"}}
+	"I offer 12000 NIS per month as a Programmer with a leased car with 20% pension, fast promotion track and 10 working hours a day": expected {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"10 hours"}} but got {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"10 hours"}}
+	"10 hours and i will give you fast promotion track": expected {"Accept":"previous"},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Working Hours":"10 hours"}} but got {"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Working Hours":"10 hours"}}
+	"You can not be a Programmer": expected {"Reject":"Job Description"} but got {"Offer":{"Job Description":"Programmer"}},{"Reject":"Job Description"}
+	"With a starting point of 12,000 NIS and nine hours a week, I can offer you a fast promotion track, so that you might reach project manager position fairly quickly": expected {"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}} but got {"Offer":{"Job Description":"Project Manager"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}}
+	"o.k. but without leased car": expected {"Accept":"previous"},{"Offer":{"Leased Car":"Without leased car"}} but got {"Offer":{"Leased Car":"Without leased car"}}
+	"why?": expected {"Insist":"previous"} but got {"Query":"reject"}
+	"how are you?": expected {"Greet":true} but got 
+	"ok. with car but insist 20000": expected {"Insist":"Salary"},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Salary":"20,000 NIS"}} but got {"Accept":"previous"},{"Insist":"Salary"},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Salary":"20,000 NIS"}}
+	"accept salary and pension": expected {"Accept":"Pension Fund"},{"Accept":"Salary"} but got {"Accept":"Pension Fund"}
+	"I would like 12,000NIS": expected {"Offer":{"Salary":"12,000 NIS"}} but got {"Offer":{"Salary":"12,000 NIS"}},{"Reject":"Salary"}
+	"12k , programmer 20% pension with cat fast premotion is graet": expected {"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}} but got {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}}
+	"I can pay you 12,000NIS if you agree for 10 hours a day.": expected {"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"10 hours"}} but got {"Offer":{"Working Hours":"10 hours"}}
+	"No, we agreed fast promotion track": expected {"Insist":"previous"},{"Offer":{"Promotion Possibilities":"Fast promotion track"}} but got {"Insist":"previous"},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Reject":"previous"}
+	"12,000NIS, No leased car Pension fund 10% Fast Track Promotion, 8 hours": expected {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"8 hours"}} but got {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"8 hours"}},{"Reject":"Salary"}
+	"What do you want?": expected {"Query":"bid"} but got 
+	"What is your offer?": expected {"Query":"bid"} but got 
+	"How about 10 hour days?": expected {"Offer":{"Working Hours":"10 hours"}} but got {"Offer":{"Promotion Possibilities":"Slow promotion track"}},{"Offer":{"Working Hours":"10 hours"}}
+	"Will you work 9 hour days?": expected {"Offer":{"Working Hours":"9 hours"}} but got {"Offer":{"Promotion Possibilities":"Slow promotion track"}},{"Offer":{"Working Hours":"10 hours"}},{"Offer":{"Working Hours":"9 hours"}}
+	"How about 12000 salary, programmer, leased car, 20 percent pension, fast promotion and 8 hour days?": expected {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"8 hours"}} but got {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Promotion Possibilities":"Slow promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"10 hours"}}
+	"Fine, thanks! I would like to offer you 12000 as a QA associate with a fast track to promotion and 9 working hours. Pension Fund at 10%. No leased car.": expected {"Offer":{"Job Description":"QA"}},{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}} but got Other,{"Accept":"previous"},{"Offer":{"Job Description":"QA"}},{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}}
+	"Is 10% penion ok?": expected {"Offer":{"Pension Fund":"10%"}} but got 
+	"And a car": expected {"Append":"previous"},{"Offer":{"Leased Car":"With leased car"}} but got {"Offer":{"Leased Car":"With leased car"}}
+	"Fine, thanks": expected Other but got Other,{"Accept":"previous"}
+	"and a car": expected {"Append":"previous"},{"Offer":{"Leased Car":"With leased car"}} but got {"Offer":{"Leased Car":"With leased car"}}
+	"I will agree on 20000, programmer and fast promotion track.  I will offer 10 hours a day, 10% pension and no agreemnet on the car": expected {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"No agreement"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"10 hours"}} but got {"Accept":"Leased Car"},{"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"No agreement"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"10 hours"}}
+	"12000, project manager, leased car, 10% pension,  fast promotion, 10 hours": expected {"Offer":{"Job Description":"Project Manager"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"10 hours"}} but got {"Offer":{"Job Description":"Project Manager"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"10 hours"}},{"Offer":{"Working Hours":"9 hours"}}
+	"20000, project manager, without leased car, 20% pension, fast promotion track, 10 hours": expected {"Offer":{"Job Description":"Project Manager"}},{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"10 hours"}} but got {"Offer":{"Job Description":"Project Manager"}},{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"10 hours"}},{"Offer":{"Working Hours":"9 hours"}}
+SUMMARY: Accuracy=551/611=90% HammingGain=943/1010=93% Precision=98% Recall=95% F1=97% timePerSample=1[ms]
+
+test on training data after reload:
+
+Building classifier for Candidate
+
+start training on 613 samples
+end training on 613 samples, 2590 [ms]
+
+test on training data:
+	"I want no agreement about the salary": expected {"Offer":{"Salary":"No agreement"}} but got 
+	"I want no agreement about the job description": expected {"Offer":{"Job Description":"No agreement"}} but got 
+	"I want no agreement about the pension fund": expected {"Offer":{"Pension Fund":"No agreement"}} but got 
+	"I want no agreement about the company car": expected {"Offer":{"Leased Car":"No agreement"}} but got 
+	"I want no agreement about the promotion track": expected {"Offer":{"Promotion Possibilities":"No agreement"}} but got 
+	"I want no agreement about the working hours": expected {"Offer":{"Working Hours":"No agreement"}} but got 
+	"I accept your offer about the salary": expected {"Accept":"Salary"} but got 
+	"I accept your offer about the job description": expected {"Accept":"Job Description"} but got 
+	"I accept your offer about the pension fund": expected {"Accept":"Pension Fund"} but got 
+	"I accept your offer about the company car": expected {"Accept":"Leased Car"} but got 
+	"I accept your offer about the promotion track": expected {"Accept":"Promotion Possibilities"} but got 
+	"I accept your offer about the working hours": expected {"Accept":"Working Hours"} but got 
+	"I reject your offer about the salary": expected {"Reject":"Salary"} but got 
+	"I reject your offer about the job description": expected {"Reject":"Job Description"} but got 
+	"I reject your offer about the pension fund": expected {"Reject":"Pension Fund"} but got 
+	"I reject your offer about the company car": expected {"Reject":"Leased Car"} but got 
+	"I reject your offer about the promotion track": expected {"Reject":"Promotion Possibilities"} but got 
+	"I reject your offer about the working hours": expected {"Reject":"Working Hours"} but got 
+	"I insist on my offer about the salary": expected {"Insist":"Salary"} but got 
+	"I insist on my offer about the job description": expected {"Insist":"Job Description"} but got 
+	"I insist on my offer about the pension fund": expected {"Insist":"Pension Fund"} but got 
+	"I insist on my offer about the company car": expected {"Insist":"Leased Car"} but got 
+	"I insist on my offer about the promotion track": expected {"Insist":"Promotion Possibilities"} but got 
+	"I insist on my offer about the working hours": expected {"Insist":"Working Hours"} but got 
+	"12000 NIS per month.programmer, company car and 10% pension, fast promotion track and a daily schedule of 9 hours": expected {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}} but got {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}}
+	"I will not be a Team Manager. I want to be a programmer": expected {"Offer":{"Job Description":"Programmer"}},{"Reject":"Job Description"} but got {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Job Description":"Team Manager"}},{"Reject":"Job Description"}
+	"pension 10% and we have a deal": expected {"Accept":"previous"},{"Offer":{"Pension Fund":"10%"}} but got {"Offer":{"Pension Fund":"10%"}}
+	"I will not be a Team manager, I am a programmer": expected {"Offer":{"Job Description":"Programmer"}},{"Reject":"Job Description"} but got {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Job Description":"Team Manager"}},{"Reject":"Job Description"}
+	"Programmer, company car , 20% pension , slow promotion track 10 hours, 12000 NIS": expected {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Slow promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"10 hours"}} but got {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Slow promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"10 hours"}}
+	"hi ok but 10% pension": expected {"Accept":"previous"},{"Greet":true},{"Offer":{"Pension Fund":"10%"}} but got {"Offer":{"Pension Fund":"10%"}}
+	"10 hours and fast promotion track": expected {"Accept":"previous"},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Working Hours":"10 hours"}} but got {"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Working Hours":"10 hours"}}
+	"company car": expected {"Offer":{"Leased Car":"With leased car"}} but got 
+	"company car": expected {"Offer":{"Leased Car":"With leased car"}} but got 
+	"With a starting point of 12,000 NIS and nine hours a week, I want a fast promotion track, so that I might reach project manager position fairly quickly": expected {"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}} but got {"Offer":{"Job Description":"Project Manager"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}}
+	"i would like a 20000 NIS salary. this is mandatory to me to have a good salary as i believe working conditions affect directly my effectiveness": expected {"Offer":{"Salary":"20,000 NIS"}} but got {"Offer":{"Salary":"20,000 NIS"}},{"Reject":"previous"}
+	"also, how is that fast promotion track coming along": expected {"Offer":{"Promotion Possibilities":"Fast promotion track"}} but got {"Append":"previous"},{"Offer":{"Promotion Possibilities":"Fast promotion track"}}
+	"Hello, I would like 20,000 NIS, to be at least a Team Manager, and 8 working hours": expected {"Offer":{"Job Description":"Team Manager"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"8 hours"}} but got {"Greet":true},{"Offer":{"Job Description":"Team Manager"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"8 hours"}}
+	"o.k. but with leased car": expected {"Accept":"previous"},{"Offer":{"Leased Car":"With leased car"}} but got {"Offer":{"Leased Car":"With leased car"}}
+	"THis is ridiculous": expected {"Reject":"previous"} but got 
+	"why?": expected {"Insist":"previous"} but got {"Query":"reject"}
+	"what about 20000, with car, programmer, 10% pension Found, fast promotion track and 9 hours": expected {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}} but got {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}}
+	"I insist on a higher pension.": expected {"Insist":"Pension Fund"} but got 
+	"If you give me a leased car and 9 working hours I will accept your offer": expected {"Accept":"previous"},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Working Hours":"9 hours"}} but got {"Accept":"previous"},{"Offer":{"Leased Car":"With leased car"}}
+	"how are you?": expected {"Greet":true} but got 
+	"ok. with car but insist 20000": expected {"Insist":"Salary"},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Salary":"20,000 NIS"}} but got {"Accept":"previous"},{"Insist":"Salary"},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Salary":"20,000 NIS"}}
+	"ok. I'm offer you my skils as project manager - you wont be sorry to have me nd i'm insist on 20000": expected {"Offer":{"Job Description":"Project Manager"}},{"Offer":{"Salary":"20,000 NIS"}} but got {"Accept":"previous"},{"Offer":{"Job Description":"Project Manager"}},{"Offer":{"Salary":"20,000 NIS"}}
+	"ok. i can be whatever you want, but i still insist on 20000": expected {"Insist":"Salary"},{"Offer":{"Salary":"20,000 NIS"}} but got {"Accept":"previous"},{"Insist":"Salary"},{"Offer":{"Salary":"20,000 NIS"}}
+	"I don't accept 7,000NIS": expected {"Reject":"Salary"} but got {"Offer":{"Salary":"12,000 NIS"}},{"Reject":"previous"}
+	"I want 20000 and a car": expected {"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Salary":"20,000 NIS"}} but got {"Offer":{"Salary":"20,000 NIS"}}
+	"hi, iagree to the 12,000 and to be a programmer": expected {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Salary":"12,000 NIS"}} but got {"Greet":true},{"Offer":{"Job Description":"Programmer"}},{"Offer":{"Salary":"12,000 NIS"}}
+	"12k , programmer 20% pension with cat fast premotion is graet": expected {"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}} but got {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}}
+	"7k": expected {"Offer":{"Salary":"7,000 NIS"}} but got 
+	"I wnat 20k": expected {"Offer":{"Salary":"20,000 NIS"}} but got 
+	"I can accept 7,000NIS if you agree to give me fast promotion.": expected {"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"7,000 NIS"}} but got {"Offer":{"Promotion Possibilities":"Fast promotion track"}}
+	"What do you want?": expected {"Query":"bid"} but got 
+	"what can you offer?": expected {"Query":"bid"} but got 
+	"I want 20000 nis as a project manager. I want a leased car and 10% with slow promotion. I want to work 9 hours.": expected {"Offer":{"Job Description":"Project Manager"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Slow promotion track"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}} but got {"Offer":{"Job Description":"Project Manager"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Promotion Possibilities":"Slow promotion track"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}}
+	"And a car": expected {"Append":"previous"},{"Offer":{"Leased Car":"With leased car"}} but got {"Offer":{"Leased Car":"With leased car"}}
+	"Fine, thanks": expected Other but got Other,{"Accept":"previous"}
+	"7000": expected {"Offer":{"Salary":"7,000 NIS"}} but got 
+	"hi, I would like 12k for work as a programmer, with an option for a company car, 20% pension, fast track promotion and 9 hour schedule": expected {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}} but got {"Greet":true},{"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}}
+	"What are you offering?": expected {"Query":"bid"} but got 
+	"What about 7,000 salary as a programmer with a leased car, 10% pension, slow promotion track, and 8 hours a day?": expected {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Slow promotion track"}},{"Offer":{"Salary":"7,000 NIS"}},{"Offer":{"Working Hours":"8 hours"}} but got {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Slow promotion track"}},{"Offer":{"Working Hours":"8 hours"}}
+SUMMARY: Accuracy=550/613=90% HammingGain=968/1035=93% Precision=98% Recall=95% F1=97% timePerSample=1[ms]
+
+test on training data after reload:
+machine learning trainer end

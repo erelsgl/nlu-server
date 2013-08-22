@@ -1,0 +1,86 @@
+machine learning trainer start
+
+Train on domain data, test on woz single class: Accuracy=153/300=51% Precision=100% Recall=51% F1=68% timePerSample=0[ms]
+
+Train on domain data, test on woz multi class: Accuracy=13/100=13% Precision=98% Recall=37% F1=53% timePerSample=0[ms]
+
+Train on grammar data, test on woz single class: Accuracy=126/300=42% Precision=99% Recall=42% F1=59% timePerSample=0[ms]
+
+Train on grammar data, test on woz multi class: Accuracy=9/100=9% Precision=97% Recall=33% F1=50% timePerSample=0[ms]
+
+Train on woz single class, test on woz multi class: Accuracy=50/100=50% Precision=98% Recall=59% F1=73% timePerSample=0[ms]
+
+Train on woz multi class, test on woz single class: Accuracy=206/300=69% Precision=70% Recall=98% F1=82% timePerSample=0[ms]
+
+Train on mixed, test on mixed: Accuracy=145/200=73% Precision=91% Recall=84% F1=87% timePerSample=0[ms]
+
+Train on mixed, test on mixed (2): Accuracy=147/200=74% Precision=93% Recall=83% F1=88% timePerSample=0[ms]
+
+start 5-fold cross-validation on 45 grammar samples and 400 collected samples
+partition #0: 0 [ms]
+partition #1: 1107 [ms]
+partition #2: 2201 [ms]
+partition #3: 3289 [ms]
+partition #4: 4378 [ms]
+
+end 5-fold cross-validation: 5465 [ms]
+
+MACRO AVERAGE SUMMARY: NaN
+
+MICRO AVERAGE SUMMARY: Accuracy=329/400=82% Precision=95% Recall=90% F1=93% timePerSample=14[ms]
+
+start training on 594 samples
+end training on 594 samples, 1959 [ms]
+
+test on training data:
+	I offer a company car: expected {"Offer": {"Leased Car": "With leased car"}} but got 
+	I offer no agreement about the salary: expected {"Offer": {"Salary": "No agreement"}} but got 
+	I offer no agreement about the job description: expected {"Offer": {"Job Description": "No agreement"}} but got 
+	I offer no agreement about the pension fund: expected {"Offer": {"Pension Fund": "No agreement"}} but got 
+	I offer no agreement about the company car: expected {"Offer": {"Leased Car": "No agreement"}} but got 
+	I offer no agreement about the promotion track: expected {"Offer": {"Promotion Possibilities": "No agreement"}} but got 
+	I offer no agreement about the working hours: expected {"Offer": {"Working Hours": "No agreement"}} but got 
+	I accept your offer about the salary: expected {"Accept": "Salary"} but got 
+	I accept your offer about the job description: expected {"Accept": "Job Description"} but got 
+	I accept your offer about the pension fund: expected {"Accept": "Pension Fund"} but got 
+	I accept your offer about the company car: expected {"Accept": "Leased Car"} but got 
+	I accept your offer about the promotion track: expected {"Accept": "Promotion Possibilities"} but got 
+	I accept your offer about the working hours: expected {"Accept": "Working Hours"} but got 
+	I reject your offer about the salary: expected {"Reject": "Salary"} but got 
+	I reject your offer about the job description: expected {"Reject": "Job Description"} but got 
+	I reject your offer about the pension fund: expected {"Reject": "Pension Fund"} but got 
+	I reject your offer about the company car: expected {"Reject": "Leased Car"} but got 
+	I reject your offer about the promotion track: expected {"Reject": "Promotion Possibilities"} but got 
+	I reject your offer about the working hours: expected {"Reject": "Working Hours"} but got 
+	I insist on my previous offer: expected {"Insist": "previous"} but got 
+	I insist on my offer about the salary: expected {"Insist": "Salary"} but got 
+	I insist on my offer about the job description: expected {"Insist": "Job Description"} but got 
+	I insist on my offer about the pension fund: expected {"Insist": "Pension Fund"} but got 
+	I insist on my offer about the company car: expected {"Insist": "Leased Car"} but got 
+	I insist on my offer about the promotion track: expected {"Insist": "Promotion Possibilities"} but got 
+	I insist on my offer about the working hours: expected {"Insist": "Working Hours"} but got 
+	hi ok but 10% pension: expected {"Accept": "previous"},{"Offer": {"Pension Fund": "10%"}} but got {"Offer": {"Pension Fund": "10%"}}
+	10 hours and i will give you fast promotion track: expected {"Accept": "previous"},{"Offer": {"Promotion Possibilities": "Fast promotion track"}},{"Offer": {"Working Hours": "10 hours"}} but got {"Offer": {"Promotion Possibilities": "Fast promotion track"}},{"Offer": {"Working Hours": "10 hours"}}
+	I'm sorry but I can't do anything. That's the company policy: expected {"Insist": "previous"} but got 
+	ok: expected {"Accept": "previous"} but got 
+	that absurd amount of money I would ask you to be a programmer, and work for 10 hours a day: expected {"Offer": {"Job Description": "Programmer"}},{"Offer": {"Working Hours": "10 hours"}} but got {"Offer": {"Job Description": "Programmer"}}
+	o.k. but with leased car: expected {"Accept": "previous"},{"Offer": {"Leased Car": "With leased car"}} but got {"Offer": {"Leased Car": "With leased car"}}
+	I offer you 20000, with car, QA, 0% pension Found, fast promotion track and 9 hours: expected {"Offer": {"Job Description": "QA"}},{"Offer": {"Leased Car": "With leased car"}},{"Offer": {"Pension Fund": "0%"}},{"Offer": {"Promotion Possibilities": "Fast promotion track"}},{"Offer": {"Salary": "20,000 NIS"}},{"Offer": {"Working Hours": "9 hours"}} but got {"Offer": {"Leased Car": "With leased car"}},{"Offer": {"Pension Fund": "0%"}},{"Offer": {"Promotion Possibilities": "Fast promotion track"}},{"Offer": {"Salary": "20,000 NIS"}},{"Offer": {"Working Hours": "9 hours"}}
+	I must insist on a higher salary.: expected {"Insist": "Salary"},{"Reject": "Salary"} but got {"Reject": "Salary"}
+	i would like more salary and a 20% pension fund: expected {"Offer": {"Pension Fund": "20%"}},{"Reject": "Salary"} but got {"Offer": {"Pension Fund": "20%"}}
+	I need a better pension fund.: expected {"Reject": "Pension Fund"} but got 
+	I insist on a higher pension.: expected {"Insist": "Pension Fund"} but got 
+	I insist on fewer hours.: expected {"Insist": "Working Hours"} but got 
+	how are you?: expected {"Greet": true} but got 
+	I don't accept 7,000NIS: expected {"Reject": "Salary"} but got 
+	I can pay you 12,000NIS if you agree for 10 hours a day.: expected {"Offer": {"Salary": "12,000 NIS"}},{"Offer": {"Working Hours": "10 hours"}} but got {"Offer": {"Salary": "12,000 NIS"}}
+	I can't accept your offer: expected {"Reject": "previous"} but got 
+	I don't like your offer: expected {"Reject": "previous"} but got 
+	No, we agreed fast promotion track: expected {"Insist": "previous"},{"Offer": {"Promotion Possibilities": "Fast promotion track"}} but got {"Offer": {"Promotion Possibilities": "Fast promotion track"}}
+	What do you want?: expected {"Query": "bid"} but got 
+	What is your offer?: expected {"Query": "bid"} but got 
+	What do you want to talk about?: expected {"Query": "issues"} but got 
+SUMMARY: Accuracy=547/594=92% Precision=100% Recall=95% F1=97% timePerSample=1[ms]
+
+test on training data after reload:
+machine learning trainer end

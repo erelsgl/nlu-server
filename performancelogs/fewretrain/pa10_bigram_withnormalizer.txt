@@ -1,0 +1,16 @@
+machine learning trainer start
+
+Train on old data, test on new data: Accuracy=1/148=1% HammingGain=556/2359=24% Precision=24% Recall=95% F1=38% timePerSample=0[ms]
+
+Train on grammar data, test on woz single class: Accuracy=25/298=8% HammingGain=228/2629=9% Precision=9% Recall=77% F1=16% timePerSample=0[ms]
+
+Train on grammar data, test on woz multi class: Accuracy=1/99=1% HammingGain=180/1541=12% Precision=13% Recall=60% F1=21% timePerSample=0[ms]
+
+Train on woz single class, test on woz multi class: Accuracy=46/99=46% HammingGain=274/390=70% Precision=75% Recall=92% F1=83% timePerSample=0[ms]
+
+Train on woz multi class, test on woz single class: Accuracy=38/298=13% HammingGain=296/1555=19% Precision=19% Recall=99% F1=32% timePerSample=0[ms]
+
+Train on mixed, test on mixed: Accuracy=80/198=40% HammingGain=277/544=51% Precision=54% Recall=90% F1=67% timePerSample=0[ms]
+
+Train on mixed, test on mixed (2): Accuracy=97/199=49% HammingGain=258/526=49% Precision=52% Recall=90% F1=66% timePerSample=0[ms]
+machine learning trainer end
