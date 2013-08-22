@@ -9,18 +9,24 @@ var mlutils = require('../machine-learning/utils');
 var _ = require('underscore')._;
 var fs = require('fs');
 
+require("./SpellingCorrecter").initialize(function(SpellingCorrecter) {
+
 console.log("machine learning trainer start\n");
 
 //var domainDataset = JSON.parse(fs.readFileSync("datasets/Employer/Dataset0Domain.json"));
 var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/Dataset0Grammar.json"));
+//grammarDataset.forEach(function(datum) {
+//	console.log(datum.input);
+//});
+
 var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz.json"));
 var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz1class.json"));
 var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2Woz.json"));
 var collectedDatasetMulti3 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset3Expert.json"));
 var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset4WozAmt.json"));
+var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAll.json"));
 
 var createNewClassifier = require('./createNewClassifier').defaultClassifier;
-
 
 var do_cross_dataset_testing = true;
 var do_cross_validation = true;
@@ -111,7 +117,7 @@ if (do_cross_validation) {
 	var microAverage = new PrecisionRecall();
 	var macroAverage = new PrecisionRecall();
 	
-	var devSet = collectedDatasetMulti.concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetMulti3);
+	var devSet = collectedDatasetSingle.concat(collectedDatasetMulti2).concat(collectedDatasetMulti8);
 	var startTime = new Date();
 	console.log("\nstart "+numOfFolds+"-fold cross-validation on "+grammarDataset.length+" grammar samples and "+devSet.length+" collected samples");
 	partitions.partitions(devSet, numOfFolds, function(trainSet, testSet, index) {
@@ -180,3 +186,6 @@ if (do_serialization) {
 } // do_serialization
 
 console.log("machine learning trainer end");
+
+});
+

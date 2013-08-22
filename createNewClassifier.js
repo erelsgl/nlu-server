@@ -18,9 +18,9 @@ createWinnowClassifierWithNormalizer: function() {
 	var fs = require('fs');
 
 	return new classifiers.EnhancedClassifier({
-		normalizer: FeaturesUnit.RegexpNormalizer(
+		normalizer: [FeaturesUnit.RegexpNormalizer(
 			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
-		),
+		)],
 		classifierType: classifiers.multilabel.BinaryRelevance,
 		classifierOptions: {
 				binaryClassifierType: classifiers.Winnow,
@@ -48,9 +48,10 @@ createWinnowSegmenter: function() {
 	var fs = require('fs');
 
 	return new classifiers.EnhancedClassifier({
-		normalizer: FeaturesUnit.RegexpNormalizer(
-			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
-		),
+		normalizer: [FeaturesUnit.RegexpNormalizer(
+			        JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
+			.concat(JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/ChatNormalizations.json')))
+		)],
 		classifierType: classifiers.multilabel.BinarySegmentation,
 		classifierOptions: {
 			binaryClassifierType: classifiers.Winnow,
@@ -84,9 +85,9 @@ createPassiveAggressiveClassifier: function() {
 			Constant: 5.0,
 			retrain_count: 12,
 		},
-		normalizer: FeaturesUnit.RegexpNormalizer(
+		normalizer: [FeaturesUnit.RegexpNormalizer(
 			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
-		),
+		)],
 		featureExtractor: [
 			//FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
 			FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),

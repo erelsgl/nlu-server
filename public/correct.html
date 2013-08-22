@@ -119,6 +119,7 @@ $(document).ready(function() {
 function translate() {
 	var request = formToObject($('#form'));
 	request.classifierName = classifierName; 
+	request.source = "expert";
 
 	$("#translations").html("<img src='images/ajax_loader.gif' /"+">");
 	$(".acknowledgement").html("");
