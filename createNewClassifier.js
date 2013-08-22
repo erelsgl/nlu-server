@@ -48,9 +48,9 @@ createWinnowSegmenter: function() {
 	var fs = require('fs');
 
 	return new classifiers.EnhancedClassifier({
-		//normalizer: FeaturesUnit.RegexpNormalizer(
-		//	JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
-		//),
+		normalizer: FeaturesUnit.RegexpNormalizer(
+			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
+		),
 		classifierType: classifiers.multilabel.BinarySegmentation,
 		classifierOptions: {
 			binaryClassifierType: classifiers.Winnow,
@@ -60,7 +60,7 @@ createWinnowSegmenter: function() {
 				margin: 1,
 			},
 			featureExtractor: [
-				//FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
+				FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
 				FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),
 				//FeaturesUnit.WordsFromText(3,false/*,4,0.6*/),
 			],

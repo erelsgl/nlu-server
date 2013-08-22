@@ -18,7 +18,7 @@ var express = require('express')
 
 
 //
-// Step 1: Configure an application with EXPRESS
+// Step 1: Configure an application with EXPRESS"
 //
 
 var app = express();

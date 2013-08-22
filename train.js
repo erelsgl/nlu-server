@@ -139,12 +139,12 @@ if (do_serialization) {
 		var classifier = createNewClassifier();
 
 		var grammarDataset = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset0Grammar.json"));
-		var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz.json"));
+		//var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz.json"));
 		var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz1class.json"));
 		var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset2Woz.json"));
-		var collectedDatasetMulti3 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset3Expert.json"));
+		var collectedDatasetMulti3 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset8WozAll.json"));
 
-		var dataset = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetMulti3);
+		var dataset = grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetMulti3);
 
 		console.log("\nstart training on "+dataset.length+" samples");
 		var startTime = new Date();
