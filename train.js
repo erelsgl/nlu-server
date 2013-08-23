@@ -77,6 +77,20 @@ if (do_cross_dataset_testing) {
 	//		        require('./createNewClassifier').createWinnowClassifierWithSpeller, 
 	//		        grammarDataset, newData, verbosity+2);
 	//process.exit(1);
+	console.log("Calculate learning curve");
+	mlutils.learningCurve(createNewClassifier, [
+	    grammarDataset.concat(collectedDatasetSingle), 
+	    //collectedDatasetMulti.slice(0,50), 
+	    //collectedDatasetMulti.slice(50,100), 
+	    collectedDatasetMulti2.slice(0,50), 
+	    collectedDatasetMulti2.slice(50,100), 
+	    collectedDatasetMulti8.slice(0,50), 
+	    collectedDatasetMulti8.slice(50,100), 
+	    collectedDatasetMulti8.slice(100,150), 
+	    collectedDatasetMulti8.slice(150,200)],
+	  verbosity);
+	console.log("");
+	
 	console.log("Train on grammar, test on new data: "+
 		trainAndTest(createNewClassifier, grammarDataset, newData, verbosity).shortStats())+"\n";
 	//process.exit(1);
