@@ -73,6 +73,10 @@ if (do_cross_dataset_testing) {
 		];*/
 
 	var newData = collectedDatasetMulti4;
+	//trainAndCompare(require('./createNewClassifier').createWinnowClassifierWithoutSpeller, 
+	//		        require('./createNewClassifier').createWinnowClassifierWithSpeller, 
+	//		        grammarDataset, newData, verbosity+2);
+	//process.exit(1);
 	console.log("Train on grammar, test on new data: "+
 		trainAndTest(createNewClassifier, grammarDataset, newData, verbosity).shortStats())+"\n";
 	//process.exit(1);
