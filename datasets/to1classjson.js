@@ -2,20 +2,16 @@
  * Application for converting a JSON dataset with multiple classes per sample, to a JSON dataset with a single class per sample, by duplicating the samples
  */
 
+if (process.argv.length<3) {
+	console.error("SYNTAX: node tojson <input>");
+	process.exit(1);
+}
+
 var fs = require('fs');
+var json = require('../../machine-learning/utils/json');
+
 var pathToFile = process.argv[2];
 var dataset = JSON.parse(fs.readFileSync(pathToFile));
-
-var write = function(json) {
-	//console.log(JSON.stringify(json, null, "\t"))
-	console.log("[");
-	for (var i=0; i<json.length; ++i) {
-		console.log(
-			(i>0? ", ": "  ")+
-			JSON.stringify(json[i]));
-	}	
-	console.log("]");
-}
 
 var newDataset = [];
 dataset.forEach(function(sample) {
@@ -24,5 +20,5 @@ dataset.forEach(function(sample) {
 	});
 });
 
-write(newDataset);
+console.log(json.toJSON(newDataset));
 

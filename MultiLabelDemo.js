@@ -43,7 +43,7 @@ var trainSet = classes.map(function(theClass) {
 	return sample;
 });
 
-fs.writeFileSync("./multilabel.train.arff", mlutils.toARFF(trainSet,"multilabel"));
+fs.writeFileSync("./multilabel.train.arff", mlutils.arff.toARFF(trainSet,"multilabel"));
 
 // Create a test set - combinations of zero or more classes per sample
 var testSet = [];
@@ -62,7 +62,7 @@ for (var numClasses=0; numClasses<classes.length; ++numClasses) {
 	}
 }
 
-fs.writeFileSync("./multilabel.test.arff", mlutils.toARFF(testSet,"multilabel"));
+fs.writeFileSync("./multilabel.test.arff", mlutils.arff.toARFF(testSet,"multilabel"));
 
 var explain = 0;
 classifier.trainBatch(trainSet);

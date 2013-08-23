@@ -43,6 +43,6 @@
 , {"source": "\\b(\\d+)k\\b", "target": "$1000"}
 , {"source": "\\b(\\d+),000\\b", "target": "$1000"}
 , {"source": "\\b(\\d+) percent\\b", "target": "$1%"}
-, {"source": "\\bo.k.", "target": "okay"}
-, {"source": "\\bok\\b", "target": "okay"}
+, {"source": "\\b[o][.][k][.]?", "target": "okay"}
+, {"source": "\\b[o][k]\\b", "target": "okay"}
 ]

@@ -4,6 +4,7 @@
 
 var fs = require('fs');
 var hash = require('../../machine-learning/utils/hash');
+var json = require('../../machine-learning/utils/json');
 
 /**
  * Read a dataset from a text file.
@@ -37,20 +38,9 @@ var read = function(pathToFile) {
 	return dataset;
 }
 
-var write = function(json) {
-	//console.log(JSON.stringify(json, null, "\t"))
-	console.log("[");
-	for (var i=0; i<json.length; ++i) {
-		console.log(
-			(i>0? ", ": "  ")+
-			JSON.stringify(json[i]));
-	}	
-	console.log("]");
-}
-
 if (process.argv.length<3) {
 	console.error("SYNTAX: node tojson <input>");
 } else {
 	var pathToFile = process.argv[2];
-	write(read(pathToFile));
+	console.log(json.toJSON(read(pathToFile)));
 }

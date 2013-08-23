@@ -22,7 +22,7 @@ var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Employer/Datas
 
 var featureExtractor = FeatureExtractor.WordsFromText(2,false/*,4,0.6*/);
 
-mlutils.toARFFs("datasets/Employer",
+mlutils.arff.toARFFs("datasets/Employer",
 	{
 		"Dataset0Grammar": grammarDataset,
 		"Dataset1Woz": collectedDatasetMulti,

@@ -2,19 +2,15 @@
  * Application for converting a all classes in a dataset from JSON strings to objects.
  */
 
+if (process.argv.length<3) {
+	console.error("SYNTAX: node tojson <input>");
+	process.exit(1);
+}
+
 var fs = require('fs');
+var json = require('../../machine-learning/utils/json');
 var pathToFile = process.argv[2];
 var dataset = JSON.parse(fs.readFileSync(pathToFile));
-
-var write = function(json) {
-	console.log("[");
-	for (var i=0; i<json.length; ++i) {
-		console.log(
-			(i>0? ", ": "  ")+
-			JSON.stringify(json[i]));
-	}	
-	console.log("]");
-}
 
 var newDataset = [];
 dataset.forEach(function(sample) {
@@ -24,5 +20,5 @@ dataset.forEach(function(sample) {
 	newDataset.push({input: sample.input, output: parsedOutput});
 });
 
-write(newDataset);
+console.log(json.toJSON(newDataset));
 

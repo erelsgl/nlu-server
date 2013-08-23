@@ -9,8 +9,6 @@ var mlutils = require('../machine-learning/utils');
 var _ = require('underscore')._;
 var fs = require('fs');
 
-require("./SpellingCorrecter").initialize(function(SpellingCorrecter) {
-
 console.log("machine learning trainer start\n");
 
 //var domainDataset = JSON.parse(fs.readFileSync("datasets/Employer/Dataset0Domain.json"));
@@ -77,6 +75,7 @@ if (do_cross_dataset_testing) {
 	var newData = collectedDatasetMulti4;
 	console.log("Train on grammar, test on new data: "+
 		trainAndTest(createNewClassifier, grammarDataset, newData, verbosity).shortStats())+"\n";
+	//process.exit(1);
 	console.log("Train on grammar-single1, test on new data: "+
 		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle), newData, verbosity).shortStats())+"\n";
 	console.log("Train on grammar-single1-multi2, test on new data: "+
@@ -157,8 +156,8 @@ if (do_serialization) {
 		classifier.trainBatch(dataset);
 		console.log("end training on "+dataset.length+" samples, "+(new Date()-startTime)+" [ms]");
 
-		console.log("\ntest on training data:");
-		mlutils.testLite(classifier, dataset);
+		console.log("\ntest on training data: "+mlutils.test(classifier, dataset).shortStats());
+		//mlutils.testLite(classifier, dataset);
 
 		var resultsBeforeReload = [];
 		for (var i=0; i<dataset.length; ++i) {
@@ -186,6 +185,3 @@ if (do_serialization) {
 } // do_serialization
 
 console.log("machine learning trainer end");
-
-});
-

@@ -41,8 +41,10 @@ checkSentence(text, function(err, results) {
 
 require("./SpellingCorrecter").initialize(function(SpellingCorrecter) {
 	console.log(SpellingCorrecter.correct('I cann giv yuo 12000dollars nad 20000 NIS per mnth. Is that O.k?'));
-	console.log(SpellingCorrecter.correct('I wnat to giv yuo 12000dollars nad 20000 NIS per mnth. Is that O.k?'));
+	console.log(SpellingCorrecter.correct('I wnat to giv yuo 12000dollars nad 20000 NIS per mnth for work as a QA. Is that O.k?'));
 	console.log(SpellingCorrecter.correct('"This iz a verry long sentens with many, many words nd some mistakes"'));
+	console.log(SpellingCorrecter.correct('hi'));
+	console.log(SpellingCorrecter.correct('hi '));
 	//console.log(SpellingCorrecter.correct("This is a smile :-)"));
 });
 
