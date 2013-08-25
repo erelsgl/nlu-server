@@ -18,11 +18,12 @@ createPassiveAggressiveClassifier: function() {
 	var fs = require('fs');
 
 	return new classifiers.EnhancedClassifier({
-		classifierType: classifiers.MultiLabelPassiveAggressive,
+		classifierType: classifiers.multilabel.PassiveAggressive,
 		classifierOptions: {
 			Constant: 5.0,
 			retrain_count: 12,
 		},
+		inputSplitter: FeaturesUnit.RegexpSplitter(/[.,;?!]|and/i),
 		normalizer: [FeaturesUnit.RegexpNormalizer(
 			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
 		)],
@@ -149,5 +150,6 @@ createWinnowClassifierWithoutSpeller: function() {
 
 //module.exports.defaultClassifier = module.exports.createPassiveAggressiveClassifier;
 //module.exports.defaultClassifier = module.exports.createWinnowClassifierWithoutSpeller;
-module.exports.defaultClassifier = module.exports.createWinnowSegmenter;
+//module.exports.defaultClassifier = module.exports.createWinnowSegmenter;
+module.exports.defaultClassifier = module.exports.createPassiveAggressiveClassifier;
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");

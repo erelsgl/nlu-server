@@ -13,4 +13,16 @@ Train on woz multi class, test on woz single class: Accuracy=38/298=13% HammingG
 Train on mixed, test on mixed: Accuracy=80/198=40% HammingGain=277/544=51% Precision=54% Recall=90% F1=67% timePerSample=0[ms]
 
 Train on mixed, test on mixed (2): Accuracy=97/199=49% HammingGain=258/526=49% Precision=52% Recall=90% F1=66% timePerSample=0[ms]
+
+start 5-fold cross-validation on 56 grammar samples and 298 single samples and 327 collected samples
+partition #0: 1 [ms]
+partition #1: 45771 [ms]
+partition #2: 92041 [ms]
+partition #3: 138210 [ms]
+partition #4: 182995 [ms]
+end 5-fold cross-validation: 227525 [ms]
+MICRO AVERAGE SUMMARY: Accuracy=21/325=6% HammingGain=1-3886/795=-389% Precision=16% Recall=95% F1=28% timePerSample=700[ms]
+machine learning trainer end
+
+
 machine learning trainer end

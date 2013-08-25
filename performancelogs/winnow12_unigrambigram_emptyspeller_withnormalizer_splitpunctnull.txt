@@ -19,14 +19,30 @@ Train on woz multi class, test on woz single class: Accuracy=240/298=81% Hamming
 Train on mixed, test on mixed: Accuracy=150/198=76% HammingGain=1-61/312=80% Precision=90% Recall=90% F1=90% timePerSample=3[ms]
 Train on mixed, test on mixed (2): Accuracy=153/199=77% HammingGain=1-59/290=80% Precision=92% Recall=87% F1=90% timePerSample=3[ms]
 
-start 3-fold cross-validation on 56 grammar samples and 602 collected samples
-partition #0: 1 [ms]
-partition #1: 6043 [ms]
-partition #2: 12094 [ms]
 
-end 3-fold cross-validation: 18062 [ms]
 
-MICRO AVERAGE SUMMARY: Accuracy=422/600=70% HammingGain=1-233/1141=80% Precision=93% Recall=86% F1=89% timePerSample=30[ms]
+start 5-fold cross-validation on 56 grammar samples and 426 collected samples (multi only)
+partition #0: 2 [ms]
+partition #1: 6305 [ms]
+partition #2: 12535 [ms]
+partition #3: 18520 [ms]
+partition #4: 24409 [ms]
+end 5-fold cross-validation: 30483 [ms]
+MICRO AVERAGE SUMMARY: Accuracy=240/425=56% HammingGain=1-272/1103=75% Precision=90% Recall=84% F1=87% timePerSample=72[ms]
+machine learning trainer end
+
+
+
+start 5-fold cross-validation on 56 grammar samples and 298 single samples and 327 collected samples
+partition #0: 2 [ms]
+partition #1: 6730 [ms]
+partition #2: 13294 [ms]
+partition #3: 19790 [ms]
+partition #4: 26415 [ms]
+end 5-fold cross-validation: 32933 [ms]
+MICRO AVERAGE SUMMARY: Accuracy=180/325=55% HammingGain=1-195/801=76% Precision=93% Recall=82% F1=87% timePerSample=101[ms]
+
+
 
 Building classifier for Employer
 

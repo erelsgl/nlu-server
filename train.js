@@ -30,9 +30,9 @@ var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/Employer/
 
 var createNewClassifier = require('./createNewClassifier').defaultClassifier;
 
-var do_split = true;
+var do_split = false;
 var do_cross_dataset_testing = false;
-var do_cross_validation = false;
+var do_cross_validation = true;
 var do_serialization = false;
 
 var verbosity = 0;
@@ -143,29 +143,28 @@ if (do_cross_dataset_testing) {
 if (do_cross_validation) {
 	verbosity=0;
 
-	var numOfFolds = 3; // for k-fold cross-validation
+	var numOfFolds = 5; // for k-fold cross-validation
 	var microAverage = new PrecisionRecall();
 	var macroAverage = new PrecisionRecall();
 	
-	var devSet = collectedDatasetSingle.concat(collectedDatasetMulti2).concat(collectedDatasetMulti8);
+	var devSet = (collectedDatasetMulti2).concat(collectedDatasetMulti8);
 	var startTime = new Date();
-	console.log("\nstart "+numOfFolds+"-fold cross-validation on "+grammarDataset.length+" grammar samples and "+devSet.length+" collected samples");
+	console.log("\nstart "+numOfFolds+"-fold cross-validation on "+grammarDataset.length+" grammar samples and "+collectedDatasetSingle.length+" single samples and "+devSet.length+" collected samples");
 	partitions.partitions(devSet, numOfFolds, function(trainSet, testSet, index) {
 		console.log("partition #"+index+": "+(new Date()-startTime)+" [ms]");
 		trainAndTest(createNewClassifier,
-			trainSet.concat(grammarDataset), testSet, verbosity,
+			trainSet.concat(grammarDataset).concat(collectedDatasetSingle), testSet, verbosity,
 			microAverage, macroAverage
 		);
 	});
 	//_(macroAverage).each(function(value,key) { macroAverage[key] = value/numOfFolds; });
-	console.log("\nend "+numOfFolds+"-fold cross-validation: "+(new Date()-startTime)+" [ms]");
+	console.log("end "+numOfFolds+"-fold cross-validation: "+(new Date()-startTime)+" [ms]");
 
 	//if (verbosity>0) {console.log("\n\nMACRO AVERAGE FULL STATS:"); console.dir(macroAverage.fullStats());}
 	//console.log("\nMACRO AVERAGE SUMMARY: "+macroAverage.shortStats());
 
 	microAverage.calculateStats();
-	if (verbosity>0) {console.log("\n\nMICRO AVERAGE FULL STATS:"); console.dir(microAverage.fullStats());}
-	console.log("\nMICRO AVERAGE SUMMARY: "+microAverage.shortStats());
+	console.log("MICRO AVERAGE SUMMARY: "+microAverage.shortStats());
 } // do_cross_validation
 
 if (do_serialization) {
