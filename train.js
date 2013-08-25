@@ -30,9 +30,9 @@ var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/Datas
 var createNewClassifier = require('./createNewClassifier').defaultClassifier;
 
 var do_split = false;
-var do_cross_dataset_testing = true;
+var do_cross_dataset_testing = false;
 var do_cross_validation = false;
-var do_serialization = false;
+var do_serialization = true;
 
 var verbosity = 0;
 var explain = 0;
@@ -46,8 +46,8 @@ var trainAndTestLite = mlutils.trainAndTestLite;
 if (do_split) {
 	console.log("\nSPLIT TO EASY AND HARD: ");
 	var classifier = createNewClassifier();
-	classifier.trainBatch(grammarDataset.concat(collectedDatasetSingle));
-	var datasets = mlutils.splitToEasyAndHard(classifier, collectedDatasetMulti2);
+	classifier.trainBatch(grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle2));
+	var datasets = mlutils.splitToEasyAndHard(classifier, collectedDatasetMulti8);
 	console.log("Easy - "+datasets.easy.length+": ");
 	console.log(mlutils.json.toJSON(datasets.easy));
 	console.log("Hard - "+datasets.hard.length+": ");
@@ -100,6 +100,8 @@ if (do_cross_dataset_testing) {
 	//	trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti2Easy), newData, verbosity).shortStats())+"\n";
 	//console.log("Train on grammar+single1+single2hard, test on new data: "+
 	//	trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle2Hard), newData, verbosity).shortStats())+"\n";
+	console.log("Train on grammar+single1+single2hard, test on new data: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle2Hard), newData, verbosity).shortStats())+"\n";
 	console.log("Train on grammar+single1+single2, test on new data: "+
 		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle2), newData, verbosity).shortStats())+"\n";
 
