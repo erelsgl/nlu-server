@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link type="text/css" rel="stylesheet" href="main.css" />
+<meta charset='utf-8' />
+
+<title>multi-label to single-label</title>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+
+<script>
+var inputDataset, outputDataset;
+var indexInputDataset;
+
+var newTask = function() {
+		if (indexInputDataset<inputDataset.length) {
+			var datum = inputDataset[indexInputDataset];
+			if (datum.output.length<=1) {  // single label - no need to split - send directly to output
+				outputDataset.push(datum);
+				$("#outputDataset").val(datasetToJson(outputDataset));
+				indexInputDataset++;
+				return newTask();
+			}
+			var newTaskHtml = "<div>\n"+
+					"<b>Sentence #"+(indexInputDataset+1)+" out of "+inputDataset.length+":</b>\n"+
+					"The following sentence has "+datum.output.length+" labels. Please split it into "+datum.output.length+" sub-sentences, each with a single label:"+
+					"<div id='inputSentence'>"+datum.input+"</div>"+
+					"</div>\n";
+			newTaskHtml += "<table border='1'><tr><th>Sub-sentence</th><th>Label</th></tr>\n";
+			for (var iLabel=0; iLabel<datum.output.length; ++iLabel) {
+				newTaskHtml += "<tr><td><input class='subsentence' /></td><td class='label'>"+JSON.stringify(datum.output[iLabel])+"</td></tr>\n";
+			}
+			newTaskHtml += "</table>\n";
+			newTaskHtml += "<button id='next'>Next</button>\n";
+		} else {
+			var newTaskHtml = 
+				"<p>Done! Please copy all the text in the 'output' text area below, and email to erelsgl@gmail.com</p>"+
+				"<p>Please also notify Erel at 03-5318054</p>";
+		}
+		indexInputDataset++;
+		return newTaskHtml;
+}
+
+var datasetToJson = function(dataset) {
+	var json = "[";
+	for (var i=0; i<dataset.length; ++i) {
+		json += (
+			(i>0? "\n, ": "\n  ")+
+			JSON.stringify(dataset[i]));
+	}	
+	json += "\n]\n";
+	return json;
+}
+
+var processTask = function() {
+	$(".subsentence").each(function() {
+		var subsentenceElement = $(this);
+		var labelElement = subsentenceElement.parent().next();
+		var datum = {input: subsentenceElement.val(), output: [JSON.parse(labelElement.text())]};
+		outputDataset.push(datum);
+	});
+	$("#outputDataset").val(datasetToJson(outputDataset));
+}
+
+$(document).ready(function() {
+	$("#start").click(function() {
+		inputDataset = JSON.parse($("#inputDataset").val());
+		indexInputDataset = 0;
+		outputDataset = [];
+		$("#tasks").html(newTask());
+		$("#start").attr("disabled","disabled");
+	});
+	
+	$("#tasks").on("click", "#next", function() {
+		processTask();
+		if (indexInputDataset<inputDataset.length) {
+			$("#tasks").html(newTask());
+		} else {
+			$("#tasks").html(
+				"<p>Done! Please copy all the text in the 'output' text area below, and email to erelsgl@gmail.com</p>"+
+				"<p>Please also notify Erel at 03-5318054</p>"
+			);
+		}
+	});	
+});
+</script>
+
+</head>
+
+<body id='split'>
+<script language="javascript" type="text/javascript">
+</script>
+
+<h1>Split multi-label samples to single-label samples</h1>
+<table>
+
+<tr>
+<td><h2>Input</h2></td>
+<td>
+<!-- textarea id='inputDataset'>
+[
+  {"input":"This sentence talks about topic1 and topic2","output":[{"topic1": true}, {"topic2": true}]}
+, {"input":"The sentence talks about birds, rocks and trees","output":[{"stones": "rocks"}, {"plants": "trees"}, {"animals": "birds"}]}
+, {"input":"The sentence talks about birds only","output":[{"animals": "birds"}]}
+, {"input":"The manager offers a job as a programmer with a fast promotion track","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Job Description":"Programmer"}}]}
+, {"input":"The manager offers a job as a programmer only","output":[{"Offer":{"Job Description":"Programmer"}}]}
+]
+</textarea -->
+
+<textarea id='inputDataset'>
+[
+  {"input":"So are you saying programmer with a fast promotion track?","output":[{"Offer":{"Job Description":"Programmer"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"I offer 12,000.","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"Did you have a preference on work hours? My normal day is 10 hours.","output":[{"Offer":{"Working Hours":"10 hours"}}]}
+, {"input":"I can agree to team manager. shall we say 12,000, 9 hours, and team manager?","output":[{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Job Description":"Team Manager"}},{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"that absurd amount of money I would ask you to be a programmer, and work for 10 hours a day","output":[{"Offer":{"Job Description":"Programmer"}},{"Offer":{"Working Hours":"10 hours"}}]}
+, {"input":"also, how is that fast promotion track coming along","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"I agree to offer a wage of 20000 NIS and 10% pension without a car","output":[{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I offer you 7000","output":[{"Offer":{"Salary":"7,000 NIS"}}]}
+, {"input":"I offer 20000 NIS","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I offer 7000 NIS","output":[{"Offer":{"Salary":"7,000 NIS"}}]}
+, {"input":"I offer 12 thousand","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"i offer 7000","output":[{"Offer":{"Salary":"7,000 NIS"}}]}
+, {"input":"I can offer 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I offer 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I accept your offer","output":[{"Accept":"previous"}]}
+, {"input":"I offer 12,000 with leased car","output":[{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Leased Car":"With leased car"}}]}
+, {"input":"How about 12,000 with leased carr with 20% pention 10 hours","output":[{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Working Hours":"10 hours"}}]}
+, {"input":"12,000 NIS and other as you said","output":[{"Offer":{"Salary":"12,000 NIS"}},{"Accept":"previous"}]}
+, {"input":"I agree to offer a wage of 20000 NIS and 10% pension with no a car","output":[{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I offer 12k","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"offer 12000","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"i reject","output":[{"Reject":"previous"}]}
+, {"input":"I offer you 20000, with car, QA, 0% pension Found, fast promotion track and 9 hours","output":[{"Offer":{"Job Description":"QA"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"0%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"so may be 20000, with car, programmer, 0% pension Found, fast promotion track and 9 hours","output":[{"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"0%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"what about 20000, with car, programmer, 10% pension Found, fast promotion track and 9 hours","output":[{"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"I offer 7000","output":[{"Offer":{"Salary":"7,000 NIS"}}]}
+, {"input":"fine","output":[{"Accept":"previous"}]}
+, {"input":"OK, I accept","output":[{"Accept":"previous"}]}
+, {"input":"Hi, let's begin our negotiation.","output":[{"Greet":true}]}
+, {"input":"This is my offer.","output":[{"Insist":"previous"}]}
+, {"input":"I accept this.","output":[{"Accept":"previous"}]}
+, {"input":"I offer salary 20000.","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"12000 nis","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"pension 20%","output":[{"Offer":{"Pension Fund":"20%"}}]}
+, {"input":"7000 nis","output":[{"Offer":{"Salary":"7,000 NIS"}}]}
+, {"input":"8 hours","output":[{"Offer":{"Working Hours":"8 hours"}}]}
+, {"input":"offer 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I'm offer 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"i offer you 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"10% pension fuon is good enough","output":[{"Offer":{"Pension Fund":"10%"}}]}
+, {"input":"and fast premotion truck is supper","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"but you should work at least 9 hours","output":[{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"I'm agree to your offer","output":[{"Accept":"previous"}]}
+, {"input":"I'm willing to pay 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+]
+</textarea>
+
+<p><button id='start'>Start</button></p>
+</td>
+</tr>
+
+<tr>
+<td class='edit'><h2>Edit</h2></td>
+<td class='edit'>
+<div id='tasks'>
+</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<h2>Output</h2>
+</td>
+<td>
+<textarea id='outputDataset'>
+[
+]
+</textarea>
+</td>
+</tr>
+
+	<div style='display:none;' id='credits'>
+		<div>Development: Erel Segal the Levite (erelsgl@gmail.com)</div>
+	</div>
+
+</body>
+</html>
+

@@ -20,15 +20,19 @@ var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/Dataset0Gramm
 var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz.json"));
 var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz1class.json"));
 var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2Woz.json"));
-var collectedDatasetMulti3 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset3Expert.json"));
+var collectedDatasetMulti2Easy = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2WozEasy.json"));
+var collectedDatasetMulti2Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2WozHard.json"));
+var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2Woz1class.json"));
+var collectedDatasetSingle2Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2WozHard1class.json"));
 var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset4WozAmt.json"));
 var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAll.json"));
 
 var createNewClassifier = require('./createNewClassifier').defaultClassifier;
 
+var do_split = false;
 var do_cross_dataset_testing = true;
-var do_cross_validation = true;
-var do_serialization = true;
+var do_cross_validation = false;
+var do_serialization = false;
 
 var verbosity = 0;
 var explain = 0;
@@ -39,45 +43,32 @@ var trainAndTest = mlutils.trainAndTest;
 var trainAndCompare = mlutils.trainAndCompare;
 var trainAndTestLite = mlutils.trainAndTestLite;
 
+if (do_split) {
+	console.log("\nSPLIT TO EASY AND HARD: ");
+	var classifier = createNewClassifier();
+	classifier.trainBatch(grammarDataset.concat(collectedDatasetSingle));
+	var datasets = mlutils.splitToEasyAndHard(classifier, collectedDatasetMulti2);
+	console.log("Easy - "+datasets.easy.length+": ");
+	console.log(mlutils.json.toJSON(datasets.easy));
+	console.log("Hard - "+datasets.hard.length+": ");
+	console.log(mlutils.json.toJSON(datasets.hard));
+}
+
 if (do_cross_dataset_testing) {
 	verbosity=0;
-	//console.log("Train on woz single class, test on woz multi class: "+
-	//	trainAndTestLite(createNewClassifier, collectedDatasetSingle, collectedDatasetMulti, verbosity).shortStats())+"\n";
-
-	//2-grams:
-	//Longest : Accuracy=54/99=55% HammingGain=235/319=72% Precision=94% Recall=77% F1=85% timePerSample=30[ms]
-	//Shortest: Accuracy=61/99=62% HammingGain=284/340=82% Precision=89% Recall=93% F1=91% timePerSample=25[ms]
-
-	//2-grams and 1-grams:
-	//Longest : Accuracy=79/99=80% HammingGain=297/319=93% Precision=95% Recall=98% F1=96% timePerSample=45[ms]
-	//Shortest: Accuracy=69/99=70% HammingGain=301/337=88% Precision=90% Recall=99% F1=94% timePerSample=33[ms]
-	//null    : Accuracy=78/99=79% HammingGain=276/308=89% Precision=99% Recall=91% F1=95% timePerSample=12[ms]
 	
+	//console.log("Train on grammar+single1+single2hard, test on new data: "+
+	//	trainAndTestLite(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle2Hard), collectedDatasetMulti2Hard, verbosity).shortStats())+"\n";
 	//process.exit(1);
-	
-	/*
-	
-	var newData = [
-	   {"input":"I offer 7000 NIS ",
-	    "output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
-	 , {"input":"I offer 7k NIS ",
-	    "output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
-	    ];*/
-	/*var newData = [
-   {"input":"How about 12k, programmer, with leased car, 10% pension, slow promotion track, and 9 hours?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"]}
- , {"input":"How about 12k, programmer, 10% pension, slow promotion track, and 8 hours?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
- , {"input":"How about 12k, programmer, 10% pension, slow promotion track, and 8 hours, no agreement on car?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"No agreement\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
- , {"input":"How about 12k, programmer, 10% pension, slow promotion track, and 8 hours, without leased car?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
- , {"input":"How about 7k, programmer, 10% pension, slow promotion track, and 8 hours, with leased car?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
- , {"input":"How about 7000 salary, programmer, 10% pension, slow promotion track, and 8 hours, with leased car?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}	
-		];*/
 
-	var newData = collectedDatasetMulti4;
+
+	var newData = collectedDatasetMulti8;
 	//trainAndCompare(require('./createNewClassifier').createWinnowClassifierWithoutSpeller, 
 	//		        require('./createNewClassifier').createWinnowClassifierWithSpeller, 
 	//		        grammarDataset, newData, verbosity+2);
 	//process.exit(1);
-	console.log("Calculate learning curve");
+	
+	/*console.log("Calculate learning curve");
 	mlutils.learningCurve(createNewClassifier, [
 	    grammarDataset.concat(collectedDatasetSingle), 
 	    //collectedDatasetMulti.slice(0,50), 
@@ -89,17 +80,31 @@ if (do_cross_dataset_testing) {
 	    collectedDatasetMulti8.slice(100,150), 
 	    collectedDatasetMulti8.slice(150,200)],
 	  verbosity);
-	console.log("");
+	console.log("");*/
 	
 	console.log("Train on grammar, test on new data: "+
 		trainAndTest(createNewClassifier, grammarDataset, newData, verbosity).shortStats())+"\n";
-	//process.exit(1);
-	console.log("Train on grammar-single1, test on new data: "+
+
+	console.log("Train on grammar+multi1, test on new data: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti), newData, verbosity).shortStats())+"\n";
+	console.log("Train on grammar+single1, test on new data: "+
 		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle), newData, verbosity).shortStats())+"\n";
-	console.log("Train on grammar-single1-multi2, test on new data: "+
+	console.log("Train on grammar+single1+multi1, test on new data: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti), newData, verbosity).shortStats())+"\n";
+
+	console.log("Train on grammar+single1+multi2, test on new data: "+
 		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti2), newData, verbosity).shortStats())+"\n";
-	console.log("Train on grammar-single1-multi1-multi2, test on new data: "+
-		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2), newData, verbosity).shortStats())+"\n";
+	//console.log("Train on grammar+single1+multi2hard, test on new data: "+
+	//	trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti2Hard), newData, verbosity).shortStats())+"\n";
+	//console.log("Train on grammar+single1+multi2easy, test on new data: "+
+	//	trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti2Easy), newData, verbosity).shortStats())+"\n";
+	//console.log("Train on grammar+single1+single2hard, test on new data: "+
+	//	trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle2Hard), newData, verbosity).shortStats())+"\n";
+	console.log("Train on grammar+single1+single2, test on new data: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle2), newData, verbosity).shortStats())+"\n";
+
+	console.log("Train on grammar+single1+single2+multi1+multi2, test on new data: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetSingle2), newData, verbosity).shortStats())+"\n";
 
 	//console.log("Train on old data, compare on new data: "+
 	//	trainAndCompare(require('./createNewClassifier').createWinnowClassifierWithoutNormalizer, require('./createNewClassifier').createWinnowClassifierWithNormalizer, oldData, newData, verbosity+3))+"\n";
@@ -165,9 +170,9 @@ if (do_serialization) {
 		//var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz.json"));
 		var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz1class.json"));
 		var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset2Woz.json"));
-		var collectedDatasetMulti3 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset8WozAll.json"));
+		var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset8WozAll.json"));
 
-		var dataset = grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetMulti3);
+		var dataset = grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetMulti8);
 
 		console.log("\nstart training on "+dataset.length+" samples");
 		var startTime = new Date();

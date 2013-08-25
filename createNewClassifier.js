@@ -42,6 +42,17 @@ createWinnowSegmenter: function() {
 	var classifiers = require(__dirname+'/../machine-learning/classifiers');
 	var FeaturesUnit = require(__dirname+'/../machine-learning/features');
 	var fs = require('fs');
+	
+	var winnowOptions = {
+				retrain_count: 12,  /* much better than 5, better than 10 */
+				do_averaging: false,
+				margin: 1,
+	};
+	
+	var ngramExtractors = [
+				FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
+				FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),
+	];
 
 	return new classifiers.EnhancedClassifier({
 		normalizer: [FeaturesUnit.RegexpNormalizer(
@@ -49,23 +60,17 @@ createWinnowSegmenter: function() {
 			.concat(JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/ChatNormalizations.json')))
 		)],
 		inputSplitter: FeaturesUnit.RegexpSplitter(/[.,;?!]|and/i),
+		pastTrainingSamples: [], // to enable retraining
+
 		classifierType: classifiers.multilabel.BinarySegmentation,
 		classifierOptions: {
 			binaryClassifierType: classifiers.Winnow,
-			binaryClassifierOptions: {
-				retrain_count: 12,  /* much better than 5, better than 10 */
-				do_averaging: false,
-				margin: 1,
-			},
-			featureExtractor: [
-				FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
-				FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),
-			],
+			binaryClassifierOptions: winnowOptions,
+			featureExtractor: ngramExtractors,
 			//segmentSplitStrategy: 'shortestSegment',
 			//segmentSplitStrategy: 'longestSegment',
 			segmentSplitStrategy: null,
 		},
-		pastTrainingSamples: [], // to enable retraining
 	});
 },
 
@@ -81,8 +86,6 @@ createWinnowClassifierWithSpeller: function() {
 	//fs.readFileSync(__dirname+'/knowledgeresources/spelling/seed.txt','utf-8').split("\n").forEach(function(word) {
 	//	spellChecker.understand(word);
 	//});
-	
-	//console.log("spellChecker(8)="+spellChecker.suggest(8));
 
 	return new classifiers.EnhancedClassifier({
 		normalizer: [FeaturesUnit.RegexpNormalizer(
@@ -145,6 +148,6 @@ createWinnowClassifierWithoutSpeller: function() {
 }
 
 //module.exports.defaultClassifier = module.exports.createPassiveAggressiveClassifier;
-module.exports.defaultClassifier = module.exports.createWinnowClassifierWithoutSpeller;
-//module.exports.defaultClassifier = module.exports.createWinnowSegmenter;
+//module.exports.defaultClassifier = module.exports.createWinnowClassifierWithoutSpeller;
+module.exports.defaultClassifier = module.exports.createWinnowSegmenter;
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");

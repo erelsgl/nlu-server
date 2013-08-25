@@ -1,0 +1,51 @@
+[
+  {"input":"I agree to a wage of 20000 NIS and 10% pension with no car","output":[{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I agree to a wage of 20000 NIS and 10% pension with out car","output":[{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"10%"}}]}
+, {"input":"12,000, Programmer, Leased Car, 10%, Slow Promo, 9 Hours?","output":[{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Slow promotion track"}},{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"I was thinking more in line of a QA role. I expect a good development plan, and easily progress in the company","output":[{"Offer":{"Job Description":"QA"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"With a starting point of 12,000 NIS and nine hours a week, I can offer you a fast promotion track, so that you might reach project manager position fairly quickly","output":[{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"I can suggest a 20% pension, but no car. is that acceptable to you?","output":[{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"ill give you a car","output":[{"Offer":{"Leased Car":"With leased car"}}]}
+, {"input":"i'll give you a better job but without car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I offer 20000 NIS and no car","output":[{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"no car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I offer you 7000 but no car","output":[{"Offer":{"Salary":"7,000 NIS"}},{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I offer 12000 and no car","output":[{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I offer no car and 20000 NIS","output":[{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I reject your offer!","output":[{"Reject":"previous"}]}
+, {"input":"I offer no car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I cannot accept your offer","output":[{"Reject":"previous"}]}
+, {"input":"reject","output":[{"Reject":"previous"}]}
+, {"input":"7000 is ridiculous","output":[{"Reject":"Salary"}]}
+, {"input":"o.k. but without leased car","output":[{"Offer":{"Leased Car":"Without leased car"}},{"Accept":"previous"}]}
+, {"input":"I offer 12000 and to be project manager without car 20% pension fast promotion and 9 hours","output":[{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Job Description":"Project Manager"}}]}
+, {"input":"I offer 20000 and to be project manager without car 20% pension fast promotion and 8 hours","output":[{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"8 hours"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Job Description":"Project Manager"}}]}
+, {"input":"I offer 12000 and to be project manager with car 20% pension fast promotion and 9 hours","output":[{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Job Description":"Project Manager"}},{"Offer":{"Leased Car":"With leased car"}}]}
+, {"input":"I offer you 12000 to work as project manager with car and 20% pension fund, slow promotion possibility and work for 9 hours a day","output":[{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Promotion Possibilities":"Slow promotion track"}},{"Offer":{"Job Description":"Project Manager"}}]}
+, {"input":"I offer you 12000 to work as team manager with car and 20% pension fund, slow promotion possibility and work for 9 hours a day","output":[{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Job Description":"Team Manager"}},{"Offer":{"Promotion Possibilities":"Slow promotion track"}}]}
+, {"input":"O.k, so what about fast promotion possibility and 20000 salary, but I'm insist the other","output":[{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Insist":"previous"}]}
+, {"input":"THis is ridiculous","output":[{"Reject":"previous"}]}
+, {"input":"I reject your offer","output":[{"Reject":"previous"}]}
+, {"input":"I cannot agree","output":[{"Reject":"previous"}]}
+, {"input":"why?","output":[{"Insist":"previous"}]}
+, {"input":"i'm insist","output":[{"Insist":"previous"}]}
+, {"input":"I cannot accpet","output":[{"Reject":"previous"}]}
+, {"input":"I insist","output":[{"Insist":"previous"}]}
+, {"input":"No I do not accept these terms.","output":[{"Reject":"previous"}]}
+, {"input":"how are you?","output":[{"Greet":true}]}
+, {"input":"I offer 20000 and fast promotion posiility and 20@ pension and 9 hours and you will be the project manager and will get a car","output":[{"Offer":{"Job Description":"Project Manager"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"offer fast premotion truk and inssist","output":[{"Insist":"previous"},{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"ok. with car but insist 20000","output":[{"Insist":"Salary"},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Leased Car":"With leased car"}}]}
+, {"input":"accapt salary","output":[{"Accept":"Salary"}]}
+, {"input":"accept salary and pension","output":[{"Accept":"Pension Fund"},{"Accept":"Salary"}]}
+, {"input":"i accept only salary","output":[{"Accept":"Salary"}]}
+, {"input":"This proposal is ridiculous","output":[{"Reject":"previous"}]}
+, {"input":"I would like 12,000NIS","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"I don't accept 7,000NIS","output":[{"Reject":"Salary"}]}
+, {"input":"No, I do NOT accept","output":[{"Reject":"previous"}]}
+, {"input":"I offer 20000 and a car","output":[{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"its too much!","output":[{"Reject":"previous"}]}
+, {"input":"12k , programmer 20% pension with cat fast premotion is graet","output":[{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"I'm disagree to you","output":[{"Reject":"previous"}]}
+, {"input":"I'm disagree to your offer","output":[{"Reject":"previous"}]}
+]

@@ -1,0 +1,107 @@
+[
+	{"input":"I agree to no car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I agree to 10% pension","output":[{"Offer":{"Pension Fund":"10%"}}]}
+, {"input":"I agree to a wage of 20000 NIS","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+,	{"input":"I agree to with out car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I agree to 10% pension","output":[{"Offer":{"Pension Fund":"10%"}}]}
+, {"input":"I agree to a wage of 20000 NIS","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"12,000?","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"Programmer?","output":[{"Offer":{"Job Description":"Programmer"}}]}
+, {"input":"Leased car?","output":[{"Offer":{"Leased Car":"With leased car"}}]}
+, {"input":"10%?","output":[{"Offer":{"Pension Fund":"10%"}}]}
+, {"input":"Slow Promo?","output":[{"Offer":{"Promotion Possibilities":"Slow promotion track"}}]}
+, {"input":"9 Hours?","output":[{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"I was thinking more in line of a QA role.","output":[{"Offer":{"Job Description":"QA"}}]}
+, {"input":"I expect a good development plan, and easily progress in the company.","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"With a starting point of 12,00 NIS.","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"I can offer you a fast promotion track, so that you might reach project manager position fairly quickly","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"With a starting point of nine hours a week.","output":[{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"I can suggest a 20% pension. is that acceptable to you?","output":[{"Offer":{"Pension Fund":"20%"}}]}
+, {"input":"I can suggest no car. is that acceptable to you?","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"ill give you a car","output":[{"Offer":{"Leased Car":"With leased car"}}]}
+, {"input":"i'll give you a better job but without car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I offer 20000 NIS","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I offer no car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"no car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I offer you 7000","output":[{"Offer":{"Salary":"7,000 NIS"}}]}
+, {"input":"I offer you no car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I offer 12000 ","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"I offer no car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I offer 20000 NIS","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I offer no car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I reject your offer!","output":[{"Reject":"previous"}]}
+, {"input":"I offer no car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I cannot accept your offer","output":[{"Reject":"previous"}]}
+, {"input":"reject","output":[{"Reject":"previous"}]}
+, {"input":"7000 is ridiculous","output":[{"Reject":"Salary"}]}
+, {"input":"without leased car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"o.k.","output":[{"Accept":"previous"}]}
+, {"input":"I offer 20% pension","output":[{"Offer":{"Pension Fund":"20%"}}]}
+, {"input":"I offer 12000","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"I offer 9 hours","output":[{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"I offer fast promotion","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"I offer without car ","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I offer you to be project manager","output":[{"Offer":{"Job Description":"Project Manager"}}]}
+, {"input":"I offer 20%","output":[{"Offer":{"Pension Fund":"20%"}}]}
+, {"input":"I offer 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I offer 8 hours","output":[{"Offer":{"Working Hours":"8 hours"}}]}
+, {"input":"I offer fast promotion","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"I offer without car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I offer you to be project manager","output":[{"Offer":{"Job Description":"Project Manager"}}]}
+, {"input":"I offer 20% pension","output":[{"Offer":{"Pension Fund":"20%"}}]}
+, {"input":"I offer 12000","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"I offer 9 hours","output":[{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"I offer fast promotion","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"I offer you be project manager","output":[{"Offer":{"Job Description":"Project Manager"}}]}
+, {"input":"I offer with car","output":[{"Offer":{"Leased Car":"With leased car"}}]}
+, {"input":"I offer you 20% pension fund,","output":[{"Offer":{"Pension Fund":"20%"}}]}
+, {"input":"I offer you 12000","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"I offer you work for 9 hours a day","output":[{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"I offer you car","output":[{"Offer":{"Leased Car":"With leased car"}}]}
+, {"input":"I offer you slow promotion possibility","output":[{"Offer":{"Promotion Possibilities":"Slow promotion track"}}]}
+, {"input":"I offer you to work as project manager","output":[{"Offer":{"Job Description":"Project Manager"}}]}
+, {"input":"I offer you 20% pension fund,","output":[{"Offer":{"Pension Fund":"20%"}}]}
+, {"input":"I offer you 12000","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"I offer you work for 9 hours a day","output":[{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"I offer you with car","output":[{"Offer":{"Leased Car":"With leased car"}}]}
+, {"input":"I offer you to work as team manager","output":[{"Offer":{"Job Description":"Team Manager"}}]}
+, {"input":"I offer you slow promotion possibility","output":[{"Offer":{"Promotion Possibilities":"Slow promotion track"}}]}
+, {"input":"so what about 20000 salary,","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"what about fast promotion possibility","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"THis is ridiculous","output":[{"Reject":"previous"}]}
+, {"input":"I reject your offer","output":[{"Reject":"previous"}]}
+, {"input":"I cannot agree","output":[{"Reject":"previous"}]}
+, {"input":"why?","output":[{"Insist":"previous"}]}
+, {"input":"i insist","output":[{"Insist":"previous"}]}
+, {"input":"I cannot accpet","output":[{"Reject":"previous"}]}
+, {"input":"I insist","output":[{"Insist":"previous"}]}
+, {"input":"No I do not accept these terms.","output":[{"Reject":"previous"}]}
+, {"input":"how are you?","output":[{"Greet":true}]}
+, {"input":"I offer you will be the project manager","output":[{"Offer":{"Job Description":"Project Manager"}}]}
+, {"input":"I offer a car","output":[{"Offer":{"Leased Car":"With leased car"}}]}
+, {"input":"I offer 20@ pension","output":[{"Offer":{"Pension Fund":"20%"}}]}
+, {"input":"I offer fast promotion posiility","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"I offer 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I offer 9 hours","output":[{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"inssist","output":[{"Insist":"previous"}]}
+, {"input":"offer fast premotion truk","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"I insist 20000","output":[{"Insist":"Salary"}]}
+, {"input":"20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"with car","output":[{"Offer":{"Leased Car":"With leased car"}}]}
+, {"input":"accapt salary","output":[{"Accept":"Salary"}]}
+, {"input":"accept pension","output":[{"Accept":"Pension Fund"}]}
+, {"input":"accept salary","output":[{"Accept":"Salary"}]}
+, {"input":"i accept only salary","output":[{"Accept":"Salary"}]}
+, {"input":"This proposal is ridiculous","output":[{"Reject":"previous"}]}
+, {"input":"I would like 12,000NIS","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"I don't accept 7,000NIS","output":[{"Reject":"Salary"}]}
+, {"input":"No, I do NOT accept","output":[{"Reject":"previous"}]}
+, {"input":"I offer a car","output":[{"Offer":{"Leased Car":"With leased car"}}]}
+, {"input":"I offer 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"its too much!","output":[{"Reject":"previous"}]}
+, {"input":"20% pension is graet","output":[{"Offer":{"Pension Fund":"20%"}}]}
+, {"input":"fast premotion is graet","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"12k is graet","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"I'm disagree to you","output":[{"Reject":"previous"}]}
+, {"input":"I'm disagree to your offer","output":[{"Reject":"previous"}]}
+]

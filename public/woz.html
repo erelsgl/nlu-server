@@ -52,6 +52,8 @@ $(document).ready(function() {
 
 	translationSocket.on('classes', function(classes) {
 		availableClasses = classes;
+		if (availableClasses.indexOf('Other')<0)
+			availableClasses.push('Other');
 	});
 	
 	function translationDataToString(translationData) {

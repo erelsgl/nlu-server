@@ -85,3 +85,11 @@ body#correct { font-size: 14pt;}
 	
 .translation_json {font-size:10px;}
 td.text {font-weight:bold}
+
+body#split { font-size: 14pt; text-align: left; }
+body#split button {font-size:20px;} 
+body#split #inputDataset, body#split #outputDataset { width:800px; height:200px; }
+body#split #inputSentence {margin:1em; border: 1px solid blue; padding: 1em;}
+body#split input.subsentence { width:800px }
+body#split td.edit {border-top: 1px solid black; border-bottom: 1px solid black; padding: 1em 0; margin: 1em 0;}
+

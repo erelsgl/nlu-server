@@ -1,0 +1,8 @@
+{
+    "STORAGE_NAME": "negochatstorage",
+    "STORAGE_KEY": "AoiHCVxc+ToAxP8dosCJL8RcQe8p1741LzVK9euKa96nbkIcHiPOQ6dDy7KskwJFuGUQm1Db0RZz+M+9fvNFAA==",
+    "PARTITION_KEY": "gameid",
+    "TABLE_NAME": "tasks",
+    "AGENT_PORT": "4001",
+    "PORT" :  "4000"
+}
