@@ -1,0 +1,44 @@
+[
+  {"input":"So are you saying programmer with a fast promotion track?","output":[{"Offer":{"Job Description":"Programmer"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"I can offer you 12,000.","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"Did you have a preference on work hours? Our normal day is 10 hours.","output":[{"Offer":{"Working Hours":"10 hours"}}]}
+, {"input":"I can agree to team manager. shall we say 12,000, 9 hours, and team manager?","output":[{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Job Description":"Team Manager"}},{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"i would like to apply to a project manager job in your company","output":[{"Offer":{"Job Description":"Project Manager"}}]}
+, {"input":"also, how is that fast promotion track coming along","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"I want a wage of 20000 NIS and 10% pension without a car","output":[{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I want 7000","output":[{"Offer":{"Salary":"7,000 NIS"}}]}
+, {"input":"I want 20000 NIS","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I want 7000 NIS","output":[{"Offer":{"Salary":"7,000 NIS"}}]}
+, {"input":"I want 12 thousand","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"i want 7000","output":[{"Offer":{"Salary":"7,000 NIS"}}]}
+, {"input":"I want 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I accept your offer","output":[{"Accept":"previous"}]}
+, {"input":"I want 12,000 with leased car","output":[{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Leased Car":"With leased car"}}]}
+, {"input":"12,000 NIS and other as you said","output":[{"Offer":{"Salary":"12,000 NIS"}},{"Accept":"previous"}]}
+, {"input":"I want 12k","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"offer 12000","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"i reject","output":[{"Reject":"previous"}]}
+, {"input":"I want 20000, with car, QA, 0% pension Found, fast promotion track and 9 hours","output":[{"Offer":{"Job Description":"QA"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"0%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"so may be 20000, with car, programmer, 0% pension Found, fast promotion track and 9 hours","output":[{"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"0%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"what about 20000, with car, programmer, 10% pension Found, fast promotion track and 9 hours","output":[{"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"I want 7000","output":[{"Offer":{"Salary":"7,000 NIS"}}]}
+, {"input":"fine","output":[{"Accept":"previous"}]}
+, {"input":"OK, I accept","output":[{"Accept":"previous"}]}
+, {"input":"Hi, let's begin our negotiation.","output":[{"Greet":true}]}
+, {"input":"This is my offer.","output":[{"Insist":"previous"}]}
+, {"input":"I accept this.","output":[{"Accept":"previous"}]}
+, {"input":"I cant take the job for less than 20000 nis","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I can work 10 hours","output":[{"Offer":{"Working Hours":"10 hours"}}]}
+, {"input":"I want salary 20000.","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"12000 nis","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"pension 20%","output":[{"Offer":{"Pension Fund":"20%"}}]}
+, {"input":"7000 nis","output":[{"Offer":{"Salary":"7,000 NIS"}}]}
+, {"input":"8 hours","output":[{"Offer":{"Working Hours":"8 hours"}}]}
+, {"input":"offer 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"i want 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"10% pension fuon is good enough","output":[{"Offer":{"Pension Fund":"10%"}}]}
+, {"input":"and fast premotion truck is supper","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"but i want to work only 9 hours","output":[{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"I'm agree to your offer","output":[{"Accept":"previous"}]}
+]
+

@@ -20,19 +20,20 @@ var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/Dataset0Gramm
 var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz.json"));
 var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz1class.json"));
 var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2Woz.json"));
-var collectedDatasetMulti2Easy = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2WozEasy.json"));
-var collectedDatasetMulti2Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2WozHard.json"));
+//var collectedDatasetMulti2Easy = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2WozEasy.json"));
+//var collectedDatasetMulti2Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2WozHard.json"));
 var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2Woz1class.json"));
 var collectedDatasetSingle2Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2WozHard1class.json"));
 var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset4WozAmt.json"));
 var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAll.json"));
+var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAllHard1class.json"));
 
 var createNewClassifier = require('./createNewClassifier').defaultClassifier;
 
-var do_split = false;
+var do_split = true;
 var do_cross_dataset_testing = false;
 var do_cross_validation = false;
-var do_serialization = true;
+var do_serialization = false;
 
 var verbosity = 0;
 var explain = 0;
@@ -46,8 +47,10 @@ var trainAndTestLite = mlutils.trainAndTestLite;
 if (do_split) {
 	console.log("\nSPLIT TO EASY AND HARD: ");
 	var classifier = createNewClassifier();
-	classifier.trainBatch(grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle2));
-	var datasets = mlutils.splitToEasyAndHard(classifier, collectedDatasetMulti8);
+	classifier.trainBatch(
+			       JSON.parse(fs.readFileSync("datasets/Candidate/Dataset0Grammar.json")).
+			concat(JSON.parse(fs.readFileSync("datasets/Candidate/Dataset1Woz1class.json"))));
+	var datasets = mlutils.splitToEasyAndHard(classifier, JSON.parse(fs.readFileSync("datasets/Candidate/Dataset2Woz.json")));
 	console.log("Easy - "+datasets.easy.length+": ");
 	console.log(mlutils.json.toJSON(datasets.easy));
 	console.log("Hard - "+datasets.hard.length+": ");
@@ -82,31 +85,34 @@ if (do_cross_dataset_testing) {
 	  verbosity);
 	console.log("");*/
 	
-	console.log("Train on grammar, test on new data: "+
-		trainAndTest(createNewClassifier, grammarDataset, newData, verbosity).shortStats())+"\n";
-
-	console.log("Train on grammar+multi1, test on new data: "+
-		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti), newData, verbosity).shortStats())+"\n";
-	console.log("Train on grammar+single1, test on new data: "+
-		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle), newData, verbosity).shortStats())+"\n";
-	console.log("Train on grammar+single1+multi1, test on new data: "+
-		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti), newData, verbosity).shortStats())+"\n";
-
-	console.log("Train on grammar+single1+multi2, test on new data: "+
-		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti2), newData, verbosity).shortStats())+"\n";
-	//console.log("Train on grammar+single1+multi2hard, test on new data: "+
-	//	trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti2Hard), newData, verbosity).shortStats())+"\n";
-	//console.log("Train on grammar+single1+multi2easy, test on new data: "+
-	//	trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti2Easy), newData, verbosity).shortStats())+"\n";
-	//console.log("Train on grammar+single1+single2hard, test on new data: "+
-	//	trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle2Hard), newData, verbosity).shortStats())+"\n";
-	console.log("Train on grammar+single1+single2hard, test on new data: "+
-		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle2Hard), newData, verbosity).shortStats())+"\n";
-	console.log("Train on grammar+single1+single2, test on new data: "+
-		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle2), newData, verbosity).shortStats())+"\n";
-
-	console.log("Train on grammar+single1+single2+multi1+multi2, test on new data: "+
-		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetSingle2), newData, verbosity).shortStats())+"\n";
+	console.log("Train on grammar, test on multi8: "+
+		trainAndTest(createNewClassifier, grammarDataset, collectedDatasetMulti8, verbosity).shortStats())+"\n";
+	console.log("Train on grammar+multi1, test on multi8: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti), collectedDatasetMulti8, verbosity).shortStats())+"\n";
+	console.log("Train on grammar+single1, test on multi8: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle), collectedDatasetMulti8, verbosity).shortStats())+"\n";
+	console.log("Train on grammar+single1, test on multi2: "+
+			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle), collectedDatasetMulti2, verbosity).shortStats())+"\n";
+	console.log("Train on grammar+single1+multi1, test on multi8: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti), collectedDatasetMulti8, verbosity).shortStats())+"\n";
+	
+	console.log("Train on grammar+single1+multi2, test on multi8: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
+	console.log("Train on grammar+single1+single2hard, test on multi8: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle2Hard), collectedDatasetMulti8, verbosity).shortStats())+"\n";
+	console.log("Train on grammar+single1+single2, test on new multi8: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
+	console.log("Train on grammar+single1+single2+multi1+multi2, test on multi8: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetSingle2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
+	
+	console.log("Train on grammar+single1+multi8, test on multi2: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti8), collectedDatasetMulti2, verbosity).shortStats())+"\n";
+	console.log("Train on grammar+single1+single8hard, test on multi2: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle8Hard), collectedDatasetMulti2, verbosity).shortStats())+"\n";
+	console.log("Train on grammar+single1+single8hard+multi8, test on multi2: "+
+			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle8Hard).concat(collectedDatasetMulti8), collectedDatasetMulti2, verbosity).shortStats())+"\n";
+	console.log("Train on grammar+single1+single8hard+multi1+multi8, test on multi2: "+
+		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti8).concat(collectedDatasetSingle8Hard), collectedDatasetMulti2, verbosity).shortStats())+"\n";
 
 	//console.log("Train on old data, compare on new data: "+
 	//	trainAndCompare(require('./createNewClassifier').createWinnowClassifierWithoutNormalizer, require('./createNewClassifier').createWinnowClassifierWithNormalizer, oldData, newData, verbosity+3))+"\n";
