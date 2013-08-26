@@ -1,0 +1,64 @@
+machine learning trainer start
+
+Calculate learning curve
+Train on 354 samples (2542 ms): Accuracy=21/50=42% HammingGain=1-34/108=69% Precision=94% Recall=73% F1=82% timePerSample=5[ms]
+Train on 404 samples (3267 ms): Accuracy=22/43=51% HammingGain=1-34/70=51% Precision=79% Recall=70% F1=74% timePerSample=4[ms]
+Train on 447 samples (3462 ms): Accuracy=30/50=60% HammingGain=1-27/190=86% Precision=95% Recall=91% F1=93% timePerSample=8[ms]
+Train on 497 samples (4560 ms): Accuracy=35/50=70% HammingGain=1-22/145=85% Precision=93% Recall=92% F1=92% timePerSample=5[ms]
+Train on 547 samples (5273 ms): Accuracy=30/50=60% HammingGain=1-24/82=71% Precision=91% Recall=78% F1=84% timePerSample=4[ms]
+Train on 597 samples (5756 ms): Accuracy=32/50=64% HammingGain=1-29/229=87% Precision=97% Recall=90% F1=93% timePerSample=10[ms]
+
+Train on grammar, test on new data: Accuracy=20/115=17% HammingGain=1-133/444=70% Precision=93% Recall=76% F1=83% timePerSample=9[ms]
+Train on grammar-single1, test on new data: Accuracy=59/115=51% HammingGain=1-85/444=81% Precision=93% Recall=88% F1=90% timePerSample=9[ms]
+Train on grammar-single1-multi2, test on new data: Accuracy=62/115=54% HammingGain=1-66/444=85% Precision=94% Recall=91% F1=92% timePerSample=9[ms]
+Train on grammar-single1-multi1-multi2, test on new data: Accuracy=63/115=55% HammingGain=1-67/444=85% Precision=93% Recall=91% F1=92% timePerSample=9[ms]
+Train on grammar data, test on woz single class: Accuracy=218/298=73% HammingGain=1-94/298=68% Precision=93% Recall=74% F1=82% timePerSample=2[ms]
+Train on grammar data, test on woz multi class: Accuracy=21/99=21% HammingGain=1-111/304=63% Precision=93% Recall=69% F1=79% timePerSample=7[ms]
+Train on woz single class, test on woz multi class: Accuracy=80/99=81% HammingGain=1-31/304=90% Precision=99% Recall=91% F1=95% timePerSample=6[ms]
+Train on woz multi class, test on woz single class: Accuracy=240/298=81% HammingGain=1-75/298=75% Precision=81% Recall=98% F1=89% timePerSample=2[ms]
+Train on mixed, test on mixed: Accuracy=150/198=76% HammingGain=1-61/312=80% Precision=90% Recall=90% F1=90% timePerSample=3[ms]
+Train on mixed, test on mixed (2): Accuracy=153/199=77% HammingGain=1-59/290=80% Precision=92% Recall=87% F1=90% timePerSample=3[ms]
+
+
+
+start 5-fold cross-validation on 56 grammar samples and 426 collected samples (multi only)
+partition #0: 2 [ms]
+partition #1: 6305 [ms]
+partition #2: 12535 [ms]
+partition #3: 18520 [ms]
+partition #4: 24409 [ms]
+end 5-fold cross-validation: 30483 [ms]
+MICRO AVERAGE SUMMARY: Accuracy=240/425=56% HammingGain=1-272/1103=75% Precision=90% Recall=84% F1=87% timePerSample=72[ms]
+machine learning trainer end
+
+
+
+start 5-fold cross-validation on 56 grammar samples and 298 single samples and 327 collected samples
+partition #0: 2 [ms]
+partition #1: 6730 [ms]
+partition #2: 13294 [ms]
+partition #3: 19790 [ms]
+partition #4: 26415 [ms]
+end 5-fold cross-validation: 32933 [ms]
+MICRO AVERAGE SUMMARY: Accuracy=180/325=55% HammingGain=1-195/801=76% Precision=93% Recall=82% F1=87% timePerSample=101[ms]
+
+
+
+Building classifier for Employer
+
+start training on 658 samples
+end training on 658 samples, 7236 [ms]
+
+test on training data: Accuracy=552/658=84% HammingGain=1-125/1199=90% Precision=98% Recall=91% F1=95% timePerSample=5[ms]
+
+test on training data after reload:
+
+Building classifier for Candidate
+
+start training on 677 samples
+end training on 677 samples, 7005 [ms]
+
+test on training data: Accuracy=566/677=84% HammingGain=1-126/1220=90% Precision=97% Recall=93% F1=95% timePerSample=5[ms]
+
+test on training data after reload:
+machine learning trainer end

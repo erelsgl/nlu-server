@@ -149,7 +149,6 @@ createWinnowClassifierWithoutSpeller: function() {
 }
 
 //module.exports.defaultClassifier = module.exports.createPassiveAggressiveClassifier;
-//module.exports.defaultClassifier = module.exports.createWinnowClassifierWithoutSpeller;
+module.exports.defaultClassifier = module.exports.createWinnowClassifierWithoutSpeller;
 //module.exports.defaultClassifier = module.exports.createWinnowSegmenter;
-module.exports.defaultClassifier = module.exports.createPassiveAggressiveClassifier;
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
