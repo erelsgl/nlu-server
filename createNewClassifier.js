@@ -70,7 +70,8 @@ createWinnowSegmenter: function() {
 			featureExtractor: ngramExtractors,
 			//segmentSplitStrategy: 'shortestSegment',
 			//segmentSplitStrategy: 'longestSegment',
-			segmentSplitStrategy: null,
+			segmentSplitStrategy: 'cheapestSegment',
+			//segmentSplitStrategy: null,
 		},
 	});
 },
@@ -149,6 +150,6 @@ createWinnowClassifierWithoutSpeller: function() {
 }
 
 //module.exports.defaultClassifier = module.exports.createPassiveAggressiveClassifier;
-module.exports.defaultClassifier = module.exports.createWinnowClassifierWithoutSpeller;
-//module.exports.defaultClassifier = module.exports.createWinnowSegmenter;
+//module.exports.defaultClassifier = module.exports.createWinnowClassifierWithoutSpeller;
+module.exports.defaultClassifier = module.exports.createWinnowSegmenter;
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");

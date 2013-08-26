@@ -1,5 +1,5 @@
 [ {"input":"","output":[]}
- , {"input":"I was actually interested in getting a little more money considering I would really be interested in a Team manager position.","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Reject\":\"Salary\"}"]}
+, {"input":"I was actually interested in getting a little more money considering I would really be interested in a Team manager position.","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Reject\":\"Salary\"}"]}
 , {"input":"I understand, but would at least need to work an 8 hour day considering that is the industry benchmark for a Programmer or Team Manager position.","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
 , {"input":"I am willing to take a 10% pension fund instead of 20% if you can increase the salary from 7,000 NIS to 12,000 NIS.","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
 , {"input":"Actually, 7,000 NIS is less than I was looking for, especially if you aren't including a company car.","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
