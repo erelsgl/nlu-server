@@ -75,23 +75,17 @@ createWinnowSegmenter: function() {
 
 
 
-createWinnowClassifierWithSpeller: function() {
+createWinnowClassifier: function() {
 	var classifiers = require(__dirname+'/../machine-learning/classifiers');
 	var FeaturesUnit = require(__dirname+'/../machine-learning/features');
 	var fs = require('fs');
-	
-	var spellChecker = require('wordsworth').getInstance();
-	// pre-train the spellChecker with a large file:
-	//fs.readFileSync(__dirname+'/knowledgeresources/spelling/seed.txt','utf-8').split("\n").forEach(function(word) {
-	//	spellChecker.understand(word);
-	//});
 
 	return new classifiers.EnhancedClassifier({
 		normalizer: [FeaturesUnit.RegexpNormalizer(
 			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
 		)],
 		inputSplitter: FeaturesUnit.RegexpSplitter(/[.,;?!]|and/i),
-		spellChecker: spellChecker,
+		spellChecker: null,
 		classifierType: classifiers.multilabel.BinaryRelevance.bind(this, {
 				binaryClassifierType: classifiers.Winnow.bind(this, {
 					retrain_count: 12,  /* much better than 5, better than 10 */
@@ -111,7 +105,8 @@ createWinnowClassifierWithSpeller: function() {
 },
 
 
-createWinnowClassifierWithoutSpeller: function() {
+
+createBayesClassifier: function() {
 	var classifiers = require(__dirname+'/../machine-learning/classifiers');
 	var FeaturesUnit = require(__dirname+'/../machine-learning/features');
 	var fs = require('fs');
@@ -122,11 +117,8 @@ createWinnowClassifierWithoutSpeller: function() {
 		)],
 		inputSplitter: FeaturesUnit.RegexpSplitter(/[.,;?!]|and/i),
 		spellChecker: null,
-		classifierType: classifiers.multilabel.BinaryRelevance.bind({
-				binaryClassifierType: classifiers.Winnow.bind({
-					retrain_count: 12,  /* much better than 5, better than 10 */
-					do_averaging: false,
-					margin: 1,
+		classifierType: classifiers.multilabel.BinaryRelevance.bind(this, {
+				binaryClassifierType: classifiers.Bayesian.bind(this, {
 				}),
 		}),
 		featureExtractor: [
@@ -140,9 +132,39 @@ createWinnowClassifierWithoutSpeller: function() {
 	});
 },
 
+
+createBayesSegmenter: function() {
+	var classifiers = require(__dirname+'/../machine-learning/classifiers');
+	var FeaturesUnit = require(__dirname+'/../machine-learning/features');
+	var fs = require('fs');
+	
+	var ngramExtractors = [
+			//	FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
+				FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),
+	];
+
+	return new classifiers.EnhancedClassifier({
+		normalizer: [FeaturesUnit.RegexpNormalizer(
+			        JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
+			.concat(JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/ChatNormalizations.json')))
+		)],
+		inputSplitter: FeaturesUnit.RegexpSplitter(/[.,;?!]|and/i),
+		pastTrainingSamples: [], // to enable retraining
+
+		classifierType: classifiers.multilabel.MulticlassSegmentation.bind(this, {
+			multiclassClassifierType: classifiers.Bayesian.bind(this, {
+				calculateRelativeProbabilities: true,
+			//	normalizeOutputProbabilities: true
+			}),
+			featureExtractor: ngramExtractors,
+		}),
+	});
+},
+
 }
 
 //module.exports.defaultClassifier = module.exports.createPassiveAggressiveClassifier;
-//module.exports.defaultClassifier = module.exports.createWinnowClassifierWithoutSpeller;
-module.exports.defaultClassifier = module.exports.createWinnowSegmenter;
+//module.exports.defaultClassifier = module.exports.createWinnowClassifier;
+//module.exports.defaultClassifier = module.exports.createWinnowSegmenter;
+module.exports.defaultClassifier = module.exports.createBayesSegmenter;
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
