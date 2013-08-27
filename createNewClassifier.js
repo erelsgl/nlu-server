@@ -18,11 +18,10 @@ createPassiveAggressiveClassifier: function() {
 	var fs = require('fs');
 
 	return new classifiers.EnhancedClassifier({
-		classifierType: classifiers.multilabel.PassiveAggressive,
-		classifierOptions: {
+		classifierType: classifiers.multilabel.PassiveAggressive.bind(this, {
 			Constant: 5.0,
 			retrain_count: 12,
-		},
+		}),
 		inputSplitter: FeaturesUnit.RegexpSplitter(/[.,;?!]|and/i),
 		normalizer: [FeaturesUnit.RegexpNormalizer(
 			JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json'))
@@ -63,16 +62,14 @@ createWinnowSegmenter: function() {
 		inputSplitter: FeaturesUnit.RegexpSplitter(/[.,;?!]|and/i),
 		pastTrainingSamples: [], // to enable retraining
 
-		classifierType: classifiers.multilabel.BinarySegmentation,
-		classifierOptions: {
-			binaryClassifierType: classifiers.Winnow,
-			binaryClassifierOptions: winnowOptions,
+		classifierType: classifiers.multilabel.BinarySegmentation.bind(this, {
+			binaryClassifierType: classifiers.Winnow.bind(this, winnowOptions),
 			featureExtractor: ngramExtractors,
 			//segmentSplitStrategy: 'shortestSegment',
 			//segmentSplitStrategy: 'longestSegment',
-			segmentSplitStrategy: 'cheapestSegment',
-			//segmentSplitStrategy: null,
-		},
+			//segmentSplitStrategy: 'cheapestSegment',
+			segmentSplitStrategy: null,
+		}),
 	});
 },
 
@@ -95,15 +92,13 @@ createWinnowClassifierWithSpeller: function() {
 		)],
 		inputSplitter: FeaturesUnit.RegexpSplitter(/[.,;?!]|and/i),
 		spellChecker: spellChecker,
-		classifierType: classifiers.multilabel.BinaryRelevance,
-		classifierOptions: {
-				binaryClassifierType: classifiers.Winnow,
-				binaryClassifierOptions: {
+		classifierType: classifiers.multilabel.BinaryRelevance.bind(this, {
+				binaryClassifierType: classifiers.Winnow.bind(this, {
 					retrain_count: 12,  /* much better than 5, better than 10 */
 					do_averaging: false,
 					margin: 1,
-				},
-		},
+				}),
+		}),
 		featureExtractor: [
 		    FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
 			FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),
@@ -127,15 +122,13 @@ createWinnowClassifierWithoutSpeller: function() {
 		)],
 		inputSplitter: FeaturesUnit.RegexpSplitter(/[.,;?!]|and/i),
 		spellChecker: null,
-		classifierType: classifiers.multilabel.BinaryRelevance,
-		classifierOptions: {
-				binaryClassifierType: classifiers.Winnow,
-				binaryClassifierOptions: {
+		classifierType: classifiers.multilabel.BinaryRelevance.bind({
+				binaryClassifierType: classifiers.Winnow.bind({
 					retrain_count: 12,  /* much better than 5, better than 10 */
 					do_averaging: false,
 					margin: 1,
-				},
-		},
+				}),
+		}),
 		featureExtractor: [
 		    FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
 			FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),

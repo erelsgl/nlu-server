@@ -11,30 +11,30 @@ var fs = require('fs');
 
 console.log("machine learning trainer start\n");
 
-//var domainDataset = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset0Domain.json"));
-var grammarDataset = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset0Grammar.json"));
+//var domainDataset = JSON.parse(fs.readFileSync("datasets/Employer/Dataset0Domain.json"));
+var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/Dataset0Grammar.json"));
 //grammarDataset.forEach(function(datum) {
 //	console.log(datum.input);
 //});
 
-var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset1Woz.json"));
-var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset1Woz1class.json"));
-var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset2Woz.json"));
-var collectedDatasetMulti2Easy = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset2WozEasy.json"));
-//var collectedDatasetMulti2Hard = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset2WozHard.json"));
-var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset2Woz1class.json"));
-var collectedDatasetSingle2Hard = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset2WozHard1class.json"));
-var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset4WozAmt.json"));
-var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset8WozAll.json"));
-var collectedDatasetMulti8Easy = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset8WozAllEasy.json"));
-var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset8WozAllHard1class.json"));
+var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz.json"));
+var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz1class.json"));
+var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2Woz.json"));
+var collectedDatasetMulti2Easy = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2WozEasy.json"));
+//var collectedDatasetMulti2Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2WozHard.json"));
+var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2Woz1class.json"));
+var collectedDatasetSingle2Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2WozHard1class.json"));
+var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset4WozAmt.json"));
+var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAll.json"));
+var collectedDatasetMulti8Easy = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAllEasy.json"));
+var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAllHard1class.json"));
 
 var createNewClassifier = require('./createNewClassifier').defaultClassifier;
 
 var do_split = false;
-var do_cross_dataset_testing = true;
-var do_cross_validation = false;
-var do_serialization = false;
+var do_cross_dataset_testing = false;
+var do_cross_validation = true;
+var do_serialization = true;
 
 var verbosity = 0;
 var explain = 0;
@@ -49,9 +49,9 @@ if (do_split) {
 	console.log("\nSPLIT TO EASY AND HARD: ");
 	var classifier = createNewClassifier();
 	classifier.trainBatch(
-			       JSON.parse(fs.readFileSync("datasets/Candidate/Dataset0Grammar.json")).
-			concat(JSON.parse(fs.readFileSync("datasets/Candidate/Dataset1Woz1class.json"))));
-	var datasets = mlutils.splitToEasyAndHard(classifier, JSON.parse(fs.readFileSync("datasets/Candidate/Dataset2Woz.json")));
+			       JSON.parse(fs.readFileSync("datasets/Employer/Dataset0Grammar.json")).
+			concat(JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz1class.json"))));
+	var datasets = mlutils.splitToEasyAndHard(classifier, JSON.parse(fs.readFileSync("datasets/Employer/Dataset2Woz.json")));
 	console.log("Easy - "+datasets.easy.length+": ");
 	console.log(mlutils.json.toJSON(datasets.easy));
 	console.log("Hard - "+datasets.hard.length+": ");
