@@ -232,7 +232,6 @@
 , {"input":"programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
 , {"input":" programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
 , {"input":"I would like to work as a Project manager at 20,000 NIS with a leased car, 20% pension fund, with a fast promotion track and work 10 hours a day.","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
-, {"input":"שלום","output":["{\"Greet\":true}"]}
 , {"input":"great, you'll get a car if you'll work 10 hours","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"only without a car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"]}
 , {"input":"project manager, no car, 10 hours and 12000 NIS?","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
@@ -372,4 +371,130 @@
 , {"input":"We offer a pension fund of 10%","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}"]}
 , {"input":"This is unacceptable","output":["{\"Reject\":\"previous\"}"]}
 , {"input":"project manager and 20%","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"]}
+, {"input":"Do you want a car?","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
+, {"input":"what about a car?","output":["{\"Query\":\"Leased Car\"}"]}
+, {"input":"what's up?","output":["{\"Greet\":true}"]}
+, {"input":"car?","output":["{\"Query\":\"Leased Car\"}"]}
+, {"input":"I need you to be a programmer","output":["{\"Insist\":\"Job Description\"}"]}
+, {"input":"Project Manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
+, {"input":"I offer project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
+, {"input":"you can be a project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
+, {"input":"no can do","output":["{\"Reject\":\"previous\"}"]}
+, {"input":"I don't need a programmer","output":["{\"Reject\":\"Job Description\"}"]}
+, {"input":"a programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
+, {"input":"a programmer and 20000 NIS","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
+, {"input":"how about a programmer and 20000?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
+, {"input":"how do you do?","output":["{\"Greet\":true}"]}
+, {"input":"I'm fine, you?","output":["{\"Greet\":true}"]}
+, {"input":"No, thats too high","output":["{\"Reject\":\"Salary\"}"]}
+, {"input":"okay, that's more like it","output":["{\"Accept\":\"previous\"}"]}
+, {"input":"I'll give you a car if you work 10 hours","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"Project manager and 10 hours","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"10 hours, 20000 NIS but no car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"20000 Nis and 10 hours","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"great, I'll also give you a car if you will work as a programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
+, {"input":"I offer with car and programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
+, {"input":"I also offer 10% pension","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}"]}
+, {"input":"okay, but with slow promotion track","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"]}
+, {"input":"okay, lets sign","output":["{\"Accept\":\"previous\"}"]}
+, {"input":"I need a programmer that works 10 hours","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"I also throw in a car","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
+, {"input":"I will also give you a car","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
+, {"input":"You'll also get a car","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
+, {"input":"A leased car, but 10 hours and you'll be a programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"why not?","output":["{\"Insist\":\"previous\"}"]}
+, {"input":"so what do you want?","output":["{\"Query\":\"bid\"}"]}
+, {"input":"no, this is more than my salary","output":["{\"Reject\":\"Salary\"}"]}
+, {"input":"Please accept 12000 NIS, this is very good","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"hello dear agent","output":["{\"Greet\":true}"]}
+, {"input":"Hello dear agent","output":["{\"Greet\":true}"]}
+, {"input":"No, I don't accet that","output":["{\"Reject\":\"previous\"}"]}
+, {"input":"I don't accept 20000 NIS","output":["{\"Reject\":\"Salary\"}"]}
+, {"input":"I offer you a salary of 12000 NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"I will give you a car, and fast promotion if you'll work for 10 hours","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"everyone works here 10 hours a day","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"project manager and 10 hours a day","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"I'll give you a car but let's not agree on the promotion possibilities","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Promotion Possibilities\":\"No agreement\"}}"]}
+, {"input":"Sure, if we'll also agree on 0% pension","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Pension Fund\":\"0%\"}}"]}
+, {"input":"No, sorry, I still want 10 hours","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"A car but 0% pension will be fine by me","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"0%\"}}"]}
+, {"input":"like I said. Car and 0% pension?","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"0%\"}}"]}
+, {"input":"great. what about promotion track?","output":["{\"Accept\":\"previous\"}","{\"Query\":\"Promotion Possibilities\"}"]}
+, {"input":"come on, time is running out","output":["{\"Query\":\"bid\"}","{\"Query\":\"issues\"}"]}
+, {"input":"so lets just say No agreement of the promotion track","output":["{\"Offer\":{\"Promotion Possibilities\":\"No agreement\"}}"]}
+, {"input":"Project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
+, {"input":"you can be a Project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
+, {"input":" Project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
+, {"input":"that is very high","output":["{\"Reject\":\"Salary\"}"]}
+, {"input":"for 20,000 you'll have to work 10 hours as a programmer, agreed?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"hi there","output":["{\"Greet\":true}"]}
+, {"input":"no, that's too high","output":["{\"Reject\":\"Salary\"}"]}
+, {"input":"I prepare to give 7000, and nothing more","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
+, {"input":"7000 is my final offer or I'm out","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
+, {"input":"7000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
+, {"input":"so no deal","output":["{\"Quit\":true}"]}
+, {"input":"7000 is my final offer","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
+, {"input":"so 12000 but also 10 hours a day","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"I will opt out","output":["{\"Quit\":true}"]}
+, {"input":"programmer and 12000?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"12000 with programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"programmer gets 12000","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"I dont accept 12000 if you're not a programmer","output":["{\"Reject\":\"Salary\"}"]}
+, {"input":"12000 and programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"now, a car comes with 10 hours a day","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"and I'll give you a leased car","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
+, {"input":"hello?","output":["{\"Greet\":true}"]}
+, {"input":"and 10% pension","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Pension Fund\":\"10%\"}}"]}
+, {"input":"no. we talked about 10 hours","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"10% pension?","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}"]}
+, {"input":"which promotion track you want?","output":["{\"Query\":\"Promotion Possibilities\"}"]}
+, {"input":"hello my agent","output":["{\"Greet\":true}"]}
+, {"input":"let's start with your job description","output":["{\"Query\":\"Job Description\"}"]}
+, {"input":"a programmer sounds okay?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
+, {"input":"let's talk about job description first","output":["{\"Query\":\"Job Description\"}"]}
+, {"input":"Do you want to be a QA?","output":["{\"Offer\":{\"Job Description\":\"QA\"}}"]}
+, {"input":"You need to work for 9 hours and your salary should be 12000","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"]}
+, {"input":"programmer?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
+, {"input":"the same offer but you'll be a programmer","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
+, {"input":"12000 Nis, 9 hours and a programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"]}
+, {"input":"I want you to be a QA","output":["{\"Offer\":{\"Job Description\":\"QA\"}}"]}
+, {"input":"great. Now, you'll get 12000 NIS","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"but for 10 hours","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"so you'll be a QA","output":["{\"Offer\":{\"Job Description\":\"QA\"}}"]}
+, {"input":"okay, let's move on","output":["{\"Accept\":\"previous\"}"]}
+, {"input":"you'll get a car if you'll work 10 hours","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"a car and 10 hours a day?","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"no. let me offer a counter offer","output":["{\"Reject\":\"previous\"}"]}
+, {"input":"10 hours and programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"car and 0% pension","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"0%\"}}"]}
+, {"input":"and slow track","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"]}
+, {"input":"I want to change the salary to 7000","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
+, {"input":"i offer salary of 7000","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
+, {"input":"I offer you work as a project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
+, {"input":"no, I offer 12000","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"I don't need a project manager","output":["{\"Reject\":\"Job Description\"}"]}
+, {"input":"my offer is programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
+, {"input":"no, a programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
+, {"input":" project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
+, {"input":"no. you can work for 12000","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"do you want to be a programmer?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
+, {"input":"a programmer?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
+, {"input":"9 hours a day and 10% pension?","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"]}
+, {"input":"No, sorry. Salary is 12000 no more","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"you already accepted programmer and 12000","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"no, I need a programmer.","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
+, {"input":"so what do you suggest?","output":["{\"Query\":\"bid\"}"]}
+, {"input":"I need a QA person","output":["{\"Offer\":{\"Job Description\":\"QA\"}}"]}
+, {"input":"good.","output":["{\"Accept\":\"previous\"}"]}
+, {"input":"What about 10 hours a day?","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"a project manager and 10 hours will get 12000 NIS","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"how about programmer and 20000 NIS?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
+, {"input":"leased car, programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
+, {"input":"You will be a programmer and leased car","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
+, {"input":"a programmer and leased car","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
+, {"input":"how about a programmer and 20000 NIS","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
+, {"input":"how about a programmer and 20000 NIS?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
+, {"input":"be a programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
+, {"input":"team manager","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"]}
+, {"input":"qa","output":["{\"Offer\":{\"Job Description\":\"QA\"}}"]}
 ] 
