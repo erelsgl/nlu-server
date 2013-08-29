@@ -29,21 +29,33 @@ function shallowJson(json, depth) {
  * -- For example: ["Offer", "Salary", "20000"]
  */
 function splitJson(json) {
+	return splitJsonRecursive(_.isString(json) && /{.*}/.test(json)?
+		JSON.parse(json):
+		json);
+}
+ 
+function splitJsonRecursive(json) {
 	if (!_.isObject(json))
 		return [json];
 	var firstKey = Object.keys(json)[0];
-	var rest = splitJson(json[firstKey]);
+	var rest = splitJsonRecursive(json[firstKey]);
 	rest.unshift(firstKey);
 	return rest;
 }
 
 function joinJson(parts) {
+	var json = joinJsonRecursive(parts);
+	//console.dir("joinJson "+JSON.stringify(parts)+" = "+JSON.stringify(json));
+	return _.isString(json)? json: JSON.stringify(json);
+}
+
+function joinJsonRecursive(parts) {
 	var firstKey = parts[0];
 	if (parts.length<=1)
 		return firstKey;
 	else {
 		var result = {};
-		result[firstKey] = joinJson(parts.slice(1));
+		result[firstKey] = joinJsonRecursive(parts.slice(1));
 		return result;
 	}
 }

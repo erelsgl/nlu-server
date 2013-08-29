@@ -1,11 +1,10 @@
 [ {"input":"","output":[]}
-, {"input":"I was actually interested in getting a little more money considering I would really be interested in a Team manager position.","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Reject\":\"Salary\"}"]}
+ , {"input":"I was actually interested in getting a little more money considering I would really be interested in a Team manager position.","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Reject\":\"Salary\"}"]}
 , {"input":"I understand, but would at least need to work an 8 hour day considering that is the industry benchmark for a Programmer or Team Manager position.","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
 , {"input":"I am willing to take a 10% pension fund instead of 20% if you can increase the salary from 7,000 NIS to 12,000 NIS.","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
 , {"input":"Actually, 7,000 NIS is less than I was looking for, especially if you aren't including a company car.","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
 , {"input":"I would like 12,000 NIS, with a car, a 10% pension fund, fast promotion track, an 8 hour work day, and a Team Manager or Project Manager.","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
 , {"input":"I appreciate you increasing the position from programmer to Team Manager, but must insist that I would make 12,000 NIS, especially with the increased responsibilities of a manger role.","output":["{\"Insist\":\"previous\"}","{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
-, {"input":"hi, I would like 12k for work as a programmer, with an option for a company car, 20% pension, fast track promotion and 9 hour schedule","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"]}
 , {"input":"I'm ok with removing the company car but will require 20% pension if I work 10 hours","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"I also require a rate of 12k","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
 , {"input":"Does that include fast track promotion?","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"]}
@@ -259,4 +258,37 @@
 , {"input":"give me your best offer","output":["{\"Query\":\"bid\"}"]}
 , {"input":"what is your best offer?","output":["{\"Query\":\"bid\"}"]}
 , {"input":"give me a good offer","output":["{\"Query\":\"bid\"}"]}
+, {"input":"hi","output":["{\"Greet\":true}"]}
+, {"input":"add a car","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
+, {"input":"I cannot do this","output":["{\"Reject\":\"previous\"}"]}
+, {"input":"this is ridiculous","output":["{\"Reject\":\"previous\"}"]}
+, {"input":"What do you offer?","output":["{\"Query\":\"bid\"}"]}
+, {"input":"Your offer is ridiculous","output":["{\"Reject\":\"previous\"}"]}
+, {"input":"I can never agree to this offer","output":["{\"Reject\":\"previous\"}"]}
+, {"input":"I disagree","output":["{\"Reject\":\"previous\"}"]}
+, {"input":"I offer 12,000NIS but want you to work 9 hours.","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"]}
+, {"input":"I agree to work 10 hours if you pay me 20,000NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"If you pay me 12,000NIS I will work 8 hours","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
+, {"input":"If you pay me 7,000 I will work only 8 hours","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
+, {"input":"I don't like to work 10 hours.","output":["{\"Reject\":\"Working Hours\"}"]}
+, {"input":"I offer you a car and fast promotion.","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"]}
+, {"input":"I offer you a car and pension 20%","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"]}
+, {"input":"I offer you leased car and fast promosion","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"]}
+, {"input":"I offer you a  car and fast promosion","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"]}
+, {"input":"I would like a lease car, 20,000NIS and fast promosion.","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"]}
+, {"input":"I can't work more than 8 hours","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
+, {"input":"I would like to get 12,000NIS and work only 8 hours","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
+, {"input":"I would like to get 20,000 NIS and leased car","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
+, {"input":"It is unreasonable to work 10 hours","output":["{\"Reject\":\"Working Hours\"}"]}
+, {"input":"I would like 20% pension, fast track promosion and work 8 hours","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
+, {"input":"I can't accept your offer","output":["{\"Reject\":\"previous\"}"]}
+, {"input":"I want 12,000, leased car and title of project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"I want 12,000, leased car and title of QA","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"I want 12,000, fast promotio and leased car","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"If you pay me 8,000 I will work only 8 hours","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
+, {"input":"Sounds great!","output":["{\"Accept\":\"previous\"}"]}
+, {"input":"I have a better offer.","output":["{\"Reject\":\"previous\"}"]}
+, {"input":"No; I would like 20,000 NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Reject\":\"previous\"}"]}
+, {"input":"What about my promotion track? ","output":["{\"Query\":\"Promotion Possibilities\"}"]}
+, {"input":"Does the offer include leased car?","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
 ] 
