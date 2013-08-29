@@ -11,6 +11,10 @@ Installation
 
 Use
 =========
+
+Asynchronous Initialization
+---------
+
 The sample `/data/en_US/seed.txt` and `/data/en_US/training.txt` files are fairly large and as such have
 been compressed and provided in an archive located in `/data/`.  To run the examples, extract
 the contents of the archive into `/en_US`.
@@ -44,6 +48,31 @@ the contents of the archive into `/en_US`.
 
       }
     );
+
+Synchronous Initialization
+---------
+
+    var sp = require('wordsworth').getInstance();
+
+    var seeds = ['one', 'two', 'three']; // language dictionary, one word per array index
+    var training = [
+        'large amounts of training text',
+        'ideally one sentence per array index'
+    ];
+
+    sp.initializeSync(seeds, training);
+    sp.exists('one');
+    sp.suggest('some mis-spelled word');
+
+
+Testing
+=========
+    npm test
+
+Contributors
+=========
+* [mrmarbles](http://github.com/mrmarbles)
+* [erelsgl](http://github.com/erelsgl)
 
 license
 -------

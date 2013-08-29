@@ -2,3 +2,4 @@
 .idea/
 node_modules/
 data/en_US/*
+.project
