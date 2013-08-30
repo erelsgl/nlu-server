@@ -26,29 +26,29 @@ Train on mixed, test on mixed: Accuracy=160/198=81% HammingGain=1-49/312=84% Pre
 Train on mixed, test on mixed (2): Accuracy=162/199=81% HammingGain=1-50/290=83% Precision=94% Recall=88% F1=91% timePerSample=0[ms]
 
 start 5-fold cross-validation on 56 grammar samples and 298 single samples and 592 collected samples
-partition #0: 1 [ms]
-partition #1: 3461 [ms]
+partition #0: 2 [ms]
+partition #1: 3503 [ms]
 partition #2: 6853 [ms]
-partition #3: 10325 [ms]
-partition #4: 13779 [ms]
-end 5-fold cross-validation: 17153 [ms]
-MICRO AVERAGE SUMMARY: Accuracy=393/590=67% HammingGain=1-272/1228=78% Precision=92% Recall=86% F1=89% timePerSample=29[ms]
+partition #3: 10256 [ms]
+partition #4: 13639 [ms]
+end 5-fold cross-validation: 17042 [ms]
+MICRO AVERAGE SUMMARY: Accuracy=383/590=65% HammingGain=1-273/1229=78% Precision=92% Recall=85% F1=88% timePerSample=29[ms]
 
 Building classifier for Employer
 
-start training on 291 samples
-end training on 291 samples, 776 [ms]
+start training on 1358 samples
+end training on 1358 samples, 4985 [ms]
 
-test on training data: Accuracy=277/291=95% HammingGain=1-26/291=91% Precision=96% Recall=96% F1=96% timePerSample=1[ms]
+test on training data: Accuracy=1199/1358=88% HammingGain=1-211/1997=89% Precision=95% Recall=94% F1=95% timePerSample=1[ms]
 
 Convert to string, and test on training data again
 
 Building classifier for Candidate
 
-start training on 626 samples
-end training on 626 samples, 1901 [ms]
+start training on 1538 samples
+end training on 1538 samples, 6244 [ms]
 
-test on training data: Accuracy=588/626=94% HammingGain=1-56/626=91% Precision=94% Recall=98% F1=96% timePerSample=1[ms]
+test on training data: Accuracy=1359/1538=88% HammingGain=1-217/2160=90% Precision=95% Recall=95% F1=95% timePerSample=1[ms]
 
 Convert to string, and test on training data again
 machine learning trainer end

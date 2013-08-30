@@ -23,7 +23,7 @@ var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/Datas
 var collectedDatasetMulti8Easy = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAllEasy.json"));
 var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAllHard1class.json"));
 
-var createNewClassifier = require('./createNewClassifier').defaultClassifier;
+var createNewClassifier = require('./classifierConstructors').defaultClassifier;
 
 var do_split = false;
 var do_cross_dataset_testing = false;
@@ -76,7 +76,7 @@ if (do_cross_dataset_testing) {
 	console.log("");*/
 	
 //	console.log("Train on grammar+single1, test on multi8: "+
-	//		trainAndTestLite(createNewClassifier, grammarDataset.concat(collectedDatasetSingle), collectedDatasetMulti8.slice(10,15), verbosity+3).shortStats())+"\n";
+//		trainAndTestLite(createNewClassifier, grammarDataset.concat(collectedDatasetSingle), collectedDatasetMulti8.slice(10,15), verbosity+3).shortStats())+"\n";
 //	process.exit(1);
 	
 	console.log("Train on grammar, test on multi8: "+
