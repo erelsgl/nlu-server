@@ -200,9 +200,9 @@ createHomerClassifier: function() {
 }
 
 //module.exports.defaultClassifier = module.exports.createPassiveAggressiveClassifier;
-module.exports.defaultClassifier = module.exports.createWinnowClassifier;
+//module.exports.defaultClassifier = module.exports.createWinnowClassifier;
 //module.exports.defaultClassifier = module.exports.createWinnowSegmenter;
 //module.exports.defaultClassifier = module.exports.createBayesSegmenter;
-//module.exports.defaultClassifier = module.exports.createHomerClassifier;
+module.exports.defaultClassifier = module.exports.createHomerClassifier;
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");

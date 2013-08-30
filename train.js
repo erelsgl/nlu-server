@@ -190,43 +190,22 @@ if (do_serialization) {
 		var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset8WozAllHard1class.json"));
 
 		var dataset = grammarDataset.
-			concat(collectedDatasetSingle).
-			concat(collectedDatasetMulti2).
-			concat(collectedDatasetSingle2).
-			concat(collectedDatasetMulti8).
+//			concat(collectedDatasetSingle).
+//			concat(collectedDatasetMulti2).
+//			concat(collectedDatasetSingle2).
+//			concat(collectedDatasetMulti8).
 			concat(collectedDatasetSingle8Hard)
 			;
 
-		console.log("\nstart training on "+dataset.length+" samples");
-		var startTime = new Date();
+		console.log("\nstart training on "+dataset.length+" samples"); var startTime = new Date();
 		classifier.trainBatch(dataset);
 		console.log("end training on "+dataset.length+" samples, "+(new Date()-startTime)+" [ms]");
 
 		console.log("\ntest on training data: "+mlutils.test(classifier, dataset).shortStats());
-		//mlutils.testLite(classifier, dataset);
 
-		var resultsBeforeReload = [];
-		for (var i=0; i<dataset.length; ++i) {
-			var actualClasses = classifier.classify(dataset[i].input);  
-			actualClasses.sort();
-			resultsBeforeReload[i] = actualClasses;
-		}
-		
+		console.log("\nConvert to string, and test on training data again");
 		fs.writeFileSync("trainedClassifiers/"+classifierName+"/MostRecentClassifier.json", 
-			mlutils.serialize.toString(classifier, createNewClassifier), 'utf8');
-	
-		var classifier2 = mlutils.serialize.fromString(
-			fs.readFileSync("trainedClassifiers/"+classifierName+"/MostRecentClassifier.json"), __dirname);
-	
-		console.log("\ntest on training data after reload:")
-		for (var i=0; i<dataset.length; ++i) {
-			var actualClasses = classifier2.classify(dataset[i].input);
-			actualClasses.sort();
-			if (!_(resultsBeforeReload[i]).isEqual(actualClasses)) {
-				throw new Error("Reload does not reproduce the original classifier! before reload="+resultsBeforeReload[i]+", after reload="+actualClasses);
-			}
-			if (verbosity>0) console.log(dataset[i].input+": "+actualClasses);
-		}
+			mlutils.serialize.toStringVerified(classifier, createNewClassifier, __dirname, dataset), 'utf8');
 	});
 } // do_serialization
 

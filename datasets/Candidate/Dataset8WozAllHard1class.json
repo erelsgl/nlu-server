@@ -138,22 +138,16 @@
 , {"input":"8 hours","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
 , {"input":"I will be the Programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
 , {"input":"Accept this offer or I will infect you","output":["{\"Insist\":\"previous\"}"]}
-, {"input":"I want 20 percent pension fund. Accept this fucking offer or I will infect you with a virus","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"]}
-, {"input":"I want Fast promotion track. Accept this fucking offer or I will infect you with a virus","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"]}
-, {"input":"I want 20,000 NIS . Accept this fucking offer or I will infect you with a virus","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
-, {"input":"I want 8 hours. Accept this fucking offer or I will infect you with a virus","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
+, {"input":"I want 20 percent pension fund","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"]}
+, {"input":"I want Fast promotion track","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"]}
+, {"input":"I want 20,000 NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
+, {"input":"I want 8 hours","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
 , {"input":"a project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
 , {"input":"No agreement on the car","output":["{\"Offer\":{\"Leased Car\":\"No agreement\"}}"]}
 , {"input":"i NEED a 20% Pensions fund","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"]}
 , {"input":"on the fast promotion track","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"]}
 , {"input":"20,000 NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
 , {"input":"the most i will work is 8 hours","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
-, {"input":"Alright cock sucker, I'm the project manager. So listen the fuck up and accept this shit. Also. Blow me.","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
-, {"input":"Alright cock sucker I want a leased car. So listen the fuck up and accept this shit. Also. Blow me.","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
-, {"input":"Alright cock sucker, my pension fund is going to be 20% cock sucker. So listen the fuck up and accept this shit. Also. Blow me.","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"]}
-, {"input":"Alright cock sucker, Fast Promotion. So listen the fuck up and accept this shit. Also. Blow me.","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"]}
-, {"input":"Alright cock sucker, my salary WILL BE 20,000 NIS. So listen the fuck up and accept this shit. Also. Blow me.","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
-, {"input":"Alright cock sucker, I work 8 hours. So listen the fuck up and accept this shit. Also. Blow me.","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
 , {"input":"Alright, Team Manager","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"]}
 , {"input":"Alright, Leased car","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
 , {"input":"Alright, 20% pension","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"]}
