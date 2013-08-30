@@ -232,6 +232,7 @@
 , {"input":"programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
 , {"input":" programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
 , {"input":"I would like to work as a Project manager at 20,000 NIS with a leased car, 20% pension fund, with a fast promotion track and work 10 hours a day.","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"שלום","output":["{\"Greet\":true}"]}
 , {"input":"great, you'll get a car if you'll work 10 hours","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"only without a car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"]}
 , {"input":"project manager, no car, 10 hours and 12000 NIS?","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
@@ -379,6 +380,7 @@
 , {"input":"Project Manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
 , {"input":"I offer project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
 , {"input":"you can be a project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
+, {"input":"shalom","output":["{\"Greet\":true}"]}
 , {"input":"no can do","output":["{\"Reject\":\"previous\"}"]}
 , {"input":"I don't need a programmer","output":["{\"Reject\":\"Job Description\"}"]}
 , {"input":"a programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
@@ -497,4 +499,41 @@
 , {"input":"be a programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
 , {"input":"team manager","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"]}
 , {"input":"qa","output":["{\"Offer\":{\"Job Description\":\"QA\"}}"]}
+, {"input":"be a project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
+, {"input":"what about project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
+, {"input":"I offer that you be a project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
+, {"input":"projet manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
+, {"input":"i offer 12000","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"This is too high. How about 7,000 ?","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Reject\":\"Salary\"}"]}
+, {"input":"Great. 10 hours?","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"What do you offer?","output":["{\"Query\":\"bid\"}"]}
+, {"input":"20,000 it too high. How about 7,000 NIS?","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Reject\":\"Salary\"}"]}
+, {"input":"great. How about 10 hours a day?","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"What do you suggest?","output":["{\"Query\":\"bid\"}"]}
+, {"input":"12,000 NIS and 10 hours?","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"So how many hours?","output":["{\"Query\":\"Working Hours\"}"]}
+, {"input":"What do you offer for the number of hours?","output":["{\"Query\":\"Working Hours\"}"]}
+, {"input":"No.","output":["{\"Reject\":\"previous\"}"]}
+, {"input":"Without a car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"]}
+, {"input":"No!!","output":["{\"Reject\":\"previous\"}"]}
+, {"input":"So, we agreed on 12,000 NIS and 10 hours","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"Pension fund of 10%","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}"]}
+, {"input":"My counter offer: 10 hours, 10% and 12,000","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"10 hours, 20% and 12,000 NIS","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"I offer job description of QA","output":["{\"Offer\":{\"Job Description\":\"QA\"}}"]}
+, {"input":"I offer 12,000 NIS, 20%, Project Manager and 10 hours","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"I agree to offer a wage of 20000 NIS and 10% pension without a car.","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
+, {"input":"I agree to your offer.","output":["{\"Accept\":\"previous\"}"]}
+, {"input":"With leased car and Team Manager","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
+, {"input":"agreed","output":["{\"Accept\":\"previous\"}"]}
+, {"input":"How about 10 hours?","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"7,000 ?","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
+, {"input":"I suggest 12,000 and 10 hours","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"how about 12,000 and 9 hours?","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"]}
+, {"input":"No, without leased car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"]}
+, {"input":"Team manager?","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"]}
+, {"input":"12,000 with leased car","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"No","output":["{\"Reject\":\"previous\"}"]}
+, {"input":"I offer 12,000 NIS  20%  Project Manager  10 hours","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 ] 
+

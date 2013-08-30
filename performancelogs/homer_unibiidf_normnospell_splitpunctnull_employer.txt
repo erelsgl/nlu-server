@@ -36,19 +36,19 @@ MICRO AVERAGE SUMMARY: Accuracy=390/590=66% HammingGain=1-276/1227=78% Precision
 
 Building classifier for Employer
 
-start training on 1358 samples
-end training on 1358 samples, 5078 [ms]
+start training on 1396 samples
+end training on 1396 samples, 5225 [ms]
 
-test on training data: Accuracy=1248/1358=92% HammingGain=1-157/1997=92% Precision=96% Recall=97% F1=96% timePerSample=1[ms]
+test on training data: Accuracy=1258/1396=90% HammingGain=1-199/2057=90% Precision=94% Recall=96% F1=95% timePerSample=1[ms]
 
 Convert to string, and test on training data again
 
 Building classifier for Candidate
 
-start training on 1538 samples
-end training on 1538 samples, 6244 [ms]
+start training on 1544 samples
+end training on 1544 samples, 6966 [ms]
 
-test on training data: Accuracy=1360/1538=88% HammingGain=1-215/2160=90% Precision=96% Recall=94% F1=95% timePerSample=1[ms]
+test on training data: Accuracy=1398/1544=91% HammingGain=1-180/2168=92% Precision=95% Recall=96% F1=96% timePerSample=1[ms]
 
 Convert to string, and test on training data again
 machine learning trainer end

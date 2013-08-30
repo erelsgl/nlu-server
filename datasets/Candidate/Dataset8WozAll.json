@@ -290,5 +290,10 @@
 , {"input":"What about my promotion track? ","output":["{\"Query\":\"Promotion Possibilities\"}"]}
 , {"input":"Does the offer include leased car?","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
 , {"input":"Project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
-]
- 
+, {"input":"Working 10 hours is too much for me.","output":["{\"Reject\":\"Working Hours\"}"]}
+, {"input":"I do not want to work 9 hours.","output":["{\"Reject\":\"Working Hours\"}"]}
+, {"input":"I would like to be team manager.","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"]}
+, {"input":"I need higher pension.","output":["{\"Reject\":\"Pension Fund\"}"]}
+, {"input":"Could you please make a compromise? ","output":["{\"Query\":\"compromise\"}"]}
+, {"input":"I want a wage of 20000 NIS and 10% pension with car.","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
+] 
