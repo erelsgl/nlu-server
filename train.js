@@ -26,8 +26,8 @@ var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/Employer/
 var createNewClassifier = require('./createNewClassifier').defaultClassifier;
 
 var do_split = false;
-var do_cross_dataset_testing = true;
-var do_cross_validation = true;
+var do_cross_dataset_testing = false;
+var do_cross_validation = false;
 var do_serialization = true;
 
 var verbosity = 0;
