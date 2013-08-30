@@ -190,10 +190,10 @@ if (do_serialization) {
 		var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset8WozAllHard1class.json"));
 
 		var dataset = grammarDataset.
-//			concat(collectedDatasetSingle).
-//			concat(collectedDatasetMulti2).
-//			concat(collectedDatasetSingle2).
-//			concat(collectedDatasetMulti8).
+			concat(collectedDatasetSingle).
+			concat(collectedDatasetMulti2).
+			concat(collectedDatasetSingle2).
+			concat(collectedDatasetMulti8).
 			concat(collectedDatasetSingle8Hard)
 			;
 

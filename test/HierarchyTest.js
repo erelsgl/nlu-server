@@ -46,9 +46,9 @@ describe('joinJson', function() {
 		joinJson(["Offer"]).should.eql("Offer");
 	});
 	it('works for simple objects (depth 2)', function() {
-		joinJson(["Offer", "Salary"]).should.eql({Offer: "Salary"});
+		joinJson(["Offer", "Salary"]).should.eql(JSON.stringify({Offer: "Salary"}));
 	});
 	it('works for complex objects (depth 3)', function() {
-		joinJson(["Offer", "Salary", "20000"]).should.eql({Offer: {Salary: "20000"}});
+		joinJson(["Offer", "Salary", "20000"]).should.eql(JSON.stringify({Offer: {Salary: "20000"}}));
 	});
 });
