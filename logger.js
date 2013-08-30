@@ -40,9 +40,14 @@ exports.readSingleJsonObjectSync = function(pathToLog) {
  * @return an array of all objects in the file.
  */
 exports.readJsonLogSync = function(pathToLog) {
-  var json = "["+fs.readFileSync(pathToLog, 'utf8').replace(/\n/g,",")+"]";
-  json = json.replace(/,\]/,"]");
-  return JSON.parse(json);
+  if (fs.existsSync(pathToLog)) {
+    var json = "["+fs.readFileSync(pathToLog, 'utf8').replace(/\n/g,",")+"]";
+    json = json.replace(/,\]/,"]");
+    return JSON.parse(json);
+  } else {
+	console.warn("WARNING: File '"+pathToLog+"' does not exist!");
+	return [];
+  }
 }
 
 

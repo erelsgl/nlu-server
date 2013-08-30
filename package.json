@@ -18,7 +18,8 @@
     "useragent": "~2.0.4",
     "node-fs": "~0.1.6",
     "wordsworth": "*",
-    "underscore" : ">=1.1.0"
+    "underscore" : ">=1.1.0",
+    "seed-random": "*"
   },
   "devDependencies": {
 	  "mocha": "*",

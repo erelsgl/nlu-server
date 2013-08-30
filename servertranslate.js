@@ -309,14 +309,19 @@ function translate(request, requester, requester_is_private_translator, callback
 			if (request.multiple) {  // return multiple samples per class
 				var samples = activeClassifier.backClassify(classes);
 			} else {  // return a single sample per class, selected at random
+				if (request.randomSeed) {
+					var seedRandom = require('seed-random');
+					seedRandom(request.randomSeed, true);
+				} else {
+					if (seedRandom)
+						seedRandom(undefined, true);
+				}
 				if (!(classes instanceof Array))
 					classes = [classes];
 				var samples = [];
 				classes.forEach(function(theClass) {
 					var samplesOfClass = activeClassifier.backClassify(theClass);
 					var randomIndex = Math.floor(Math.random()*samplesOfClass.length);
-					//console.dir(samplesOfClass);
-					//console.log("randomIndex="+randomIndex);
 					var randomSample = samplesOfClass[randomIndex];
 					samples.push(randomSample);
 				});
