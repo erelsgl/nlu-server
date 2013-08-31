@@ -27,18 +27,18 @@ module.exports = function() {return {
 		featureExtractor: [
 			ftrs.WordsFromText(1,false/*,4,0.8*/),
 			ftrs.WordsFromText(2,false/*,4,0.6*/),
+		//	ftrs.WordsFromText(3,true/*,4,0.6*/),
 		],
 		
 		featureExtractorForClassification: [
 			ftrs.Hypernyms(JSON.parse(fs.readFileSync('knowledgeresources/hypernyms.json'))),
 		],
 
-		featureDocumentFrequency: {},
 		multiplyFeaturesByIDF: true,
+		//minFeatureDocumentFrequency: 2,
 
 		pastTrainingSamples: [], // to enable retraining
 
-		
 		winnowOptions: {
 				retrain_count: 12,  /* much better than 5, better than 10 */
 				promotion: 1.5,

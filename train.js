@@ -80,9 +80,9 @@ if (do_cross_dataset_testing) {
 //		trainAndTestLite(createNewClassifier, grammarDataset, grammarDataset, verbosity+3).shortStats())+"\n";
 //	console.log("Train on single, test on single: "+
 //			trainAndTestLite(createNewClassifier, collectedDatasetSingle, collectedDatasetSingle, verbosity+3).shortStats())+"\n";
-	console.log("Train on woz multi class, test on woz single class: "+
-			trainAndTest(createNewClassifier, collectedDatasetMulti, collectedDatasetSingle, verbosity).shortStats())+"\n";
-	process.exit(1);
+//	console.log("Train on woz multi class, test on woz single class: "+
+//			trainAndTest(createNewClassifier, collectedDatasetMulti, collectedDatasetSingle, verbosity).shortStats())+"\n";
+//	process.exit(1);
 	
 	console.log("Train on grammar, test on multi8: "+
 			trainAndTest(createNewClassifier, grammarDataset, collectedDatasetMulti8, verbosity).shortStats())+"\n";
