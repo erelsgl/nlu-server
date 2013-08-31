@@ -312,10 +312,11 @@ function translate(request, requester, requester_is_private_translator, callback
 				if (request.randomSeed) {
 					var seedRandom = require('seed-random');
 					seedRandom(request.randomSeed, true);
-				} else {
-					if (seedRandom)
-						seedRandom(undefined, true);
 				}
+//				else {
+//					if (seedRandom)
+//						seedRandom(undefined, true);
+//				}
 				if (!(classes instanceof Array))
 					classes = [classes];
 				var samples = [];
