@@ -41,7 +41,10 @@ module.exports = function() {return {
 		
 		winnowOptions: {
 				retrain_count: 12,  /* much better than 5, better than 10 */
+				promotion: 1.5,
+				demotion: 0.5,
 				do_averaging: false,
 				margin: 1,
+				//debug: true,
 		},
 }};

@@ -26,9 +26,10 @@ var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/Employer/
 var createNewClassifier = require('./classifierConstructors').defaultClassifier;
 
 var do_split = false;
+
 var do_cross_dataset_testing = false;
-var do_cross_validation = false;
-var do_serialization = true;
+var do_cross_validation = true;
+var do_serialization = false;
 
 var verbosity = 0;
 var explain = 0;
@@ -75,9 +76,13 @@ if (do_cross_dataset_testing) {
 	  verbosity);
 	console.log("");*/
 	
-//	console.log("Train on grammar+single1, test on multi8: "+
-//		trainAndTestLite(createNewClassifier, grammarDataset.concat(collectedDatasetSingle), collectedDatasetMulti8.slice(10,15), verbosity+3).shortStats())+"\n";
-//	process.exit(1);
+//	console.log("Train on grammar, test on grammar: "+
+//		trainAndTestLite(createNewClassifier, grammarDataset, grammarDataset, verbosity+3).shortStats())+"\n";
+//	console.log("Train on single, test on single: "+
+//			trainAndTestLite(createNewClassifier, collectedDatasetSingle, collectedDatasetSingle, verbosity+3).shortStats())+"\n";
+	console.log("Train on woz multi class, test on woz single class: "+
+			trainAndTest(createNewClassifier, collectedDatasetMulti, collectedDatasetSingle, verbosity).shortStats())+"\n";
+	process.exit(1);
 	
 	console.log("Train on grammar, test on multi8: "+
 			trainAndTest(createNewClassifier, grammarDataset, collectedDatasetMulti8, verbosity).shortStats())+"\n";
@@ -156,11 +161,10 @@ if (do_cross_validation) {
 	var startTime = new Date();
 	console.log("\nstart "+numOfFolds+"-fold cross-validation on "+grammarDataset.length+" grammar samples and "+collectedDatasetSingle.length+" single samples and "+devSet.length+" collected samples");
 	partitions.partitions(devSet, numOfFolds, function(trainSet, testSet, index) {
-		console.log("partition #"+index+": "+(new Date()-startTime)+" [ms]");
-		trainAndTest(createNewClassifier,
+		var stats = trainAndTest(createNewClassifier,
 			trainSet.concat(constantTrainSet), testSet, verbosity,
-			microAverage, macroAverage
-		);
+			microAverage, macroAverage).shortStats();
+		console.log("partition #"+index+": "+(new Date()-startTime)+" [ms]: "+stats);
 	});
 	//_(macroAverage).each(function(value,key) { macroAverage[key] = value/numOfFolds; });
 	console.log("end "+numOfFolds+"-fold cross-validation: "+(new Date()-startTime)+" [ms]");

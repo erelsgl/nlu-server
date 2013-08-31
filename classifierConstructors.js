@@ -108,9 +108,14 @@ createHomerClassifier: function() {
 			multilabelClassifierType: classifiers.multilabel.BinaryRelevance.bind(this, {
 				binaryClassifierType: classifiers.Winnow.bind(this, settings.winnowOptions),
 			}),
+//			multilabelClassifierType: classifiers.multilabel.PassiveAggressive.bind(this, {
+//				Constant: 5.0,
+//				retrain_count: 1,
+//			}),
 			splitLabel: Hierarchy.splitJson,
 			joinLabel:  Hierarchy.joinJson,
 		}),
+		//normalize_features: true,
 	}));
 },
 

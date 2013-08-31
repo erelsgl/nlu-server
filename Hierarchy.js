@@ -52,7 +52,7 @@ function joinJson(parts) {
 function joinJsonRecursive(parts) {
 	var firstKey = parts[0];
 	if (parts.length<=1)
-		return firstKey;
+		return (firstKey=='true'? true: firstKey);
 	else {
 		var result = {};
 		result[firstKey] = joinJsonRecursive(parts.slice(1));
