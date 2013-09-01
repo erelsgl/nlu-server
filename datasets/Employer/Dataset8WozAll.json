@@ -22,11 +22,9 @@
 , {"input":"If you want 20000, then a your daily schedule will have to be 10 hours","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"20000, Programmer, with leased car, 10% pension, fast track, 10 hours","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"20000, Programmer, with leased car, 10% pension, slow promotion track, 9 hours","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"]}
-, {"input":"hi,I am unable to meet that demand, but can offer you 18,000 as a programmer wth 15% pension","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
 , {"input":"What about QA?","output":["{\"Offer\":{\"Job Description\":\"QA\"}}"]}
 , {"input":"why did your work hours decrease?","output":["{\"Query\":\"bid\"}"]}
 , {"input":"As a project manager, we would require 10 hours of work","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
-, {"input":"I could do programmer at 18,000 with no leased vehicle","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"]}
 , {"input":"programmer, 20k no car, but 20% pension","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
 , {"input":"I could do 12k salary with the car and the pension","output":["{\"Accept\":\"Leased Car\"}","{\"Accept\":\"Pension Fund\"}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
 , {"input":"deal","output":["{\"Accept\":\"previous\"}"]}
