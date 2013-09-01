@@ -27,7 +27,7 @@ module.exports = function() {return {
 		featureExtractor: [
 			ftrs.WordsFromText(1,false/*,4,0.8*/),
 			ftrs.WordsFromText(2,false/*,4,0.6*/),
-		//	ftrs.WordsFromText(3,true/*,4,0.6*/),
+		//	ftrs.WordsFromText(3,true/*,4,0.6*/), // much slower, only a little better
 		],
 		
 		featureExtractorForClassification: [
@@ -40,11 +40,16 @@ module.exports = function() {return {
 		pastTrainingSamples: [], // to enable retraining
 
 		winnowOptions: {
-				retrain_count: 12,  /* much better than 5, better than 10 */
-				promotion: 1.5,
-				demotion: 0.5,
-				do_averaging: false,
-				margin: 1,
-				//debug: true,
+			retrain_count: 15,  /* 12 is much better than 5, better than 10 */
+			promotion: 1.5,
+			demotion: 0.5,
+			do_averaging: false,
+			margin: 1,
+			//debug: true,
+		},
+		
+		paOptions: {
+			retrain_count: 1,
+			Constant: 5.0,
 		},
 }};

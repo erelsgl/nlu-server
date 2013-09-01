@@ -7,7 +7,7 @@
 
 
 var _ = require('underscore')._;
-var FeaturesUnit = require('../machine-learning/features');
+var ftrs = require('../machine-learning/features');
 var fs = require('fs');
 
 /**
@@ -20,8 +20,8 @@ var fs = require('fs');
 exports.toKeshet = function(dataset, relationName, featureExtractor) {
 	if (!featureExtractor) featureExtractor=_.identity;
 
-	var inputFeatureLookupTable = new FeaturesUnit.FeatureLookupTable();
-	var outputFeatureLookupTable = new FeaturesUnit.FeatureLookupTable();
+	var inputFeatureLookupTable = new ftrs.FeatureLookupTable();
+	var outputFeatureLookupTable = new ftrs.FeatureLookupTable();
 
 	// Extract the input attributes (- features):
 	dataset.forEach(function(datum) {
@@ -55,8 +55,8 @@ exports.toKeshet = function(dataset, relationName, featureExtractor) {
 exports.toKeshets = function(outputFolder, mapFileNameToDataset, featureExtractor) {
 	if (!featureExtractor) featureExtractor=_.identity;
 
-	var inputFeatureLookupTable = new FeaturesUnit.FeatureLookupTable();
-	var outputFeatureLookupTable = new FeaturesUnit.FeatureLookupTable();
+	var inputFeatureLookupTable = new ftrs.FeatureLookupTable();
+	var outputFeatureLookupTable = new ftrs.FeatureLookupTable();
 	
 	// Extract the input attributes (- features):
 	for (var relationName in mapFileNameToDataset) {
@@ -139,9 +139,9 @@ if (process.argv[1] === __filename) {
 	var collectedDatasetMulti8Easy = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAllEasy.json"));
 	var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAllHard1class.json"));
 	
-	var ngramExtractors = FeaturesUnit.CollectionOfExtractors([
-		FeaturesUnit.WordsFromText(1,false/*,4,0.8*/),
-		FeaturesUnit.WordsFromText(2,false/*,4,0.6*/),
+	var ngramExtractors = ftrs.CollectionOfExtractors([
+		ftrs.WordsFromText(1,false/*,4,0.8*/),
+		ftrs.WordsFromText(2,false/*,4,0.6*/),
 	]);
 	
 	exports.toKeshets(

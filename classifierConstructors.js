@@ -19,10 +19,7 @@ createPassiveAggressiveClassifier: function() {
 	var extend = require('util')._extend;
 
 	return new classifiers.EnhancedClassifier(extend(settings,{
-		classifierType: classifiers.multilabel.PassiveAggressive.bind(this, {
-			Constant: 5.0,
-			retrain_count: 12,
-		}),
+		classifierType: classifiers.multilabel.PassiveAggressive.bind(this, settings.paOptions),
 	}));
 },
 
@@ -51,7 +48,7 @@ createWinnowSegmenter: function() {
 createWinnowClassifier: function() {
 	var classifiers = require(__dirname+'/../machine-learning/classifiers');
 	var settings = require(__dirname+'/classifierSettings')();
-	var extend = require('utils')._extend;
+	var extend = require('util')._extend;
 
 	return new classifiers.EnhancedClassifier(extend(settings, {
 		classifierType: classifiers.multilabel.BinaryRelevance.bind(this, {
@@ -105,15 +102,12 @@ createHomerClassifier: function() {
 
 	return new classifiers.EnhancedClassifier(extend(settings, {
 		classifierType: classifiers.multilabel.Homer.bind(this, {
+			splitLabel: Hierarchy.splitJson,
+			joinLabel:  Hierarchy.joinJson,
 			multilabelClassifierType: classifiers.multilabel.BinaryRelevance.bind(this, {
 				binaryClassifierType: classifiers.Winnow.bind(this, settings.winnowOptions),
 			}),
-//			multilabelClassifierType: classifiers.multilabel.PassiveAggressive.bind(this, {
-//				Constant: 5.0,
-//				retrain_count: 1,
-//			}),
-			splitLabel: Hierarchy.splitJson,
-			joinLabel:  Hierarchy.joinJson,
+//			multilabelClassifierType: */classifiers.multilabel.PassiveAggressive.bind(this, settings.paOptions),
 		}),
 		//normalize_features: true,
 	}));
@@ -123,8 +117,6 @@ createHomerClassifier: function() {
 
 //module.exports.defaultClassifier = module.exports.createPassiveAggressiveClassifier;
 //module.exports.defaultClassifier = module.exports.createWinnowClassifier;
-//module.exports.defaultClassifier = module.exports.createWinnowSegmenter;
-//module.exports.defaultClassifier = module.exports.createBayesSegmenter;
 module.exports.defaultClassifier = module.exports.createHomerClassifier;
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
