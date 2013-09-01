@@ -107,7 +107,7 @@ createHomerClassifier: function() {
 			multilabelClassifierType: classifiers.multilabel.BinaryRelevance.bind(this, {
 				binaryClassifierType: classifiers.Winnow.bind(this, settings.winnowOptions),
 			}),
-//			multilabelClassifierType: */classifiers.multilabel.PassiveAggressive.bind(this, settings.paOptions),
+//			multilabelClassifierType: classifiers.multilabel.PassiveAggressive.bind(this, settings.paOptions),
 		}),
 		//normalize_features: true,
 	}));

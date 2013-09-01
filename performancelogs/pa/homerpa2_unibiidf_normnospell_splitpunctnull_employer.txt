@@ -1,0 +1,12 @@
+machine learning trainer start
+
+
+start 5-fold cross-validation on 56 grammar samples and 298 single samples and 639 collected samples
+partition #0: 9899 [ms]: Accuracy=58/127=46% HammingGain=1-207/242=14% Precision=54% Recall=95% F1=69% timePerSample=0[ms]
+partition #1: 18694 [ms]: Accuracy=52/127=41% HammingGain=1-311/280=-11% Precision=47% Recall=94% F1=63% timePerSample=0[ms]
+partition #2: 27789 [ms]: Accuracy=59/127=46% HammingGain=1-226/278=19% Precision=55% Recall=95% F1=70% timePerSample=0[ms]
+partition #3: 37214 [ms]: Accuracy=51/127=40% HammingGain=1-311/256=-21% Precision=45% Recall=95% F1=61% timePerSample=0[ms]
+partition #4: 46703 [ms]: Accuracy=67/127=53% HammingGain=1-221/244=9% Precision=53% Recall=96% F1=68% timePerSample=0[ms]
+end 5-fold cross-validation: 46703 [ms]
+MICRO AVERAGE SUMMARY: Accuracy=287/635=45% HammingGain=1-1276/1300=2% Precision=50% Recall=95% F1=66% timePerSample=74[ms]
+machine learning trainer end

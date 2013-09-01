@@ -35,6 +35,7 @@ module.exports = function() {return {
 		],
 
 		multiplyFeaturesByIDF: true,
+		
 		//minFeatureDocumentFrequency: 2,
 
 		pastTrainingSamples: [], // to enable retraining
@@ -49,7 +50,7 @@ module.exports = function() {return {
 		},
 		
 		paOptions: {
-			retrain_count: 1,
+			retrain_count: 2,
 			Constant: 5.0,
 		},
 }};
