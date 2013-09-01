@@ -11,13 +11,14 @@ var ftrs = require('../machine-learning/features');
 var fs = require('fs');
 
 /**
- * convert a single dataset to Weka ARFF string.
+ * convert a single dataset to Joseph Keshet file.
  * @param dataset an array of samples in the format {input: {feature1: xxx, feature2: yyy, ...}, output: [1,2,3]}
  * @param relationName first name of files.
- * @param featureExtractor [optional]
- * @return an ARFF string. 
+ * @param normalizers [array of functions, optional]
+ * @param featureExtractor [function, optional]
  */
-exports.toKeshet = function(dataset, relationName, featureExtractor) {
+exports.toKeshet = function(dataset, relationName, normalizers, featureExtractor) {
+	if (!normalizers) normalizers = [];
 	if (!featureExtractor) featureExtractor=_.identity;
 
 	var inputFeatureLookupTable = new ftrs.FeatureLookupTable();
@@ -25,6 +26,9 @@ exports.toKeshet = function(dataset, relationName, featureExtractor) {
 
 	// Extract the input attributes (- features):
 	dataset.forEach(function(datum) {
+		normalizers.forEach(function(normalizer){
+			datum.input = normalizer(datum.input);
+		});
 		datum.features = featureExtractor(datum.input, {});
 		if (!_.isObject(datum.features))
 			throw new Error("Expected feature vector to be a hash, but found "+JSON.stringify(datum.features));
@@ -51,9 +55,12 @@ exports.toKeshet = function(dataset, relationName, featureExtractor) {
 /**
  * convert many dataset to Joseph Keshet files.
  * @param mapFileNameToDataset 
+ * @param normalizers [array of functions, optional]
+ * @param featureExtractor [function, optional]
  */
-exports.toKeshets = function(outputFolder, mapFileNameToDataset, featureExtractor) {
+exports.toKeshets = function(outputFolder, mapFileNameToDataset, normalizers, featureExtractor) {
 	if (!featureExtractor) featureExtractor=_.identity;
+	if (!normalizers) normalizers = [];
 
 	var inputFeatureLookupTable = new ftrs.FeatureLookupTable();
 	var outputFeatureLookupTable = new ftrs.FeatureLookupTable();
@@ -62,6 +69,9 @@ exports.toKeshets = function(outputFolder, mapFileNameToDataset, featureExtracto
 	for (var relationName in mapFileNameToDataset) {
 		var dataset = mapFileNameToDataset[relationName];
 		dataset.forEach(function(datum) {
+			normalizers.forEach(function(normalizer){
+				datum.input = normalizer(datum.input);
+			});
 			datum.features = featureExtractor(datum.input, {});
 			if (!_.isObject(datum.features))
 				throw new Error("Expected feature vector to be a hash, but found "+JSON.stringify(datum.features));
@@ -99,7 +109,8 @@ exports.toKeshets = function(outputFolder, mapFileNameToDataset, featureExtracto
  * @param dataset an array of samples in the format {input: {feature1: xxx, feature2: yyy, ...}, output: [1,2,3]}
  * @param relationName first name of files.
  * @param featureLookupTable maps features to indices
- * @return an ARFF string. 
+ * @return an ARFF string.  * @return an ARFF string. 
+
  */
 var toKeshetLocal = function(dataset, relationName, inputFeatureLookupTable, outputFeatureLookupTable) {
 	var input = "";
@@ -139,18 +150,21 @@ if (process.argv[1] === __filename) {
 	var collectedDatasetMulti8Easy = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAllEasy.json"));
 	var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAllHard1class.json"));
 	
-	var ngramExtractors = ftrs.CollectionOfExtractors([
-		ftrs.WordsFromText(1,false/*,4,0.8*/),
-		ftrs.WordsFromText(2,false/*,4,0.6*/),
-	]);
-	
 	exports.toKeshets(
-		"datasets/keshet",
+		"datasets/python",
 		{
 			train_single: grammarDataset.concat(collectedDatasetSingle),
 			train_multi: grammarDataset.concat(collectedDatasetMulti),
 			train_both: grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti),
 			test: collectedDatasetMulti8,
 		},
-		ngramExtractors);
+		[
+			ftrs.LowerCaseNormalizer,
+			ftrs.RegexpNormalizer(
+				JSON.parse(fs.readFileSync('knowledgeresources/BiuNormalizations.json'))
+		)],
+		ftrs.CollectionOfExtractors([
+			ftrs.WordsFromText(1,false/*,4,0.8*/),
+			ftrs.WordsFromText(2,false/*,4,0.6*/),
+		]));
 }
