@@ -539,4 +539,9 @@
 , {"input":"I can offer 20000 NIS, project manager and team manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
 , {"input":"no","output":["{\"Reject\":\"previous\"}"]}
 , {"input":"no!!","output":["{\"Reject\":\"previous\"}"]}
+, {"input":"I prefer 12000","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"Great","output":["{\"Accept\":\"previous\"}"]}
+, {"input":"how about 20% pension, but no agreement on the car?","output":["{\"Offer\":{\"Leased Car\":\"No agreement\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"]}
+, {"input":"ok, but slow promotion","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"]}
+, {"input":"great, let's sign!","output":["{\"Accept\":\"previous\"}"]}
 ] 
