@@ -46,7 +46,8 @@ exports.analyze = function(dataset, relationName, normalizers, featureExtractor)
 	}
 
 	return "== "+ relationName + " ==\n"+
-		"Avg. occurances: "+totalFeatureCount+" / "+Object.keys(featureCounts).length+" = "+(totalFeatureCount/Object.keys(featureCounts).length) + "\n" +
+		"Avg. occurances: "+totalFeatureCount+" / "+Object.keys(featureCounts).length+" = "+Math.round((totalFeatureCount/Object.keys(featureCounts).length)*10)/10 + "\n" +
+		"Proportion of singles: "+featureCountsCounts[1]+" / "+totalFeatureCount+" = "+Math.round(featureCountsCounts[1]/totalFeatureCount*100) + "%\n" +
 		"Distribution: "+JSON.stringify(featureCountsCounts);
 }
 
