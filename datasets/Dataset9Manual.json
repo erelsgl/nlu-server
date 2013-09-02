@@ -1,5 +1,4 @@
 [
-   {"input":"Team manager","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"]}
-,  {"input":"Project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
-,  {"input":"no","output":["{\"Reject\":\"previous\"}"]}
+   {"input":"Do you want a car?","output":["{\"Query\":\"Leased car\"}"]}
+,  {"input":"Do you want a car ?","output":["{\"Query\":\"Leased car\"}"]}
 ]

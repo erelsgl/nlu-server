@@ -20,13 +20,14 @@ module.exports = function() {return {
 				JSON.parse(fs.readFileSync('knowledgeresources/BiuNormalizations.json'))
 		)],
 		
-		inputSplitter: ftrs.RegexpSplitter(/[.,;?!]|and/i),
+		inputSplitter: ftrs.RegexpSplitter("[.,;?!]|and", /*include delimiters = */{"?":true}),
 
 		spellChecker: null,
 		
 		featureExtractor: [
 			ftrs.WordsFromText(1,false/*,4,0.8*/),
 			ftrs.WordsFromText(2,false/*,4,0.6*/),
+			ftrs.LastLetterExtractor,
 		//	ftrs.WordsFromText(3,true/*,4,0.6*/), // much slower, only a little better
 		],
 		
