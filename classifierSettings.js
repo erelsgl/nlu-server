@@ -53,4 +53,12 @@ module.exports = function() {return {
 			retrain_count: 1,
 			Constant: 5.0,
 		},
+
+		svmOptions: {
+				learn_args: "-c 20.0", 
+				classify_args: "", 
+				model_file_prefix: "trainedClassifiers/SvmPerf/data",
+				continuous_output:false,
+				debug:true,
+		},
 }};
