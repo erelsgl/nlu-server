@@ -22,7 +22,7 @@ module.exports = function() {return {
 		
 		inputSplitter: ftrs.RegexpSplitter("[.,;?!]|and", /*include delimiters = */{"?":true}),
 
-		spellChecker: null,
+		//spellChecker: require('wordsworth').getInstance(),
 		
 		featureExtractor: [
 			ftrs.WordsFromText(1,false/*,4,0.8*/),
@@ -55,10 +55,10 @@ module.exports = function() {return {
 		},
 
 		svmOptions: {
-				learn_args: "-c 20.0", 
+				learn_args: "-c 100 --i 1",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
 				classify_args: "", 
 				model_file_prefix: "trainedClassifiers/SvmPerf/data",
 				continuous_output:false,
-				debug:true,
+				debug:false,
 		},
 }};

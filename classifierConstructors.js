@@ -106,13 +106,12 @@ createHomerClassifier: function() {
 			splitLabel: Hierarchy.splitJson,
 			joinLabel:  Hierarchy.joinJson,
 			multilabelClassifierType: classifiers.multilabel.BinaryRelevance.bind(this, {
-				//binaryClassifierType: classifiers.Winnow.bind(this, settings.winnowOptions),
+//				binaryClassifierType: classifiers.Winnow.bind(this, settings.winnowOptions),
 				binaryClassifierType: classifiers.SvmPerf.bind(this, settings.svmOptions),
 			}),
-//			multilabelClassifierType: */classifiers.multilabel.PassiveAggressive.bind(this, settings.paOptions),
+//			multilabelClassifierType: classifiers.multilabel.PassiveAggressive.bind(this, settings.paOptions),
 		}),
 		featureLookupTable: new ftrs.FeatureLookupTable(), // for SvmPerf
-		//normalize_features: true,
 	}));
 },
 

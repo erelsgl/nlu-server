@@ -28,7 +28,7 @@ var createNewClassifier = require('./classifierConstructors').defaultClassifier;
 var do_split = false;
 
 var do_cross_dataset_testing = true;
-var do_cross_validation = false;
+var do_cross_validation = true;
 var do_serialization = false;
 
 var verbosity = 0;
