@@ -112,7 +112,7 @@ if (do_cross_dataset_testing) {
 	console.log("Train on grammar+single1+multi1+single2+multi2, test on multi8: "+
 		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti).concat(collectedDatasetSingle2).concat(collectedDatasetMulti2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
 	
-	console.log("Train on grammar+single1+multi8, test on multi2: "+
+	console.log("\nTrain on grammar+single1+multi8, test on multi2: "+
 		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti8), collectedDatasetMulti2, verbosity).shortStats())+"\n";
 	console.log("Train on grammar+single1+single8hard, test on multi2: "+
 		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle8Hard), collectedDatasetMulti2, verbosity).shortStats())+"\n";

@@ -46,8 +46,12 @@ exports.analyze = function(dataset, relationName, normalizers, featureExtractor)
 	}
 
 	return "== "+ relationName + " ==\n"+
-		"Avg. occurances: "+totalFeatureCount+" / "+Object.keys(featureCounts).length+" = "+(totalFeatureCount/Object.keys(featureCounts).length) + "\n" +
-		"Distribution: "+JSON.stringify(featureCountsCounts);
+		"# sentences:\t"+dataset.length+"\n"+
+		"# features:\t"+totalFeatureCount+"\n"+
+		"vocabulary:\t"+Object.keys(featureCounts).length+" ("+Math.round(Object.keys(featureCounts).length/totalFeatureCount*100)+"%)\n"+
+		"# singletons:\t"+featureCountsCounts[1]+" ("+Math.round(featureCountsCounts[1]/totalFeatureCount*100) + "%)\n" +
+		"Avg. occurances:\t"+Math.round((totalFeatureCount/Object.keys(featureCounts).length)*10)/10 + "\n" +
+		"Distribution:\t"+JSON.stringify(featureCountsCounts);
 }
 
 
@@ -56,17 +60,17 @@ exports.analyze = function(dataset, relationName, normalizers, featureExtractor)
 if (process.argv[1] === __filename) {
 	// demo program
 	
-	var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/Dataset0Grammar.json"));
-	var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz.json"));
-	var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz1class.json"));
-	var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2Woz.json"));
-	var collectedDatasetMulti2Easy = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2WozEasy.json"));
-	var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2Woz1class.json"));
-	var collectedDatasetSingle2Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2WozHard1class.json"));
-	var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset4WozAmt.json"));
-	var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAll.json"));
-	var collectedDatasetMulti8Easy = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAllEasy.json"));
-	var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAllHard1class.json"));
+	var grammarDataset = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset0Grammar.json"));
+	var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset1Woz.json"));
+	var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset1Woz1class.json"));
+	var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset2Woz.json"));
+	var collectedDatasetMulti2Easy = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset2WozEasy.json"));
+	var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset2Woz1class.json"));
+	var collectedDatasetSingle2Hard = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset2WozHard1class.json"));
+	var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset4WozAmt.json"));
+	var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset8WozAll.json"));
+	var collectedDatasetMulti8Easy = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset8WozAllEasy.json"));
+	var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/Candidate/Dataset8WozAllHard1class.json"));
 	
 	var normalizers = [
 					ftrs.LowerCaseNormalizer,

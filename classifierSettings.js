@@ -20,13 +20,14 @@ module.exports = function() {return {
 				JSON.parse(fs.readFileSync('knowledgeresources/BiuNormalizations.json'))
 		)],
 		
-		inputSplitter: ftrs.RegexpSplitter(/[.,;?!]|and/i),
+		inputSplitter: ftrs.RegexpSplitter("[.,;?!]|and", /*include delimiters = */{"?":true}),
 
-		spellChecker: null,
+		//spellChecker: require('wordsworth').getInstance(),
 		
 		featureExtractor: [
 			ftrs.WordsFromText(1,false/*,4,0.8*/),
 			ftrs.WordsFromText(2,false/*,4,0.6*/),
+			ftrs.LastLetterExtractor,
 		//	ftrs.WordsFromText(3,true/*,4,0.6*/), // much slower, only a little better
 		],
 		
@@ -52,5 +53,13 @@ module.exports = function() {return {
 		paOptions: {
 			retrain_count: 2,
 			Constant: 5.0,
+		},
+
+		svmOptions: {
+				learn_args: "-c 100 --i 1",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
+				classify_args: "", 
+				model_file_prefix: "trainedClassifiers/SvmPerf/data",
+				continuous_output:false,
+				debug:false,
 		},
 }};
