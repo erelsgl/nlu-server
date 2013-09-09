@@ -9,7 +9,7 @@ html
 			pre
 				| [ #{JSON.stringify({input: "", output: []})+"\n"} 
 				for line in lines
-					| #{", "+JSON.stringify({input: line.text, output: line.translations})+"\n"}
+					| #{", "+JSON.stringify({input: line.text, output: line.translations, is_correct: line.is_correct, timestamp: line.timestamp})+"\n"}
 				| ] 
 		else
 			pre
