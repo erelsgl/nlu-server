@@ -23,7 +23,10 @@ var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/Datas
 var collectedDatasetMulti8Easy = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAllEasy.json"));
 var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAllHard1class.json"));
 
-var createNewClassifier = require('./classifierConstructors').defaultClassifier;
+var createNewClassifier = function() {
+	var defaultClassifier = require('./classifiers').defaultClassifier;
+	return new defaultClassifier();
+}
 
 var do_split = false;
 
