@@ -30,6 +30,7 @@ var createNewClassifier = function() {
 
 var do_split = false;
 
+var do_small_test = true;
 var do_cross_dataset_testing = true;
 var do_cross_validation = true;
 var do_serialization = false;
@@ -56,36 +57,18 @@ if (do_split) {
 	console.log(mlutils.json.toJSON(datasets.hard));
 }
 
-if (do_cross_dataset_testing) {
-	verbosity=0;
-	
-	var newData = collectedDatasetMulti8;
-	//trainAndCompare(require('./createNewClassifier').createWinnowClassifierWithoutSpeller, 
-	//		        require('./createNewClassifier').createWinnowClassifierWithSpeller, 
-	//		        grammarDataset, newData, verbosity+2);
-	//process.exit(1);
-	
-	/*console.log("Calculate learning curve");
-	mlutils.learningCurve(createNewClassifier, [
-	    grammarDataset.concat(collectedDatasetSingle), 
-	    //collectedDatasetMulti.slice(0,50), 
-	    //collectedDatasetMulti.slice(50,100), 
-	    collectedDatasetMulti2.slice(0,50), 
-	    collectedDatasetMulti2.slice(50,100), 
-	    collectedDatasetMulti8.slice(0,50), 
-	    collectedDatasetMulti8.slice(50,100), 
-	    collectedDatasetMulti8.slice(100,150), 
-	    collectedDatasetMulti8.slice(150,200)],
-	  verbosity);
-	console.log("");*/
-	
+if (do_small_test) {
 //	console.log("Train on grammar, test on grammar: "+
 //		trainAndTestLite(createNewClassifier, grammarDataset, grammarDataset, verbosity+3).shortStats())+"\n";
-//	console.log("Train on single, test on single: "+
-//			trainAndTestLite(createNewClassifier, collectedDatasetSingle, collectedDatasetSingle, verbosity+3).shortStats())+"\n";
+	console.log("Train on single, test on single: "+
+		trainAndTestLite(createNewClassifier, collectedDatasetSingle, collectedDatasetSingle, verbosity+3).shortStats())+"\n";
 //	console.log("Train on woz multi class, test on woz single class: "+
-//			trainAndTest(createNewClassifier, collectedDatasetMulti, collectedDatasetSingle, verbosity).shortStats())+"\n";
-//	process.exit(1);
+//		trainAndTest(createNewClassifier, collectedDatasetMulti, collectedDatasetSingle, verbosity).shortStats())+"\n";
+	process.exit(1);
+}
+
+if (do_cross_dataset_testing) {
+	verbosity=0;
 	
 	console.log("Train on grammar, test on multi8: "+
 			trainAndTest(createNewClassifier, grammarDataset, collectedDatasetMulti8, verbosity).shortStats())+"\n";
@@ -95,7 +78,6 @@ if (do_cross_dataset_testing) {
 			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti), collectedDatasetMulti8, verbosity).shortStats())+"\n";
 	console.log("Train on grammar+single1+multi1, test on multi8: "+
 			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti), collectedDatasetMulti8, verbosity).shortStats())+"\n";
-	//process.exit(1);
 
 	console.log("Train on grammar+multi2, test on multi8: "+
 		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
@@ -125,9 +107,6 @@ if (do_cross_dataset_testing) {
 			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle8Hard).concat(collectedDatasetMulti8), collectedDatasetMulti2, verbosity).shortStats())+"\n";
 	console.log("Train on grammar+single1+single8hard+multi1+multi8, test on multi2: "+
 		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti8).concat(collectedDatasetSingle8Hard), collectedDatasetMulti2, verbosity).shortStats())+"\n";
-
-	//console.log("Train on old data, compare on new data: "+
-	//	trainAndCompare(require('./createNewClassifier').createWinnowClassifierWithoutNormalizer, require('./createNewClassifier').createWinnowClassifierWithNormalizer, oldData, newData, verbosity+3))+"\n";
 
 	console.log("\nTrain on grammar data, test on woz single class: "+
 		trainAndTest(createNewClassifier, grammarDataset, collectedDatasetSingle, verbosity).shortStats())+"\n";
