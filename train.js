@@ -24,16 +24,17 @@ var collectedDatasetMulti8Easy = JSON.parse(fs.readFileSync("datasets/Employer/D
 var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAllHard1class.json"));
 
 var createNewClassifier = function() {
-	var defaultClassifier = require('./classifiers').defaultClassifier;
+	var defaultClassifier = require(__dirname+'/classifiers').defaultClassifier;
 	return new defaultClassifier();
 }
 
 var do_split = false;
 
-var do_small_test = true;
-var do_cross_dataset_testing = true;
-var do_cross_validation = true;
-var do_serialization = false;
+var do_small_test = false;
+var do_cross_dataset_testing = false;
+var do_final_test = true;
+var do_cross_validation = false;
+var do_serialization = true;
 
 var verbosity = 0;
 var explain = 0;
@@ -131,6 +132,34 @@ if (do_cross_dataset_testing) {
 			verbosity).shortStats())+"\n";
 } // do_cross_dataset_testing
 
+if (do_final_test) {
+	verbosity=0;
+	
+	["Employer","Candidate"].forEach(function(classifierName) {
+		console.log("\nFinal test for "+classifierName);
+
+		var grammarDataset = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset0Grammar.json"));
+		var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz.json"));
+		var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz1class.json"));
+		var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset2Woz.json"));
+		var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset2Woz1class.json"));
+		var amtDataset = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset4WozAmt.json"));
+		
+		console.log("Train on grammar, test on AMT: "+
+				trainAndTest(createNewClassifier, grammarDataset, amtDataset, verbosity).shortStats())+"\n";
+		console.log("Train on grammar+multi1, test on AMT: "+
+				trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti), amtDataset, verbosity).shortStats())+"\n";
+		console.log("Train on grammar+single1+multi1, test on AMT: "+
+				trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti), amtDataset, verbosity).shortStats())+"\n";
+		console.log("Train on grammar+multi2, test on AMT: "+
+				trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti2), amtDataset, verbosity).shortStats())+"\n";
+		console.log("Train on grammar+single2+multi2, test on AMT: "+
+				trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle2).concat(collectedDatasetMulti2), amtDataset, verbosity).shortStats())+"\n";
+		console.log("Train on grammar+single1+multi1+single2+multi2, test on AMT: "+
+				trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti).concat(collectedDatasetSingle2).concat(collectedDatasetMulti2), amtDataset, verbosity).shortStats())+"\n";
+	});
+} // do_final_test
+
 if (do_cross_validation) {
 	verbosity=0;
 
@@ -165,7 +194,7 @@ if (do_serialization) {
 		var classifier = createNewClassifier();
 
 		var grammarDataset = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset0Grammar.json"));
-		//var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz.json"));
+		var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz.json"));
 		var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz1class.json"));
 		var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset2Woz.json"));
 		var collectedDatasetMulti2Easy = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset2WozEasy.json"));
@@ -176,6 +205,7 @@ if (do_serialization) {
 		var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset8WozAllHard1class.json"));
 
 		var dataset = grammarDataset.
+			concat(collectedDatasetMulti).
 			concat(collectedDatasetSingle).
 			concat(collectedDatasetMulti2).
 			concat(collectedDatasetSingle2).

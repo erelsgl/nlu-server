@@ -188,6 +188,6 @@ module.exports = {
 		HomerMetaLabelerPassiveAggressive: enhance(homer(metalabeler(PassiveAggressiveClassifier))),
 };
 
-module.exports.defaultClassifier = module.exports.HomerMetaLabelerPassiveAggressive;
+module.exports.defaultClassifier = module.exports.HomerWinnowClassifier;
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
