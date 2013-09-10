@@ -27,17 +27,19 @@ Train on mixed, test on mixed: Accuracy=160/198=81% HammingGain=1-54/312=83% Pre
 Train on mixed, test on mixed (2): Accuracy=165/199=83% HammingGain=1-42/290=86% Precision=96% Recall=89% F1=93% timePerSample=1[ms]
 
 Final test for Employer
-Train on grammar, test on AMT: Accuracy=11/133=8% HammingGain=1-390/496=21% Precision=74% Recall=33% F1=46% timePerSample=1[ms]
-Train on grammar+single1, test on AMT: Accuracy=57/133=43% HammingGain=1-125/496=75% Precision=93% Recall=80% F1=86% timePerSample=1[ms]
+Train on grammar, test on AMT: Accuracy=11/133=8% HammingGain=1-390/496=21% Precision=74% Recall=33% F1=46% timePerSample=0[ms]
 Train on grammar+multi1, test on AMT: Accuracy=61/133=46% HammingGain=1-115/496=77% Precision=92% Recall=84% F1=88% timePerSample=1[ms]
 Train on grammar+single1+multi1, test on AMT: Accuracy=63/133=47% HammingGain=1-112/496=77% Precision=93% Recall=84% F1=88% timePerSample=1[ms]
+Train on grammar+multi2, test on AMT: Accuracy=40/133=30% HammingGain=1-152/496=69% Precision=82% Recall=88% F1=85% timePerSample=1[ms]
+Train on grammar+single2+multi2, test on AMT: Accuracy=80/133=60% HammingGain=1-71/496=86% Precision=96% Recall=90% F1=93% timePerSample=1[ms]
 Train on grammar+single1+multi1+single2+multi2, test on AMT: Accuracy=79/133=59% HammingGain=1-69/496=86% Precision=96% Recall=90% F1=93% timePerSample=1[ms]
 
 Final test for Candidate
-Train on grammar, test on AMT: Accuracy=37/212=17% HammingGain=1-425/651=35% Precision=86% Recall=42% F1=56% timePerSample=1[ms]
-Train on grammar+single1, test on AMT: Accuracy=73/212=34% HammingGain=1-243/651=63% Precision=91% Recall=69% F1=79% timePerSample=1[ms]
+Train on grammar, test on AMT: Accuracy=37/212=17% HammingGain=1-425/651=35% Precision=86% Recall=42% F1=56% timePerSample=0[ms]
 Train on grammar+multi1, test on AMT: Accuracy=78/212=37% HammingGain=1-213/651=67% Precision=89% Recall=77% F1=82% timePerSample=1[ms]
 Train on grammar+single1+multi1, test on AMT: Accuracy=82/212=39% HammingGain=1-210/651=68% Precision=89% Recall=78% F1=83% timePerSample=1[ms]
+Train on grammar+multi2, test on AMT: Accuracy=64/212=30% HammingGain=1-272/651=58% Precision=76% Recall=85% F1=80% timePerSample=1[ms]
+Train on grammar+single2+multi2, test on AMT: Accuracy=114/212=54% HammingGain=1-141/651=78% Precision=93% Recall=85% F1=89% timePerSample=1[ms]
 Train on grammar+single1+multi1+single2+multi2, test on AMT: Accuracy=131/212=62% HammingGain=1-116/651=82% Precision=95% Recall=87% F1=91% timePerSample=1[ms]
 
 start 5-fold cross-validation on 56 grammar samples and 298 single samples and 779 collected samples

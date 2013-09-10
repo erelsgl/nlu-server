@@ -266,7 +266,7 @@ function translate(request, requester, requester_is_private_translator, callback
 				}
 				logger.writeEventLog("events", "translate-pastManualTranslation>"+id, classification.translations);
 			} else {
-				classification = activeClassifier.classify(request.text, parseInt(request.explain));
+				classification = activeClassifier.classify(request.text, parseInt(request.explain), /*continuous_output=*/false);
 				if (request.explain && !(classification instanceof Array)) {
 					classification.translations = classification.classes;
 					delete classification.classes;
@@ -275,6 +275,8 @@ function translate(request, requester, requester_is_private_translator, callback
 						translations: classification
 					};
 				};
+				if (!classification.translations)
+					classification.translations = [];
 				_(classification).extend(request); // add the text, forward, classifierName, etc.
 				logger.writeJsonLog("translations_automatic", classification);
 				
