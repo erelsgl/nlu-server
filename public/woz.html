@@ -169,6 +169,7 @@ $(document).ready(function() {
 
 		var form = $(this).closest("form");
 		var text = form.find(".text").text();
+		form.find(".no_translations").hide();
 		form.find(".translationsTable").append(translationToHtml(translation, /*withDelete=*/true));
 		translationSocket.emit('append_translation', {
 			text: text,
