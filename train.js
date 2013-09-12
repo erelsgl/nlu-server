@@ -28,13 +28,11 @@ var createNewClassifier = function() {
 	return new defaultClassifier();
 }
 
-var do_split = false;
-
 var do_small_test = false;
-var do_cross_dataset_testing = false;
+var do_cross_dataset_testing = true;
 var do_final_test = true;
-var do_cross_validation = false;
-var do_serialization = true;
+var do_cross_validation = true;
+var do_serialization = false;
 
 var verbosity = 0;
 var explain = 0;
@@ -45,26 +43,13 @@ var trainAndTest = mlutils.trainAndTest;
 var trainAndCompare = mlutils.trainAndCompare;
 var trainAndTestLite = mlutils.trainAndTestLite;
 
-if (do_split) {
-	console.log("\nSPLIT TO EASY AND HARD: ");
-	var classifier = createNewClassifier();
-	classifier.trainBatch(
-			       JSON.parse(fs.readFileSync("datasets/Employer/Dataset0Grammar.json")).
-			concat(JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz1class.json"))));
-	var datasets = mlutils.splitToEasyAndHard(classifier, JSON.parse(fs.readFileSync("datasets/Employer/Dataset2Woz.json")));
-	console.log("Easy - "+datasets.easy.length+": ");
-	console.log(mlutils.json.toJSON(datasets.easy));
-	console.log("Hard - "+datasets.hard.length+": ");
-	console.log(mlutils.json.toJSON(datasets.hard));
-}
-
 if (do_small_test) {
 //	console.log("Train on grammar, test on grammar: "+
 //		trainAndTestLite(createNewClassifier, grammarDataset, grammarDataset, verbosity+3).shortStats())+"\n";
-	console.log("Train on single, test on single: "+
-		trainAndTestLite(createNewClassifier, collectedDatasetSingle, collectedDatasetSingle, verbosity+3).shortStats())+"\n";
-//	console.log("Train on woz multi class, test on woz single class: "+
-//		trainAndTest(createNewClassifier, collectedDatasetMulti, collectedDatasetSingle, verbosity).shortStats())+"\n";
+//	console.log("Train on single, test on single: "+
+//		trainAndTestLite(createNewClassifier, collectedDatasetSingle, collectedDatasetSingle, verbosity+3).shortStats())+"\n";
+	console.log("Train on woz multi class, test on woz single class: "+
+		trainAndTestLite(createNewClassifier, collectedDatasetMulti, collectedDatasetSingle.slice(0,2000), verbosity+3).shortStats())+"\n";
 	process.exit(1);
 }
 
@@ -73,8 +58,8 @@ if (do_cross_dataset_testing) {
 	
 	console.log("Train on grammar, test on multi8: "+
 			trainAndTest(createNewClassifier, grammarDataset, collectedDatasetMulti8, verbosity).shortStats())+"\n";
-	console.log("Train on grammar+single1, test on multi8: "+
-			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle), collectedDatasetMulti8, verbosity).shortStats())+"\n";
+//	console.log("Train on grammar+single1, test on multi8: "+
+//			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle), collectedDatasetMulti8, verbosity).shortStats())+"\n";
 	console.log("Train on grammar+multi1, test on multi8: "+
 			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti), collectedDatasetMulti8, verbosity).shortStats())+"\n";
 	console.log("Train on grammar+single1+multi1, test on multi8: "+
@@ -82,42 +67,44 @@ if (do_cross_dataset_testing) {
 
 	console.log("Train on grammar+multi2, test on multi8: "+
 		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
-	console.log("Train on grammar+single2hard, test on multi8: "+
-			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle2Hard), collectedDatasetMulti8, verbosity).shortStats())+"\n";
-	console.log("Train on grammar+single2, test on multi8: "+
-		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
-	console.log("Train on grammar+single2hard+multi2, test on multi8: "+
-			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle2Hard).concat(collectedDatasetMulti2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
+//	console.log("Train on grammar+single2hard, test on multi8: "+
+//			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle2Hard), collectedDatasetMulti8, verbosity).shortStats())+"\n";
+//	console.log("Train on grammar+single2, test on multi8: "+
+//		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
+//	console.log("Train on grammar+single2hard+multi2, test on multi8: "+
+//			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle2Hard).concat(collectedDatasetMulti2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
 	console.log("Train on grammar+single2+multi2, test on multi8: "+
 			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle2).concat(collectedDatasetMulti2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
 	
-	console.log("Train on grammar+multi1+multi2, test on multi8: "+
-		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetMulti2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
-	console.log("Train on grammar+single1+single2, test on multi8: "+
-		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
+//	console.log("Train on grammar+multi1+multi2, test on multi8: "+
+//		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetMulti2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
+//	console.log("Train on grammar+single1+single2, test on multi8: "+
+//		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
 	console.log("Train on grammar+single1+multi1+single2+multi2, test on multi8: "+
 		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti).concat(collectedDatasetSingle2).concat(collectedDatasetMulti2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
 	
-	console.log("\nTrain on grammar+single1+multi8, test on multi2: "+
-		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti8), collectedDatasetMulti2, verbosity).shortStats())+"\n";
-	console.log("Train on grammar+single1+single8hard, test on multi2: "+
-		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle8Hard), collectedDatasetMulti2, verbosity).shortStats())+"\n";
-	console.log("Train on grammar+single1+single8hard+multi8easy, test on multi2: "+
-			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle8Hard).concat(collectedDatasetMulti8Easy), collectedDatasetMulti2, verbosity).shortStats())+"\n";
-	console.log("Train on grammar+single1+single8hard+multi8, test on multi2: "+
-			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle8Hard).concat(collectedDatasetMulti8), collectedDatasetMulti2, verbosity).shortStats())+"\n";
-	console.log("Train on grammar+single1+single8hard+multi1+multi8, test on multi2: "+
-		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti8).concat(collectedDatasetSingle8Hard), collectedDatasetMulti2, verbosity).shortStats())+"\n";
+//	console.log("\nTrain on grammar+single1+multi8, test on multi2: "+
+//		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti8), collectedDatasetMulti2, verbosity).shortStats())+"\n";
+//	console.log("Train on grammar+single1+multi1+multi8, test on multi2: "+
+//			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti).concat(collectedDatasetMulti8), collectedDatasetMulti2, verbosity).shortStats())+"\n";
+//	console.log("Train on grammar+single1+single8hard, test on multi2: "+
+//		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle8Hard), collectedDatasetMulti2, verbosity).shortStats())+"\n";
+//	console.log("Train on grammar+single1+single8hard+multi8easy, test on multi2: "+
+//			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle8Hard).concat(collectedDatasetMulti8Easy), collectedDatasetMulti2, verbosity).shortStats())+"\n";
+//	console.log("Train on grammar+single1+single8hard+multi8, test on multi2: "+
+//			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle8Hard).concat(collectedDatasetMulti8), collectedDatasetMulti2, verbosity).shortStats())+"\n";
+//	console.log("Train on grammar+single1+single8hard+multi1+multi8, test on multi2: "+
+//		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti8).concat(collectedDatasetSingle8Hard), collectedDatasetMulti2, verbosity).shortStats())+"\n";
 
-	console.log("\nTrain on grammar data, test on woz single class: "+
-		trainAndTest(createNewClassifier, grammarDataset, collectedDatasetSingle, verbosity).shortStats())+"\n";
-	console.log("Train on grammar data, test on woz multi class: "+
-		trainAndTest(createNewClassifier, grammarDataset, collectedDatasetMulti, verbosity).shortStats())+"\n";
-	console.log("Train on woz single class, test on woz multi class: "+
+//	console.log("\nTrain on grammar data, test on woz single class: "+
+//		trainAndTest(createNewClassifier, grammarDataset, collectedDatasetSingle, verbosity).shortStats())+"\n";
+//	console.log("Train on grammar data, test on woz multi class: "+
+//		trainAndTest(createNewClassifier, grammarDataset, collectedDatasetMulti, verbosity).shortStats())+"\n";
+	console.log("\nTrain on woz single class, test on woz multi class: "+
 		trainAndTest(createNewClassifier, collectedDatasetSingle, collectedDatasetMulti, verbosity).shortStats())+"\n";
 	console.log("Train on woz multi class, test on woz single class: "+
 		trainAndTest(createNewClassifier, collectedDatasetMulti, collectedDatasetSingle, verbosity).shortStats())+"\n";
-	
+
 	collectedDatasetMultiPartition = partitions.partition(collectedDatasetMulti, 0, collectedDatasetMulti.length/2);
 	collectedDatasetSinglePartition = partitions.partition(collectedDatasetSingle, 0, collectedDatasetSingle.length/2);
 	console.log("Train on mixed, test on mixed: "+
@@ -135,7 +122,7 @@ if (do_cross_dataset_testing) {
 if (do_final_test) {
 	verbosity=0;
 	
-	["Employer","Candidate"].forEach(function(classifierName) {
+	["Employer"/*,"Candidate"*/].forEach(function(classifierName) {
 		console.log("\nFinal test for "+classifierName);
 
 		var grammarDataset = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset0Grammar.json"));

@@ -43,7 +43,7 @@ var inputSplitter = ftrs.RegexpSplitter("[.,;?!]|and", /*include delimiters = */
  * BINARY CLASSIFIERS (used as basis to other classifiers):
  */
 
-var WinnowBinaryClassifier = classifiers.Winnow.bind(this, {
+var WinnowBinaryClassifier = classifiers.Winnow.where({
 	retrain_count: 15,  /* 15 is much better than 5, better than 10 */
 	promotion: 1.5,
 	demotion: 0.5,
@@ -52,15 +52,20 @@ var WinnowBinaryClassifier = classifiers.Winnow.bind(this, {
 	//debug: true,
 });
 
-var BayesBinaryClassifier = classifiers.Bayesian.bind(this, {
+var BayesBinaryClassifier = classifiers.Bayesian.where({
 });
 
-var SvmPerfBinaryClassifier = classifiers.SvmPerf.bind(this, {
+var SvmPerfBinaryClassifier = classifiers.SvmPerf.where({
 	learn_args: "-c 100 --i 1",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
-	classify_args: "", 
-	model_file_prefix: "trainedClassifiers/SvmPerf/data",
+	model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf",
 });
 
+
+var SvmLinearMulticlassifier = classifiers.SvmLinear.where({
+	learn_args: "-c 20", 
+	model_file_prefix: "trainedClassifiers/tempfiles/SvmLinear",
+	multiclass: true,
+})
 
 
 
@@ -68,35 +73,34 @@ var SvmPerfBinaryClassifier = classifiers.SvmPerf.bind(this, {
  * MULTI-LABEL CLASSIFIERS (used as basis to other classifiers):
  */
 
-var WinnowBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(this, {
+var WinnowBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.where({
 	binaryClassifierType: WinnowBinaryClassifier,
 });
 
-var BayesBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(this, {
+var BayesBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.where({
 	binaryClassifierType: BayesBinaryClassifier,
 });
 
-var SvmPerfBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(this, {
+var SvmPerfBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.where({
 	binaryClassifierType: SvmPerfBinaryClassifier,
 });
 
-var PassiveAggressiveClassifier = classifiers.multilabel.PassiveAggressive.bind(this, {
+var PassiveAggressiveClassifier = classifiers.multilabel.PassiveAggressive.where({
 	retrain_count: 1,
 	Constant: 5.0,
 });
-
 
 
 /*
  * SEGMENTERS (unused):
  */
 
-var WinnowSegmenter = classifiers.EnhancedClassifier.bind(this, {
+var WinnowSegmenter = classifiers.EnhancedClassifier.where({
 		normalizer: normalizer,
 		inputSplitter: inputSplitter,
 		pastTrainingSamples: [], // to enable retraining
 
-		classifierType: classifiers.multilabel.BinarySegmentation.bind(this, {
+		classifierType: classifiers.multilabel.BinarySegmentation.where({
 			binaryClassifierType: WinnowBinaryClassifier,
 			featureExtractor: featureExtractor,
 			//segmentSplitStrategy: 'shortestSegment',
@@ -106,13 +110,13 @@ var WinnowSegmenter = classifiers.EnhancedClassifier.bind(this, {
 		}),
 });
 
-var BayesSegmenter = classifiers.EnhancedClassifier.bind(this, {
+var BayesSegmenter = classifiers.EnhancedClassifier.where({
 		normalizer: normalizer,
 		inputSplitter: inputSplitter,
 		pastTrainingSamples: [], // to enable retraining
 
-		classifierType: classifiers.multilabel.MulticlassSegmentation.bind(this, {
-			multiclassClassifierType: classifiers.Bayesian.bind(this, {
+		classifierType: classifiers.multilabel.MulticlassSegmentation.where({
+			multiclassClassifierType: classifiers.Bayesian.where({
 				calculateRelativeProbabilities: true,
 			}),
 			featureExtractor: featureExtractor,
@@ -127,7 +131,7 @@ var BayesSegmenter = classifiers.EnhancedClassifier.bind(this, {
  */
 
 var enhance = function (classifierType, featureLookupTable) {
-	return classifiers.EnhancedClassifier.bind(this, {
+	return classifiers.EnhancedClassifier.where({
 		normalizer: normalizer,
 		inputSplitter: inputSplitter,
 		//spellChecker: require('wordsworth').getInstance(),
@@ -149,7 +153,7 @@ var enhance = function (classifierType, featureLookupTable) {
 };
 
 var homer = function(multilabelClassifierType) {
-	return classifiers.multilabel.Homer.bind(this, {
+	return classifiers.multilabel.Homer.where({
 		splitLabel: Hierarchy.splitJson, 
 		joinLabel:  Hierarchy.joinJson,
 		multilabelClassifierType: multilabelClassifierType,
@@ -158,7 +162,7 @@ var homer = function(multilabelClassifierType) {
 
 var metalabeler = function(rankerType, counterType) {
 	if (!counterType) counterType=rankerType;
-	return classifiers.multilabel.MetaLabeler.bind(this, {
+	return classifiers.multilabel.MetaLabeler.where({
 		rankerType:  rankerType,
 		counterType: counterType,
 	});
@@ -176,18 +180,22 @@ module.exports = {
 		PassiveAggressiveClassifier: enhance(PassiveAggressiveClassifier),
 		
 		MetaLabelerWinnow: enhance(metalabeler(WinnowBinaryRelevanceClassifier)),
-		MetaLabelerSvm: enhance(metalabeler(SvmPerfBinaryRelevanceClassifier), new ftrs.FeatureLookupTable()),
+		MetaLabelerSvmPerf: enhance(metalabeler(SvmPerfBinaryRelevanceClassifier), new ftrs.FeatureLookupTable()),
+		MetaLabelerSvmLinear: enhance(metalabeler(SvmLinearMulticlassifier), new ftrs.FeatureLookupTable()),
 		MetaLabelerPassiveAggressive: enhance(metalabeler(PassiveAggressiveClassifier)),
+		MetaLabelerPassiveAggressiveWithMulticlassSvm: enhance((metalabeler(PassiveAggressiveClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
 		
 		HomerSvmPerfClassifier: enhance(homer(SvmPerfBinaryRelevanceClassifier), new ftrs.FeatureLookupTable()),
 		HomerWinnowClassifier: enhance(homer(WinnowBinaryRelevanceClassifier)),
 		HomerPassiveAggressiveClassifier: enhance(homer(PassiveAggressiveClassifier)),
 		
 		HomerMetaLabelerWinnow: enhance(homer(metalabeler(WinnowBinaryRelevanceClassifier))),
-		HomerMetaLabelerSvm: enhance(homer(metalabeler(SvmPerfBinaryRelevanceClassifier)), new ftrs.FeatureLookupTable()),
+		HomerMetaLabelerSvmPerf: enhance(homer(metalabeler(SvmPerfBinaryRelevanceClassifier)), new ftrs.FeatureLookupTable()),
+		HomerMetaLabelerSvmLinear: enhance(homer(metalabeler(SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
 		HomerMetaLabelerPassiveAggressive: enhance(homer(metalabeler(PassiveAggressiveClassifier))),
+		HomerMetaLabelerPassiveAggressiveWithMulticlassSvm: enhance(homer(metalabeler(PassiveAggressiveClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
 };
 
-module.exports.defaultClassifier = module.exports.HomerWinnowClassifier;
+module.exports.defaultClassifier = module.exports.HomerMetaLabelerPassiveAggressiveWithMulticlassSvm;
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
