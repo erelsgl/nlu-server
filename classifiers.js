@@ -198,10 +198,10 @@ module.exports = {
 		MetaLabelerPassiveAggressive: enhance(metalabeler(PassiveAggressiveClassifier)),
 		MetaLabelerPassiveAggressiveWithMulticlassSvm: enhance((metalabeler(PassiveAggressiveClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
 		
-		HomerSvmPerfClassifier: enhance(homer(SvmPerfBinaryRelevanceClassifier), new ftrs.FeatureLookupTable()),
-		HomerSvmLinearClassifier: enhance(homer(SvmLinearBinaryRelevanceClassifier), new ftrs.FeatureLookupTable()),
-		HomerWinnowClassifier: enhance(homer(WinnowBinaryRelevanceClassifier)),
-		HomerPassiveAggressiveClassifier: enhance(homer(PassiveAggressiveClassifier)),
+		HomerSvmPerf: enhance(homer(SvmPerfBinaryRelevanceClassifier), new ftrs.FeatureLookupTable()),
+		HomerSvmLinear: enhance(homer(SvmLinearBinaryRelevanceClassifier), new ftrs.FeatureLookupTable()),
+		HomerWinnow: enhance(homer(WinnowBinaryRelevanceClassifier)),
+		HomerPassiveAggressive: enhance(homer(PassiveAggressiveClassifier)),
 		
 		HomerMetaLabelerWinnow: enhance(homer(metalabeler(WinnowBinaryRelevanceClassifier))),
 		HomerMetaLabelerSvmPerf: enhance(homer(metalabeler(SvmPerfBinaryRelevanceClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
@@ -210,6 +210,6 @@ module.exports = {
 		HomerMetaLabelerPassiveAggressiveWithMulticlassSvm: enhance(homer(metalabeler(PassiveAggressiveClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
 };
 
-module.exports.defaultClassifier = module.exports.HomerMetaLabelerSvmLinear;
+module.exports.defaultClassifier = module.exports.HomerSvmPerf;
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
