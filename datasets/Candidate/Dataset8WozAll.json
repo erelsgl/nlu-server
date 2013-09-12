@@ -185,7 +185,6 @@
 , {"input":"Are we agreeable on me being the project manager?","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
 , {"input":"I offer myself as the project manager at 10 hours.","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"Okay I agree with your offer but will you consider increasing the pay to 12,000 NIS. I have superior skills.","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
-, {"input":"I have been offered 16,000 with another company. I will take a pay cut to work for you and work 10 hours per week on the fast track with a 20% pension fund and a leased car.","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"Will you hire me for 12,000 NIS?","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
 , {"input":"Will you hire me as the project manager. I have a degree in management.","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
 , {"input":"Will you allow me a vehicle. A project manager needs a leased car to attend to routine business.","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}

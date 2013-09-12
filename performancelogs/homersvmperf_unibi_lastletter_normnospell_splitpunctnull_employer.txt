@@ -26,6 +26,14 @@ Train on woz multi class, test on woz single class: Accuracy=213/298=71% Hamming
 Train on mixed, test on mixed: Accuracy=164/198=83% HammingGain=1-51/312=84% Precision=95% Recall=88% F1=92% timePerSample=2[ms]
 Train on mixed, test on mixed (2): Accuracy=160/199=80% HammingGain=1-46/290=84% Precision=97% Recall=87% F1=92% timePerSample=2[ms]
 
+Final test for Employer
+Train on grammar, test on AMT: Accuracy=26/133=20% HammingGain=1-228/496=54% Precision=81% Recall=70% F1=75% timePerSample=13[ms]
+Train on grammar+multi1, test on AMT: Accuracy=64/133=48% HammingGain=1-114/496=77% Precision=90% Recall=87% F1=88% timePerSample=16[ms]
+Train on grammar+single1+multi1, test on AMT: Accuracy=72/133=54% HammingGain=1-95/496=81% Precision=93% Recall=87% F1=90% timePerSample=16[ms]
+Train on grammar+multi2, test on AMT: Accuracy=48/133=36% HammingGain=1-124/496=75% Precision=87% Recall=88% F1=88% timePerSample=16[ms]
+Train on grammar+single2+multi2, test on AMT: Accuracy=79/133=59% HammingGain=1-87/496=82% Precision=93% Recall=89% F1=91% timePerSample=16[ms]
+Train on grammar+single1+multi1+single2+multi2, test on AMT: Accuracy=87/133=65% HammingGain=1-63/496=87% Precision=95% Recall=92% F1=94% timePerSample=17[ms]
+
 start 5-fold cross-validation on 56 grammar samples and 298 single samples and 779 collected samples
 partition #0: 5858 [ms]: Accuracy=115/155=74% HammingGain=1-56/271=79% Precision=91% Recall=88% F1=90% timePerSample=8[ms]
 partition #1: 12630 [ms]: Accuracy=112/155=72% HammingGain=1-56/319=82% Precision=92% Recall=90% F1=91% timePerSample=10[ms]
