@@ -274,7 +274,7 @@ function translationToHtml(translation, withDelete) {
 /** Convert the translations received from the server to HTML */
 function translationsToHtml(translations, withDelete) {
 	if (translations==null || translations.length==0) {
-		return "<p>No translations.</p>\n"+
+		return "<p class='no_translations'>No translations.</p>\n"+
 			"<table class='translationsTable'></table>\n";
 	} else {
 		var html = "";

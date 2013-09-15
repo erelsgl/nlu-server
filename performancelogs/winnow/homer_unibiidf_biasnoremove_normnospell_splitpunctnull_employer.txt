@@ -1,0 +1,36 @@
+machine learning trainer start
+
+Train on grammar, test on multi8: Accuracy=45/537=8% HammingGain=1-941/1112=15% Precision=95% Recall=16% F1=28% timePerSample=0[ms]
+Train on grammar+single1, test on multi8: Accuracy=217/537=40% HammingGain=1-416/1112=63% Precision=97% Recall=65% F1=78% timePerSample=0[ms]
+Train on grammar+multi1, test on multi8: Accuracy=238/537=44% HammingGain=1-381/1112=66% Precision=94% Recall=70% F1=80% timePerSample=0[ms]
+Train on grammar+single1+multi1, test on multi8: Accuracy=228/537=42% HammingGain=1-380/1112=66% Precision=95% Recall=69% F1=80% timePerSample=0[ms]
+Train on grammar+multi2, test on multi8: Accuracy=198/537=37% HammingGain=1-430/1112=61% Precision=88% Recall=71% F1=79% timePerSample=0[ms]
+Train on grammar+single2hard, test on multi8: Accuracy=151/537=28% HammingGain=1-573/1112=48% Precision=94% Recall=52% F1=67% timePerSample=0[ms]
+Train on grammar+single2, test on multi8: Accuracy=253/537=47% HammingGain=1-383/1112=66% Precision=94% Recall=70% F1=80% timePerSample=0[ms]
+Train on grammar+single2hard+multi2, test on multi8: Accuracy=288/537=54% HammingGain=1-309/1112=72% Precision=95% Recall=77% F1=85% timePerSample=0[ms]
+Train on grammar+single2+multi2, test on multi8: Accuracy=284/537=53% HammingGain=1-307/1112=72% Precision=96% Recall=76% F1=85% timePerSample=0[ms]
+Train on grammar+multi1+multi2, test on multi8: Accuracy=276/537=51% HammingGain=1-317/1112=71% Precision=94% Recall=76% F1=84% timePerSample=0[ms]
+Train on grammar+single1+single2, test on multi8: Accuracy=256/537=48% HammingGain=1-343/1112=69% Precision=96% Recall=72% F1=82% timePerSample=0[ms]
+Train on grammar+single1+multi1+single2+multi2, test on multi8: Accuracy=295/537=55% HammingGain=1-287/1112=74% Precision=96% Recall=78% F1=86% timePerSample=0[ms]
+Train on grammar+single1+multi8, test on multi2: Accuracy=57/93=61% HammingGain=1-45/179=75% Precision=95% Recall=79% F1=86% timePerSample=1[ms]
+Train on grammar+single1+single8hard, test on multi2: Accuracy=52/93=56% HammingGain=1-63/179=65% Precision=93% Recall=70% F1=80% timePerSample=0[ms]
+Train on grammar+single1+single8hard+multi8easy, test on multi2: Accuracy=60/93=65% HammingGain=1-44/179=75% Precision=95% Recall=79% F1=87% timePerSample=0[ms]
+Train on grammar+single1+single8hard+multi8, test on multi2: Accuracy=61/93=66% HammingGain=1-42/179=77% Precision=96% Recall=80% F1=87% timePerSample=0[ms]
+Train on grammar+single1+single8hard+multi1+multi8, test on multi2: Accuracy=59/93=63% HammingGain=1-43/179=76% Precision=95% Recall=80% F1=87% timePerSample=0[ms]
+
+Train on grammar data, test on woz single class: Accuracy=59/298=20% HammingGain=1-240/298=19% Precision=97% Recall=20% F1=33% timePerSample=0[ms]
+Train on grammar data, test on woz multi class: Accuracy=2/99=2% HammingGain=1-257/304=15% Precision=94% Recall=16% F1=28% timePerSample=0[ms]
+Train on woz single class, test on woz multi class: Accuracy=75/99=76% HammingGain=1-50/304=84% Precision=100% Recall=84% F1=91% timePerSample=0[ms]
+Train on woz multi class, test on woz single class: Accuracy=242/298=81% HammingGain=1-67/298=78% Precision=83% Recall=98% F1=90% timePerSample=0[ms]
+Train on mixed, test on mixed: Accuracy=153/198=77% HammingGain=1-60/312=81% Precision=94% Recall=86% F1=90% timePerSample=0[ms]
+Train on mixed, test on mixed (2): Accuracy=155/199=78% HammingGain=1-51/290=82% Precision=96% Recall=86% F1=91% timePerSample=0[ms]
+
+start 5-fold cross-validation on 56 grammar samples and 298 single samples and 630 collected samples
+partition #0: 2670 [ms]: Accuracy=87/126=69% HammingGain=1-50/265=81% Precision=92% Recall=88% F1=90% timePerSample=0[ms]
+partition #1: 5285 [ms]: Accuracy=82/126=65% HammingGain=1-53/278=81% Precision=93% Recall=87% F1=90% timePerSample=0[ms]
+partition #2: 7948 [ms]: Accuracy=83/126=66% HammingGain=1-51/248=79% Precision=93% Recall=86% F1=89% timePerSample=0[ms]
+partition #3: 10552 [ms]: Accuracy=68/126=54% HammingGain=1-71/267=73% Precision=91% Recall=81% F1=86% timePerSample=0[ms]
+partition #4: 13270 [ms]: Accuracy=89/126=71% HammingGain=1-47/233=80% Precision=94% Recall=85% F1=89% timePerSample=0[ms]
+end 5-fold cross-validation: 13270 [ms]
+MICRO AVERAGE SUMMARY: Accuracy=409/630=65% HammingGain=1-272/1291=79% Precision=93% Recall=86% F1=89% timePerSample=21[ms]
+machine learning trainer end

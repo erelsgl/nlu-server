@@ -414,11 +414,6 @@
 , {"input":"I would be satisfied working 9 hours","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"]}
 , {"input":"Okay I agree with your offer","output":["{\"Accept\":\"previous\"}"]}
 , {"input":"will you consider increasing the pay to 12,000 NIS.","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
-, {"input":"I have been offered 16,000 with another company. I will take a pay cut to work for you and a leased car.","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
-, {"input":"I have been offered 16,000 with another company. I will take a pay cut to work for you and a 20% pension fund","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"]}
-, {"input":"I have been offered 16,000 with another company. I will take a pay cut to work for you on the fast track","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"]}
-, {"input":"I have been offered 16,000 with another company. I will take a pay cut to work for you.","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
-, {"input":"I have been offered 16,000 with another company. I will take a pay cut to work for you and work 10 hours per week","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"A project manager needs to attend to routine business.","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
 , {"input":"Will you allow me a vehicle. needs a leased car to attend to routine business.","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
 , {"input":"Will you please allow me a 20% pension fund? I started late with my benefits and am worried about retirement.","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"]}

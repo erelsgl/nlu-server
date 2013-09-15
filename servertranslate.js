@@ -155,8 +155,19 @@ app.get("/translations/:manualorautomatic/:dataset?", function(req,res) {
 	} else {
 		var filename = "translations_"+manualorautomatic+".json";
 		var lines = logger.readJsonLogSync(logger.cleanPathToLog(filename));
-		if (!_.isEmpty(req.query))
+		if (!_.isEmpty(req.query)) {
+			for (key in req.query) {
+				var value = req.query[key];
+				if (value=='true')
+					value=true;
+				else if (value=='false')
+					value=false;
+				else if (!isNaN(parseInt(value)))
+					value = parseInt(value);
+				req.query[key]=value;
+			}
 			lines = _(lines).where(req.query);
+		}
 		if (req.params.dataset) {
 			lines = _(lines).select(function(line) {return line.text && 
 				line.translations && 
@@ -255,7 +266,7 @@ function translate(request, requester, requester_is_private_translator, callback
 				}
 				logger.writeEventLog("events", "translate-pastManualTranslation>"+id, classification.translations);
 			} else {
-				classification = activeClassifier.classify(request.text, parseInt(request.explain));
+				classification = activeClassifier.classify(request.text, parseInt(request.explain), /*continuous_output=*/false);
 				if (request.explain && !(classification instanceof Array)) {
 					classification.translations = classification.classes;
 					delete classification.classes;
@@ -264,6 +275,8 @@ function translate(request, requester, requester_is_private_translator, callback
 						translations: classification
 					};
 				};
+				if (!classification.translations)
+					classification.translations = [];
 				_(classification).extend(request); // add the text, forward, classifierName, etc.
 				logger.writeJsonLog("translations_automatic", classification);
 				
@@ -462,6 +475,8 @@ io.sockets.on('connection', function (socket) {
 		}
 		var is_correct = _(automatic_translations).isEqual(request.translations);
 		
+		request.automatic_translations = automatic_translations;
+		request.is_correct = is_correct;
 		logger.writeJsonLog("translations_manual", request);
 
 		fs.appendFile(logger.cleanPathToLog("translations_all.log"), 
@@ -474,6 +489,7 @@ io.sockets.on('connection', function (socket) {
 			);
 		request.explanation="approved by a human translator";
 		socket.emit('acknowledgement');
+		
 		logger.writeEventLog("events", "APPROVE<"+socket.id, request);
 		
 		manualTranslations[request.classifierName][request.text] = request;

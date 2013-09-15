@@ -40,9 +40,12 @@
 , {"source": "twenty", "target": "20"}
 , {"source": "\\b(\\d+) hundreds?\\b", "target": "$100"}
 , {"source": "\\b(\\d+) thousands?\\b", "target": "$1000"}
-, {"source": "\\b(\\d+)k\\b", "target": "$1000"}
+
+, {"source": "\\b(\\d+)\\s*k\\b", "target": "$1000"}
 , {"source": "\\b(\\d+),000\\b", "target": "$1000"}
-, {"source": "\\b(\\d+) percent\\b", "target": "$1%"}
+, {"source": "\\b(\\d+)\\s*percent\\b", "target": "$1%"}
+, {"source": "\\b(\\d+)\\s+%\\b", "target": "$1%"}
+
 , {"source": "\\b[o][.][k][.]?", "target": "okay"}
 , {"source": "\\b[o][k]\\b", "target": "okay"}
 ]
