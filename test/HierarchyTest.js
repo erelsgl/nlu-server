@@ -6,49 +6,41 @@
  */
 
 var should = require('should');
-var shallowJson = require('../Hierarchy').shallowJson;
-var splitJson = require('../Hierarchy').splitJson;
-var joinJson = require('../Hierarchy').joinJson;
-
-describe('shallowJson', function() {
-	it('works for strings (depth 1)', function() {
-		shallowJson("Offer", 1).should.eql("Offer");
-		shallowJson("Offer", 2).should.eql("Offer");
-		shallowJson("Offer", 3).should.eql("Offer");
-	});
-	it('works for simple objects (depth 2)', function() {
-		shallowJson({Offer: "Salary"}, 1).should.eql("Offer");
-		shallowJson({Offer: "Salary"}, 2).should.eql({Offer: "Salary"});
-		shallowJson({Offer: "Salary"}, 3).should.eql({Offer: "Salary"});
-	});
-	it('works for complex objects (depth 3)', function() {
-		shallowJson({Offer: {Salary: 20000}}, 1).should.eql("Offer");
-		shallowJson({Offer: {Salary: 20000}}, 2).should.eql({Offer: "Salary"});
-		shallowJson({Offer: {Salary: 20000}}, 3).should.eql({Offer: {Salary: 20000}});
-	});
-});
+var Hierarchy = require('../Hierarchy');
 
 
 describe('splitJson', function() {
 	it('works for strings (depth 1)', function() {
-		splitJson("Offer").should.eql(["Offer"]);
+		Hierarchy.splitJson("Offer").should.eql(["Offer"]);
 	});
 	it('works for simple objects (depth 2)', function() {
-		splitJson({Offer: "Salary"}).should.eql(["Offer", "Salary"]);
+		Hierarchy.splitJson({Offer: "Salary"}).should.eql(["Offer", "Salary"]);
 	});
 	it('works for complex objects (depth 3)', function() {
-		splitJson({Offer: {Salary: "20000"}}).should.eql(["Offer", "Salary", "20000"]);
+		Hierarchy.splitJson({Offer: {Salary: "20000"}}).should.eql(["Offer", "Salary", "20000"]);
 	});
 });
 
 describe('joinJson', function() {
 	it('works for strings (depth 1)', function() {
-		joinJson(["Offer"]).should.eql("Offer");
+		Hierarchy.joinJson(["Offer"]).should.eql("Offer");
 	});
 	it('works for simple objects (depth 2)', function() {
-		joinJson(["Offer", "Salary"]).should.eql(JSON.stringify({Offer: "Salary"}));
+		Hierarchy.joinJson(["Offer", "Salary"]).should.eql(JSON.stringify({Offer: "Salary"}));
 	});
 	it('works for complex objects (depth 3)', function() {
-		joinJson(["Offer", "Salary", "20000"]).should.eql(JSON.stringify({Offer: {Salary: "20000"}}));
+		Hierarchy.joinJson(["Offer", "Salary", "20000"]).should.eql(JSON.stringify({Offer: {Salary: "20000"}}));
+	});
+});
+
+describe('splitJsonFeatures', function() {
+	it('works for strings (depth 1)', function() {
+		Hierarchy.splitJsonFeatures("Offer").should.eql({"Offer":1});
+	});
+	it('works for simple objects (depth 2)', function() {
+		Hierarchy.splitJsonFeatures({Offer: "Salary"}).should.eql({"Offer":1, "Salary":1});
+	});
+	it('works for complex objects (depth 3)', function() {
+		Hierarchy.splitJsonFeatures({Offer: {Salary: "20000"}}).should.eql({"Offer":1, "Salary":1, "20000":1});
 	});
 });

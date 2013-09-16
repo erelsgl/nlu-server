@@ -1,32 +1,14 @@
 /**
- * A utility function for Homer.
+ * utility functions for Homer.
  */
 var _ = require("underscore")._;
-
-/**
- * @param json a JSON object, such as: {Offer: {Salary: 20000}}
- * @param depth an integer >= 1.
- * @return a view of the top-level parts of the json object.
- * -- For example, for depth=1: "Offer". For depth=2: "{Offer: Salary}". For depth=3: "{Offer: {Salary: 20000}}", etc.
- */
-function shallowJson(json, depth) {
-	if (!_.isObject(json))
-		return json;
-	var firstKey = Object.keys(json)[0];
-	if (depth<=1) {
-		return firstKey;
-	} else {
-		var shallow = {};
-		shallow[firstKey] = shallowJson(json[firstKey], depth-1);
-		return shallow;
-	}
-}
-
+var NGramsFromArray = require("../machine-learning/features/NGramExtractor").NGramsFromArray;
 
 /**
  * @param json a JSON object, such as: {Offer: {Salary: 20000}}
  * @return an array of the parts of the json.
  * -- For example: ["Offer", "Salary", "20000"]
+ * @see joinJson
  */
 function splitJson(json) {
 	return splitJsonRecursive(_.isString(json) && /{.*}/.test(json)?
@@ -43,9 +25,15 @@ function splitJsonRecursive(json) {
 	return rest;
 }
 
+/**
+ * The opposite of splitJson.
+ * @param an array of the parts of the json. For example: ["Offer", "Salary", "20000"]
+ * @return a JSON object, such as: {Offer: {Salary: 20000}} 
+ * @see splitJson
+ */
+
 function joinJson(parts) {
 	var json = joinJsonRecursive(parts);
-	//console.dir("joinJson "+JSON.stringify(parts)+" = "+JSON.stringify(json));
 	return _.isString(json)? json: JSON.stringify(json);
 }
 
@@ -60,9 +48,20 @@ function joinJsonRecursive(parts) {
 	}
 }
 
+
+
+/**
+ * @param json a JSON object, such as: {Offer: {Salary: 20000}}
+ * @return a hash of the parts of the json. For example: {"Offer":1, "Salary":1, "20000":1}
+ * @see joinJson
+ */
+function splitJsonFeatures(json, features) {
+	return NGramsFromArray(1, 0, splitJson(json), features);
+}
+
 module.exports = {
-	shallowJson: shallowJson,
 	splitJson: splitJson,
 	joinJson: joinJson,
+	splitJsonFeatures: splitJsonFeatures,
 }
 

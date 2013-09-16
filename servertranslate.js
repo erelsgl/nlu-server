@@ -61,6 +61,7 @@ var activeClassifiers = {};
 var manualTranslations = {};
 var pendingAutomaticTranslations = {};
 classifierNames.forEach(function(classifierName) {
+	var startTime = new Date();
 	var pathToBaseClassifier = __dirname+"/trainedClassifiers/"+classifierName+"/MostRecentClassifier.json";
 	var pathToRetrainedClassifier = __dirname+"/trainedClassifiers/"+classifierName+"/RetrainedClassifier.json";
 	var pathToClassifier = (fs.existsSync(pathToRetrainedClassifier)?
@@ -76,7 +77,8 @@ classifierNames.forEach(function(classifierName) {
 	activeClassifiers[classifierName].classes.sort();
 	if (!activeClassifiers[classifierName].classes)
 		throw new Error("Classes of classifier '"+classifierName+"' are null!");
-	console.log("Loaded classifier '"+classifierName+"'");
+	var elapsedTime = new Date()-startTime;
+	console.log("Loaded classifier '"+classifierName+"' ("+elapsedTime+" ms)");
 	
 	registeredPublicTranslators[classifierName] = {};
 	activePublicTranslators[classifierName] = {};
@@ -100,14 +102,14 @@ classifierNames.forEach(function(classifierName) {
 
 var lines = logger.readJsonLogSync(logger.cleanPathToLog("translations_manual.json"));
 lines.forEach(function(sample) {
-	if (sample.classifierName)
+	if (sample.classifierName && manualTranslations[sample.classifierName])
 		//if (sample.translations.length>0)
 			manualTranslations[sample.classifierName][sample.text]=sample;
 });
 
 var lines = logger.readJsonLogSync(logger.cleanPathToLog("translations_pending.json"));
 lines.forEach(function(sample) {
-	if (sample.classifierName)
+	if (sample.classifierName && manualTranslations[sample.classifierName])
 		if (!manualTranslations[sample.classifierName][sample.text])
 			pendingAutomaticTranslations[sample.classifierName][sample.text]=sample;
 });
