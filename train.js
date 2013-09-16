@@ -29,10 +29,10 @@ var createNewClassifier = function() {
 }
 
 var do_small_test = false;
-var do_cross_dataset_testing = true;
-var do_final_test = true;
-var do_cross_validation = true;
-var do_serialization = false;
+var do_cross_dataset_testing = false;
+var do_final_test = false;
+var do_cross_validation = false;
+var do_serialization = true;
 
 var verbosity = 0;
 var explain = 0;
@@ -48,8 +48,10 @@ if (do_small_test) {
 //		trainAndTestLite(createNewClassifier, grammarDataset, grammarDataset, verbosity+3).shortStats())+"\n";
 //	console.log("Train on single, test on single: "+
 //		trainAndTestLite(createNewClassifier, collectedDatasetSingle, collectedDatasetSingle, verbosity+3).shortStats())+"\n";
-	console.log("Train on woz multi class, test on woz single class: "+
-		trainAndTestLite(createNewClassifier, collectedDatasetMulti, collectedDatasetSingle.slice(0,2000), verbosity+3).shortStats())+"\n";
+//	console.log("Train on woz multi class, test on woz single class: "+
+//		trainAndTestLite(createNewClassifier, collectedDatasetMulti, collectedDatasetSingle.slice(0,5), verbosity+3).shortStats())+"\n";
+	console.log("Train on woz single class, test on manual dataset: "+
+	trainAndTestLite(createNewClassifier, collectedDatasetSingle, JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json")), verbosity+3).shortStats())+"\n";
 	process.exit(1);
 }
 
@@ -179,6 +181,7 @@ if (do_serialization) {
 	["Employer","Candidate"].forEach(function(classifierName) {
 		console.log("\nBuilding classifier for "+classifierName);
 		var classifier = createNewClassifier();
+		var jsonEmpty = classifier.toJSON();  // just to check that it works
 
 		var grammarDataset = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset0Grammar.json"));
 		var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz.json"));

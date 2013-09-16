@@ -1,4 +1,4 @@
 [
-   {"input":"Do you want a car?","output":["{\"Query\":\"Leased car\"}"]}
-,  {"input":"Do you want a car ?","output":["{\"Query\":\"Leased car\"}"]}
+  {"input":"ok/","output":["{\"Accept\":\"previous\"}"]}
+, {"input":"'ok'","output":["{\"Accept\":\"previous\"}"]}
 ]

@@ -61,6 +61,7 @@ var activeClassifiers = {};
 var manualTranslations = {};
 var pendingAutomaticTranslations = {};
 classifierNames.forEach(function(classifierName) {
+	var startTime = new Date()
 	var pathToBaseClassifier = __dirname+"/trainedClassifiers/"+classifierName+"/MostRecentClassifier.json";
 	var pathToRetrainedClassifier = __dirname+"/trainedClassifiers/"+classifierName+"/RetrainedClassifier.json";
 	var pathToClassifier = (fs.existsSync(pathToRetrainedClassifier)?
@@ -76,7 +77,8 @@ classifierNames.forEach(function(classifierName) {
 	activeClassifiers[classifierName].classes.sort();
 	if (!activeClassifiers[classifierName].classes)
 		throw new Error("Classes of classifier '"+classifierName+"' are null!");
-	console.log("Loaded classifier '"+classifierName+"'");
+	var elapsedTime = new Date()-startTime;
+	console.log("Loaded classifier '"+classifierName+"' ("+elapsedTime+" ms)");
 	
 	registeredPublicTranslators[classifierName] = {};
 	activePublicTranslators[classifierName] = {};

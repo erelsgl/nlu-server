@@ -17,18 +17,23 @@ var classifiers = require(__dirname+'/../machine-learning/classifiers');
 var ftrs = require(__dirname+'/../machine-learning/features');
 var Hierarchy = require(__dirname+'/Hierarchy');
 
+var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
+var natural = require('natural');
+var tokenizer = new natural.WordPunctTokenizer(); // WordTokenizer, TreebankWordTokenizer, WordPunctTokenizer
 
 /*
  * ENHANCEMENTS:
  */
 
-var featureExtractor = [
-                              			ftrs.WordsFromText(1,false/*,4,0.8*/),
-                            			ftrs.WordsFromText(2,false/*,4,0.6*/),
-                            			ftrs.LastLetterExtractor,
-                            		//	ftrs.WordsFromText(3,true/*,4,0.6*/), // much slower, only a little better
-                       ];
+function featureExtractor(sentence, features) {
+	var words = tokenizer.tokenize(sentence);
+	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
+	ftrs.NGramsFromArray(2, 0, words, features);  // bigrams
+	//ftrs.NGramsFromArray(3, 1, words, features);  // trigrams   // much slower, not better at all
+	//ftrs.LastLetterExtractor(sentence, features); // last letter - not needed when using WordPunctTokenizer
+	return features;
+}
 
 var normalizer = [
       			ftrs.LowerCaseNormalizer,
@@ -100,6 +105,10 @@ var PassiveAggressiveClassifier = classifiers.multilabel.PassiveAggressive.where
 	Constant: 5.0,
 });
 
+var LanguageModelClassifier = classifiers.multilabel.CrossLanguageModel.bind(this, {
+	smoothingFactor : 0.9,
+	labelFeatureExtractor: Hierarchy.splitJsonFeatures,
+});
 
 /*
  * SEGMENTERS (unused):
@@ -191,13 +200,15 @@ module.exports = {
 		SvmPerfClassifier: enhance(SvmPerfBinaryRelevanceClassifier),
 		SvmLinearClassifier: enhance(SvmLinearBinaryRelevanceClassifier),
 		PassiveAggressiveClassifier: enhance(PassiveAggressiveClassifier),
-		
+
 		MetaLabelerWinnow: enhance(metalabeler(WinnowBinaryRelevanceClassifier)),
 		MetaLabelerSvmPerf: enhance(metalabeler(SvmPerfBinaryRelevanceClassifier), new ftrs.FeatureLookupTable()),
 		MetaLabelerSvmLinear: enhance(metalabeler(SvmLinearBinaryRelevanceClassifier), new ftrs.FeatureLookupTable()),
 		MetaLabelerPassiveAggressive: enhance(metalabeler(PassiveAggressiveClassifier)),
-		MetaLabelerPassiveAggressiveWithMulticlassSvm: enhance((metalabeler(PassiveAggressiveClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
-		
+		MetaLabelerPassiveAggressiveSvm: enhance((metalabeler(PassiveAggressiveClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
+		MetaLabelerLanguageModelWinnow: enhance(metalabeler(LanguageModelClassifier,WinnowBinaryRelevanceClassifier)),
+		MetaLabelerLanguageModelSvm: enhance(metalabeler(LanguageModelClassifier,SvmLinearMulticlassifier)),
+
 		HomerSvmPerf: enhance(homer(SvmPerfBinaryRelevanceClassifier), new ftrs.FeatureLookupTable()),
 		HomerSvmLinear: enhance(homer(SvmLinearBinaryRelevanceClassifier), new ftrs.FeatureLookupTable()),
 		HomerWinnow: enhance(homer(WinnowBinaryRelevanceClassifier)),
