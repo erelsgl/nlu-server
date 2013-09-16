@@ -26,6 +26,42 @@ var tokenizer = new natural.WordPunctTokenizer(); // WordTokenizer, TreebankWord
  * ENHANCEMENTS:
  */
 
+var regexpNormalizer = ftrs.RegexpNormalizer(
+		JSON.parse(fs.readFileSync('knowledgeresources/BiuNormalizations.json')));
+
+function normalizer(sentence) {
+	sentence = sentence.toLowerCase().trim();
+	return regexpNormalizer(sentence);
+}
+
+var regexpString = "([.,;?!]|and)";  // to capture the delimiters
+var regexp = new RegExp(regexpString, "i");
+var delimitersToInclude = {"?":true};
+function inputSplitter(text) {
+	var normalizedParts = [];
+	if (/^and/i.test(text)) {   // special treatment to a sentence that starts with "and"
+		normalizedParts.push("and");
+		text = text.replace(/^and\s*/,"");
+	}
+
+	var parts = text.split(regexp);
+	for (var i=0; i<parts.length; i+=2) {
+		parts[i] = parts[i].trim();
+		var part = parts[i];
+		if (i+1<parts.length) {
+			var delimiter = parts[i+1];
+			if (delimitersToInclude[delimiter])
+				part += " " + delimiter;
+		}
+		if (part.length>0)
+			normalizedParts.push(part);
+	}
+//	console.log(text);
+//	console.dir(normalizedParts);
+	return normalizedParts;
+}
+
+
 function featureExtractor(sentence, features) {
 	var words = tokenizer.tokenize(sentence);
 	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
@@ -34,15 +70,6 @@ function featureExtractor(sentence, features) {
 	//ftrs.LastLetterExtractor(sentence, features); // last letter - not needed when using WordPunctTokenizer
 	return features;
 }
-
-var normalizer = [
-      			ftrs.LowerCaseNormalizer,
-    			ftrs.RegexpNormalizer(
-    				JSON.parse(fs.readFileSync('knowledgeresources/BiuNormalizations.json'))
-    		)];
-
-var inputSplitter = ftrs.RegexpSplitter("[.,;?!]|and", /*include delimiters = */{"?":true});
-
 
 /*
  * BINARY CLASSIFIERS (used as basis to other classifiers):
