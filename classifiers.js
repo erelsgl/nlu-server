@@ -248,6 +248,6 @@ module.exports = {
 		HomerMetaLabelerPassiveAggressiveWithMulticlassSvm: enhance(homer(metalabeler(PassiveAggressiveClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
 };
 
-module.exports.defaultClassifier = module.exports.HomerSvmPerf;
+module.exports.defaultClassifier = module.exports.HomerWinnow;
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
