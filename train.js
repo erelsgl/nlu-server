@@ -29,12 +29,12 @@ var createNewClassifier = function() {
 }
 
 var do_small_test = false;
-var do_small_serialization_test = false;
+var do_small_serialization_test = true;
 var do_cross_dataset_testing = true;
 var do_final_test = true;
 var do_cross_validation = true;
 var do_serialization = true;
-var do_test_on_training_data = false;
+var do_test_on_training_data = true;
 
 var verbosity = 0;
 var explain = 0;
