@@ -134,6 +134,12 @@ app.get("/", function(req,res) {
 	res.render("index");
 });
 
+//kill page - to check if the process can restart automatically:
+app.get("/kill!!!", function(req,res) {
+	logger.writeEventLog("events", "MANUAL","KILL!!!");
+	process.exit(1);
+});
+
 // view a table of the previous correct/incorrect translations: 
 app.get("/translations/:manualorautomatic/:dataset?", function(req,res) {
 	var manualorautomatic = req.params.manualorautomatic;
