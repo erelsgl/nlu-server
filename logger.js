@@ -6,7 +6,7 @@ var fs     = require('fs')
   ;
 
 
-exports.MAX_LENGTH_OF_CONSOLE_MESSAGE = 75;
+exports.MAX_LENGTH_OF_CONSOLE_MESSAGE = 1000;
 
 if (!fs.appendFile) {
   console.log("You have Node "+process.version+", that does not support appendFile. I try to approximate it with 'createWriteStream'.")
