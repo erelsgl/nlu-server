@@ -141,7 +141,7 @@ app.get("/", function(req,res) {
 //kill page - to check if the process can restart automatically:
 app.get("/kill!!!", function(req,res) {
 	logger.writeEventLog("events", "MANUAL","KILL!!!");
-	process.exit(1);
+	process.nextTick(function() {throw new Error("Manual Kill!!!");});
 });
 
 // view a table of the previous correct/incorrect translations: 
