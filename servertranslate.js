@@ -422,7 +422,7 @@ io.sockets.on('connection', function (socket) {
 	// A human asks for a translation: 
 	socket.on('translate', function(request) {
 		translate(request, socket.id, socket.private_translator, function(classification) {
-			logger.writeEventLog("events", (request.forward? "translate<": "generate<")+socket.id, classification);
+			logger.writeEventLog("events", (request.forward? "translate>": "generate>")+socket.id, classification);
 			socket.emit('translation', classification);
 		}, socket);
 	});
