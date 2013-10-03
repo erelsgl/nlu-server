@@ -96,6 +96,10 @@ classifierNames.forEach(function(classifierName) {
 	pendingAutomaticTranslations[classifierName] = {};
 });
 
+if (process.argv[2]==='test') {
+	process.exit(0);
+}
+
 //
 // Step 3: load additional approved translations from the manual translations file:
 //

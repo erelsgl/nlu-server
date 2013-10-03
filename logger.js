@@ -21,7 +21,7 @@ if (!fs.appendFile) {
     stream.write(data);
   };
 } else {
-  console.log("Congratulations! you have Node "+process.version+", that supports appendFile.");
+  console.log("Running on Node "+process.version+".");
 }
 
 if (!fs.existsSync("logs")) fs.mkdir("logs");
