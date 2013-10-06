@@ -64,7 +64,7 @@
 , {"input":"Can I have a salary of 12,000 Nis if I'm a team manager","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
 , {"input":"Pension 20%.","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"]}
 , {"input":"Programmer, 12,000 NIS. 8 hours a day. With a leased car.","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
-, {"input":"Your offer is even more unacceptable. Programmer 22.000 NIS is my final decision.","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Reject\":\"previous\"}"]}
+, {"input":"Your offer is even more unacceptable. Programmer 20.000 NIS is my final decision.","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Reject\":\"previous\"}"]}
 , {"input":"Make an offer.","output":["{\"Query\":\"bid\"}"]}
 , {"input":"Salary of 12,000 NIS, Team manager, without leased car, 10%pension, fast promotion track, 9 hours.","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"]}
 , {"input":"How about 12,000 NIS?","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}

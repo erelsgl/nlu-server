@@ -52,7 +52,7 @@
 , {"input":"Salary is quite low for this position. I would say 20,000 NIS would be appropriate.","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Reject\":\"Salary\"}"]}
 , {"input":"hi how are you","output":["{\"Greet\":true}"]}
 , {"input":"Let's start with 20,000 NIS, Programmier.","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
-, {"input":"Your offer is even more unacceptable. Programmer 22.000 NIS is my final decision.","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Reject\":\"previous\"}"]}
+, {"input":"Your offer is even more unacceptable. Programmer 20.000 NIS is my final decision.","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Reject\":\"previous\"}"]}
 , {"input":"Make an offer.","output":["{\"Query\":\"bid\"}"]}
 , {"input":"Salary of 12,000 NIS, Team manager, without leased car, 10%pension, fast promotion track, 9 hours.","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"]}
 , {"input":"Also I need a leased car.","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
