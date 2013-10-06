@@ -96,6 +96,10 @@ classifierNames.forEach(function(classifierName) {
 	pendingAutomaticTranslations[classifierName] = {};
 });
 
+if (process.argv[2]==='test') {
+	process.exit(0);
+}
+
 //
 // Step 3: load additional approved translations from the manual translations file:
 //
@@ -137,7 +141,7 @@ app.get("/", function(req,res) {
 //kill page - to check if the process can restart automatically:
 app.get("/kill!!!", function(req,res) {
 	logger.writeEventLog("events", "MANUAL","KILL!!!");
-	process.exit(1);
+	process.nextTick(function() {throw new Error("Manual Kill!!!");});
 });
 
 // view a table of the previous correct/incorrect translations: 
@@ -204,7 +208,7 @@ app.get("/get", function(req,res) {
 	var request = JSON.parse(req.query.request);
 	var id = "WEBSERVICE";
 	translate(request, id, /*requester_is_private_translator=*/false, function(classification) {
-		logger.writeEventLog("events", "translate>"+id, classification);
+		logger.writeEventLog("events", (request.forward? "translate>": "generate>")+id, classification);
 		res.write(JSON.stringify(classification));
 		res.end();
 	});
@@ -418,7 +422,7 @@ io.sockets.on('connection', function (socket) {
 	// A human asks for a translation: 
 	socket.on('translate', function(request) {
 		translate(request, socket.id, socket.private_translator, function(classification) {
-			logger.writeEventLog("events", "translate>"+socket.id, classification);
+			logger.writeEventLog("events", (request.forward? "translate>": "generate>")+socket.id, classification);
 			socket.emit('translation', classification);
 		}, socket);
 	});
