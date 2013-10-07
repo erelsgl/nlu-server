@@ -54,5 +54,6 @@
 , {"input":"What are you willing to compromise?","output":[{"Query":"compromise"}]}
 , {"input":"Do you accept my offer?","output":[{"Query":"accept"}]}
 , {"input":"Why do you reject my offer?","output":[{"Query":"reject"}]}
+, {"input":"hi","output":[{"Greet":true}]}
 , {"input":"I quit","output":[{"Quit":true}]}
 ]

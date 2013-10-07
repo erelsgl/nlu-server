@@ -220,6 +220,9 @@ app.get("/stats", function(req,res) {
 		"unhandled-sentence, wrong-empty-translation":0,
 		"unhandled-sentence-total":0,
 		
+		"correct-translation": 0,
+		"wrong-translation": 0,
+		
 		"sentence-total":0,
 	};
 	lines.forEach(function(line) {
@@ -243,7 +246,14 @@ app.get("/stats", function(req,res) {
 
 		var automaticTranslationCorrectness = (line.is_correct? "correct": "wrong");
 		var automaticTranslationMeaning     = (line.automatic_translations && line.automatic_translations.length==0? "empty": "meaning");
+		var automaticTranslationCorrectnessDescription = automaticTranslationCorrectness+"-translation";
 		var automaticTranslationDescription = automaticTranslationCorrectness+"-"+automaticTranslationMeaning+"-"+"translation";
+		if (automaticTranslationCorrectnessDescription in stats)
+			stats[automaticTranslationCorrectnessDescription]++;
+		else {
+			res.end("error: '"+automaticTranslationCorrectnessDescription+"' not found (line="+JSON.stringify(line));
+			return;
+		}
 		
 		var lineDescription = manualTranslationDescription+", "+automaticTranslationDescription;
 		if (lineDescription in stats)

@@ -5,21 +5,34 @@ html
 		link(rel='stylesheet', href='/main.css')
 	body#translations
 		h1 #{query.classifierName} in #{query.source} in #{query.accountName}
+		h2 types of sentences (based on their actual meaning) 
+		table
+			tr
+				th meaningful sentences: &nbsp;
+				td= Math.round(100*stats["meaningful-sentence-total"]/stats["sentence-total"])+"%"
+			tr
+				th empty sentences: &nbsp;
+				td= Math.round(100*stats["empty-sentence-total"]/stats["sentence-total"])+"%"
+			tr
+				th unhandled sentences: &nbsp;
+				td= Math.round(100*stats["unhandled-sentence-total"]/stats["sentence-total"])+"%"
+		h2 accuracy of classifier 
+		table
+			tr
+				th accuracy on meaningful sentences only: &nbsp;
+				td= Math.round(100*stats["meaningful-sentence, correct-meaning-translation"]/stats["meaningful-sentence-total"])+"%"
+			tr
+				th accuracy on meaningful and unhandled sentences: &nbsp;
+				td= Math.round(100*stats["meaningful-sentence, correct-meaning-translation"]/(stats["meaningful-sentence-total"]+stats["unhandled-sentence-total"]))+"%"
+			tr
+				th accuracy on all sentences: &nbsp;
+				td= Math.round(100*stats["correct-translation"]/stats["sentence-total"])+"%"
+
+		h2 counts
 		table
 			each value, key in stats
 				tr
 					th #{key.replace(/-/g," ")}: &nbsp;
 					td #{value}
-		table
-			tr
-				th accuracy in meaningful sentences: &nbsp;
-				td= Math.round(100*stats["meaningful-sentence, correct-meaning-translation"]/stats["meaningful-sentence-total"])+"%"
-			tr
-				th accuracy in empty sentences: &nbsp;
-				td= Math.round(100*stats["empty-sentence, correct-empty-translation"]/stats["empty-sentence-total"])+"%"
-			tr
-				th percent of empty sentences: &nbsp;
-				td= Math.round(100*stats["empty-sentence-total"]/stats["sentence-total"])+"%"
-			tr
-				th percent of unhandled sentences: &nbsp;
-				td= Math.round(100*stats["unhandled-sentence-total"]/stats["sentence-total"])+"%"
+
+				
