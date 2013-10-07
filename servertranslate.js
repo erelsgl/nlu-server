@@ -144,6 +144,22 @@ app.get("/kill!!!", function(req,res) {
 	process.nextTick(function() {throw new Error("Manual Kill!!!");});
 });
 
+var filter = function(lines, query) {
+	if (!_.isEmpty(query)) {
+		for (key in query) {
+			var value = query[key];
+			if (value=='true')
+				value=true;
+			else if (value=='false')
+				value=false;
+			else if (!isNaN(parseInt(value)))
+				value = parseInt(value);
+			query[key]=value;
+		}
+		return _(lines).where(query);
+	}
+}
+
 // view a table of the previous correct/incorrect translations: 
 app.get("/translations/:manualorautomatic/:dataset?", function(req,res) {
 	var manualorautomatic = req.params.manualorautomatic;
@@ -167,19 +183,7 @@ app.get("/translations/:manualorautomatic/:dataset?", function(req,res) {
 	} else {
 		var filename = "translations_"+manualorautomatic+".json";
 		var lines = logger.readJsonLogSync(logger.cleanPathToLog(filename));
-		if (!_.isEmpty(req.query)) {
-			for (key in req.query) {
-				var value = req.query[key];
-				if (value=='true')
-					value=true;
-				else if (value=='false')
-					value=false;
-				else if (!isNaN(parseInt(value)))
-					value = parseInt(value);
-				req.query[key]=value;
-			}
-			lines = _(lines).where(req.query);
-		}
+		lines = filter(lines, req.query);
 		if (req.params.dataset) {
 			lines = _(lines).select(function(line) {return line.text && 
 				line.translations && 
@@ -196,6 +200,60 @@ app.get("/translations/:manualorautomatic/:dataset?", function(req,res) {
 	}
 });
 
+//view statistics of the previous correct/incorrect translations: 
+app.get("/stats", function(req,res) {
+	var filename = "translations_manual.json";
+	var lines = logger.readJsonLogSync(logger.cleanPathToLog(filename));
+	lines = filter(lines, req.query);
+	
+	var stats = {
+		"meaningful-sentence, correct-meaning-translation":0,
+		"meaningful-sentence, wrong-meaning-translation":0,
+		"meaningful-sentence, wrong-empty-translation":0,
+		"meaningful-sentence-total":0,
+
+		"empty-sentence, correct-empty-translation":0,
+		"empty-sentence, wrong-meaning-translation":0,
+		"empty-sentence-total":0,
+
+		"unhandled-sentence, wrong-meaning-translation":0,
+		"unhandled-sentence, wrong-empty-translation":0,
+		"unhandled-sentence-total":0,
+	};
+	lines.forEach(function(line) {
+		var manualTranslationDescription = "";
+		if (line.translations.length==0)
+			manualTranslationDescription = "empty-sentence";
+		else if (line.translations.length==1 && line.translations[0]=="Other")
+			manualTranslationDescription = "unhandled-sentence";
+		else 
+			manualTranslationDescription = "meaningful-sentence";
+		manualTranslationDescriptionTotal = manualTranslationDescription+"-total";
+		if (manualTranslationDescriptionTotal in stats)
+			stats[manualTranslationDescriptionTotal]++;
+		else {
+			res.end("error: '"+manualTranslationDescriptionTotal+"' not found (line="+JSON.stringify(line));
+			return;
+		}
+
+		var automaticTranslationCorrectness = (line.is_correct? "correct": "wrong");
+		var automaticTranslationMeaning     = (line.automatic_translations.length==0? "empty": "meaning");
+		var automaticTranslationDescription = automaticTranslationCorrectness+"-"+automaticTranslationMeaning+"-"+"translation";
+		
+		var lineDescription = manualTranslationDescription+", "+automaticTranslationDescription;
+		if (lineDescription in stats)
+			stats[lineDescription]++;
+		else {
+			res.end("error: '"+lineDescription+"' not found (line="+JSON.stringify(line));
+			return;
+		}
+	});
+
+	res.render("stats", {
+		query: req.query,
+		stats: stats
+	});
+});
 
 // translation as a web service: 
 app.get("/get", function(req,res) {

@@ -28,6 +28,10 @@ html
 						a(href='/translations/manual?classifierName=#{role}&source=#{game}_JobCandidate&accountName=negochatstorage&is_correct=false') #{role} - real env mistakes
 					li
 						a(href='/translations/manual/dataset?classifierName=#{role}&source=#{game}_JobCandidate&accountName=negochatstorage') #{role} - real env dataset 
+					li
+						a(href='/stats?classifierName=#{role}&source=#{game}_JobCandidate') #{role} Statistics
+					li
+						a(href='/stats?classifierName=#{role}&source=#{game}_JobCandidate&accountName=negochatstorage') #{role} Statistics, real env
 
 		h2 Other translations
 		ul

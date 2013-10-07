@@ -1,0 +1,22 @@
+doctype 5
+html
+	head
+		title Translations Stats 
+		link(rel='stylesheet', href='/main.css')
+	body#translations
+		h1 #{query.classifierName} in #{query.source} in #{query.accountName}
+		table
+			each value, key in stats
+				tr
+					th #{key.replace(/-/g," ")}: &nbsp;
+					td #{value}
+		table
+			tr
+				th accuracy in meaningful sentences: &nbsp;
+				td= Math.round(100*stats["meaningful-sentence, correct-meaning-translation"]/stats["meaningful-sentence-total"])+"%"
+			tr
+				th accuracy in empty sentences: &nbsp;
+				td= Math.round(100*stats["empty-sentence, correct-meaning-translation"]/stats["empty-sentence-total"])+"%"
+			tr
+				th percent of unhandled sentences: &nbsp;
+				td= Math.round(100*stats["unhandled-sentence-total"]/(stats["meaningful-sentence-total"]+stats["unhandled-sentence-total"]))+"%"
