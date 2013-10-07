@@ -37,7 +37,9 @@ $(document).ready(function() {
 	translationSocket = commonConnect(serverport, deeplog);
 
 	translationSocket.on('connect', function() {
-		translationSocket.emit("register_as_private_translator", {classifierName: classifierName});
+		translationSocket.emit("register_as_private_translator", {
+			classifierName: args.classifierName
+		});
 		if ($("#text").val().length) 
 			translate();
 	});
@@ -72,13 +74,13 @@ $(document).ready(function() {
 				translationSocket.emit("delete_translation", {
 					text: $("#text").val(), 
 					translation_to_delete: translation,
-					classifierName: classifierName,
+					classifierName: args.classifierName,
 				});
 			} else {
 				translationSocket.emit("append_translation", {
 					text: $("#text").val(), 
 					translation_to_add: translation,
-					classifierName: classifierName,
+					classifierName: args.classifierName,
 				});
 			}
 	});
@@ -91,7 +93,7 @@ $(document).ready(function() {
 		translationSocket.emit('append_translation', {
 			text: $("#text").val(),
 			translation_to_add: translation,
-			classifierName: classifierName,
+			classifierName: args.classifierName,
 		});	
 	});
 	
@@ -119,7 +121,7 @@ $(document).ready(function() {
 /** Ask the server for a translation */
 function translate() {
 	var request = formToObject($('#form'));
-	request.classifierName = classifierName; 
+	request.classifierName = args.classifierName; 
 	request.source = "expert";
 
 	$("#translations").html("<img src='images/ajax_loader.gif' /"+">");
@@ -150,7 +152,7 @@ function approve() {
 		text: text,
 		translations: translations,
 		train: train,
-		classifierName: classifierName, 
+		classifierName: args.classifierName, 
 		source: "expert",
 	});
 	return false;

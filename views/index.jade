@@ -4,17 +4,17 @@ html
 		title Translation Server 
 		link(rel='stylesheet', href='/main.css')
 	body(style='text-align:left; font-size:20px')
+		h2 GUIs 
 		ul
 			li
-				a(href='/translations/all') All translations
+				a(href='/translate.html') Simple Translate
 			li
-				a(href='/translations/automatic') Automatic translations
+				a(href='/woz.html') Wizard of Oz
 			li
-				a(href='/translations/pending') Pending translations
-
+				a(href='/correct.html') Expert Translate (simple+woz)
 		h2 
 			a(href='/translations/manual') Manual translations
-		for game in ['negonlp', 'negonlp2', 'negonlpnc', 'negonlp2nc']
+		for game in ['negonlp', 'negonlp2', 'negonlpnc', 'negonlp2nc', 'negonlpncAMT']
 			h3 #{game}
 			ul
 				for role in ['Employer', 'Candidate']
@@ -24,4 +24,12 @@ html
 						a(href='/translations/manual/dataset?classifierName=#{role}&source=#{game}_JobCandidate&accountName=negochatstorage') #{role} - dataset, real env
 					li
 						a(href='/translations/manual?classifierName=#{role}&source=#{game}_JobCandidate&accountName=negochatstorage&is_correct=false') #{role} - real env, mistakes
-						
+
+		h2 Other translations
+		ul
+			li
+				a(href='/translations/all') All translations
+			li
+				a(href='/translations/automatic') Automatic translations
+			li
+				a(href='/translations/pending') Pending translations

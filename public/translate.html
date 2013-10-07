@@ -60,7 +60,7 @@ $(document).ready(function() {
 /** Ask the server for a translation */
 function translate() {
   var request = formToObject($('#form'));
-  request.classifierName = classifierName;
+  request.classifierName = args.classifierName;
   request.source = "html";
   $("#translations").html("<img src='images/ajax_loader.gif' />");
   startTime = new Date();

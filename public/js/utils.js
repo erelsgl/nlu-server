@@ -295,13 +295,17 @@ function explanationsToHtml(translations) {
 }
 
 
-/* handle classifierName parameter */
-
-var classifierName='Employer';
+/* handle parameters */
+var args = {};
+args.classifierName='Employer';
 var matches = /name=([^&]+)/.exec(location.search);
 if (matches)
-	classifierName=matches[1];
+	args.classifierName=matches[1];
+args.source = null;
+var matches = /source=([^&]+)/.exec(location.search);
+if (matches)
+	args.source=matches[1];
 $(document).ready(function() {
-  $("h1").append("<span> ("+classifierName+")</span>");
-  $("title").prepend(classifierName+" ");
+  $("h1").append("<span> ("+args.classifierName+(args.source?" "+args.source:"")+")</span>");
+  $("title").prepend(args.classifierName+" ");
 });

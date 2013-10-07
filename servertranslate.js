@@ -301,9 +301,12 @@ function translate(request, requester, requester_is_private_translator, callback
 			if (!requester_is_private_translator && !pastManualTranslation) {
 				// send the translation to all registered public translators (active or inactive):
 				var relevantPublicTranslators = registeredPublicTranslators[request.classifierName];
-				for (var id in relevantPublicTranslators) { 
+				for (var id in relevantPublicTranslators) {
+					var relevantPublicTranslatorSocket = relevantPublicTranslators[id];
+					if (relevantPublicTranslatorSocket.source && (classification.source!==request.relevantPublicTranslatorSocket.source))
+						continue;
 					logger.writeEventLog("events", "translate-toapprove>"+id, classification.translations);
-					relevantPublicTranslators[id].emit('translation', classification);
+					relevantPublicTranslatorSocket.emit('translation', classification);
 				}
 			}
 
@@ -368,7 +371,7 @@ io.sockets.on('connection', function (socket) {
 	var address = socket.handshake.address;
 	logger.writeEventLog("events", "CONNECT "+address.address + ":" + address.port+"<", socket.id);
 	
-	// Public translator accepts translations from other users for correction (a "wizard-of-oz"):
+	// A public translator accepts translations from other users for correction (a "wizard-of-oz"):
 	socket.public_translator = false;
 	socket.on('register_as_public_translator', function(request) {
 		if (!request || !request.classifierName || !activeClassifiers[request.classifierName]) {
@@ -391,6 +394,8 @@ io.sockets.on('connection', function (socket) {
 		// Send all pending automatic translations:
 		for (text in pendingAutomaticTranslations[request.classifierName]) {
 			classification = pendingAutomaticTranslations[request.classifierName][text];
+			if (request.source && (classification.source!==request.source))
+				continue;
 			logger.writeEventLog("events", "translate-toapprove>"+socket.id, classification.translations);
 			socket.emit('translation', classification);
 		};
@@ -453,7 +458,7 @@ io.sockets.on('connection', function (socket) {
 		onTranslatorAction(socket, request);
 		logger.writeEventLog("events", "APPEND<"+socket.id, request);
 	});
-	
+
 	// A human translator asks to stop the timer of a certain translation: 
 	socket.on('stop_timer', function(request) {
 		if (!request || !request.classifierName || !activeClassifiers[request.classifierName]) {
