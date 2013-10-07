@@ -192,25 +192,13 @@ if (do_serialization) {
 		var classifier = createNewClassifier();
 		var jsonEmpty = classifier.toJSON();  // just to check that it works
 
-		var grammarDataset = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset0Grammar.json"));
-		var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz.json"));
-		var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz1class.json"));
-		var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset2Woz.json"));
-		var collectedDatasetMulti2Easy = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset2WozEasy.json"));
-		var collectedDatasetSingle2Hard = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset2WozHard1class.json"));
-		var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset2Woz1class.json"));
-		var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset8WozAll.json"));
-		var collectedDatasetMulti8Easy = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset8WozAllEasy.json"));
-		var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset8WozAllHard1class.json"));
-
-		var dataset = grammarDataset.
-			concat(collectedDatasetMulti).
-			concat(collectedDatasetSingle).
-			concat(collectedDatasetMulti2).
-			concat(collectedDatasetSingle2).
-			concat(collectedDatasetMulti8).
-			concat(collectedDatasetSingle8Hard)
-			;
+		var datasetNames = ["Dataset0Grammar","Dataset1Woz","Dataset1Woz1class","Dataset2Woz","Dataset2Woz1class","Dataset8WozAll","Dataset8WozAllHard1class"];
+		var dataset = datasetNames.reduce(function(previous, current) {
+			return previous.concat(
+				JSON.parse(
+					fs.readFileSync(
+						"datasets/"+classifierName+"/" + current + ".json")));
+		}, []);
 
 		console.log("\nstart training on "+dataset.length+" samples"); var startTime = new Date();
 		classifier.trainBatch(dataset);

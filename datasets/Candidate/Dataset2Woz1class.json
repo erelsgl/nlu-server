@@ -73,12 +73,12 @@
 , {"input":"but you should work at least 9 hours","output":[{"Offer":{"Working Hours":"9 hours"}}]}
 , {"input":"I'm agree to your offer","output":[{"Accept":"previous"}]}
 , {"input":"I'm willing to get 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
-, {"input":"I agree to offer a wage no car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
-, {"input":"I agree to offer a wage of 10% pension","output":[{"Offer":{"Pension Fund":"10%"}}]}
-, {"input":"I agree to offer a wage of 20000 NIS","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
-, {"input":"I agree to offer a wage of 20000 NIS","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
-, {"input":"I agree to offer a wage with out car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
-, {"input":"I agree to offer a wage of 10% pension","output":[{"Offer":{"Pension Fund":"10%"}}]}
+, {"input":"I agree to a wage no car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I agree to a wage of 10% pension","output":[{"Offer":{"Pension Fund":"10%"}}]}
+, {"input":"I agree to a wage of 20000 NIS","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I agree to a wage of 20000 NIS","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I agree to a wage with out car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I agree to a wage of 10% pension","output":[{"Offer":{"Pension Fund":"10%"}}]}
 , {"input":"okay great...we de offer 10% pension","output":[{"Offer":{"Pension Fund":"10%"}}]}
 , {"input":"okay great...we de offer fast promotion track","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
 , {"input":"okay great...that title doesn't come with a car option","output":[{"Offer":{"Leased Car":"Without leased car"}}]}

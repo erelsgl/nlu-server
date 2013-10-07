@@ -1,6 +1,6 @@
 [
-  {"input":"I agree to offer a wage of 20000 NIS and 10% pension with no car","output":[{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Salary":"20,000 NIS"}}]}
-, {"input":"I agree to offer a wage of 20000 NIS and 10% pension with out car","output":[{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"10%"}}]}
+  {"input":"I agree to a wage of 20000 NIS and 10% pension with no car","output":[{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"I agree to a wage of 20000 NIS and 10% pension with out car","output":[{"Offer":{"Salary":"20,000 NIS"}},{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"10%"}}]}
 , {"input":"okay great...that title doesn't come with a car option but we de offer 10% pension fast promotion track","output":[{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Leased Car":"Without leased car"}}]}
 , {"input":"12,000, Programmer, Leased Car, 10%, Slow Promo, 9 Hours?","output":[{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"Slow promotion track"}},{"Offer":{"Working Hours":"9 hours"}}]}
 , {"input":"I was thinking more in line of a QA role. I think you can expect a good development plan, and easily progress in the company","output":[{"Offer":{"Job Description":"QA"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}

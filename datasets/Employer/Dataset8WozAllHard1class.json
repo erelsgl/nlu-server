@@ -132,7 +132,7 @@
 , {"input":"Ok then I will offer you this: a leased car","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
 , {"input":"Ok then I will offer you this: 20% pension","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"]}
 , {"input":"Ok then I will offer you this: Fast promotion track","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"]}
-, {"input":"Ok then I will offer you this: 20,00 salary","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
+, {"input":"Ok then I will offer you this: 20,000 salary","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
 , {"input":"Ok then I will offer you this: working 9 hours.","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"]}
 , {"input":"I will offer Porgrammer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
 , {"input":"I will offer Without leased car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"]}

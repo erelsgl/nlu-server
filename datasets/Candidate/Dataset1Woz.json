@@ -85,7 +85,7 @@
 , {"input":"Leased car without leased car, Promotion Possibillities Fast promotion track","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Leased Car":"Without leased car"}}]}
 , {"input":"I want 10% pension...","output":[{"Offer":{"Pension Fund":"10%"}}]}
 , {"input":"all other details are fine","output":[{"Accept":"previous"}]}
-, {"input":"I can give you 12000 NIS and everything you've requested","output":[{"Offer":{"Salary":"12,000 NIS"}},{"Accept":"previous"}]}
+, {"input":"I will work for 12000 NIS and everything you've requested","output":[{"Offer":{"Salary":"12,000 NIS"}},{"Accept":"previous"}]}
 , {"input":"20% pension, programmer, fast promotion track, with leased car, 12000, 10 hours","output":[{"Offer":{"Job Description":"Programmer"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Working Hours":"10 hours"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Salary":"12,000 NIS"}}]}
 , {"input":"i can live with 9 hours...what are you saying?","output":[{"Offer":{"Working Hours":"9 hours"}}]}
 , {"input":"Salary 12000 NIS Job Description QA Without leased car Pension Fund 20% Fast promotion track Working Hours 10 hours","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Working Hours":"10 hours"}},{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Job Description":"QA"}},{"Offer":{"Salary":"12,000 NIS"}}]}
