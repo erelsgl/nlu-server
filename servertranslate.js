@@ -221,6 +221,9 @@ app.get("/stats", function(req,res) {
 		"unhandled-sentence-total":0,
 	};
 	lines.forEach(function(line) {
+		if (!line.translations)
+			return;
+
 		var manualTranslationDescription = "";
 		if (line.translations.length==0)
 			manualTranslationDescription = "empty-sentence";
@@ -237,7 +240,7 @@ app.get("/stats", function(req,res) {
 		}
 
 		var automaticTranslationCorrectness = (line.is_correct? "correct": "wrong");
-		var automaticTranslationMeaning     = (line.automatic_translations.length==0? "empty": "meaning");
+		var automaticTranslationMeaning     = (line.automatic_translations && line.automatic_translations.length==0? "empty": "meaning");
 		var automaticTranslationDescription = automaticTranslationCorrectness+"-"+automaticTranslationMeaning+"-"+"translation";
 		
 		var lineDescription = manualTranslationDescription+", "+automaticTranslationDescription;
