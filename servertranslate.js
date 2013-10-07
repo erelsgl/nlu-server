@@ -305,6 +305,8 @@ function translate(request, requester, requester_is_private_translator, callback
 					var relevantPublicTranslatorSocket = relevantPublicTranslators[id];
 					if (relevantPublicTranslatorSocket.source && (classification.source!==request.relevantPublicTranslatorSocket.source))
 						continue;
+					if (relevantPublicTranslatorSocket.accountName && (classification.source!==request.relevantPublicTranslatorSocket.accountName))
+						continue;
 					logger.writeEventLog("events", "translate-toapprove>"+id, classification.translations);
 					relevantPublicTranslatorSocket.emit('translation', classification);
 				}
@@ -383,6 +385,8 @@ io.sockets.on('connection', function (socket) {
 		socket.public_translator = true;
 		if (request.source)  // limit the public translator to a specific source:
 			socket.source = request.source;
+		if (request.accountName)  // limit the public translator to a specific account:
+			socket.accountName = request.accountName;
 		registeredPublicTranslators[request.classifierName][socket.id] = socket;
 		activePublicTranslators[request.classifierName][socket.id] = socket;
 		logger.writeEventLog("events", "PUBLICTRANSLATOR<", socket.id);
@@ -395,6 +399,8 @@ io.sockets.on('connection', function (socket) {
 		for (text in pendingAutomaticTranslations[request.classifierName]) {
 			classification = pendingAutomaticTranslations[request.classifierName][text];
 			if (request.source && (classification.source!==request.source))
+				continue;
+			if (request.accountName && (classification.accountName!==request.accountName))
 				continue;
 			logger.writeEventLog("events", "translate-toapprove>"+socket.id, classification.translations);
 			socket.emit('translation', classification);

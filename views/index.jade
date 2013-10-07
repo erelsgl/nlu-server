@@ -9,8 +9,6 @@ html
 			li
 				a(href='/translate.html') Simple Translate
 			li
-				a(href='/woz.html') Wizard of Oz
-			li
 				a(href='/correct.html') Expert Translate (simple+woz)
 		h2 
 			a(href='/translations/manual') Manual translations
@@ -19,11 +17,17 @@ html
 			ul
 				for role in ['Employer', 'Candidate']
 					li
+						a(href='/woz.html?classifierName=#{role}&source=#{game}_JobCandidate') Wizard-of-Oz for #{role} in #{game}
+					li
+						a(href='/woz.html?classifierName=#{role}&source=#{game}_JobCandidate&accountName=negochatstorage') Wizard-of-Oz for #{role} in #{game}, real env
+					li
 						a(href='/translations/manual?classifierName=#{role}&source=#{game}_JobCandidate') #{role} - all
 					li
-						a(href='/translations/manual/dataset?classifierName=#{role}&source=#{game}_JobCandidate&accountName=negochatstorage') #{role} - dataset, real env
+						a(href='/translations/manual?classifierName=#{role}&source=#{game}_JobCandidate&accountName=negochatstorage') #{role} - real env
 					li
-						a(href='/translations/manual?classifierName=#{role}&source=#{game}_JobCandidate&accountName=negochatstorage&is_correct=false') #{role} - real env, mistakes
+						a(href='/translations/manual?classifierName=#{role}&source=#{game}_JobCandidate&accountName=negochatstorage&is_correct=false') #{role} - real env mistakes
+					li
+						a(href='/translations/manual/dataset?classifierName=#{role}&source=#{game}_JobCandidate&accountName=negochatstorage') #{role} - real env dataset 
 
 		h2 Other translations
 		ul
