@@ -16,7 +16,10 @@ html
 				td= Math.round(100*stats["meaningful-sentence, correct-meaning-translation"]/stats["meaningful-sentence-total"])+"%"
 			tr
 				th accuracy in empty sentences: &nbsp;
-				td= Math.round(100*stats["empty-sentence, correct-meaning-translation"]/stats["empty-sentence-total"])+"%"
+				td= Math.round(100*stats["empty-sentence, correct-empty-translation"]/stats["empty-sentence-total"])+"%"
+			tr
+				th percent of empty sentences: &nbsp;
+				td= Math.round(100*stats["empty-sentence-total"]/stats["sentence-total"])+"%"
 			tr
 				th percent of unhandled sentences: &nbsp;
-				td= Math.round(100*stats["unhandled-sentence-total"]/(stats["meaningful-sentence-total"]+stats["unhandled-sentence-total"]))+"%"
+				td= Math.round(100*stats["unhandled-sentence-total"]/stats["sentence-total"])+"%"

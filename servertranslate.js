@@ -219,6 +219,8 @@ app.get("/stats", function(req,res) {
 		"unhandled-sentence, wrong-meaning-translation":0,
 		"unhandled-sentence, wrong-empty-translation":0,
 		"unhandled-sentence-total":0,
+		
+		"sentence-total":0,
 	};
 	lines.forEach(function(line) {
 		if (!line.translations)
@@ -250,6 +252,8 @@ app.get("/stats", function(req,res) {
 			res.end("error: '"+lineDescription+"' not found (line="+JSON.stringify(line));
 			return;
 		}
+		
+		stats["sentence-total"]++;
 	});
 
 	res.render("stats", {
