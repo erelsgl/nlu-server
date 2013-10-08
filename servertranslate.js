@@ -327,6 +327,16 @@ var removeTextListeners = function(text) {
 		delete mapTextToListeners[text];
 }
 
+function classificationBelongsToTraslator(classification, translator) {
+	if (!translator)
+		throw new Error("translator is null");
+	if (translator.source && classification.source && (classification.source!==translator.source))
+		return false;
+	if (translator.accountName && classification.accountName && (classification.accountName!==translator.accountName))
+		return false;
+	return true;
+}
+
 /**
  * Translate text according to the given request.
  * @param request contains the text, the classifierName, and whether it is forward translation (or backward=generation).
@@ -338,7 +348,7 @@ function translate(request, requester, requester_is_private_translator, callback
 		if (!request || !request.classifierName || !activeClassifiers[request.classifierName]) {
 			console.error("classifierName not found! request="+JSON.stringify(request));
 			return;
-		}
+		}classificationBelongsToTraslator
 		var activeClassifier = activeClassifiers[request.classifierName];
 
 		logger.writeEventLog("events", (request.forward? "TRANSLATE<": "GENERATE<")+requester, request);
@@ -377,13 +387,10 @@ function translate(request, requester, requester_is_private_translator, callback
 				// send the translation to all registered public translators (active or inactive):
 				var relevantPublicTranslators = registeredPublicTranslators[request.classifierName];
 				for (var id in relevantPublicTranslators) {
-					var relevantPublicTranslatorSocket = relevantPublicTranslators[id];
-					if (relevantPublicTranslatorSocket.source && (classification.source!==relevantPublicTranslatorSocket.source))
-						continue;
-					if (relevantPublicTranslatorSocket.accountName && (classification.source!==relevantPublicTranslatorSocket.accountName))
+					if (!classificationBelongsToTraslator(classification, relevantPublicTranslators[id]))
 						continue;
 					logger.writeEventLog("events", "translate-toapprove>"+id, classification.translations);
-					relevantPublicTranslatorSocket.emit('translation', classification);
+					relevantPublicTranslators[id].emit('translation', classification);
 				}
 			}
 
@@ -473,9 +480,7 @@ io.sockets.on('connection', function (socket) {
 		// Send all pending automatic translations:
 		for (text in pendingAutomaticTranslations[request.classifierName]) {
 			classification = pendingAutomaticTranslations[request.classifierName][text];
-			if (request.source && (classification.source!==request.source))
-				continue;
-			if (request.accountName && (classification.accountName!==request.accountName))
+			if (!classificationBelongsToTraslator(classification, socket))
 				continue;
 			logger.writeEventLog("events", "translate-toapprove>"+socket.id, classification.translations);
 			socket.emit('translation', classification);
