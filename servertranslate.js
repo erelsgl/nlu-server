@@ -378,9 +378,9 @@ function translate(request, requester, requester_is_private_translator, callback
 				var relevantPublicTranslators = registeredPublicTranslators[request.classifierName];
 				for (var id in relevantPublicTranslators) {
 					var relevantPublicTranslatorSocket = relevantPublicTranslators[id];
-					if (relevantPublicTranslatorSocket.source && (classification.source!==request.relevantPublicTranslatorSocket.source))
+					if (relevantPublicTranslatorSocket.source && (classification.source!==relevantPublicTranslatorSocket.source))
 						continue;
-					if (relevantPublicTranslatorSocket.accountName && (classification.source!==request.relevantPublicTranslatorSocket.accountName))
+					if (relevantPublicTranslatorSocket.accountName && (classification.source!==relevantPublicTranslatorSocket.accountName))
 						continue;
 					logger.writeEventLog("events", "translate-toapprove>"+id, classification.translations);
 					relevantPublicTranslatorSocket.emit('translation', classification);
