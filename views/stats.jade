@@ -26,7 +26,7 @@ html
 				td= stats["meaningful-sentence, correct-meaning-translation"]+"/"+(stats["meaningful-sentence-total"]+stats["unhandled-sentence-total"])+"="+Math.round(100*stats["meaningful-sentence, correct-meaning-translation"]/(stats["meaningful-sentence-total"]+stats["unhandled-sentence-total"]))+"%"
 			tr
 				th accuracy on all sentences: &nbsp;
-				td= Math.round(100*stats["correct-translation"]/stats["sentence-total"])+"%"
+				td= stats["correct-translation"]+"/"+stats["sentence-total"]+"="+Math.round(100*stats["correct-translation"]/stats["sentence-total"])+"%"
 
 		h2 counts
 		table
