@@ -9,21 +9,21 @@ html
 		table
 			tr
 				th meaningful sentences: &nbsp;
-				td= Math.round(100*stats["meaningful-sentence-total"]/stats["sentence-total"])+"%"
+				td= stats["meaningful-sentence-total"]+"/"+stats["sentence-total"]+"="+Math.round(100*stats["meaningful-sentence-total"]/stats["sentence-total"])+"%"
 			tr
 				th empty sentences: &nbsp;
-				td= Math.round(100*stats["empty-sentence-total"]/stats["sentence-total"])+"%"
+				td= stats["empty-sentence-total"]+"/"+stats["sentence-total"]+"="+Math.round(100*stats["empty-sentence-total"]/stats["sentence-total"])+"%"
 			tr
 				th unhandled sentences: &nbsp;
-				td= Math.round(100*stats["unhandled-sentence-total"]/stats["sentence-total"])+"%"
+				td= stats["unhandled-sentence-total"]+"/"+stats["sentence-total"]+"="+Math.round(100*stats["unhandled-sentence-total"]/stats["sentence-total"])+"%"
 		h2 accuracy of classifier 
 		table
 			tr
 				th accuracy on meaningful sentences only: &nbsp;
-				td= Math.round(100*stats["meaningful-sentence, correct-meaning-translation"]/stats["meaningful-sentence-total"])+"%"
+				td= stats["meaningful-sentence, correct-meaning-translation"]+"/"+stats["meaningful-sentence-total"]+"="+Math.round(100*stats["meaningful-sentence, correct-meaning-translation"]/stats["meaningful-sentence-total"])+"%"
 			tr
 				th accuracy on meaningful and unhandled sentences: &nbsp;
-				td= Math.round(100*stats["meaningful-sentence, correct-meaning-translation"]/(stats["meaningful-sentence-total"]+stats["unhandled-sentence-total"]))+"%"
+				td= stats["meaningful-sentence, correct-meaning-translation"]+"/"+(stats["meaningful-sentence-total"]+stats["unhandled-sentence-total"])+"="+Math.round(100*stats["meaningful-sentence, correct-meaning-translation"]/(stats["meaningful-sentence-total"]+stats["unhandled-sentence-total"]))+"%"
 			tr
 				th accuracy on all sentences: &nbsp;
 				td= Math.round(100*stats["correct-translation"]/stats["sentence-total"])+"%"
