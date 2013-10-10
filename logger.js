@@ -41,8 +41,8 @@ exports.readSingleJsonObjectSync = function(pathToLog) {
  */
 exports.readJsonLogSync = function(pathToLog) {
   if (fs.existsSync(pathToLog)) {
-    var json = "["+fs.readFileSync(pathToLog, 'utf8').replace(/\n/g,",")+"]";
-    json = json.replace(/,\]/,"]");
+    var json = "["+fs.readFileSync(pathToLog, 'utf8').replace(/[\n\r]+/g,",")+"]";
+    json = json.replace(/,,+/g,",").replace(/,\s*\]/,"]");
     return JSON.parse(json);
   } else {
 	console.warn("WARNING: File '"+pathToLog+"' does not exist!");
