@@ -13,7 +13,7 @@ var mlutils = require('../../machine-learning/utils');
 var fs = require('fs');
 var _ = require('underscore')._;
 
-var BinaryRelevanceClassifier = new classifiers.BinaryClassifierSet({
+var BinaryRelevanceClassifier = new classifiers.multilabel.BinaryRelevance({
 	'binaryClassifierType': classifiers.Winnow.bind(this, {
 		promotion: 1.5,
 		demotion: 0.5,

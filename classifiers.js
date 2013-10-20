@@ -75,7 +75,7 @@ function featureExtractor(sentence, features) {
  * BINARY CLASSIFIERS (used as basis to other classifiers):
  */
 
-var WinnowBinaryClassifier = classifiers.Winnow.where({
+var WinnowBinaryClassifier = classifiers.Winnow.bind(0, {
 	retrain_count: 15,  /* 15 is much better than 5, better than 10 */
 	promotion: 1.5,
 	demotion: 0.5,
@@ -84,22 +84,22 @@ var WinnowBinaryClassifier = classifiers.Winnow.where({
 	//debug: true,
 });
 
-var BayesBinaryClassifier = classifiers.Bayesian.where({
+var BayesBinaryClassifier = classifiers.Bayesian.bind(0, {
 });
 
-var SvmPerfBinaryClassifier = classifiers.SvmPerf.where({
+var SvmPerfBinaryClassifier = classifiers.SvmPerf.bind(0, {
 	learn_args: "-c 100 --i 1",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
 	model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf",
 });
 
 
-var SvmLinearBinaryClassifier = classifiers.SvmLinear.where({
+var SvmLinearBinaryClassifier = classifiers.SvmLinear.bind(0, {
 	learn_args: "-c 100", 
 	model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearBinary",
 });
 
 
-var SvmLinearMulticlassifier = classifiers.SvmLinear.where({
+var SvmLinearMulticlassifier = classifiers.SvmLinear.bind(0, {
 	learn_args: "-c 100", 
 	model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearMulti",
 	multiclass: true,
@@ -111,23 +111,23 @@ var SvmLinearMulticlassifier = classifiers.SvmLinear.where({
  * MULTI-LABEL CLASSIFIERS (used as basis to other classifiers):
  */
 
-var WinnowBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.where({
+var WinnowBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
 	binaryClassifierType: WinnowBinaryClassifier,
 });
 
-var BayesBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.where({
+var BayesBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
 	binaryClassifierType: BayesBinaryClassifier,
 });
 
-var SvmPerfBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.where({
+var SvmPerfBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
 	binaryClassifierType: SvmPerfBinaryClassifier,
 });
 
-var SvmLinearBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.where({
+var SvmLinearBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
 	binaryClassifierType: SvmLinearBinaryClassifier,
 });
 
-var PassiveAggressiveClassifier = classifiers.multilabel.PassiveAggressive.where({
+var PassiveAggressiveClassifier = classifiers.multilabel.PassiveAggressive.bind(0, {
 	retrain_count: 1,
 	Constant: 5.0,
 });
@@ -141,12 +141,12 @@ var LanguageModelClassifier = classifiers.multilabel.CrossLanguageModel.bind(thi
  * SEGMENTERS (unused):
  */
 
-var WinnowSegmenter = classifiers.EnhancedClassifier.where({
+var WinnowSegmenter = classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
 		inputSplitter: inputSplitter,
 		pastTrainingSamples: [], // to enable retraining
 
-		classifierType: classifiers.multilabel.BinarySegmentation.where({
+		classifierType: classifiers.multilabel.BinarySegmentation.bind(0, {
 			binaryClassifierType: WinnowBinaryClassifier,
 			featureExtractor: featureExtractor,
 			//segmentSplitStrategy: 'shortestSegment',
@@ -156,13 +156,13 @@ var WinnowSegmenter = classifiers.EnhancedClassifier.where({
 		}),
 });
 
-var BayesSegmenter = classifiers.EnhancedClassifier.where({
+var BayesSegmenter = classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
 		inputSplitter: inputSplitter,
 		pastTrainingSamples: [], // to enable retraining
 
-		classifierType: classifiers.multilabel.MulticlassSegmentation.where({
-			multiclassClassifierType: classifiers.Bayesian.where({
+		classifierType: classifiers.multilabel.MulticlassSegmentation.bind(0, {
+			multiclassClassifierType: classifiers.Bayesian.bind(0, {
 				calculateRelativeProbabilities: true,
 			}),
 			featureExtractor: featureExtractor,
@@ -177,7 +177,7 @@ var BayesSegmenter = classifiers.EnhancedClassifier.where({
  */
 
 var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
-	return classifiers.EnhancedClassifier.where({
+	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
 		inputSplitter: inputSplitter,
 		//spellChecker: require('wordsworth').getInstance(),
@@ -200,7 +200,7 @@ var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 };
 
 var homer = function(multilabelClassifierType) {
-	return classifiers.multilabel.Homer.where({
+	return classifiers.multilabel.Homer.bind(0, {
 		splitLabel: Hierarchy.splitJson, 
 		joinLabel:  Hierarchy.joinJson,
 		multilabelClassifierType: multilabelClassifierType,
@@ -209,7 +209,7 @@ var homer = function(multilabelClassifierType) {
 
 var metalabeler = function(rankerType, counterType) {
 	if (!counterType) counterType=rankerType;
-	return classifiers.multilabel.MetaLabeler.where({
+	return classifiers.multilabel.MetaLabeler.bind(0, {
 		rankerType:  rankerType,
 		counterType: counterType,
 	});
