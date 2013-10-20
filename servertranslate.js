@@ -12,7 +12,8 @@ var express = require('express')
 	, util = require('util')
 	, logger = require('./logger')
 	, _ = require('underscore')._
-	, mlutils = require('../machine-learning/utils')
+	, limdu = require('limdu')
+	, serialization = require('serialization')
 	, timer = require('./timer');
 	;
 
@@ -68,10 +69,10 @@ classifierNames.forEach(function(classifierName) {
 		pathToRetrainedClassifier:
 		pathToBaseClassifier);
 	
-	activeClassifiers[classifierName] = mlutils.serialize.fromString(
+	activeClassifiers[classifierName] = serialization.fromString(
 		fs.readFileSync(pathToClassifier), __dirname);
 	activeClassifiers[classifierName].pathToRetrainedClassifier = pathToRetrainedClassifier;
-	activeClassifiers[classifierName].precisionrecall = mlutils.test(activeClassifiers[classifierName], activeClassifiers[classifierName].pastTrainingSamples).calculateStats();
+	activeClassifiers[classifierName].precisionrecall = limdu.utils.test(activeClassifiers[classifierName], activeClassifiers[classifierName].pastTrainingSamples).calculateStats();
 
 	activeClassifiers[classifierName].classes = activeClassifiers[classifierName].getAllClasses();
 	activeClassifiers[classifierName].classes.sort();
@@ -619,12 +620,12 @@ io.sockets.on('connection', function (socket) {
 				logger.writeEventLog("events", "++TRAIN<"+socket.id, request);
 			}
 			if (activeClassifier.pastTrainingSamples.length % 2 == 0) {  // write every OTHER sample
-				fs.writeFile(activeClassifier.pathToRetrainedClassifier, mlutils.serialize.toString(activeClassifier), 'utf-8', function(err) {
+				fs.writeFile(activeClassifier.pathToRetrainedClassifier, serialization.toString(activeClassifier), 'utf-8', function(err) {
 					logger.writeEventLog("events", "+++SAVE<"+socket.id, err);
 				});
 			}
 			
-			activeClassifier.precisionrecall = mlutils.test(activeClassifier, activeClassifier.pastTrainingSamples).calculateStats();
+			activeClassifier.precisionrecall = limdu.utils.test(activeClassifier, activeClassifier.pastTrainingSamples).calculateStats();
 			socket.emit('precisionrecall', activeClassifier.precisionrecall);
 		}
 	});

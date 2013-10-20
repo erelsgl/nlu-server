@@ -1,11 +1,10 @@
 /**
- * Demonstrates a full text-categorization system, with feature extractors and cross-validation.
+ * Trains the NLU component.
  * 
  * @author Erel Segal-Halevi
  * @since 2013-06
  */
 
-var mlutils = require('../machine-learning/utils');
 var _ = require('underscore')._;
 var fs = require('fs');
 
@@ -30,20 +29,23 @@ var createNewClassifier = function() {
 
 var do_small_test = false;
 var do_small_serialization_test = false;
-var do_cross_dataset_testing = false;
-var do_final_test = false;
-var do_cross_validation = false;
+
+var do_cross_dataset_testing = true;
+var do_final_test = true;
+var do_cross_validation = true;
 var do_serialization = true;
 var do_test_on_training_data = true;
 
 var verbosity = 0;
 var explain = 0;
 
-var partitions = mlutils.partitions;
-var PrecisionRecall = mlutils.PrecisionRecall;
-var trainAndTest = mlutils.trainAndTest;
-var trainAndCompare = mlutils.trainAndCompare;
-var trainAndTestLite = mlutils.trainAndTestLite;
+var partitions = require('limdu/utils/partitions');
+var PrecisionRecall = require('limdu/utils/PrecisionRecall');
+var trainAndTest = require('limdu/utils/trainAndTest').trainAndTest;
+var trainAndCompare = require('limdu/utils/trainAndTest').trainAndCompare;
+var trainAndTestLite = require('limdu/utils/trainAndTest').trainAndTestLite;
+var test = require('limdu/utils/trainAndTest').test;
+var serialization = require('serialization');
 
 if (do_small_test) {
 //	console.log("Train on grammar, test on grammar: "+
@@ -60,7 +62,7 @@ if (do_small_serialization_test) {
 	var classifier = createNewClassifier(); 
 	classifier.trainBatch(collectedDatasetSingle);
 	console.log("\nConvert to string, and test on training data again");
-	mlutils.serialize.toStringVerified(classifier, createNewClassifier, __dirname, collectedDatasetSingle, /*explain=*/4);
+	serialization.toStringVerified(classifier, createNewClassifier, __dirname, collectedDatasetSingle, /*explain=*/4);
 	process.exit(1);
 }
 
@@ -204,13 +206,13 @@ if (do_serialization) {
 		classifier.trainBatch(dataset);
 		console.log("end training on "+dataset.length+" samples, "+(new Date()-startTime)+" [ms]");
 
-		if (do_test_on_training_data) console.log("\ntest on training data: "+mlutils.test(classifier, dataset).shortStats());
+		if (do_test_on_training_data) console.log("\ntest on training data: " + test(classifier, dataset).shortStats());
 
 		console.log("\nConvert to string, and test on training data again");
 		fs.writeFileSync("trainedClassifiers/"+classifierName+"/MostRecentClassifier.json", 
 			(do_test_on_training_data? 
-					mlutils.serialize.toStringVerified(classifier, createNewClassifier, __dirname, dataset):
-					mlutils.serialize.toString(classifier, createNewClassifier, __dirname))
+					serialization.toStringVerified(classifier, createNewClassifier, __dirname, dataset):
+					serialization.toString(classifier, createNewClassifier, __dirname))
 			, 'utf8');
 	});
 } // do_serialization

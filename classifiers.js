@@ -12,9 +12,10 @@
 
 var extend = require('util')._extend;
 var fs = require('fs');
+var limdu = require("limdu");
 
-var classifiers = require(__dirname+'/../machine-learning/classifiers');
-var ftrs = require(__dirname+'/../machine-learning/features');
+var classifiers = limdu.classifiers;
+var ftrs = limdu.features;
 var Hierarchy = require(__dirname+'/Hierarchy');
 
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
@@ -67,7 +68,7 @@ function featureExtractor(sentence, features) {
 	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
 	ftrs.NGramsFromArray(2, 0, words, features);  // bigrams
 	//ftrs.NGramsFromArray(3, 1, words, features);  // trigrams   // much slower, not better at all
-	//ftrs.LastLetterExtractor(sentence, features); // last letter - not needed when using WordPunctTokenizer
+	//require('./LastLetterExtractor')(sentence, features); // last letter - not needed when using WordPunctTokenizer
 	return features;
 }
 

@@ -3,8 +3,8 @@
  */
 
 var fs = require('fs');
-var hash = require('../../machine-learning/utils/hash');
-var json = require('../../machine-learning/utils/json');
+var hash = require('limdu/utils/hash');
+var json = require('limdu/formats/json');
 
 /**
  * Read a dataset from a text file.

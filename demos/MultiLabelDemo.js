@@ -8,8 +8,8 @@
 
 console.log("Multi-Label Classification demo start");
 
-var classifiers = require('../../machine-learning/classifiers');
-var mlutils = require('../../machine-learning/utils');
+var classifiers = require('limdu/classifiers');
+var mlutils = require('limdu/utils');
 var fs = require('fs');
 var _ = require('underscore')._;
 

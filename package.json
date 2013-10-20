@@ -6,6 +6,8 @@
     "start": "node machine-learning/server"
   },
   "dependencies": {
+    "limdu": "latest",
+    "serialization": "latest",
     "connect": "~2.7.10",
     "express": "~3.2.5",
     "jade": "~0.30.0",

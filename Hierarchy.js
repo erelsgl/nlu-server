@@ -2,7 +2,7 @@
  * utility functions for Homer.
  */
 var _ = require("underscore")._;
-var NGramsFromArray = require("../machine-learning/features/NGramExtractor").NGramsFromArray;
+var NGramsFromArray = require("limdu/features").NGramsFromArray;
 
 /**
  * @param json a JSON object, such as: {Offer: {Salary: 20000}}

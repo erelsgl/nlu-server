@@ -7,7 +7,7 @@
 
 
 var _ = require('underscore')._;
-var ftrs = require('../machine-learning/features');
+var ftrs = require('limdu/features');
 var fs = require('fs');
 
 /**
@@ -77,8 +77,8 @@ if (process.argv[1] === __filename) {
 					ftrs.RegexpNormalizer(
 						JSON.parse(fs.readFileSync('knowledgeresources/BiuNormalizations.json'))
 				)];
-	var unigrams = ftrs.WordsFromText(1,false/*,4,0.8*/);
-	var bigrams = ftrs.WordsFromText(2,false/*,4,0.6*/);
+	var unigrams = ftrs.NGramsOfWords(1,false/*,4,0.8*/);
+	var bigrams = ftrs.NGramsOfWords(2,false/*,4,0.6*/);
 	
 	console.log(
 		exports.analyze(
