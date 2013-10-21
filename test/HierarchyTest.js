@@ -7,7 +7,7 @@
 
 var should = require('should');
 var Hierarchy = require('../Hierarchy');
-
+var ftrs = require("limdu/features");
 
 describe('splitJson', function() {
 	it('works for strings (depth 1)', function() {
@@ -35,12 +35,12 @@ describe('joinJson', function() {
 
 describe('splitJsonFeatures', function() {
 	it('works for strings (depth 1)', function() {
-		Hierarchy.splitJsonFeatures("Offer").should.eql({"Offer":1});
+		ftrs.call(Hierarchy.splitJsonFeatures, "Offer").should.eql({"Offer":1});
 	});
 	it('works for simple objects (depth 2)', function() {
-		Hierarchy.splitJsonFeatures({Offer: "Salary"}).should.eql({"Offer":1, "Salary":1});
+		ftrs.call(Hierarchy.splitJsonFeatures, {Offer: "Salary"}).should.eql({"Offer":1, "Salary":1});
 	});
 	it('works for complex objects (depth 3)', function() {
-		Hierarchy.splitJsonFeatures({Offer: {Salary: "20000"}}).should.eql({"Offer":1, "Salary":1, "20000":1});
+		ftrs.call(Hierarchy.splitJsonFeatures, {Offer: {Salary: "20000"}}).should.eql({"Offer":1, "Salary":1, "20000":1});
 	});
 });

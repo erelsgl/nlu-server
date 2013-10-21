@@ -1,9 +1,9 @@
 /**
- * Create a new classifier for the ML server.
+ * Create a new classifier for the NLU server.
  *
  * This is the file where the classifier specification (type, options, etc.) is defined.
  *
- * The selection of which classifier to actually use is made in the last line of this file.
+ * The selection of which classifier to actually use is made in the bottom of this file.
  *
  * 
  * @author Erel Segal-Halevi
