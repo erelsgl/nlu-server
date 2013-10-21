@@ -1,7 +1,5 @@
-translation server
-==================
+# Natural Language Understanding server
 
-This folder (server/**) contains a standalone application - 
-a server for text categorization.
+A server that supplies web-services for NLU (Natural Language Understanding) and NLG (Natural Language Generation) for a negotiation agent.
 
  

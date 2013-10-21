@@ -1,9 +1,10 @@
 {
-  "name": "machine-learning-server",
+  "name": "nlu-server",
   "version": "0.0.2",
   "private": true,
   "scripts": {
-    "start": "node machine-learning/server"
+    "start": "node servertranslate",
+    "test": "mocha test"
   },
   "dependencies": {
     "limdu": "latest",
