@@ -10,9 +10,21 @@ html
 				a(href='/translate.html') Simple Translate
 			li
 				a(href='/correct.html') Expert Translate (simple+woz)
+		h2 game index
+		ul
+			li
+				negonlp  -      KBAgent, students, NLU
+				negonlp2 -      KBAgent, mturkers, WOZ
+				negonlpnc -     NCAgent, students, NLU
+				negonlp2nc-     NCAgent, mturkers, WOZ
+				negonlpAMT-     KBAgent, mturkers, NLU
+				negonlp2ncAMT - NCAgent, mturkers, WOZ
+				html -          the translate.html interface
+				expert -        the correct.html interface
+				
 		h2 
 			a(href='/translations/manual') Manual translations
-		for game in ['negonlp', 'negonlp2', 'negonlpnc', 'negonlp2nc', 'negonlpAMT', 'negonlpncAMT', 'negonlp2ncAMT']
+		for game in ['negonlp', 'negonlp2', 'negonlpnc', 'negonlp2nc', 'negonlpAMT', 'negonlpncAMT', 'negonlp2ncAMT', 'html', 'expert']
 			h3 #{game}
 			ul
 				for role in ['Employer', 'Candidate']

@@ -10,17 +10,13 @@ var fs = require('fs');
 
 console.log("machine learning trainer start\n");
 
-var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/Dataset0Grammar.json"));
-var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz.json"));
-var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Employer/Dataset1Woz1class.json"));
-var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2Woz.json"));
-var collectedDatasetMulti2Easy = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2WozEasy.json"));
-var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2Woz1class.json"));
-var collectedDatasetSingle2Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset2WozHard1class.json"));
-var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset4WozAmt.json"));
-var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAll.json"));
-var collectedDatasetMulti8Easy = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAllEasy.json"));
-var collectedDatasetSingle8Hard = JSON.parse(fs.readFileSync("datasets/Employer/Dataset8WozAllHard1class.json"));
+var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/0_grammar.json"));
+var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students.json"));
+var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students1class.json"));
+var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Employer/2_experts.json"));
+var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/Employer/2_experts1class.json"));
+var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Employer/3_woz_kbagent_turkers_negonlp2.json"));
+var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/4_various.json"));
 
 var createNewClassifier = function() {
 	var defaultClassifier = require(__dirname+'/classifiers').defaultClassifier;
@@ -80,12 +76,8 @@ if (do_cross_dataset_testing) {
 
 	console.log("Train on grammar+multi2, test on multi8: "+
 		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
-//	console.log("Train on grammar+single2hard, test on multi8: "+
-//			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle2Hard), collectedDatasetMulti8, verbosity).shortStats())+"\n";
 //	console.log("Train on grammar+single2, test on multi8: "+
 //		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
-//	console.log("Train on grammar+single2hard+multi2, test on multi8: "+
-//			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle2Hard).concat(collectedDatasetMulti2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
 	console.log("Train on grammar+single2+multi2, test on multi8: "+
 			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle2).concat(collectedDatasetMulti2), collectedDatasetMulti8, verbosity).shortStats())+"\n";
 	
@@ -100,14 +92,6 @@ if (do_cross_dataset_testing) {
 //		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti8), collectedDatasetMulti2, verbosity).shortStats())+"\n";
 //	console.log("Train on grammar+single1+multi1+multi8, test on multi2: "+
 //			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetMulti).concat(collectedDatasetMulti8), collectedDatasetMulti2, verbosity).shortStats())+"\n";
-//	console.log("Train on grammar+single1+single8hard, test on multi2: "+
-//		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle8Hard), collectedDatasetMulti2, verbosity).shortStats())+"\n";
-//	console.log("Train on grammar+single1+single8hard+multi8easy, test on multi2: "+
-//			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle8Hard).concat(collectedDatasetMulti8Easy), collectedDatasetMulti2, verbosity).shortStats())+"\n";
-//	console.log("Train on grammar+single1+single8hard+multi8, test on multi2: "+
-//			trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetSingle).concat(collectedDatasetSingle8Hard).concat(collectedDatasetMulti8), collectedDatasetMulti2, verbosity).shortStats())+"\n";
-//	console.log("Train on grammar+single1+single8hard+multi1+multi8, test on multi2: "+
-//		trainAndTest(createNewClassifier, grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti8).concat(collectedDatasetSingle8Hard), collectedDatasetMulti2, verbosity).shortStats())+"\n";
 
 //	console.log("\nTrain on grammar data, test on woz single class: "+
 //		trainAndTest(createNewClassifier, grammarDataset, collectedDatasetSingle, verbosity).shortStats())+"\n";
@@ -138,12 +122,12 @@ if (do_final_test) {
 	["Employer"/*,"Candidate"*/].forEach(function(classifierName) {
 		console.log("\nFinal test for "+classifierName);
 
-		var grammarDataset = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset0Grammar.json"));
-		var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz.json"));
-		var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset1Woz1class.json"));
-		var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset2Woz.json"));
-		var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset2Woz1class.json"));
-		var amtDataset = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/Dataset4WozAmt.json"));
+		var grammarDataset = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/0_grammar.json"));
+		var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/1_woz_kbagent_students.json"));
+		var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/1_woz_kbagent_students1class.json"));
+		var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/2_experts.json"));
+		var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/2_experts1class.json"));
+		var amtDataset = JSON.parse(fs.readFileSync("datasets/"+classifierName+"/3_woz_kbagent_turkers_negonlp2.json"));
 		
 		console.log("Train on grammar, test on AMT: "+
 				trainAndTest(createNewClassifier, grammarDataset, amtDataset, verbosity).shortStats())+"\n";
@@ -194,7 +178,14 @@ if (do_serialization) {
 		var classifier = createNewClassifier();
 		var jsonEmpty = classifier.toJSON();  // just to check that it works
 
-		var datasetNames = ["Dataset0Grammar","Dataset1Woz","Dataset1Woz1class","Dataset2Woz","Dataset2Woz1class","Dataset8WozAll","Dataset8WozAllHard1class"];
+		var datasetNames = [
+			"0_grammar",
+			"1_woz_kbagent_students",
+			"1_woz_kbagent_students1class",
+			"2_experts",
+			"2_experts1class",
+			"4_various",
+			"4_various1class"];
 		var dataset = datasetNames.reduce(function(previous, current) {
 			return previous.concat(
 				JSON.parse(
