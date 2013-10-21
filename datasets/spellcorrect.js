@@ -1,7 +1,3 @@
-/**
- * Application for converting a all classes in a dataset from JSON strings to objects.
- */
-
 if (process.argv.length<3) {
 	console.error("SYNTAX: node spellcorrect <input>");
 	process.exit(1);

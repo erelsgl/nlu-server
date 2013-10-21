@@ -1,5 +1,6 @@
 /**
- * A socket.io server for text categorization. Based on a pre-trained model. 
+ * A socket.io server for Natural Language Understanding (NLU) and Natural Language Generation (NLG).
+ * Based on a pre-trained model. 
  * 
  * @author Erel Segal-Halevi erelsgl@gmail.com
  * @since 2013-06

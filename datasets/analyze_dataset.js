@@ -1,5 +1,5 @@
 /**
- * Utilities for analyzing datasets - calculating the distribution of features, size of vocabulary, etc. 
+ * Utilities for statistic analysis of datasets: distribution of features, size of vocabulary, etc. 
  * 
  * @author Erel Segal-Halevi
  * @since 2013-09
