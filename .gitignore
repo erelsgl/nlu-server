@@ -1,20 +1,9 @@
-lib-cov
 *.seed
-*.log
-*.csv
-*.dat
 *.out
 *.pid
 
-pids
-results
-
 npm-debug.log
-/deploy_all.xml
-/deploy_light.xml
 /retrainedClassifiers
-/logs130707
-/logs130723
 /.project
 /node_modules_1
 /node_modules
