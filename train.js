@@ -1,14 +1,24 @@
 /**
- * Trains the NLU component.
+ * Trains and tests the NLU component.
  * 
  * @author Erel Segal-Halevi
  * @since 2013-06
  */
 
+console.log("machine learning trainer start\n");
+
+var do_small_temporary_test = false;
+var do_small_temporary_serialization_test = false;
+
+var do_cross_dataset_testing = true;
+var do_final_test = true;
+var do_cross_validation = true;
+var do_serialization = true;
+var do_test_on_training_data = true;
+
+
 var _ = require('underscore')._;
 var fs = require('fs');
-
-console.log("machine learning trainer start\n");
 
 var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/0_grammar.json"));
 var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students.json"));
@@ -23,15 +33,6 @@ var createNewClassifier = function() {
 	return new defaultClassifier();
 }
 
-var do_small_test = false;
-var do_small_serialization_test = false;
-
-var do_cross_dataset_testing = true;
-var do_final_test = true;
-var do_cross_validation = true;
-var do_serialization = true;
-var do_test_on_training_data = true;
-
 var verbosity = 0;
 var explain = 0;
 
@@ -43,18 +44,12 @@ var trainAndTestLite = require('limdu/utils/trainAndTest').trainAndTestLite;
 var test = require('limdu/utils/trainAndTest').test;
 var serialization = require('serialization');
 
-if (do_small_test) {
-//	console.log("Train on grammar, test on grammar: "+
-//		trainAndTestLite(createNewClassifier, grammarDataset, grammarDataset, verbosity+3).shortStats())+"\n";
-//	console.log("Train on single, test on single: "+
-//		trainAndTestLite(createNewClassifier, collectedDatasetSingle, collectedDatasetSingle, verbosity+3).shortStats())+"\n";
-//	console.log("Train on woz multi class, test on woz single class: "+
-//		trainAndTestLite(createNewClassifier, collectedDatasetMulti, collectedDatasetSingle.slice(0,5), verbosity+3).shortStats())+"\n";
+if (do_small_temporary_test) {
 	console.log("Train on woz single class, test on manual dataset: "+
 		trainAndTestLite(createNewClassifier, collectedDatasetSingle, JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json")), verbosity+3).shortStats())+"\n";
 }
 
-if (do_small_serialization_test) {
+if (do_small_temporary_serialization_test) {
 	var classifier = createNewClassifier(); 
 	classifier.trainBatch(collectedDatasetSingle);
 	console.log("\nConvert to string, and test on training data again");
