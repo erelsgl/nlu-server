@@ -1,3 +1,8 @@
+/*
+This script calculates the statistic and influence of unseen words
+It seaches for words that appear in testSet and not in the trainSet
+Then it trains the classifier on trainSet after that it evaluates the influence of unseen words in testSet
+*/
 var _ = require('underscore')._;
 var fs = require('fs');
 var hash = require('limdu/utils/hash');
