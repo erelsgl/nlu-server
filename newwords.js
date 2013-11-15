@@ -5,14 +5,33 @@ Then it trains the classifier on trainSet after that it evaluates the influence 
 */
 var _ = require('underscore')._;
 var fs = require('fs');
+var natural = require('natural');
 var hash = require('limdu/utils/hash');
 var trainAndTest_hash= require('limdu/utils/trainAndTest').trainAndTest_hash;
 var partitions = require('limdu/utils/partitions');
 
+var tokenizer = new natural.WordPunctTokenizer(); // WordTokenizer, TreebankWordTokenizer,
 
 var createNewClassifier = function() {
   var defaultClassifier = require(__dirname+'/classifiers').defaultClassifier;
   return new defaultClassifier();
+}
+
+function normalizer(sentence) {
+  sentence = sentence.toLowerCase().trim();
+  // return regexpNormalizer(sentence);
+  return sentence;
+}
+
+function tokenizedataset(dataset)
+{ 
+  vocabulary = []
+  for (var sample in dataset) 
+   {
+  var words = tokenizer.tokenize(normalizer(dataset[sample]['input']));
+  vocabulary = vocabulary.concat(words);
+   }
+  return _.uniq(vocabulary);
 }
 
 var datasetcollected = new Array();
@@ -40,65 +59,74 @@ partitions.partitions(datasetcollectedcommon, 3, function(trainSet, testSet, ind
 
 // process.exit();  
 //var datasetHash = hash.fromString(fs.readFileSync("datasets/Employer/2_experts1class.json", 'utf8'));
- 
-  var dataset = JSON.parse(fs.readFileSync("datasets/Employer/2_experts1class.json"));
-  dataset = testSet;
-  vocabulary = [];
-  for (var sample in dataset) 
+   // var dataset = JSON.parse(fs.readFileSync("datasets/Employer/2_experts1class.json"));
+
+  console.log("test set size "+testSet.length)
+  console.log("train set size "+trainSet.length)
+  
+  testvocabulary = tokenizedataset(testSet)
+  trainvocabulary = tokenizedataset(trainSet)
+
+  console.log("test vocabulary "+ testvocabulary.length)
+  console.log("train vocabulary "+ trainvocabulary.length)
+
+  unseenvocabulary = _.difference(testvocabulary, trainvocabulary);
+
+  console.log("unseen vocas")
+  console.log(unseenvocabulary)
+  
+  unseendataset =[];
+  unseenwords = {}
+  
+  for (var word in unseenvocabulary)
     {
-    vocabulary = vocabulary.concat(dataset[sample]['input'].replace(/[ \t,;:.!?]/g,' ').split(' '));
-    }
-  vocabulary = _.uniq(vocabulary);
-
-  var dataset = JSON.parse(fs.readFileSync("datasets/Employer/4_various.json"));
-  dataset = trainSet;
-  goldvocabulary = [];
-  for (var sample in dataset) 
-    {
-    goldvocabulary = goldvocabulary.concat(dataset[sample]['input'].replace(/[ \t,;:.!?]/g,' ').split(' '));
-    }
-
-  hoser = [];
-  hoser = _(vocabulary).difference(goldvocabulary);
-
-  fullhoser = [];
-  hoserdataset =[];
-
-  var dataset = JSON.parse(fs.readFileSync("datasets/Employer/2_experts1class.json"));
-  dataset = testSet;
-
-  var indexes = []
-  var words = []
-  for (var word in hoser)
-    {
-      el = {}
-      el['word'] = hoser[word];
-      el['sentences'] = [];
-        
-    for (var sample in dataset) 
+    data = []  
+    for (var sample in testSet) 
       {
-      if ((' '+dataset[sample]['input'].replace(/[ \t,;:.!?]/g,' ')+' ').indexOf(' '+hoser[word]+' ') != -1)
+        tuple = {}
+      if ((tokenizer.tokenize(normalizer(testSet[sample]['input']))).indexOf(unseenvocabulary[word]) != -1)
         {
-        el['sentences'] = el['sentences'].concat(dataset[sample]['input'].trim());
-        hoserdataset = hoserdataset.concat(dataset[sample]);
-        indexes.push(parseInt(sample));
-        words.push(hoser[word]);
+        tuple['utterance'] = testSet[sample]['input'].trim()
+        tuple['number'] = sample
+        // sentences = sentences.concat(testSet[sample]['input'].trim());
+        data = data.concat(tuple)
+        unseendataset = unseendataset.concat(testSet[sample]);
         }
       }
-      fullhoser = fullhoser.concat(el);
+      unseenwords[unseenvocabulary[word]] = data
     }
-  console.log("Train on trainSet size " + trainSet.length +" testSet size "+ testSet.length+"\n");
-  console.log(fullhoser);
 
-  var stats  = trainAndTest_hash(createNewClassifier, trainSet, testSet, 5);
-  // var common = _.intersection(stats[1], indexes);
-  // console.log(JSON.stringify(stats['data'], null, 4));
- _.each(indexes, function(num, key, list) 
-     { 
-     if ((stats['data'][num]['explanations']['FP'].length > 0 ) || (stats['data'][num]['explanations']['FN'].length > 0 ))
-       {
-        console.log(words[key]);
-        console.log(JSON.stringify(stats['data'][num], null, 4));
-       }
-       ;});
+    console.log(unseenwords)
+
+
+
+
+    var stats  = trainAndTest_hash(createNewClassifier, trainSet, testSet, 5);
+ // //  // var common = _.intersection(stats[1], indexes);
+ // //  // console.log(JSON.stringify(stats['data'], null, 4));
+ //   _.each(unseenwords.keys(), function(num, key, list) 
+ //       { 
+ //        console.log(num)
+ // //      if ((stats['data'][num]['explanations']['FP'].length > 0 ) || (stats['data'][num]['explanations']['FN'].length > 0 ))
+ //        {
+ //         console.log(words[key]);
+ //         console.log(JSON.stringify(stats['data'][num], null, 4));
+ //        }
+         // ;});
+
+for (var index in unseenwords)
+  {
+    for (var utterance in unseenwords[index])
+      {
+        number = unseenwords[index][utterance]['number']
+        if ((stats['data'][number]['explanations']['FP'].length > 0 ) || (stats['data'][number]['explanations']['FN'].length > 0 ))
+        {
+           console.log(index);
+           console.log(unseenwords[index]);
+           console.log(JSON.stringify(stats['data'][number], null, 4));
+        }
+ 
+      }
+
+  }
  });
