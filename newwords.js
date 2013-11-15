@@ -71,9 +71,20 @@ partitions.partitions(datasetcollectedcommon, 3, function(trainSet, testSet, ind
   console.log("train vocabulary "+ trainvocabulary.length)
 
   unseenvocabulary = _.difference(testvocabulary, trainvocabulary);
+  
+  console.log("unseen vocas size")
+  console.log(unseenvocabulary.length)
+  
 
   console.log("unseen vocas")
   console.log(unseenvocabulary)
+
+  // console.log("train vocas")
+  // console.log(trainvocabulary)
+  
+  // console.log("test vocas")
+  // console.log(testvocabulary)
+  
   
   unseendataset =[];
   unseenwords = {}
@@ -103,7 +114,7 @@ partitions.partitions(datasetcollectedcommon, 3, function(trainSet, testSet, ind
 
     var stats  = trainAndTest_hash(createNewClassifier, trainSet, testSet, 5);
  // //  // var common = _.intersection(stats[1], indexes);
- // //  // console.log(JSON.stringify(stats['data'], null, 4));
+ // //  // console.log(JSON.stringify(st1ats['data'], null, 4));
  //   _.each(unseenwords.keys(), function(num, key, list) 
  //       { 
  //        console.log(num)
@@ -113,6 +124,18 @@ partitions.partitions(datasetcollectedcommon, 3, function(trainSet, testSet, ind
  //         console.log(JSON.stringify(stats['data'][num], null, 4));
  //        }
          // ;});
+
+var total = 0
+for (var number in testSet)
+  {
+      if ((stats['data'][number]['explanations']['FP'].length > 0 ) || (stats['data'][number]['explanations']['FN'].length > 0 ))
+        {
+          total += 1
+        }
+ 
+  }
+
+console.log("total error sentence "+ total)
 
 for (var index in unseenwords)
   {
