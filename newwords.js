@@ -139,14 +139,27 @@ console.log("total error sentence "+ total)
 
 for (var index in unseenwords)
   {
+    console.log(index);
     for (var utterance in unseenwords[index])
       {
         number = unseenwords[index][utterance]['number']
+        console.log(number);
         if ((stats['data'][number]['explanations']['FP'].length > 0 ) || (stats['data'][number]['explanations']['FN'].length > 0 ))
         {
-           console.log(index);
            console.log(unseenwords[index]);
            console.log(JSON.stringify(stats['data'][number], null, 4));
+           for (var er in stats['data'][number]['explanations'])
+           {
+            console.log(er)
+            for (var err in stats['data'][number]['explanations'][er])
+              {
+                console.log(stats['data'][number]['explanations'][er][err].replace(/[{}'/"]/g,""))
+              }
+           }
+        }
+        else
+        {
+         console.log("zero error") 
         }
  
       }
