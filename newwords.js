@@ -44,7 +44,8 @@ datasetfile[4] = '2_experts1class.json';
 datasetfile[5] = '3_woz_kbagent_turkers_negonlp2.json';
 datasetfile[6] = '4_various.json';
 datasetfile[7] = '4_various1class.json';
-// datasetfile[8] = '5_woz_ncagent_turkers_negonlp2ncAMT.json';
+datasetfile[8] = '5_woz_ncagent_turkers_negonlp2ncAMT.json';
+datasetfile[8] = '6_expert.json';
 
 var datasetcollectedcommon = [];
 for (var i=0;i<datasetfile.length;i++)
@@ -88,6 +89,7 @@ partitions.partitions(datasetcollectedcommon, 3, function(trainSet, testSet, ind
   
   unseendataset =[];
   unseenwords = {}
+  unseensetences = 0
   
   for (var word in unseenvocabulary)
     {
@@ -105,8 +107,11 @@ partitions.partitions(datasetcollectedcommon, 3, function(trainSet, testSet, ind
         }
       }
       unseenwords[unseenvocabulary[word]] = data
+      unseensetences += data.length
     }
 
+    console.log("senteces with unseen words ")
+    console.log(unseensetences)
     console.log(unseenwords)
 
 
