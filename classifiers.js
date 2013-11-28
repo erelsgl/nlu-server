@@ -17,6 +17,7 @@ var limdu = require("limdu");
 var classifiers = limdu.classifiers;
 var ftrs = limdu.features;
 var Hierarchy = require(__dirname+'/Hierarchy');
+var ThresholdUtils = require(__dirname+'/ThresholdUtils');
 
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
@@ -216,7 +217,13 @@ var metalabeler = function(rankerType, counterType) {
 	});
 }
 
-
+var threshold = function(multiclassClassifierType) {
+        return classifiers.multilabel.Threshold.bind(0, {
+                multiclassClassifierType: multiclassClassifierType,
+                devsetsize: 0.1, 
+                evaluatefeedback: ThresholdUtils.F1_evaluation,
+        });
+}
 
 /*
  * FINAL CLASSIFIERS (exports):
@@ -247,8 +254,11 @@ module.exports = {
 		HomerMetaLabelerSvmLinear: enhance(homer(metalabeler(SvmLinearBinaryRelevanceClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
 		HomerMetaLabelerPassiveAggressive: enhance(homer(metalabeler(PassiveAggressiveClassifier))),
 		HomerMetaLabelerPassiveAggressiveWithMulticlassSvm: enhance(homer(metalabeler(PassiveAggressiveClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
+
+		ThresholdLanguageModelWinnow: enhance(threshold(LanguageModelClassifier)),
 };
 
-module.exports.defaultClassifier = module.exports.HomerWinnow;
+module.exports.defaultClassifier = module.exports.ThresholdLanguageModelWinnow;
+//module.exports.defaultClassifier = module.exports.HomerWinnow;
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
