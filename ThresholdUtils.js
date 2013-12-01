@@ -15,27 +15,19 @@ it means if there is impossible to evaluate F1 measure it returs the worse F1 me
 @author Vasily Konovalov
 
 */
-function F1_evaluation(status_list, type_of_averaging) {
+function F1_evaluation(stats, type_of_averaging) {
 	if (type_of_averaging == 0)
 	{
-		var tp=0
-		var fp=0
-		var fn=0
-		for (elem in status_list)
-		{
-			tp += status_list[elem]['TP'].length
-			fp += status_list[elem]['FP'].length
-			fn += status_list[elem]['FN'].length
-		}
-		if ((tp == 0) || (tp+fp == 0) || (tp+fn == 0)) return 0
+		if ((stats['TP'] == 0) || (stats['TP']+stats['FP'] == 0) || (stats['TP']+stats['FN'] == 0)) return 0
 
-		var precision = tp/(tp+fp)
-		var recall = tp/(tp+fn)
+		var precision = stats['TP']/(stats['TP']+stats['FP'])
+		var recall = stats['TP']/(stats['TP']+stats['FN'])
 
 		var f1 = (precision*recall)/(precision + recall)
 		return f1		
 	}
 }
+
  
 module.exports = {
 	F1_evaluation: F1_evaluation,
