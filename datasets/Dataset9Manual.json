@@ -1,4 +1,28 @@
 [
-  {"input":"ok/","output":["{\"Accept\":\"previous\"}"]}
-, {"input":"'ok'","output":["{\"Accept\":\"previous\"}"]}
+ {"input":"with fast promotion track","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"Start as a programmer","output":[{"Offer":{"Job Description":"Programmer"}}]}
+, {"input":"I would like to suggest you to work as a programmer","output":[{"Offer":{"Job Description":"Programmer"}}]}
+, {"input":"I would like to suggest you to work for 12000","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"i can offer you being a programmer first","output":[{"Offer":{"Job Description":"Programmer"}}]}
+, {"input":"i can offer you with fast promotion track","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"i can offer you have a 10% pension","output":[{"Offer":{"Pension Fund":"10%"}}]}
+, {"input":"I agree.","output":[{"Accept":"previous"}]}
+, {"input":"Job Description Programmer","output":[{"Offer":{"Job Description":"Programmer"}}]}
+, {"input":"Working hours 10 hours","output":[{"Offer":{"Working Hours":"10 hours"}}]}
+, {"input":"Pension Fund 10%","output":[{"Offer":{"Pension Fund":"10%"}}]}
+, {"input":"With leased car","output":[{"Offer":{"Leased Car":"With leased car"}}]}
+, {"input":"Slow promotion track","output":[{"Offer":{"Promotion Possibilities":"Slow promotion track"}}]}
+, {"input":"Salary 12000 NIS","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"work as a Programmer","output":[{"Offer":{"Job Description":"Programmer"}}]}
+, {"input":"with a fast promotion track","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
+, {"input":"with 20% pension","output":[{"Offer":{"Pension Fund":"20%"}}]}
+, {"input":"a daily schedule of 10 hours","output":[{"Offer":{"Working Hours":"10 hours"}}]}
+, {"input":"without a company car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"I can give you 20000 NIS per month","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
+, {"input":"Programmer","output":[{"Offer":{"Job Description":"Programmer"}}]}
+, {"input":"daily 9 hours","output":[{"Offer":{"Working Hours":"9 hours"}}]}
+, {"input":"without car","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
+, {"input":"10% pension","output":[{"Offer":{"Pension Fund":"10%"}}]}
+, {"input":"slow promotion track","output":[{"Offer":{"Promotion Possibilities":"Slow promotion track"}}]}
+, {"input":"12000 NIS","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
 ]

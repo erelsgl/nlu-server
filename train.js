@@ -7,14 +7,14 @@
 
 console.log("machine learning trainer start\n");
 
-var do_small_temporary_test = false;
+var do_small_temporary_test = true;
 var do_small_temporary_serialization_test = false;
 
-var do_cross_dataset_testing = true;
-var do_final_test = true;
-var do_cross_validation = true;
-var do_serialization = true;
-var do_test_on_training_data = true;
+var do_cross_dataset_testing = false;
+var do_final_test = false;
+var do_cross_validation = false;
+var do_serialization = false;
+var do_test_on_training_data = false;
 
 
 var _ = require('underscore')._;
@@ -45,8 +45,12 @@ var test = require('limdu/utils/trainAndTest').test;
 var serialization = require('serialization');
 
 if (do_small_temporary_test) {
-	console.log("Train on woz single class, test on manual dataset: "+
-		trainAndTestLite(createNewClassifier, collectedDatasetSingle, JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json")), verbosity+3).shortStats())+"\n";
+    var datasettest = JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json"))
+    console.log("Train on woz single class, test on manual dataset: "+
+        trainAndTest(createNewClassifier, datasettest, datasettest, verbosity+3).shortStats())+"\n";
+
+	// console.log("Train on woz single class, test on manual dataset: "+
+	// 	trainAndTestLite(createNewClassifier, collectedDatasetSingle, JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json")), verbosity+3).shortStats())+"\n";
 }
 
 if (do_small_temporary_serialization_test) {
