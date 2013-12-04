@@ -135,7 +135,7 @@ var PassiveAggressiveClassifier = classifiers.multilabel.PassiveAggressive.bind(
 });
 
 var LanguageModelClassifier = classifiers.multilabel.CrossLanguageModel.bind(this, {
-	smoothingFactor : 0.9,
+	smoothingCoefficient: 0.9,
 	labelFeatureExtractor: Hierarchy.splitJsonFeatures,
 });
 
