@@ -15,7 +15,7 @@ var do_final_test = false;
 var do_cross_validation = false;
 var do_serialization = false;
 var do_test_on_training_data = false;
-
+var do_small_temporary_test_dataset = false
 
 var _ = require('underscore')._;
 var fs = require('fs');
@@ -47,9 +47,10 @@ var test = require('limdu/utils/trainAndTest').test;
 var serialization = require('serialization');
 
 if (do_small_temporary_test) {
-	var datasettest = JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json"))
+	var train = JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json"))
+	var test = JSON.parse(fs.readFileSync("datasets/Dataset9Manual1.json"))
     console.log("Train on woz single class, test on manual dataset: "+
-        trainAndTest(createNewClassifier, datasettest, datasettest, verbosity+3).shortStats())+"\n";
+        trainAndTest(createNewClassifier, train, test, verbosity+3).shortStats())+"\n";
 }
 
 if (do_small_temporary_test_dataset) {
