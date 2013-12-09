@@ -219,7 +219,11 @@ var metalabeler = function(rankerType, counterType) {
 var thresholdclassifier = function(multiclassClassifierType) {
         return classifiers.multilabel.ThresholdClassifier.bind(0, {
                 multiclassClassifierType: multiclassClassifierType,
-                evaluateMeasureToMaximize: 'F1',
+                // ['Accuracy','F1']
+                evaluateMeasureToMaximize: 'Accuracy',
+                // set the number of fold for cross-validation, 
+                // =1 use validation set insted of cross - validation
+                validateThreshold: 10,
         });
 }
 

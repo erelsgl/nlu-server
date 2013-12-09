@@ -47,8 +47,8 @@ var test = require('limdu/utils/trainAndTest').test;
 var serialization = require('serialization');
 
 if (do_small_temporary_test) {
-	var train = JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json"))
-	var test = JSON.parse(fs.readFileSync("datasets/Dataset9Manual1.json"))
+	var train = JSON.parse(fs.readFileSync("datasets/Dataset9Manual4.json"))
+	var test = JSON.parse(fs.readFileSync("datasets/Dataset9Manual4.json"))
     console.log("Train on woz single class, test on manual dataset: "+
         trainAndTest(createNewClassifier, train, test, verbosity+3).shortStats())+"\n";
 }
