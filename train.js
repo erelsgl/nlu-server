@@ -7,7 +7,7 @@
 
 console.log("machine learning trainer start\n");
 
-var do_small_temporary_test = true;
+var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
 
 var do_cross_dataset_testing = false;
@@ -16,6 +16,7 @@ var do_cross_validation = false;
 var do_serialization = false;
 var do_test_on_training_data = false;
 var do_small_temporary_test_dataset = false
+var do_small_test_multi_threshold = true
 
 var _ = require('underscore')._;
 var fs = require('fs');
@@ -43,12 +44,12 @@ var PrecisionRecall = require('limdu/utils/PrecisionRecall');
 var trainAndTest = require('limdu/utils/trainAndTest').trainAndTest;
 var trainAndCompare = require('limdu/utils/trainAndTest').trainAndCompare;
 var trainAndTestLite = require('limdu/utils/trainAndTest').trainAndTestLite;
-var test = require('limdu/utils/trainAndTest').test;
+var ToTest = require('limdu/utils/trainAndTest').test;
 var serialization = require('serialization');
 
 if (do_small_temporary_test) {
-	var train = JSON.parse(fs.readFileSync("datasets/Dataset9Manual4.json"))
-	var test = JSON.parse(fs.readFileSync("datasets/Dataset9Manual4.json"))
+	var train = JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json"))
+	var test = JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json"))
     console.log("Train on woz single class, test on manual dataset: "+
         trainAndTest(createNewClassifier, train, test, verbosity+3).shortStats())+"\n";
 }
@@ -111,6 +112,29 @@ if (do_small_temporary_test_dataset) {
 	// 	trainAndTestLite(createNewClassifier, collectedDatasetSingle, JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json")), verbosity+3).shortStats())+"\n";
 }
 
+if (do_small_test_multi_threshold)
+	{
+
+	var classifier = createNewClassifier(); 
+
+	var train = JSON.parse(fs.readFileSync("datasets/Dataset9Manual4.json"))
+	var test = JSON.parse(fs.readFileSync("datasets/Dataset9Manual4.json"))
+
+    classifier.trainBatch(train);
+
+    console.log(classifier.classifier.stats)
+    	
+    Threshold = classifier.classifier.multiclassClassifier.threshold
+
+	partitions.partitions_consistent(train, classifier.classifier.validateThreshold, (function(trainSet, testSet, index) {
+		classifier.trainBatch(trainSet);
+		stats = ToTest(classifier, testSet, 0)
+		console.log(stats)
+		process.exit(0)
+	
+	}))
+	}
+	
 if (do_small_temporary_serialization_test) {
 	var classifier = createNewClassifier(); 
 	classifier.trainBatch(collectedDatasetSingle);

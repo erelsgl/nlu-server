@@ -223,7 +223,7 @@ var thresholdclassifier = function(multiclassClassifierType) {
                 evaluateMeasureToMaximize: 'Accuracy',
                 // set the number of fold for cross-validation, 
                 // =1 use validation set insted of cross - validation
-                validateThreshold: 10,
+                numOfFoldsForThresholdCalculation: 10,
         });
 }
 
