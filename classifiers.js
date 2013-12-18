@@ -88,17 +88,20 @@ var WinnowBinaryClassifier = classifiers.Winnow.bind(0, {
 var BayesBinaryClassifier = classifiers.Bayesian.bind(0, {
 });
 
+var AdaboostClassifier = classifiers.multilabel.Adaboost.bind(0, {
+	ngram_length: 2,
+	iterations: 200
+});
+
 var SvmPerfBinaryClassifier = classifiers.SvmPerf.bind(0, {
 	learn_args: "-c 100 --i 1",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
 	model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf",
 });
 
-
 var SvmLinearBinaryClassifier = classifiers.SvmLinear.bind(0, {
 	learn_args: "-c 100", 
 	model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearBinary",
 });
-
 
 var SvmLinearMulticlassifier = classifiers.SvmLinear.bind(0, {
 	learn_args: "-c 100", 
@@ -177,6 +180,15 @@ var BayesSegmenter = classifiers.EnhancedClassifier.bind(0, {
  * CONSTRUCTORS:
  */
 
+var enhance2 = function (classifierType) {
+	return classifiers.EnhancedClassifier.bind(0, {
+		normalizer: normalizer,
+		inputSplitter: inputSplitter,
+		pastTrainingSamples: [], // to enable retraining
+		classifierType: classifierType,
+	});
+};
+
 var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
@@ -232,6 +244,9 @@ var thresholdclassifier = function(multiclassClassifierType) {
  */
 
 module.exports = {
+
+		HomerAdaboostClassifier: enhance2(homer(AdaboostClassifier)), 
+		AdaboostClassifier: enhance2(AdaboostClassifier), 
 		WinnowClassifier: enhance(WinnowBinaryRelevanceClassifier),
 		BayesClassifier: enhance(BayesBinaryRelevanceClassifier),
 		SvmPerfClassifier: enhance(SvmPerfBinaryRelevanceClassifier),
@@ -257,10 +272,12 @@ module.exports = {
 		HomerMetaLabelerPassiveAggressive: enhance(homer(metalabeler(PassiveAggressiveClassifier))),
 		HomerMetaLabelerPassiveAggressiveWithMulticlassSvm: enhance(homer(metalabeler(PassiveAggressiveClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
 
-		ThresholdClassifierLanguageModelWinnow: enhance(thresholdclassifier(LanguageModelClassifier)),
+		// ThresholdClassifierLanguageModelWinnow: enhance(thresholdclassifier(LanguageModelClassifier)),
 };
 
-module.exports.defaultClassifier = module.exports.ThresholdClassifierLanguageModelWinnow;
+//module.exports.defaultClassifier = module.exports.ThresholdClassifierLanguageModelWinnow;
+module.exports.defaultClassifier = module.exports.AdaboostClassifier;
 //module.exports.defaultClassifier = module.exports.HomerWinnow;
+//module.exports.defaultClassifier = AdaboostClassifier
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
