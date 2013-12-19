@@ -17,7 +17,6 @@ var limdu = require("limdu");
 var classifiers = limdu.classifiers;
 var ftrs = limdu.features;
 var Hierarchy = require(__dirname+'/Hierarchy');
-var ThresholdUtils = require(__dirname+'/ThresholdUtils');
 
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
@@ -220,8 +219,11 @@ var metalabeler = function(rankerType, counterType) {
 var thresholdclassifier = function(multiclassClassifierType) {
         return classifiers.multilabel.ThresholdClassifier.bind(0, {
                 multiclassClassifierType: multiclassClassifierType,
-                devsetsize: 0.1, 
-                evaluateMeasureToMaximize: ThresholdUtils.F1_evaluation,
+                // ['Accuracy','F1']
+                evaluateMeasureToMaximize: 'Accuracy',
+                // set the number of fold for cross-validation, 
+                // =1 use validation set insted of cross - validation
+                numOfFoldsForThresholdCalculation: 10,
         });
 }
 

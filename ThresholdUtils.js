@@ -1,3 +1,5 @@
+//FIXME: maybe useless because in recent version string constant 'F1' 'Average' are in use
+
 /**
  * utility functions for Threshold.
  */
