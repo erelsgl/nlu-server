@@ -15,6 +15,7 @@
     "serialization": "latest",
     "connect": "~2.7.10",
     "express": "~3.2.5",
+    "execSync": "*",
     "jade": "~0.30.0",
     "socket.io": "~0.9.14",
     "forms": "~0.2.2",
