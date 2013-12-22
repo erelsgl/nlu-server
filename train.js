@@ -9,14 +9,14 @@ console.log("machine learning trainer start\n");
 
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
-
+var do_learning_curves = true
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
 var do_serialization = false;
 var do_test_on_training_data = false;
 var do_small_temporary_test_dataset = false
-var do_small_test_multi_threshold = true
+var do_small_test_multi_threshold = false
 
 var _ = require('underscore')._;
 var fs = require('fs');
@@ -46,12 +46,29 @@ var trainAndCompare = require('limdu/utils/trainAndTest').trainAndCompare;
 var trainAndTestLite = require('limdu/utils/trainAndTest').trainAndTestLite;
 var ToTest = require('limdu/utils/trainAndTest').test;
 var serialization = require('serialization');
+var learning_curves = require('limdu/utils/learning_curves').learning_curves;
+var classifier = require(__dirname+'/classifiers')
 
 if (do_small_temporary_test) {
 	var train = JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json"))
 	var test = JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json"))
     console.log("Train on woz single class, test on manual dataset: "+
         trainAndTest(createNewClassifier, train, test, verbosity+3).shortStats())+"\n";
+}
+
+if (do_learning_curves) {
+	
+	var dataset = JSON.parse(fs.readFileSync("datasets/Employer/2_experts.json"))
+	dataset = _.shuffle(dataset)
+
+	classifiers  = {
+	HomerWinnow: classifier.HomerWinnow, 
+	Adaboost: classifier.AdaboostClassifier, 
+	Winnow: classifier.WinnowClassifier  
+	};
+
+	parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
+	learning_curves(classifiers, dataset, parameters, 20)
 }
 
 if (do_small_temporary_test_dataset) {
