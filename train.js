@@ -63,7 +63,7 @@ if (do_learning_curves) {
 
 	classifiers  = {
 	HomerWinnow: classifier.HomerWinnow, 
-	Adaboost: classifier.AdaboostClassifier, 
+	// Adaboost: classifier.AdaboostClassifier, 
 	Winnow: classifier.WinnowClassifier  
 	};
 
