@@ -9,11 +9,11 @@ console.log("machine learning trainer start\n");
 
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
-var do_learning_curves = true
+var do_learning_curves = false
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
-var do_serialization = false;
+var do_serialization = true;
 var do_test_on_training_data = false;
 var do_small_temporary_test_dataset = false
 var do_small_test_multi_threshold = false
@@ -271,7 +271,7 @@ if (do_cross_validation) {
 
 if (do_serialization) {
 	verbosity=0;
-	["Employer","Candidate"].forEach(function(classifierName) {
+	["Employer","Candidate", "Candidate-israel", "Employer-israel", "Candidate-USA", "Employer-USA"].forEach(function(classifierName) {
 		console.log("\nBuilding classifier for "+classifierName);
 		var classifier = createNewClassifier();
 		var jsonEmpty = classifier.toJSON();  // just to check that it works

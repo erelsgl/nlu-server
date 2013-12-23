@@ -260,7 +260,7 @@ module.exports = {
 		ThresholdClassifierLanguageModelWinnow: enhance(thresholdclassifier(LanguageModelClassifier)),
 };
 
-module.exports.defaultClassifier = module.exports.ThresholdClassifierLanguageModelWinnow;
-//module.exports.defaultClassifier = module.exports.HomerWinnow;
+//module.exports.defaultClassifier = module.exports.ThresholdClassifierLanguageModelWinnow;
+module.exports.defaultClassifier = module.exports.HomerWinnow;
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");

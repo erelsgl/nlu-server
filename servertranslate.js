@@ -55,7 +55,7 @@ app.configure('development', function(){
 //
 // Step 2: Load the activeClassifiers and prepare the translators
 //
-var classifierNames = ["Employer", "Candidate"];
+var classifierNames = ["Employer","Candidate", "Candidate-israel", "Employer-israel", "Candidate-USA", "Employer-USA"]
 
 var registeredPublicTranslators = {};
 var activePublicTranslators = {};
