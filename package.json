@@ -33,6 +33,15 @@
 	  "mocha": "*",
 	  "should": "*"
   },
+  "contributors": [
+                   {
+                     "name": "Erel Segal-Halevi",
+                     "email": "erelsgl@gmail.com"
+                   },
+                   {
+                       "name": "Vasily Konovalov",
+                       "email": "vasili.konov@gmail.com"
+                   },
   "scripts": {
       "test": "mocha"
   } 

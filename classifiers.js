@@ -134,7 +134,7 @@ var PassiveAggressiveClassifier = classifiers.multilabel.PassiveAggressive.bind(
 });
 
 var LanguageModelClassifier = classifiers.multilabel.CrossLanguageModel.bind(this, {
-	smoothingFactor : 0.9,
+	smoothingCoefficient: 0.9,
 	labelFeatureExtractor: Hierarchy.splitJsonFeatures,
 });
 
@@ -216,7 +216,16 @@ var metalabeler = function(rankerType, counterType) {
 	});
 }
 
-
+var thresholdclassifier = function(multiclassClassifierType) {
+        return classifiers.multilabel.ThresholdClassifier.bind(0, {
+                multiclassClassifierType: multiclassClassifierType,
+                // ['Accuracy','F1']
+                evaluateMeasureToMaximize: 'Accuracy',
+                // set the number of fold for cross-validation, 
+                // =1 use validation set insted of cross - validation
+                numOfFoldsForThresholdCalculation: 10,
+        });
+}
 
 /*
  * FINAL CLASSIFIERS (exports):
@@ -247,8 +256,11 @@ module.exports = {
 		HomerMetaLabelerSvmLinear: enhance(homer(metalabeler(SvmLinearBinaryRelevanceClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
 		HomerMetaLabelerPassiveAggressive: enhance(homer(metalabeler(PassiveAggressiveClassifier))),
 		HomerMetaLabelerPassiveAggressiveWithMulticlassSvm: enhance(homer(metalabeler(PassiveAggressiveClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
+
+		ThresholdClassifierLanguageModelWinnow: enhance(thresholdclassifier(LanguageModelClassifier)),
 };
 
-module.exports.defaultClassifier = module.exports.HomerWinnow;
+module.exports.defaultClassifier = module.exports.ThresholdClassifierLanguageModelWinnow;
+//module.exports.defaultClassifier = module.exports.HomerWinnow;
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
