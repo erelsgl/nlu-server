@@ -22,7 +22,6 @@ var _ = require('underscore')._;
 var fs = require('fs');
 var trainAndTest_hash= require('limdu/utils/trainAndTest').trainAndTest_hash;
 
-
 var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/0_grammar.json"));
 var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students.json"));
 var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students1class.json"));
@@ -50,10 +49,18 @@ var learning_curves = require('limdu/utils/learning_curves').learning_curves;
 var classifier = require(__dirname+'/classifiers')
 
 if (do_small_temporary_test) {
-	var train = JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json"))
-	var test = JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json"))
-    console.log("Train on woz single class, test on manual dataset: "+
-        trainAndTest(createNewClassifier, train, test, verbosity+3).shortStats())+"\n";
+	// var dataset = JSON.parse(fs.readFileSync("datasets/Employer/2_experts.json"))
+	dataset = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetSingle2).concat(collectedDatasetMulti4).concat(collectedDatasetMulti8)
+	dataset = _.shuffle(dataset)
+   
+    stats = trainAndTest_hash(createNewClassifier, dataset, dataset, verbosity+3)
+
+    _.each(stats['data'], function(value, key, list){ 
+		if ((value['explanations']['FP'].length != 0) || (value['explanations']['FN'].length != 0))
+		{
+		console.log(value)	
+		}
+	});
 }
 
 if (do_learning_curves) {
