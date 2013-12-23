@@ -26,7 +26,7 @@ var express = require('express')
 var app = express();
 app.configure(function(){
 	// Settings:
-	app.set('port', process.env.PORT || 9995);
+	app.set('port', process.argv[2] || process.env.PORT || 9995);
 	app.set('views', path.join(__dirname, 'views'));		// The view directory path
 	app.set('view engine', 'jade');						// The default engine extension to use when omitted
 	app.set('case sensitive routing', false);	// Enable case sensitivity, disabled by default, treating "/Foo" and "/foo" as same
