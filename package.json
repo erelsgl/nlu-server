@@ -42,6 +42,7 @@
                        "name": "Vasily Konovalov",
                        "email": "vasili.konov@gmail.com"
                    }
+                  ],
   "scripts": {
       "test": "mocha"
   } 
