@@ -111,6 +111,10 @@ var SvmLinearMulticlassifier = classifiers.SvmLinear.bind(0, {
 /*
  * MULTI-LABEL CLASSIFIERS (used as basis to other classifiers):
  */
+var AdaboostClassifier = classifiers.multilabel.Adaboost.bind(0, {
+	ngram_length: 2,
+	iterations: 2000
+});
 
 var WinnowBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
 	binaryClassifierType: WinnowBinaryClassifier,
@@ -177,6 +181,15 @@ var BayesSegmenter = classifiers.EnhancedClassifier.bind(0, {
  * CONSTRUCTORS:
  */
 
+var enhance2 = function (classifierType) {
+	return classifiers.EnhancedClassifier.bind(0, {
+		normalizer: normalizer,
+		inputSplitter: inputSplitter,
+		pastTrainingSamples: [], // to enable retraining
+		classifierType: classifierType,
+	});
+};
+
 var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
@@ -232,10 +245,14 @@ var thresholdclassifier = function(multiclassClassifierType) {
  */
 
 module.exports = {
+
+		HomerAdaboostClassifier: enhance2(homer(AdaboostClassifier)), 
+		AdaboostClassifier: enhance2(AdaboostClassifier), 
+
 		WinnowClassifier: enhance(WinnowBinaryRelevanceClassifier),
 		BayesClassifier: enhance(BayesBinaryRelevanceClassifier),
-		SvmPerfClassifier: enhance(SvmPerfBinaryRelevanceClassifier),
-		SvmLinearClassifier: enhance(SvmLinearBinaryRelevanceClassifier),
+		SvmPerfClassifier: enhance(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
+		SvmLinearClassifier: enhance(SvmLinearBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
 		PassiveAggressiveClassifier: enhance(PassiveAggressiveClassifier),
 
 		MetaLabelerWinnow: enhance(metalabeler(WinnowBinaryRelevanceClassifier)),

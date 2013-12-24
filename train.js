@@ -9,11 +9,11 @@ console.log("machine learning trainer start\n");
 
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
-var do_learning_curves = false
+var do_learning_curves = true
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
-var do_serialization = true;
+var do_serialization = false;
 var do_test_on_training_data = false;
 var do_small_temporary_test_dataset = false
 var do_small_test_multi_threshold = false
@@ -21,7 +21,6 @@ var do_small_test_multi_threshold = false
 var _ = require('underscore')._;
 var fs = require('fs');
 var trainAndTest_hash= require('limdu/utils/trainAndTest').trainAndTest_hash;
-
 
 var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/0_grammar.json"));
 var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students.json"));
@@ -49,33 +48,7 @@ var serialization = require('serialization');
 var learning_curves = require('limdu/utils/learning_curves').learning_curves;
 var classifier = require(__dirname+'/classifiers')
 
-if (do_small_temporary_test) {
-	var train = JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json"))
-	var test = JSON.parse(fs.readFileSync("datasets/Dataset9Manual.json"))
-    console.log("Train on woz single class, test on manual dataset: "+
-        trainAndTest(createNewClassifier, train, test, verbosity+3).shortStats())+"\n";
-}
-
-if (do_learning_curves) {
-	
-	var dataset = JSON.parse(fs.readFileSync("datasets/Employer/2_experts.json"))
-	dataset = _.shuffle(dataset)
-
-	classifiers  = {
-	HomerWinnow: classifier.HomerWinnow, 
-	// Adaboost: classifier.AdaboostClassifier, 
-	Winnow: classifier.WinnowClassifier  
-	};
-
-	parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
-	learning_curves(classifiers, dataset, parameters, 20)
-}
-
-if (do_small_temporary_test_dataset) {
-
-	dataset = []
-
-		var datasetNames = [
+var datasetNames = [
 			"0_grammar.json",
 			"1_woz_kbagent_students.json",
 			"1_woz_kbagent_students1class.json",
@@ -92,6 +65,49 @@ if (do_small_temporary_test_dataset) {
 			"woz_kbagent_students_negonlp.json"
 			];
 
+if (do_small_temporary_test) {
+	// var dataset = JSON.parse(fs.readFileSync("datasets/Employer/2_experts.json"))
+	dataset = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetSingle2).concat(collectedDatasetMulti4).concat(collectedDatasetMulti8)
+	dataset = _.shuffle(dataset)
+   
+    stats = trainAndTest_hash(createNewClassifier, dataset, dataset, verbosity+3)
+
+    _.each(stats['data'], function(value, key, list){ 
+		if ((value['explanations']['FP'].length != 0) || (value['explanations']['FN'].length != 0))
+		{
+		console.log(value)	
+		}
+	});
+}   
+ 
+if (do_learning_curves) {
+	
+	dataset = []
+
+	_.each(datasetNames, function(value, key, list){ 
+		dataset = dataset.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+	});
+
+	dataset = _.shuffle(dataset)
+
+	classifiers  = {
+	HomerSvmPerf: classifier.HomerSvmPerf,
+	SvmPerf: classifier.SvmPerfClassifier,
+
+	HomerWinnow: classifier.HomerWinnow, 
+	Winnow: classifier.WinnowClassifier,  
+
+	HomerAdaboost: classifier.HomerAdaboostClassifier,
+	Adaboost: classifier.AdaboostClassifier, 
+	};
+
+	parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
+	learning_curves(classifiers, dataset, parameters, 100)
+}
+
+if (do_small_temporary_test_dataset) {
+
+	dataset = []
 
 	_.each(datasetNames, function(value, key, list){ 
 		console.log(value)
