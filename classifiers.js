@@ -251,8 +251,8 @@ module.exports = {
 
 		WinnowClassifier: enhance(WinnowBinaryRelevanceClassifier),
 		BayesClassifier: enhance(BayesBinaryRelevanceClassifier),
-		SvmPerfClassifier: enhance(SvmPerfBinaryRelevanceClassifier),
-		SvmLinearClassifier: enhance(SvmLinearBinaryRelevanceClassifier),
+		SvmPerfClassifier: enhance(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
+		SvmLinearClassifier: enhance(SvmLinearBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
 		PassiveAggressiveClassifier: enhance(PassiveAggressiveClassifier),
 
 		MetaLabelerWinnow: enhance(metalabeler(WinnowBinaryRelevanceClassifier)),

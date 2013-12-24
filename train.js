@@ -78,8 +78,8 @@ if (do_small_temporary_test) {
 		console.log(value)	
 		}
 	});
-}
-
+}   
+ 
 if (do_learning_curves) {
 	
 	dataset = []
@@ -91,7 +91,7 @@ if (do_learning_curves) {
 	dataset = _.shuffle(dataset)
 
 	classifiers  = {
-	//HomerSvmPerf: classifier.HomerSvmPerf,
+	HomerSvmPerf: classifier.HomerSvmPerf,
 	SvmPerf: classifier.SvmPerfClassifier,
 
 	HomerWinnow: classifier.HomerWinnow, 
@@ -99,7 +99,6 @@ if (do_learning_curves) {
 
 	HomerAdaboost: classifier.HomerAdaboostClassifier,
 	Adaboost: classifier.AdaboostClassifier, 
-
 	};
 
 	parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
