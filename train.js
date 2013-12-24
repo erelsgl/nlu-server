@@ -9,11 +9,11 @@ console.log("machine learning trainer start\n");
 
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
-var do_learning_curves = false
+var do_learning_curves = true
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
-var do_serialization = true;
+var do_serialization = false;
 var do_test_on_training_data = false;
 var do_small_temporary_test_dataset = false
 var do_small_test_multi_threshold = false
@@ -48,6 +48,23 @@ var serialization = require('serialization');
 var learning_curves = require('limdu/utils/learning_curves').learning_curves;
 var classifier = require(__dirname+'/classifiers')
 
+var datasetNames = [
+			"0_grammar.json",
+			"1_woz_kbagent_students.json",
+			"1_woz_kbagent_students1class.json",
+			"2_experts.json",
+			"2_experts1class.json",
+			"4_various.json",
+			"4_various1class.json",
+			"6_expert.json",
+			"3_woz_kbagent_turkers_negonlp2.json",
+			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			"nlu_kbagent_turkers_negonlpAMT.json",
+			"nlu_ncagent_students_negonlpnc.json",
+			"nlu_ncagent_turkers_negonlpncAMT.json",
+			"woz_kbagent_students_negonlp.json"
+			];
+
 if (do_small_temporary_test) {
 	// var dataset = JSON.parse(fs.readFileSync("datasets/Employer/2_experts.json"))
 	dataset = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetSingle2).concat(collectedDatasetMulti4).concat(collectedDatasetMulti8)
@@ -65,40 +82,33 @@ if (do_small_temporary_test) {
 
 if (do_learning_curves) {
 	
-	var dataset = JSON.parse(fs.readFileSync("datasets/Employer/2_experts.json"))
+	dataset = []
+
+	_.each(datasetNames, function(value, key, list){ 
+		dataset = dataset.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+	});
+
 	dataset = _.shuffle(dataset)
 
 	classifiers  = {
+	//HomerSvmPerf: classifier.HomerSvmPerf,
+	SvmPerf: classifier.SvmPerfClassifier,
+
 	HomerWinnow: classifier.HomerWinnow, 
-	// Adaboost: classifier.AdaboostClassifier, 
-	Winnow: classifier.WinnowClassifier  
+	Winnow: classifier.WinnowClassifier,  
+
+	HomerAdaboost: classifier.HomerAdaboostClassifier,
+	Adaboost: classifier.AdaboostClassifier, 
+
 	};
 
 	parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
-	learning_curves(classifiers, dataset, parameters, 20)
+	learning_curves(classifiers, dataset, parameters, 100)
 }
 
 if (do_small_temporary_test_dataset) {
 
 	dataset = []
-
-		var datasetNames = [
-			"0_grammar.json",
-			"1_woz_kbagent_students.json",
-			"1_woz_kbagent_students1class.json",
-			"2_experts.json",
-			"2_experts1class.json",
-			"4_various.json",
-			"4_various1class.json",
-			"6_expert.json",
-			"3_woz_kbagent_turkers_negonlp2.json",
-			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
-			"nlu_kbagent_turkers_negonlpAMT.json",
-			"nlu_ncagent_students_negonlpnc.json",
-			"nlu_ncagent_turkers_negonlpncAMT.json",
-			"woz_kbagent_students_negonlp.json"
-			];
-
 
 	_.each(datasetNames, function(value, key, list){ 
 		console.log(value)
