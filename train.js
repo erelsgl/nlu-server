@@ -65,6 +65,46 @@ var datasetNames = [
 			"woz_kbagent_students_negonlp.json"
 			];
 
+if (do_checking_tag) {
+
+	dataset = []
+	tagdict = {}
+	all = 0
+
+	_.each(datasetNames, function(value, key, list){ 
+		data = JSON.parse(fs.readFileSync("datasets/Employer/"+value))
+			_.each(data, function(record, key, list){ 
+				classes = record['output'].map(stringifyClass);
+					_.each(classes, function(clas, key, list){ 
+						all += 1
+						if (!tagdict[clas])
+							{	
+							tagdict[clas]={}
+							tagdict[clas]['input'] = []
+							tagdict[clas]['file'] = []
+							}
+						tagdict[clas]['input'].push(record['input'])
+						tagdict[clas]['file'].push(value)
+						})
+			})
+	})
+
+
+	commonfile = {}
+	_.each(tagdict, function(tag, key, list){ 
+		commonfile[key] = {}
+		commonfile[key]['count'] = tag['input'].length
+		commonfile[key]['ratio'] = tag['input'].length/all
+		commonfile[key]['files'] = _.uniq(tag['file'])
+		commonfile[key]['input'] = tag['input']
+	})
+
+	console.log(commonfile)
+	
+}   
+
+
+
 if (do_small_temporary_test) {
 	// var dataset = JSON.parse(fs.readFileSync("datasets/Employer/2_experts.json"))
 	dataset = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetSingle2).concat(collectedDatasetMulti4).concat(collectedDatasetMulti8)
