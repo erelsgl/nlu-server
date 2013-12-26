@@ -287,7 +287,7 @@ if (do_cross_validation) {
 
 if (do_serialization) {
 	verbosity=0;
-	["Employer","Candidate", "Candidate-israel", "Employer-israel", "Candidate-USA", "Employer-USA"].forEach(function(classifierName) {
+	["Employer","Candidate", "Candidate-israel", "Employer-israel", "Candidate-usa", "Employer-usa"].forEach(function(classifierName) {
 		console.log("\nBuilding classifier for "+classifierName);
 		var classifier = createNewClassifier();
 		var jsonEmpty = classifier.toJSON();  // just to check that it works
