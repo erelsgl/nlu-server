@@ -7,9 +7,10 @@
 
 console.log("machine learning trainer start\n");
 
+var do_checking_tag = true
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
-var do_learning_curves = true
+var do_learning_curves = false
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
@@ -100,7 +101,6 @@ if (do_checking_tag) {
 	})
 
 	console.log(commonfile)
-	
 }   
 
 
