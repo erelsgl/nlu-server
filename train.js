@@ -49,6 +49,10 @@ var serialization = require('serialization');
 var learning_curves = require('limdu/utils/learning_curves').learning_curves;
 var classifier = require(__dirname+'/classifiers')
 
+var stringifyClass = function (aClass) {
+  	return (_(aClass).isString()? aClass: JSON.stringify(aClass));
+  };
+
 var datasetNames = [
 			"0_grammar.json",
 			"1_woz_kbagent_students.json",
