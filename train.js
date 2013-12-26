@@ -31,11 +31,6 @@ var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/Employer/2_ex
 var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Employer/3_woz_kbagent_turkers_negonlp2.json"));
 var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/4_various.json"));
 
-var createNewClassifier = function() {
-	var defaultClassifier = require(__dirname+'/classifiers').defaultClassifier;
-	return new defaultClassifier();
-}
-
 var verbosity = 0;
 var explain = 0;
 
@@ -52,6 +47,11 @@ var classifier = require(__dirname+'/classifiers')
 var stringifyClass = function (aClass) {
   	return (_(aClass).isString()? aClass: JSON.stringify(aClass));
   };
+
+var createNewClassifier = function() {
+	var defaultClassifier = require(__dirname+'/classifiers').defaultClassifier;
+	return new defaultClassifier();
+}
 
 var datasetNames = [
 			"0_grammar.json",
