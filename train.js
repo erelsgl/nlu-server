@@ -7,9 +7,10 @@
 
 console.log("machine learning trainer start\n");
 
+var do_checking_tag = true
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
-var do_learning_curves = true
+var do_learning_curves = false
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
@@ -30,11 +31,6 @@ var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/Employer/2_ex
 var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Employer/3_woz_kbagent_turkers_negonlp2.json"));
 var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/4_various.json"));
 
-var createNewClassifier = function() {
-	var defaultClassifier = require(__dirname+'/classifiers').defaultClassifier;
-	return new defaultClassifier();
-}
-
 var verbosity = 0;
 var explain = 0;
 
@@ -47,6 +43,15 @@ var ToTest = require('limdu/utils/trainAndTest').test;
 var serialization = require('serialization');
 var learning_curves = require('limdu/utils/learning_curves').learning_curves;
 var classifier = require(__dirname+'/classifiers')
+
+var stringifyClass = function (aClass) {
+  	return (_(aClass).isString()? aClass: JSON.stringify(aClass));
+  };
+
+var createNewClassifier = function() {
+	var defaultClassifier = require(__dirname+'/classifiers').defaultClassifier;
+	return new defaultClassifier();
+}
 
 var datasetNames = [
 			"0_grammar.json",
@@ -64,6 +69,45 @@ var datasetNames = [
 			"nlu_ncagent_turkers_negonlpncAMT.json",
 			"woz_kbagent_students_negonlp.json"
 			];
+
+if (do_checking_tag) {
+
+	dataset = []
+	tagdict = {}
+	all = 0
+
+	_.each(datasetNames, function(value, key, list){ 
+		data = JSON.parse(fs.readFileSync("datasets/Employer/"+value))
+			_.each(data, function(record, key, list){ 
+				classes = record['output'].map(stringifyClass);
+					_.each(classes, function(clas, key, list){ 
+						all += 1
+						if (!tagdict[clas])
+							{	
+							tagdict[clas]={}
+							tagdict[clas]['input'] = []
+							tagdict[clas]['file'] = []
+							}
+						tagdict[clas]['input'].push(record['input'])
+						tagdict[clas]['file'].push(value)
+						})
+			})
+	})
+
+
+	commonfile = {}
+	_.each(tagdict, function(tag, key, list){ 
+		commonfile[key] = {}
+		commonfile[key]['count'] = tag['input'].length
+		commonfile[key]['ratio'] = tag['input'].length/all
+		commonfile[key]['files'] = _.uniq(tag['file'])
+		commonfile[key]['input'] = tag['input']
+	})
+
+	console.log(commonfile)
+}   
+
+
 
 if (do_small_temporary_test) {
 	// var dataset = JSON.parse(fs.readFileSync("datasets/Employer/2_experts.json"))
@@ -287,7 +331,7 @@ if (do_cross_validation) {
 
 if (do_serialization) {
 	verbosity=0;
-	["Employer","Candidate", "Candidate-israel", "Employer-israel", "Candidate-USA", "Employer-USA"].forEach(function(classifierName) {
+	["Employer","Candidate", "Candidate-israel", "Employer-israel", "Candidate-usa", "Employer-usa"].forEach(function(classifierName) {
 		console.log("\nBuilding classifier for "+classifierName);
 		var classifier = createNewClassifier();
 		var jsonEmpty = classifier.toJSON();  // just to check that it works
