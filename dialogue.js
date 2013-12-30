@@ -25,6 +25,8 @@ _.each(content, function(str, key, list){
 		record.push(str[1])
 		// replica number
 		record.push(str[2])
+		// replica timestamp
+		record.push(str[3])
 		// candidate employer
 		record.push(str[7])
 		// text
@@ -33,6 +35,7 @@ _.each(content, function(str, key, list){
 		if ((str[7]=='Employer') && (str[9]=='Translation'))
 			{
 				dialogue[buffer][dialogue[buffer].length-1]= str[5]
+				dialogue[buffer].push(str[3])
 			}
 		else
 		{

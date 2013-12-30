@@ -48,4 +48,6 @@
 
 , {"source": "\\b[o][.][k][.]?", "target": "okay"}
 , {"source": "\\b[o][k]\\b", "target": "okay"}
+
+, {"source": "$", "target": "USD"}
 ]
