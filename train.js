@@ -332,7 +332,8 @@ if (do_cross_validation) {
 if (do_serialization) {
 	verbosity=0;
 	// ["Employer","Candidate", "Candidate-israel", "Employer-israel", "Candidate-usa", "Employer-usa"].forEach(function(classifierName) {
-		["Candidate-usa"].forEach(function(classifierName) {
+		// ["Candidate-usa"].forEach(function(classifierName) {
+		["Employer-usa"].forEach(function(classifierName) {
 		console.log("\nBuilding classifier for "+classifierName);
 		var classifier = createNewClassifier();
 		var jsonEmpty = classifier.toJSON();  // just to check that it works
@@ -345,30 +346,30 @@ if (do_serialization) {
 			// "2_experts1class",
 			// "4_various",
 			// "4_various1class"
-	// "usd-0_grammar.json.json",
-	// "usd-4_various.json.json",
-	// "usd-1_woz_kbagent_students1class.json.json",
-	// "usd-1_woz_kbagent_students.json.json",
-	// "usd-6_expert.json.json",
-	// "usd-2_experts1class.json.json",
-	// "usd-nlu_kbagent_turkers_negonlpAMT.json.json",
-	// "usd-2_experts.json.json",
-	// "usd-3_woz_kbagent_turkers_negonlp2.json.json",
-	// "usd-4_various1class.json.json",
-	// "usd-woz_kbagent_students_negonlp.json.json",
-	// "usd-5_woz_ncagent_turkers_negonlp2ncAMT.json.json",
-	// "usd-nlu_ncagent_students_negonlpnc.json.json",
-	// "usd-nlu_ncagent_turkers_negonlpncAMT.json.json"
+	"usd-0_grammar.json.json",
+	"usd-4_various.json.json",
+	"usd-1_woz_kbagent_students1class.json.json",
+	"usd-1_woz_kbagent_students.json.json",
+	"usd-6_expert.json.json",
+	"usd-2_experts1class.json.json",
+	"usd-nlu_kbagent_turkers_negonlpAMT.json.json",
+	"usd-2_experts.json.json",
+	"usd-3_woz_kbagent_turkers_negonlp2.json.json",
+	"usd-4_various1class.json.json",
+	"usd-woz_kbagent_students_negonlp.json.json",
+	"usd-5_woz_ncagent_turkers_negonlp2ncAMT.json.json",
+	"usd-nlu_ncagent_students_negonlpnc.json.json",
+	"usd-nlu_ncagent_turkers_negonlpncAMT.json.json"
 
-"usd-0_grammar.json.json",
-"usd-2_experts1class.json.json",
-"usd-4_various1class.json.json",
-"usd-1_woz_kbagent_students1class.json.json",
-"usd-2_experts.json.json",
-"usd-4_various.json.json",
-"usd-1_woz_kbagent_students.json.json",
-"usd-3_woz_kbagent_turkers_negonlp2.json.json",
-"usd-expert.json.json"
+// "usd-0_grammar.json.json",
+// "usd-2_experts1class.json.json",
+// "usd-4_various1class.json.json",
+// "usd-1_woz_kbagent_students1class.json.json",
+// "usd-2_experts.json.json",
+// "usd-4_various.json.json",
+// "usd-1_woz_kbagent_students.json.json",
+// "usd-3_woz_kbagent_turkers_negonlp2.json.json",
+// "usd-expert.json.json"
 			];
 		var dataset = datasetNames.reduce(function(previous, current) {
 			return previous.concat(
