@@ -2,7 +2,7 @@ var _ = require('underscore')._;
 var fs = require('fs');
 
 // filename = "ncagent.csv"
-filename = "kbagent.csv"
+filename = "ncagent.csv"
 
 content = fs.readFileSync(filename, 'utf8')
 content = content.split('\n')
