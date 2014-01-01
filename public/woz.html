@@ -16,7 +16,7 @@
 <script src="js/utils.js"></script>
 <script src="js/sound.js"></script>
 
-<script src="translate.port.js"></script>
+<!--<script src="translate.port.js"></script>-->
 
 </head>
 
@@ -44,7 +44,7 @@ $(document).ready(function() {
   form = $('#form'); form.deserialize(location.search.substr(1));
   if (quiet_mode) $("h1").after("<h2>Quiet mode</h2>");
   
-  translationSocket = commonConnect(serverport, deeplog);
+  translationSocket = commonConnect(location.port, deeplog);
 
   translationSocket.on('connect', function() {
 		translationSocket.emit("register_as_public_translator", {
