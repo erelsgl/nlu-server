@@ -4,6 +4,7 @@ A server that supplies web-services for NLU (Natural Language Understanding) and
 
 Tested on Ubuntu 12.04.
 
+Powered by [Limdu](http://erelsgl.github.io/limdu).
 
 ## Installation
 
