@@ -46,6 +46,7 @@ var serialization = require('serialization');
 var learning_curves = require('limdu/utils/learning_curves').learning_curves;
 var unseen_words_curves = require('limdu/utils/unseen_curves').unseen_word_curves;
 var unseen_correlation = require('limdu/utils/unseen_correlation').unseen_correlation;
+var tokenize = require('limdu/utils/unseen_correlation').tokenize;
 var classifier = require(__dirname+'/classifiers')
 
 var stringifyClass = function (aClass) {
@@ -104,7 +105,8 @@ if (do_unseen_word_fp)
 	_.each(dataset, function(value, key, list){ 
 		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
 	})
-	console.log(unseen_correlation(data, createNewClassifier))
+
+	console.log(unseen_correlation(data, createNewClassifier, tokenize))
 	}
 
 
