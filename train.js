@@ -7,6 +7,8 @@
 
 console.log("machine learning trainer start\n");
 
+var do_unseen_word_fp = false
+var do_unseen_word_curve = true
 var do_checking_tag = false
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
@@ -14,7 +16,7 @@ var do_learning_curves = false
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
-var do_serialization = true;
+var do_serialization = false;
 var do_test_on_training_data = false;
 var do_small_temporary_test_dataset = false
 var do_small_test_multi_threshold = false
@@ -42,6 +44,8 @@ var trainAndTestLite = require('limdu/utils/trainAndTest').trainAndTestLite;
 var ToTest = require('limdu/utils/trainAndTest').test;
 var serialization = require('serialization');
 var learning_curves = require('limdu/utils/learning_curves').learning_curves;
+var unseen_words_curves = require('limdu/utils/unseen_curves').unseen_word_curves;
+var unseen_correlation = require('limdu/utils/unseen_correlation').unseen_correlation;
 var classifier = require(__dirname+'/classifiers')
 
 var stringifyClass = function (aClass) {
@@ -69,6 +73,40 @@ var datasetNames = [
 			"nlu_ncagent_turkers_negonlpncAMT.json",
 			"woz_kbagent_students_negonlp.json"
 			];
+
+if (do_unseen_word_curve)
+	{
+	dataset = [
+			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			"nlu_ncagent_students_negonlpnc.json",
+			"nlu_ncagent_turkers_negonlpncAMT.json"
+			]
+
+	data = []
+	_.each(dataset, function(value, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+	})
+	
+	unseen_words_curves(data)
+
+	}
+
+
+if (do_unseen_word_fp)
+	 {
+	dataset = [
+			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			"nlu_ncagent_students_negonlpnc.json",
+			"nlu_ncagent_turkers_negonlpncAMT.json"
+			// "test.json"
+			]
+	data = []
+	_.each(dataset, function(value, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+	})
+	console.log(unseen_correlation(data, createNewClassifier))
+	}
+
 
 if (do_checking_tag) {
 
@@ -107,8 +145,6 @@ if (do_checking_tag) {
 	console.log(commonfile)
 }   
 
-
-
 if (do_small_temporary_test) {
 	// var dataset = JSON.parse(fs.readFileSync("datasets/Employer/2_experts.json"))
 	dataset = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetSingle2).concat(collectedDatasetMulti4).concat(collectedDatasetMulti8)
@@ -123,9 +159,14 @@ if (do_small_temporary_test) {
 		}
 	});
 }   
- 
+
 if (do_learning_curves) {
 	
+	datasetNames = [
+			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			"nlu_ncagent_students_negonlpnc.json",
+			"nlu_ncagent_turkers_negonlpncAMT.json"
+			]
 	dataset = []
 
 	_.each(datasetNames, function(value, key, list){ 
@@ -146,7 +187,7 @@ if (do_learning_curves) {
 	};
 
 	parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
-	learning_curves(classifiers, dataset, parameters, 100)
+	learning_curves(classifiers, dataset, parameters, 20)
 }
 
 if (do_small_temporary_test_dataset) {
