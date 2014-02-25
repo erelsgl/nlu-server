@@ -7,11 +7,12 @@
 
 console.log("machine learning trainer start\n");
 
-var do_partial_classification = true
+
+var do_partial_classification = false
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
-var do_small_temporary_test = false;
+var do_small_temporary_test = true;
 var do_small_temporary_serialization_test = false;
 var do_learning_curves = false
 var do_cross_dataset_testing = false;
