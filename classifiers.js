@@ -213,6 +213,15 @@ var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 	});
 };
 
+var PartialClassification = function(multilabelClassifierType) {
+	return classifiers.multilabel.PartialClassification.bind(0, {
+		splitLabel: Hierarchy.splitJson, 
+		joinLabel:  Hierarchy.joinJson,
+		multilabelClassifierType: multilabelClassifierType,
+	});
+};
+
+
 var homer = function(multilabelClassifierType) {
 	return classifiers.multilabel.Homer.bind(0, {
 		splitLabel: Hierarchy.splitJson, 
@@ -275,9 +284,12 @@ module.exports = {
 		HomerMetaLabelerPassiveAggressiveWithMulticlassSvm: enhance(homer(metalabeler(PassiveAggressiveClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
 
 		ThresholdClassifierLanguageModelWinnow: enhance(thresholdclassifier(LanguageModelClassifier)),
+		PartialClassification: enhance(PartialClassification(WinnowBinaryRelevanceClassifier)),
 };
 
 //module.exports.defaultClassifier = module.exports.ThresholdClassifierLanguageModelWinnow;
-module.exports.defaultClassifier = module.exports.HomerWinnow;
+// module.exports.defaultClassifier = module.exports.HomerWinnow;
+module.exports.defaultClassifier = module.exports.PartialClassification;
+
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");

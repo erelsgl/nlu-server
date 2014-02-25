@@ -7,8 +7,9 @@
 
 console.log("machine learning trainer start\n");
 
+var do_partial_classification = true
 var do_unseen_word_fp = false
-var do_unseen_word_curve = true
+var do_unseen_word_curve = false
 var do_checking_tag = false
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
@@ -92,6 +93,39 @@ if (do_unseen_word_curve)
 
 	}
 
+if (do_partial_classification)
+	{
+	dataset = [
+			// "5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			"nlu_ncagent_students_negonlpnc.json",
+			"nlu_ncagent_turkers_negonlpncAMT.json"
+			// "test.json"
+			]
+	data = []
+	_.each(dataset, function(value, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+	})
+
+	var classifier = new createNewClassifier();
+	// console.log(classifier.classifier.transformtest)
+	// console.log(classifier.classifierType)
+	
+
+	classifier.trainBatch(data);
+
+	
+
+	for (var i=0; i<data.length; ++i) 
+	{
+		// var expectedClasses = normalizeClasses(testSet[i].output);
+		// var actualClasses = classifier.classify(testSet[i].input);
+		
+		var expectedClasses = classifier.classifier.transformtest(data[i].output);
+		console.log(expectedClasses)
+		// process.exit(0)
+	// stats = trainAndTest_hash(createNewClassifier, data, data, verbosity+3)
+	}
+}
 
 if (do_unseen_word_fp)
 	 {
