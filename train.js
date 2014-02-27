@@ -8,11 +8,11 @@
 console.log("machine learning trainer start\n");
 
 
-var do_partial_classification = false
+var do_partial_classification = true
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
-var do_small_temporary_test = true;
+var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
 var do_learning_curves = false
 var do_cross_dataset_testing = false;
@@ -99,7 +99,7 @@ if (do_partial_classification)
 	dataset = [
 			// "5_woz_ncagent_turkers_negonlp2ncAMT.json",
 			"nlu_ncagent_students_negonlpnc.json",
-			"nlu_ncagent_turkers_negonlpncAMT.json"
+			// "nlu_ncagent_turkers_negonlpncAMT.json"
 			// "test.json"
 			]
 	data = []
@@ -108,24 +108,12 @@ if (do_partial_classification)
 	})
 
 	var classifier = new createNewClassifier();
-	// console.log(classifier.classifier.transformtest)
-	// console.log(classifier.classifierType)
+
+	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
+	stats = trainAndTest_hash(createNewClassifier, dataset['train'], classifier.classifier.transformdataset(dataset['test']), verbosity+3)
 	
-
-	classifier.trainBatch(data);
-
 	
-
-	for (var i=0; i<data.length; ++i) 
-	{
-		// var expectedClasses = normalizeClasses(testSet[i].output);
-		// var actualClasses = classifier.classify(testSet[i].input);
-		
-		var expectedClasses = classifier.classifier.transformtest(data[i].output);
-		console.log(expectedClasses)
-		// process.exit(0)
-	// stats = trainAndTest_hash(createNewClassifier, data, data, verbosity+3)
-	}
+	console.log(stats['stats'])
 }
 
 if (do_unseen_word_fp)

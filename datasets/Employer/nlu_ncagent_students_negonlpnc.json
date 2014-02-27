@@ -1,5 +1,4 @@
-[ {"input":"","output":[]}
- , {"input":"its a little bit high dont you think?","output":["{\"Reject\":\"Salary\"}"],"is_correct":true,"timestamp":"2013-09-09T16:55:42.510Z"}
+[ {"input":"its a little bit high dont you think?","output":["{\"Reject\":\"Salary\"}"],"is_correct":true,"timestamp":"2013-09-09T16:55:42.510Z"}
 , {"input":"7,000 with 8 hours of working hours","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2013-09-09T16:55:44.244Z"}
 , {"input":"QA job","output":["{\"Offer\":{\"Job Description\":\"QA\"}}"],"is_correct":true,"timestamp":"2013-09-09T16:55:45.400Z"}
 , {"input":"without leased car but with 10 % pension","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":false,"timestamp":"2013-09-09T16:55:55.307Z"}
