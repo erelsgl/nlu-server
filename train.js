@@ -97,9 +97,9 @@ if (do_unseen_word_curve)
 if (do_partial_classification)
 	{
 	dataset = [
-			// "5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
 			"nlu_ncagent_students_negonlpnc.json",
-			// "nlu_ncagent_turkers_negonlpncAMT.json"
+			"nlu_ncagent_turkers_negonlpncAMT.json"
 			// "test.json"
 			]
 	data = []
@@ -113,7 +113,10 @@ if (do_partial_classification)
 	stats = trainAndTest_hash(createNewClassifier, dataset['train'], classifier.classifier.transformdataset(dataset['test']), verbosity+3)
 	
 	
-	console.log(stats['stats'])
+	
+	// console.log(stats['stats'])
+	console.log(stats['stats']['label_output'])
+	// console.log(JSON.stringify(stats, null, 4))
 }
 
 if (do_unseen_word_fp)
