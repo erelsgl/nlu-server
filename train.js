@@ -98,12 +98,12 @@ if (do_unseen_word_curve)
 	}
 
 if (do_partial_classification)
+	{
 
-
-	a = [ '{"Offer":{"Leased Car":"Without leased car"}}','{"Offer":{"Pension Fund":"10%"}}' ]
-	console.log(Hierarchy.splitPartNotEqual(a))
-	process.exit(0)
-	// console.log(a.map(Hierarchy.splitJson))
+	//  a = [ '{"Offer":{"Leased Car":"Without leased car"}}','{"Offer":{"Pension Fund":"10%"}}' ]
+	// console.log(Hierarchy.splitPartEqual(a))
+	// // process.exit(0)
+	// // console.log(a.map(Hierarchy.splitJson))
 
 
 	// console.log(Hierarchy.(a[0]))
@@ -113,7 +113,7 @@ if (do_partial_classification)
 	// console.log(a.map(Hierarchy.splitJson))
 	
 
-	{
+	
 
 	dataset = [
 				"Dataset9Manual1.json"
@@ -130,10 +130,10 @@ if (do_partial_classification)
 
 	var classifier = new createNewClassifier();
 
-	trainAndTest_hash(createNewClassifier, data, data, verbosity+3)
+	// trainAndTest_hash(createNewClassifier, data,  classifier.classifier.toFormat(data), verbosity+3)
 
-	// dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
-	// stats = trainAndTest_hash(createNewClassifier, dataset['train'], classifier.classifier.transformdataset(dataset['test']), verbosity+3)
+	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
+	stats = trainAndTest_hash(createNewClassifier, dataset['train'], classifier.classifier.toFormat(dataset['test']), verbosity+3)
 	
 	
 	

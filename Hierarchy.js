@@ -11,22 +11,22 @@ var NGramsFromArray = require("limdu/features").NGramsFromArray;
  * @see joinJson
  */
 
-function splitPartEqual(json) {
+function splitPartEqual(json) {	
 	// return _.map(_.uniq(_.flatten(json.map(this.splitJson)) ), function(num){ return [num];})
 	label = []	
 
 	_(3).times(function(n){
 		label[n] = []
-		_.each(json.map(this.splitJson), function(value, key, list){
+		_.each(json.map(splitJson), function(value, key, list){
 			label[n] = label[n].concat(value[n])
-		}, this)
+		})
 		label[n] = _.uniq(_.compact(label[n]))
-	}, this)
+	})
 	return label
 }
 
 function splitPartNotEqual(json) {
-	// console.log(json.map(this.splitJson))
+	console.log(json.map(this.splitJson))
 	label = []	
 
 	_(3).times(function(n){
