@@ -12,20 +12,37 @@ var NGramsFromArray = require("limdu/features").NGramsFromArray;
  */
 
 function splitPartEqual(json) {
-	return _.map(_.uniq(_.flatten(json.map(this.splitJson)) ), function(num){ return [num];})
+	// return _.map(_.uniq(_.flatten(json.map(this.splitJson)) ), function(num){ return [num];})
+	label = []	
+
+	_(3).times(function(n){
+		label[n] = []
+		_.each(json.map(this.splitJson), function(value, key, list){
+			label[n] = label[n].concat(value[n])
+		}, this)
+		label[n] = _.uniq(_.compact(label[n]))
+	}, this)
+	return label
 }
 
 function splitPartNotEqual(json) {
 	// console.log(json.map(this.splitJson))
-	label = []
-	_.each(json.map(this.splitJson), function(value, key, list){ 
-		sublabel = _.flatten(value) 
-		if (sublabel.length == 3)
-			sublabel[2] = sublabel[1]+":"+sublabel[2]
-		label = label.concat(sublabel)
-	},this)
+	label = []	
 
-	return _.map(_.uniq(label), function(num){ return [num];}) 
+	_(3).times(function(n){
+		label[n] = []
+		_.each(json.map(this.splitJson), function(value, key, list){
+			if (n!=2)
+				{
+					label[n] = label[n].concat(value[n])
+				}
+			else {
+				label[n] = label[n].concat(label[n-1][key]+":"+value[n])
+			}
+		}, this)
+		label[n] = _.uniq(_.compact(label[n]))
+	}, this)
+	return label
 }
 
 function splitJson(json) {
@@ -65,8 +82,6 @@ function joinJsonRecursive(parts) {
 		return result;
 	}
 }
-
-
 
 /**
  * @param json a JSON object, such as: {Offer: {Salary: 20000}}

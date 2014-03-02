@@ -103,6 +103,8 @@ if (do_partial_classification)
 	a = [ '{"Offer":{"Leased Car":"Without leased car"}}','{"Offer":{"Pension Fund":"10%"}}' ]
 	console.log(Hierarchy.splitPartNotEqual(a))
 	process.exit(0)
+	// console.log(a.map(Hierarchy.splitJson))
+
 
 	// console.log(Hierarchy.(a[0]))
 	// console.log(Hierarchy.splitJson(a[1]))

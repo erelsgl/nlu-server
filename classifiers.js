@@ -215,7 +215,7 @@ var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 
 var PartialClassification = function(multilabelClassifierType) {
 	return classifiers.multilabel.PartialClassification.bind(0, {
-		splitLabel: Hierarchy.splitJson, 
+		splitLabel: Hierarchy.splitPartEqual, 
 		joinLabel:  Hierarchy.joinJson,
 		multilabelClassifierType: multilabelClassifierType,
 	});
