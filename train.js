@@ -5,6 +5,9 @@
  * @since 2013-06
  */
 
+ var Hierarchy = require(__dirname+'/Hierarchy');
+
+
 console.log("machine learning trainer start\n");
 
 
@@ -95,27 +98,45 @@ if (do_unseen_word_curve)
 	}
 
 if (do_partial_classification)
+
+
+	a = [ '{"Offer":{"Leased Car":"Without leased car"}}','{"Offer":{"Pension Fund":"10%"}}' ]
+	console.log(Hierarchy.splitPartNotEqual(a))
+	process.exit(0)
+
+	// console.log(Hierarchy.(a[0]))
+	// console.log(Hierarchy.splitJson(a[1]))
+	// console.log(Hierarchy.splitJson("{\"Offer\":{\"Pension Fund\":\"10%\"}}, {"Offer":{"Leased Car":"Without leased car"}}))
+	// _.map(_.uniq(label), function(num){ return [num];})
+	// console.log(a.map(Hierarchy.splitJson))
+	
+
 	{
+
 	dataset = [
-			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
-			"nlu_ncagent_students_negonlpnc.json",
-			"nlu_ncagent_turkers_negonlpncAMT.json"
+				"Dataset9Manual1.json"
+			// "5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			// "nlu_ncagent_students_negonlpnc.json",
+			// "nlu_ncagent_turkers_negonlpncAMT.json"
 			// "test.json"
 			]
 	data = []
 	_.each(dataset, function(value, key, list){ 
-		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+		// data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+		data = data.concat(JSON.parse(fs.readFileSync("datasets/"+value)))
 	})
 
 	var classifier = new createNewClassifier();
 
-	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
-	stats = trainAndTest_hash(createNewClassifier, dataset['train'], classifier.classifier.transformdataset(dataset['test']), verbosity+3)
+	trainAndTest_hash(createNewClassifier, data, data, verbosity+3)
+
+	// dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
+	// stats = trainAndTest_hash(createNewClassifier, dataset['train'], classifier.classifier.transformdataset(dataset['test']), verbosity+3)
 	
 	
 	
-	// console.log(stats['stats'])
-	console.log(stats['stats']['label_output'])
+	console.log(stats['stats'])
+	// console.log(stats['stats']['label_output'])
 	// console.log(JSON.stringify(stats, null, 4))
 }
 

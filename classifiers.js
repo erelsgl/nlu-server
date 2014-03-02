@@ -288,8 +288,8 @@ module.exports = {
 };
 
 //module.exports.defaultClassifier = module.exports.ThresholdClassifierLanguageModelWinnow;
-// module.exports.defaultClassifier = module.exports.HomerWinnow;
-module.exports.defaultClassifier = module.exports.PartialClassification;
+module.exports.defaultClassifier = module.exports.HomerWinnow;
+// module.exports.defaultClassifier = module.exports.PartialClassification;
 
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");

@@ -10,6 +10,24 @@ var NGramsFromArray = require("limdu/features").NGramsFromArray;
  * -- For example: ["Offer", "Salary", "20000"]
  * @see joinJson
  */
+
+function splitPartEqual(json) {
+	return _.map(_.uniq(_.flatten(json.map(this.splitJson)) ), function(num){ return [num];})
+}
+
+function splitPartNotEqual(json) {
+	// console.log(json.map(this.splitJson))
+	label = []
+	_.each(json.map(this.splitJson), function(value, key, list){ 
+		sublabel = _.flatten(value) 
+		if (sublabel.length == 3)
+			sublabel[2] = sublabel[1]+":"+sublabel[2]
+		label = label.concat(sublabel)
+	},this)
+
+	return _.map(_.uniq(label), function(num){ return [num];}) 
+}
+
 function splitJson(json) {
 	return splitJsonRecursive(_.isString(json) && /{.*}/.test(json)?
 		JSON.parse(json):
@@ -63,5 +81,7 @@ module.exports = {
 	splitJson: splitJson,
 	joinJson: joinJson,
 	splitJsonFeatures: splitJsonFeatures,
+	splitPartEqual: splitPartEqual,
+	splitPartNotEqual: splitPartNotEqual,
 }
 
