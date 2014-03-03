@@ -213,9 +213,18 @@ var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 	});
 };
 
-var PartialClassification = function(multilabelClassifierType) {
+var PartialClassificationEqual = function(multilabelClassifierType) {
 	return classifiers.multilabel.PartialClassification.bind(0, {
 		splitLabel: Hierarchy.splitPartEqual, 
+		joinLabel:  Hierarchy.joinJson,
+		multilabelClassifierType: multilabelClassifierType,
+	});
+};
+
+
+var PartialClassificationNotEqual = function(multilabelClassifierType) {
+	return classifiers.multilabel.PartialClassification.bind(0, {
+		splitLabel: Hierarchy.splitPartNotEqual, 
 		joinLabel:  Hierarchy.joinJson,
 		multilabelClassifierType: multilabelClassifierType,
 	});
@@ -284,12 +293,14 @@ module.exports = {
 		HomerMetaLabelerPassiveAggressiveWithMulticlassSvm: enhance(homer(metalabeler(PassiveAggressiveClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
 
 		ThresholdClassifierLanguageModelWinnow: enhance(thresholdclassifier(LanguageModelClassifier)),
-		PartialClassification: enhance(PartialClassification(WinnowBinaryRelevanceClassifier)),
+		
+		PartialClassificationNotEqual: enhance(PartialClassificationNotEqual(WinnowBinaryRelevanceClassifier)),
+		PartialClassificationEqual: enhance(PartialClassificationEqual(WinnowBinaryRelevanceClassifier)),
 };
 
 //module.exports.defaultClassifier = module.exports.ThresholdClassifierLanguageModelWinnow;
 //module.exports.defaultClassifier = module.exports.HomerWinnow;
-module.exports.defaultClassifier = module.exports.PartialClassification;
+module.exports.defaultClassifier = module.exports.PartialClassificationEqual;
 
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");

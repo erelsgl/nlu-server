@@ -26,12 +26,11 @@ function splitPartEqual(json) {
 }
 
 function splitPartNotEqual(json) {
-	console.log(json.map(this.splitJson))
 	label = []	
 
 	_(3).times(function(n){
 		label[n] = []
-		_.each(json.map(this.splitJson), function(value, key, list){
+		_.each(json.map(splitJson), function(value, key, list){
 			if (n!=2)
 				{
 					label[n] = label[n].concat(value[n])

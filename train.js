@@ -11,13 +11,13 @@
 console.log("machine learning trainer start\n");
 
 
-var do_partial_classification = true
+var do_partial_classification = false
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
-var do_learning_curves = false
+var do_learning_curves = true
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
@@ -116,16 +116,16 @@ if (do_partial_classification)
 	
 
 	dataset = [
-				"Dataset9Manual1.json"
+				// "Dataset9Manual1.json"
 			// "5_woz_ncagent_turkers_negonlp2ncAMT.json",
-			// "nlu_ncagent_students_negonlpnc.json",
-			// "nlu_ncagent_turkers_negonlpncAMT.json"
+			 "nlu_ncagent_students_negonlpnc.json",
+			 "nlu_ncagent_turkers_negonlpncAMT.json"
 			// "test.json"
 			]
 	data = []
 	_.each(dataset, function(value, key, list){ 
-		// data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
-		data = data.concat(JSON.parse(fs.readFileSync("datasets/"+value)))
+		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+		// data = data.concat(JSON.parse(fs.readFileSync("datasets/"+value)))
 	})
 
 	var classifier = new createNewClassifier();
@@ -133,11 +133,12 @@ if (do_partial_classification)
 	// trainAndTest_hash(createNewClassifier, data,  classifier.classifier.toFormat(data), verbosity+3)
 
 	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
-	stats = trainAndTest_hash(createNewClassifier, dataset['train'], classifier.classifier.toFormat(dataset['test']), verbosity+3)
+	// stats = trainAndTest_hash(createNewClassifier, dataset['train'], classifier.classifier.toFormat(dataset['test']), verbosity+3)
+	
+	stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], verbosity+3)
 	
 	
-	
-	console.log(stats['stats'])
+	// console.log(JSON.stringify(stats['stats'], null, 4))
 	// console.log(stats['stats']['label_output'])
 	// console.log(JSON.stringify(stats, null, 4))
 }
@@ -227,17 +228,21 @@ if (do_learning_curves) {
 	dataset = _.shuffle(dataset)
 
 	classifiers  = {
-	HomerSvmPerf: classifier.HomerSvmPerf,
-	SvmPerf: classifier.SvmPerfClassifier,
+		Equal: classifier.PartialClassificationEqual,
+		NotEqual: classifier.PartialClassificationNotEqual,
 
-	HomerWinnow: classifier.HomerWinnow, 
-	Winnow: classifier.WinnowClassifier,  
+	// HomerSvmPerf: classifier.HomerSvmPerf,
+	// SvmPerf: classifier.SvmPerfClassifier,
 
-	HomerAdaboost: classifier.HomerAdaboostClassifier,
-	Adaboost: classifier.AdaboostClassifier, 
+	// HomerWinnow: classifier.HomerWinnow, 
+	// Winnow: classifier.WinnowClassifier,  
+
+	// HomerAdaboost: classifier.HomerAdaboostClassifier,
+	// Adaboost: classifier.AdaboostClassifier, 
 	};
 
-	parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
+	// parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
+	parameters = ['F1']
 	learning_curves(classifiers, dataset, parameters, 20)
 }
 
