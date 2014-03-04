@@ -106,7 +106,6 @@ if (do_partial_classification)
 	// console.log(Hierarchy.splitPartVersion2(a))
 	// process.exit(0)
 	
-
 	dataset = [
 			 "5_woz_ncagent_turkers_negonlp2ncAMT.json",
 			 "nlu_ncagent_students_negonlpnc.json",
@@ -119,7 +118,7 @@ if (do_partial_classification)
 	})
 
 	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
-	stats = trainAndTestLite(createNewClassifier, dataset['train'], dataset['test'], 5)
+	stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
 	console.log(JSON.stringify(stats, null, 4))
 }
 
