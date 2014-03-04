@@ -11,13 +11,13 @@
 console.log("machine learning trainer start\n");
 
 
-var do_partial_classification = false
+var do_partial_classification = true
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
-var do_learning_curves = true
+var do_learning_curves = false
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
@@ -29,6 +29,8 @@ var do_small_test_multi_threshold = false
 var _ = require('underscore')._;
 var fs = require('fs');
 var trainAndTest_hash= require('limdu/utils/trainAndTest').trainAndTest_hash;
+var trainAndTestLite = require('limdu/utils/trainAndTest').trainAndTestLite
+
 
 var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/0_grammar.json"));
 var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students.json"));
@@ -100,24 +102,13 @@ if (do_unseen_word_curve)
 if (do_partial_classification)
 	{
 
-	//  a = [ '{"Offer":{"Leased Car":"Without leased car"}}','{"Offer":{"Pension Fund":"10%"}}' ]
-	// console.log(Hierarchy.splitPartEqual(a))
-	// // process.exit(0)
-	// // console.log(a.map(Hierarchy.splitJson))
-
-
-	// console.log(Hierarchy.(a[0]))
-	// console.log(Hierarchy.splitJson(a[1]))
-	// console.log(Hierarchy.splitJson("{\"Offer\":{\"Pension Fund\":\"10%\"}}, {"Offer":{"Leased Car":"Without leased car"}}))
-	// _.map(_.uniq(label), function(num){ return [num];})
-	// console.log(a.map(Hierarchy.splitJson))
-	
-
+	// a= ['{"Insist":"Working Hours"}','{"Offer":{"Job Description":"Programmer"}}','{"Offer":{"Working Hours":"10 hours"}}']
+	// console.log(Hierarchy.splitPartVersion2(a))
+	// process.exit(0)
 	
 
 	dataset = [
-				// "Dataset9Manual1.json"
-			// "5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			 "5_woz_ncagent_turkers_negonlp2ncAMT.json",
 			 "nlu_ncagent_students_negonlpnc.json",
 			 "nlu_ncagent_turkers_negonlpncAMT.json"
 			// "test.json"
@@ -125,22 +116,11 @@ if (do_partial_classification)
 	data = []
 	_.each(dataset, function(value, key, list){ 
 		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
-		// data = data.concat(JSON.parse(fs.readFileSync("datasets/"+value)))
 	})
 
-	var classifier = new createNewClassifier();
-
-	// trainAndTest_hash(createNewClassifier, data,  classifier.classifier.toFormat(data), verbosity+3)
-
 	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
-	// stats = trainAndTest_hash(createNewClassifier, dataset['train'], classifier.classifier.toFormat(dataset['test']), verbosity+3)
-	
-	stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], verbosity+3)
-	
-	
-	// console.log(JSON.stringify(stats['stats'], null, 4))
-	// console.log(stats['stats']['label_output'])
-	// console.log(JSON.stringify(stats, null, 4))
+	stats = trainAndTestLite(createNewClassifier, dataset['train'], dataset['test'], 5)
+	console.log(JSON.stringify(stats, null, 4))
 }
 
 if (do_unseen_word_fp)
@@ -228,8 +208,9 @@ if (do_learning_curves) {
 	dataset = _.shuffle(dataset)
 
 	classifiers  = {
-		Equal: classifier.PartialClassificationEqual,
-		NotEqual: classifier.PartialClassificationNotEqual,
+		Intent_Attribute_Value: classifier.PartialClassificationEqually,
+		Intent_Attribute_AttributeValue: classifier.PartialClassificationVersion1,
+		Intent_AttributeValue: classifier.PartialClassificationVersion2,
 
 	// HomerSvmPerf: classifier.HomerSvmPerf,
 	// SvmPerf: classifier.SvmPerfClassifier,

@@ -213,18 +213,26 @@ var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 	});
 };
 
-var PartialClassificationEqual = function(multilabelClassifierType) {
+var PartialClassificationEqually = function(multilabelClassifierType) {
 	return classifiers.multilabel.PartialClassification.bind(0, {
-		splitLabel: Hierarchy.splitPartEqual, 
+		splitLabel: Hierarchy.splitPartEqually, 
 		joinLabel:  Hierarchy.joinJson,
 		multilabelClassifierType: multilabelClassifierType,
 	});
 };
 
 
-var PartialClassificationNotEqual = function(multilabelClassifierType) {
+var PartialClassificationVersion1 = function(multilabelClassifierType) {
 	return classifiers.multilabel.PartialClassification.bind(0, {
-		splitLabel: Hierarchy.splitPartNotEqual, 
+		splitLabel: Hierarchy.splitPartVersion1, 
+		joinLabel:  Hierarchy.joinJson,
+		multilabelClassifierType: multilabelClassifierType,
+	});
+};
+
+var PartialClassificationVersion2 = function(multilabelClassifierType) {
+	return classifiers.multilabel.PartialClassification.bind(0, {
+		splitLabel: Hierarchy.splitPartVersion2, 
 		joinLabel:  Hierarchy.joinJson,
 		multilabelClassifierType: multilabelClassifierType,
 	});
@@ -293,14 +301,15 @@ module.exports = {
 		HomerMetaLabelerPassiveAggressiveWithMulticlassSvm: enhance(homer(metalabeler(PassiveAggressiveClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
 
 		ThresholdClassifierLanguageModelWinnow: enhance(thresholdclassifier(LanguageModelClassifier)),
-		
-		PartialClassificationNotEqual: enhance(PartialClassificationNotEqual(WinnowBinaryRelevanceClassifier)),
-		PartialClassificationEqual: enhance(PartialClassificationEqual(WinnowBinaryRelevanceClassifier)),
+
+		PartialClassificationEqually: enhance(PartialClassificationEqually(WinnowBinaryRelevanceClassifier)),
+		PartialClassificationVersion1: enhance(PartialClassificationVersion1(WinnowBinaryRelevanceClassifier)),
+		PartialClassificationVersion2: enhance(PartialClassificationVersion2(WinnowBinaryRelevanceClassifier)),
 };
 
 //module.exports.defaultClassifier = module.exports.ThresholdClassifierLanguageModelWinnow;
 //module.exports.defaultClassifier = module.exports.HomerWinnow;
-module.exports.defaultClassifier = module.exports.PartialClassificationEqual;
+module.exports.defaultClassifier = module.exports.PartialClassificationVersion2;
 
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
