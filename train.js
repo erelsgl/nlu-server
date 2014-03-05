@@ -5,10 +5,15 @@
  * @since 2013-06
  */
 
+ var Hierarchy = require(__dirname+'/Hierarchy');
+
+
 console.log("machine learning trainer start\n");
 
+
+var do_partial_classification = true
 var do_unseen_word_fp = false
-var do_unseen_word_curve = true
+var do_unseen_word_curve = false
 var do_checking_tag = false
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
@@ -24,6 +29,8 @@ var do_small_test_multi_threshold = false
 var _ = require('underscore')._;
 var fs = require('fs');
 var trainAndTest_hash= require('limdu/utils/trainAndTest').trainAndTest_hash;
+var trainAndTestLite = require('limdu/utils/trainAndTest').trainAndTestLite
+
 
 var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/0_grammar.json"));
 var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students.json"));
@@ -92,6 +99,28 @@ if (do_unseen_word_curve)
 
 	}
 
+if (do_partial_classification)
+	{
+
+	// a= ['{"Insist":"Working Hours"}','{"Offer":{"Job Description":"Programmer"}}','{"Offer":{"Working Hours":"10 hours"}}']
+	// console.log(Hierarchy.splitPartVersion2(a))
+	// process.exit(0)
+	
+	dataset = [
+			 "5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			 "nlu_ncagent_students_negonlpnc.json",
+			 "nlu_ncagent_turkers_negonlpncAMT.json"
+			// "test.json"
+			]
+	data = []
+	_.each(dataset, function(value, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+	})
+
+	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
+	stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
+	console.log(JSON.stringify(stats, null, 4))
+}
 
 if (do_unseen_word_fp)
 	 {
@@ -178,17 +207,22 @@ if (do_learning_curves) {
 	dataset = _.shuffle(dataset)
 
 	classifiers  = {
-	HomerSvmPerf: classifier.HomerSvmPerf,
-	SvmPerf: classifier.SvmPerfClassifier,
+		Intent_Attribute_Value: classifier.PartialClassificationEqually,
+		Intent_Attribute_AttributeValue: classifier.PartialClassificationVersion1,
+		Intent_AttributeValue: classifier.PartialClassificationVersion2,
 
-	HomerWinnow: classifier.HomerWinnow, 
-	Winnow: classifier.WinnowClassifier,  
+	// HomerSvmPerf: classifier.HomerSvmPerf,
+	// SvmPerf: classifier.SvmPerfClassifier,
 
-	HomerAdaboost: classifier.HomerAdaboostClassifier,
-	Adaboost: classifier.AdaboostClassifier, 
+	// HomerWinnow: classifier.HomerWinnow, 
+	// Winnow: classifier.WinnowClassifier,  
+
+	// HomerAdaboost: classifier.HomerAdaboostClassifier,
+	// Adaboost: classifier.AdaboostClassifier, 
 	};
 
-	parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
+	// parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
+	parameters = ['F1']
 	learning_curves(classifiers, dataset, parameters, 20)
 }
 

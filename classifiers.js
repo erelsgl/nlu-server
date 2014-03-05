@@ -213,6 +213,32 @@ var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 	});
 };
 
+var PartialClassificationEqually = function(multilabelClassifierType) {
+	return classifiers.multilabel.PartialClassification.bind(0, {
+		splitLabel: Hierarchy.splitPartEqually, 
+		joinLabel:  Hierarchy.joinJson,
+		multilabelClassifierType: multilabelClassifierType,
+	});
+};
+
+
+var PartialClassificationVersion1 = function(multilabelClassifierType) {
+	return classifiers.multilabel.PartialClassification.bind(0, {
+		splitLabel: Hierarchy.splitPartVersion1, 
+		joinLabel:  Hierarchy.joinJson,
+		multilabelClassifierType: multilabelClassifierType,
+	});
+};
+
+var PartialClassificationVersion2 = function(multilabelClassifierType) {
+	return classifiers.multilabel.PartialClassification.bind(0, {
+		splitLabel: Hierarchy.splitPartVersion2, 
+		joinLabel:  Hierarchy.joinJson,
+		multilabelClassifierType: multilabelClassifierType,
+	});
+};
+
+
 var homer = function(multilabelClassifierType) {
 	return classifiers.multilabel.Homer.bind(0, {
 		splitLabel: Hierarchy.splitJson, 
@@ -275,9 +301,15 @@ module.exports = {
 		HomerMetaLabelerPassiveAggressiveWithMulticlassSvm: enhance(homer(metalabeler(PassiveAggressiveClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
 
 		ThresholdClassifierLanguageModelWinnow: enhance(thresholdclassifier(LanguageModelClassifier)),
+
+		PartialClassificationEqually: enhance(PartialClassificationEqually(WinnowBinaryRelevanceClassifier)),
+		PartialClassificationVersion1: enhance(PartialClassificationVersion1(WinnowBinaryRelevanceClassifier)),
+		PartialClassificationVersion2: enhance(PartialClassificationVersion2(WinnowBinaryRelevanceClassifier)),
 };
 
 //module.exports.defaultClassifier = module.exports.ThresholdClassifierLanguageModelWinnow;
-module.exports.defaultClassifier = module.exports.HomerWinnow;
+//module.exports.defaultClassifier = module.exports.HomerWinnow;
+module.exports.defaultClassifier = module.exports.PartialClassificationVersion1;
+
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
