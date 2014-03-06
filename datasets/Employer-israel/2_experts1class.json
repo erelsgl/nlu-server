@@ -12,7 +12,6 @@
 , {"input":"Slow Promo?","output":[{"Offer":{"Promotion Possibilities":"Slow promotion track"}}]}
 , {"input":"9 Hours?","output":[{"Offer":{"Working Hours":"9 hours"}}]}
 , {"input":"I was thinking more in line of a QA role.","output":[{"Offer":{"Job Description":"QA"}}]}
-, {"input":"I expect a good development plan, and easily progress in the company.","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
 , {"input":"With a starting point of 12,00 NIS.","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
 , {"input":"I can offer you a fast promotion track, so that you might reach project manager position fairly quickly","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
 , {"input":"With a starting point of nine hours a week.","output":[{"Offer":{"Working Hours":"9 hours"}}]}

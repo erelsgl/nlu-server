@@ -22,11 +22,6 @@
 , {"input":"slow promotion track","output":["{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"]}
 , {"input":"hi,I am unable to meet that demand","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
 , {"input":"why did your work hours decrease?","output":["{\"Query\":\"bid\"}"]}
-, {"input":"I could do programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
-, {"input":"I could do with no leased vehicle","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"]}
-, {"input":"I could do with the car","output":["{\"Accept\":\"Leased Car\"}"]}
-, {"input":"I could do with the pension","output":["{\"Accept\":\"Pension Fund\"}"]}
-, {"input":"I could do 12k salary","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
 , {"input":"deal","output":["{\"Accept\":\"previous\"}"]}
 , {"input":"what do i do","output":["{\"Query\":\"bid\"}"]}
 , {"input":"how are you","output":["{\"Greet\":true}"]}
