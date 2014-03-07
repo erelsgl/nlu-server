@@ -11,7 +11,7 @@
 console.log("machine learning trainer start\n");
 
 
-var do_partial_classification = false
+var do_partial_classification = true
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
@@ -21,7 +21,7 @@ var do_learning_curves = false
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
-var do_serialization = true;
+var do_serialization = false;
 var do_test_on_training_data = false;
 var do_small_temporary_test_dataset = false
 var do_small_test_multi_threshold = false
@@ -117,8 +117,11 @@ if (do_partial_classification)
 		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
 	})
 
-	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
-	stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
+	data = _.shuffle(data)
+
+	// dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
+	// stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
+	stats = trainAndTest_hash(createNewClassifier, data, data, 5)
 	console.log(JSON.stringify(stats, null, 4))
 }
 
