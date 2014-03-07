@@ -55,6 +55,13 @@ html
 					li
 						a(href='/translations/manual/dataset?classifierName=#{role}&source=#{game}') #{role} - dataset 
 
+		for game in ['negochatWithAgent']
+			h3 #{game}
+			ul
+				for role in ['Employer-usa']
+					li
+						a(href='/woz.html?classifierName=#{role}&source=#{game}_JobCandidate&accountName=negochatstorage') Wizard-of-Oz for #{role} in #{game}
+
 		h2 Other translations
 		ul
 			li
