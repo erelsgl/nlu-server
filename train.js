@@ -11,7 +11,7 @@
 console.log("machine learning trainer start\n");
 
 
-var do_partial_classification = true
+var do_partial_classification = false
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
@@ -21,7 +21,7 @@ var do_learning_curves = false
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
-var do_serialization = false;
+var do_serialization = true;
 var do_test_on_training_data = false;
 var do_small_temporary_test_dataset = false
 var do_small_test_multi_threshold = false
@@ -409,45 +409,18 @@ if (do_cross_validation) {
 if (do_serialization) {
 	verbosity=0;
 	// ["Employer","Candidate", "Candidate-israel", "Employer-israel", "Candidate-usa", "Employer-usa"].forEach(function(classifierName) {
-		// ["Candidate-usa"].forEach(function(classifierName) {
-		["Employer-usa"].forEach(function(classifierName) {
+		["Employer-israel", "Candidate-israel"].forEach(function(classifierName) {
 		console.log("\nBuilding classifier for "+classifierName);
 		var classifier = createNewClassifier();
 		var jsonEmpty = classifier.toJSON();  // just to check that it works
 
-		var datasetNames = [
-			// "0_grammar",
-			// "1_woz_kbagent_students",
-			// "1_woz_kbagent_students1class",
-			// "2_experts",
-			// "2_experts1class",
-			// "4_various",
-			// "4_various1class"
-	"usd-0_grammar.json",
-	"usd-4_various.json",
-	"usd-1_woz_kbagent_students1class.json",
-	"usd-1_woz_kbagent_students.json",
-	"usd-6_expert.json",
-	"usd-2_experts1class.json",
-	"usd-nlu_kbagent_turkers_negonlpAMT.json",
-	"usd-2_experts.json",
-	"usd-3_woz_kbagent_turkers_negonlp2.json",
-	"usd-4_various1class.json",
-	"usd-woz_kbagent_students_negonlp.json",
-	"usd-5_woz_ncagent_turkers_negonlp2ncAMT.json",
-	"usd-nlu_ncagent_students_negonlpnc.json",
-	"usd-nlu_ncagent_turkers_negonlpncAMT.json"
+		try { datasetNames = fs.readdirSync("datasets/" + classifierName) }
 
-// "usd-0_grammar.json",
-// "usd-2_experts1class.json",
-// "usd-4_various1class.json",
-// "usd-1_woz_kbagent_students1class.json",
-// "usd-2_experts.json",
-// "usd-4_various.json",
-// "usd-1_woz_kbagent_students.json",
-// "usd-3_woz_kbagent_turkers_negonlp2.json",
-// "usd-expert.json"
-			];
+		catch (e)
+		{	
+			throw new Error(e);
+		}
+
 		var dataset = datasetNames.reduce(function(previous, current) {
 			return previous.concat(
 				JSON.parse(

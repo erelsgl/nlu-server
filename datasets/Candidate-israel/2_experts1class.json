@@ -36,18 +36,6 @@
 , {"input":"I want 12k","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
 , {"input":"want 12000","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
 , {"input":"i reject","output":[{"Reject":"previous"}]}
-, {"input":"I want you QA","output":[{"Offer":{"Job Description":"QA"}}]}
-, {"input":"I want you with car","output":[{"Offer":{"Leased Car":"With leased car"}}]}
-, {"input":"I want you 0% pension Found","output":[{"Offer":{"Pension Fund":"0%"}}]}
-, {"input":"I want you fast promotion track","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
-, {"input":"I want you 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
-, {"input":"I want you 9 hours","output":[{"Offer":{"Working Hours":"9 hours"}}]}
-, {"input":"you may be programmer","output":[{"Offer":{"Job Description":"Programmer"}}]}
-, {"input":"you may get car","output":[{"Offer":{"Leased Car":"With leased car"}}]}
-, {"input":"you may get 0% pension Found","output":[{"Offer":{"Pension Fund":"0%"}}]}
-, {"input":"you may get fast promotion track","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
-, {"input":"you may get 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
-, {"input":"you may get 9 hours","output":[{"Offer":{"Working Hours":"9 hours"}}]}
 , {"input":"what about programmer","output":[{"Offer":{"Job Description":"Programmer"}}]}
 , {"input":"what about with car","output":[{"Offer":{"Leased Car":"With leased car"}}]}
 , {"input":"what about 10% pension Found","output":[{"Offer":{"Pension Fund":"10%"}}]}
@@ -89,7 +77,6 @@
 , {"input":"Slow Promo?","output":[{"Offer":{"Promotion Possibilities":"Slow promotion track"}}]}
 , {"input":"9 Hours?","output":[{"Offer":{"Working Hours":"9 hours"}}]}
 , {"input":"I was thinking more in line of a QA role","output":[{"Offer":{"Job Description":"QA"}}]}
-, {"input":"I think you can expect a good development plan, and easily progress in the company","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
 , {"input":"I do believe that my skills are more suited to at the very least team manager, since I have extensive experience in heading projects","output":[{"Offer":{"Job Description":"Team Manager"}}]}
 , {"input":"I am willing to begin at 12,000 NIS ","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
 , {"input":"I am willing to begin a slower promotion track.","output":[{"Offer":{"Promotion Possibilities":"Slow promotion track"}}]}
@@ -97,7 +84,6 @@
 , {"input":"I want a fast promotion track","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]}
 , {"input":"nine hours a day,","output":[{"Offer":{"Working Hours":"9 hours"}}]}
 , {"input":"I can suggest a 20% pension. is that acceptable to you?","output":[{"Offer":{"Pension Fund":"20%"}}]}
-, {"input":"I can suggest no car. is that acceptable to you?","output":[{"Offer":{"Leased Car":"Without leased car"}}]}
 , {"input":"i would work as a programmer","output":[{"Offer":{"Job Description":"Programmer"}}]}
 , {"input":"i would work and have 20% pension set aside for my retirement","output":[{"Offer":{"Pension Fund":"20%"}}]}
 , {"input":"i would work 8 hours a day","output":[{"Offer":{"Working Hours":"8 hours"}}]}
