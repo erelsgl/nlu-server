@@ -11,13 +11,13 @@
 console.log("machine learning trainer start\n");
 
 
-var do_partial_classification = true
+var do_partial_classification = false
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
-var do_learning_curves = false
+var do_learning_curves = true
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
@@ -107,8 +107,8 @@ if (do_partial_classification)
 	// process.exit(0)
 	
 	dataset = [
-			 "5_woz_ncagent_turkers_negonlp2ncAMT.json",
-			 "nlu_ncagent_students_negonlpnc.json",
+			 // "5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			 // "nlu_ncagent_students_negonlpnc.json",
 			 "nlu_ncagent_turkers_negonlpncAMT.json"
 			// "test.json"
 			]
@@ -122,7 +122,7 @@ if (do_partial_classification)
 	// dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
 	// stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
 	stats = trainAndTest_hash(createNewClassifier, data, data, 5)
-	console.log(JSON.stringify(stats, null, 4))
+	// console.log(JSON.stringify(stats, null, 4))
 }
 
 if (do_unseen_word_fp)
@@ -198,8 +198,8 @@ if (do_learning_curves) {
 	
 	datasetNames = [
 			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
-			"nlu_ncagent_students_negonlpnc.json",
-			"nlu_ncagent_turkers_negonlpncAMT.json"
+			// "nlu_ncagent_students_negonlpnc.json",
+			// "nlu_ncagent_turkers_negonlpncAMT.json"
 			]
 	dataset = []
 
@@ -211,8 +211,9 @@ if (do_learning_curves) {
 
 	classifiers  = {
 		Intent_Attribute_Value: classifier.PartialClassificationEqually,
-		Intent_Attribute_AttributeValue: classifier.PartialClassificationVersion1,
-		Intent_AttributeValue: classifier.PartialClassificationVersion2,
+		Winnow: classifier.HomerWinnow3
+		// Intent_Attribute_AttributeValue: classifier.PartialClassificationVersion1,
+		// Intent_AttributeValue: classifier.PartialClassificationVersion2,
 
 	// HomerSvmPerf: classifier.HomerSvmPerf,
 	// SvmPerf: classifier.SvmPerfClassifier,

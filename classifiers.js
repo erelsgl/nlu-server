@@ -181,6 +181,34 @@ var BayesSegmenter = classifiers.EnhancedClassifier.bind(0, {
  * CONSTRUCTORS:
  */
 
+var enhance4 = function (classifierType, featureLookupTable, labelLookupTable) {
+	return classifiers.EnhancedClassifier.bind(0, {
+		normalizer: normalizer,
+		inputSplitter: inputSplitter,
+		//spellChecker: require('wordsworth').getInstance(),
+		featureExtractor: featureExtractor,
+		
+		featureLookupTable: featureLookupTable,
+		labelLookupTable: labelLookupTable,
+		
+		featureExtractorForClassification: [
+			ftrs.Hypernyms(JSON.parse(fs.readFileSync('knowledgeresources/hypernyms.json'))),
+		],
+
+		multiplyFeaturesByIDF: true,
+		//minFeatureDocumentFrequency: 2,
+
+		pastTrainingSamples: [], // to enable retraining
+			
+		classifierType: classifierType,
+
+		OutputSplitLabel: Hierarchy.splitPartEqually,
+		InputSplitLabel: Hierarchy.splitPartEqually
+
+	});
+};
+
+
  var enhance3 = function (classifierType, featureLookupTable, labelLookupTable) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
@@ -237,6 +265,15 @@ var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 		classifierType: classifierType,
 	});
 };
+
+var PartialClassification = function(multilabelClassifierType) {
+	return classifiers.multilabel.PartialClassification.bind(0, {
+		// splitLabel: Hierarchy.splitPartEqually, 
+		// joinLabel:  Hierarchy.joinJson,
+		multilabelClassifierType: multilabelClassifierType,
+	});
+};
+
 
 var PartialClassificationEqually = function(multilabelClassifierType) {
 	return classifiers.multilabel.PartialClassification.bind(0, {
@@ -329,14 +366,15 @@ module.exports = {
 
 		ThresholdClassifierLanguageModelWinnow: enhance(thresholdclassifier(LanguageModelClassifier)),
 
-		PartialClassificationEqually: enhance(PartialClassificationEqually(WinnowBinaryRelevanceClassifier)),
-		PartialClassificationVersion1: enhance(PartialClassificationVersion1(WinnowBinaryRelevanceClassifier)),
-		PartialClassificationVersion2: enhance(PartialClassificationVersion2(WinnowBinaryRelevanceClassifier)),
+		// PartialClassificationVersion1: enhance(PartialClassificationVersion1(WinnowBinaryRelevanceClassifier)),
+		// PartialClassificationVersion2: enhance(PartialClassificationVersion2(WinnowBinaryRelevanceClassifier)),
+		PartialClassificationEqually: enhance4(PartialClassification(WinnowBinaryRelevanceClassifier)),
 };
 
 //module.exports.defaultClassifier = module.exports.ThresholdClassifierLanguageModelWinnow;
-//module.exports.defaultClassifier = module.exports.HomerWinnow;
-module.exports.defaultClassifier = module.exports.HomerWinnow3
+// module.exports.defaultClassifier = module.exports.HomerWinnow;
+//module.exports.defaultClassifier = module.exports.HomerWinnow3
+module.exports.defaultClassifier = module.exports.PartialClassificationEqually
 //module.exports.defaultClassifier = module.exports.PartialClassificationEqually;
 
 
