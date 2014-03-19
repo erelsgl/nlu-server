@@ -1,6 +1,5 @@
-[ {"input":"","output":[]}
- , {"input":"hiya","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2013-10-08T17:34:49.784Z"}
-, {"input":"Will you take 12000?","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-08T19:38:38.413Z"}
+[ 
+{"input":"Will you take 12000?","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-08T19:38:38.413Z"}
 , {"input":"How about a QA?","output":["{\"Offer\":{\"Job Description\":\"QA\"}}"],"is_correct":true,"timestamp":"2013-10-08T19:39:11.761Z"}
 , {"input":"Would you agree to team manager?","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"],"is_correct":true,"timestamp":"2013-10-08T19:39:36.419Z"}
 , {"input":"I will offer 10% at best.","output":["{\"Insist\":\"Pension Fund\"}","{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":false,"timestamp":"2013-10-08T19:40:08.870Z"}

@@ -354,7 +354,6 @@
 {"input":"so we both agreement","output":[{"Query":"accept"}],"is_correct":false,"timestamp":"2013-10-07T13:57:15.606Z"},
 {"input":"so both agreement","output":[{"Query":"accept"}],"is_correct":false,"timestamp":"2013-10-07T13:57:22.092Z"},
 {"input":"any thing else ?","output":[{"Query":"issues"}],"is_correct":false,"timestamp":"2013-10-07T13:57:29.218Z"},
-{"input":"you can get 10000 tops!","output":[{"Offer":{"Salary":"60,000 USD"}}],"is_correct":false,"timestamp":"2013-10-07T13:57:41.624Z"},
 {"input":"hi, if you want to get this much, you need to take a prodovtive work like programmer and work 10 hours a day","output":[{"Greet":true},{"Offer":{"Job Description":"Programmer"}},{"Offer":{"Working Hours":"10 hours"}}],"is_correct":false,"timestamp":"2013-10-07T13:58:00.474Z"},
 {"input":"I will give you this much only if you work as programmer","output":[{"Accept":"Salary"},{"Offer":{"Job Description":"Programmer"}}],"is_correct":false,"timestamp":"2013-10-07T13:58:08.655Z"},
 {"input":"you offer { Job Description : Project Manager } is unacceptable","output":[{"Reject":"Job Description"}],"is_correct":false,"timestamp":"2013-10-07T13:59:14.041Z"},
