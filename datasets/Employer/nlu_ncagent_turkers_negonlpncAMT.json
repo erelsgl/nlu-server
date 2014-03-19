@@ -1,5 +1,4 @@
-[ {"input":"","output":[]}
- , {"input":"I dont think that will work.","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T07:17:32.322Z"}
+[ {"input":"I dont think that will work.","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T07:17:32.322Z"}
 , {"input":"I can also provide pension","output":["{\"Append\":\"previous\"}"],"is_correct":true,"timestamp":"2013-10-07T07:17:33.343Z"}
 , {"input":"I need you for 10hrs","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2013-10-07T07:17:52.573Z"}
 , {"input":"10 hrs per day","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2013-10-07T07:17:53.692Z"}
@@ -198,7 +197,7 @@
 , {"input":"I think everything is agreed I am going to sign","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2013-10-08T08:58:33.942Z"}
 , {"input":"why do you deserve 20000","output":["{\"Reject\":\"Salary\"}"],"is_correct":true,"timestamp":"2013-10-08T09:03:58.028Z"}
 , {"input":"hi I WILL PAY YOU 7000nis","output":["{\"Greet\":true}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-08T10:39:37.697Z"}
-, {"input":"7000NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-08T10:39:43.184Z"}
+, {"input":"7000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-08T10:39:43.184Z"}
 , {"input":"7000 NIS FOR A PTOGGRAMER","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-08T10:39:49.913Z"}
 , {"input":"HOW CAN A PROJECT MANAGER GET 7000 ONLY","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Reject\":\"Salary\"}"],"is_correct":false,"timestamp":"2013-10-08T10:40:04.236Z"}
 , {"input":"BASED ON YOUR QUALIFICATION I CAN OFFER YOU PROGRAMMER","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2013-10-08T10:40:07.873Z"}

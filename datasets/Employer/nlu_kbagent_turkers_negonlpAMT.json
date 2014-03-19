@@ -1,5 +1,4 @@
-[ {"input":"","output":[]}
- , {"input":"Hello, let's begin.","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2013-10-08T08:34:41.265Z"}
+[ {"input":"Hello, let's begin.","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2013-10-08T08:34:41.265Z"}
 , {"input":"7,000 NIS, Programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:34:53.337Z"}
 , {"input":"10% Pension, 9 Hours","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:34:56.673Z"}
 , {"input":"Let's see. I can give you fast track promotion if you work 10 hours.","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:35:01.347Z"}

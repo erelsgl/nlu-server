@@ -11,6 +11,7 @@
 	    "url": "https://github.com/erelsgl/nlu-server.git"
    },
   "dependencies": {
+    "execSync": "*",
     "limdu": "latest",
     "serialization": "latest",
     "connect": "~2.7.10",

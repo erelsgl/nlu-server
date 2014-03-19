@@ -71,7 +71,6 @@
 , {"input":"deal?","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2013-09-11T17:53:57.416Z"}
 , {"input":"no!","output":["{\"Reject\":\"previous\"}"],"is_correct":true,"timestamp":"2013-09-12T11:42:56.870Z"}
 , {"input":"no 7000","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-09-12T11:43:20.510Z"}
-, {"input":"o k","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2013-09-12T11:43:22.026Z"}
 , {"input":"10 hours!","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2013-09-12T11:43:22.963Z"}
 , {"input":"you start at 10 hours and then we will sea","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2013-09-12T11:43:25.166Z"}
 , {"input":"and 10 hours!","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2013-09-12T11:43:36.245Z"}
@@ -243,21 +242,21 @@
 , {"input":"tell this to the police","output":["{\"Quit\":true}"],"is_correct":false,"timestamp":"2013-10-07T13:35:47.055Z"}
 , {"input":"now, GET OUT! I't my browzer","output":["{\"Quit\":true}"],"is_correct":false,"timestamp":"2013-10-07T13:35:56.330Z"}
 , {"input":"hi 20000 NIS does not proper the QA JOB","output":["{\"Greet\":true}","{\"Offer\":{\"Job Description\":\"QA\"}}","{\"Reject\":\"Salary\"}"],"is_correct":false,"timestamp":"2013-10-07T13:36:10.908Z"}
-, {"input":"Usually the salary for QA ia about 5000 - 7000 NIS but i think you will be very usefull for the company so 8000 NIS is my offer","output":["{\"Offer\":{\"Job Description\":\"QA\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:36:19.633Z"}
+, {"input":"Usually the salary for QA ia about 5000 - 7000 NIS but i think you will be very usefull for the company so 7000 NIS is my offer","output":["{\"Offer\":{\"Job Description\":\"QA\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:36:19.633Z"}
 , {"input":"QA workers usually get promotion to a team manager after few years if they good in what they do","output":["{\"Offer\":{\"Job Description\":\"QA\"}}","{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:36:30.381Z"}
 , {"input":"the pension will be 10%","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:36:33.093Z"}
 , {"input":"workday of 9 hours","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:36:34.816Z"}
 , {"input":"without leased car ","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:36:36.500Z"}
-, {"input":"8000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:36:44.255Z"}
-, {"input":"i offer 8500 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:36:49.967Z"}
-, {"input":"i offer a salary of 8750 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:36:54.954Z"}
-, {"input":"the salary is 8750","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:37:01.588Z"}
-, {"input":"the salary is 8750 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:37:07.797Z"}
-, {"input":"I ofeer 8,750","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:37:12.250Z"}
-, {"input":"the salary will be 9000 and with an option for raising in one year","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:37:20.420Z"}
-, {"input":"i didnt accept the salary will be 9000","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:37:24.858Z"}
-, {"input":"the salary will be 9000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:37:30.761Z"}
-, {"input":"the salary 9000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:37:36.968Z"}
+, {"input":"7000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:36:44.255Z"}
+, {"input":"i offer 7000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:36:49.967Z"}
+, {"input":"i offer a salary of 7000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:36:54.954Z"}
+, {"input":"the salary is 7000","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:37:01.588Z"}
+, {"input":"the salary is 7000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:37:07.797Z"}
+, {"input":"I ofeer 7000","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:37:12.250Z"}
+, {"input":"the salary will be 7000 and with an option for raising in one year","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:37:20.420Z"}
+, {"input":"i didnt accept the salary will be 7000","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:37:24.858Z"}
+, {"input":"the salary will be 7000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:37:30.761Z"}
+, {"input":"the salary 7000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:37:36.968Z"}
 , {"input":"it is much too high.","output":["{\"Reject\":\"Salary\"}"],"is_correct":false,"timestamp":"2013-10-07T13:37:44.291Z"}
 , {"input":"i think 7000 is good","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Reject\":\"Salary\"}"],"is_correct":true,"timestamp":"2013-10-07T13:37:47.898Z"}
 , {"input":"well you should accept it you will get fast promotion track.","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:37:57.029Z"}
@@ -353,7 +352,6 @@
 , {"input":"so we both agreement","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2013-10-07T13:57:15.606Z"}
 , {"input":"so both agreement","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2013-10-07T13:57:22.092Z"}
 , {"input":"any thing else ?","output":["{\"Query\":\"issues\"}"],"is_correct":false,"timestamp":"2013-10-07T13:57:29.218Z"}
-, {"input":"you can get 10000 tops!","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:57:41.624Z"}
 , {"input":"hi, if you want to get this much, you need to take a prodovtive work like programmer and work 10 hours a day","output":["{\"Greet\":true}","{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:58:00.474Z"}
 , {"input":"I will give you this much only if you work as programmer","output":["{\"Accept\":\"Salary\"}","{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:58:08.655Z"}
 , {"input":"you offer { Job Description : Project Manager } is unacceptable","output":["{\"Reject\":\"Job Description\"}"],"is_correct":false,"timestamp":"2013-10-07T13:59:14.041Z"}

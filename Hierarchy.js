@@ -15,21 +15,60 @@ function splitPartEqually(json) {
 	label = []	
 
 	_(3).times(function(n){
-		label[n] = []
+		buf = []
 		_.each(json.map(splitJson), function(value, key, list){
-			label[n] = label[n].concat(value[n])
+			buf = buf.concat(value[n])
 		})
-		label[n] = _.uniq(_.compact(label[n]))
+		
+		buf = _.uniq(_.compact(buf))
+		if (buf.length != 0) label[n] = buf
+
 	})
+		
 	return label
 }
+
+/**
+ * @param the result of Partial Classification
+ * @return the intent from the given classification
+ */
+function retrieveIntent(values)
+	{
+		return values[0]
+	}
+
+/**
+ * @param a bag of all possible labels for a given sample after classification and observation is a tree of label hierarchy
+ * @return a set of consistent labels from the observation that could be built by greedy constructing for the bag of labels.
+ */
+function greedyLabelJoin(values, observation)
+	{
+ 	values = _.flatten(values)
+	possib = []
+		for (intent in observation)
+		{
+		for (attr in observation[intent])
+			{
+			if (Object.keys(observation[intent][attr]).length==0)
+				if ((values.indexOf(intent)!=-1) && (values.indexOf(attr)!=-1))
+					possib.push(joinJson([intent,attr]))
+			for (value in observation[intent][attr])
+				{
+				if ((values.indexOf(intent)!=-1) && (values.indexOf(attr)!=-1) && (values.indexOf(value)!=-1))
+					{
+					possib.push(joinJson([intent,attr,value]))
+					}
+				}
+			}
+		}
+	return [possib]
+	}
 
 /**
  * @param json a JSON object, such as: [ '{"Offer":{"Leased Car":"Without leased car"}}','{"Offer":{"Pension Fund":"10%"}}' ]
  * @return an array of three arrays with devision on intent, attribute and attribute:value
  * -- For example:  [ [ 'Offer' ],[ 'Leased Car', 'Pension Fund' ],[ 'Leased Car:Without leased car', 'Pension Fund:10%' ] ]
  */
-
 function splitPartVersion1(json) {
 	label = []	
 
@@ -112,6 +151,28 @@ function splitJsonRecursive(json) {
  * @see splitJson
  */
 
+function joinLabels(values, observable) {
+	possib = []
+	for (intent in observable)
+			{
+			for (attr in observable[intent])
+				{
+				if (Object.keys(observable[intent][attr]).length==0)
+					if ((values.indexOf(intent)!=-1) && (values.indexOf(attr)!=-1))
+						possib.push(this.joinJson([intent,attr]))
+				for (value in observable[intent][attr])
+					{
+					// console.log(intent+attr+value)
+					if ((values.indexOf(intent)!=-1) && (values.indexOf(attr)!=-1) && (values.indexOf(value)!=-1))
+						{
+						possib.push(this.joinJson([intent,attr,value]))
+						}
+					}
+				}
+			}
+	return possib
+}
+
 function joinJson(parts) {
 	var json = joinJsonRecursive(parts);
 	return _.isString(json)? json: JSON.stringify(json);
@@ -144,5 +205,8 @@ module.exports = {
 	splitPartEqually: splitPartEqually,
 	splitPartVersion1: splitPartVersion1,
 	splitPartVersion2: splitPartVersion2,
+	joinLabels: joinLabels,
+	greedyLabelJoin: greedyLabelJoin, 
+	retrieveIntent: retrieveIntent,
 }
 
