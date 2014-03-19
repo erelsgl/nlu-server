@@ -691,7 +691,7 @@ if (do_partial_classification)
 	// stats = trainAndTest_hash(createNewClassifier, data, data, 5)
 
 	// console.log(trainAndTest(createNewClassifier, data, data, 5))
-	console.log(JSON.stringify(stats[0], null, 4))
+	console.log(JSON.stringify(stats, null, 4))
 }
 
 if (do_unseen_word_fp)

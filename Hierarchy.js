@@ -61,7 +61,7 @@ function greedyLabelJoin(values, observation)
 				}
 			}
 		}
-	return possib
+	return [possib]
 	}
 
 /**

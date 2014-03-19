@@ -307,13 +307,13 @@ module.exports = {
 		ThresholdClassifierLanguageModelWinnow: enhance(thresholdclassifier(LanguageModelClassifier)),
 		
 		PartialClassificationWinnowEqually: enhance3(PartialClassification(WinnowBinaryRelevanceClassifier),undefined,undefined,Hierarchy.splitPartEqually, Hierarchy.splitPartEqually),
-		PartialClassificationEqually: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.greedyLabelJoin,  Hierarchy.splitPartEqually),
+		PartialClassificationEqually: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.greedyLabelJoin,  undefined),
 		PartialClassificationEquallyNaive: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEqually),
 		PartialClassificationJustTwo: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartVersion2, Hierarchy.splitPartVersion2),
 		SvmPerfClassifierPartial: enhance3(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable(),undefined,undefined,Hierarchy.splitPartEqually),
 		PartialClassificationEquallyNoOutput: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined),
 };
 
-module.exports.defaultClassifier = module.exports.HomerWinnow;
+module.exports.defaultClassifier = module.exports.PartialClassificationEqually;
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
