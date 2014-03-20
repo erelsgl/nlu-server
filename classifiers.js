@@ -235,9 +235,12 @@ var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 	});
 };
 
+// numberofclassifiers - defines how many classifiers should be defined on initialization step,
+// current workaround solution for setFeatureLookupTable routine
 var PartialClassification = function(multilabelClassifierType) {
 	return classifiers.multilabel.PartialClassification.bind(0, {
 		multilabelClassifierType: multilabelClassifierType,
+		numberofclassifiers: 3,
 	});
 };
 
