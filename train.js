@@ -672,7 +672,7 @@ if (do_partial_classification)
 	// a = [{"input":"Okay. I 20k agree. I can't lease you the car with a 20% pension.","output":["{\"Accept\":\"previous\"}","{\"Insist\":\"Leased Car\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:35:57.698Z"}]
 	
 	dataset = [
-			 "5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			   "5_woz_ncagent_turkers_negonlp2ncAMT.json",
 			   "nlu_ncagent_students_negonlpnc.json",
 			   "nlu_ncagent_turkers_negonlpncAMT.json"
 			   // "usd-7_short.json"
@@ -686,6 +686,18 @@ if (do_partial_classification)
 	// data = _.shuffle(data)
 
 	dataset = partitions.partition(data, 1, Math.round(data.length*0.1))
+
+
+	// dataset['test'] = [{
+	// 					"input":"I propose 9 hours, with car",
+	// 					"output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Accept\":{\"Working Hours\":\"9 hours\"}}"]
+	// 					}]
+
+
+		// console.log(Hierarchy.splitPartEquallyIntent(dataset['test'][0]['output']))
+		// console.log()
+		// process.exit(0)
+
 	stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
 	// data = a
 	// stats = trainAndTest_hash(createNewClassifier, data, data, 5)

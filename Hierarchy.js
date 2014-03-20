@@ -31,10 +31,19 @@ function splitPartEqually(json) {
 /**
  * @param the result of Partial Classification
  * @return the intent from the given classification
+ * input: [ [ 'Offer', 'Offer' ],
+ *  		[ 'Working Hours', 'Leased Car' ],
+ * 			[ '9 hours', 'With leased car' ] ]
+ * output: [ 'Offer', 'Offer' ]
  */
 function retrieveIntent(values)
-	{
-		return values[0]
+	{	
+	return values[0]
+	}
+
+function splitPartEquallyIntent(json) 
+	{	
+	return retrieveIntent(splitPartEqually(json))
 	}
 
 /**
@@ -208,5 +217,6 @@ module.exports = {
 	joinLabels: joinLabels,
 	greedyLabelJoin: greedyLabelJoin, 
 	retrieveIntent: retrieveIntent,
+	splitPartEquallyIntent: splitPartEquallyIntent,
 }
 
