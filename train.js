@@ -11,13 +11,13 @@
 console.log("machine learning trainer start\n");
 
 
-var do_partial_classification = true
+var do_partial_classification = false
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
-var do_learning_curves = false
+var do_learning_curves = true
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
@@ -28,6 +28,7 @@ var do_small_test_multi_threshold = false
 var naive = false
 var naive1 = false
 var count_2_intents_2_attributes = false
+var bars = true
 
 var _ = require('underscore')._;
 var fs = require('fs');
@@ -777,15 +778,56 @@ if (do_small_temporary_test) {
 	});
 }   
 
+if (bars)
+	{
+		dataset = [
+			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			"nlu_ncagent_students_negonlpnc.json",
+			"nlu_ncagent_turkers_negonlpncAMT.json"
+			]
+
+	data = []
+	_.each(dataset, function(value, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+	})
+
+	labelhash = {}
+	_.each(data, function(value, key, list){
+		console.log(value.output) 
+		output = _.flatten((Hierarchy.splitPartEqually(multilabelutils.normalizeOutputLabels(value.output)))	)
+		console.log(output)
+		
+		_.each(output, function(lab, key, list){
+			if (!(lab in labelhash))
+				labelhash[lab] = 1
+			else
+				 labelhash[lab] = labelhash[lab] + 1
+			}, this)
+
+		}, this)
+
+		lablist = []
+		for (lab in labelhash)
+			{
+				lablist.push([lab,labelhash[lab]])
+			}
+		lablist = _.sortBy(lablist, function(num){ return num[1]; });
+	console.log(lablist)
+	_.each(lablist, function(lab, key, list){ 
+			console.log(lab[0]+"\t"+lab[1])
+		}, this)
+	process.exit(0)
+	}
+
 if (do_learning_curves) {
 	
 	datasetNames = [
-			// "5_woz_ncagent_turkers_negonlp2ncAMT.json",
-			// "nlu_ncagent_students_negonlpnc.json",
-			// "nlu_ncagent_turkers_negonlpncAMT.json",
+			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			"nlu_ncagent_students_negonlpnc.json",
+			"nlu_ncagent_turkers_negonlpncAMT.json",
 			// "3_woz_kbagent_turkers_negonlp2.json",
 			// "woz_kbagent_students_negonlp.json",
-			"nlu_kbagent_turkers_negonlpAMT.json"
+			// "nlu_kbagent_turkers_negonlpAMT.json"
 			]
 	dataset = []
 
