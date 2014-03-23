@@ -11,13 +11,13 @@
 console.log("machine learning trainer start\n");
 
 
-var do_partial_classification = false
+var do_partial_classification = true
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
-var do_learning_curves = true
+var do_learning_curves = false
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
@@ -669,11 +669,11 @@ if (naive)
 if (do_partial_classification)
 	{
 	// a= ['{"Insist":"Working Hours"}','{"Offer":{"Job Description":"Programmer"}}','{"Offer":{"Working Hours":"10 hours"}}']
-	// a = [{"input":"Okay. I 20k agree. I can't lease you the car with a 20% pension.","output":["{\"Accept\":\"previous\"}","{\"Insist\":\"Leased Car\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:35:57.698Z"}]
+	a = [{"input":"Okay. I 20k agree. I can't lease you the car with a 20% pension.","output":["{\"Accept\":\"previous\"}","{\"Insist\":\"Leased Car\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:35:57.698Z"}]
 	
 	dataset = [
-			   "5_woz_ncagent_turkers_negonlp2ncAMT.json",
-			   "nlu_ncagent_students_negonlpnc.json",
+			    "5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			    "nlu_ncagent_students_negonlpnc.json",
 			   "nlu_ncagent_turkers_negonlpncAMT.json"
 			   // "usd-7_short.json"
 			// // "nlu_kbagent_turkers_negonlpAMT.json"
@@ -685,7 +685,7 @@ if (do_partial_classification)
 
 	// data = _.shuffle(data)
 
-	dataset = partitions.partition(data, 1, Math.round(data.length*0.1))
+	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
 
 
 	// dataset['test'] = [{
@@ -698,9 +698,11 @@ if (do_partial_classification)
 		// console.log()
 		// process.exit(0)
 
-	stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
+	// stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
 	// data = a
-	// stats = trainAndTest_hash(createNewClassifier, data, data, 5)
+
+	stats =	trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
+	// stats = trainAndTest_hash(createNewClassifier, data, a, 5)
 
 	// console.log(trainAndTest(createNewClassifier, data, data, 5))
 	console.log(JSON.stringify(stats, null, 4))
