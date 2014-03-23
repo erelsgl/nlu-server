@@ -12,7 +12,7 @@
 , {"input":"i will accept your offer.","output":["{\"Accept\":\"previous\"}"]}
 , {"input":"I will sign the agreement","output":["{\"Accept\":\"previous\"}"]}
 , {"input":"accept","output":["{\"Accept\":\"previous\"}"]}
-, {"input":"hii","output":["{\"Greet\":true}"]}
+, {"input":"hi","output":["{\"Greet\":true}"]}
 , {"input":"I can give you the the position of project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]}
 , {"input":"I can give you a leased car","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
 , {"input":"I can give you the 20% pension fund","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"]}
