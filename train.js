@@ -11,13 +11,13 @@
 console.log("machine learning trainer start\n");
 
 
-var do_partial_classification = false
+var do_partial_classification = true
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
-var do_learning_curves = true
+var do_learning_curves = false
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
@@ -28,7 +28,7 @@ var do_small_test_multi_threshold = false
 var naive = false
 var naive1 = false
 var count_2_intents_2_attributes = false
-var bars = true
+var bars = false
 
 var _ = require('underscore')._;
 var fs = require('fs');
@@ -670,12 +670,13 @@ if (naive)
 if (do_partial_classification)
 	{
 	// a= ['{"Insist":"Working Hours"}','{"Offer":{"Job Description":"Programmer"}}','{"Offer":{"Working Hours":"10 hours"}}']
-	a = [{"input":"Okay. I 20k agree. I can't lease you the car with a 20% pension.","output":["{\"Accept\":\"previous\"}","{\"Insist\":\"Leased Car\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:35:57.698Z"}]
-	
+	// a = [{"input":"Okay. I 20k agree. I can't lease you the car with a 20% pension.","output":["{\"Accept\":\"previous\"}","{\"Insist\":\"Leased Car\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:35:57.698Z"}]
+	// a = [{"input":"Buy it with your own money.","output":[{"Reject":"Leased Car"}],"is_correct":false,"timestamp":"2013-10-07T13:30:54.177Z"}]
+	a = [{"input":"its a little bit high dont you think?","output":["{\"Reject\":\"Salary\"}"],"is_correct":true,"timestamp":"2013-09-09T16:55:42.510Z"}]
 	dataset = [
 			    "5_woz_ncagent_turkers_negonlp2ncAMT.json",
 			    "nlu_ncagent_students_negonlpnc.json",
-			   "nlu_ncagent_turkers_negonlpncAMT.json"
+			    "nlu_ncagent_turkers_negonlpncAMT.json"
 			   // "usd-7_short.json"
 			// // "nlu_kbagent_turkers_negonlpAMT.json"
 			]
@@ -842,14 +843,16 @@ if (do_learning_curves) {
 		 //SVM_Separated: classifier.SvmPerfClassifierPartial,
 		// Intent_Attribute_Value: classifier.PartialClassificationEqually
 		//New_approach: classifier.PartialClassificationEquallyNoOutput, 
-		SVM: classifier.SvmPerfClassifier,
+		SVM_SeparatedAfter: classifier.SvmOutputPartialEqually,
+		SVM_SeparatedClassification: classifier.PartialClassificationEqually
+
 		// Intent_Attribute_AttributeValue: classifier.PartialClassificationVersion1,
 		// Intent_AttributeValue: classifier.PartialClassificationVersion2,
 
 	// HomerSvmPerf: classifier.HomerSvmPerf,
 	// SvmPerf: classifier.SvmPerfClassifier,
 
-	HomerWinnow: classifier.HomerWinnow, 
+	// HomerWinnow: classifier.HomerWinnow, 
 	// Winnow: classifier.WinnowClassifier,  
 
 	// HomerAdaboost: classifier.HomerAdaboostClassifier,

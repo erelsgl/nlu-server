@@ -17,13 +17,26 @@ function splitPartEqually(json) {
 	_(3).times(function(n){
 		buf = []
 		_.each(json.map(splitJson), function(value, key, list){
-			buf = buf.concat(value[n])
+			if (_.compact(value[n]).length != 0)
+				buf = buf.concat(value[n])
 		})
 		
-		buf = _.uniq(_.compact(buf))
-		if (buf.length != 0) label[n] = buf
+		// buf = _.uniq(_.compact(buf))
+
+
+		// buf = _.uniq(_.compact(buf))
+	 //   	if (buf.length != 0) label[n] = buf
+
+		buf = _.uniq(buf)
+
+		if ((buf.length > 0) && (typeof(buf[0])!="undefined"))
+			label[n] = buf
+		if ((typeof(buf[0])=="undefined"))
+			label[n] = []
 
 	})
+
+
 		
 	return label
 }
