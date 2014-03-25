@@ -238,7 +238,7 @@
 , {"input":"12000 nis, a leased car, and 9 hours","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:35:23.240Z"}
 , {"input":"you wan't everything, but there are other better candidates","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T13:35:29.100Z"}
 , {"input":"bye bye","output":["{\"Quit\":true}"],"is_correct":false,"timestamp":"2013-10-07T13:35:35.779Z"}
-, {"input":"get outof my office, or I call the police","output":["{\"Quit\":true}"],"is_correct":false,"timestamp":"2013-10-07T13:35:40.995Z"}
+, {"input":"get out of my office, or I call the police","output":["{\"Quit\":true}"],"is_correct":false,"timestamp":"2013-10-07T13:35:40.995Z"}
 , {"input":"tell this to the police","output":["{\"Quit\":true}"],"is_correct":false,"timestamp":"2013-10-07T13:35:47.055Z"}
 , {"input":"now, GET OUT! I't my browzer","output":["{\"Quit\":true}"],"is_correct":false,"timestamp":"2013-10-07T13:35:56.330Z"}
 , {"input":"hi 20000 NIS does not proper the QA JOB","output":["{\"Greet\":true}","{\"Offer\":{\"Job Description\":\"QA\"}}","{\"Reject\":\"Salary\"}"],"is_correct":false,"timestamp":"2013-10-07T13:36:10.908Z"}

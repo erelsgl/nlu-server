@@ -6,7 +6,7 @@
 {"input":"I will agree on programmer","output":[{"Offer":{"Job Description":"Programmer"}}]},
 {"input":"I will agree on 10% pension","output":[{"Offer":{"Pension Fund":"10%"}}]},
 {"input":"I will agree on fast promotion track.","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}}]},
-{"input":"hii","output":[{"Greet":true}]},
+{"input":"hi","output":[{"Greet":true}]},
 {"input":"accept","output":[{"Accept":"previous"}]},
 {"input":"I can give you the the position of project manager","output":[{"Offer":{"Job Description":"Project Manager"}}]},
 {"input":"I will sign the agreement","output":[{"Accept":"previous"}]},

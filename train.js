@@ -11,13 +11,13 @@
 console.log("machine learning trainer start\n");
 
 
-var do_partial_classification = false
+var do_partial_classification = true
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
-var do_learning_curves = true
+var do_learning_curves = false
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
@@ -28,6 +28,7 @@ var do_small_test_multi_threshold = false
 var naive = false
 var naive1 = false
 var count_2_intents_2_attributes = false
+var bars = false
 
 var _ = require('underscore')._;
 var fs = require('fs');
@@ -670,11 +671,12 @@ if (do_partial_classification)
 	{
 	// a= ['{"Insist":"Working Hours"}','{"Offer":{"Job Description":"Programmer"}}','{"Offer":{"Working Hours":"10 hours"}}']
 	// a = [{"input":"Okay. I 20k agree. I can't lease you the car with a 20% pension.","output":["{\"Accept\":\"previous\"}","{\"Insist\":\"Leased Car\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:35:57.698Z"}]
-	
+	// a = [{"input":"Buy it with your own money.","output":[{"Reject":"Leased Car"}],"is_correct":false,"timestamp":"2013-10-07T13:30:54.177Z"}]
+	a = [{"input":"its a little bit high dont you think?","output":["{\"Reject\":\"Salary\"}"],"is_correct":true,"timestamp":"2013-09-09T16:55:42.510Z"}]
 	dataset = [
-			   "5_woz_ncagent_turkers_negonlp2ncAMT.json",
-			   "nlu_ncagent_students_negonlpnc.json",
-			   "nlu_ncagent_turkers_negonlpncAMT.json"
+			    "5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			    "nlu_ncagent_students_negonlpnc.json",
+			    "nlu_ncagent_turkers_negonlpncAMT.json"
 			   // "usd-7_short.json"
 			// // "nlu_kbagent_turkers_negonlpAMT.json"
 			]
@@ -685,7 +687,7 @@ if (do_partial_classification)
 
 	// data = _.shuffle(data)
 
-	dataset = partitions.partition(data, 1, Math.round(data.length*0.1))
+	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
 
 
 	// dataset['test'] = [{
@@ -698,9 +700,11 @@ if (do_partial_classification)
 		// console.log()
 		// process.exit(0)
 
-	stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
+	// stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
 	// data = a
-	// stats = trainAndTest_hash(createNewClassifier, data, data, 5)
+
+	stats =	trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
+	// stats = trainAndTest_hash(createNewClassifier, data, a, 5)
 
 	// console.log(trainAndTest(createNewClassifier, data, data, 5))
 	console.log(JSON.stringify(stats, null, 4))
@@ -775,15 +779,56 @@ if (do_small_temporary_test) {
 	});
 }   
 
+if (bars)
+	{
+		dataset = [
+			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			"nlu_ncagent_students_negonlpnc.json",
+			"nlu_ncagent_turkers_negonlpncAMT.json"
+			]
+
+	data = []
+	_.each(dataset, function(value, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+	})
+
+	labelhash = {}
+	_.each(data, function(value, key, list){
+		console.log(value.output) 
+		output = _.flatten((Hierarchy.splitPartEqually(multilabelutils.normalizeOutputLabels(value.output)))	)
+		console.log(output)
+		
+		_.each(output, function(lab, key, list){
+			if (!(lab in labelhash))
+				labelhash[lab] = 1
+			else
+				 labelhash[lab] = labelhash[lab] + 1
+			}, this)
+
+		}, this)
+
+		lablist = []
+		for (lab in labelhash)
+			{
+				lablist.push([lab,labelhash[lab]])
+			}
+		lablist = _.sortBy(lablist, function(num){ return num[1]; });
+	console.log(lablist)
+	_.each(lablist, function(lab, key, list){ 
+			console.log(lab[0]+"\t"+lab[1])
+		}, this)
+	process.exit(0)
+	}
+
 if (do_learning_curves) {
 	
 	datasetNames = [
-			// "5_woz_ncagent_turkers_negonlp2ncAMT.json",
-			// "nlu_ncagent_students_negonlpnc.json",
-			// "nlu_ncagent_turkers_negonlpncAMT.json",
+			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			"nlu_ncagent_students_negonlpnc.json",
+			"nlu_ncagent_turkers_negonlpncAMT.json",
 			// "3_woz_kbagent_turkers_negonlp2.json",
 			// "woz_kbagent_students_negonlp.json",
-			"nlu_kbagent_turkers_negonlpAMT.json"
+			// "nlu_kbagent_turkers_negonlpAMT.json"
 			]
 	dataset = []
 
@@ -798,14 +843,16 @@ if (do_learning_curves) {
 		 //SVM_Separated: classifier.SvmPerfClassifierPartial,
 		// Intent_Attribute_Value: classifier.PartialClassificationEqually
 		//New_approach: classifier.PartialClassificationEquallyNoOutput, 
-		SVM: classifier.SvmPerfClassifier,
+		SVM_SeparatedAfter: classifier.SvmOutputPartialEqually,
+		SVM_SeparatedClassification: classifier.PartialClassificationEqually
+
 		// Intent_Attribute_AttributeValue: classifier.PartialClassificationVersion1,
 		// Intent_AttributeValue: classifier.PartialClassificationVersion2,
 
 	// HomerSvmPerf: classifier.HomerSvmPerf,
 	// SvmPerf: classifier.SvmPerfClassifier,
 
-	HomerWinnow: classifier.HomerWinnow, 
+	// HomerWinnow: classifier.HomerWinnow, 
 	// Winnow: classifier.WinnowClassifier,  
 
 	// HomerAdaboost: classifier.HomerAdaboostClassifier,

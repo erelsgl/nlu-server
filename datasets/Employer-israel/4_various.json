@@ -5,7 +5,7 @@
 , {"input":"i will accept your offer.","output":["{\"Accept\":\"previous\"}"]}
 , {"input":"I will sign the agreement","output":["{\"Accept\":\"previous\"}"]}
 , {"input":"accept","output":["{\"Accept\":\"previous\"}"]}
-, {"input":"hii","output":["{\"Greet\":true}"]}
+, {"input":"hi","output":["{\"Greet\":true}"]}
 , {"input":"reject","output":["{\"Reject\":\"previous\"}"]}
 , {"input":"Hello, I hope that we can come to an agreement","output":["{\"Greet\":true}"]}
 , {"input":"I am willing to pay 12,000 NIS for the position of project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
