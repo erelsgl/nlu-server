@@ -438,11 +438,11 @@
 , {"input":"hi ","output":["{\"Greet\":true}"]}
 , {"input":"work as programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
 , {"input":"work as with fast promotion track","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"]}
-, {"input":"20000NIS work","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
+, {"input":"20000 NIS work","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
 , {"input":"working as programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"]}
 , {"input":"with leased car","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
 , {"input":"no promotion agreement","output":["{\"Offer\":{\"Promotion Possibilities\":\"No agreement\"}}"]}
-, {"input":"12000NIS working","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"12000 NIS working","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
 , {"input":"8 working hours","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
 , {"input":"working team manager","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"]}
 , {"input":"no agreement for car","output":["{\"Offer\":{\"Leased Car\":\"No agreement\"}}"]}
