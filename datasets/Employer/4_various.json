@@ -190,25 +190,25 @@
 , {"input":"and 8 hours","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
 , {"input":"car and 8 hours","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
 , {"input":"ok","output":["{\"Accept\":\"previous\"}"]}
-, {"input":"I can pay 7,000NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
+, {"input":"I can pay 7,000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
 , {"input":"I can pay 7,000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
 , {"input":"I can pay 12,000 NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
-, {"input":"I can pay 12,000NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
-, {"input":"I can pay 20,000NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
+, {"input":"I can pay 12,000 NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"I can pay 20,000 NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
 , {"input":"I can pay 20,000 NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
 , {"input":"work 10 hours","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"work 10hours","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"can you work for 7,000IS?","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
 , {"input":"can you work for 7,000 IS?","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
 , {"input":"can you work for 7,000 NIS?","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
-, {"input":"can you work for 7,000NIS?","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
-, {"input":"work for 7000NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
+, {"input":"can you work for 7,000 NIS?","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
+, {"input":"work for 7000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
 , {"input":"work for 7000IS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
 , {"input":"work for 12000IS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
-, {"input":"work for 12000NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
-, {"input":"can you work for 12000NIS?","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
-, {"input":"can you work for 7000NIS?","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
-, {"input":"can you work for 20000NIS?","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
+, {"input":"work for 12000 NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"can you work for 12000 NIS?","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"can you work for 7000 NIS?","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
+, {"input":"can you work for 20000 NIS?","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
 , {"input":"o,k,","output":["{\"Accept\":\"previous\"}"]}
 , {"input":"7 thousand NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
 , {"input":"I want a monthly salary of 7 thousand NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
@@ -296,13 +296,13 @@
 , {"input":"so: 9 hours, salary 12000 NIS, with car, programmer, and fast promotion and 20% pension ","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"]}
 , {"input":"What about 20% pension?","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"]}
 , {"input":"what about 12000 salary?","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
-, {"input":"I offer you salary of 20,000NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
+, {"input":"I offer you salary of 20,000 NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
 , {"input":"How about salary of 12,000 NIS?","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
 , {"input":"I can't pay you 7,000","output":["{\"Reject\":\"Salary\"}"]}
-, {"input":"I reject your offer of 7,000NIS","output":["{\"Reject\":\"previous\"}"]}
-, {"input":"I offer to pay you 7,000NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
-, {"input":"I offer to pay you 12,000NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
-, {"input":"I want to pay you  12,000NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"I reject your offer of 7,000 NIS","output":["{\"Reject\":\"previous\"}"]}
+, {"input":"I offer to pay you 7,000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
+, {"input":"I offer to pay you 12,000 NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
+, {"input":"I want to pay you  12,000 NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]}
 , {"input":"I will not give you a car","output":["{\"Reject\":\"Leased Car\"}"]}
 , {"input":"How about working 10 hours?","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"hi 7,000 NIS, team manager, 0 pension, 8 hours","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Pension Fund\":\"0%\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
@@ -311,12 +311,12 @@
 , {"input":"7,000 NIS, project manager, 10 hours","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"I offer 7,000 NIS, programmer position, 10 hours","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"I offer you 20,000 NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
-, {"input":"I offer you 20,000NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
+, {"input":"I offer you 20,000 NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
 , {"input":"I offer you 20,000 NIS given that you work 10 hours","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"I can't pay 20,000 NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Reject\":\"Salary\"}"]}
 , {"input":"What do you want to negotiate on?","output":["{\"Query\":\"issues\"}"]}
 , {"input":"Can you compromise on anything?","output":["{\"Query\":\"compromise\"}"]}
-, {"input":"I offer you 20,000NIS given that you work 10 hours","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
+, {"input":"I offer you 20,000 NIS given that you work 10 hours","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"I offer you 20,000 NIS given that you work 10 hours and 10% pension","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"Please make a counter offer","output":["{\"Query\":\"bid\"}"]}
 , {"input":"offer 7000 salary, as the projct Manager, I would like to work with a leased car, I want a pension of 20 percent, I am willing to begin a slower promotion track., i will only do 9 hours or less","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"]}

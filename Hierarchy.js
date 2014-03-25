@@ -4,6 +4,36 @@
 var _ = require("underscore")._;
 var NGramsFromArray = require("limdu/features").NGramsFromArray;
 
+
+/**
+ * OrderLabelJoin comprises the labels in the separated format to labels within original JSON format.
+ * developemnt in progress
+ */
+function OrderLabelJoin(classes, Observable, sample, explanation)
+{
+	// console.log("hierar")
+	// console.log(classes)
+	// console.log(explanation)
+	// console.log(continuous_output)
+	// process.exit(0)
+	// console.log(JSON.stringify(explanation, null, 4))
+	sample = "[start] "+sample+" [end]"
+	labelfeat = []
+
+	for (label in explanation['positive'])
+	{
+		sorted = _.sortBy(explanation['positive'][label], function(num){ return num[1]; });
+		sorted = sorted.reverse()
+			// console.log(sorted)
+		labelfeat.push([label,sample.indexOf(sorted[0][0]), sorted[0][0]])
+
+	}
+	// console.log(sample)
+	// console.log(labelfeat)
+	// console.log("---------------------")
+	// process.exit(0)
+}
+
 /**
  * @param json a JSON object, such as: [ '{"Offer":{"Leased Car":"Without leased car"}}','{"Offer":{"Pension Fund":"10%"}}' ]
  * @return an array of three arrays with devision on intent, attribute and value
@@ -22,10 +52,8 @@ function splitPartEqually(json) {
 		})
 		
 		// buf = _.uniq(_.compact(buf))
-
-
 		// buf = _.uniq(_.compact(buf))
-	 //   	if (buf.length != 0) label[n] = buf
+	 	// if (buf.length != 0) label[n] = buf
 
 		buf = _.uniq(buf)
 
@@ -231,5 +259,6 @@ module.exports = {
 	greedyLabelJoin: greedyLabelJoin, 
 	retrieveIntent: retrieveIntent,
 	splitPartEquallyIntent: splitPartEquallyIntent,
+	OrderLabelJoin: OrderLabelJoin,
 }
 

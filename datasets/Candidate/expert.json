@@ -7,18 +7,18 @@
 , {"input":"Your offer is ridiculous","output":["{\"Reject\":\"previous\"}"],"timestamp":"2013-08-26T20:52:30.206Z"}
 , {"input":"I can never agree to this offer","output":["{\"Reject\":\"previous\"}"],"timestamp":"2013-08-26T20:52:32.316Z"}
 , {"input":"I disagree","output":["{\"Reject\":\"previous\"}"],"timestamp":"2013-08-26T20:52:33.207Z"}
-, {"input":"I offer 12,000NIS but want you to work 9 hours.","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"timestamp":"2013-08-27T20:10:34.761Z"}
-, {"input":"I agree to work 10 hours if you pay me 20,000NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"timestamp":"2013-08-27T20:13:02.120Z"}
-, {"input":"If you pay me 12,000NIS I will work 8 hours","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"timestamp":"2013-08-27T20:14:00.776Z"}
+, {"input":"I offer 12,000 NIS but want you to work 9 hours.","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"timestamp":"2013-08-27T20:10:34.761Z"}
+, {"input":"I agree to work 10 hours if you pay me 20,000 NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"timestamp":"2013-08-27T20:13:02.120Z"}
+, {"input":"If you pay me 12,000 NIS I will work 8 hours","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"timestamp":"2013-08-27T20:14:00.776Z"}
 , {"input":"If you pay me 7,000 I will work only 8 hours","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"timestamp":"2013-08-27T20:14:52.606Z"}
 , {"input":"I don't like to work 10 hours.","output":["{\"Reject\":\"Working Hours\"}"],"timestamp":"2013-08-27T20:15:30.620Z"}
 , {"input":"I offer you a car and fast promotion.","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"timestamp":"2013-08-27T20:16:04.542Z"}
 , {"input":"I offer you a car and pension 20%","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"timestamp":"2013-08-27T20:17:07.870Z"}
 , {"input":"I offer you leased car and fast promosion","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"timestamp":"2013-08-27T20:17:37.105Z"}
 , {"input":"I offer you a  car and fast promosion","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"timestamp":"2013-08-27T20:18:06.026Z"}
-, {"input":"I would like a lease car, 20,000NIS and fast promosion.","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"timestamp":"2013-08-27T20:53:38.214Z"}
+, {"input":"I would like a lease car, 20,000 NIS and fast promosion.","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"timestamp":"2013-08-27T20:53:38.214Z"}
 , {"input":"I can't work more than 8 hours","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"timestamp":"2013-08-27T20:54:28.448Z"}
-, {"input":"I would like to get 12,000NIS and work only 8 hours","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"timestamp":"2013-08-27T20:55:02.011Z"}
+, {"input":"I would like to get 12,000 NIS and work only 8 hours","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"timestamp":"2013-08-27T20:55:02.011Z"}
 , {"input":"I would like to get 20,000 NIS and leased car","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"],"timestamp":"2013-08-27T20:55:34.776Z"}
 , {"input":"It is unreasonable to work 10 hours","output":["{\"Reject\":\"Working Hours\"}"],"timestamp":"2013-08-27T20:56:17.933Z"}
 , {"input":"I would like 20% pension, fast track promosion and work 8 hours","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"timestamp":"2013-08-27T20:57:00.401Z"}

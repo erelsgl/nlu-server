@@ -310,6 +310,8 @@ module.exports = {
 		ThresholdClassifierLanguageModelWinnow: enhance(thresholdclassifier(LanguageModelClassifier)),
 		
 		PartialClassificationWinnowEqually: enhance3(PartialClassification(WinnowBinaryRelevanceClassifier),undefined,undefined,Hierarchy.splitPartEqually, Hierarchy.splitPartEqually),
+		// construct labels according to the rules of location of positive features
+		PartialClassificationEquallyPlace: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.OrderLabelJoin,  undefined),
 		// at the input separate the labels to intent/attribute/value then join them in greedy approach
 		PartialClassificationEquallyGreedy: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.greedyLabelJoin,  undefined),
 		// separate to intent/attribute/value then retrieve just intent and test only on intent

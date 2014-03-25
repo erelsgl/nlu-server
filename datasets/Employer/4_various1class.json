@@ -206,12 +206,12 @@
 , {"input":"offer with car","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
 , {"input":"offer with 10 hours","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"offer with 8 hours","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"]}
-, {"input":"I can pay 7,000NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
-, {"input":"I can pay 20,000NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
+, {"input":"I can pay 7,000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
+, {"input":"I can pay 20,000 NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}
 , {"input":"work 10hours","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"]}
 , {"input":"can you work for 7,000IS?","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
 , {"input":"can you work for 7,000 IS?","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
-, {"input":"can you work for 7,000NIS?","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
+, {"input":"can you work for 7,000 NIS?","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
 , {"input":"work for 7000IS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"]}
 , {"input":"o,k,","output":["{\"Accept\":\"previous\"}"]}
 , {"input":"is it okay?","output":["{\"Query\":\"accept\"}"]}

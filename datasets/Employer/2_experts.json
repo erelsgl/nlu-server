@@ -78,8 +78,8 @@
 , {"input":"i accept only salary","output":[{"Accept":"Salary"}]}
 , {"input":"I'm offer 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}
 , {"input":"This proposal is ridiculous","output":[{"Reject":"previous"}]}
-, {"input":"I would like 12,000NIS","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
-, {"input":"I don't accept 7,000NIS","output":[{"Reject":"Salary"}]}
+, {"input":"I would like 12,000 NIS","output":[{"Offer":{"Salary":"12,000 NIS"}}]}
+, {"input":"I don't accept 7,000 NIS","output":[{"Reject":"Salary"}]}
 , {"input":"No, I do NOT accept","output":[{"Reject":"previous"}]}
 , {"input":"I offer 20000 and a car","output":[{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Salary":"20,000 NIS"}}]}
 , {"input":"i offer you 20000","output":[{"Offer":{"Salary":"20,000 NIS"}}]}

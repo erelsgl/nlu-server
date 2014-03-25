@@ -9,22 +9,22 @@
 , {"input":"Your offer is ridiculus","output":["{\"Reject\":\"previous\"}"],"timestamp":"2013-08-26T20:38:26.610Z"}
 , {"input":"this is ridiculous","output":["{\"Reject\":\"previous\"}"],"timestamp":"2013-08-26T20:38:28.360Z"}
 , {"input":"your offer is ridiculous","output":["{\"Reject\":\"previous\"}"],"timestamp":"2013-08-26T20:38:33.595Z"}
-, {"input":"I offer you salary of 20,000NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"],"timestamp":"2013-08-26T20:50:14.535Z"}
+, {"input":"I offer you salary of 20,000 NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"],"timestamp":"2013-08-26T20:50:14.535Z"}
 , {"input":"How about salary of 12,000 NIS?","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"timestamp":"2013-08-26T20:51:13.356Z"}
 , {"input":"I can't pay you 7,000","output":["{\"Reject\":\"Salary\"}"],"timestamp":"2013-08-26T20:51:57.385Z"}
-, {"input":"I reject your offer of 7,000NIS","output":["{\"Reject\":\"previous\"}"],"timestamp":"2013-08-26T20:52:33.613Z"}
-, {"input":"I offer to pay you 7,000NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"timestamp":"2013-08-26T20:53:47.344Z"}
-, {"input":"I offer to pay you 12,000NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"timestamp":"2013-08-26T20:54:29.845Z"}
-, {"input":"I want to pay you  12,000NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"timestamp":"2013-08-26T20:54:53.701Z"}
+, {"input":"I reject your offer of 7,000 NIS","output":["{\"Reject\":\"previous\"}"],"timestamp":"2013-08-26T20:52:33.613Z"}
+, {"input":"I offer to pay you 7,000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"timestamp":"2013-08-26T20:53:47.344Z"}
+, {"input":"I offer to pay you 12,000 NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"timestamp":"2013-08-26T20:54:29.845Z"}
+, {"input":"I want to pay you  12,000 NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"timestamp":"2013-08-26T20:54:53.701Z"}
 , {"input":"I will not give you a car","output":["{\"Reject\":\"Leased Car\"}"],"timestamp":"2013-08-26T20:55:39.111Z"}
 , {"input":"How about working 10 hours?","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"timestamp":"2013-08-26T20:56:13.435Z"}
 , {"input":"I offer you 20,000 NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"],"timestamp":"2013-08-28T07:52:02.500Z"}
-, {"input":"I offer you 20,000NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"],"timestamp":"2013-08-28T07:54:11.937Z"}
+, {"input":"I offer you 20,000 NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"],"timestamp":"2013-08-28T07:54:11.937Z"}
 , {"input":"I offer you 20,000 NIS given that you work 10 hours","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"timestamp":"2013-08-28T07:55:38.734Z"}
 , {"input":"I can't pay 20,000 NIS","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Reject\":\"Salary\"}"],"timestamp":"2013-08-28T07:59:13.546Z"}
 , {"input":"What do you want to negotiate on?","output":["{\"Query\":\"issues\"}"],"timestamp":"2013-08-28T13:49:42.318Z"}
 , {"input":"Can you compromise on anything?","output":["{\"Query\":\"compromise\"}"],"timestamp":"2013-08-28T13:50:50.796Z"}
-, {"input":"I offer you 20,000NIS given that you work 10 hours","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"timestamp":"2013-08-28T13:51:48.713Z"}
+, {"input":"I offer you 20,000 NIS given that you work 10 hours","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"timestamp":"2013-08-28T13:51:48.713Z"}
 , {"input":"I offer you 20,000 NIS given that you work 10 hours and 10% pension","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"timestamp":"2013-08-28T13:51:50.081Z"}
 , {"input":"Please make a counter offer","output":["{\"Query\":\"bid\"}"],"timestamp":"2013-08-28T13:51:58.647Z"}
 , {"input":"We are running out of time. You need to compromise.","output":["{\"Query\":\"compromise\"}"],"timestamp":"2013-08-28T13:52:32.317Z"}
@@ -113,7 +113,7 @@
 , {"input":"o.K.","output":["{\"Accept\":\"previous\"}"],"timestamp":"2013-08-19T09:38:21.202Z"}
 , {"input":"8 hours or 9 hours","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"timestamp":"2013-08-21T06:08:23.139Z"}
 , {"input":"9 or 10 hours","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"timestamp":"2013-08-21T06:27:01.765Z"}
-, {"input":"I can pay 7,000NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"timestamp":"2013-08-22T15:53:18.421Z"}
+, {"input":"I can pay 7,000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"timestamp":"2013-08-22T15:53:18.421Z"}
 , {"input":"i don't want you to get a pension","output":["{\"Offer\":{\"Pension Fund\":\"0%\"}}"],"timestamp":"2013-08-26T20:38:04.326Z"}
 , {"input":"i don't want you to get a pension, and I offer 20 percent pension","output":["{\"Offer\":{\"Pension Fund\":\"0%\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"timestamp":"2013-08-26T20:38:10.280Z"}
 , {"input":"Project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"],"timestamp":"2013-08-29T05:09:35.910Z"}
