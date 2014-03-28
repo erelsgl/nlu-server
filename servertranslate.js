@@ -431,12 +431,12 @@ function translate(request, requester, requester_is_private_translator, callback
 //					if (seedRandom)
 //						seedRandom(undefined, true);
 //				}
-				classes = JSON.parse(classes)
+				// classes = JSON.parse(classes)
 				if (!(classes instanceof Array))
 					classes = [classes];
 				var samples = [];
 				classes.forEach(function(theClass) {
-					theClass = JSON.stringify(theClass)
+					// theClass = JSON.stringify(theClass)
 					var samplesOfClass = activeClassifier.backClassify(theClass);
 					var randomIndex = Math.floor(Math.random()*samplesOfClass.length);
 					var randomSample = samplesOfClass[randomIndex];

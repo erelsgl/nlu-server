@@ -311,7 +311,9 @@ module.exports = {
 		
 		PartialClassificationWinnowEqually: enhance3(PartialClassification(WinnowBinaryRelevanceClassifier),undefined,undefined,Hierarchy.splitPartEqually, Hierarchy.splitPartEqually),
 		// construct labels according to the rules of location of positive features
-		PartialClassificationEquallyPlace: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.OrderLabelJoin,  undefined),
+		PartialClassificationEquallyPlace: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.OrderLabelJoin,  Hierarchy.splitPartEqually),
+
+		// PartialClassificationEquallyPlace: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.OrderLabelJoin,  undefined),
 		// at the input separate the labels to intent/attribute/value then join them in greedy approach
 		PartialClassificationEquallyGreedy: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.greedyLabelJoin,  undefined),
 		// separate to intent/attribute/value then retrieve just intent and test only on intent
@@ -326,9 +328,9 @@ module.exports = {
 };
 
 // module.exports.defaultClassifier = module.exports.SvmOutputPartialEqually;
-module.exports.defaultClassifier = module.exports.PartialClassificationEqually;
+// module.exports.defaultClassifier = module.exports.PartialClassificationEqually;
 
-// module.exports.defaultClassifier = module.exports.HomerWinnow;
+module.exports.defaultClassifier = module.exports.HomerWinnow;
 // module.exports.defaultClassifier = module.exports.SvmPerfClassifier
 
 

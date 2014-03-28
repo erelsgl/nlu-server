@@ -184,7 +184,6 @@
 , {"input":"You want a lot","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-08T08:45:01.413Z"}
 , {"input":"You want a lot but not wanting to help me out ","output":["{\"Query\":\"compromise\"}","{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-08T08:45:10.974Z"}
 , {"input":"Opting out","output":["{\"Quit\":true}"],"is_correct":false,"timestamp":"2013-10-08T08:45:17.988Z"}
-, {"input":"in 3","output":["{\"Quit\":true}"],"is_correct":false,"timestamp":"2013-10-08T08:45:23.525Z"}
 , {"input":"I will offer 12,000 NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:45:25.224Z"}
 , {"input":"ok 8 hours 10% pension","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:45:27.903Z"}
 , {"input":"How about QA or Team Manager?","output":["{\"Offer\":{\"Job Description\":\"QA\"}}","{\"Offer\":{\"Job Description\":\"Team Manager\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:45:30.368Z"}

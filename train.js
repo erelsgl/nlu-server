@@ -11,13 +11,13 @@
 console.log("machine learning trainer start\n");
 
 
-var do_partial_classification = true
+var do_partial_classification = false
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
-var do_learning_curves = false
+var do_learning_curves = true
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
@@ -671,6 +671,7 @@ if (do_partial_classification)
 	{
 	// a= ['{"Insist":"Working Hours"}','{"Offer":{"Job Description":"Programmer"}}','{"Offer":{"Working Hours":"10 hours"}}']
 	// a = [{"input":"Okay. I 20k agree. I can't lease you the car with a 20% pension.","output":["{\"Accept\":\"previous\"}","{\"Insist\":\"Leased Car\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:35:57.698Z"}]
+	// a = [{"input":"Okay. I 20k agree. I accept lease you the car with a 20% pension.","output":["{\"Accept\":\"previous\"}","{\"Insist\":\"Leased Car\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:35:57.698Z"}]
 	// a = [{"input":"Buy it with your own money.","output":[{"Reject":"Leased Car"}],"is_correct":false,"timestamp":"2013-10-07T13:30:54.177Z"}]
 	// a = [{"input":"its a little bit high dont you think?","output":["{\"Reject\":\"Salary\"}"],"is_correct":true,"timestamp":"2013-09-09T16:55:42.510Z"}]
 	dataset = [
@@ -685,55 +686,13 @@ if (do_partial_classification)
 		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
 	})
 
-	// data = _.shuffle(data)
-
-	
-	// dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
-
-	// for (record in a)	
-	// {		
-	// 	for (out in a[record]['output'])
-	// 		if (a[record]['output'][out].indexOf("Offer")==-1)
-	// 			t.push(a[record]['output'][out])
-	// console.log(t)
-	// }
-
-
-	// dataset['test'] = [{
-	// 					"input":"I propose 9 hours, with car",
-	// 					"output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Accept\":{\"Working Hours\":\"9 hours\"}}"]
-	// 					}]
-
-
-		// console.log(Hierarchy.splitPartEquallyIntent(dataset['test'][0]['output']))
-		// console.log()
-		// process.exit(0)
-
-	// stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
-	// data = a
-
-	// stats =	trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
-	// stats = trainAndTest_hash(createNewClassifier, data, a, 5)
-
-	// console.log(trainAndTest(createNewClassifier, data, data, 5))
-	// console.log(JSON.stringify(stats, null, 4))
-
+	data = _.shuffle(data)
 
 	partitions.partitions(data, 5, function(trainSet1, testSet1, index) {
 		testSet = trainutils.clonedataset(testSet1)
 		trainSet = trainutils.clonedataset(trainSet1)
-
-		// console.log(JSON.stringify(trainutils.bars(trainSet), null, 4))
-		// stats =	trainAndTest_hash(createNewClassifier, trainSet, testSet, 5)
-		stats =	trainAndTestLite(createNewClassifier, trainSet, trainSet, 5)
-
-		// console.log(JSON.stringify(stats[2]['labels'], null, 4))
-		// console.log(JSON.stringify(trainutils.filtererror(stats[2]), null, 4))
-		// console.log()
-		// process.exit(0)
+		stats =	trainAndTest_hash(createNewClassifier, trainSet, testSet, 5)
 		});
-
-
 }
 
 if (do_unseen_word_fp)
@@ -754,6 +713,15 @@ if (do_unseen_word_fp)
 
 
 if (do_checking_tag) {
+
+	// datasetNames = [
+	// 		"5_woz_ncagent_turkers_negonlp2ncAMT.json",
+	// 		"nlu_ncagent_students_negonlpnc.json",
+	// 		"nlu_ncagent_turkers_negonlpncAMT.json",
+	// 		// "3_woz_kbagent_turkers_negonlp2.json",
+	// 		// "woz_kbagent_students_negonlp.json",
+	// 		// "nlu_kbagent_turkers_negonlpAMT.json"
+	// 		]
 
 	dataset = []
 	tagdict = {}
@@ -806,7 +774,7 @@ if (do_small_temporary_test) {
 }   
 
 if (do_learning_curves) {
-	
+
 	datasetNames = [
 			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
 			"nlu_ncagent_students_negonlpnc.json",
@@ -821,7 +789,10 @@ if (do_learning_curves) {
 		dataset = dataset.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
 	});
 
+
 	dataset = _.shuffle(dataset)
+
+	trainutils.intent_attr_matrix(dataset)
 
 	classifiers  = {
 		// Intent_AttributeValue: classifier.PartialClassificationJustTwo,
