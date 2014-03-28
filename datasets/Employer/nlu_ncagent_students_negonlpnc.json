@@ -101,7 +101,6 @@
 , {"input":"you dont get a car!","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":true,"timestamp":"2013-09-12T12:00:56.182Z"}
 , {"input":"no cAR","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":true,"timestamp":"2013-09-12T12:01:20.432Z"}
 , {"input":"NO CAR!!!","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":true,"timestamp":"2013-09-12T12:01:25.620Z"}
-, {"input":"BY","output":["{\"Quit\":true}"],"is_correct":false,"timestamp":"2013-09-12T12:01:33.526Z"}
 , {"input":"go get another job","output":["{\"Quit\":true}"],"is_correct":false,"timestamp":"2013-09-12T12:01:37.932Z"}
 , {"input":"i don't accept your offer","output":["{\"Reject\":\"previous\"}"],"is_correct":true,"timestamp":"2013-09-12T12:01:39.901Z"}
 , {"input":"I would like 12000","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-09-16T08:57:35.401Z"}
@@ -437,7 +436,6 @@
 , {"input":"PLEASE SIGN THE AGREEMENT","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2013-10-07T14:15:49.259Z"}
 , {"input":"LET'S SIGN","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2013-10-07T14:16:00.043Z"}
 , {"input":"THANK YOU","output":["{\"Quit\":true}"],"is_correct":false,"timestamp":"2013-10-07T14:16:08.965Z"}
-, {"input":"BYE","output":["{\"Quit\":true}"],"is_correct":false,"timestamp":"2013-10-07T14:16:13.746Z"}
 , {"input":"YOU UNDERSTAND RIGHT","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T14:16:19.019Z"}
 , {"input":"SIGN","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2013-10-07T14:16:27.442Z"}
 , {"input":"AGREE","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2013-10-07T14:16:29.879Z"}

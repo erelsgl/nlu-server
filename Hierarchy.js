@@ -11,12 +11,6 @@ var NGramsFromArray = require("limdu/features").NGramsFromArray;
  */
 function OrderLabelJoin(classes, Observable, sample, explanation)
 {
-	// console.log("hierar")
-	// console.log(classes)
-	// console.log(explanation)
-	// console.log(continuous_output)
-	// process.exit(0)
-	// console.log(JSON.stringify(explanation, null, 4))
 	sample = "[start] "+sample+" [end]"
 	labelfeat = []
 
@@ -24,14 +18,8 @@ function OrderLabelJoin(classes, Observable, sample, explanation)
 	{
 		sorted = _.sortBy(explanation['positive'][label], function(num){ return num[1]; });
 		sorted = sorted.reverse()
-			// console.log(sorted)
 		labelfeat.push([label,sample.indexOf(sorted[0][0]), sorted[0][0]])
-
 	}
-	// console.log(sample)
-	// console.log(labelfeat)
-	// console.log("---------------------")
-	// process.exit(0)
 }
 
 /**
@@ -47,8 +35,11 @@ function splitPartEqually(json) {
 	_(3).times(function(n){
 		buf = []
 		_.each(json.map(splitJson), function(value, key, list){
-			if (_.compact(value[n]).length != 0)
-				buf = buf.concat(value[n])
+			if (value.length > n)
+			{
+			if (_.compact(value[n].toString()).length != 0)
+				buf = buf.concat(value[n].toString())
+			}
 		})
 		
 		// buf = _.uniq(_.compact(buf))
