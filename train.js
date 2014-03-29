@@ -10,14 +10,13 @@
 
 console.log("machine learning trainer start\n");
 
-
 var do_partial_classification = false
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
 var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
-var do_learning_curves = true
+var do_learning_curves = false
 var do_cross_dataset_testing = false;
 var do_final_test = false;
 var do_cross_validation = false;
@@ -28,6 +27,7 @@ var do_small_test_multi_threshold = false
 var naive = false
 var naive1 = false
 var count_2_intents_2_attributes = false
+var do_comparison = true
 
 var _ = require('underscore')._;
 var fs = require('fs');
@@ -84,14 +84,14 @@ var normalizeClasses = function (expectedClasses) {
 	return expectedClasses;
 };
 
-var clonedataset  = function(dataset) {
+// var clonedataset  = function(dataset) {
 
-	trainSet1 = []
-		_.each(dataset, function(value, key, list){
-			trainSet1.push(_.clone(value))
-			})
-		return trainSet1
-};
+// 	trainSet1 = []
+// 		_.each(dataset, function(value, key, list){
+// 			trainSet1.push(_.clone(value))
+// 			})
+// 		return trainSet1
+// };
 
 var datasetNames = [
 			"0_grammar.json",
@@ -688,12 +688,107 @@ if (do_partial_classification)
 
 	data = _.shuffle(data)
 
+	// test = trainutils.clonedataset(data)
+	// dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
+	// stats = trainAndTest_hash(createNewClassifier, _.sample(data,500), _.sample(test,100), 5)
+	// stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
+	// console.log(JSON.stringify(trainutils.confusion_matrix(stats[1]), null, 4))
+
+	matlist = []
 	partitions.partitions(data, 5, function(trainSet1, testSet1, index) {
 		testSet = trainutils.clonedataset(testSet1)
 		trainSet = trainutils.clonedataset(trainSet1)
+
 		stats =	trainAndTest_hash(createNewClassifier, trainSet, testSet, 5)
-		});
+		console.log()
+		process.exit(0)
+		matrix = trainutils.confusion_matrix(stats[0])
+		matlist.push(matrix)
+		})
+
+		trainutils.hash_to_htmltable(trainutils.aggregate_two_nested(matlist))
+		console.log()
+		process.exit(0)
 }
+
+
+
+if (do_comparison)
+	{
+	stud = [
+			"nlu_ncagent_students_negonlpnc.json",
+			]
+	turk = [
+		    "5_woz_ncagent_turkers_negonlp2ncAMT.json",
+		    "nlu_ncagent_turkers_negonlpncAMT.json"
+			]
+
+	turkdata = []
+	_.each(turk, function(value, key, list){ 
+		turkdata = turkdata.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+	})
+
+	studdata = []
+	_.each(stud, function(value, key, list){ 
+		studdata = studdata.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+	})
+	// console.log(studdata.length)
+	// console.log(turkdata.length)
+	// process.exit(0)
+
+	studdata = _.shuffle(studdata)
+	turkdata = _.shuffle(turkdata)
+
+	turkstats = [[],[],[]]
+	studstats = [[],[],[]]
+
+	partitions.partitions(turkdata, 5, function(trainSet1, testSet1, index) {
+
+		data = _.sample(trainSet1, 300)
+
+		test = trainutils.clonedataset(data)
+		test1 = trainutils.clonedataset(data)
+
+		studtest = _.sample(studdata, 100)
+		turktest = _.sample(testSet1, 100)
+
+		stats1 =	trainAndTest_hash(createNewClassifier, test, studtest, 5)
+		
+		studstats[0].push(stats1[0]['stats'])
+		studstats[1].push(stats1[1]['stats'])
+		studstats[2].push(stats1[2]['stats'])
+
+		stats =	trainAndTest_hash(createNewClassifier, test1, turktest, 5)
+				
+		turkstats[0].push(stats[0]['stats'])
+		turkstats[1].push(stats[1]['stats'])
+		turkstats[2].push(stats[2]['stats'])
+
+		})
+
+		// trainutils.hash_to_htmltable(trainutils.aggregate_two_nested(matlist))
+		// console.log()
+		// process.exit(0)
+
+		console.log("turkstats")
+		console.log("intents")
+		console.log(trainutils.aggregate_results(turkstats[0]))		
+		console.log("attr")
+		console.log(trainutils.aggregate_results(turkstats[1]))		
+		console.log("values")
+		console.log(trainutils.aggregate_results(turkstats[2]))		
+
+		console.log("studstats")
+		console.log("intents")
+		console.log(trainutils.aggregate_results(studstats[0]))		
+		console.log("attr")
+		console.log(trainutils.aggregate_results(studstats[1]))		
+		console.log("values")
+		console.log(trainutils.aggregate_results(studstats[2]))		
+
+		process.exit(0)
+}
+
 
 if (do_unseen_word_fp)
 	 {
@@ -789,10 +884,7 @@ if (do_learning_curves) {
 		dataset = dataset.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
 	});
 
-
 	dataset = _.shuffle(dataset)
-
-	trainutils.intent_attr_matrix(dataset)
 
 	classifiers  = {
 		// Intent_AttributeValue: classifier.PartialClassificationJustTwo,

@@ -299,8 +299,6 @@ module.exports = {
 		HomerWinnow: enhance(homer(WinnowBinaryRelevanceClassifier)),
 		HomerPassiveAggressive: enhance(homer(PassiveAggressiveClassifier)),
 
-		
-		
 		HomerMetaLabelerWinnow: enhance(homer(metalabeler(WinnowBinaryRelevanceClassifier))),
 		HomerMetaLabelerSvmPerf: enhance(homer(metalabeler(SvmPerfBinaryRelevanceClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
 		HomerMetaLabelerSvmLinear: enhance(homer(metalabeler(SvmLinearBinaryRelevanceClassifier,SvmLinearMulticlassifier)), new ftrs.FeatureLookupTable()),
@@ -328,9 +326,8 @@ module.exports = {
 };
 
 // module.exports.defaultClassifier = module.exports.SvmOutputPartialEqually;
-// module.exports.defaultClassifier = module.exports.PartialClassificationEqually;
-
-module.exports.defaultClassifier = module.exports.HomerWinnow;
+module.exports.defaultClassifier = module.exports.PartialClassificationEqually;
+// module.exports.defaultClassifier = module.exports.HomerWinnow;
 // module.exports.defaultClassifier = module.exports.SvmPerfClassifier
 
 
