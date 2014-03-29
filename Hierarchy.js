@@ -34,7 +34,7 @@ function splitPartEqually(json) {
 
 	_(3).times(function(n){
 		buf = []
-		_.each(json.map(splitJson), function(value, key, list){
+		_.each(json.map(Compensate), function(value, key, list){
 			if (value.length > n)
 			{
 			if (_.compact(value[n].toString()).length != 0)
@@ -169,6 +169,17 @@ function splitPartVersion2(json) {
  * -- For example: ["Offer", "Salary", "20000"]
  * @see joinJson
  */
+
+function Compensate(json) {
+		// console.log(json)
+	js = splitJson(json)
+	if ((js.length == 2) && (js[1].toString()[0] != js[1].toString()[0].toUpperCase()))
+		{
+		js.push(js[1])
+		js[1] = ""
+		}
+	return js
+}
 
 function splitJson(json) {
 	return splitJsonRecursive(_.isString(json) && /{.*}/.test(json)?
