@@ -689,12 +689,27 @@ if (do_partial_classification)
 
 	data = _.shuffle(data)
 
+	
+	console.log(trainutils.bars_original(data))
+	process.exit(0)
 	// test = trainutils.clonedataset(data)
 	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
 
 	// stats = trainAndTest_hash(createNewClassifier, _.sample(data,500), _.sample(test,100), 5)
 	stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
 	// console.log(JSON.stringify(trainutils.confusion_matrix(stats[0]), null, 4))
+
+
+
+	// _.each(stats, function(value, key, list){ 
+	// 	_.each(value['labels'], function(value1, label, list){
+	// 				if (value1["F1"] != -1)
+	// 				console.log("\""+label+"\"\t"+value1['F1']+"\t"+value1['Train']) 
+	// 		}, this)
+	// 	}, this)
+
+	console.log()
+	process.exit(0)
 
 	console.log(stats[0]['stats'])
 	console.log(stats[1]['stats'])
@@ -889,8 +904,8 @@ if (do_learning_curves_dialogue)
 		};
 
 	// parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
-	parameters = ['F1']
-	curves.learning_curves_dialogue(classifiers, dataset, parameters, 2, 5)
+	parameters = ['F1', 'Precision','Recall']
+	curves.learning_curves(classifiers, dataset, parameters, 2, 5)
 	}
 
 if (do_learning_curves) {
