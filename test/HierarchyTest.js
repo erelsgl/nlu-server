@@ -4,7 +4,7 @@
  * @author Erel Segal-Halevi
  * @since 2013-08
  */
-
+var _ = require('underscore')._;
 var should = require('should');
 var Hierarchy = require('../Hierarchy');
 var ftrs = require("limdu/features");
@@ -20,6 +20,15 @@ describe('splitJson', function() {
 		Hierarchy.splitJson({Offer: {Salary: "20000"}}).should.eql(["Offer", "Salary", "20000"]);
 	});
 });
+
+describe('splitPartEqually', function() {
+	it('should separate labels correctly', function() {
+		_.isEqual(Hierarchy.splitPartEqually([{Offer: {Salary: "20000"}}]), [["Offer"], ["Salary"], ["20000"]]).should.equal(true);
+		_.isEqual(Hierarchy.splitPartEqually([{Accept: "previous"}]), [["Accept"], [], ["previous"]]).should.equal(true)
+		_.isEqual(Hierarchy.splitPartEqually([{Insist: "Salary"}]), [["Insist"], ["Salary"], []]).should.equal(true)	
+		_.isEqual(Hierarchy.splitPartEqually([{Insist: "Salary"}, {Accept: "previous"}]), [["Insist", "Accept"], ["Salary"], ["previous"]]);	
+	});
+})
 
 describe('joinJson', function() {
 	it('works for strings (depth 1)', function() {

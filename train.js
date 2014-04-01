@@ -10,7 +10,7 @@
 
 console.log("machine learning trainer start\n");
 
-var do_partial_classification = false
+var do_partial_classification = true
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
@@ -18,6 +18,7 @@ var do_small_temporary_test = false;
 var do_small_temporary_serialization_test = false;
 var do_learning_curves = false
 var do_cross_dataset_testing = false;
+var do_learning_curves_dialogue = false
 var do_final_test = false;
 var do_cross_validation = false;
 var do_serialization = false;
@@ -27,7 +28,7 @@ var do_small_test_multi_threshold = false
 var naive = false
 var naive1 = false
 var count_2_intents_2_attributes = false
-var do_comparison = true
+var do_comparison = false
 
 var _ = require('underscore')._;
 var fs = require('fs');
@@ -57,7 +58,7 @@ var trainAndCompare = require('limdu/utils/trainAndTest').trainAndCompare;
 var trainAndTestLite = require('limdu/utils/trainAndTest').trainAndTestLite;
 var ToTest = require('limdu/utils/trainAndTest').test;
 var serialization = require('serialization');
-var learning_curves = require('limdu/utils/learning_curves').learning_curves;
+var curves = require('limdu/utils/learning_curves');
 var unseen_words_curves = require('limdu/utils/unseen_curves').unseen_word_curves;
 var unseen_correlation = require('limdu/utils/unseen_correlation').unseen_correlation;
 var tokenize = require('limdu/utils/unseen_correlation').tokenize;
@@ -688,12 +689,35 @@ if (do_partial_classification)
 
 	data = _.shuffle(data)
 
+	
+	console.log(trainutils.bars_original(data))
+	process.exit(0)
 	// test = trainutils.clonedataset(data)
-	// dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
-	// stats = trainAndTest_hash(createNewClassifier, _.sample(data,500), _.sample(test,100), 5)
-	// stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
-	// console.log(JSON.stringify(trainutils.confusion_matrix(stats[1]), null, 4))
+	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
 
+	// stats = trainAndTest_hash(createNewClassifier, _.sample(data,500), _.sample(test,100), 5)
+	stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
+	// console.log(JSON.stringify(trainutils.confusion_matrix(stats[0]), null, 4))
+
+
+
+	// _.each(stats, function(value, key, list){ 
+	// 	_.each(value['labels'], function(value1, label, list){
+	// 				if (value1["F1"] != -1)
+	// 				console.log("\""+label+"\"\t"+value1['F1']+"\t"+value1['Train']) 
+	// 		}, this)
+	// 	}, this)
+
+	console.log()
+	process.exit(0)
+
+	console.log(stats[0]['stats'])
+	console.log(stats[1]['stats'])
+	console.log(stats[2]['stats'])
+	process.exit(0)
+
+	console.log(trainutils.hash_to_htmltable(trainutils.confusion_matrix(stats[2])))
+	process.exit(0)
 	matlist = []
 	partitions.partitions(data, 5, function(trainSet1, testSet1, index) {
 		testSet = trainutils.clonedataset(testSet1)
@@ -868,6 +892,22 @@ if (do_small_temporary_test) {
 	});
 }   
 
+
+if (do_learning_curves_dialogue)
+	{
+	dataset = JSON.parse(fs.readFileSync("datasets/Dialogue.json"))
+	dataset = _.shuffle(dataset)
+
+	classifiers  = {
+		SVM_SeparatedAfter: classifier.SvmOutputPartialEqually,
+		SVM_SeparatedClassification: classifier.PartialClassificationEqually
+		};
+
+	// parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
+	parameters = ['F1', 'Precision','Recall']
+	curves.learning_curves(classifiers, dataset, parameters, 2, 5)
+	}
+
 if (do_learning_curves) {
 
 	datasetNames = [
@@ -909,7 +949,7 @@ if (do_learning_curves) {
 
 	// parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
 	parameters = ['F1']
-	learning_curves(classifiers, dataset, parameters, 70, 5)
+	curves.learning_curves(classifiers, dataset, parameters, 70, 5)
 }
 
 if (do_small_temporary_test_dataset) {

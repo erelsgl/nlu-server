@@ -1,0 +1,249 @@
+[ {"input":"","output":[]}
+ , {"input":"Okay, I'm interested in working as a project manager. I'd like a leased car. I can work 8 hours a day. I'd prefer a 20% pension, and a job with fast promotion possibilities. Starting salary of 90,000. What do you think?","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-01-06T08:48:39.235Z"}
+, {"input":"I'm interested in working as a project manager.","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"],"is_correct":true,"timestamp":"2014-01-06T08:49:07.919Z"}
+, {"input":"Hello. I'm happy to meet you.","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-01-06T08:49:10.624Z"}
+, {"input":"I will accept 60k for the programmer position. I need a leased car to be provided. I would also like to work 9 hours per day and have the fast promotion track.","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"60,000 USD\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2014-01-06T08:49:30.115Z"}
+, {"input":"What is the job description that you have available?","output":["{\"Query\":\"Job Description\"}"],"is_correct":false,"timestamp":"2014-01-06T08:49:54.702Z"}
+, {"input":"I want 120k!","output":["{\"Offer\":{\"Salary\":\"120,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-20T16:23:34.110Z"}
+, {"input":"project manager and 90K","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-20T16:24:23.809Z"}
+, {"input":"slow promotion no agreement on the car","output":["{\"Offer\":{\"Leased Car\":\"No agreement\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"],"is_correct":true,"timestamp":"2014-01-20T16:24:40.148Z"}
+, {"input":"sotty, I can't be a QA, but if you will give me 120k I can be a programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"120,000 USD\"}}","{\"Reject\":\"Job Description\"}"],"is_correct":false,"timestamp":"2014-01-22T13:20:21.879Z"}
+, {"input":"fine, i'll agree to your 60 if i'll get a car otherwise I'll stay on 90k!","output":["{\"Accept\":\"Salary\"}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:21:15.076Z"}
+, {"input":"no agreement!","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2014-01-22T13:21:32.673Z"}
+, {"input":"10% pension no agreement on car","output":["{\"Offer\":{\"Leased Car\":\"No agreement\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:21:36.293Z"}
+, {"input":"I10% pension will giv you more points...","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:21:48.504Z"}
+, {"input":"so, car. 10% pension, slow promotion, 10 hours","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:22:03.440Z"}
+, {"input":"and...","output":["{\"Append\":\"previous\"}"],"is_correct":true,"timestamp":"2014-01-22T13:22:06.517Z"}
+, {"input":"and I can compormise on programmer","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:22:12.659Z"}
+, {"input":"no agreement on pension","output":["{\"Offer\":{\"Pension Fund\":\"No agreement\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:22:15.717Z"}
+, {"input":"and with car","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:22:18.276Z"}
+, {"input":"and 8 hours for that pathetic salary and job","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:22:27.356Z"}
+, {"input":"with car!","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:22:28.954Z"}
+, {"input":"do we have an agreement?","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2014-01-22T13:22:36.784Z"}
+, {"input":"I won't work 10 hots in QA","output":["{\"Reject\":\"Working Hours\"}"],"is_correct":true,"timestamp":"2014-01-22T13:22:45.781Z"}
+, {"input":"the car is must - I live far away...","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:22:55.425Z"}
+, {"input":"9 hours as a programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:22:57.604Z"}
+, {"input":"listen, give me 90k, and the car. you won't be sorry...","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:23:08.235Z"}
+, {"input":"and 10 HOURS","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:23:10.441Z"}
+, {"input":"I cant do qa, my brain will die!","output":["{\"Reject\":\"Job Description\"}"],"is_correct":false,"timestamp":"2014-01-22T13:23:40.970Z"}
+, {"input":"programmer. we dont have much time...","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:23:45.912Z"}
+, {"input":"the car is must!","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:24:00.640Z"}
+, {"input":"90k programmer with(!) car 10% slow promotion 10 hours. ","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:24:11.191Z"}
+, {"input":"10% pension!","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:24:42.919Z"}
+, {"input":"Hi there, nice to meet you. ","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2014-01-22T13:25:00.695Z"}
+, {"input":"What are you thinking for a salary?","output":["{\"Query\":\"Salary\"}"],"is_correct":false,"timestamp":"2014-01-22T13:25:07.777Z"}
+, {"input":"sounds good to me. ","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-01-22T13:25:32.878Z"}
+, {"input":"Project manager would be great. With a leased car. ","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:25:40.555Z"}
+, {"input":"Hey","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2014-01-22T13:25:43.512Z"}
+, {"input":"I will do team  manager 90l leased car 10% pension fast promo and 8 hours","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:25:58.869Z"}
+, {"input":"Nope 90,000 or nothing","output":["{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:26:01.749Z"}
+, {"input":"I can agree to 90,000.","output":["{\"Accept\":\"Salary\"}"],"is_correct":false,"timestamp":"2014-01-22T13:26:14.326Z"}
+, {"input":"20% pension then","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:26:16.833Z"}
+, {"input":"I can be a programmer.","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:26:21.806Z"}
+, {"input":"ok 60000","output":["{\"Accept\":\"Salary\"}"],"is_correct":false,"timestamp":"2014-01-22T13:26:30.140Z"}
+, {"input":"10% can be done.","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:26:32.332Z"}
+, {"input":"No we already said tem manager","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:26:40.509Z"}
+, {"input":"10 hours is optimal.","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:26:43.630Z"}
+, {"input":"The offer i will accept is 60000 team manager leased car 20% fast promotion and 8 hours","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"60,000 USD\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:27:01.589Z"}
+, {"input":"No car then.","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:27:03.821Z"}
+, {"input":"Sounds fair, I accept.","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2014-01-22T13:27:09.515Z"}
+, {"input":"fine programmer lets finish","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:27:12.573Z"}
+, {"input":"There is no way i do that","output":["{\"Reject\":\"previous\"}"],"is_correct":true,"timestamp":"2014-01-22T13:27:18.452Z"}
+, {"input":"Okay, then. We can sign.","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2014-01-22T13:27:30.500Z"}
+, {"input":"8 hours is what we agreed on","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:27:40.483Z"}
+, {"input":"Absolutely.  Do you have any proposals?","output":["{\"Query\":\"bid\"}"],"is_correct":false,"timestamp":"2014-01-22T13:28:03.578Z"}
+, {"input":"yes we already agreed onthat","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2014-01-22T13:28:07.455Z"}
+, {"input":"no 8 hours and lets just finish","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:28:20.181Z"}
+, {"input":"8 hours you bum","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:28:34.123Z"}
+, {"input":"its iehter 90000 and 9 hours or 8 and 60000","output":["{\"Offer\":{\"Salary\":\"60,000 USD\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:28:46.926Z"}
+, {"input":"Nice to meet you, too.","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2014-01-22T13:28:53.113Z"}
+, {"input":"I could live with that if I could be hired as a team manager with a minimum of 9 working hours","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:28:59.494Z"}
+, {"input":"So, which job do you have any opening for?","output":["{\"Query\":\"Job Description\"}"],"is_correct":false,"timestamp":"2014-01-22T13:29:08.377Z"}
+, {"input":"Hello","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-01-22T13:29:09.400Z"}
+, {"input":"That's ok, I don't need the car.","output":["{\"Accept\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2014-01-22T13:29:22.309Z"}
+, {"input":"put your out there","output":["{\"Query\":\"bid\"}"],"is_correct":false,"timestamp":"2014-01-22T13:29:43.201Z"}
+, {"input":"It sounds like we've reached a deal.  It was a pleasure negotiating with you.","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2014-01-22T13:30:02.541Z"}
+, {"input":"change your car to leased car and lets finish","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:30:12.477Z"}
+, {"input":"I could definitely fill your programmer position.","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:30:17.258Z"}
+, {"input":"lets just sign","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2014-01-22T13:31:17.479Z"}
+, {"input":"8 hours would be ideal","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:31:17.482Z"}
+, {"input":"Change your thing to leased car and lets go...","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:31:17.490Z"}
+, {"input":"there will be no agreement at all","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2014-01-22T13:31:17.654Z"}
+, {"input":"I will take the project manager position at 90,000.00 with 8 hours if I can get a leased car and a 20% pension fund.","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:32:35.896Z"}
+, {"input":"Hello.","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-01-22T13:32:42.437Z"}
+, {"input":"leased car or no deal","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:40:32.744Z"}
+, {"input":"A Project Manager, making 90,000 and you have a deal.","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:40:36.029Z"}
+, {"input":"im just opting out","output":["{\"Quit\":true}"],"is_correct":false,"timestamp":"2014-01-22T13:40:59.523Z"}
+, {"input":"That sounds good to me. It's a deal.","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-01-22T13:41:04.487Z"}
+, {"input":"Let's say 120,000 grand a year?","output":["{\"Offer\":{\"Salary\":\"120,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:41:26.061Z"}
+, {"input":"hi nice to meet you","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2014-01-22T13:41:29.028Z"}
+, {"input":"I would like 120,000 USD a year","output":["{\"Offer\":{\"Salary\":\"120,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:41:32.885Z"}
+, {"input":"I don't need the car, but I would need 20% pension fund, and an 8 hour work day.","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}","{\"Reject\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2014-01-22T13:41:43.394Z"}
+, {"input":"90,000 sounds okay","output":["{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:41:48.482Z"}
+, {"input":"Agreed","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2014-01-22T13:41:49.993Z"}
+, {"input":"I just can't work those kinds of hours.  How about an 8 hour work day, with a 10% pension?","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}","{\"Reject\":\"Working Hours\"}"],"is_correct":false,"timestamp":"2014-01-22T13:43:40.162Z"}
+, {"input":"It's for sure that I do not need a leased car as I have a functional vehicle.","output":["{\"Reject\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2014-01-22T13:43:49.944Z"}
+, {"input":"I will accept programmer with a leased car","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:43:53.770Z"}
+, {"input":"Programmer with 10% pension","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:43:56.016Z"}
+, {"input":"What about $90,000 salary as Team Manager.","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:43:59.970Z"}
+, {"input":"8 Hour days are ideal","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:44:02.111Z"}
+, {"input":"I cannot agree to less than 10% pension","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:44:04.130Z"}
+, {"input":"Sorry, no.  I either need the 20% pension or the 8 hour work day. I would also take a leased car in leiu of a pension.","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:44:32.556Z"}
+, {"input":"10% pension OR leased car","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:44:36.713Z"}
+, {"input":"I would like fast track promotion","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:44:46.931Z"}
+, {"input":"Hello, I am well, and you?","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-01-22T13:44:49.183Z"}
+, {"input":"Programmer career is good","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:44:51.679Z"}
+, {"input":"Are you sure you can't do 10%? Pension is very helpful later in life","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:45:02.830Z"}
+, {"input":"I was thinking closer to 90,00 a year.","output":["{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:45:07.439Z"}
+, {"input":"Ok. Without a pension I am asking for an 8 hr workday","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:45:23.130Z"}
+, {"input":"Considering my experience, I shouls have a salary of $120,000, 10% pension fund, a fast promotional track, and 8 hrs of work per day","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"120,000 USD\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:45:34.362Z"}
+, {"input":"meet me in the middle","output":["{\"Query\":\"compromise\"}"],"is_correct":false,"timestamp":"2014-01-22T13:45:42.219Z"}
+, {"input":"What about a leased car to go with it?","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:45:45.569Z"}
+, {"input":"Hi there!","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2014-01-22T13:45:51.158Z"}
+, {"input":"I Ok. Agree","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-01-22T13:46:02.374Z"}
+, {"input":"I thought that 90,000 a year was with a leased car.","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:46:06.536Z"}
+, {"input":"ok.  deal","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-01-22T13:46:10.245Z"}
+, {"input":"Agree. No leased car","output":["{\"Accept\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2014-01-22T13:46:19.114Z"}
+, {"input":"What about pension?","output":["{\"Query\":\"Pension Fund\"}"],"is_correct":false,"timestamp":"2014-01-22T13:46:36.708Z"}
+, {"input":"20%","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:46:39.515Z"}
+, {"input":"I will go down to 10% in exchange for a fast promotion track","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:46:42.709Z"}
+, {"input":"I want 120,000","output":["{\"Offer\":{\"Salary\":\"120,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:46:44.148Z"}
+, {"input":"I won't work less then 8 hours a day.","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:46:46.862Z"}
+, {"input":"hey, I'd really like the 90000","output":["{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:46:50.756Z"}
+, {"input":"I'd prefer to be a team manager","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:46:59.445Z"}
+, {"input":"only if its as team manager","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:47:01.417Z"}
+, {"input":"10% pension fund sounds good","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:47:04.386Z"}
+, {"input":"I'd prefer 9 hour days","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:47:13.415Z"}
+, {"input":"sounds fair enough","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2014-01-22T13:47:17.796Z"}
+, {"input":"10 working hours","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:47:21.220Z"}
+, {"input":"no agreement on leased car","output":["{\"Offer\":{\"Leased Car\":\"No agreement\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:47:28.464Z"}
+, {"input":"I was looking for 120,000","output":["{\"Offer\":{\"Salary\":\"120,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:47:30.413Z"}
+, {"input":"Hello, my name is Nate. How are you today?","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-01-22T13:47:36.724Z"}
+, {"input":"I was hoping to be a Project Manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:47:59.712Z"}
+, {"input":"How about Team Manager, at least?","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:48:01.052Z"}
+, {"input":"Hello, nice to meet you.","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-01-22T13:48:03.314Z"}
+, {"input":"I definitely want to work for your company! I really feel that project manager would really work out for both parties.","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:48:08.212Z"}
+, {"input":"Can you go just a bit higher to 20%?","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:48:16.809Z"}
+, {"input":"Ok, I'm willing to accept 10%","output":["{\"Accept\":\"Pension Fund\"}"],"is_correct":false,"timestamp":"2014-01-22T13:48:21.272Z"}
+, {"input":"I do not agree to that","output":["{\"Reject\":\"previous\"}"],"is_correct":true,"timestamp":"2014-01-22T13:48:23.498Z"}
+, {"input":"OK 10%","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:48:25.092Z"}
+, {"input":"10 hours is good","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:48:26.914Z"}
+, {"input":"Good Afternoon.","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2014-01-22T13:48:29.871Z"}
+, {"input":"Fast track accepted","output":["{\"Accept\":\"Promotion Possibilities\"}"],"is_correct":false,"timestamp":"2014-01-22T13:48:38.610Z"}
+, {"input":"I; hoping to meet somewhere in the middle. 90,000 USD, Team Manager, no leased car agreement, 10% pension fund, slow promotion track, and 9 hour work day.","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Leased Car\":\"No agreement\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:48:55.959Z"}
+, {"input":"I am fine. How are you?","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-01-22T13:48:58.180Z"}
+, {"input":"Sounds good to me. I would like a $120K salary, as a Team Manager, with a leased car, 10% pension, slow track promotion, working 9 hours a day.","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"120,000 USD\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:49:52.868Z"}
+, {"input":"Well, I think that if we meet in the middle and stick no agreement on the car and 9 hours a day it would benefit both of us.","output":["{\"Offer\":{\"Leased Car\":\"No agreement\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:50:00.397Z"}
+, {"input":"Could you go up to $90K?","output":["{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:50:02.310Z"}
+, {"input":"leased car?","output":["{\"Query\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2014-01-22T13:50:12.174Z"}
+, {"input":"What If I agreed to be a Programmer. Could I keep the leased car?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:50:15.815Z"}
+, {"input":"Sorry, I can't do that.","output":["{\"Reject\":\"previous\"}"],"is_correct":true,"timestamp":"2014-01-22T13:50:20.767Z"}
+, {"input":"9 hours?","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:50:22.535Z"}
+, {"input":"How about we go with my original offer and go with Programmer instead of Team Manager?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:50:33.537Z"}
+, {"input":"I can't accept that. The deal I offered is more than fair.","output":["{\"Reject\":\"previous\"}"],"is_correct":true,"timestamp":"2014-01-22T13:50:37.516Z"}
+, {"input":"hey","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2014-01-22T13:50:40.479Z"}
+, {"input":"I'm not sure if I get this entirely but: 90,000; Programmer;with leased car; 10% pension; fast promo; 8 hrs","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:53:10.061Z"}
+, {"input":"If I'm working 9 hours, I need the car","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:53:13.623Z"}
+, {"input":"Now that we are here. What kind of salary did you have in mind?","output":["{\"Query\":\"Salary\"}"],"is_correct":false,"timestamp":"2014-01-22T13:55:18.955Z"}
+, {"input":"Will the position include a leased car?","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:55:23.451Z"}
+, {"input":"What about the pension fund and promotion possibilities?","output":["{\"Query\":\"Pension Fund\"}","{\"Query\":\"Promotion Possibilities\"}"],"is_correct":false,"timestamp":"2014-01-22T13:55:42.630Z"}
+, {"input":"Hello, how are you?","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-01-22T13:55:48.392Z"}
+, {"input":"Hrm... I'd really prefer to be either the team manager, or to have a 90K salary.","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:55:53.323Z"}
+, {"input":"Also, what about the promotional track? I would be fine with a fast promotional track and Team Manager. ","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:59:18.267Z"}
+, {"input":"hi. I'd like to offer 90 grand, Project Manager, with a car, 10% pension, Slow track, 8 hour days","output":["{\"Greet\":true}","{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:59:30.458Z"}
+, {"input":"Ok, you have a deal.","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-01-22T13:59:40.649Z"}
+, {"input":"Hello!  ","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-01-22T13:59:42.448Z"}
+, {"input":"Ok, how bout project manager?","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"],"is_correct":true,"timestamp":"2014-01-22T13:59:45.977Z"}
+, {"input":"I think 120,000 would better suit my needs.","output":["{\"Offer\":{\"Salary\":\"120,000 USD\"}}"],"is_correct":false,"timestamp":"2014-01-22T13:59:51.179Z"}
+, {"input":"Why don't we meet in the middle at 90,000?","output":["{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:00:21.190Z"}
+, {"input":"I agree to a salary of 120,000","output":["{\"Accept\":\"Salary\"}"],"is_correct":false,"timestamp":"2014-01-22T14:00:29.152Z"}
+, {"input":"I think you should hire me on as a project manager.","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:00:31.807Z"}
+, {"input":"How about a Team Manager?","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:00:33.823Z"}
+, {"input":"hi what shall we discuss first","output":["{\"Greet\":true}","{\"Query\":\"issues\"}"],"is_correct":false,"timestamp":"2014-01-22T14:00:42.139Z"}
+, {"input":"I feel as my skills warrant at least a Team Manager position","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:00:46.455Z"}
+, {"input":"I refuse to go lower than Team Manager.","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:00:54.888Z"}
+, {"input":"What is your offer then?","output":["{\"Query\":\"bid\"}"],"is_correct":false,"timestamp":"2014-01-22T14:01:00.512Z"}
+, {"input":"I want 120K","output":["{\"Offer\":{\"Salary\":\"120,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:01:01.809Z"}
+, {"input":"I feel that I should get a fully leased car?","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:01:26.261Z"}
+, {"input":"Why don't we meet in the middle then, and not agree to anything right now?","output":["{\"Query\":\"compromise\"}"],"is_correct":false,"timestamp":"2014-01-22T14:01:34.224Z"}
+, {"input":"No. I do not agree.","output":["{\"Reject\":\"previous\"}"],"is_correct":true,"timestamp":"2014-01-22T14:01:36.845Z"}
+, {"input":"I'll drop to 90,000 if I get a leased car.","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:01:57.712Z"}
+, {"input":"I feel as though my skills are worth 120,000","output":["{\"Offer\":{\"Salary\":\"120,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:02:07.488Z"}
+, {"input":"and I am trained as a programmer","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:02:10.487Z"}
+, {"input":"120,000 is my final offer","output":["{\"Offer\":{\"Salary\":\"120,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:02:17.604Z"}
+, {"input":"QA ","output":["{\"Offer\":{\"Job Description\":\"QA\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:02:19.916Z"}
+, {"input":"no agreement on the car","output":["{\"Offer\":{\"Leased Car\":\"No agreement\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:02:22.804Z"}
+, {"input":"I will work 8 hours a week","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:02:24.157Z"}
+, {"input":"1220,000","output":["{\"Offer\":{\"Salary\":\"120,000 USD\"}}"],"is_correct":false,"timestamp":"2014-01-22T14:02:32.485Z"}
+, {"input":"I will work 8 hours","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:02:34.370Z"}
+, {"input":"How about 9 hours","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:02:36.590Z"}
+, {"input":"I would like 90,000 as the salary","output":["{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:02:37.990Z"}
+, {"input":"For the programmer position","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:02:40.059Z"}
+, {"input":"hi, how are you","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-01-22T14:02:41.862Z"}
+, {"input":"Thats really not acceptable to me","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2014-01-22T14:02:48.014Z"}
+, {"input":"I was thinking more along the lines of 120,000, team manager, no agreement on car, fast track,20%,  ","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Leased Car\":\"No agreement\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"120,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:04:11.620Z"}
+, {"input":"9 hour","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:04:13.603Z"}
+, {"input":"90,000 salary?","output":["{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:04:17.484Z"}
+, {"input":"okay no car","output":["{\"Accept\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2014-01-22T14:04:25.395Z"}
+, {"input":"I would be willing to the job as a programmer if the salary was 90,000 and I would need 8 hour days. I would be willing to go to a slower promotion track. ","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:04:42.146Z"}
+, {"input":"i want a salary of 90,000 USD","output":["{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:04:43.892Z"}
+, {"input":"I would like a salary of 90,000.","output":["{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:05:14.795Z"}
+, {"input":"how about 120,000 usd?","output":["{\"Offer\":{\"Salary\":\"120,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:05:17.321Z"}
+, {"input":"90000 as a project manager, no car, 10% pension, 10 hour days","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:05:30.633Z"}
+, {"input":"hi, I am doing well, and yourself?","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2014-01-22T14:06:30.049Z"}
+, {"input":"I would perfer to work as a Programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:06:32.155Z"}
+, {"input":"That sounds good to me.","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-01-22T14:06:37.103Z"}
+, {"input":"slow track is fine","output":["{\"Accept\":\"Promotion Possibilities\"}"],"is_correct":false,"timestamp":"2014-01-22T14:06:41.255Z"}
+, {"input":"I am looking for a salary of $120,000","output":["{\"Offer\":{\"Salary\":\"120,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:06:42.927Z"}
+, {"input":"I would like a leased car.","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:06:45.367Z"}
+, {"input":"I can agree to 90k","output":["{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:06:52.034Z"}
+, {"input":"what about the car","output":["{\"Query\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2014-01-22T14:07:12.643Z"}
+, {"input":"i would like a leased car","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:07:15.001Z"}
+, {"input":"Let's do the paperwork","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2014-01-22T14:07:30.536Z"}
+, {"input":"i could also do 9 hours","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:07:39.369Z"}
+, {"input":"I owuld also like 20% contribution to my pension fund.","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:07:45.046Z"}
+, {"input":"But I would need a leased car","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":false,"timestamp":"2014-01-22T14:07:50.452Z"}
+, {"input":"What about promotion possibilities?","output":["{\"Query\":\"Promotion Possibilities\"}"],"is_correct":false,"timestamp":"2014-01-22T14:09:34.391Z"}
+, {"input":"Based on my skills, I am looking to be a project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:09:38.534Z"}
+, {"input":"Can we agree with a Project Manager position?","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:09:43.193Z"}
+, {"input":"That sounds perfect.","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2014-01-22T14:09:44.844Z"}
+, {"input":"Perhaps Team Manager?","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:09:47.261Z"}
+, {"input":"8 is the standard amount.","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":false,"timestamp":"2014-01-22T14:09:56.814Z"}
+, {"input":"You are already paying me $100,000, so it would be in your best interest to make me the project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:10:03.926Z"}
+, {"input":"Wonderful. We are agreed on all points.","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2014-01-22T14:10:07.618Z"}
+, {"input":"And a project manager deserves a leased car","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:10:12.001Z"}
+, {"input":"I will agree to be programmer if I get a leased car.","output":["{\"Accept\":\"Job Description\"}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Reject\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2014-01-22T14:11:26.304Z"}
+, {"input":"Let's sign the agreement.","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2014-01-22T14:11:37.614Z"}
+, {"input":"10 hours of work is required of someone who is making $120,000","output":["{\"Offer\":{\"Salary\":\"120,000 USD\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:11:54.799Z"}
+, {"input":"so we can talk about a raise possibly","output":["{\"Query\":\"Salary\"}"],"is_correct":false,"timestamp":"2014-01-22T14:12:06.237Z"}
+, {"input":"I'd like 90k per year as a programmer, without a leased car, 10% pension, and fast track promotion. 9 hours per week","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:12:15.834Z"}
+, {"input":"Hello potential employer!","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-01-22T14:12:17.116Z"}
+, {"input":"Okay but 10 hours is worth 20% pension and a fast track to management","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2014-01-22T14:12:29.832Z"}
+, {"input":"I think that will all be beneficial to me as well as you. I will sign the agreement.","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-01-22T14:12:37.919Z"}
+, {"input":"I believe a salary of $120,000 is very reasonable for my skill level.","output":["{\"Offer\":{\"Salary\":\"120,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:12:43.369Z"}
+, {"input":"Lets settled for $120,000 with no leased car, 10% pension","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Salary\":\"120,000 USD\"}}"],"is_correct":false,"timestamp":"2014-01-22T14:12:59.374Z"}
+, {"input":"Why don't we meet in the middle at $90,000?","output":["{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:13:02.448Z"}
+, {"input":"Okay $120, 10%, no car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Salary\":\"120,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:13:06.880Z"}
+, {"input":"For $90,000 I deserve at least a team manager position.","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:13:10.262Z"}
+, {"input":"$60,000","output":["{\"Offer\":{\"Salary\":\"60,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:14:19.448Z"}
+, {"input":"A fast promotion track if I am only a programmer.","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:14:27.229Z"}
+, {"input":"but I want to be a programmer","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":false,"timestamp":"2014-01-22T14:14:30.973Z"}
+, {"input":"I dont need a car or and ill take a 0% pension","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"0%\"}}"],"is_correct":false,"timestamp":"2014-01-22T14:14:43.677Z"}
+, {"input":"slow promotion and 10% and you have a deal","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:14:50.013Z"}
+, {"input":"do we have a deal?","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2014-01-22T14:14:55.074Z"}
+, {"input":"hi, how are you?","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-01-22T14:14:56.338Z"}
+, {"input":"Did you sign","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2014-01-22T14:15:52.570Z"}
+, {"input":"I would like to be the project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:15:55.121Z"}
+, {"input":"I want 90000 as a project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:15:57.849Z"}
+, {"input":"I would like to work only 8 hours a day though","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:16:03.737Z"}
+, {"input":"I am willing to work 9 hours a day, if I get a leased car.","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:16:37.199Z"}
+, {"input":"Programmer, with 8 hours/day on the fast track sounds good to me","output":["{\"Accept\":\"Job Description\"}","{\"Accept\":\"Promotion Possibilities\"}","{\"Accept\":\"Working Hours\"}"],"is_correct":false,"timestamp":"2014-01-22T14:16:55.621Z"}
+, {"input":"without a leased car, I'd like to get paid well","output":["{\"Accept\":\"Leased Car\"}","{\"Reject\":\"Salary\"}"],"is_correct":false,"timestamp":"2014-01-22T14:17:41.890Z"}
+, {"input":"I'm fine with the 10%","output":["{\"Accept\":\"Pension Fund\"}"],"is_correct":false,"timestamp":"2014-01-22T14:17:45.378Z"}
+, {"input":"and I'll take the 90,000","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:17:52.563Z"}
+, {"input":"A 90.000 salary","output":["{\"Offer\":{\"Salary\":\"90,000 USD\"}}"],"is_correct":false,"timestamp":"2014-01-22T14:18:28.510Z"}
+, {"input":"10% pension and fast promotion","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:18:34.087Z"}
+, {"input":"I really would like the car.","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:18:37.432Z"}
+, {"input":"Leased car: no agreement","output":["{\"Offer\":{\"Leased Car\":\"No agreement\"}}"],"is_correct":true,"timestamp":"2014-01-22T14:18:42.854Z"}
+, {"input":"no i have to have leased car now come on","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Reject\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2014-01-22T14:19:02.928Z"}
+]
