@@ -1,0 +1,471 @@
+[
+    {
+        "id": "2013-10-08T19:37:39.324Z",
+        "user": "174.71.115.59:2013-10-08T19:34:08.877Z",
+        "role": "Employer",
+        "turns": [
+            {
+                "input": "Will you take 12000?",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "7",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "How about a QA?",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "11",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"QA\"}}"
+                ]
+            },
+            {
+                "input": "Would you agree to team manager?",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "15",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+                ]
+            },
+            {
+                "input": "I will offer 10% at best.",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "19",
+                "output": [
+                    "{\"Insist\":\"Pension Fund\"}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "I will need you to work 10 hours.",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "24",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "10 hours is my best offer.",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "28",
+                "output": [
+                    "{\"Insist\":\"Working Hours\"}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "I will take 9 hours.",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "31",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "I insist on 9 hours.",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "35",
+                "output": [
+                    "{\"Insist\":\"Working Hours\"}"
+                ]
+            },
+            {
+                "input": "I will offer 10 hours and a fast promotion track.",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "38",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "9 hours and slow promotion.",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "43",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "8 hours and slow promotion.",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "51",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "I will offer you 8 working hours.",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "56",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "I will offer no car and a slow promotion track.",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "62",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "I will offer a car and a fast promotion track.",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "65",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            {
+                "input": "Let's go with no car.",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "69",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "2013-10-08T21:03:07.238Z",
+        "user": "204.29.77.90:2013-10-08T20:59:49.243Z",
+        "role": "Employer",
+        "turns": [
+            {
+                "input": "Hello, how are you today?",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "4",
+                "output": [
+                    "{\"Greet\":true}"
+                ]
+            },
+            {
+                "input": "How about 12000 and 10 hour workdays?",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "7",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "20000 is a bit much, how about 12000 and 8 hour workdays?",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "10",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
+                    "{\"Reject\":\"Salary\"}"
+                ]
+            },
+            {
+                "input": "Done, what about your job? Do you want to be a programmer?",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "16",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Query\":\"Job Description\"}"
+                ]
+            },
+            {
+                "input": "I can do 10%",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "21",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "No leased car and a slow promotion track?",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "29",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "2013-10-10T17:40:22.237Z",
+        "user": "174.55.132.183:2013-10-10T17:37:42.952Z",
+        "role": "Employer",
+        "turns": [
+            {
+                "input": "I'm willing to pay 12000",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "15",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "I offer team manager",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "20",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+                ]
+            },
+            {
+                "input": "I'll offer 10%",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "24",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "9 hours",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "32",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "No company car",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "37",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            {
+                "input": "No agreement",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "43",
+                "output": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "No car",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "45",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            {
+                "input": "I will not give you a leased car",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "48",
+                "output": [
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            {
+                "input": "No, I'm sticking to our original offer",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "51",
+                "output": [
+                    "{\"Insist\":\"previous\"}",
+                    "{\"Reject\":\"previous\"}"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "2013-10-10T18:21:21.136Z",
+        "user": "50.170.206.40:2013-10-10T18:16:17.403Z",
+        "role": "Employer",
+        "turns": [
+            {
+                "input": "hi",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "4",
+                "output": [
+                    "{\"Greet\":true}"
+                ]
+            },
+            {
+                "input": "yes thank you",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "7",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "sure",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "13",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "then i need you to work 10 hours",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "20",
+                "output": [
+                    "{\"Insist\":\"Working Hours\"}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "ten hours for your pension",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "26",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "i will only offer 8 hours if you reduce your pension",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "30",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
+                    "{\"Reject\":\"Pension Fund\"}"
+                ]
+            },
+            {
+                "input": "i accept",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "36",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "yes",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "40",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "yes",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "44",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "yes",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "50",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "whatever is needed to sign the agreement",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "52",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "do u wish to sign the agreement?",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "55",
+                "output": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "yes",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "57",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "will yo sign the agreement",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "60",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "actually i need you work 10 hours for an agreement",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "88",
+                "output": [
+                    "{\"Insist\":\"Working Hours\"}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "but i feel as given the maximum amount salary it is fair to relinquish the company car",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "93",
+                "output": [
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            {
+                "input": "without leased car",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:04:44.416Z",
+                "turn": "96",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            }
+        ]
+    }
+]

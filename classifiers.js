@@ -178,10 +178,12 @@ var BayesSegmenter = classifiers.EnhancedClassifier.bind(0, {
  * CONSTRUCTORS:
  */
 
- var enhance3 = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel) {
+ var enhance3 = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel, IS) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
 		// inputSplitter: inputSplitter,
+		inputSplitter: IS,
+
 		//spellChecker: require('wordsworth').getInstance(),
 		featureExtractor: featureExtractor,
 		
@@ -316,7 +318,9 @@ module.exports = {
 		PartialClassificationEquallyGreedy: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.greedyLabelJoin,  undefined),
 		// separate to intent/attribute/value then retrieve just intent and test only on intent
 		PartialClassificationEquallyIntent: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent),
-		PartialClassificationEqually: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
+		PartialClassificationEqually: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually, undefined),
+	 	PartialClassificationEquallyIS: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually, inputSplitter),
+
 	 	// svm train on the standard labels then on output separate labels
 	 	SvmOutputPartialEqually: enhance3(SvmPerfBinaryRelevanceClassifier,new ftrs.FeatureLookupTable(),undefined, undefined, Hierarchy.splitPartEqually,  Hierarchy.splitPartEqually),
 
@@ -326,7 +330,8 @@ module.exports = {
 };
 
 // module.exports.defaultClassifier = module.exports.SvmOutputPartialEqually;
-module.exports.defaultClassifier = module.exports.PartialClassificationEqually;
+// module.exports.defaultClassifier = module.exports.PartialClassificationEquallyPlace;
+module.exports.defaultClassifier = module.exports.PartialClassificationEqually
 // module.exports.defaultClassifier = module.exports.HomerWinnow;
 // module.exports.defaultClassifier = module.exports.SvmPerfClassifier
 

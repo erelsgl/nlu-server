@@ -37,5 +37,10 @@
 , {"input":"actually i need you work 10 hours for an agreement","output":["{\"Insist\":\"Working Hours\"}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2013-10-10T18:30:35.851Z"}
 , {"input":"but i feel as given the maximum amount salary it is fair to relinquish the company car","output":["{\"Reject\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2013-10-10T18:32:37.697Z"}
 , {"input":"No agreement","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-11T09:39:04.601Z"}
-] 
-
+, {"input":"yes","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-11T09:39:04.601Z"}
+, {"input":"No company car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":false,"timestamp":"2013-10-11T09:39:04.601Z"}
+, {"input":"without leased car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":false,"timestamp":"2013-10-11T09:39:04.601Z"}
+, {"input":"9 hours","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2013-10-11T09:39:04.601Z"}
+, {"input":"sure","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-11T09:39:04.601Z"}
+, {"input":"hi","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2013-10-08T21:03:37.140Z"}
+]

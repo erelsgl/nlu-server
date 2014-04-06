@@ -23,7 +23,7 @@
 , {"input":"i have plenty of other candidates","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-08T08:13:36.512Z"}
 , {"input":"if you don't accept as discussed I will need to end","output":["{\"Insist\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-08T08:13:46.638Z"}
 , {"input":"it is not going to happen","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-08T08:13:50.895Z"}
-, {"input":"12,000 as agreed or nothing","output":["{\"Insist\":\"previous\"}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:13:57.142Z"}
+, {"input":"12,000 as agreed or nothing","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:13:57.142Z"}
 , {"input":"hi, does that sound good?","output":["{\"Greet\":true}","{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2013-10-08T08:14:09.908Z"}
 , {"input":"you already did accept","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-08T08:14:20.904Z"}
 , {"input":"hi I want to offer you a fast track promotion","output":["{\"Greet\":true}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:14:31.680Z"}
@@ -35,7 +35,7 @@
 , {"input":"so, do we agree on a programming position with a leased car and a 10% pension?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:15:09.736Z"}
 , {"input":"Okay, you can have a leased car. ","output":["{\"Accept\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2013-10-08T08:15:21.006Z"}
 , {"input":"I can only offer programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:15:23.802Z"}
-, {"input":"I think you should be a Programmer.","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Reject\":\"Job Description\"}"],"is_correct":true,"timestamp":"2013-10-08T08:15:29.476Z"}
+, {"input":"I think you should be a Programmer.","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:15:29.476Z"}
 , {"input":"Leased car is only possible with programmer and 10% pension","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:15:33.239Z"}
 , {"input":"9 working hours.","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:15:34.997Z"}
 , {"input":"no, 12,000","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Reject\":\"previous\"}"],"is_correct":true,"timestamp":"2013-10-08T08:15:38.223Z"}
@@ -118,10 +118,10 @@
 , {"input":"ok you can have 20000","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:33:12.688Z"}
 , {"input":"i will give you 10%.","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:33:14.906Z"}
 , {"input":"I would like you to work 9 hour days.","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:33:20.072Z"}
-, {"input":"No, it is 9 hour days","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}","{\"Reject\":\"Working Hours\"}"],"is_correct":false,"timestamp":"2013-10-08T08:33:29.009Z"}
+, {"input":"No, it is 9 hour days","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}","{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-08T08:33:29.009Z"}
 , {"input":"No, If you want 8 hour day you can have  a salary of 12000 and the 10% pension fund","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}","{\"Reject\":\"previous\"}"],"is_correct":true,"timestamp":"2013-10-08T08:33:40.653Z"}
 , {"input":"ok 20000. 9 hour days and 10% pension fund","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:33:45.610Z"}
-, {"input":"there will be no car. you will only recieve a car if you work 10 hour days","output":["{\"Insist\":\"Working Hours\"}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:34:09.309Z"}
+, {"input":"there will be no car. you will only recieve a car if you work 10 hour days","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:34:09.309Z"}
 , {"input":"fast promotion track is ok","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:34:14.343Z"}
 , {"input":"salary 20000, project manager, with leased car, 10% pension fund, fast promotion track and 10 hour days?","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:34:33.601Z"}
 , {"input":"What do you want to change?","output":["{\"Query\":\"issues\"}"],"is_correct":false,"timestamp":"2013-10-08T08:34:38.840Z"}
@@ -160,7 +160,6 @@
 , {"input":"in order for 20% pension I will require 9 hours of work per day and no car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:41:58.903Z"}
 , {"input":"Programmer for 12,000?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:42:00.666Z"}
 , {"input":"Programmer and 20,000?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:42:02.817Z"}
-, {"input":"you are already agreed to the job description","output":["{\"Insist\":\"Job Description\"}","{\"Reject\":\"Job Description\"}"],"is_correct":false,"timestamp":"2013-10-08T08:42:13.080Z"}
 , {"input":"ok deal","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2013-10-08T08:42:14.751Z"}
 , {"input":"my only offer","output":["{\"Insist\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-08T08:42:24.701Z"}
 , {"input":"No 9","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:42:29.906Z"}
@@ -312,7 +311,7 @@
 , {"input":"unacceptable","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-08T10:58:41.562Z"}
 , {"input":"what do I get in return","output":["{\"Query\":\"compromise\"}"],"is_correct":false,"timestamp":"2013-10-08T10:58:49.766Z"}
 , {"input":"for 12,000","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-08T10:58:51.465Z"}
-, {"input":"that finishes us at status quo I can not do a leased car","output":["{\"Insist\":\"Leased Car\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":false,"timestamp":"2013-10-08T10:59:20.842Z"}
+, {"input":"that finishes us at status quo I can not do a leased car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":false,"timestamp":"2013-10-08T10:59:20.842Z"}
 , {"input":"my offer is without leased car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":true,"timestamp":"2013-10-08T10:59:24.425Z"}
 , {"input":"well then we are at an impass","output":["{\"Quit\":true}"],"is_correct":false,"timestamp":"2013-10-08T10:59:31.856Z"}
 , {"input":"I don't offer a leased car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":true,"timestamp":"2013-10-08T10:59:34.984Z"}

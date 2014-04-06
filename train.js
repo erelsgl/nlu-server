@@ -689,17 +689,101 @@ if (do_partial_classification)
 
 	data = _.shuffle(data)
 
+	// sa = trainutils.intent_attr_dataset_ambiguity(data)
+	// console.log(JSON.stringify(sa, null, 4))
+	// console.log(sa.length)
+	// process.exit(0)
 	
-	console.log(trainutils.bars_original(data))
-	process.exit(0)
+	// console.log(trainutils.bars_original(data))
+	// process.exit(0)
 	// test = trainutils.clonedataset(data)
 	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
 
 	// stats = trainAndTest_hash(createNewClassifier, _.sample(data,500), _.sample(test,100), 5)
-	stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
+	// stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
+	stats = trainAndTestLite(createNewClassifier, dataset['train'], dataset['test'], 5)
+	
 	// console.log(JSON.stringify(trainutils.confusion_matrix(stats[0]), null, 4))
 
+	console.log()
+	process.exit(0)
+	console.log(trainutils.hash_to_htmltable(trainutils.confusion_matrix(stats[0])))
+	console.log()
+	process.exit(0)
 
+
+	console.log(stats[0]['stats'])
+		console.log(stats[1]['stats'])
+
+	console.log(stats[2]['stats'])
+
+	process.exit(0)
+		// console.log(stats[0]['starts'])
+	// 	console.log(stats[1]['starts'])
+
+	// console.log(stats[2]['starts'])
+
+	process.exit(0)
+	// intent = trainutils.filtererror(stats[0])
+	// attributes = trainutils.filtererror(stats[1])
+	// values = trainutils.filtererror(stats[2])
+
+
+	// console.log("intent")
+	// console.log(stats[0]['stats'])
+
+	// console.log("attributes")
+	// console.log(stats[1]['stats'])
+
+	// console.log("values")
+	// console.log(stats[2]['stats'])
+
+	// console.log("number of intent errors")
+	// console.log(intent.length)
+	// console.log("number of attribute errors")
+	// console.log(attributes.length)
+	// console.log("number of value errors")
+	// console.log(values.length)
+
+
+	// g = 0
+	// _.each(intent, function(value, key, list){
+	// 	_.each(values, function(value1, key, list){ 
+	// 		if (value['input'] == value1['input'])
+	// 			g = g+1
+	// 	 	}, this) 
+	// 	}, this)
+
+	// w = 0
+
+	// _.each(intent, function(value, key, list){
+	// 	_.each(attributes, function(value1, key, list){ 
+	// 		if (value['input'] == value1['input'])
+	// 			w = w+1
+	// 	 	}, this) 
+	// 	}, this)
+
+	// p = 0
+
+	// _.each(values, function(value, key, list){
+	// 	_.each(attributes, function(value1, key, list){ 
+	// 		if (value['input'] == value1['input'])
+	// 			p = p+1
+	// 	 	}, this) 
+	// 	}, this)
+
+
+	// 	console.log("number of mistakenly classified sentence with mistake in intent and value")
+	// 	console.log(g)
+	// 	console.log("number of mistakenly classified sentence with mistake in intent and attribute")
+	// 	console.log(w)
+	// 	console.log("number of mistakenly classified sentence with mistake in attribute and value")
+	// 	console.log(p)
+
+
+
+	// process.exit(0)
+	
 
 	// _.each(stats, function(value, key, list){ 
 	// 	_.each(value['labels'], function(value1, label, list){
@@ -932,7 +1016,8 @@ if (do_learning_curves) {
 		// Intent_Attribute_Value: classifier.PartialClassificationEqually
 		//New_approach: classifier.PartialClassificationEquallyNoOutput, 
 		SVM_SeparatedAfter: classifier.SvmOutputPartialEqually,
-		SVM_SeparatedClassification: classifier.PartialClassificationEqually
+		SVM_SeparatedClassification: classifier.PartialClassificationEqually,
+		SVM_SeparatedClassification_IS: classifier.PartialClassificationEquallyIS
 
 		// Intent_Attribute_AttributeValue: classifier.PartialClassificationVersion1,
 		// Intent_AttributeValue: classifier.PartialClassificationVersion2,
@@ -948,7 +1033,7 @@ if (do_learning_curves) {
 	};
 
 	// parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
-	parameters = ['F1']
+	parameters = ['F1','Precision','Recall']
 	curves.learning_curves(classifiers, dataset, parameters, 70, 5)
 }
 
