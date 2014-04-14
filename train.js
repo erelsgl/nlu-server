@@ -10,14 +10,16 @@
 
 console.log("machine learning trainer start\n");
 
-var do_partial_classification = true
+var do_spell_correction_test = false
+var do_compare_approach = false
+var do_partial_classification = false
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
-var do_small_temporary_test = false;
+var do_small_temporary_test = false
 var do_small_temporary_serialization_test = false;
-var do_learning_curves = false
-var do_cross_dataset_testing = false;
+var do_learning_curves = true
+var do_cross_dataset_testing = false
 var do_learning_curves_dialogue = false
 var do_final_test = false;
 var do_cross_validation = false;
@@ -668,19 +670,154 @@ if (naive)
 
 	}
 
+if (do_compare_approach)
+	{
+	dataset = [
+		    // "5_woz_ncagent_turkers_negonlp2ncAMT.json",
+		    "nlu_ncagent_students_negonlpnc.json",
+		    "nlu_ncagent_turkers_negonlpncAMT.json"
+			]
+	data = []
+
+	_.each(dataset, function(value, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+	})
+
+	data = _.shuffle(data)
+	data = _.sample(data, 200)
+	dataset = partitions.partition(data, 1, Math.round(data.length*0.5))
+
+
+	var composite = new classifier.SvmPerfClassifier
+	composite.trainBatch(dataset['train'])
+
+	var component = new classifier.PartialClassificationEqually
+	component.trainBatch(dataset['train'])
+
+	_.each(dataset['test'], function(value, key, list){
+		actual_composite = composite.classify(value.input, 50, true)
+		actual_component = component.classify(value.input, 50, true)
+		// console.log(actual_component)
+		// console.log(value)
+		// console.log(actual_component)
+		// process.exit(0)
+		var amb = trainutils.intent_attr_label_ambiguity(actual_component.classes)
+
+
+		// if (amb.length>0)
+			{
+			var gen = trainutils.generate_labels(actual_component.classes)
+			console.log(value)
+			console.log(gen)
+			console.log(actual_component.classes)
+			console.log(actual_composite.classes)
+			// process.exit(0)
+			_.each(gen, function(lab, key, list){
+				console.log(lab)
+				console.log(actual_composite['scores'][lab])	 
+			}, this)
+			console.log("------------------------------------------")
+
+			}
+
+		// console.log("------------------------------------------")
+
+		// console.log("___________________-")
+		// console.log(actual_component.classes)
+		// console.log(trainutils.generate_labels(actual_component.classes))
+		// console.log()
+		// process.exit(0)
+		// trainutils.generate_labels
+		// if (amb.length > 0)
+		// 	{
+
+		// 	console.log("_________________________________")
+		// 	console.log(amb)
+		// 	console.log(value)
+		// 	console.log(actual_composite)
+		// 	console.log(actual_component)
+		// 	process.exit(0)
+		// 	}
+	}, this)
+		// trainutils.intent_attr_label_ambiguity = function(output)
+
+	console.log()
+	process.exit(0)
+	}
+
+if (do_spell_correction_test)
+	{
+	var a= ["iam speak english . france and am a good team manager ",
+		// "but i can work as aprogrammer if you pay to me 9000",
+		// "nd give me 9000",
+		// "i will give you 9000 but with pensino fund 10%",
+		// "yes i can start from tomorrwo if you want",
+		// "yes i honour to be one of your company ",
+		// "yeah surethere are know anavaliable job ",
+		// "as asalary",
+		// "dou you want alealesed car",
+		// "but we will incrase the working hour to 10 hours you agree?",
+		"Thank you very mush",
+		// " i'm here to gitting a jop  can u tell me about the work here in this company "
+	]
+
+	var dataset = [
+			    "0_grammar.json",
+				"1_woz_kbagent_students.json",
+				"1_woz_kbagent_students1class.json",
+				"2_experts.json",
+				"2_experts1class.json",
+				"4_various.json",
+				"4_various1class.json",
+				"6_expert.json",
+				"3_woz_kbagent_turkers_negonlp2.json",
+				"5_woz_ncagent_turkers_negonlp2ncAMT.json",
+				"nlu_kbagent_turkers_negonlpAMT.json",
+				"nlu_ncagent_students_negonlpnc.json",
+				"nlu_ncagent_turkers_negonlpncAMT.json",
+				"woz_kbagent_students_negonlp.json"
+			]
+	var data = []
+	_.each(dataset, function(value, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+	})
+
+	data = _.shuffle(data)
+
+	var composite = new classifier.SvmPerfClassifier
+	composite.trainBatch(data)
+
+	_.each(a, function(sen, key, list){ 
+		console.log(sen)
+		_.each(sen.split(" "), function(value, key, list){ 
+			if (!(composite.spellChecker.exists(value)))
+			{	
+				var suggestions = composite.spellChecker.suggest(value); // If feature exists, returns empty. Otherwise, returns ordered list of suggested corrections from the training set.
+				// if (suggestions.length!=0) 
+					{
+					console.log("'"+value+"'")
+					console.log(suggestions)
+					}
+			}
+		}, this)
+	}, this)
+
+	console.log()
+	process.exit(0)
+
+	}
+
 if (do_partial_classification)
 	{
 	// a= ['{"Insist":"Working Hours"}','{"Offer":{"Job Description":"Programmer"}}','{"Offer":{"Working Hours":"10 hours"}}']
-	// a = [{"input":"Okay. I 20k agree. I can't lease you the car with a 20% pension.","output":["{\"Accept\":\"previous\"}","{\"Insist\":\"Leased Car\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:35:57.698Z"}]
+	// a = [{"input":"Okay. pension fund 10%, salary I 20,000 NIS agree.","output":["{\"Accept\":\"previous\"}","{\"Insist\":\"Leased Car\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:35:57.698Z"}]
 	// a = [{"input":"Okay. I 20k agree. I accept lease you the car with a 20% pension.","output":["{\"Accept\":\"previous\"}","{\"Insist\":\"Leased Car\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:35:57.698Z"}]
 	// a = [{"input":"Buy it with your own money.","output":[{"Reject":"Leased Car"}],"is_correct":false,"timestamp":"2013-10-07T13:30:54.177Z"}]
 	// a = [{"input":"its a little bit high dont you think?","output":["{\"Reject\":\"Salary\"}"],"is_correct":true,"timestamp":"2013-09-09T16:55:42.510Z"}]
 	dataset = [
-			    "5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			    // "5_woz_ncagent_turkers_negonlp2ncAMT.json",
 			    "nlu_ncagent_students_negonlpnc.json",
 			    "nlu_ncagent_turkers_negonlpncAMT.json"
-			   // "usd-7_short.json"
-			// // "nlu_kbagent_turkers_negonlpAMT.json"
 			]
 	data = []
 	_.each(dataset, function(value, key, list){ 
@@ -689,6 +826,18 @@ if (do_partial_classification)
 
 	data = _.shuffle(data)
 
+
+	// labhash = {}
+
+	// _.each(data, function(value, key, list){ 
+		// _.each(value.output, function(lab, key, list){ 
+			// if (!(lab in labhash))
+			// labhash[lab] = 1
+		// }, this)
+	// }, this)
+
+	// console.log(Object.keys(labhash))
+	// process.exit(0)
 	// sa = trainutils.intent_attr_dataset_ambiguity(data)
 	// console.log(JSON.stringify(sa, null, 4))
 	// console.log(sa.length)
@@ -697,23 +846,48 @@ if (do_partial_classification)
 	// console.log(trainutils.bars_original(data))
 	// process.exit(0)
 	// test = trainutils.clonedataset(data)
+	// console.log(trainutils.intent_attr_matrix(data))
+	// process.exit(0)
+
 	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
 
-	// stats = trainAndTest_hash(createNewClassifier, _.sample(data,500), _.sample(test,100), 5)
-	// stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
-	stats = trainAndTestLite(createNewClassifier, dataset['train'], dataset['test'], 5)
-	
-	// console.log(JSON.stringify(trainutils.confusion_matrix(stats[0]), null, 4))
 
+	// dataset['test'] = [{"input":"how about 10,000 NIS, QA, no agreement on pension, no agreement on car","output":["{\"Offer\":{\"Salary\":\"10,000 NIS\"}}", "{\"Offer\":{\"Job Description\":\"QA\"}}", "{\"Offer\":{\"Leased Car\":\"No agreement\"}}", "{\"Offer\":{\"Pension Fund\":\"No agreement\"}}"],"is_correct":true,"timestamp":"2013-09-09T16:55:44.244Z"}]
+
+// dataset['test'] = [{"input":"QA job","output":["{\"Offer\":{\"Job Description\":\"QA\"}}"],"is_correct":true,"timestamp":"2013-09-09T16:55:45.400Z"}]
+// classifier.PartialClassificationEquallyIS
+// classifier.PartialClassificationEqually
+	// stats = trainAndTest_hash(createNewClassifier, _.sample(data,500), _.sample(test,100), 5)
+	stats = trainAndTest_hash(createNewClassifier, dataset['train'], dataset['test'], 5)
+	// stats = trainAndTest_hash(createNewClassifier, data, a, 5)
+	console.log(JSON.stringify(stats, null, 4))
+
+process.exit(0)
+
+
+	// stats = trainAndTestLite(createNewClassifier, dataset['train'], dataset['test'], 5)
+
+	console.log(JSON.stringify(stats, null, 4))
 	console.log()
 	process.exit(0)
-	console.log(trainutils.hash_to_htmltable(trainutils.confusion_matrix(stats[0])))
-	console.log()
-	process.exit(0)
+	// console.log(JSON.stringify(stats[0], null, 4))
+	// console.log(JSON.stringify(stats[0]['labels'], null, 4))
+
+
+	// console.log(JSON.stringify(trainutils.confusion_matrix(stats[0]), null, 4))
+	// console.log()
+	// process.exit(0)
+	// console.log(trainutils.hash_to_htmltable(trainutils.confusion_matrix(stats[2])))
+	// console.log()
+	// process.exit(0)
+	// stat = trainAndTest_hash(classifier.PartialClassificationEquallyIS, dataset['train'], dataset['test'], 5)
+	// console.log(trainutils.hash_to_htmltable(trainutils.confusion_matrix(stat[2])))
+	// process.exit(0)
+
 
 
 	console.log(stats[0]['stats'])
-		console.log(stats[1]['stats'])
+	onsole.log(stats[1]['stats'])
 
 	console.log(stats[2]['stats'])
 
@@ -979,17 +1153,36 @@ if (do_small_temporary_test) {
 
 if (do_learning_curves_dialogue)
 	{
-	dataset = JSON.parse(fs.readFileSync("datasets/Dialogue.json"))
-	dataset = _.shuffle(dataset)
+	dataset = [
+		// "5_woz_dialogue.json",
+		"students.json",
+		"turkers.json"
+		]
+	data = []
+	_.each(dataset, function(value, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/Dialogue/"+value)))
+	})
+
+	data = _.shuffle(data)
 
 	classifiers  = {
-		SVM_SeparatedAfter: classifier.SvmOutputPartialEqually,
-		SVM_SeparatedClassification: classifier.PartialClassificationEqually
+		// SVM_SeparatedAfter: classifier.SvmOutputPartialEqually,
+		// SVM_SeparatedClassification: classifier.PartialClassificationEqually,
+		// SVM_SeparatedClassification_IS: classifier.PartialClassificationEquallyIS
+	
+		// SVM_SeparatedAfter: classifier.SvmOutputPartialAttVal,
+		// SVM_SeparatedClassification: classifier.PartialClassificationAttVal,
+		// SVM_SeparatedClassification_IS: classifier.PartialClassificationAttValIS
+
+		PartialClassificationEquallyGreedyISNoTrick: classifier.PartialClassificationEquallyGreedyISNoTrick,
+		PartialClassificationEquallyGreedyISTrick: classifier.PartialClassificationEquallyGreedyISTrick,
+		SVM: classifier.SvmPerfClassifier,
+		Homer: classifier.HomerWinnow
 		};
 
 	// parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
 	parameters = ['F1', 'Precision','Recall']
-	curves.learning_curves(classifiers, dataset, parameters, 2, 5)
+	curves.learning_curves(classifiers, data, parameters, 1, 5)
 	}
 
 if (do_learning_curves) {
@@ -1015,9 +1208,9 @@ if (do_learning_curves) {
 		 //SVM_Separated: classifier.SvmPerfClassifierPartial,
 		// Intent_Attribute_Value: classifier.PartialClassificationEqually
 		//New_approach: classifier.PartialClassificationEquallyNoOutput, 
-		SVM_SeparatedAfter: classifier.SvmOutputPartialEqually,
-		SVM_SeparatedClassification: classifier.PartialClassificationEqually,
-		SVM_SeparatedClassification_IS: classifier.PartialClassificationEquallyIS
+		// SVM_SeparatedAfter: classifier.SvmOutputPartialEqually,
+		// SVM_SeparatedClassification: classifier.PartialClassificationEqually,
+		// SVM_SeparatedClassification_IS: classifier.PartialClassificationEquallyIS
 
 		// Intent_Attribute_AttributeValue: classifier.PartialClassificationVersion1,
 		// Intent_AttributeValue: classifier.PartialClassificationVersion2,
@@ -1030,6 +1223,14 @@ if (do_learning_curves) {
 
 	// HomerAdaboost: classifier.HomerAdaboostClassifier,
 	// Adaboost: classifier.AdaboostClassifier, 
+
+	// SVM: classifier.SvmPerfClassifier,
+	// Homer: classifier.HomerWinnow,
+	// PartialClassificationEquallyGreedy: classifier.PartialClassificationEquallyGreedy,
+		PartialClassificationEquallyGreedyISNoTrick: classifier.PartialClassificationEquallyGreedyISNoTrick,
+		PartialClassificationEquallyGreedyISTrick: classifier.PartialClassificationEquallyGreedyISTrick,
+		SVM: classifier.SvmPerfClassifier,
+	
 	};
 
 	// parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']

@@ -382,7 +382,7 @@
 2013-09-29T17:09:42.458Z^24^NaN^"Let's agree on 9 hours, but be flexible"^201.157.3.71:2013-09-29T17:04:19.970Z^Employer^1550^Message
 2013-09-29T17:09:42.458Z^25^NaN^{"translate":[{"Offer":{"Working Hours":"9 hours"}}],"text":"Let's agree on 9 hours, but be flexible"}^201.157.3.71:2013-09-29T17:04:19.970Z^Employer^1550^Translation
 2013-09-29T17:09:42.458Z^26^NaN^"I don't accept your offer about {\"Working Hours\":\"9 hours\"}. I can't work more than 8 hours"^NegoChatAgent2013-09-29T17:09:46.181Z^Candidate^1545^Message
-2013-09-29T17:09:42.458Z^27^NaN^"I need you to work 10 hours. but 9 will do"^201.157.3.71:2013-09-29T17:04:19.970Z^Employer^1520^Message
+2013-09-29T17:09:42.458Z^27^NaN^"9 working hours."^201.157.3.71:2013-09-29T17:04:19.970Z^Employer^1520^Message
 2013-09-29T17:09:42.458Z^28^NaN^{"translate":[{"Offer":{"Working Hours":"10 hours"}},{"Offer":{"Working Hours":"9 hours"}}],"text":"I need you to work 10 hours. but 9 will do"}^201.157.3.71:2013-09-29T17:04:19.970Z^Employer^1520^Translation
 2013-09-29T17:09:42.458Z^29^NaN^"I cannot agree to {\"Working Hours\":\"9 hours\"}. I would like to get 8 hours a day"^NegoChatAgent2013-09-29T17:09:46.181Z^Candidate^1510^Message
 2013-09-29T17:09:42.458Z^30^NaN^"Since time is running out and we are losing points, I am once again suggesting Working Hours : 8 hours"^NegoChatAgent2013-09-29T17:09:46.181Z^Candidate^1480^Message
@@ -2248,7 +2248,7 @@
 2013-10-04T10:13:13.377Z^23^NaN^"Since time is running out and we are losing points, I am once again suggesting Salary : 20,000 NIS"^NegoChatAgent2013-10-04T10:13:16.889Z^Candidate^1425^Message
 2013-10-04T10:13:13.377Z^24^NaN^"hi I WILL PAY YOU 7000nis"^122.169.189.161:2013-10-04T10:07:28.650Z^Employer^1405^Message
 2013-10-04T10:13:13.377Z^25^NaN^"I want 20000"^NegoChatAgent2013-10-04T10:13:16.889Z^Candidate^1400^Message
-2013-10-04T10:13:13.377Z^26^NaN^"7000NIS"^122.169.189.161:2013-10-04T10:07:28.650Z^Employer^1385^Message
+2013-10-04T10:13:13.377Z^26^NaN^"7000 NIS"^122.169.189.161:2013-10-04T10:07:28.650Z^Employer^1385^Message
 2013-10-04T10:13:13.377Z^27^NaN^"I want 20,000 NIS"^NegoChatAgent2013-10-04T10:13:16.889Z^Candidate^1375^Message
 2013-10-04T10:13:13.377Z^28^NaN^"7000 NIS FOR A PTOGGRAMER"^122.169.189.161:2013-10-04T10:07:28.650Z^Employer^1370^Message
 2013-10-04T10:13:13.377Z^29^NaN^{"translate":[{"Offer":{"Salary":"7,000 NIS"}}],"text":"7000 NIS FOR A PTOGGRAMER"}^122.169.189.161:2013-10-04T10:07:28.650Z^Employer^1370^Translation
@@ -2612,7 +2612,6 @@
 2013-10-04T11:28:14.930Z^12^NaN^"I agree to a wage of 20000 NIS"^NegoChatAgent2013-10-04T11:28:18.176Z^Candidate^1700^Message
 2013-10-04T11:28:14.930Z^13^NaN^"We can start at 12,000 and work your way up to 20,000"^74.243.190.197:2013-10-04T11:22:02.214Z^Employer^1695^Message
 2013-10-04T11:28:14.930Z^14^NaN^{"translate":[{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Salary":"20,000 NIS"}}],"text":"We can start at 12,000 and work your way up to 20,000"}^74.243.190.197:2013-10-04T11:22:02.214Z^Employer^1695^Translation
-2013-10-04T11:28:14.930Z^15^NaN^""^NegoChatAgent2013-10-04T11:28:18.176Z^Candidate^1690^Message
 2013-10-04T11:28:14.930Z^16^NaN^"what say you?"^74.243.190.197:2013-10-04T11:22:02.214Z^Employer^1670^Message
 2013-10-04T11:28:14.930Z^17^NaN^"do you agree to start with 12,000"^74.243.190.197:2013-10-04T11:22:02.214Z^Employer^1655^Message
 2013-10-04T11:28:14.930Z^18^NaN^{"translate":[{"Offer":{"Salary":"12,000 NIS"}}],"text":"do you agree to start with 12,000"}^74.243.190.197:2013-10-04T11:22:02.214Z^Employer^1655^Translation
@@ -2640,11 +2639,9 @@
 2013-10-04T11:28:14.930Z^40^NaN^"agreed"^74.243.190.197:2013-10-04T11:22:02.214Z^Employer^1485^Message
 2013-10-04T11:28:14.930Z^41^NaN^{"translate":[{"Accept":"previous"}],"text":"agreed"}^74.243.190.197:2013-10-04T11:22:02.214Z^Employer^1485^Translation
 2013-10-04T11:28:14.930Z^42^NaN^"I'm happy that you accept.{\"Promotion Possibilities\":\"Fast promotion track\"}"^NegoChatAgent2013-10-04T11:28:18.176Z^Candidate^1480^Message
-2013-10-04T11:28:14.930Z^43^NaN^""^NegoChatAgent2013-10-04T11:28:18.176Z^Candidate^1480^Message
 2013-10-04T11:28:14.930Z^44^NaN^"I guess we discuss everything and we can sign the agreement"^NegoChatAgent2013-10-04T11:28:18.176Z^Candidate^1450^Message
 2013-10-04T11:28:14.930Z^45^NaN^"trying to sign the agreement"^74.243.190.197:2013-10-04T11:22:02.214Z^Employer^1415^Message
 2013-10-04T11:28:14.930Z^46^NaN^{"translate":[{"Accept":"previous"}],"text":"trying to sign the agreement"}^74.243.190.197:2013-10-04T11:22:02.214Z^Employer^1415^Translation
-2013-10-04T11:28:14.930Z^47^NaN^""^74.243.190.197:2013-10-04T11:22:02.214Z^Employer^1215^Message
 2013-10-04T11:28:14.930Z^49^NaN^""^NegoChatAgent2013-10-04T11:28:18.176Z^Candidate^0^Disconnect
 2013-10-04T11:28:14.930Z^51^NaN^""^74.243.190.197:2013-10-04T11:22:02.214Z^Employer^-5^Disconnect
 2013-10-04T11:42:15.834Z^1^NaN^""^NegoChatAgent2013-10-04T11:42:19.222Z^Candidate^-^Connect
@@ -2887,7 +2884,7 @@
 2013-10-04T14:05:23.326Z^17^Salary^20,000 NIS^213.57.149.226:2013-10-04T14:02:30.145Z^Employer^1755^Change
 2013-10-04T14:05:23.326Z^18^NaN^"I'm offer 20000"^NegoChatAgent2013-10-04T14:05:26.813Z^Candidate^1750^Message
 2013-10-04T14:05:23.326Z^19^NaN^"Salary 20000 NIS"^NegoChatAgent2013-10-04T14:05:26.813Z^Candidate^1725^Message
-2013-10-04T14:05:23.326Z^20^NaN^"12 NIS, programmer,without liased car"^213.57.149.226:2013-10-04T14:02:30.145Z^Employer^1710^Message
+2013-10-04T14:05:23.326Z^20^NaN^"12000 NIS, programmer,without liased car"^213.57.149.226:2013-10-04T14:02:30.145Z^Employer^1710^Message
 2013-10-04T14:05:23.326Z^21^NaN^{"translate":[{"Offer":{"Salary":"12,000 NIS"}},{"Offer":{"Job Description":"Programmer"}}],"text":"12 NIS, programmer,without liased car"}^213.57.149.226:2013-10-04T14:02:30.145Z^Employer^1710^Translation
 2013-10-04T14:05:23.326Z^22^NaN^""^NegoChatAgent2013-10-04T14:05:26.813Z^Candidate^1705^Message
 2013-10-04T14:05:23.326Z^23^NaN^"12000 NIS"^213.57.149.226:2013-10-04T14:02:30.145Z^Employer^1695^Message
@@ -3130,7 +3127,7 @@
 2013-10-05T16:54:09.217Z^89^NaN^"Your offer {\"Working Hours\":\"8 hours\"} is unacceptable. Can you work 10 hours?"^NegoChatAgent2013-10-05T16:54:12.536Z^Employer^1115^Message
 2013-10-05T16:54:09.217Z^90^NaN^"no"^46.120.77.237:2013-10-05T16:45:52.992Z^Candidate^1100^Message
 2013-10-05T16:54:09.217Z^91^NaN^{"translate":[{"Reject":"previous"}],"text":"no"}^46.120.77.237:2013-10-05T16:45:52.992Z^Candidate^1100^Translation
-2013-10-05T16:54:09.217Z^92^NaN^"i can live with 9 hours. But I must change our previous agreement. Pension Fund 20%, So are you saying programmer? and work for 7000NIS"^NegoChatAgent2013-10-05T16:54:12.536Z^Employer^1095^Message
+2013-10-05T16:54:09.217Z^92^NaN^"i can live with 9 hours. But I must change our previous agreement. Pension Fund 20%, So are you saying programmer? and work for 7000 NIS"^NegoChatAgent2013-10-05T16:54:12.536Z^Employer^1095^Message
 2013-10-05T16:54:09.217Z^93^NaN^"absolutely not!! only project manager"^46.120.77.237:2013-10-05T16:45:52.992Z^Candidate^1065^Message
 2013-10-05T16:54:09.217Z^94^NaN^{"translate":[{"Offer":{"Job Description":"Project Manager"}}],"text":"absolutely not!! only project manager"}^46.120.77.237:2013-10-05T16:45:52.992Z^Candidate^1065^Translation
 2013-10-05T16:54:09.217Z^95^NaN^"I don't accept your offer about {\"Job Description\":\"Project Manager\"}. programmer"^NegoChatAgent2013-10-05T16:54:12.536Z^Employer^1060^Message
@@ -19201,7 +19198,7 @@
 2014-03-10T07:15:41.184Z^13^^"how about 7000?"^NegoChatAgent2014-03-10T07:15:44.552Z^Employer^1620^Message
 2014-03-10T07:15:41.184Z^14^Job Description^Programmer^213.57.152.113:2014-03-10T06:55:21.427Z^Candidate^1610^Change
 2014-03-10T07:15:41.184Z^15^Leased Car^No agreement^213.57.152.113:2014-03-10T06:55:21.427Z^Candidate^1605^Change
-2014-03-10T07:15:41.184Z^16^^"work for 7000NIS"^NegoChatAgent2014-03-10T07:15:44.552Z^Employer^1600^Message
+2014-03-10T07:15:41.184Z^16^^"work for 7000 NIS"^NegoChatAgent2014-03-10T07:15:44.552Z^Employer^1600^Message
 2014-03-10T07:15:41.184Z^17^Leased Car^Without leased car^213.57.152.113:2014-03-10T06:55:21.427Z^Candidate^1595^Change
 2014-03-10T07:15:41.184Z^18^^"How about 7,000?"^NegoChatAgent2014-03-10T07:15:44.552Z^Employer^1580^Message
 2014-03-10T07:15:41.184Z^19^^"hi"^213.57.152.113:2014-03-10T06:55:21.427Z^Candidate^1575^Message
@@ -22354,7 +22351,7 @@
 2014-03-31T08:39:59.826Z^3^^"hello"^37.19.127.230:2014-03-31T08:38:23.892Z^Candidate^1800^Message
 2014-03-31T08:39:59.826Z^4^^{"translate":[{"Greet":true}],"text":"hello"}^37.19.127.230:2014-03-31T08:38:23.892Z^Candidate^1800^Translation
 2014-03-31T08:39:59.826Z^5^^"Hello, I hope that we can come to an agreement"^NegoChatAgent2014-03-31T08:40:03.154Z^Employer^1800^Message
-2014-03-31T08:39:59.826Z^6^^"work for 7000NIS"^NegoChatAgent2014-03-31T08:40:03.154Z^Employer^1795^Message
+2014-03-31T08:39:59.826Z^6^^"work for 7000 NIS"^NegoChatAgent2014-03-31T08:40:03.154Z^Employer^1795^Message
 2014-03-31T08:39:59.826Z^7^^"No, let's go for 12000 NIS"^37.19.127.230:2014-03-31T08:38:23.892Z^Candidate^1785^Message
 2014-03-31T08:39:59.826Z^8^^{"translate":[{"Offer":{"Salary":"12,000 NIS"}}],"text":"No, let's go for 12000 NIS"}^37.19.127.230:2014-03-31T08:38:23.892Z^Candidate^1785^Translation
 2014-03-31T08:39:59.826Z^9^^"Your offer 12,000 NIS,  is acceptable. Now let's talk about the other issues. Programmer"^NegoChatAgent2014-03-31T08:40:03.154Z^Employer^1785^Message

@@ -13,6 +13,7 @@
 var extend = require('util')._extend;
 var fs = require('fs');
 var limdu = require("limdu");
+var trainutils = require('limdu/utils/bars')
 
 var classifiers = limdu.classifiers;
 var ftrs = limdu.features;
@@ -111,6 +112,11 @@ var SvmLinearMulticlassifier = classifiers.SvmLinear.bind(0, {
  * MULTI-LABEL CLASSIFIERS (used as basis to other classifiers):
  */
 
+var RulebasedClassifier = classifiers.multilabel.Rulebased.bind(0, {
+	// ngram_length: 2,
+	// iterations: 2000
+});
+
 var AdaboostClassifier = classifiers.multilabel.Adaboost.bind(0, {
 	ngram_length: 2,
 	iterations: 2000
@@ -178,13 +184,12 @@ var BayesSegmenter = classifiers.EnhancedClassifier.bind(0, {
  * CONSTRUCTORS:
  */
 
- var enhance3 = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel, IS) {
+ var enhanceis = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
-		// inputSplitter: inputSplitter,
-		inputSplitter: IS,
+		inputSplitter: inputSplitter,
 
-		//spellChecker: require('wordsworth').getInstance(),
+		// spellChecker: require('wordsworth').getInstance(),
 		featureExtractor: featureExtractor,
 		
 		featureLookupTable: featureLookupTable,
@@ -205,12 +210,40 @@ var BayesSegmenter = classifiers.EnhancedClassifier.bind(0, {
 	});
 };
 
-var enhance2 = function (classifierType) {
+ var enhance3 = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel) {
+	return classifiers.EnhancedClassifier.bind(0, {
+		normalizer: normalizer,
+		// inputSplitter: inputSplitter,
+		// inputSplitter: IS,
+
+		// spellChecker: require('wordsworth').getInstance(),
+		featureExtractor: featureExtractor,
+		
+		featureLookupTable: featureLookupTable,
+		labelLookupTable: labelLookupTable,
+		
+		featureExtractorForClassification: [
+			ftrs.Hypernyms(JSON.parse(fs.readFileSync('knowledgeresources/hypernyms.json'))),
+		],
+
+		multiplyFeaturesByIDF: true,
+		//minFeatureDocumentFrequency: 2,
+		pastTrainingSamples: [], // to enable retraining
+		classifierType: classifierType,
+
+		InputSplitLabel: InputSplitLabel,
+		OutputSplitLabel: OutputSplitLabel,
+		TestSplitLabel: TestSplitLabel
+	});
+};
+
+var enhance2 = function (classifierType, TestSplitLabel) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
 		inputSplitter: inputSplitter,
 		pastTrainingSamples: [], // to enable retraining
 		classifierType: classifierType,
+		TestSplitLabel: TestSplitLabel
 	});
 };
 
@@ -218,7 +251,7 @@ var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
 		inputSplitter: inputSplitter,
-		//spellChecker: require('wordsworth').getInstance(),
+		// spellChecker: require('wordsworth').getInstance(),
 		featureExtractor: featureExtractor,
 		
 		featureLookupTable: featureLookupTable,
@@ -282,6 +315,8 @@ module.exports = {
 		HomerAdaboostClassifier: enhance2(homer(AdaboostClassifier)), 
 		AdaboostClassifier: enhance2(AdaboostClassifier), 
 
+		RulebasedClassifier: enhance2(RulebasedClassifier, Hierarchy.splitPartEquallyIntent),
+
 		WinnowClassifier: enhance(WinnowBinaryRelevanceClassifier),
 		BayesClassifier: enhance(BayesBinaryRelevanceClassifier),
 		SvmPerfClassifier: enhance(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
@@ -315,14 +350,22 @@ module.exports = {
 
 		// PartialClassificationEquallyPlace: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.OrderLabelJoin,  undefined),
 		// at the input separate the labels to intent/attribute/value then join them in greedy approach
-		PartialClassificationEquallyGreedy: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.greedyLabelJoin,  undefined),
+		PartialClassificationEquallyGreedy: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_label),
+		PartialClassificationEquallyGreedyISTrick: enhanceis(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_label_trick),
+		PartialClassificationEquallyGreedyISNoTrick: enhanceis(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_label_no_trick),
+
 		// separate to intent/attribute/value then retrieve just intent and test only on intent
 		PartialClassificationEquallyIntent: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent),
 		PartialClassificationEqually: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually, undefined),
-	 	PartialClassificationEquallyIS: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually, inputSplitter),
+	 	PartialClassificationEquallyIS: enhanceis(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
 
 	 	// svm train on the standard labels then on output separate labels
 	 	SvmOutputPartialEqually: enhance3(SvmPerfBinaryRelevanceClassifier,new ftrs.FeatureLookupTable(),undefined, undefined, Hierarchy.splitPartEqually,  Hierarchy.splitPartEqually),
+
+
+	 	PartialClassificationAttValIS: enhanceis(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartVersion2, undefined,  Hierarchy.splitPartVersion2),
+	 	PartialClassificationAttVal: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartVersion2, undefined,  Hierarchy.splitPartVersion2),
+	 	SvmOutputPartialAttVal: enhance3(SvmPerfBinaryRelevanceClassifier,new ftrs.FeatureLookupTable(),undefined, undefined, Hierarchy.splitPartVersion2,  Hierarchy.splitPartVersion2),
 
 		PartialClassificationJustTwo: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartVersion2, Hierarchy.splitPartVersion2),
 		SvmPerfClassifierPartial: enhance3(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable(),undefined,undefined,Hierarchy.splitPartEqually),
@@ -331,9 +374,12 @@ module.exports = {
 
 // module.exports.defaultClassifier = module.exports.SvmOutputPartialEqually;
 // module.exports.defaultClassifier = module.exports.PartialClassificationEquallyPlace;
-module.exports.defaultClassifier = module.exports.PartialClassificationEqually
 // module.exports.defaultClassifier = module.exports.HomerWinnow;
 // module.exports.defaultClassifier = module.exports.SvmPerfClassifier
 
+// module.exports.defaultClassifier = module.exports.PartialClassificationEqually
+// module.exports.defaultClassifier = module.exports.RulebasedClassifier
+module.exports.defaultClassifier = module.exports.PartialClassificationEquallyGreedy
+// module.exports.defaultClassifier = module.exports.SvmPerfClassifier
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
