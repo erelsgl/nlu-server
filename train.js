@@ -10,7 +10,7 @@
 
 console.log("machine learning trainer start\n");
 
-var test_egypt = true
+var test_egypt = false
 var test_segmentation = false
 var do_spell_correction_test = false
 var do_compare_approach = false
@@ -19,14 +19,14 @@ var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
 var do_small_temporary_test = false
-var do_small_temporary_serialization_test = false;
+var do_small_temporary_serialization_test = false
 var do_learning_curves = false
 var do_cross_dataset_testing = false
 var do_learning_curves_dialogue = false
-var do_final_test = false;
-var do_cross_validation = false;
-var do_serialization = false;
-var do_test_on_training_data = false;
+var do_final_test = false
+var do_cross_validation = false
+var do_serialization = true
+var do_test_on_training_data = false
 var do_small_temporary_test_dataset = false
 var do_small_test_multi_threshold = false
 var naive = false
@@ -1623,7 +1623,7 @@ if (do_cross_validation) {
 
 if (do_serialization) {
 	verbosity=0;
-		["Employer", "Candidate"].forEach(function(classifierName) {
+		["Employer-egypt-translate", "Employer-egypt-generate", "Employer-egypt"].forEach(function(classifierName) {
 		console.log("\nBuilding classifier for "+classifierName);
 		var classifier = createNewClassifier();
 		var jsonEmpty = classifier.toJSON();  // just to check that it works

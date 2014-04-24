@@ -37,4 +37,4 @@
 {"input":"will yo sign the agreement","output":[{"Accept":"previous"},{"Query":"accept"}],"is_correct":false,"timestamp":"2013-10-10T18:28:25.241Z"},
 {"input":"actually i need you work 10 hours for an agreement","output":[{"Insist":"Working Hours"},{"Offer":{"Working Hours":"10 hours"}}],"is_correct":false,"timestamp":"2013-10-10T18:30:35.851Z"},
 {"input":"No agreement","output":[{"Reject":"previous"}],"is_correct":false,"timestamp":"2013-10-11T09:39:04.601Z"},
-]{"input":"but i feel as given the maximum amount salary it is fair to relinquish the company car","output":[{"Reject":"Leased Car"}],"is_correct":false,"timestamp":"2013-10-10T18:32:37.697Z"},
+{"input":"but i feel as given the maximum amount salary it is fair to relinquish the company car","output":[{"Reject":"Leased Car"}],"is_correct":false,"timestamp":"2013-10-10T18:32:37.697Z"}]

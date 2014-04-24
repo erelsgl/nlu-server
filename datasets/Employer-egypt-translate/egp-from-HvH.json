@@ -1,0 +1,130 @@
+[ {"input":"","output":[]}
+ , {"input":"hi","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-04-23T09:06:48.417Z"}
+, {"input":"good after noon","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2014-04-23T09:06:53.985Z"}
+, {"input":"good but i need u to wort as programmer ","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:08:51.575Z"}
+, {"input":"no i will give you 5400 ","output":["{\"Offer\":{\"Salary\":\"5,400 EGP\"}}","{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:09:45.767Z"}
+, {"input":"i know but i cannot pay you more than 5400","output":["{\"Offer\":{\"Salary\":\"5,400 EGP\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:10:01.745Z"}
+, {"input":"i will give you 9000 but with pensino fund 10%","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Salary\":\"9,000 EGP\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:10:20.328Z"}
+, {"input":"okay that is good ","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2014-04-23T09:10:27.037Z"}
+, {"input":"now u can consider youself accepted ","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:10:34.730Z"}
+, {"input":"i wish that ","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:10:41.916Z"}
+, {"input":"you will work as programmer with salary 9000 and leased car","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Salary\":\"9,000 EGP\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:11:05.760Z"}
+, {"input":"and your promotion possibilities will be fast and you will work 8 hours aday","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:11:16.693Z"}
+, {"input":"that is satisfied to you ?","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2014-04-23T09:11:26.042Z"}
+, {"input":"that is ok ","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2014-04-23T09:11:34.571Z"}
+, {"input":"good afteroon mr osama","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2014-04-23T09:12:16.662Z"}
+, {"input":"ok . may i know what terms you are looking for?","output":["{\"Accept\":\"previous\"}", "{\"Query\":\"bid\"}"],"is_correct":false,"timestamp":"2014-04-23T09:12:30.056Z"}
+, {"input":"sorry but i want a team manager","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:12:38.695Z"}
+, {"input":"ok i see your C.V and i like it much but i think iam going to make a great use of you in the position of team manager","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:13:03.734Z"}
+, {"input":"ok . your salary will be 3,150 EGP ","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Salary\":\"3,150 EGP\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:13:29.641Z"}
+, {"input":"the company will lese you a car and a pension  reach to 20%  ","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:13:56.582Z"}
+, {"input":" all imy company can afford to pay for you is 3,150 EGP","output":["{\"Offer\":{\"Salary\":\"3,150 EGP\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:14:02.844Z"}
+, {"input":"sorry i cant pay more . but as you like in the term of choosing car","output":["{\"Reject\":\"Salary\"}"],"is_correct":false,"timestamp":"2014-04-23T09:14:21.758Z"}
+, {"input":"you mean 3.150","output":["{\"Offer\":{\"Salary\":\"3,150 EGP\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:14:36.259Z"}
+, {"input":"sorry but the company lese a car for its employees","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:14:49.224Z"}
+, {"input":"and i accept you as a project maager so now you are the one who will make the last choice","output":["{\"Accept\":\"Job Description\"}"],"is_correct":false,"timestamp":"2014-04-23T09:15:15.753Z"}
+, {"input":"i need you on team manger","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:15:30.013Z"}
+, {"input":"ok but your salary will be 3,150","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Salary\":\"3,150 EGP\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:15:51.554Z"}
+, {"input":"ok but your promotion will be slow","output":["{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:15:57.001Z"}
+, {"input":"no if u get one your pension fund will be 10% you agree ore a","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:16:24.862Z"}
+, {"input":"ok ","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2014-04-23T09:16:28.699Z"}
+, {"input":"your work hours will be 8 hours","output":["{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:16:36.179Z"}
+, {"input":"very nice too meet you bye","output":["{\"Quit\":true}"],"is_correct":true,"timestamp":"2014-04-23T09:17:00.445Z"}
+, {"input":"hi i need a new workers for programming ","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:17:08.471Z"}
+, {"input":"but if you worked as a programmer you will recieve 5400 as a monthly salary","output":["{\"Offer\":{\"Salary\":\"5,400 EGP\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:17:19.186Z"}
+, {"input":"okey but you will work for 10 hours ","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:17:33.929Z"}
+, {"input":"no i think this impossible ","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:17:40.296Z"}
+, {"input":"with only 3150 for the salary","output":["{\"Offer\":{\"Salary\":\"3,150 EGP\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:17:44.966Z"}
+, {"input":"and a pension 20","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:17:51.255Z"}
+, {"input":"no this is impossible ","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:17:59.895Z"}
+, {"input":"i will  give you fast promotion track ","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:18:09.837Z"}
+, {"input":"with no car leased ","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:18:15.890Z"}
+, {"input":"this increase my costs so if you need a car th salarry will be decreased to 3150","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Salary\":\"3,150 EGP\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:18:35.845Z"}
+, {"input":"so uyou can't take a car ","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:18:58.758Z"}
+, {"input":"so i will agree in case of the pension is 10%","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:19:26.124Z"}
+, {"input":"and slow  promotion track","output":["{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:19:32.700Z"}
+, {"input":"it will be slow ","output":["{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:19:37.958Z"}
+, {"input":"but my company will not  i am doing all  for you","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:19:55.656Z"}
+, {"input":"okey if you want a fast promotion track you will take no pension ","output":["{\"Offer\":{\"Pension Fund\":\"0%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:20:09.481Z"}
+, {"input":"so choose 10% pension with slow ","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:20:33.517Z"}
+, {"input":"or fast with no pension","output":["{\"Offer\":{\"Pension Fund\":\"0%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:20:44.616Z"}
+, {"input":"okey ","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:20:53.375Z"}
+, {"input":"hi ","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-04-23T09:20:56.702Z"}
+, {"input":"can ihelp you?","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2014-04-23T09:21:00.069Z"}
+, {"input":"what kind of job you want??","output":["{\"Query\":\"Job Description\"}"],"is_correct":true,"timestamp":"2014-04-23T09:21:12.983Z"}
+, {"input":"how much you want ??","output":["{\"Query\":\"Salary\"}"],"is_correct":false,"timestamp":"2014-04-23T09:21:22.688Z"}
+, {"input":"sure","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.147Z"}
+, {"input":"the salary avaliable is 3,150","output":["{\"Offer\":{\"Salary\":\"3,150 EGP\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.151Z"}
+, {"input":"ok how many hours you want to work ??","output":["{\"Query\":\"Working Hours\"}"],"is_correct":false,"timestamp":"2014-04-23T09:29:59.153Z"}
+, {"input":"no 10 hours is too much to yor salary you wantu","output":["{\"Reject\":\"Working Hours\"}"],"is_correct":false,"timestamp":"2014-04-23T09:29:59.155Z"}
+, {"input":"ineed 10 hours","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.155Z"}
+, {"input":"dou you want alealesed car","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:29:59.156Z"}
+, {"input":"do you want fast or slow possibilities","output":["{\"Query\":\"Promotion Possibilities\"}"],"is_correct":false,"timestamp":"2014-04-23T09:29:59.158Z"}
+, {"input":"ok","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.161Z"}
+, {"input":"sorry no pension food ","output":["{\"Reject\":\"Pension Fund\"}"],"is_correct":false,"timestamp":"2014-04-23T09:29:59.167Z"}
+, {"input":"what about the salary??","output":["{\"Query\":\"Salary\"}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.169Z"}
+, {"input":"but we will incrase the working hour to 10 hours you agree?","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.171Z"}
+, {"input":"ok no proplem iam agree","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.172Z"}
+, {"input":" what about the job descreption","output":["{\"Query\":\"Job Description\"}"],"is_correct":false,"timestamp":"2014-04-23T09:29:59.173Z"}
+, {"input":"penshion fund 20% ok or not ","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.175Z"}
+, {"input":"which job you are apply for it ??","output":["{\"Query\":\"Job Description\"}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.176Z"}
+, {"input":"ok we will give you just 9000 ","output":["{\"Offer\":{\"Salary\":\"9,000 EGP\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:29:59.179Z"}
+, {"input":"ok we will give what you want salary and car but no pension fund ","output":["{\"Accept\":\"Leased Car\"}","{\"Accept\":\"Salary\"}","{\"Reject\":\"Pension Fund\"}"],"is_correct":false,"timestamp":"2014-04-23T09:29:59.181Z"}
+, {"input":" the working hours will be 10 hours","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.182Z"}
+, {"input":"if you want ok","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:29:59.185Z"}
+, {"input":"ok i will give you what you want but the promotion track will be slow every 4 years ","output":["{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.186Z"}
+, {"input":"no just slow every 4 years ","output":["{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.187Z"}
+, {"input":"ok it will be fast but working hours will be just 9 this or this it up to you ","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:29:59.199Z"}
+, {"input":"sorry it will be 10 and the the promotion  will be fast ","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:29:59.200Z"}
+, {"input":"do you agree for all this /","output":["{\"Query\":\"accept\"}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.202Z"}
+, {"input":"ok its great ","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2014-04-23T09:30:33.322Z"}
+, {"input":"i think that it is a good salary","output":["{\"Accept\":\"Salary\"}"],"is_correct":false,"timestamp":"2014-04-23T09:30:39.655Z"}
+, {"input":"but what about the leased car?","output":["{\"Query\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2014-04-23T09:30:45.191Z"}
+, {"input":"i want a car ","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:30:50.697Z"}
+, {"input":"you want a car??","output":["{\"Query\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2014-04-23T09:30:58.863Z"}
+, {"input":"what about the fund ?","output":["{\"Query\":\"Pension Fund\"}"],"is_correct":false,"timestamp":"2014-04-23T09:31:13.235Z"}
+, {"input":"it is ok","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:31:18.155Z"}
+, {"input":"what about the promotion possibilities?","output":["{\"Query\":\"Promotion Possibilities\"}"],"is_correct":true,"timestamp":"2014-04-23T09:31:23.136Z"}
+, {"input":"no i think the fast promotion track is good","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:31:28.677Z"}
+, {"input":"what about the job description ?","output":["{\"Query\":\"Job Description\"}"],"is_correct":true,"timestamp":"2014-04-23T09:31:35.054Z"}
+, {"input":"ok i want programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:31:40.217Z"}
+, {"input":"wht about the working hours ?","output":["{\"Query\":\"Working Hours\"}"],"is_correct":false,"timestamp":"2014-04-23T09:31:44.279Z"}
+, {"input":"i think 10 hours is better for me ","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:31:52.374Z"}
+, {"input":"you are accepted to this job ","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:32:19.681Z"}
+, {"input":"it will be 3150 EGP","output":["{\"Offer\":{\"Salary\":\"3,150 EGP\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:32:28.034Z"}
+, {"input":"i have 2 avaliable job team manger and programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Job Description\":\"Team Manager\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:32:46.954Z"}
+, {"input":"there is no car in this job","output":["{\"Reject\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2014-04-23T09:32:57.337Z"}
+, {"input":"i can offer you 10% pension job in replacement of the car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:33:15.566Z"}
+, {"input":"10 hours","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:33:31.896Z"}
+, {"input":"what about 9 hours ?","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:33:35.678Z"}
+, {"input":"nice to meet you","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2014-04-23T09:33:38.724Z"}
+, {"input":"Hello","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-04-23T09:33:41.304Z"}
+, {"input":"what you thinking about your salary will be ?","output":["{\"Query\":\"Salary\"}"],"is_correct":false,"timestamp":"2014-04-23T09:33:48.348Z"}
+, {"input":"nice but i think your salary must be 3,150 EGP","output":["{\"Offer\":{\"Salary\":\"3,150 EGP\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:33:53.581Z"}
+, {"input":"nice ","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:33:57.177Z"}
+, {"input":"ok this sort of good ","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:34:21.615Z"}
+, {"input":"you don't need a car in your job","output":["{\"Reject\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2014-04-23T09:34:28.009Z"}
+, {"input":"about your pension fund will be 20 % ok ","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:34:34.872Z"}
+, {"input":"nice","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:34:38.088Z"}
+, {"input":"it's will be slow promotion track ","output":["{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:34:42.984Z"}
+, {"input":"it's ok","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:34:46.070Z"}
+, {"input":"you will work 9 hours every day this nice or u have another words ?","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:34:52.477Z"}
+, {"input":"nice congratulation man in our company ","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:34:57.768Z"}
+, {"input":"no","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:35:05.546Z"}
+, {"input":"i can't give you this price","output":["{\"Reject\":\"Salary\"}"],"is_correct":false,"timestamp":"2014-04-23T09:35:11.905Z"}
+, {"input":"i will lose if i gived you this salary","output":["{\"Reject\":\"Salary\"}"],"is_correct":false,"timestamp":"2014-04-23T09:35:19.381Z"}
+, {"input":"i can give you 3,150","output":["{\"Offer\":{\"Salary\":\"3,150 EGP\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:35:24.266Z"}
+, {"input":"yup","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:35:27.276Z"}
+, {"input":"what about job describtion","output":["{\"Query\":\"Job Description\"}"],"is_correct":true,"timestamp":"2014-04-23T09:35:32.207Z"}
+, {"input":"i gree","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:35:35.375Z"}
+, {"input":"i can't give you a car","output":["{\"Reject\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2014-04-23T09:35:41.067Z"}
+, {"input":"i can't","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:35:45.038Z"}
+, {"input":"i  can't","output":["{\"Reject\":\"previous\"}"],"is_correct":true,"timestamp":"2014-04-23T09:35:55.261Z"}
+, {"input":"without leased car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:36:05.439Z"}
+, {"input":"what about pension fund?","output":["{\"Query\":\"Pension Fund\"}"],"is_correct":false,"timestamp":"2014-04-23T09:36:10.632Z"}
+, {"input":"what about promotion possibilities?","output":["{\"Query\":\"Promotion Possibilities\"}"],"is_correct":true,"timestamp":"2014-04-23T09:36:17.604Z"}
+, {"input":"what is your job description?","output":["{\"Query\":\"Job Description\"}"],"is_correct":true,"timestamp":"2014-04-23T09:36:23.928Z"}
+, {"input":"what about leased car?","output":["{\"Query\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2014-04-23T09:36:34.637Z"}
+, {"input":"what about working hourses?","output":["{\"Query\":\"Working Hours\"}"],"is_correct":false,"timestamp":"2014-04-23T09:36:39.385Z"}
+, {"input":"what about salary","output":["{\"Query\":\"Salary\"}"],"is_correct":true,"timestamp":"2014-04-23T09:36:47.687Z"}
+] 
