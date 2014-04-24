@@ -89,7 +89,7 @@
 , {"input":"GOOD","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2013-09-12T11:59:54.245Z"}
 , {"input":"AS A PROGRAMMER","output":["{\"Append\":\"previous\"}","{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":false,"timestamp":"2013-09-12T12:00:00.026Z"}
 , {"input":"no car!","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":true,"timestamp":"2013-09-12T12:00:01.385Z"}
-, {"input":"then work for 10 hours","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2013-09-12T12:00:07.260Z"}
+, {"input":"then work for 10 hours","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2013-09-12T12:00:07.260Z"}
 , {"input":"and no pention","output":["{\"Offer\":{\"Pension Fund\":\"0%\"}}"],"is_correct":false,"timestamp":"2013-09-12T12:00:13.557Z"}
 , {"input":"pention fund 10%","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":true,"timestamp":"2013-09-12T12:00:14.995Z"}
 , {"input":"no car but fast promotion track","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"],"is_correct":true,"timestamp":"2013-09-12T12:00:17.713Z"}
@@ -150,13 +150,11 @@
 , {"input":"i accept leased car issue","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T12:23:32.365Z"}
 , {"input":"and i agree if you work 9 hours","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2013-10-07T12:23:42.792Z"}
 , {"input":"time is runningg out","output":["{\"Query\":\"bid\"}"],"is_correct":true,"timestamp":"2013-10-07T12:24:06.959Z"}
-, {"input":"are you still here?","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2013-10-07T12:24:29.338Z"}
 , {"input":"you will get 7000 nis","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-07T12:24:51.087Z"}
 , {"input":"and you will work 10 hours","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2013-10-07T12:24:52.952Z"}
 , {"input":"i dont have a time","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2013-10-07T12:25:30.549Z"}
 , {"input":"you agree?","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2013-10-07T12:25:37.564Z"}
 , {"input":"you want work?","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2013-10-07T12:25:54.353Z"}
-, {"input":"candidate?","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2013-10-07T12:26:03.548Z"}
 , {"input":"is the candidate still here?","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2013-10-07T12:26:05.184Z"}
 , {"input":"you want to work?","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2013-10-07T12:26:12.385Z"}
 , {"input":"i am understand you are agree so welcome","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2013-10-07T12:27:35.881Z"}
@@ -172,7 +170,6 @@
 , {"input":"I am waiting for your answer","output":["{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2013-10-07T13:11:04.703Z"}
 , {"input":"I cannot give you a leased car.","output":["{\"Reject\":\"Leased Car\"}"],"is_correct":true,"timestamp":"2013-10-07T13:11:07.583Z"}
 , {"input":"0 % pension","output":["{\"Offer\":{\"Pension Fund\":\"0%\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:11:09.342Z"}
-, {"input":"Is there a candidate?","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2013-10-07T13:11:12.866Z"}
 , {"input":"pensions","output":["{\"Query\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2013-10-07T13:11:20.144Z"}
 , {"input":"pension","output":["{\"Query\":\"Pension Fund\"}"],"is_correct":false,"timestamp":"2013-10-07T13:11:33.317Z"}
 , {"input":"do you want to talk about your pension fund?","output":["{\"Query\":\"Pension Fund\"}"],"is_correct":false,"timestamp":"2013-10-07T13:12:22.039Z"}
@@ -265,18 +262,18 @@
 , {"input":"i cannot agree to your suggest","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T13:38:27.237Z"}
 , {"input":"i will accept 9 hours, not less","output":["{\"Insist\":\"Working Hours\"}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:38:52.363Z"}
 , {"input":"10 hours and a leased car","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:38:54.670Z"}
-, {"input":"then 9 hours","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:39:00.405Z"}
+, {"input":"then 9 hours","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:39:00.405Z"}
 , {"input":"i will not accept 8 hours a day","output":["{\"Reject\":\"Working Hours\"}"],"is_correct":false,"timestamp":"2013-10-07T13:39:07.699Z"}
 , {"input":"fine but with no car","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Reject\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2013-10-07T13:39:34.227Z"}
 , {"input":"no, we agreed on 9","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}","{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T13:39:56.110Z"}
-, {"input":"fine, but no car","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Reject\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2013-10-07T13:40:03.842Z"}
+, {"input":"fine, but no car","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:40:03.842Z"}
 , {"input":"7000, no car, project manager, 10%, slow promotion, 9 hours, and we can sign","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}","{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2013-10-07T13:40:17.166Z"}
 , {"input":"10 hours and a car","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:41:24.723Z"}
 , {"input":"slow promotion and we can sign","output":["{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:41:32.671Z"}
 , {"input":"7000, fast promotion","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:41:34.920Z"}
 , {"input":"thats the last offer","output":["{\"Insist\":\"previous\"}"],"is_correct":true,"timestamp":"2013-10-07T13:41:38.683Z"}
 , {"input":"not good","output":["{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T13:41:42.673Z"}
-, {"input":"last offer: 7000 and fast promotion","output":["{\"Insist\":\"Promotion Possibilities\"}","{\"Insist\":\"Salary\"}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:42:17.482Z"}
+, {"input":"last offer: 7000 and fast promotion","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:42:17.482Z"}
 , {"input":"12000 and i accept","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:42:25.105Z"}
 , {"input":"12000, programmer, car,10%,fast promotion 9 hours","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:42:43.107Z"}
 , {"input":"yes, for a programmer","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:42:47.576Z"}
@@ -291,7 +288,6 @@
 , {"input":"We have to meet half way, 10%.","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Query\":\"compromise\"}"],"is_correct":false,"timestamp":"2013-10-07T13:47:29.684Z"}
 , {"input":"Well, let us talk about 10 hours.","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:47:33.637Z"}
 , {"input":"you will have to work more hours then that, 10 hours.","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:47:37.539Z"}
-, {"input":"i need you to work more hours","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:49:01.519Z"}
 , {"input":"10 hours.","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:49:03.103Z"}
 , {"input":"you have to meet me half way, at 9 hours.","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}","{\"Query\":\"compromise\"}"],"is_correct":true,"timestamp":"2013-10-07T13:49:06.356Z"}
 , {"input":"compromise only on 9 hours.","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}","{\"Query\":\"compromise\"}"],"is_correct":false,"timestamp":"2013-10-07T13:49:18.570Z"}
@@ -349,8 +345,7 @@
 , {"input":"any thing else ?","output":["{\"Query\":\"issues\"}"],"is_correct":false,"timestamp":"2013-10-07T13:57:29.218Z"}
 , {"input":"hi, if you want to get this much, you need to take a prodovtive work like programmer and work 10 hours a day","output":["{\"Greet\":true}","{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:58:00.474Z"}
 , {"input":"I will give you this much only if you work as programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":false,"timestamp":"2013-10-07T13:58:08.655Z"}
-, {"input":"you offer { Job Description : Project Manager } is unacceptable","output":["{\"Reject\":\"Job Description\"}"],"is_correct":false,"timestamp":"2013-10-07T13:59:14.041Z"}
-, {"input":"lets talk about job descreption first","output":["{\"Query\":\"Job Description\"}"],"is_correct":true,"timestamp":"2013-10-07T13:59:16.871Z"}
+, {"input":"lets talk about job description first","output":["{\"Query\":\"Job Description\"}"],"is_correct":true,"timestamp":"2013-10-07T13:59:16.871Z"}
 , {"input":"what job do you take?","output":["{\"Query\":\"Job Description\"}"],"is_correct":false,"timestamp":"2013-10-07T13:59:24.893Z"}
 , {"input":"would you like to work as programmer?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:59:54.319Z"}
 , {"input":"my offer is, project manager, 10 hours work , no pension, no car , you get 12 000 NIS","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"0%\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T14:00:03.978Z"}
@@ -363,11 +358,11 @@
 , {"input":"I dont accept fast promotion","output":["{\"Reject\":\"Promotion Possibilities\"}"],"is_correct":false,"timestamp":"2013-10-07T14:01:14.082Z"}
 , {"input":"its 9 hours or nothing","output":["{\"Insist\":\"Working Hours\"}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2013-10-07T14:01:22.007Z"}
 , {"input":"ok 8 hours and 7000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T14:01:38.652Z"}
-, {"input":"9 hours then and we close a deal","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2013-10-07T14:01:49.921Z"}
+, {"input":"9 hours then and we close a deal","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2013-10-07T14:01:49.921Z"}
 , {"input":"8 hours 12000 NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T14:01:53.152Z"}
 , {"input":"how about 20,000 NIS, programmer, 10 pension fund with leased car?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-07T14:02:41.606Z"}
 , {"input":"how about 8 hours a day and slow promotion?","output":["{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T14:02:45.054Z"}
-, {"input":"12 NIS, programmer,withour lissed car","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T14:03:01.032Z"}
+, {"input":"12000 NIS, programmer,withour lissed car","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-07T14:03:01.032Z"}
 , {"input":"no..you be programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T14:04:56.428Z"}
 , {"input":"your salary 12000","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-07T14:04:59.297Z"}
 , {"input":"ok. but in this job no lissed car","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":false,"timestamp":"2013-10-07T14:05:11.887Z"}
@@ -551,7 +546,7 @@
 , {"input":"withour liased car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":false,"timestamp":"2013-09-09T16:55:55.307Z"}
 , {"input":"without liased car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":false,"timestamp":"2013-09-09T16:55:55.307Z"}
 , {"input":"no liased car but you be team manager","output":["{\"Offer\":{\"Job Description\":\"Team Manager\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":false,"timestamp":"2013-09-09T16:55:55.307Z"}
-, {"input":"12 NIS, programmer,without liased car","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":true,"timestamp":"2013-10-07T14:25:09.723Z"}
+, {"input":"12000 NIS, programmer,without liased car","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":true,"timestamp":"2013-10-07T14:25:09.723Z"}
 , {"input":"you can't get a car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":false,"timestamp":"2013-09-09T16:55:55.307Z"}
 , {"input":"hi what is your skills","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2013-09-09T16:57:24.073Z"}
 , {"input":"i offer programmer","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2013-09-09T16:55:45.400Z"}
