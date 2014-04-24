@@ -30,6 +30,16 @@ describe('splitPartEqually', function() {
 	});
 })
 
+describe('splitPartAtrributeValue', function() {
+	it('should separate labels correctly', function() {
+		_.isEqual(Hierarchy.splitPartVersion2([{Offer: {Salary: "20000"}}]), [[ 'Offer' ],[ 'Salary:20000' ]]).should.equal(true);
+		_.isEqual(Hierarchy.splitPartVersion2([{Accept: "previous"}]), [[ 'Accept' ],[ 'previous' ]]).should.equal(true);
+		_.isEqual(Hierarchy.splitPartVersion2([{Insist: "Salary"}]), [[ 'Insist' ],[ 'Salary' ]]).should.equal(true)
+		_.isEqual(Hierarchy.splitPartVersion2([{Offer: {Salary: "20000"}},{Insist: {Pension: "10"}}]), [ [ 'Offer', 'Insist'],['Salary:20000','Pension:10']]).should.equal(true)	
+		_.isEqual(Hierarchy.splitPartVersion2([{Insist: "Salary"}, {Accept: "previous"}]), [[ 'Insist', 'Accept' ],[ 'Salary', 'previous' ]]);	
+	});
+})
+
 describe('joinJson', function() {
 	it('works for strings (depth 1)', function() {
 		Hierarchy.joinJson(["Offer"]).should.eql("Offer");

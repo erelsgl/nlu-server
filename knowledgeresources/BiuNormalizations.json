@@ -22,6 +22,8 @@
 , {"source": "kilometers per hour", "target": "kmh"}
 , {"source": "kilometers per hour", "target": "kmh"}
 , {"source": "miles per hour", "target": "mph"}
+, {"source": "let's", "target": "let us"}
+
 
 , {"source": "'re", "target": " are"}
 , {"source": "'ve", "target": " have"}

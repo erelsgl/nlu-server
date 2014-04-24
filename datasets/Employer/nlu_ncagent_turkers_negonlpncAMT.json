@@ -10,7 +10,7 @@
 , {"input":"no car is provided","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:09:22.737Z"}
 , {"input":"ok, perhaps we should end negotiation","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2013-10-08T08:09:36.958Z"}
 , {"input":"no team manager i need a QA","output":["{\"Offer\":{\"Job Description\":\"QA\"}}","{\"Reject\":\"Job Description\"}"],"is_correct":false,"timestamp":"2013-10-08T08:09:49.112Z"}
-, {"input":"i would only offer 10","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:09:56.228Z"}
+, {"input":"i would only offer 10","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}", "{\"Insist\":\"Working Hours\"}"],"is_correct":false,"timestamp":"2013-10-08T08:09:56.228Z"}
 , {"input":"10 is normal","output":["{\"Insist\":\"Working Hours\"}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:10:16.068Z"}
 , {"input":"20 is for executives","output":["{\"Reject\":\"Pension Fund\"}"],"is_correct":false,"timestamp":"2013-10-08T08:12:07.419Z"}
 , {"input":"pension fund is too high","output":["{\"Reject\":\"Pension Fund\"}"],"is_correct":false,"timestamp":"2013-10-08T08:12:13.297Z"}
@@ -47,7 +47,7 @@
 , {"input":"I can offer a 7,000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:17:55.502Z"}
 , {"input":"Tell you what, let's compromise on 10 hours a day and I'll concede on the next aspect","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}","{\"Query\":\"compromise\"}"],"is_correct":false,"timestamp":"2013-10-08T08:18:08.743Z"}
 , {"input":"Let's agree on 9 hours, but be flexible","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}","{\"Query\":\"compromise\"}"],"is_correct":false,"timestamp":"2013-10-08T08:18:39.070Z"}
-, {"input":"I need you to work 10 hours. but 9 will do","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:18:45.076Z"}
+, {"input":"9 working hours.","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:18:45.076Z"}
 , {"input":"9 hours, and that is a good compromise, I can't offer you any other","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}","{\"Query\":\"compromise\"}"],"is_correct":false,"timestamp":"2013-10-08T08:18:50.919Z"}
 , {"input":"I am willing to compromise on a 20% pension fund","output":["{\"Offer\":{\"Pension Fund\":\"20%\"}}","{\"Query\":\"compromise\"}"],"is_correct":false,"timestamp":"2013-10-08T08:18:58.571Z"}
 , {"input":"9 hours, I can't do less, please accept","output":["{\"Insist\":\"Working Hours\"}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}","{\"Query\":\"accept\"}"],"is_correct":false,"timestamp":"2013-10-08T08:19:13.832Z"}
@@ -95,7 +95,7 @@
 , {"input":"You can have the position but no car.","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Reject\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2013-10-08T08:26:53.511Z"}
 , {"input":"Then I think you should think our offer over and let me know whether you are interested in the position with no car.","output":["{\"Insist\":\"previous\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:27:23.008Z"}
 , {"input":"Think it over.  Its a good job, and a good offer.","output":["{\"Insist\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-08T08:27:32.095Z"}
-, {"input":"You can have the job, but no car at this time.","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Reject\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2013-10-08T08:27:44.830Z"}
+, {"input":"You can have the job, but no car at this time.","output":["{\"Accept\":\"previous\"}","{\"Reject\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2013-10-08T08:27:44.830Z"}
 , {"input":"You can have the job, but no car.","output":["{\"Accept\":\"previous\"}","{\"Reject\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2013-10-08T08:27:56.301Z"}
 , {"input":"good by","output":["{\"Quit\":true}"],"is_correct":false,"timestamp":"2013-10-08T08:30:23.801Z"}
 , {"input":"project manager without car","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:30:37.627Z"}
@@ -193,7 +193,6 @@
 , {"input":"I only have a programmer position open","output":["{\"Insist\":\"Job Description\"}","{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:46:07.825Z"}
 , {"input":"Offer accepted about car, not salary","output":["{\"Accept\":\"Leased Car\"}","{\"Reject\":\"Salary\"}"],"is_correct":false,"timestamp":"2013-10-08T08:58:30.495Z"}
 , {"input":"I think everything is agreed I am going to sign","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2013-10-08T08:58:33.942Z"}
-, {"input":"why do you deserve 20000","output":["{\"Reject\":\"Salary\"}"],"is_correct":true,"timestamp":"2013-10-08T09:03:58.028Z"}
 , {"input":"hi I WILL PAY YOU 7000nis","output":["{\"Greet\":true}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-08T10:39:37.697Z"}
 , {"input":"7000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-08T10:39:43.184Z"}
 , {"input":"7000 NIS FOR A PTOGGRAMER","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-08T10:39:49.913Z"}
@@ -333,5 +332,28 @@
 , {"input":"10 hours a day is my final offer","output":["{\"Insist\":\"Working Hours\"}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2013-10-08T11:01:58.930Z"}
 , {"input":"I will not accept","output":["{\"Reject\":\"previous\"}"],"is_correct":true,"timestamp":"2013-10-08T11:02:01.230Z"}
 , {"input":"fine I accept","output":["{\"Accept\":\"previous\"}"],"is_correct":true,"timestamp":"2013-10-08T11:02:02.999Z"}
+, {"input":"I accept","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T07:18:04.678Z"}
+, {"input":"agreed","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T07:18:04.678Z"}
+, {"input":"hi","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2013-10-08T08:14:09.908Z"}
+, {"input":"hello?","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2013-10-08T08:14:09.908Z"}
+, {"input":"will you accept 7000?","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"],"is_correct":false,"timestamp":"2013-10-08T10:57:04.718Z"}
+, {"input":"9 working hours","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":true,"timestamp":"2013-10-08T11:01:46.722Z"}
+, {"input":"no leased car","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"],"is_correct":true,"timestamp":"2013-10-08T10:57:24.660Z"}
+, {"input":"yes","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T07:18:04.678Z"}
+, {"input":"10%","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}"],"is_correct":true,"timestamp":"2013-10-08T10:53:17.416Z"}
+, {"input":"12,000 NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-08T10:53:27.527Z"}
+, {"input":"ok","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T07:18:04.678Z"}
+, {"input":"done","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T07:18:04.678Z"}
+, {"input":"Accepted.","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T07:18:04.678Z"}
+, {"input":"Ok","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T07:18:04.678Z"}
+, {"input":"Leased car?","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}"],"is_correct":true,"timestamp":"2013-10-08T10:57:24.660Z"}
+, {"input":"you can be a project manager","output":["{\"Offer\":{\"Job Description\":\"Project Manager\"}}"],"is_correct":true,"timestamp":"2013-10-08T08:30:37.627Z"}
+, {"input":"yes we can","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T07:18:04.678Z"}
+, {"input":"I accept your offer","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T07:18:04.678Z"}
+, {"input":"okay","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T07:18:04.678Z"}
+, {"input":"OK","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T07:18:04.678Z"}
+, {"input":"I can do 10","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2013-10-08T11:00:47.037Z"}
+, {"input":"fine","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2013-10-07T07:18:04.678Z"}
+, {"input":"you are already agreed to the job description","output":["{\"Accept\":\"Job Description\"}"],"is_correct":false,"timestamp":"2013-10-08T08:15:21.006Z"}
 ] 
 
