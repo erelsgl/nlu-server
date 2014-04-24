@@ -2984,7 +2984,7 @@
 2013-10-05T16:49:41.539Z^1^NaN^""^85.65.173.67:2013-10-05T16:47:41.836Z^Employer^-^Connect
 2013-10-05T16:49:41.539Z^2^NaN^""^NegoChatAgent2013-10-05T16:49:45.111Z^Candidate^-^Connect
 2013-10-05T16:49:41.539Z^3^NaN^"20000"^NegoChatAgent2013-10-05T16:49:45.111Z^Candidate^1795^Message
-2013-10-05T16:49:41.539Z^4^NaN^"10000"^85.65.173.67:2013-10-05T16:47:41.836Z^Employer^1775^Message
+2013-10-05T16:49:41.539Z^4^NaN^"7000"^85.65.173.67:2013-10-05T16:47:41.836Z^Employer^1775^Message
 2013-10-05T16:49:41.539Z^5^NaN^"I'm offer 20000"^NegoChatAgent2013-10-05T16:49:45.111Z^Candidate^1750^Message
 2013-10-05T16:49:41.539Z^6^NaN^"salary 10,000"^85.65.173.67:2013-10-05T16:47:41.836Z^Employer^1750^Message
 2013-10-05T16:49:41.539Z^7^NaN^"I want 20,000 NIS sallary"^NegoChatAgent2013-10-05T16:49:45.111Z^Candidate^1725^Message
@@ -3646,20 +3646,20 @@
 2013-10-05T18:36:13.974Z^1^NaN^""^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^-^Connect
 2013-10-05T18:36:13.974Z^2^NaN^""^NegoChatAgent2013-10-05T18:36:17.597Z^Candidate^-^Connect
 2013-10-05T18:36:13.974Z^3^NaN^"offer 20000"^NegoChatAgent2013-10-05T18:36:17.597Z^Candidate^1795^Message
-2013-10-05T18:36:13.974Z^4^NaN^"I offer 10000 and 20% pension"^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1780^Message
-2013-10-05T18:36:13.974Z^5^NaN^{"translate":[{"Offer":{"Pension Fund":"20%"}}],"text":"I offer 10000 and 20% pension"}^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1780^Translation
+2013-10-05T18:36:13.974Z^4^NaN^"I offer 7000 and 20% pension"^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1780^Message
+2013-10-05T18:36:13.974Z^5^NaN^{"translate":[{"Offer":{"Pension Fund":"20%"}}],"text":"I offer 7000 and 20% pension"}^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1780^Translation
 2013-10-05T18:36:13.974Z^6^NaN^"I accept your offer about {\"Pension Fund\":\"20%\"}. Now let's talk about the other issues. you may get 20000"^NegoChatAgent2013-10-05T18:36:17.597Z^Candidate^1775^Message
-2013-10-05T18:36:13.974Z^7^NaN^"I offer 10000 and a leased car"^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1730^Message
-2013-10-05T18:36:13.974Z^8^NaN^{"translate":[{"Offer":{"Leased Car":"With leased car"}}],"text":"I offer 10000 and a leased car"}^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1730^Translation
+2013-10-05T18:36:13.974Z^7^NaN^"I offer 7000 and a leased car"^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1730^Message
+2013-10-05T18:36:13.974Z^8^NaN^{"translate":[{"Offer":{"Leased Car":"With leased car"}}],"text":"I offer 7000 and a leased car"}^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1730^Translation
 2013-10-05T18:36:13.974Z^9^NaN^"I agree to {\"Leased Car\":\"With leased car\"}. Now let's talk about the other issues. I want 20000"^NegoChatAgent2013-10-05T18:36:17.597Z^Candidate^1725^Message
 2013-10-05T18:36:13.974Z^10^NaN^"i will give you 8 working hours"^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1710^Message
 2013-10-05T18:36:13.974Z^11^NaN^{"translate":[{"Offer":{"Working Hours":"8 hours"}}],"text":"i will give you 8 working hours"}^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1710^Translation
 2013-10-05T18:36:13.974Z^12^NaN^"I agree to {\"Working Hours\":\"8 hours\"}. Now let's talk about the other issues. I want salary 20000."^NegoChatAgent2013-10-05T18:36:17.597Z^Candidate^1705^Message
-2013-10-05T18:36:13.974Z^13^NaN^"10000"^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1700^Message
-2013-10-05T18:36:13.974Z^14^NaN^"you will get 10000"^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1690^Message
+2013-10-05T18:36:13.974Z^13^NaN^"7000"^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1700^Message
+2013-10-05T18:36:13.974Z^14^NaN^"you will get 7000"^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1690^Message
 2013-10-05T18:36:13.974Z^15^NaN^"Since time is running out and we are losing points, I am once again suggesting Salary : 20,000 NIS"^NegoChatAgent2013-10-05T18:36:17.597Z^Candidate^1680^Message
-2013-10-05T18:36:13.974Z^16^NaN^"your salary will be 10000"^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1670^Message
-2013-10-05T18:36:13.974Z^17^NaN^{"translate":[{"Offer":{"Salary":"20,000 NIS"}}],"text":"your salary will be 10000"}^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1670^Translation
+2013-10-05T18:36:13.974Z^16^NaN^"your salary will be 7000"^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1670^Message
+2013-10-05T18:36:13.974Z^17^NaN^{"translate":[{"Offer":{"Salary":"20,000 NIS"}}],"text":"your salary will be 7000"}^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1670^Translation
 2013-10-05T18:36:13.974Z^18^NaN^"I'm happy that you accept.{\"Salary\":\"20,000 NIS\"}"^NegoChatAgent2013-10-05T18:36:17.597Z^Candidate^1665^Message
 2013-10-05T18:36:13.974Z^19^NaN^"hi I would like the job of Project Manager"^NegoChatAgent2013-10-05T18:36:17.597Z^Candidate^1665^Message
 2013-10-05T18:36:13.974Z^20^NaN^"ok"^94.230.88.196:2013-10-05T18:33:50.729Z^Employer^1640^Message
@@ -7617,7 +7617,7 @@
 2014-01-07T14:56:29.956Z^9^NaN^"How can you accept my offer about '[object Object]'. when I even haven't offered it yet?"^NegoChatAgent2014-01-07T14:56:59.894Z^Employer^1785^Message
 2014-01-07T14:56:29.956Z^10^NaN^"I agree to {\"Salary\":\"60,000 USD\"}. Now let's talk about the other issues. Are we agreeable on me being the project manager?"^NegoChatAgent2014-01-07T14:56:29.944Z^Candidate^1785^Message
 2014-01-07T14:56:29.956Z^11^NaN^"How can you accept my offer about '[object Object]'. when I even haven't offered it yet?"^NegoChatAgent2014-01-07T14:56:29.944Z^Candidate^1780^Message
-2014-01-07T14:56:29.956Z^12^NaN^"Your offer {\"Job Description\":\"Project Manager\"} is acceptable. Now let's talk about the other issues. you will get 10000"^NegoChatAgent2014-01-07T14:56:59.894Z^Employer^1780^Message
+2014-01-07T14:56:29.956Z^12^NaN^"Your offer {\"Job Description\":\"Project Manager\"} is acceptable. Now let's talk about the other issues. you will get 7000"^NegoChatAgent2014-01-07T14:56:59.894Z^Employer^1780^Message
 2014-01-07T14:56:29.956Z^13^NaN^"How can you accept my offer about '[object Object]'. when I even haven't offered it yet?"^NegoChatAgent2014-01-07T14:56:59.894Z^Employer^1775^Message
 2014-01-07T14:56:29.956Z^14^NaN^"Your offer {\"Salary\":\"60,000 USD\"} is acceptable. Now let's talk about the other issues. I require project manager"^NegoChatAgent2014-01-07T14:56:29.944Z^Candidate^1775^Message
 2014-01-07T14:56:29.956Z^15^NaN^"I agree to {\"Job Description\":\"Project Manager\"}. Now let's talk about the other issues. the salary is 8750 USD"^NegoChatAgent2014-01-07T14:56:59.894Z^Employer^1770^Message

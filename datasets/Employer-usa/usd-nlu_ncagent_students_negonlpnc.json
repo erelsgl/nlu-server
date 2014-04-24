@@ -297,7 +297,6 @@
 {"input":"We have to meet half way, 10%.","output":[{"Offer":{"Pension Fund":"10%"}},{"Query":"compromise"}],"is_correct":false,"timestamp":"2013-10-07T13:47:29.684Z"},
 {"input":"Well, let us talk about 10 hours.","output":[{"Offer":{"Working Hours":"10 hours"}}],"is_correct":true,"timestamp":"2013-10-07T13:47:33.637Z"},
 {"input":"you will have to work more hours then that, 10 hours.","output":[{"Offer":{"Working Hours":"10 hours"}}],"is_correct":true,"timestamp":"2013-10-07T13:47:37.539Z"},
-{"input":"i need you to work more hours","output":[{"Offer":{"Working Hours":"10 hours"}}],"is_correct":true,"timestamp":"2013-10-07T13:49:01.519Z"},
 {"input":"10 hours.","output":[{"Offer":{"Working Hours":"10 hours"}}],"is_correct":true,"timestamp":"2013-10-07T13:49:03.103Z"},
 {"input":"you have to meet me half way, at 9 hours.","output":[{"Offer":{"Working Hours":"9 hours"}},{"Query":"compromise"}],"is_correct":true,"timestamp":"2013-10-07T13:49:06.356Z"},
 {"input":"compromise only on 9 hours.","output":[{"Offer":{"Working Hours":"9 hours"}},{"Query":"compromise"}],"is_correct":false,"timestamp":"2013-10-07T13:49:18.570Z"},

@@ -288,7 +288,6 @@
 , {"input":"We have to meet half way, 10%.","output":["{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Query\":\"compromise\"}"],"is_correct":false,"timestamp":"2013-10-07T13:47:29.684Z"}
 , {"input":"Well, let us talk about 10 hours.","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:47:33.637Z"}
 , {"input":"you will have to work more hours then that, 10 hours.","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:47:37.539Z"}
-, {"input":"i need you to work more hours","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:49:01.519Z"}
 , {"input":"10 hours.","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T13:49:03.103Z"}
 , {"input":"you have to meet me half way, at 9 hours.","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}","{\"Query\":\"compromise\"}"],"is_correct":true,"timestamp":"2013-10-07T13:49:06.356Z"}
 , {"input":"compromise only on 9 hours.","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}","{\"Query\":\"compromise\"}"],"is_correct":false,"timestamp":"2013-10-07T13:49:18.570Z"}
@@ -359,7 +358,7 @@
 , {"input":"I dont accept fast promotion","output":["{\"Reject\":\"Promotion Possibilities\"}"],"is_correct":false,"timestamp":"2013-10-07T14:01:14.082Z"}
 , {"input":"its 9 hours or nothing","output":["{\"Insist\":\"Working Hours\"}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2013-10-07T14:01:22.007Z"}
 , {"input":"ok 8 hours and 7000 NIS","output":["{\"Offer\":{\"Salary\":\"7,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T14:01:38.652Z"}
-, {"input":"9 hours then and we close a deal","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2013-10-07T14:01:49.921Z"}
+, {"input":"9 hours then and we close a deal","output":["{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2013-10-07T14:01:49.921Z"}
 , {"input":"8 hours 12000 NIS","output":["{\"Offer\":{\"Salary\":\"12,000 NIS\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T14:01:53.152Z"}
 , {"input":"how about 20,000 NIS, programmer, 10 pension fund with leased car?","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}","{\"Offer\":{\"Pension Fund\":\"10%\"}}","{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"],"is_correct":true,"timestamp":"2013-10-07T14:02:41.606Z"}
 , {"input":"how about 8 hours a day and slow promotion?","output":["{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}","{\"Offer\":{\"Working Hours\":\"8 hours\"}}"],"is_correct":true,"timestamp":"2013-10-07T14:02:45.054Z"}
