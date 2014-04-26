@@ -20,12 +20,12 @@ var do_unseen_word_curve = false
 var do_checking_tag = false
 var do_small_temporary_test = false
 var do_small_temporary_serialization_test = false
-var do_learning_curves = false
+var do_learning_curves = true
 var do_cross_dataset_testing = false
 var do_learning_curves_dialogue = false
 var do_final_test = false
 var do_cross_validation = false
-var do_serialization = true
+var do_serialization = false
 var do_test_on_training_data = false
 var do_small_temporary_test_dataset = false
 var do_small_test_multi_threshold = false
@@ -1363,10 +1363,11 @@ if (do_learning_curves_dialogue)
 
 		// PartialClassificationEquallyGreedyISNoTrick: classifier.PartialClassificationEquallyGreedyISNoTrick,
 		
-		PartialClassificationEquallyGreedyNoISBiagram: classifier.PartialClassificationEquallyGreedyTrick,
-		PartialClassificationEquallySagae: classifier.PartialClassificationEquallySagae,
-		StandardSagae: classifier.WinnowSegmenter,
-		SVMNoIS: classifier.SvmPerfClassifier
+		// PartialClassificationEquallyGreedyNoISBiagram: classifier.PartialClassificationEquallyGreedyTrick,
+		// PartialClassificationEquallySagae: classifier.PartialClassificationEquallySagae,
+		// StandardSagae: classifier.WinnowSegmenter,
+		SVMNoIS: classifier.SvmPerfClassifierNoIS,
+		SVMIS: classifier.SvmPerfClassifier
 
 		// PartialClassificationEquallyIS: classifier.PartialClassificationEquallyIS,
 		
@@ -1398,7 +1399,7 @@ if (do_learning_curves) {
 
 	dataset = _.shuffle(dataset)
 
-	dataset= _.sample(dataset, 450)
+	// dataset= _.sample(dataset, 450)
 
 	classifiers  = {
 		// Intent_AttributeValue: classifier.PartialClassificationJustTwo,
@@ -1428,10 +1429,13 @@ if (do_learning_curves) {
 		// PartialClassificationEquallyGreedyISTrick: classifier.PartialClassificationEquallyGreedyISTrick,
 		// SVM: classifier.SvmPerfClassifier,
 
-		PartialClassificationEquallyGreedyNoISBiagram: classifier.PartialClassificationEquallyGreedyTrick,
-		PartialClassificationEquallySagae: classifier.PartialClassificationEquallySagae,
-		StandardSagae: classifier.WinnowSegmenter,
-		SVMNoIS: classifier.SvmPerfClassifier
+		// PartialClassificationEquallyGreedyNoISBiagram: classifier.PartialClassificationEquallyGreedyTrick,
+		// PartialClassificationEquallySagae: classifier.PartialClassificationEquallySagae,
+	//	StandardSagae: classifier.WinnowSegmenter,
+		// SVMNoIS: classifier.SvmPerfClassifier
+
+		SVMNoIS: classifier.SvmPerfClassifierNoIS,
+		SVMIS: classifier.SvmPerfClassifier
 
 	
 	};
@@ -1628,7 +1632,7 @@ if (do_serialization) {
 		var classifier = createNewClassifier();
 		var jsonEmpty = classifier.toJSON();  // just to check that it works
 
-		try { datasetNames = fs.readdirSync("datasets/" + classifierName) }
+		try { var datasetNames = fs.readdirSync("datasets/" + classifierName) }
 
 		catch (e)
 		{	

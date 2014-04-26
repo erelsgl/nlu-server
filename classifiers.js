@@ -125,10 +125,10 @@ var SvmLinearMulticlassifier = classifiers.SvmLinear.bind(0, {
  * MULTI-LABEL CLASSIFIERS (used as basis to other classifiers):
  */
 
-var RulebasedClassifier = classifiers.multilabel.Rulebased.bind(0, {
-	// ngram_length: 2,
-	// iterations: 2000
-});
+// var RulebasedClassifier = classifiers.multilabel.Rulebased.bind(0, {
+// 	// ngram_length: 2,
+// 	// iterations: 2000
+// });
 
 var AdaboostClassifier = classifiers.multilabel.Adaboost.bind(0, {
 	ngram_length: 2,
@@ -264,7 +264,7 @@ var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
 		inputSplitter: inputSplitter,
-		spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
+		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
 		featureExtractor: featureExtractor,
 		
 		featureLookupTable: featureLookupTable,
@@ -399,12 +399,16 @@ module.exports = {
 		HomerAdaboostClassifier: enhance2(homer(AdaboostClassifier)), 
 		AdaboostClassifier: enhance2(AdaboostClassifier), 
 
-		RulebasedClassifier: enhance2(RulebasedClassifier, Hierarchy.splitPartEquallyIntent),
+		// RulebasedClassifier: enhance2(RulebasedClassifier, Hierarchy.splitPartEquallyIntent),
 
 		WinnowClassifier: enhance(WinnowBinaryRelevanceClassifier),
 		BayesClassifier: enhance(BayesBinaryRelevanceClassifier),
+
 		SvmPerfClassifier: enhance(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
+		SvmPerfClassifierNoIS: enhancenois(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
+		
 		SvmLinearClassifier: enhance(SvmLinearBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
+		
 		PassiveAggressiveClassifier: enhance(PassiveAggressiveClassifier),
 
 		MetaLabelerWinnow: enhance(metalabeler(WinnowBinaryRelevanceClassifier)),
