@@ -7,7 +7,6 @@
 {"input":"no leased car since i had to increase the salary","output":[{"Offer":{"Leased Car":"Without leased car"}}],"is_correct":false,"timestamp":"2013-10-08T08:09:13.490Z"},
 {"input":"I can go to 90,000 USD with a fast promotion track.","output":[{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"90,000 USD"}}],"is_correct":true,"timestamp":"2013-10-08T08:08:54.142Z"},
 {"input":"I am thinking 60,000 USD as the role is for QA. However, the promotion track is fast.","output":[{"Offer":{"Job Description":"QA"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}},{"Offer":{"Salary":"60,000 USD"}}],"is_correct":true,"timestamp":"2013-10-08T08:08:50.667Z"},
-{"input":"i would like to be king but that isn't going to happen","output":[{"Reject":"previous"}],"is_correct":false,"timestamp":"2013-10-08T08:09:20.418Z"},
 {"input":"no car is provided","output":[{"Offer":{"Leased Car":"Without leased car"}}],"is_correct":true,"timestamp":"2013-10-08T08:09:22.737Z"},
 {"input":"ok, perhaps we should end negotiation","output":[{"Accept":"previous"}],"is_correct":true,"timestamp":"2013-10-08T08:09:36.958Z"},
 {"input":"no team manager i need a QA","output":[{"Offer":{"Job Description":"QA"}},{"Reject":"Job Description"}],"is_correct":false,"timestamp":"2013-10-08T08:09:49.112Z"},

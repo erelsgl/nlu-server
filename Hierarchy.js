@@ -38,7 +38,7 @@ function splitPartEqually(json) {
 			if (value.length > n)
 			{
 			if (_.compact(value[n].toString()).length != 0)
-				buf = buf.concat(value[n].toString())
+				buf = buf.concat(value[n])
 			}
 		})
 		

@@ -14,13 +14,13 @@ var test_egypt = false
 var test_segmentation = false
 var do_spell_correction_test = false
 var do_compare_approach = false
-var do_partial_classification = false
+var do_partial_classification = true
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
 var do_small_temporary_test = false
 var do_small_temporary_serialization_test = false
-var do_learning_curves = true
+var do_learning_curves = false
 var do_cross_dataset_testing = false
 var do_learning_curves_dialogue = false
 var do_final_test = false
@@ -36,12 +36,13 @@ var do_comparison = false
 
 var _ = require('underscore')._;
 var fs = require('fs');
-var trainAndTest_hash= require('limdu/utils/trainAndTest').trainAndTest_hash;
-var trainAndCompare= require('limdu/utils/trainAndTest').trainAndCompare;
-var trainAndTestLite = require('limdu/utils/trainAndTest').trainAndTestLite
+var trainAndTest= require('./utils/trainAndTest').trainAndTest_hash;
+// var trainAndCompare= require('./utils/trainAndTest').trainAndCompare;
+// var trainAndTestLite = require('limdu/utils/trainAndTest').trainAndTestLite
 var Hierarchy = require(__dirname+'/Hierarchy');
 var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
-var trainutils = require('limdu/utils/bars')
+// var trainutils = require('limdu/utils/bars')
+var trainutils = require('./utils/bars')
 
 
 var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/0_grammar.json"));
@@ -55,18 +56,22 @@ var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/4_var
 var verbosity = 0;
 var explain = 0;
 
+var natural = require('natural');
 var execSync = require('execSync').exec
 var partitions = require('limdu/utils/partitions');
 var PrecisionRecall = require('limdu/utils/PrecisionRecall');
-var trainAndTest = require('limdu/utils/trainAndTest').trainAndTest;
+// var trainAndTest = require('limdu/utils/trainAndTest').trainAndTest;
+var trainAndTest = require('./utils/trainAndTest');
 // var trainAndCompare = require('limdu/utils/trainAndTest').trainAndCompare;
-var trainAndTestLite = require('limdu/utils/trainAndTest').trainAndTestLite;
-var ToTest = require('limdu/utils/trainAndTest').test;
+// var trainAndTestLite = require('limdu/utils/trainAndTest').trainAndTestLite;
+// var trainAndTestLite = require('./utils/trainAndTest').trainAndTestLite;
+// var ToTest = require('limdu/utils/trainAndTest').test;
+// var ToTest = require('./utils/trainAndTest').test;
 var serialization = require('serialization');
-var curves = require('limdu/utils/learning_curves');
-var unseen_words_curves = require('limdu/utils/unseen_curves').unseen_word_curves;
-var unseen_correlation = require('limdu/utils/unseen_correlation').unseen_correlation;
-var tokenize = require('limdu/utils/unseen_correlation').tokenize;
+var curves = require('./utils/learning_curves');
+// var unseen_words_curves = require('limdu/utils/unseen_curves').unseen_word_curves;
+// var unseen_correlation = require('limdu/utils/unseen_correlation').unseen_correlation;
+// var tokenize = require('limdu/utils/unseen_correlation').tokenize;
 var classifier = require(__dirname+'/classifiers')
 var limdu = require("limdu");
 var ftrs = limdu.features;
@@ -232,11 +237,11 @@ if (test_egypt)
 
 	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
 
-	stats = trainAndTest_hash(classifier.HomerWinnow, dataset['train'], dataset['test'], 5)
+	stats = trainAndTest.trainAndTest_hash(classifier.HomerWinnow, dataset['train'], dataset['test'], 5)
 // 
 	console.log(JSON.stringify(stats[0]['stats'], null, 4))
 	
-	stats1 = trainAndTest_hash(classifier.HomerWinnowNoSpell, dataset['train'], dataset['test'], 5)
+	stats1 = trainAndTest.trainAndTest_hash(classifier.HomerWinnowNoSpell, dataset['train'], dataset['test'], 5)
 
 	console.log(JSON.stringify(stats1[0]['stats'], null, 4))
 
@@ -736,14 +741,17 @@ if (do_compare_approach)
 	})
 
 	data = _.shuffle(data)
-	data = _.sample(data, 200)
+	// data = _.sample(data, 200)
 	dataset = partitions.partition(data, 1, Math.round(data.length*0.5))
 
 
-	var composite = new classifier.SvmPerfClassifier
+	// PartialClassificationEquallySagae: classifier.PartialClassificationEquallySagae,
+		// StandardSagae: classifier.WinnowSegmenter, 
+
+	var composite = new classifier.PartialClassificationEquallySagae
 	composite.trainBatch(dataset['train'])
 
-	var component = new classifier.PartialClassificationEqually
+	var component = new classifier.WinnowSegmenter
 	component.trainBatch(dataset['train'])
 
 	_.each(dataset['test'], function(value, key, list){
@@ -753,21 +761,21 @@ if (do_compare_approach)
 		// console.log(value)
 		// console.log(actual_component)
 		// process.exit(0)
-		var amb = trainutils.intent_attr_label_ambiguity(actual_component.classes)
+		// var amb = trainutils.intent_attr_label_ambiguity(actual_component.classes)
 
 
 		// if (amb.length>0)
 			{
-			var gen = trainutils.generate_labels(actual_component.classes)
+			// var gen = trainutils.generate_labels(actual_component.classes)
 			console.log(value)
-			console.log(gen)
+			// console.log(gen)
 			console.log(actual_component.classes)
 			console.log(actual_composite.classes)
 			// process.exit(0)
-			_.each(gen, function(lab, key, list){
-				console.log(lab)
-				console.log(actual_composite['scores'][lab])	 
-			}, this)
+			// _.each(gen, function(lab, key, list){
+				// console.log(lab)
+				// console.log(actual_composite['scores'][lab])	 
+			// }, this)
 			console.log("------------------------------------------")
 
 			}
@@ -880,26 +888,40 @@ if (test_segmentation)
 	{
 	dataset = [
 	// "5_woz_dialogue.json",
-	"students.json",
-	"turkers.json"
+	// "students.json",
+	// "turkers.json"
+				//    "0_grammar.json",
+				// "1_woz_kbagent_students.json",
+				// "1_woz_kbagent_students1class.json",
+				// "2_experts.json",
+				// "2_experts1class.json",
+				// "4_various.json",
+				// "4_various1class.json",
+				// "6_expert.json",
+				// "3_woz_kbagent_turkers_negonlp2.json",
+				// "5_woz_ncagent_turkers_negonlp2ncAMT.json",
+				// "nlu_kbagent_turkers_negonlpAMT.json",
+				// "nlu_ncagent_students_negonlpnc.json",
+				"nlu_ncagent_turkers_negonlpncAMT.json",
+				// "woz_kbagent_students_negonlp.json"
 	]
 	
 	data = []
 	_.each(dataset, function(value, key, list){ 
-		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/Dialogue/"+value)))
+		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
 	})
+// 
+	data = _.shuffle(data)
 
-	// data = _.shuffle(data)
+	// data1 = []
 
-	data1 = []
+	// _.each(data, function(value, key, list){ 
+	// 	data1 = data1.concat(value['turns'])
+	// }, this)
 
-	_.each(data, function(value, key, list){ 
-		data1 = data1.concat(value['turns'])
-	}, this)
+	// console.log(data1.length)
 
-	console.log(data1.length)
-
-	dataset = partitions.partition(data1, 1, Math.round(data1.length*0.3))
+	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
 	// dataset['train'] = _.sample(dataset['train'], 20)
 	
 	// a = [{"input":" I offer salary 20,000 NIS","output":["{\"Accept\":\"previous\"}","{\"Insist\":\"Leased Car\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:35:57.698Z"}]
@@ -909,7 +931,8 @@ if (test_segmentation)
 
 a = [{
                 // "input": "A Programmer does not have a leased car, I'm afraid",
-                "input": "this is a fast promotion track, you will start with 10% pension",
+                // "input": "i would only offer 10",
+                "input": "i will give you a leased car",
                 "is_correct": false,
                 "timestamp": "2014-04-04T16:03:52.763Z",
                 "turn": "61",
@@ -920,10 +943,29 @@ a = [{
             }]
 
 	// stats = trainAndTest_hash(classifier.WinnowSegmenter, dataset['train'], a, 5)
-	stats = trainAndTest_hash(classifier.PartialClassificationEquallySagae, dataset['train'], a, 5)
-	// stats = trainAndTest_hash(classifier.PartialClassificationEquallySagae, a, a, 5)
-	// stats = trainAndTest_hash(classifier.PartialClassificationEquallySagae, dataset['train'], dataset['test'], 5)
-	console.log(JSON.stringify(stats[0]['stats'], null, 4))
+	// stats = trainAndTest_hash(classifier.PartialClassificationEquallySagae, dataset['train'], a, 5)
+	// stats = trainAndTest_hash(classifier.PartialClassificationEquallySagae, dataset['train'], a, 5)
+	// console.log()
+	// process.exit(0)
+
+	stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, dataset['train'], dataset['test'], 5)
+	// console.log(JSON.stringify(stats[0]['labels'], null, 4))
+	// console.log(JSON.stringify(stats[0]['stats'], null, 4))
+	console.log(JSON.stringify(stats[0], null, 4))
+
+	// stats1 = trainAndTest_hash(classifier.WinnowSegmenter, dataset['train'], dataset['test'], 5)
+	// console.log(JSON.stringify(stats1[0]['labels'], null, 4))
+	// console.log(JSON.stringify(stats1[0]['stats'], null, 4))
+
+	console.log()
+	process.exit(0)
+
+stats = trainAndCompare(
+		classifier.PartialClassificationEquallySagae, 
+		classifier.WinnowSegmenter,
+		dataset['train'], dataset['test'], 5) 
+
+	console.log(stats)
 
 	// stats1 = trainAndTest_hash(classifier.SvmPerfClassifier, dataset['train'], dataset['test'], 5)
 	// console.log(JSON.stringify(stats1[0]['stats'], null, 4))
@@ -1036,8 +1078,8 @@ if (do_partial_classification)
 // console.log()
 // process.exit(0)
 
-	stats = trainAndTest_hash(classifier.WinnowSegmenter, dataset['train'], dataset['test'], 5)
-	// stats = trainAndTest_hash(classifier.PartialClassificationEquallyGreedyISTrick, dataset['train'], dataset['test'], 5)
+	// stats = trainAndTest_hash(classifier.WinnowSegmenter, dataset['train'], dataset['test'], 5)
+	stats = trainAndTest.trainAndTest_hash(classifier.HomerWinnow, dataset['train'], dataset['test'], 5)
 	// stats = trainAndTest_hash(classifier.PartialClassificationEquallyGreedyISTrick, dataset['train'], dataset['test'], 5)
 	// stats1 = trainAndTest_hash(classifier.SvmPerfClassifier, dataset['train'], dataset['test'], 5)
 
@@ -1168,7 +1210,7 @@ if (do_partial_classification)
 		testSet = trainutils.clonedataset(testSet1)
 		trainSet = trainutils.clonedataset(trainSet1)
 
-		stats =	trainAndTest_hash(createNewClassifier, trainSet, testSet, 5)
+		stats =	trainAndTest.trainAndTest_hash(createNewClassifier, trainSet, testSet, 5)
 		console.log()
 		process.exit(0)
 		matrix = trainutils.confusion_matrix(stats[0])
@@ -1221,13 +1263,13 @@ if (do_comparison)
 		studtest = _.sample(studdata, 100)
 		turktest = _.sample(testSet1, 100)
 
-		stats1 =	trainAndTest_hash(createNewClassifier, test, studtest, 5)
+		stats1 =	trainAndTest.trainAndTest_hash(createNewClassifier, test, studtest, 5)
 		
 		studstats[0].push(stats1[0]['stats'])
 		studstats[1].push(stats1[1]['stats'])
 		studstats[2].push(stats1[2]['stats'])
 
-		stats =	trainAndTest_hash(createNewClassifier, test1, turktest, 5)
+		stats =	trainAndTest.trainAndTest_hash(createNewClassifier, test1, turktest, 5)
 				
 		turkstats[0].push(stats[0]['stats'])
 		turkstats[1].push(stats[1]['stats'])
@@ -1327,7 +1369,7 @@ if (do_small_temporary_test) {
 	dataset = grammarDataset.concat(collectedDatasetMulti).concat(collectedDatasetSingle).concat(collectedDatasetMulti2).concat(collectedDatasetSingle2).concat(collectedDatasetMulti4).concat(collectedDatasetMulti8)
 	dataset = _.shuffle(dataset)
    
-    stats = trainAndTest_hash(createNewClassifier, dataset, dataset, verbosity+3)
+    stats = trainAndTest.trainAndTest_hash(createNewClassifier, dataset, dataset, verbosity+3)
 
     _.each(stats['data'], function(value, key, list){ 
 		if ((value['explanations']['FP'].length != 0) || (value['explanations']['FN'].length != 0))
@@ -1366,26 +1408,26 @@ if (do_learning_curves_dialogue)
 		// PartialClassificationEquallyGreedyNoISBiagram: classifier.PartialClassificationEquallyGreedyTrick,
 		// PartialClassificationEquallySagae: classifier.PartialClassificationEquallySagae,
 		// StandardSagae: classifier.WinnowSegmenter,
-		SVMNoIS: classifier.SvmPerfClassifierNoIS,
-		SVMIS: classifier.SvmPerfClassifier
-
-		// PartialClassificationEquallyIS: classifier.PartialClassificationEquallyIS,
-		
-		// PartialClassificationEqually: classifier.PartialClassificationEqually,
+		// SVMNoIS: classifier.SvmPerfClassifierNoIS,
+		// SVMIS: classifier.SvmPerfClassifier
+		SVM_separated_IS: classifier.SvmOutputPartialEquallyIS,
+		SVM_separated_NoIS: classifier.SvmOutputPartialEquallyNoIS,
+		PartialClassificationEquallyIS: classifier.PartialClassificationEquallyIS,
+		PartialClassificationEquallyNoIS: classifier.PartialClassificationEquallyNoIS,
 		// SVM_SeparatedAfter: classifier.SvmOutputPartialEqually,
 		// Homer: classifier.HomerWinnow
 		};
 
 	// parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
 	parameters = ['F1', 'Precision','Recall']
-	curves.learning_curves(classifiers, data, parameters, 1, 5)
+	curves.learning_curves(classifiers, data, parameters, 3, 5)
 	}
 
 if (do_learning_curves) {
 
 	datasetNames = [
-			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
-			"nlu_ncagent_students_negonlpnc.json",
+			// "5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			// "nlu_ncagent_students_negonlpnc.json",
 			"nlu_ncagent_turkers_negonlpncAMT.json",
 			// "3_woz_kbagent_turkers_negonlp2.json",
 			// "woz_kbagent_students_negonlp.json",
@@ -1399,7 +1441,7 @@ if (do_learning_curves) {
 
 	dataset = _.shuffle(dataset)
 
-	// dataset= _.sample(dataset, 450)
+	// dataset= _.sample(dataset, 120)
 
 	classifiers  = {
 		// Intent_AttributeValue: classifier.PartialClassificationJustTwo,
@@ -1430,10 +1472,9 @@ if (do_learning_curves) {
 		// SVM: classifier.SvmPerfClassifier,
 
 		// PartialClassificationEquallyGreedyNoISBiagram: classifier.PartialClassificationEquallyGreedyTrick,
-		// PartialClassificationEquallySagae: classifier.PartialClassificationEquallySagae,
-	//	StandardSagae: classifier.WinnowSegmenter,
-		// SVMNoIS: classifier.SvmPerfClassifier
-
+		PartialClassificationEquallySagae: classifier.PartialClassificationEquallySagae,
+		PartialClassificationEquallySagaeNoCompletition: classifier.PartialClassificationEquallySagaeNoCompletition,
+		// StandardSagae: classifier.WinnowSegmenter, 
 		SVMNoIS: classifier.SvmPerfClassifierNoIS,
 		SVMIS: classifier.SvmPerfClassifier
 
@@ -1472,7 +1513,7 @@ if (do_small_temporary_test_dataset) {
       	console.log(output)
       	console.log(input)
 
-      	console.log(trainAndTest(createNewClassifier, collectedDatasetSingle2, testset, verbosity+3));
+      	console.log(trainAndTest.trainAndTest(createNewClassifier, collectedDatasetSingle2, testset, verbosity+3));
 
 	}, this);
 
