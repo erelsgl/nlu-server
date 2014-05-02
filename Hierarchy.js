@@ -28,7 +28,14 @@ function OrderLabelJoin(classes, Observable, sample, explanation)
  * -- For example:  [ [ 'Offer' ], [ 'Leased Car', 'Pension Fund' ], [ 'Without leased car', '10%' ] ]
  */
 
-function splitPartEqually(json) {	
+//  [ '{"Offer":{"Leased Car":"Without leased car"}}',
+//   '{"Offer":{"Pension Fund":"20%"}}' ]
+// [ [ 'Offer' ],
+//   [ 'Leased Car', 'Pension Fund' ],
+//   [ 'Without leased car', '20%' ] ]
+
+
+function splitPartEqually(json) {
 	// return _.map(_.uniq(_.flatten(json.map(this.splitJson)) ), function(num){ return [num];})
 	label = []	
 
@@ -55,8 +62,6 @@ function splitPartEqually(json) {
 
 	})
 
-
-		
 	return label
 }
 
@@ -169,15 +174,18 @@ function splitPartVersion2(json) {
  * -- For example: ["Offer", "Salary", "20000"]
  * @see joinJson
  */
+// {"Offer":{"Promotion Possibilities":"Fast promotion track"}}
+// [ 'Offer', 'Promotion Possibilities', 'Fast promotion track' ]
 
 function Compensate(json) {
-		// console.log(json)
 	js = splitJson(json)
 	if ((js.length == 2) && (js[1].toString()[0] != js[1].toString()[0].toUpperCase()))
 		{
 		js.push(js[1])
 		js[1] = ""
 		}
+	// if ((js[2] == 'previous') && (js[1]==''))
+		// js[2] = js[0] + js[2]
 	return js
 }
 
