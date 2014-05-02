@@ -11,16 +11,17 @@
 console.log("machine learning trainer start\n");
 
 var test_egypt = false
+var test_natural = false
 var test_segmentation = false
 var do_spell_correction_test = false
 var do_compare_approach = false
-var do_partial_classification = true
+var do_partial_classification = false
 var do_unseen_word_fp = false
 var do_unseen_word_curve = false
 var do_checking_tag = false
 var do_small_temporary_test = false
 var do_small_temporary_serialization_test = false
-var do_learning_curves = false
+var do_learning_curves = true
 var do_cross_dataset_testing = false
 var do_learning_curves_dialogue = false
 var do_final_test = false
@@ -37,12 +38,10 @@ var do_comparison = false
 var _ = require('underscore')._;
 var fs = require('fs');
 var trainAndTest= require('./utils/trainAndTest').trainAndTest_hash;
-// var trainAndCompare= require('./utils/trainAndTest').trainAndCompare;
-// var trainAndTestLite = require('limdu/utils/trainAndTest').trainAndTestLite
 var Hierarchy = require(__dirname+'/Hierarchy');
 var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
-// var trainutils = require('limdu/utils/bars')
 var trainutils = require('./utils/bars')
+// var Lemmer = require('node-lemmer').Lemmer;
 
 
 var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/0_grammar.json"));
@@ -209,6 +208,29 @@ if (do_unseen_word_curve)
 
 	}
 
+
+if (test_natural)
+{
+	sentence = "I offer you a salaries of 20000 NIS and 9 hours"
+	// dist = natural.JaroWinklerDistance(a,"house")
+	// console.log(dist)
+	// process.exit(0)
+	a = trainutils.sentenceStem(sentence)
+	console.log(a)
+	// var lemmerEng = new Lemmer('english');
+	// a = lemmerEng.lemmatize('10%');
+	// console.log(a)
+	// natural.LancasterStemmer.attach();
+	// var words = sentence.tokenizeAndStem()
+	// console.log(sentence)
+		
+	// console.log(words)
+	// process.exit(0)
+
+	// lis = trainutils.retrievelabels()
+	// console.log(lis)
+	// process.exit(0)
+}
 
 if (test_egypt)
 {
@@ -911,7 +933,7 @@ if (test_segmentation)
 		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
 	})
 // 
-	data = _.shuffle(data)
+	// data = _.shuffle(data)
 
 	// data1 = []
 
@@ -932,7 +954,7 @@ if (test_segmentation)
 a = [{
                 // "input": "A Programmer does not have a leased car, I'm afraid",
                 // "input": "i would only offer 10",
-                "input": "i will give you a leased car",
+                "input": "I can go to 12,000 NIS with a fast promotion track",
                 "is_correct": false,
                 "timestamp": "2014-04-04T16:03:52.763Z",
                 "turn": "61",
@@ -943,24 +965,24 @@ a = [{
             }]
 
 	// stats = trainAndTest_hash(classifier.WinnowSegmenter, dataset['train'], a, 5)
-	// stats = trainAndTest_hash(classifier.PartialClassificationEquallySagae, dataset['train'], a, 5)
-	// stats = trainAndTest_hash(classifier.PartialClassificationEquallySagae, dataset['train'], a, 5)
+	stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, dataset['train'], a, 5)
 	// console.log()
 	// process.exit(0)
 
-	stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, dataset['train'], dataset['test'], 5)
+	// stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, dataset['train'], dataset['test'], 5)
 	// console.log(JSON.stringify(stats[0]['labels'], null, 4))
 	// console.log(JSON.stringify(stats[0]['stats'], null, 4))
 	console.log(JSON.stringify(stats[0], null, 4))
-
+	console.log()
+	process.exit(0)
 	// stats1 = trainAndTest_hash(classifier.WinnowSegmenter, dataset['train'], dataset['test'], 5)
 	// console.log(JSON.stringify(stats1[0]['labels'], null, 4))
 	// console.log(JSON.stringify(stats1[0]['stats'], null, 4))
 
-	console.log()
-	process.exit(0)
+	// console.log()
+	// process.exit(0)
 
-stats = trainAndCompare(
+stats = trainAndTest.trainAndCompare(
 		classifier.PartialClassificationEquallySagae, 
 		classifier.WinnowSegmenter,
 		dataset['train'], dataset['test'], 5) 
@@ -1079,7 +1101,8 @@ if (do_partial_classification)
 // process.exit(0)
 
 	// stats = trainAndTest_hash(classifier.WinnowSegmenter, dataset['train'], dataset['test'], 5)
-	stats = trainAndTest.trainAndTest_hash(classifier.HomerWinnow, dataset['train'], dataset['test'], 5)
+	stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallyGreedyNoISTrick, dataset['train'], dataset['test'], 5, classifier.SvmPerfClassifierNoIS)
+	// stats = trainAndTest.trainAndTest_hash(classifier.HomerWinnow, dataset['train'], dataset['test'], 5, classifier.SvmPerfClassifier)
 	// stats = trainAndTest_hash(classifier.PartialClassificationEquallyGreedyISTrick, dataset['train'], dataset['test'], 5)
 	// stats1 = trainAndTest_hash(classifier.SvmPerfClassifier, dataset['train'], dataset['test'], 5)
 
@@ -1427,7 +1450,7 @@ if (do_learning_curves) {
 
 	datasetNames = [
 			// "5_woz_ncagent_turkers_negonlp2ncAMT.json",
-			// "nlu_ncagent_students_negonlpnc.json",
+			"nlu_ncagent_students_negonlpnc.json",
 			"nlu_ncagent_turkers_negonlpncAMT.json",
 			// "3_woz_kbagent_turkers_negonlp2.json",
 			// "woz_kbagent_students_negonlp.json",
@@ -1441,7 +1464,7 @@ if (do_learning_curves) {
 
 	dataset = _.shuffle(dataset)
 
-	// dataset= _.sample(dataset, 120)
+	dataset= _.sample(dataset, 100)
 
 	classifiers  = {
 		// Intent_AttributeValue: classifier.PartialClassificationJustTwo,
@@ -1472,18 +1495,26 @@ if (do_learning_curves) {
 		// SVM: classifier.SvmPerfClassifier,
 
 		// PartialClassificationEquallyGreedyNoISBiagram: classifier.PartialClassificationEquallyGreedyTrick,
-		PartialClassificationEquallySagae: classifier.PartialClassificationEquallySagae,
-		PartialClassificationEquallySagaeNoCompletition: classifier.PartialClassificationEquallySagaeNoCompletition,
+		
+
+		// PartialClassificationEquallySagae: classifier.PartialClassificationEquallySagae,
+		// PartialClassificationEquallySagaeNoCompletition: classifier.PartialClassificationEquallySagaeNoCompletition,
 		// StandardSagae: classifier.WinnowSegmenter, 
-		SVMNoIS: classifier.SvmPerfClassifierNoIS,
-		SVMIS: classifier.SvmPerfClassifier
+		// SVMNoIS: classifier.SvmPerfClassifierNoIS,
+		// SVMIS: classifier.SvmPerfClassifier
 
 	
+
+		SvmPerfClassifier: classifier.SvmPerfClassifier,
+		SvmPerfClassifierStemmer: classifier.SvmPerfClassifierLematization,
+
+		// SvmPerfClassifierSimilarity: classifier.SvmPerfClassifierSimilarity
+		
 	};
 
 	// parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
 	parameters = ['F1','Precision','Recall']
-	curves.learning_curves(classifiers, dataset, parameters, 50, 5)
+	curves.learning_curves(classifiers, dataset, parameters, 10, 5)
 }
 
 if (do_small_temporary_test_dataset) {
