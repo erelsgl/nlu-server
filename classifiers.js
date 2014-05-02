@@ -22,7 +22,7 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
 var natural = require('natural');
-// var tokenizer = new natural.WordPunctTokenizer.tokenize(); // WordTokenizer, TreebankWordTokenizer, WordPunctTokenizer
+var tokenizer = new natural.WordPunctTokenizer(); // WordTokenizer, TreebankWordTokenizer, WordPunctTokenizer
 // var ngrams = new natural.NGrams.ngrams()
 /*
  * ENHANCEMENTS:
@@ -63,22 +63,119 @@ function inputSplitter(text) {
 }
 
 
-function featureExtractor(sentence, features) {
-	tokenizer = new natural.WordTokenizer();
 
+function featureExtractorSagae(sentence, features) {
 	var words = tokenizer.tokenize(sentence);
-	featurelist = words.concat(natural.NGrams.ngrams(sentence, 2, "[start]","[end]"))
+	// compareresults
+	// natural.PorterStemmer.attach();
+	// var words = sentence.tokenizeAndStem()
+	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
+	ftrs.NGramsFromArray(2, 0, words, features);  // bigrams
 
-	_.each(featurelist, function(value, key, list){ 
-		if (_.isArray(value))
-			features[value.join(" ")] = 0
-		else
-			features[value] = 0
+	// lis = trainutils.retrievelabels()
 
-	}, this)
+	// sentence = sentence.replace(/[\,,\.]/,"");
+	// _.each(lis, function(value, key, list){ 
+	// 	if (sentence.toLowerCase().indexOf(value)!=-1)
+	// 		features[value+"_similarity"] = 1 
+	// }, this)
+
+	//ftrs.NGramsFromArray(3, 1, words, features);  // trigrams   // much slower, not better at all
+	//require('./LastLetterExtractor')(sentence, features); // last letter - not needed when using WordPunctTokenizer
+	return features;
+}
+
+
+function featureExtractorLemma(sentence, features) {
+	// var words = tokenizer.tokenize(sentence);
+
+	
+	// console.log(words)
+	
+	// ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
+	// ftrs.NGramsFromArray(2, 0, words, features);  // bigrams
+
+	// sentence = sentence.replace(/\%/," percent");
+	// natural.PorterStemmer.attach();
+	// words = sentence.tokenizeAndStem()/
+
+	// _.each(words, function(word, key, list){ 
+		// features[word]= 1
+	// }, this)
+
+	var words = trainutils.sentenceStem(sentence)
+	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
+	ftrs.NGramsFromArray(2, 0, words, features);  // unigrams
+
+	// lis = trainutils.retrievelabels()
+	// sentence = sentence.replace(/[\,,\.]/,"");
+	// _.each(lis, function(value, key, list){ 
+	// 	if (sentence.toLowerCase().indexOf(value)!=-1)
+	// 		features[value+"_similarity"] = 1 
+	// }, this)
+	//ftrs.NGramsFromArray(3, 1, words, features);  // trigrams   // much slower, not better at all
+	//require('./LastLetterExtractor')(sentence, features); // last letter - not needed when using WordPunctTokenizer
+	return features;
+}
+
+function featureExtractorSimilarity(sentence, features) {
+	var words = tokenizer.tokenize(sentence);
+	
+	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
+	ftrs.NGramsFromArray(2, 0, words, features);  // bigrams
+
+	// lis = trainutils.retrievelabels()
+
+	// sentence = sentence.replace(/[\,,\.]/,"");
+	// _.each(lis, function(value, key, list){ 
+	// 	if (sentence.toLowerCase().indexOf(value)!=-1)
+	// 		features[value+"_similarity"] = 1 
+	// }, this)
 
 	return features;
 }
+
+function featureExtractor(sentence, features) {
+	var words = tokenizer.tokenize(sentence);
+
+
+
+	// natural.PorterStemmer.attach();
+	// var words = sentence.tokenizeAndStem()
+	
+	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
+	ftrs.NGramsFromArray(2, 0, words, features);  // bigrams
+
+	// lis = trainutils.retrievelabels()
+
+	// sentence = sentence.replace(/[\,,\.]/,"");
+	// _.each(lis, function(value, key, list){ 
+	// 	if (sentence.toLowerCase().indexOf(value)!=-1)
+	// 		features[value+"_similarity"] = 1 
+	// }, this)
+	//ftrs.NGramsFromArray(3, 1, words, features);  // trigrams   // much slower, not better at all
+	//require('./LastLetterExtractor')(sentence, features); // last letter - not needed when using WordPunctTokenizer
+	return features;
+}
+
+// function featureExtractor(sentence) {
+
+// 	var features = {}
+// 	tokenizer = new natural.WordTokenizer();
+
+// 	var words = tokenizer.tokenize(sentence);
+// 	featurelist = words.concat(natural.NGrams.ngrams(sentence, 2, "[start]","[end]"))
+
+// 	_.each(featurelist, function(value, key, list){ 
+// 		if (_.isArray(value))
+// 			features[value.join(" ")] = 0
+// 		else
+// 			features[value] = 0
+
+// 	}, this)
+
+// 	return features;
+// }
 
 // function featureExtractorSagae(sentence, features) {
 // }
@@ -256,6 +353,35 @@ var LanguageModelClassifier = classifiers.multilabel.CrossLanguageModel.bind(thi
 	});
 };
 
+var enhancesagae = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel) {
+	return classifiers.EnhancedClassifier.bind(0, {
+		normalizer: normalizer,
+		// inputSplitter: inputSplitter,
+		// inputSplitter: IS,
+
+		// spellChecker: require('wordsworth').getInstance(),
+		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
+
+		featureExtractor: featureExtractorSagae,
+		
+		featureLookupTable: featureLookupTable,
+		labelLookupTable: labelLookupTable,
+		
+		featureExtractorForClassification: [
+			ftrs.Hypernyms(JSON.parse(fs.readFileSync('knowledgeresources/hypernyms.json'))),
+		],
+
+		multiplyFeaturesByIDF: true,
+		//minFeatureDocumentFrequency: 2,
+		pastTrainingSamples: [], // to enable retraining
+		classifierType: classifierType,
+
+		InputSplitLabel: InputSplitLabel,
+		OutputSplitLabel: OutputSplitLabel,
+		TestSplitLabel: TestSplitLabel
+	});
+};
+
 var enhance2 = function (classifierType, TestSplitLabel) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
@@ -272,6 +398,54 @@ var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 		inputSplitter: inputSplitter,
 		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
 		featureExtractor: featureExtractor,
+		
+		featureLookupTable: featureLookupTable,
+		labelLookupTable: labelLookupTable,
+		
+		featureExtractorForClassification: [
+			ftrs.Hypernyms(JSON.parse(fs.readFileSync('knowledgeresources/hypernyms.json'))),
+		],
+
+		multiplyFeaturesByIDF: true,
+		//minFeatureDocumentFrequency: 2,
+
+		pastTrainingSamples: [], // to enable retraining
+			
+		classifierType: classifierType,
+	});
+};
+
+
+var enhancesim = function (classifierType, featureLookupTable, labelLookupTable) {
+	return classifiers.EnhancedClassifier.bind(0, {
+		normalizer: normalizer,
+		inputSplitter: inputSplitter,
+		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
+		featureExtractor: featureExtractorSimilarity,
+		
+		featureLookupTable: featureLookupTable,
+		labelLookupTable: labelLookupTable,
+		
+		featureExtractorForClassification: [
+			ftrs.Hypernyms(JSON.parse(fs.readFileSync('knowledgeresources/hypernyms.json'))),
+		],
+
+		multiplyFeaturesByIDF: true,
+		//minFeatureDocumentFrequency: 2,
+
+		pastTrainingSamples: [], // to enable retraining
+			
+		classifierType: classifierType,
+	});
+};
+
+
+var enhancelemma = function (classifierType, featureLookupTable, labelLookupTable) {
+	return classifiers.EnhancedClassifier.bind(0, {
+		normalizer: normalizer,
+		inputSplitter: inputSplitter,
+		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
+		featureExtractor: featureExtractorLemma,
 		
 		featureLookupTable: featureLookupTable,
 		labelLookupTable: labelLookupTable,
@@ -317,15 +491,15 @@ var WinnowSegmenter1 =
 			classifiers.multilabel.BinarySegmentation.bind(0, {
 			binaryClassifierType: enhancenois(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
 			segmentSplitStrategy: 'cheapestSegment',
-			strandard: true,
+			// strandard: true,
 });
 
 
 var WinnowSegmenter2 = 
 			classifiers.multilabel.BinarySegmentation.bind(0, {
-			binaryClassifierType: enhancenois(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
+			binaryClassifierType: enhancesagae(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
 			segmentSplitStrategy: 'cheapestSegment',
-			strandard: false,
+			// strandard: false,
 });
 
 var BayesSegmenter = classifiers.EnhancedClassifier.bind(0, {
@@ -396,7 +570,9 @@ module.exports = {
 
 		SvmPerfClassifier: enhance(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
 		SvmPerfClassifierNoIS: enhancenois(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
-		
+		SvmPerfClassifierSimilarity: enhancesim(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
+		SvmPerfClassifierLematization: enhancelemma(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
+
 		SvmLinearClassifier: enhance(SvmLinearBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
 		
 		PassiveAggressiveClassifier: enhance(PassiveAggressiveClassifier),
