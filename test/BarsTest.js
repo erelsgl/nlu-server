@@ -201,10 +201,11 @@ describe('Bars utilities', function() {
 	})
 
 	it('correctly sees ambiguity', function() {
-		_.isEqual(bars.semlang_ambiguity(['Offer', '20,000 NIS']), [[ 'Offer', 'Salary', '20,000 NIS' ]]).should.equal(true)
-		_.isEqual(bars.semlang_ambiguity([true]), [ [ 'Greet', true ], [ 'Quit', true ] ]).should.equal(true)
+		_.isEqual(bars.semlang_ambiguity(['accept']), [[['Query'],[], ['accept']]]).should.equal(true)
+		_.isEqual(bars.semlang_ambiguity(['Offer', '20,000 NIS']), [[[ 'Offer'], ['Salary'], ['20,000 NIS' ]]]).should.equal(true)
+		_.isEqual(bars.semlang_ambiguity([true]), [ [ [ 'Greet' ], [], [ true ] ], [ [ 'Quit' ], [], [ true ] ] ]).should.equal(true)
 		_.isEqual(bars.semlang_ambiguity(['Accept', '20,000 NIS']), []).should.equal(true)
-		_.isEqual(bars.semlang_ambiguity(['20,000 NIS']), [['Offer','Salary','20,000 NIS']]).should.equal(true)
+		_.isEqual(bars.semlang_ambiguity(['20,000 NIS']), [[['Offer'],['Salary'],['20,000 NIS']]]).should.equal(true)
 		bars.semlang_ambiguity(['previous']).length.should.equal(4)
 	})
 
