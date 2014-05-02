@@ -158,7 +158,10 @@ module.exports.test_hash = function(
 	{
 		expectedClasses = list.listembed(testSet[i].output)
 		// classified = classifier.classify(testSet[i].input, 50, testSet[i].input)
+		// classesWithExplanation = classifier.classify(testSet[i].input, explain, true, testSet[i].output, classifier_compare)
 		classesWithExplanation = classifier.classify(testSet[i].input, explain, true, testSet[i].output)
+// console.log(classesWithExplanation)
+// process.exit(0)
 
 		if (explain > 0)
 			classes = classesWithExplanation.classes
@@ -455,8 +458,14 @@ module.exports.trainAndTest_hash = function(
  	// 		agghash = label_enrichment(trainSet1, classifier.InputSplitLabel)
  	// 	}
 
+
+ 		// var classifier_compare = new classifierType1()
+
+ 		// classifier_compare.trainBatch(utils.clonedataset(trainSet1))
+
 		classifier.trainBatch(trainSet1);
 
+		// stat_hash = module.exports.test_hash(classifier, testSet1, verbosity, microAverage, macroSum, classifier_compare);
 		stat_hash = module.exports.test_hash(classifier, testSet1, verbosity, microAverage, macroSum);
 		// stat_hash['train_time'] = new Date()-startTime;
 
