@@ -11,6 +11,7 @@
 
 	@author Vasily Konovalov
  */
+var natural = require('natural');
 var execSync = require('execSync')
 var _ = require('underscore')._;
 var fs = require('fs');
@@ -134,7 +135,33 @@ labeltree = { Offer:
   Quit: { true: {} } }
 
 
+function sentenceStem(sentence)
+{
+	sentence = sentence.replace(/\%/," percent");
+	sentenceout = []
 
+	_.each(sentence.split(" "), function(word, key, list){ 
+		stem = natural.PorterStemmer.stem(word)
+		if (stem.length == 0)
+			sentenceout.push(word)
+		else
+			sentenceout.push(stem)
+	}, this)
+	
+	return 	sentenceout
+}
+
+function retrievelabels()
+{
+	lis = []
+	_.each(semlang, function(value, key, list){ 
+		lablist = splitJson(value)
+		_.each(lablist, function(labitem, key, list){ 
+			lis.push(labitem)
+		}, this)
+	}, this)
+	return _.uniq(lis)
+}
 
 function convertlabeltree()
 {
@@ -324,7 +351,7 @@ function aggreate_similar(list)
 		if ((value[0]=='Offer')&&((buf.length==0)||(buf[buf.length-1][2][1] == value[2][0])))
 			{
 				buf.push(value)
-				str = str + value[1]
+				str = str + " " + value[1]
 			}
 		else
 			{
@@ -354,24 +381,19 @@ return aggregate_sagae(classes, classifier, parts, explanations, original, true)
 
 function aggregate_sagae(classes, classifier, parts, explanations, original, completition)
 {
-	// console.log("inside")
-	
-	// process.exit(0)
-
 	var clas = []
 
 	explanations[0] = aggreate_similar(explanations[0])
 
-	// console.log(parts)
-	// console.log(JSON.stringify(explanations, null, 2))
-	// console.log(parts)
-
 	_.each(explanations[0], function(intent, key, list){ 
+		if (intent[0] != null)
+			clas.push([[intent[0]],[],[]])
 		
 		_.each(explanations[2], function(value, key, list){ 
 			// if ((intent[2][0]-1<=value[2][0])&&(intent[2][1]+1>=value[2][1]))
 			if ((intent[2][0]<=value[2][0])&&(intent[2][1]>=value[2][1]))
 				{
+				if ((intent[0]!=null)&&(value[0]!=null))
 				clas.push([[intent[0]],[], [value[0]]])
 				}
 		}, this)
@@ -379,22 +401,22 @@ function aggregate_sagae(classes, classifier, parts, explanations, original, com
 		_.each(explanations[1], function(attr, key, list){ 
 			// if ((intent[2][0]-1<=attr[2][0])&&(intent[2][1]+1>=attr[2][1]))
 			if ((intent[2][0]<=attr[2][0])&&(intent[2][1]>=attr[2][1]))
-				clas.push([[intent[0]],[attr[0]], []])
+				if ((intent[0]!=null)&&(attr[0]!=null))
+					clas.push([[intent[0]],[attr[0]], []])
 
 			_.each(explanations[2], function(value, key, list){ 
 				// if ((attr[2][0]-1<=value[2][0])&&(attr[2][1]+1>=value[2][1])&&
 					// (intent[2][0]-1<=attr[2][0])&&(intent[2][1]+1>=attr[2][1]))
 				if ((attr[2][0]<=value[2][0])&&(attr[2][1]>=value[2][1])&&
 					(intent[2][0]<=attr[2][0])&&(intent[2][1]>=attr[2][1]))
-					clas.push([[intent[0]],[attr[0]], [value[0]]])
+					if ((intent[0]!=null)&&(attr[0]!=null)&&(value[0]!=null))
+
+						clas.push([[intent[0]],[attr[0]], [value[0]]])
 			}, this)
 		}, this)
 				
 	}, this)
 	
-	// console.log(clas)
-	// process.exit(0)
-
 	js = []
 	_.each(clas, function(lab, key, list){ 
 		if (completition)
@@ -404,12 +426,22 @@ function aggregate_sagae(classes, classifier, parts, explanations, original, com
 
 	}, this)
 
-	// console.log(_.uniq(js))
-	// console.log(original)
-	// console.log("------------------------------")
-
 	return _.uniq(js)
+}
 
+
+function compareresults(classifier1, result1, classifier2, result2)
+{
+	_(result1.length).times(function(n){
+		if (!(_.isEqual(result1[n], result2[n])))
+			{
+				console.log(classifier1)
+				console.log(JSON.stringify(result1[n], null, 4))
+				console.log(classifier2)
+				console.log(JSON.stringify(result2[n], null, 4))
+				console.log("+++++++++++++++++++++++++++++++++++")
+			}
+	})
 }
 
 function aggregate_lab(explanations, inputngram, inputnorm)
@@ -449,22 +481,22 @@ function aggregate_lab(explanations, inputngram, inputnorm)
 
 }
 
-function aggregate_label_trick(classes, classifier, sample, explanations, original)
+function aggregate_label_trick(classes, classifier, sample, explanations, original, classifier_compare)
 {
 	draw = true
-	return aggregate_label(classifier, sample, explanations, true, draw, original)
+	return aggregate_label(classifier, sample, explanations, true, draw, original, classifier_compare)
 }
 
 
-function aggregate_label_no_trick(classes, classifier, sample, explanations, original)
+function aggregate_label_no_trick(classes, classifier, sample, explanations, original, classifier_compare)
 {
 	draw = false
-	return aggregate_label(classifier, sample, explanations, false, draw, original)
+	return aggregate_label(classifier, sample, explanations, false, draw, original, classifier_compare)
 }
 
 // module.exports.aggregate_label = function(explanations, inputngram, inputnorm)
 // module.exports.aggregate_label = function(classifier, sample, explanations)
-function aggregate_label(classifier, sample, explanations, trick, draw, original)
+function aggregate_label(classifier, sample, explanations, trick, draw, original, classifier_compare)
 // exports.aggregate_label = function(classifier, sample, explanations)
 {
 	var inputngram = classifier.sampleToFeatures(classifier.normalizedSample(sample), classifier.featureExtractors)
@@ -477,6 +509,26 @@ function aggregate_label(classifier, sample, explanations, trick, draw, original
 	inputnormal = inputnormal.replace(/\%/g," %")
 	inputnormal = inputnormal.replace(/\$/g," $")
 
+	console.log(sample)
+
+	clas = classifier_compare.classify(sample, 5 ,true)
+
+	var claslist = []
+	// _.each(explanations['positive'], function(value, key, list){ 
+		// claslist.push(key)
+	// }, this)
+	// console.log(Object.keys(explanations['positive']))
+	labels = generate_possible_labels(resolve_emptiness(bag_of_labels_to_components(Object.keys(explanations['positive']))))
+	
+	labscor = []
+	_.each(labels, function(lab, key, list){ 
+		labscor.push([lab,clas['scores'][lab]])
+	}, this)
+	// _.each(claslist, function(value, key, list){ 
+		// bag_of_labels_to_components
+	// }, this)
+// console.log(labels)
+// process.exit(0)
 	// console.log(_.extend(explanations['positive'],explanations['negative']))
 	// process.exit(0)
 
@@ -518,13 +570,8 @@ function aggregate_label(classifier, sample, explanations, trick, draw, original
 		}, this)
 	}, this)
 
-	//sorting 
-	// console.log(senlabel)
-
-	// console.log(wordhash)
-	// process.exit(0)
-
-	if (draw)
+	// if ((draw) &&(intent_attr_label_ambiguity(resolve_emptiness(bag_of_labels_to_components(Object.keys(explanations['positive']))))>1))
+	if ((draw))
 		{
 			senid = "./image/"+Date.now()
 			var labellist = Object.keys(senlabel)
@@ -543,7 +590,14 @@ function aggregate_label(classifier, sample, explanations, trick, draw, original
 			fs.appendFileSync(senid, wordnum+"\t"+word+"\t"+row.join("\t")+"\n",'utf8')
 			}, this)
 
-		command = "gnuplot -p -e \"reset; set term png truecolor  size 1000,1000; set grid ytics; set grid xtics; set title \'"+sample.replace(/\'/g,'')+"\';  set key top right; set output \'image/"+sample.replace(/\'/g,'')+".png\'; set key autotitle columnhead; set label \'"+(JSON.stringify(original)).replace(/[\",\\]/g,"")+"\' at screen 0.1, 0.9; plot for [i=3:"+(labellist.length+2)+"] \'"+senid+"\' using 1:i:xticlabels(2) smooth frequency with boxes\""
+			indx = 0.8
+			labb = ""
+			_.each(labscor, function(value, key, list){ 
+				labb = labb + "set label \'"+value[0].replace(/[\",\\]/g,"")+value[1]+"\' at screen 0.1,"+indx +";"
+				indx = indx - 0.025
+			}, this)
+
+		command = "gnuplot -p -e \"reset; set term png truecolor  size 1000,1000; set grid ytics; set grid xtics; set title \'"+sample.replace(/\'/g,'')+"\';  set key top right; set output \'image/"+sample.replace(/\'/g,'')+".png\'; set key autotitle columnhead; set label \'"+(JSON.stringify(original)).replace(/[\",\\]/g,"")+"\' at screen 0.1, 0.9;"+labb+" plot for [i=3:"+(labellist.length+2)+"] \'"+senid+"\' using 1:i:xticlabels(2) smooth frequency with boxes\""
 		if (labellist.length > 0)
 			result = execSync.run(command)
 		}
@@ -555,9 +609,6 @@ function aggregate_label(classifier, sample, explanations, trick, draw, original
 	var pop = []
 	var buffer = []
 
-	// console.log(wordhash)
-	// process.exit(0)
-	
 	_.each(wordhash, function(labels, word, list){
 		if (word.split(" ").length==1)
 			{
@@ -568,24 +619,16 @@ function aggregate_label(classifier, sample, explanations, trick, draw, original
 					ar.push((value[0]=="true") ? true:value[0])
 			}, this)
 
-			// console.log("ar")
-			// console.log(ar)
 			comp = bag_of_labels_to_components(ar.concat(buffer))
-			// console.log("comp")
-			// console.log(comp)
 
 			if (trick) comp = resolve_emptiness(comp)
 			var label = generate_possible_labels(comp)
-			// console.log("label")
 			// console.log(label)
 			pop = pop.concat(label)
 
 			} 
 		buffer = _.clone(ar)
 	}, this)
-
-
-	
 
 	_.each(pop, function(value, key, list){ 
 
@@ -598,27 +641,36 @@ function aggregate_label(classifier, sample, explanations, trick, draw, original
 // module.exports.resolve_emptiness = function(label)
 function resolve_emptiness(label)
 {
+	// console.log(label)
 	_.each(label[2], function(value, key, list){ 
+		// console.log(value)
+		if (typeof(value)!=undefined)
+			if (value.toString().indexOf("previous")!=-1)
+				value = "previous"
+
 		var amb = semlang_ambiguity([value])
+		if (amb.length==1)
+			{
+				// label = this.join_labels(label,amb[0])
+				label = join_labels(label,amb[0])
+				// console.log("label")
+				// console.log(label)
+			}
+	}, this)
+
+
+	// console.log(label)
+	// process.exit(0)
+
+	_.each(label[0], function(value, key, list){ 
+		var amb = semlang_ambiguity([value])
+		// console.log(amb)
 		if (amb.length==1)
 			{
 				// label = this.join_labels(label,amb[0])
 				label = join_labels(label,amb[0])
 			}
 	}, this)
-
-
-
-	_.each(label[0], function(value, key, list){ 
-		var amb = semlang_ambiguity([value])
-		if (amb.length==1)
-			{
-				// label = this.join_labels(label,amb[0])
-				label = join_labels(label,bag_of_labels_to_components(amb[0]))
-			}
-	}, this)
-
-
 
 	_(3).times(function(n){
 		label[n] = _.uniq(label[n])
@@ -632,6 +684,14 @@ function resolve_emptiness(label)
 // module.exports.generate_possible_labels = function(label)
 function generate_possible_labels(label)
 {
+	// console.log(label)
+	// _.each(label[2], function(value, key, list){ 
+	// 	if (typeof(value) != undefined)
+	// 		// if (typeof(value) != Boolean)
+	// 			if (value.toString().indexOf("previous") != -1)
+	// 				label[2][key] = 'previous'
+	// }, this)
+
 	var out = []
 	_.each(label[0], function(intent, key, list){
 		_.each(label[2], function(value, key, list){
@@ -665,7 +725,7 @@ function join_labels(label, label1)
 // module.exports.join_labels = function(label, label1)
 {
 	_(3).times(function(n){
-		label[n] = label[n].concat(label1[n])
+		label[n] = _.uniq(label[n].concat(label1[n]))
 	})
 	return label
 }
@@ -677,7 +737,8 @@ function semlang_ambiguity(label)
 	_.each(semlang, function(value, key, list){
 		var lab = splitPartEqually(multilabelutils.normalizeOutputLabels(value))
 		if (_.difference(label,_.flatten(lab)).length==0)
-			out.push(_.flatten(lab))
+			// out.push(_.flatten(lab))
+			out.push(lab)
 	}, this)
 	return out
 }
@@ -1245,5 +1306,8 @@ module.exports = {
 	find_path:find_path,
 	aggreate_similar:aggreate_similar,
 	aggregate_sagae_no_completition: aggregate_sagae_no_completition,
-	aggregate_sagae_completition:aggregate_sagae_completition
+	aggregate_sagae_completition:aggregate_sagae_completition,
+	compareresults:compareresults,
+	retrievelabels:retrievelabels, 
+	sentenceStem:sentenceStem,
 }
