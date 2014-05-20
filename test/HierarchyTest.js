@@ -23,10 +23,11 @@ describe('splitJson', function() {
 
 describe('splitPartEqually', function() {
 	it('should separate labels correctly', function() {
+		_.isEqual(Hierarchy.splitPartEqually([{"Accept":"Job Description"}]), [ [ 'Accept' ], [ 'Job Description' ], [] ]).should.equal(true);
 		_.isEqual(Hierarchy.splitPartEqually([{Offer: {Salary: "20000"}}]), [["Offer"], ["Salary"], ["20000"]]).should.equal(true);
-		_.isEqual(Hierarchy.splitPartEqually([{Accept: "previous"}]), [["Accept"], [], ["previous"]]).should.equal(true)
-		_.isEqual(Hierarchy.splitPartEqually([{Insist: "Salary"}]), [["Insist"], ["Salary"], []]).should.equal(true)	
-		_.isEqual(Hierarchy.splitPartEqually([{Insist: "Salary"}, {Accept: "previous"}]), [["Insist", "Accept"], ["Salary"], ["previous"]]);	
+		_.isEqual(Hierarchy.splitPartEqually([{"Accept": "previous"}]), [["Accept"], [], ["previous"]]).should.equal(true)
+		_.isEqual(Hierarchy.splitPartEqually([{"Insist": "Salary"}]), [["Insist"], ["Salary"], []]).should.equal(true)	
+		_.isEqual(Hierarchy.splitPartEqually([{"Insist": "Salary"}, {Accept: "previous"}]), [["Insist", "Accept"], ["Salary"], ["previous"]]);	
 	});
 })
 
