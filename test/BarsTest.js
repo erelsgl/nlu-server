@@ -225,4 +225,19 @@ describe('Bars utilities', function() {
 		_.isEqual(bars.resolve_emptiness([[],[],['20,000 NIS']]), [['Offer'],['Salary'],['20,000 NIS']]).should.equal(true)
 	})
 
+	it('correctly resolve emptiness', function() {
+	a  = [
+        ["Offer"," I can go", [0,3]],
+        ["Offer","12,000",[4,5]],
+        ["Offer"," NIS with a fast promotion",[5,10]        ]
+    	]
+
+
+    a_tested = [["Offer","  I can go",[0,3]],
+    			["Offer"," 12,000  NIS with a fast promotion",[4,10]]
+				]
+
+	a_after = bars.aggreate_similar(a)
+	_.isEqual(a_tested, a_after).should.equal(true)
+	})
 })
