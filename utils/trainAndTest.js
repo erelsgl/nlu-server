@@ -183,6 +183,7 @@ module.exports.test_hash = function(
 			sentence_hash['expected'] = expectedClasses[n];
 			sentence_hash['classified'] = actualClasses[n];
 			sentence_hash['explanation'] = expl;
+			sentence_hash['original'] = testSet1[i].output;
 			// sentence_hash['expected original'] = testSetOriginal[i]['output']
 			// sentence_hash['classified original'] = classified
 			})	
