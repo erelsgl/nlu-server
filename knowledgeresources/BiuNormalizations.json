@@ -11,6 +11,7 @@
 , {"source": "there'st", "target": "there is"}
 , {"source": "that's", "target": "that is"}
 , {"source": "it's", "target": "it is"}
+, {"source": "hrs", "target": "hours"}
 , {"source": "kilograms", "target": "kg"}
 , {"source": "kilogram", "target": "kg"}
 , {"source": "grams", "target": "gram"}
@@ -42,9 +43,12 @@
 , {"source": "\\b(\\d+) thousands?\\b", "target": "$1000"}
 
 , {"source": "\\b(\\d+)\\s*k\\b", "target": "$1000"}
-, {"source": "\\b(\\d+),000\\b", "target": "$1000"}
+, {"source": "(\\d+),000", "target": "$1000"}
+, {"source": "(\\d+)\\.000", "target": "$1000"}
+
 , {"source": "\\b(\\d+)\\s*percent\\b", "target": "$1%"}
-, {"source": "\\b(\\d+)\\s+%\\b", "target": "$1%"}
+, {"source": "(\\d+)([^\\d\\s%])", "target": "$1 $2"}     
+, {"source": "(\\d+)\\s+%", "target": "$1%"}
 
 , {"source": "\\b[o][.][k][.]?", "target": "okay"}
 , {"source": "\\b[o][k]\\b", "target": "okay"}
