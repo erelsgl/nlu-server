@@ -22,6 +22,8 @@ var Hierarchy = require('../Hierarchy');
 var splitJson = Hierarchy.splitJson
 var splitJsonRecursive = Hierarchy.splitJsonRecursive
 var splitPartEqually = Hierarchy.splitPartEqually
+var splitPartEqually1 = Hierarchy.splitPartEqually1
+
 var joinJson = Hierarchy.joinJson
 var joinJsonRecursive = Hierarchy.joinJsonRecursive
 
@@ -44,6 +46,7 @@ semlang = [ '{"Reject":"previous"}',
   '{"Offer":{"Working Hours":"8 hours"}}',
   '{"Offer":{"Job Description":"Project Manager"}}',
   '{"Offer":{"Salary":"7,000 NIS"}}',
+  '{"Offer":{"Salary":"10,000 NIS"}}',
   '{"Offer":{"Pension Fund":"10%"}}',
   '{"Offer":{"Promotion Possibilities":"Fast promotion track"}}',
   '{"Offer":{"Salary":"12,000 NIS"}}',
@@ -134,7 +137,42 @@ labeltree = { Offer:
   Append: { previous: {} },
   Quit: { true: {} } }
 
+function comparelabels(labels1, labels2)
+{
 
+
+	var result = []
+	_.each(labels1, function(value, key, list){ 
+		if (key in labels2)
+			{
+			result.push([key, ((value['F1']!=-1) ? value['F1'] : 0) - ((labels2[key]['F1'] != -1) ? labels2[key]['F1'] : 0), value['TP']+value['FN']])
+			}
+			// result[key] = value['F1'] - labels2[key]['F1']
+	}, this)
+
+	result = _.sortBy(result, function(num){ return num[1];})
+	result = _.filter(result, function(num){ return num[1]!=0 });
+
+	return result
+}
+
+function filteraccept(dataset)
+	{
+	// var datasetfiltered = []
+	_.each(dataset, function(value, key, list){ 
+		// var bo = true
+		var labels = []
+		_.each(value['output'], function(value1, key1, list1){
+			if (value1.indexOf("previous") == -1)
+				// bo = false
+				labels.push(value1)
+		}, this)
+		// if (bo)
+			// datasetfiltered.push(value)
+		dataset[key]['output'] = labels
+	}, this)
+	return dataset
+	}
 function sentenceStem(sentence)
 {
 	sentence = sentence.replace(/\%/," percent");
@@ -344,10 +382,12 @@ function find_path(mat)
 
 function aggreate_similar(list)
 {
-	buf = []
-	str = ""
-	clean = []
+	var buf = []
+	var str = ""
+	var clean = []
+
 	_.each(list, function(value, key, list){ 
+		// should be Offer and (either it's first or it's continue)
 		if ((value[0]=='Offer')&&((buf.length==0)||(buf[buf.length-1][2][1] == value[2][0])))
 			{
 				buf.push(value)
@@ -356,16 +396,45 @@ function aggreate_similar(list)
 		else
 			{
 				if (buf.length!=0) 
-					clean.push(['Offer',str,[buf[0][2][0], buf[buf.length-1][2][1]]])
+					// clean.push(['Offer',str,[buf[0][2][0], buf[buf.length-1][2][1]], _.map(buf, function(num){return num[3]})])				
+					clean.push(['Offer',str,[buf[0][2][0], buf[buf.length-1][2][1]]])				
+
 				buf = []
 				str = ""
-				clean.push(value)
+
+				if (value[0]=='Offer')
+				{
+				buf.push(value)
+				str = str + " " + value[1]		
+				}
+				else
+				{
+				clean.push(value)					
+				}
+
+
 			}
 
 	}, this)
 	if (buf.length!=0)
+		// clean.push(['Offer',str,[buf[0][2][0], buf[buf.length-1][2][1]], _.map(buf, function(num){return num[3]})])
 		clean.push(['Offer',str,[buf[0][2][0], buf[buf.length-1][2][1]]])
 	return clean
+}
+
+function dividedataset(dataset)
+{
+	datasetd = {'one':[], 'two':[]}
+
+	_.each(dataset, function(value, key, list){ 
+		if (value.output.length == 1)
+			datasetd['one'].push(value)
+		else
+			datasetd['two'].push(value)
+
+	}, this)
+
+	return datasetd
 }
 
 
@@ -379,15 +448,170 @@ function aggregate_sagae_completition(classes, classifier, parts, explanations, 
 return aggregate_sagae(classes, classifier, parts, explanations, original, true)
 }
 
+
+// function aggregate_sagae_improved(classes, classifier, parts, explanations, original)
+// {
+// 	var completition = true
+// 	var clas = []
+
+// 	explanations[0] = aggreate_similar(explanations[0])
+// 	// explanations[0] = filterreject(explanations[0])
+// 	// explanations[2] = filterreject(explanations[2])
+
+// 	console.log("utterance")
+// 	console.log(JSON.stringify(parts, null, 4))
+// 	console.log("explanation")
+// 	console.log(JSON.stringify(explanations, null, 4))
+	
+
+// 	_.each(explanations[2], function(value, key, list){
+// 		clas.push([[],[],[value[0]]])
+// 	})
+// 	_.each(explanations[0], function(intent, key, list){ 
+// 		// if (intent[0] != null)
+// 			clas.push([[intent[0]],[],[]])
+		
+// 		_.each(explanations[2], function(value, key, list){ 
+// 			// if ((intent[2][0]-1<=value[2][0])&&(intent[2][1]+1>=value[2][1]))
+// 			if ((intent[2][0]<=value[2][0])&&(intent[2][1]>=value[2][1]))
+// 				{
+// 				if ((intent[0]!=null)&&(value[0]!=null))
+// 				clas.push([[intent[0]],[], [value[0]]])
+// 				}
+// 		}, this)
+
+// 		_.each(explanations[1], function(attr, key, list){ 
+// 			// if ((intent[2][0]-1<=attr[2][0])&&(intent[2][1]+1>=attr[2][1]))
+// 			if ((intent[2][0]<=attr[2][0])&&(intent[2][1]>=attr[2][1]))
+// 				if ((intent[0]!=null)&&(attr[0]!=null))
+// 					clas.push([[intent[0]],[attr[0]], []])
+
+// 			_.each(explanations[2], function(value, key, list){ 
+// 				// if ((attr[2][0]-1<=value[2][0])&&(attr[2][1]+1>=value[2][1])&&
+// 					// (intent[2][0]-1<=attr[2][0])&&(intent[2][1]+1>=attr[2][1]))
+// 				if ((attr[2][0]<=value[2][0])&&(attr[2][1]>=value[2][1])&&
+// 					(intent[2][0]<=attr[2][0])&&(intent[2][1]>=attr[2][1]))
+// 					if ((intent[0]!=null)&&(attr[0]!=null)&&(value[0]!=null))
+
+// 						clas.push([[intent[0]],[attr[0]], [value[0]]])
+// 			}, this)
+// 		}, this)
+				
+// 	}, this)
+
+// // console.log(clas)
+
+	
+// 	var js = []
+// 	_.each(clas, function(lab, key, list){ 
+// 		// if (completition)
+// 			var res = resolve_emptiness(lab)
+// 			// console.log(res)
+// 			js = js.concat(generate_possible_labels(res))
+// 			// console.log(js)
+// 		// else
+// 			// js = js.concat(generate_possible_labels((lab)))
+
+// 	}, this)
+
+// 	console.log("composite label:")
+// 	console.log(JSON.stringify(_.uniq(js), null, 4))
+// 	console.log("gold composite label:")
+// 	console.log(JSON.stringify(original, null, 4))
+// 	console.log()
+// 	// process.exit(0)
+// 	return _.uniq(js)
+// }
+
+function filterreject(list)
+{
+	var	placereject = false 
+	var	car = false 
+	_.each(list, function(value, key, list){ 
+			// should be Offer and (either it's first or it's continue)
+			if (value[0]=='Without leased car')
+				car = true
+			if ((value[0]=='With leased car') && (car))
+				list[key][0] = 'Without leased car'
+			
+			if (value[0]=='Reject')
+					placereject = true
+			if ((value[0]=='Accept') &&  (placereject))
+					list[key][0] = 'Reject'
+		})
+	return list
+}
+
+
+
+function getlabelhier()
+{
+lis = {}
+	_.each(semlang, function(value, key, list){ 
+		lablist = splitJson(value)
+		// console.log(la/blist)
+		// process.exit(0)
+		if (!(lablist[1] in lis)) lis[lablist[1]] = []
+			lis[lablist[1]].push(lablist[2])
+		
+		lis[lablist[1]] = _.uniq(lis[lablist[1]])
+
+		// _.each(lablist, function(labitem, key, list){ 
+			// lis.push(labitem)
+		// }, this)
+	}, this)
+	return lis
+}
+
+function aggregate_rilesbased(classes, classifier, parts, explanations, original)
+{
+
+
+var lis  = getlabelhier()
+	console.log(lis)
+	process.exit(0)
+
+// retrievelabels()	
+	console.log(parts)
+	console.log(explanations)
+	console.log()
+	process.exit(0)
+
+
+	"a10,000".match(/10,000/)
+
+}
+
 function aggregate_sagae(classes, classifier, parts, explanations, original, completition)
 {
 	var clas = []
 
 	explanations[0] = aggreate_similar(explanations[0])
+	// explanations[0] = filterreject(explanations[0])
+	// explanations[2] = filterreject(explanations[2])
+	// console.log("utterance")
+	// console.log(JSON.stringify(parts, null, 4))
+	// console.log("explanation")
+	// console.log(JSON.stringify(explanations, null, 4))
+	
 
+	_.each(explanations[2], function(value, key, list){
+		clas.push([[],[],[value[0]]])
+	})
 	_.each(explanations[0], function(intent, key, list){ 
 		if (intent[0] != null)
 			clas.push([[intent[0]],[],[]])
+
+		// _.each(explanations[1], function(attr, key, list){ 
+			// if ((intent[2][0]-1<=value[2][0])&&(intent[2][1]+1>=value[2][1]))
+			// if ((intent[2][0]<=value[2][0])&&(intent[2][1]>=value[2][1]))
+			// if (((intent[2][0]<=attr[2][0])&&(intent[2][1]>=attr[2][0])) ||
+				// ((intent[2][0]<=attr[2][1])&&(intent[2][1]>=attr[2][1]))
+				// )
+				// {
+				// clas.push([[intent[0]],[attr[0]], []])
+				// }
+		// }, this)
 		
 		_.each(explanations[2], function(value, key, list){ 
 			// if ((intent[2][0]-1<=value[2][0])&&(intent[2][1]+1>=value[2][1]))
@@ -416,16 +640,29 @@ function aggregate_sagae(classes, classifier, parts, explanations, original, com
 		}, this)
 				
 	}, this)
+
+	// console.log(clas)
+	// process.exit(0)
 	
-	js = []
+	var js = []
 	_.each(clas, function(lab, key, list){ 
 		if (completition)
-			js = js.concat(generate_possible_labels(resolve_emptiness(lab)))
+			{
+			var res = resolve_emptiness(lab)
+			// console.log(res)
+			js = js.concat(generate_possible_labels(res))
+			}
+			// console.log(js)
 		else
 			js = js.concat(generate_possible_labels((lab)))
 
 	}, this)
 
+	// console.log("composite label:")
+	// console.log(JSON.stringify(_.uniq(js), null, 4))
+	// console.log("gold composite label:")
+	// console.log(JSON.stringify(original, null, 4))
+	
 	return _.uniq(js)
 }
 
@@ -639,37 +876,65 @@ function aggregate_label(classifier, sample, explanations, trick, draw, original
 // input: [[],[],['20,000 NIS']]
 // output: [['Offer'],['Salary'],['20,000 NIS']]
 // module.exports.resolve_emptiness = function(label)
+// function resolve_emptiness(label)
+// {
+
+// 	if ((label[1].length == 0)&&(label[2].length == 0)&&
+// 		(['Append', 'Reject', 'Insist', 'Accept'].indexOf(label[0][0])) != -1
+// 		)
+// 		label[2][0] = 'previous'
+
+// 	_.each(label[2], function(value, key, list){ 
+// 		// console.log(value)
+// 		if (typeof(value)!=undefined)
+// 			if (value.toString().indexOf("previous")!=-1)
+// 				value = "previous"
+
+// 		var amb = semlang_ambiguity([value])
+// 		if (amb.length==1)
+// 			{
+// 				// label = this.join_labels(label,amb[0])
+// 				label = join_labels(label,amb[0])
+// 				// console.log("label")
+// 				// console.log(label)
+// 			}
+// 	}, this)
+
+
+// 	// console.log(label)
+// 	// process.exit(0)
+
+// 	_.each(label[0], function(value, key, list){ 
+// 		var amb = semlang_ambiguity([value])
+// 		// console.log(amb)
+// 		if (amb.length==1)
+// 			{
+// 				// label = this.join_labels(label,amb[0])
+// 				label = join_labels(label,amb[0])
+// 			}
+// 	}, this)
+
+// 	_(3).times(function(n){
+// 		label[n] = _.uniq(label[n])
+// 	})
+// 	return label
+// }
+
+
 function resolve_emptiness(label)
 {
-	// console.log(label)
+	// the most popular vased on intent
 	_.each(label[2], function(value, key, list){ 
-		// console.log(value)
-		if (typeof(value)!=undefined)
-			if (value.toString().indexOf("previous")!=-1)
-				value = "previous"
-
 		var amb = semlang_ambiguity([value])
-		if (amb.length==1)
-			{
-				// label = this.join_labels(label,amb[0])
+		if (amb.length == 1)
 				label = join_labels(label,amb[0])
-				// console.log("label")
-				// console.log(label)
-			}
 	}, this)
 
-
-	// console.log(label)
-	// process.exit(0)
-
+	// like Greet
 	_.each(label[0], function(value, key, list){ 
 		var amb = semlang_ambiguity([value])
-		// console.log(amb)
 		if (amb.length==1)
-			{
-				// label = this.join_labels(label,amb[0])
 				label = join_labels(label,amb[0])
-			}
 	}, this)
 
 	_(3).times(function(n){
@@ -677,7 +942,6 @@ function resolve_emptiness(label)
 	})
 	return label
 }
-
 
 // input: [['Offer', 'Accept'], ['Salary'], ['previous','20,000 NIS']]
 // output: [{'Offer':{'Salary':'20,000 NIS'}}, {'Accept':'previous'}]
@@ -1286,6 +1550,7 @@ function Compensate(json) {
 
 
 module.exports = {
+	// aggregate_sagae_improved: aggregate_sagae_improved,
 	aggregate_sagae: aggregate_sagae, 
 	convertlabeltree: convertlabeltree,
 	expl_struct: expl_struct,
@@ -1310,4 +1575,9 @@ module.exports = {
 	compareresults:compareresults,
 	retrievelabels:retrievelabels, 
 	sentenceStem:sentenceStem,
+	dividedataset: dividedataset,
+	filteraccept:filteraccept,
+	filterreject:filterreject,
+	comparelabels:comparelabels,
+	aggregate_rilesbased:aggregate_rilesbased
 }
