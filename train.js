@@ -5,14 +5,20 @@
  * @since 2013-06
  */
 
- var Hierarchy = require(__dirname+'/Hierarchy');
+var Hierarchy = require(__dirname+'/Hierarchy');
 
-
-console.log("machine learning trainer start\n");
-
+var sample_kbagent = false
+var do_coverage = false
+var do_separate_datasets = false
+var test_aggregate_errors = false
+var test_aggregate_keyphases = false
+var test_underscore = false
+var test_error_analysis = false
+var test_keywords = false
 var test_egypt = false
 var test_natural = false
-var test_segmentation = false
+var test_spell = false
+var test_segmentation = true
 var do_spell_correction_test = false
 var do_compare_approach = false
 var do_partial_classification = false
@@ -21,7 +27,8 @@ var do_unseen_word_curve = false
 var do_checking_tag = false
 var do_small_temporary_test = false
 var do_small_temporary_serialization_test = false
-var do_learning_curves = true
+var do_learning_curves = false
+var do_test_sagae = false
 var do_cross_dataset_testing = false
 var do_learning_curves_dialogue = false
 var do_final_test = false
@@ -55,6 +62,7 @@ var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/4_var
 var verbosity = 0;
 var explain = 0;
 
+var cheapest_paths = require('limdu/node_modules/graph-paths').cheapest_paths;
 var natural = require('natural');
 var execSync = require('execSync').exec
 var partitions = require('limdu/utils/partitions');
@@ -189,10 +197,286 @@ if (count_2_intents_2_attributes)
 	console.log(ambiguity)
 	console.log(ambiguity.length)
 	}
+
+
+
+if (test_underscore)
+{
+}
+if (test_aggregate_errors)
+{
+
+	// var filenamejson = "errors_composite1.json"
+	var filenamejson = "errors_component1.json"
+	// var filenamehtml = "errors_composite1.html"
+	var filenamehtml = "errors_component1.html"
+	var data = JSON.parse(fs.readFileSync(filenamejson))
+	// composite-wise
+	// var error_hash = {
+	// 	'1': "negation:with and without car",
+	// 	'2': "Offer:Attribute:Negative Value vs Reject:Attribute",
+	// 	//'3': "Reject FP negation",
+	// 	'4': "Query:compomise FN",
+	// 	'5': "Reject:previous vs Reject:specific",
+	// 	'6': "Accept FP: grip accept word",
+	// 	'7': "with Leased car correlated with 'with'",
+	// 	'8': "Reject FP: grip negative meaning word",
+	// 	'9': "Reject vs Accept: confusing",
+	// 	'10': "unknown words/misspelling/complex",
+	// 	'11': "Offer: grip offer word",
+	// 	'12': "Insist FN",
+	// 	'13': "Query:accept vs Query:specific",
+	// 	'14': "Insist FP",
+	// 	'15': "no agreement FN",
+	// 	'16': "Insist specific: Insist previous",
+	// 	'17': "Apeend FP",
+	// 	'18': "Append FN",
+	// 	'19': "Offer wrong attribute same value"
+	// }
+
+// component-wise
+var error_hash = {
+"1": "Insist FP",
+"2": "Query FP: grip query word (ok, only, compomise)",
+"4": "Query FN",
+"3": "Append FN",
+"5": "Insist vs Offer",
+"6": "Query vs Reject",
+"7": "Accept FP: grip accept related word",
+"8": "Reject FP: grip reject related word",
+"9": "Offer FP: grip  the value string",
+"10": "Accept vs Reject in the same sentence",
+"11": "Offer:nothing vs Reject:something",
+"12": "Append FP",
+"13": "unknown word/misspelled/complicated phrase",
+"15": "Accept Query",
+"16": "Offer Accept",
+"17": "Taggging questionable",
+"18": "Quit FP",
+"19": "Leased car and with connecion",
+"20": "Salary FP",
+"21": "Job description FP correlated 'job'",
+"22": "Append FP",
+"23": "Append FN",
+"24": "Offer FP: grip the value string",
+"25": "Pension fund FN",
+"26": "Salary FN",
+"27": "previous FP",
+"28": "Value confusion with vs without",
+"29": "Value where there is no value just string",
+"30": "confusiong between similar values"
+}
+
+	var label_count = []
+	_(Object.keys(error_hash).length+2).times(function(n){label_count.push(0)})
+
+	_(3).times(function(n){
+		_.each(data[n], function(value, key, list){ 
+			if (!(_.isEqual(value['errorclass'], [''])))
+				{
+				_.each(value['errorclass'], function(err, key, list){
+					label_count[parseInt(err)] = label_count[parseInt(err)] + 1
+				}, this)
+				}
+		}, this)
+	})
+
+	var overallsum = _.reduce(_.compact(label_count), function(memo, num){ return memo + num; }, 0);
+
+	fs.writeFileSync(filenamehtml, "<html><body>", 'utf-8')
+	// fs.writeFileSync(filenamehtml, "<a href=\"#chapter4\">blabla</a>", 'utf-8')
+
+	// fs.appendFileSync(filenamehtml, "<table style=\"white-space: pre-wrap;\"><tr><td>"+JSON.stringify(data[0][0]['stat'], null, 4)+"</td></tr></table>", 'utf-8')
+	fs.appendFileSync(filenamehtml, "<table border=\"1\" style=\"white-space: pre-wrap;\">", 'utf-8')
+
+	_.each(label_count, function(value, key, list){
+		if (label_count[key]>0) 
+			fs.appendFileSync(filenamehtml, "<tr><td><a href=\"#"+key+"\">"+error_hash[key]+"</a></td><td>"+label_count[key]+"</td><td>"+(label_count[key]/overallsum).toFixed(2)+"%</td></tr>", 'utf-8')
+	}, this)	
+	fs.appendFileSync(filenamehtml, "</table>", 'utf-8')
+
+	_.each(error_hash, function(value, key, list){ 
+		if (label_count[parseInt(key)]>0)
+		{
+		fs.appendFileSync(filenamehtml, "<a name=\""+key+"\"><i>"+value+"</i></a>", 'utf-8')
+		fs.appendFileSync(filenamehtml, "<table style=\"white-space: pre-wrap;\">", 'utf-8')
+			_(3).times(function(n){
+				_.each(data[n], function(item, key1, list){
+				// _.each(list, function(value, key, list){ 
+				// }, this)
+					if (item['errorclass'].indexOf(key)!=-1)
+						{
+						fs.appendFileSync(filenamehtml, "<tr><td><b>"+item['input']+"</b></td></tr>", 'utf-8')
+						fs.appendFileSync(filenamehtml, "<tr><td>"+JSON.stringify(item['stat'], null, 4)+"</td></tr>", 'utf-8')
+						}
+				}, this)
+			})
+		fs.appendFileSync(filenamehtml, "</table>", 'utf-8')
+		}
+	}, this)
+
+	// fs.appendFileSync(filenamehtml, "<table style=\"white-space: pre-wrap;\">", 'utf-8')
+	// fs.appendFileSync(filenamehtml, "<a name=\"chapter4\"></a>", 'utf-8')
+	fs.appendFileSync(filenamehtml, "</body></html>", 'utf-8')
+}
+
+if (test_aggregate_keyphases)
+{
+	var data = JSON.parse(fs.readFileSync("keyphases.json"))
+	var stats = {}
+
+	_.each(data, function(item, key, list){ 
+		_.each(item['labels'], function(values, label, list){
+			if (!(label in stats)) 
+					stats[label] = {}
+ 			// _.each(values, function(value, key, list){
+ 				if (!(_.isEqual(values,[''])))
+ 				// if (values.length > 0)
+ 					{
+	 					_.each(values, function(value, key1, list){ 
+							if (!(value in stats[label]))
+								 stats[label][value] = []
+							stats[label][value].push(item['sentence'])
+	 						
+	 					}, this)
+ 					}
+	 					// stats[label] = stats[label].concat(values)
+
+			 // }, this) 
+		}, this)
+	}, this)
+
+	// console.log(stats)
+	// process.exit(0)
+
+	// _.each(stats, function(values, label, list){
+		// stats[label] = _.countBy(values, function(num) { return num });
+	// }, this)
+
+
+	// var filename = "keyphases.csv"
+
+	// fs.writeFileSync(filename, Object.keys(stats).join(";")+"\n", 'utf-8')
+
+	// _(10).times(function(n){
+	// 	var row = []
+	// 	_.each(stats, function(values, label, list){
+	// 		if (Object.keys(values).length>n-1) 
+	// 			row.push(Object.keys(values)[n])
+	// 		else
+	// 			row.push('')
+	// 	}, this)
+	// 	fs.appendFileSync(filename, row.join(";")+"\n", 'utf-8')
+	// })
+	
+	var filenamehtml = "keyphases.html"
+	fs.writeFileSync(filenamehtml, "<html>", 'utf-8')
+	fs.appendFileSync(filenamehtml, "<head>", 'utf-8')
+	fs.appendFileSync(filenamehtml, "<style>ul li ul { display: none; }</style>", 'utf-8')
+	
+	fs.appendFileSync(filenamehtml, "<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script>\n",'utf-8')
+	fs.appendFileSync(filenamehtml, "</head>", 'utf-8')
+	fs.appendFileSync(filenamehtml, "<body>", 'utf-8')
+	fs.appendFileSync(filenamehtml, "<script>$(document).ready(function() { $('.list > li a').click(function() {$(this).parent().find('ul').toggle();});});</script>\n", 'utf-8')
+
+	fs.appendFileSync(filenamehtml, "set size "+data.length+" utterances<br>", 'utf-8')
+	fs.appendFileSync(filenamehtml, "date of the report "+new Date().toJSON().slice(0,10)+"<br>", 'utf-8')
+
+	fs.appendFileSync(filenamehtml, "<table border=\"1\" style=\"white-space: pre-wrap;\">", 'utf-8')
+
+	_.each(stats, function(keylist, label, list){
+
+		fs.appendFileSync(filenamehtml, "<tr><td><b>"+label+"</b></td><td></td></tr>", 'utf-8')
+		// fs.appendFileSync(filenamehtml, "<ul class='list'><li><a>"+label+"</a><ul><li>adda</li><li>ssss</li></ul></li></ul>", 'utf-8')
+
+		var tolist = _.pairs(keylist)
+		tolist = _.sortBy(tolist, function(num){ return num[1].length; });
+		_.each(tolist.reverse(), function(value, key, list){ 
+			// fullist = ""
+			// _.each(list, function(value, key, list){ 
+
+			// }, this)
+			fs.appendFileSync(filenamehtml, "<tr><td><ul class='list'><li><a>"+value[0]+"</a><ul><il>"+value[1].join("</il><br><il>")+"</il></ul></il></ul></td><td>"+value[1].length+"</td></tr>", 'utf-8')
+		}, this)
+	}, this)
+
+	fs.appendFileSync(filenamehtml, "</table>", 'utf-8')
+	fs.appendFileSync(filenamehtml, "</body></html>", 'utf-8')
+
+	console.log(stats)
+	process.exit(0)
+}
+
+
+
+
+if (test_error_analysis)
+{
+	var data = []
+	var errors = [[],[],[]]
+	
+	var dataset = ["nlu_ncagent_students_negonlpnc.json"]//"nlu_ncagent_turkers_negonlpncAMT.json"]
+	// var dataset = ["5_woz_ncagent_turkers_negonlp2ncAMT.json"]
+	
+	_.each(dataset, function(value, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+	})
+
+	partitions.partitions(data, 10, function(trainSet, testSet, index) {
+		// var stats = trainAndTest.trainAndTest_hash(classifier.WinnowSegmenter, trainSet, testSet, 5)
+		var stats = trainAndTest.trainAndTest_hash(classifier.CompositeSagaeSeparation, trainSet, testSet, 5)
+		// over intent attribute value
+		_.each(stats, function(stat, key1, list){ 
+			var samp = _.sample(stat['data'], 20)
+			_.each(samp, function(value, key, list){
+				if ((value['explanation']['FP'].length != 0) || (value['explanation']['FN'].length != 0))
+					// {
+					// console.log(key1)
+					errors[key1].push({'input':value['input'],'errorclass':[''],'stat':value['explanation'],'original':value['original']})	
+					// }
+			}, this)
+		});
+	});
+	
+	console.log(JSON.stringify(errors, null, 4))
+	process.exit(0)
+}
+
+if (test_keywords)
+{
+	
+	var data = []
+	var dataset = ["students.json","turkers.json"]
+	_.each(dataset, function(value, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/Dialogue/"+value)))
+	})
+
+	var output = []
+	var setoflab = {}
+
+
+	_.each(data, function(item, key, list){ 
+		_.each(item['turns'], function(turn, key, list){ 
+			setoflab = {'sentence': turn['input'], 'labels':{}}
+			_.each(turn['output'], function(label, key, list){
+				_.each(Hierarchy.splitPartEqually(multilabelutils.normalizeOutputLabels(label)), function( elem, key, list){ 
+					if (elem.length != 0)
+						setoflab['labels'][elem]=[""]
+				 }, this) 
+			}, this)
+			output.push(setoflab)
+		}, this)
+	}, this)
+
+	console.log(JSON.stringify(output, null, 4))
+	console.log()
+	process.exit(0)
+
+}
+
 if (do_unseen_word_curve)
 	{
-	dataset = [
-			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
+	dataset = [			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
 			// "nlu_ncagent_students_negonlpnc.json",
 			"nlu_ncagent_turkers_negonlpncAMT.json"
 
@@ -211,12 +495,59 @@ if (do_unseen_word_curve)
 
 if (test_natural)
 {
-	sentence = "I offer you a salaries of 20000 NIS and 9 hours"
+// var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%,'$]+/});
+
+	// var tokenizer = new natural.WordTokenizer({'pattern':(/(\W+|\%|)/)}); // WordTokenizer, TreebankWordTokenizer, WordPunctTokenizer
+	var words = tokenizer.tokenize("I will , offer 12,000 NIS");
+	console.log(words)
+	process.exit(0)
+
+
+	// TfIdf = natural.TfIdf,
+    // tfidf = new TfIdf();
+
+	// var features = natural.NGrams.ngrams('this node document is about this node.', 2)
+
+	// tfidf.addDocument(features)
+
+	// tfidf.addDocument('this node document is about node.');
+	// tfidf.addDocument('this document is about ruby.');
+	// tfidf.addDocument('this document is about ruby and node.');
+
+// document #0 is 0.4054651081081644 3/2*1
+// document #1 is 3/2*0
+// document #2 is 0.4054651081081644
+
+
+	// tfidf.tfidfs('node')
+	// console.log()
+	// process.exit(0)
+
+	// tfidf.tfidfs('node', function(i, measure) {
+   	 	// console.log('document #' + i + ' is ' + measure);
+	// });
+	// var a = tfidf.idf("node")
+	// sentence = "I have 15% from the deal"
+	// var tokenizer = new natural.WordTokenizer(); // WordTokenizer, TreebankWordTokenizer, WordPunctTokenizer
+	// var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%]+/});
+	
+	// var words = tokenizer.tokenize(sentence);
+//
+	// console.log(words)
+	// process.exit(0)
+
+	// var features = natural.NGrams.ngrams('hi, i will offer 12000  with a car and a pension', 1)
+	// console.log(features)
+	// process.exit(0)
+	// var a = natural.NGrams.ngrams("aaa bbb ccc ddd", 2)
+	// console.log(a)
+	// process.exit(0)
+	// sentence = "I offer you a salaries of 20000 NIS and 9 hours"
 	// dist = natural.JaroWinklerDistance(a,"house")
 	// console.log(dist)
 	// process.exit(0)
-	a = trainutils.sentenceStem(sentence)
-	console.log(a)
+	// a = trainutils.sentenceStem(sentence)
+	// console.log(a)
 	// var lemmerEng = new Lemmer('english');
 	// a = lemmerEng.lemmatize('10%');
 	// console.log(a)
@@ -230,6 +561,62 @@ if (test_natural)
 	// lis = trainutils.retrievelabels()
 	// console.log(lis)
 	// process.exit(0)
+
+	var EdgeWeightedDigraph = natural.EdgeWeightedDigraph;
+	var digraph = new EdgeWeightedDigraph();
+
+	// digraph.add(1,1,0);
+	// digraph.add(1,2,0.35);
+	digraph.add(1,3,1);
+	// digraph.add(1,4,0);
+	// digraph.add(1,5,0.93);
+	digraph.add(3,6,0);
+
+	// digraph.add(2,2,0);
+	// digraph.add(2,3,0);
+	// digraph.add(2,4,0);
+	// digraph.add(2,5,0.32);
+	// digraph.add(2,6,0);
+
+	// digraph.add(3,3,0);
+	// digraph.add(3,4,0);
+	// digraph.add(3,5,0.40);
+	// digraph.add(3,6,0);
+
+	// digraph.add(4,4,0);
+	// digraph.add(4,5,0);
+	// digraph.add(4,6,0.52);
+
+	// digraph.add(5,5,0);
+	// digraph.add(5,6,0);
+
+	// digraph.add(6,6,0);
+
+	// digraph.add(1,2,1);
+	// digraph.add(2,3,1);
+	// digraph.add(1,3,3);
+
+	var ShortestPathTree = natural.ShortestPathTree;
+	var spt = new ShortestPathTree(digraph, 1);
+	var path = spt.pathTo(6);
+
+	console.log(JSON.stringify(path, null, 4))
+	console.log()
+	console.log()
+	process.exit(0)
+
+	var costs = [
+    [0,0.35,0.29,0,0.93,0],
+    [Infinity,0,0,0,0.32,0],
+    [Infinity,Infinity,0,0,0.40,0],
+    [Infinity,Infinity,Infinity,0,0,0.52],
+    [Infinity,Infinity,Infinity,Infinity,0,0],
+    [Infinity,Infinity,Infinity,Infinity,Infinity,0],
+	];
+
+	var cheapest_paths_from_0 = cheapest_paths(costs, 0);
+
+	console.log(JSON.stringify(cheapest_paths_from_0, null, 4))
 }
 
 if (test_egypt)
@@ -753,7 +1140,7 @@ if (do_compare_approach)
 	{
 	dataset = [
 		    // "5_woz_ncagent_turkers_negonlp2ncAMT.json",
-		    "nlu_ncagent_students_negonlpnc.json",
+		    // "nlu_ncagent_students_negonlpnc.json",
 		    "nlu_ncagent_turkers_negonlpncAMT.json"
 			]
 	data = []
@@ -767,6 +1154,14 @@ if (do_compare_approach)
 	dataset = partitions.partition(data, 1, Math.round(data.length*0.5))
 
 
+
+
+	stats = trainAndTest.trainAndCompare(
+		classifier.PartialClassificationEquallySagae, 
+		classifier.WinnowSegmenter,
+		dataset['train'], dataset['test'], 5) 
+	console.log()
+	process.exit(0)
 	// PartialClassificationEquallySagae: classifier.PartialClassificationEquallySagae,
 		// StandardSagae: classifier.WinnowSegmenter, 
 
@@ -906,9 +1301,61 @@ if (do_spell_correction_test)
 
 	}
 
+if (test_spell)
+{
+	dataset = [	"turkers.json" ]
+	data = []
+
+	_.each(dataset, function(value, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/Dialogue/Platinum/"+value)))
+	})
+
+	data1 = []
+
+	_.each(data, function(value, key, list){ 
+		data1 = data1.concat(value['turns'])
+	}, this)
+
+	data1 = _.shuffle(data1)
+
+	dataset = partitions.partition(data1, 1, Math.round(data1.length*0.3))
+
+	// var composite = new classifier.SvmPerfClassifier
+	// composite.trainBatch(data1)
+
+
+			a = [{
+                // "input": "A Programmer does not have a leased car, I'm afraid",
+                // "input": "i would only offer 10",
+                "input": "I offer a 10 NIS pemsion",
+                "is_correct": false,
+                "timestamp": "2014-04-04T16:03:52.763Z",
+                "turn": "61",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ]
+            }]
+
+	stats = trainAndTest.trainAndTest_hash(classifier.SvmPerfClassifierSpell, dataset['train'], a, 5)
+	// stats = trainAndTest.trainAndTest_hash(classifier.SvmPerfClassifier, dataset['train'], dataset['test'], 5)
+
+	// var value = "least"
+	// var ex = composite.spellChecker[1].exists(value)
+	// var suggestions = composite.spellChecker[0].suggest(value); // If feature exists, returns empty. Otherwise, returns ordered list of suggested corrections from the training set.
+	// console.log(ex)
+	// console.log(suggestions)
+
+	console.log()
+	process.exit(0)
+
+}
+
 if (test_segmentation)
 	{
-	dataset = [
+
+
+	// dataset = [
 	// "5_woz_dialogue.json",
 	// "students.json",
 	// "turkers.json"
@@ -924,16 +1371,18 @@ if (test_segmentation)
 				// "5_woz_ncagent_turkers_negonlp2ncAMT.json",
 				// "nlu_kbagent_turkers_negonlpAMT.json",
 				// "nlu_ncagent_students_negonlpnc.json",
-				"nlu_ncagent_turkers_negonlpncAMT.json",
+				// "nlu_ncagent_turkers_negonlpncAMT.json",
 				// "woz_kbagent_students_negonlp.json"
-	]
+					// "turkers.json"
+// 	]
 	
-	data = []
-	_.each(dataset, function(value, key, list){ 
-		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
-	})
-// 
-	// data = _.shuffle(data)
+// 	data = []
+// 	_.each(dataset, function(value, key, list){ 
+// 		data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/Dialogue/Platinum/"+value)))
+// 		// data = data.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+// 	})
+// // 
+// 	data = _.shuffle(data)
 
 	// data1 = []
 
@@ -941,9 +1390,33 @@ if (test_segmentation)
 	// 	data1 = data1.concat(value['turns'])
 	// }, this)
 
-	// console.log(data1.length)
+	// data = _.shuffle(data1)
+	// // console.log(data1.length)
 
-	dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
+	// data = trainutils.filteraccept(data)
+
+	// dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
+
+
+	// var trainset = trainutils.filteraccept(JSON.parse(fs.readFileSync("datasets/Employer/trainonelabel.json")))
+	// var testset = trainutils.filteraccept(JSON.parse(fs.readFileSync("datasets/Employer/testalllabels.json")))
+
+
+	var trainset = JSON.parse(fs.readFileSync("datasets/Employer/trainonelabel.json"))
+	var testset = JSON.parse(fs.readFileSync("datasets/Employer/testalllabels.json"))
+
+	// testset = _.shuffle(testset)
+// testset = _.sample(testset, 100)
+// trainset = _.sample(trainset, 100)
+// stats = trainAndTest.trainAndCompare(
+// 		classifier.PartialClassificationEquallySagae, 
+// 		classifier.PartialClassificationEquallySagaeNegation,
+// 		trainset, testset, 5) 
+
+// console.log(JSON.stringify(stats, null, 4))
+// console.log()
+// process.exit(0)
+
 	// dataset['train'] = _.sample(dataset['train'], 20)
 	
 	// a = [{"input":" I offer salary 20,000 NIS","output":["{\"Accept\":\"previous\"}","{\"Insist\":\"Leased Car\"}","{\"Offer\":{\"Leased Car\":\"Without leased car\"}}","{\"Offer\":{\"Pension Fund\":\"20%\"}}"],"is_correct":false,"timestamp":"2013-10-08T08:35:57.698Z"}]
@@ -951,10 +1424,12 @@ if (test_segmentation)
 
             // "is a fast promotion track, you will start with 10%",
 
+
 a = [{
                 // "input": "A Programmer does not have a leased car, I'm afraid",
                 // "input": "i would only offer 10",
-                "input": "I can go to 12,000 NIS with a fast promotion track",
+                // "input": "without leased car, 0% pension, fast promotion track, 9 hours",
+                "input": "Pension funds cannot be given",
                 "is_correct": false,
                 "timestamp": "2014-04-04T16:03:52.763Z",
                 "turn": "61",
@@ -965,15 +1440,33 @@ a = [{
             }]
 
 	// stats = trainAndTest_hash(classifier.WinnowSegmenter, dataset['train'], a, 5)
-	stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, dataset['train'], a, 5)
-	// console.log()
-	// process.exit(0)
+	// stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, dataset['train'], a, 5)
+	// stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, dataset['train'], dataset['test'], 5)
+// var stats1 = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagaeImp, trainset, testset, 5)
+// var stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, trainset, testset, 5)
+	// var stats1 = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, trainset, testset, 5)
+	// var stats = trainAndTest.trainAndTest_hash(classifier.WinnowSegmenter, trainset, testset, 5)
+	
+	var stats = trainAndTest.trainAndTest_hash(classifier.SagaeIntent, trainset, a, 5)
 
+	console.log(stats)
+	process.exit(0)
+	// SagaeIntent
+
+	// var stats = trainAndTest.trainAndTest_hash(classifier.SvmPerfClassifier, trainset, testset, 5)
+	// console.log()
 	// stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, dataset['train'], dataset['test'], 5)
 	// console.log(JSON.stringify(stats[0]['labels'], null, 4))
 	// console.log(JSON.stringify(stats[0]['stats'], null, 4))
-	console.log(JSON.stringify(stats[0], null, 4))
-	console.log()
+	// console.log(JSON.stringify(stats[0], null, 4))
+	console.log(JSON.stringify(stats[0]['stats'], null, 4))
+	console.log(JSON.stringify(stats1[0]['stats'], null, 4))
+	// console.log(JSON.stringify(stats[0]['labels'], null, 4))
+
+// 
+	// var lab = trainutils.comparelabels(stats1[0]['labels'], stats[0]['labels'])
+	// console.log(lab)
+
 	process.exit(0)
 	// stats1 = trainAndTest_hash(classifier.WinnowSegmenter, dataset['train'], dataset['test'], 5)
 	// console.log(JSON.stringify(stats1[0]['labels'], null, 4))
@@ -1433,10 +1926,10 @@ if (do_learning_curves_dialogue)
 		// StandardSagae: classifier.WinnowSegmenter,
 		// SVMNoIS: classifier.SvmPerfClassifierNoIS,
 		// SVMIS: classifier.SvmPerfClassifier
-		SVM_separated_IS: classifier.SvmOutputPartialEquallyIS,
-		SVM_separated_NoIS: classifier.SvmOutputPartialEquallyNoIS,
-		PartialClassificationEquallyIS: classifier.PartialClassificationEquallyIS,
-		PartialClassificationEquallyNoIS: classifier.PartialClassificationEquallyNoIS,
+		CompositeIS: classifier.SvmOutputPartialEquallyIS,
+		CompositeNoIS: classifier.SvmOutputPartialEquallyNoIS,
+		ComponentIS: classifier.PartialClassificationEquallyIS,
+		ComponentNoIS: classifier.PartialClassificationEquallyNoIS,
 		// SVM_SeparatedAfter: classifier.SvmOutputPartialEqually,
 		// Homer: classifier.HomerWinnow
 		};
@@ -1446,25 +1939,308 @@ if (do_learning_curves_dialogue)
 	curves.learning_curves(classifiers, data, parameters, 3, 5)
 	}
 
-if (do_learning_curves) {
 
+
+
+if (do_coverage)
+	{
+	// index is the amount of records taken so far
+	var li = []
+	var cur = {}
+	coverage = JSON.parse(fs.readFileSync("keyphases.json"))
+
+
+	_.each(coverage, function(value, key, list){ 
+		_.each(value['labels'], function(key1, label, list){
+			if (!(label in cur)) 
+				cur[label] = {'total':0,'current':0}
+			cur[label]['total'] = cur[label]['total'] + 1
+		})
+	}, this)
+
+	_.each(coverage, function(value, key, list){ 
+		// var cur = {}
+		_.each(value['labels'], function(key1, label, list){
+			// var keyword = key1[0] 
+			// if (!(label in cur)) cur[label] = {'total':0,'current':0}
+			// var total = 0
+				_.each(coverage, function(value1, key2, list){
+					if (label in value1['labels'])
+						{
+						// cur[label]['total'] = cur[label]['total'] + 1
+						if (value1['labels'][label][0] == key1[0])
+							{	
+							cur[label]['current'] = cur[label]['current'] + 1
+							delete coverage[key2]['labels'][label]
+							}
+						}
+				}, this)
+			// cur[label] = cur[label] / total
+		}, this)
+		var cor = _.clone(cur)
+		_.each(cor, function(value, key, list){ 
+			cor[key] = value['current']/value['total']
+		}, this)
+		li.push(cor)
+	}, this)
+
+
+	var lablist = []
+	_.each(li, function(value, key, list){ 
+		_.each(value, function(value, key, list){ 
+			lablist.push(key)
+		}, this)
+	}, this)
+
+	lablist = _.uniq(lablist)
+
+	_.each(lablist, function(label, key, list){
+		// fs.writeFileSync("./coverage/"+label, "\t"+label+"\n", 'utf-8')
+		_.each(li, function(value, key, list){
+			var score = 0
+			if (label in value)
+				score = value[label]
+			fs.appendFileSync("./coverage/"+label, key+"\t"+score+"\n", 'utf-8')
+		 }, this) 
+		var command = "gnuplot -p -e \"reset; set term png truecolor  size 1000,1000; set grid ytics; set grid xtics; set title \'"+label+"\';  set key top right; set output \'coverage/"+label+".png\'; set key autotitle columnhead; plot \'coverage/"+label+"\' with lines\""
+		console.log(command)
+		result = execSync(command)
+
+	}, this)
+
+	// _.each(li, function(value, key, list){
+
+		// command = "gnuplot -p -e \"reset; set term png truecolor  size 1000,1000; set grid ytics; set grid xtics; set title \'"+sample.replace(/\'/g,'')+"\';  set key top right; set output \'image/"+sample.replace(/\'/g,'')+".png\'; set key autotitle columnhead; set label \'"+(JSON.stringify(original)).replace(/[\",\\]/g,"")+"\' at screen 0.1, 0.9;"+labb+" plot for [i=3:"+(labellist.length+2)+"] \'"+senid+"\' using 1:i:xticlabels(2) smooth frequency with boxes\""
+		// if (labellist.length > 0)
+			// result = execSync.run(command)
+		// } 
+	// }, this)
+
+	// console.log(li)
+	process.exit(0)
+	}
+
+if (do_test_sagae)
+	{
+
+	trainset = trainutils.filteraccept(JSON.parse(fs.readFileSync("datasets/Employer/trainonelabel.json")))
+	testset = trainutils.filteraccept(JSON.parse(fs.readFileSync("datasets/Employer/testalllabels.json")))
+
+	// console.log(trainutils.dividedataset(test)['one'].length)
+	// console.log(trainutils.dividedataset(test)['two'].length)
+	// 292
+	// 157
+
+	// console.log(train.length)
+	// console.log(test.length)
+	// 293
+	// 449
+
+	// partitions.partitions(dataset, numOfFolds, function(train, test, fold) {
+
+	// })
+
+	// var stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, train, trainutils.dividedataset(test)['one'], 5)
+	// var stats1 = trainAndTest.trainAndTest_hash(classifier.WinnowSegmenter, train, trainutils.dividedataset(test)['one'], 5)
+	// var stats2 = trainAndTest.trainAndTest_hash(classifier.SvmPerfClassifier, train, trainutils.dividedataset(test)['one'], 5)
+
+	trainset = _.sample(trainset, 90)
+
+	// testset = trainutils.dividedataset(testset)['two']
+
+	var attr = ['F1', 'Precision', 'Recall', 'Accuracy']
+	var classifiers = [classifier.PartialClassificationEquallySagae, classifier.WinnowSegmenter,classifier.WinnowSegmenterStd, classifier.SvmPerfClassifier]
+	var globalstart = [[],[],[],[]]
+	
+	partitions.partitions(trainset, 3, function(trainfold, testfold, fold) {
+
+		var test = _.sample(testset, trainfold.length)
+		
+
+		var stt = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, trainfold, test, 5)
+		console.log(JSON.stringify(stt[0]['labels'], null, 4))
+		var sttt = trainAndTest.trainAndTest_hash(classifier.WinnowSegmenter, trainfold, test, 5)
+		console.log(JSON.stringify(sttt[0]['labels'], null, 4))
+		console.log()
+		process.exit(0)
+
+		_.each(classifiers, function(classi, key, list){ 
+			globalstart[key].push(trainAndTest.trainAndTest_hash(classi, trainfold, test, 5)[0]['stats'])
+		}, this)
+
+		// console.log(stats[0]['stats'])
+		// console.log(stats1[0]['stats'])
+		// console.log(stats2[0]['stats'])
+
+	})
+
+	console.log(JSON.stringify(globalstart, null, 4))
+	// process.exit(0)
+
+	var gl = [{},{},{},{}]
+	_.each(globalstart, function(value, key, list){ 
+		_.each(attr, function(value1, key1, list){ 
+			gl[key][value1] = _.reduce(_.pluck(value, value1), function(memo, num){ return memo + num; }, 0)/value.length
+		}, this)
+	}, this)
+
+
+	console.log(JSON.stringify(gl, null, 4))
+	process.exit(0)
+
+	}
+
+if (sample_kbagent)
+	{
 	datasetNames = [
-			// "5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			"3_woz_kbagent_turkers_negonlp2.json",
+			]
+	dataset = []
+	_.each(datasetNames, function(value, key, list){ 
+		dataset = dataset.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+		// dataset = dataset.concat(JSON.parse(fs.readFileSync("datasets/Employer/Dialogue/Platinum/"+value)))
+	});
+	var data = _.sample(dataset, 200)
+	fs.writeFileSync("datasets/Employer/testkbagent.json", JSON.stringify(data, null, 4), 'utf8');
+	process.exit(0)
+	
+	}
+
+if (do_separate_datasets)
+	{
+		datasetNames = [
 			"nlu_ncagent_students_negonlpnc.json",
 			"nlu_ncagent_turkers_negonlpncAMT.json",
-			// "3_woz_kbagent_turkers_negonlp2.json",
-			// "woz_kbagent_students_negonlp.json",
-			// "nlu_kbagent_turkers_negonlpAMT.json"
 			]
 	dataset = []
 
 	_.each(datasetNames, function(value, key, list){ 
 		dataset = dataset.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+		// dataset = dataset.concat(JSON.parse(fs.readFileSync("datasets/Employer/Dialogue/Platinum/"+value)))
 	});
 
 	dataset = _.shuffle(dataset)
+	dataset = _.shuffle(dataset)
 
-	dataset= _.sample(dataset, 100)
+	var data = partitions.partition(dataset, 1, Math.round(dataset.length*0.3))
+
+	fs.writeFileSync("datasets/Employer/trainonelabel.json", JSON.stringify(trainutils.dividedataset(data['train'])['one'], null, 4), 'utf8');
+	fs.writeFileSync("datasets/Employer/testalllabels.json", JSON.stringify(data['test'], null, 4), 'utf8');
+
+
+
+	// console.log(JSON.stringify(str, null, 4))
+	// console.log(dataset.length)
+	// console.log()
+	process.exit(0)
+
+
+
+
+	}
+
+if (do_learning_curves) {
+
+	// datasetNames = [
+			// "5_woz_ncagent_turkers_negonlp2ncAMT.json",
+			// "nlu_ncagent_students_negonlpnc.json",
+			// "nlu_ncagent_turkers_negonlpncAMT.json",
+			// "3_woz_kbagent_turkers_negonlp2.json",
+			// "woz_kbagent_students_negonlp.json",
+			// "nlu_kbagent_turkers_negonlpAMT.json"
+			// "turkers.json"
+			// ]
+	// dataset = []
+
+	// _.each(datasetNames, function(value, key, list){ 
+		// dataset = dataset.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+		// dataset = dataset.concat(JSON.parse(fs.readFileSync("datasets/Employer/Dialogue/Platinum/"+value)))
+	// });
+
+	// data1 = []
+	// _.each(dataset, function(value, key, list){ 
+	// 	data1 = data1.concat(value['turns'])
+	// }, this)
+	// data1 = _.shuffle(data1)
+	// dataset = data1
+
+	// dataset = _.shuffle(dataset)
+
+	// console.log(dataset)
+	// process.exit(0)
+	// dataset= _.sample(dataset, 120)
+
+
+	// console.log(trainutils.dividedataset(data2)['one'].length)
+
+
+
+	// datasetNames = ["students.json"]
+	// datasettest = []
+
+	// _.each(datasetNames, function(value, key, list){ 
+		// dataset = dataset.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
+		// datasettest = datasettest.concat(JSON.parse(fs.readFileSync("datasets/Employer/Dialogue/"+value)))
+	// });
+
+	// data2 = []
+	// _.each(datasettest, function(value, key, list){ 
+		// data2 = data2.concat(value['turns'])
+	// }, this)
+
+	// data2 = _.shuffle(data2)
+	// var trainset = trainutils.filteraccept(JSON.parse(fs.readFileSync("datasets/Employer/trainonelabel.json")))
+	// var testset = trainutils.filteraccept(JSON.parse(fs.readFileSync("datasets/Employer/testalllabels.json")))
+
+	var trainset = _.shuffle(JSON.parse(fs.readFileSync("datasets/Employer/trainonelabel.json")))
+	var testsetncagent = _.shuffle(JSON.parse(fs.readFileSync("datasets/Employer/testalllabels.json")))
+	// var testsetkbagent = _.shuffle(JSON.parse(fs.readFileSync("datasets/Employer/testkbagent.json")))
+
+
+	// console.log(testsetncagent.length)
+
+	// console.log(trainutils.dividedataset(testsetncagent)['two'].length)
+
+	// console.log(trainutils.dividedataset(testsetncagent)['one'].length)
+
+
+	// testsetkbagent
+	// console.log(testsetkbagent.length)
+	// 132
+	// console.log(trainutils.dividedataset(testsetkbagent)['two'].length)
+	// 93
+	// console.log(trainutils.dividedataset(testsetkbagent)['one'].length)
+	// 39
+	var testset = testsetncagent
+
+	// console.log(trainutils.dividedataset(testset)['two'].length)
+	// console.log(trainutils.dividedataset(testset)['one'].length)
+	// console.log()
+	// process.exit(0)
+
+	// testset = trainutils.dividedataset(testset)['two']
+// more than 2
+// 103
+// exactly one
+// 166
+
+// mix - test set with length of global trainutils
+// 293 3 fold and test 293
+
+// one 
+// train 293 3 fold test 275
+
+// two
+// test 174
+
+
+	// console.log(trainutils.dividedataset(test)['one'].length)
+
+
+	// console.log(trainset.length)
+	// console.log(testset.length)
+	// console.log()
+	// process.exit(0)
 
 	classifiers  = {
 		// Intent_AttributeValue: classifier.PartialClassificationJustTwo,
@@ -1496,25 +2272,35 @@ if (do_learning_curves) {
 
 		// PartialClassificationEquallyGreedyNoISBiagram: classifier.PartialClassificationEquallyGreedyTrick,
 		
+		// Component_Sagae_Improved: classifier.PartialClassificationEquallySagaeImp,
 
-		// PartialClassificationEquallySagae: classifier.PartialClassificationEquallySagae,
-		// PartialClassificationEquallySagaeNoCompletition: classifier.PartialClassificationEquallySagaeNoCompletition,
-		// StandardSagae: classifier.WinnowSegmenter, 
-		// SVMNoIS: classifier.SvmPerfClassifierNoIS,
-		// SVMIS: classifier.SvmPerfClassifier
+		// Component_Sagae: classifier.PartialClassificationEquallySagae,
+		Component_Sagae: classifier.PartialClassificationEquallySagae,
 
+		Component_Sagae_NoCompletion: classifier.PartialClassificationEquallySagaeNoCompletion,
+
+
+
+		// Component_Sagae_Imp: classifier.PartialClassificationEquallySagaeImp,
+		// Component_Sagae_Nospell: classifier.PartialClassificationEquallySagaeNospell,
+		// Component_Sagae_no_Completion: classifier.PartialClassificationEquallySagaeNoCompletition,
+		Composite_Sagae: classifier.WinnowSegmenter, 
+		// Composite_SVM_noIS_nospell: classifier.SvmPerfClassifierNoIS,
+		Composite_SVM: classifier.SvmPerfClassifier
+		// Composite_SVM_noIS_spell: classifier.SvmPerfClassifierSpell
+// 
 	
 
-		SvmPerfClassifier: classifier.SvmPerfClassifier,
-		SvmPerfClassifierStemmer: classifier.SvmPerfClassifierLematization,
-
-		// SvmPerfClassifierSimilarity: classifier.SvmPerfClassifierSimilarity
+		// SvmPerfClassifier: classifier.SvmPerfClassifier,
+		// SvmPerfClassifierStemmer: classifier.SvmPerfClassifierLematization,
+		// SvmPerfClassifierNatural: classifier.SvmPerfClassifierSimilarity
 		
 	};
 
 	// parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
-	parameters = ['F1','Precision','Recall']
-	curves.learning_curves(classifiers, dataset, parameters, 10, 5)
+	parameters = ['F1','Precision','Recall', 'Accuracy']
+	// curves.learning_curves(classifiers, dataset, parameters, 10, 5, data2)
+	curves.learning_curves(classifiers, trainset, parameters, 20, 100,  4, testset)
 }
 
 if (do_small_temporary_test_dataset) {
@@ -1732,5 +2518,3 @@ if (do_serialization) {
 			, 'utf8');
 	});
 } // do_serialization
-
-console.log("machine learning trainer end");
