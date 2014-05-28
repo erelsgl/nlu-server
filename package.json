@@ -29,7 +29,8 @@
     "natural": "*",
     "underscore" : ">=1.1.0",
     "seed-random": "*",
-    "defaultdict": "*"
+    "defaultdict": "*",
+    "rimraf": "*"
   },
   "devDependencies": {
 	  "mocha": "*",
