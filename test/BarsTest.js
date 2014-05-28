@@ -210,6 +210,8 @@ describe('Bars utilities', function() {
 	})
 
 	it('correctly generate labels', function() {
+		_.isEqual(bars.generate_possible_labels([ [ 'Accept' ], [''], [ 'previous' ] ]), [ '{"Accept":"previous"}' ]).should.equal(true)
+		_.isEqual(bars.generate_possible_labels([['Offer'],['Salary'],['10,000 NIS']]),['{"Offer":{"Salary":"10,000 NIS"}}'])
 		_.isEqual(bars.generate_possible_labels([['Offer'],['Salary'],['20,000 NIS']]), [ '{"Offer":{"Salary":"20,000 NIS"}}' ]).should.equal(true)
 		_.isEqual(bars.generate_possible_labels([['Offer', 'Accept', 'Reject', 'Greet'],['Salary', 'Job description'],['20,000 NIS','previous']]),[ '{"Offer":{"Salary":"20,000 NIS"}}','{"Accept":"previous"}','{"Accept":"Salary"}','{"Reject":"previous"}','{"Reject":"Salary"}' ]).should.equal(true)
 		_.isEqual(bars.generate_possible_labels([['Greet'],[],[true]]),[ '{"Greet":true}' ]).should.equal(true)
@@ -220,9 +222,25 @@ describe('Bars utilities', function() {
 	})
 
 	it('correctly resolve emptiness', function() {
+		_.isEqual(bars.resolve_emptiness([[],[],['Without leased car']]),[['Offer'],['Leased Car'],['Without leased car']])
 		_.isEqual(bars.resolve_emptiness([['Greet'],[],[]]), [ ['Greet' ],[  ],[ true ] ]).should.equal(true)
 		_.isEqual(bars.resolve_emptiness([['Accept'],[],['20,000 NIS', 'QA']]), [ [ 'Accept', 'Offer' ],[ 'Salary', 'Job Description' ],[ '20,000 NIS', 'QA' ] ]).should.equal(true)
 		_.isEqual(bars.resolve_emptiness([[],[],['20,000 NIS']]), [['Offer'],['Salary'],['20,000 NIS']]).should.equal(true)
+		_.isEqual(bars.resolve_emptiness([['Accept'],[],[]]), [['Accept'],[],['previous']]).should.equal(false)
+		_.isEqual(bars.resolve_emptiness([['Insist'],[],[]]), [['Insist'],[],['previous']]).should.equal(false)
+		_.isEqual(bars.resolve_emptiness([['Offer'],[],[]]), [['Offer'],[],['previous']]).should.equal(false)
+
+	})
+
+	it('correctly resolve emptiness', function() {
+		var res = bars.filterreject([[ 'Reject', 'no..you', [0,1], {Reject:[Object]}], ['Accept','be programmer',[1,3], {Offer:[Object]}]])
+		_.isEqual(res, [['Reject','no..you', [0,1],{Reject:[Object]}],['Reject','be programmer',[1,3],{Offer:[Object]}]])
+
+		var res = bars.filterreject([[ 'Reject', 'no..you', [0,1], {Reject:[Object]}], ['Offer','be programmer',[1,3], {Offer:[Object]}]])
+		_.isEqual(res, [['Reject','no..you', [0,1],{Reject:[Object]}],['Offer','be programmer',[1,3],{Offer:[Object]}]])
+
+		var res = bars.filterreject([[ 'Reject', 'no..you', [0,1], {Reject:[Object]}], ['Offer','be programmer',[1,3], {Offer:[Object]}], ['Accept','be programmer',[1,3], {Accept:[Object]}]])
+		_.isEqual(res, [['Reject','no..you', [0,1],{Reject:[Object]}],['Offer','be programmer',[1,3],{Offer:[Object]}],['Reject','be programmer',[1,3], {Reject:[Object]}]])
 	})
 
 	it('correctly resolve emptiness', function() {
@@ -238,6 +256,44 @@ describe('Bars utilities', function() {
 				]
 
 	a_after = bars.aggreate_similar(a)
+
+	// console.log(a_after)
+
 	_.isEqual(a_tested, a_after).should.equal(true)
 	})
+
+	it('correctly filter accept', function() {
+
+		var dataset = [{"input":"","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]},
+					   {"input":"","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]}]
+		
+		var f = bars.filteraccept(dataset)
+		var gold = [{input: '',output: [ '{"Offer":{"Job Description":"Project Manager"}}' ] },
+	  { input: '', output: [ '{"Offer":{"Salary":"20,000 NIS"}}' ] } ]
+		
+		_.isEqual(f, gold).should.equal(true)
+	})
+
+	it('correctly separate dataset', function() {
+		var dataset = [
+					{"input":"","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]},
+					{"input":"","output":["{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"]},
+					{"input":"","output":["{\"Accept\":\"previous\"}"]},
+					{"input":"done","output":["{\"Accept\":\"previous\"}", "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"]},
+					{"input":"Leased car?","output":["{\"Accept\":\"previous\"}","{\"Offer\":{\"Leased Car\":\"With leased car\"}}"]}
+					]
+
+		var dt = bars.dividedataset(dataset)
+
+		_.each(dt['one'], function(value, key, list){ 
+			value['output'].length.should.equal(1)
+		}, this)
+
+		_.each(dt['two'], function(value, key, list){ 
+			value['output'].length.should.not.be.below(2);
+		}, this)
+
+	})
+
+
 })
