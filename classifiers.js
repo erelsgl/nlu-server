@@ -22,14 +22,16 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
 var natural = require('natural');
-var tokenizer = new natural.WordPunctTokenizer(); // WordTokenizer, TreebankWordTokenizer, WordPunctTokenizer
+
+var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$]+/});
+// var tokenizer = new natural.WordTokenizer({'pattern':(/(\W+|\%)/)}); // WordTokenizer, TreebankWordTokenizer, WordPunctTokenizer
 // var ngrams = new natural.NGrams.ngrams()
 /*
  * ENHANCEMENTS:
  */
 
 var regexpNormalizer = ftrs.RegexpNormalizer(
-		JSON.parse(fs.readFileSync('knowledgeresources/BiuNormalizations.json')));
+		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json')));
 
 function normalizer(sentence) {
 	sentence = sentence.toLowerCase().trim();
@@ -63,74 +65,14 @@ function inputSplitter(text) {
 }
 
 
-
-function featureExtractorSagae(sentence, features) {
+function featureExtractorUnigram(sentence, features) {
 	var words = tokenizer.tokenize(sentence);
-	// compareresults
-	// natural.PorterStemmer.attach();
-	// var words = sentence.tokenizeAndStem()
-	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
-	ftrs.NGramsFromArray(2, 0, words, features);  // bigrams
 
-	// lis = trainutils.retrievelabels()
+	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
 
-	// sentence = sentence.replace(/[\,,\.]/,"");
-	// _.each(lis, function(value, key, list){ 
-	// 	if (sentence.toLowerCase().indexOf(value)!=-1)
-	// 		features[value+"_similarity"] = 1 
-	// }, this)
-
-	//ftrs.NGramsFromArray(3, 1, words, features);  // trigrams   // much slower, not better at all
-	//require('./LastLetterExtractor')(sentence, features); // last letter - not needed when using WordPunctTokenizer
-	return features;
-}
-
-
-function featureExtractorLemma(sentence, features) {
-	// var words = tokenizer.tokenize(sentence);
-
-	
-	// console.log(words)
-	
-	// ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
-	// ftrs.NGramsFromArray(2, 0, words, features);  // bigrams
-
-	// sentence = sentence.replace(/\%/," percent");
-	// natural.PorterStemmer.attach();
-	// words = sentence.tokenizeAndStem()/
-
-	// _.each(words, function(word, key, list){ 
-		// features[word]= 1
-	// }, this)
-
-	var words = trainutils.sentenceStem(sentence)
-	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
-	ftrs.NGramsFromArray(2, 0, words, features);  // unigrams
-
-	// lis = trainutils.retrievelabels()
-	// sentence = sentence.replace(/[\,,\.]/,"");
-	// _.each(lis, function(value, key, list){ 
-	// 	if (sentence.toLowerCase().indexOf(value)!=-1)
-	// 		features[value+"_similarity"] = 1 
-	// }, this)
-	//ftrs.NGramsFromArray(3, 1, words, features);  // trigrams   // much slower, not better at all
-	//require('./LastLetterExtractor')(sentence, features); // last letter - not needed when using WordPunctTokenizer
-	return features;
-}
-
-function featureExtractorSimilarity(sentence, features) {
-	var words = tokenizer.tokenize(sentence);
-	
-	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
-	ftrs.NGramsFromArray(2, 0, words, features);  // bigrams
-
-	// lis = trainutils.retrievelabels()
-
-	// sentence = sentence.replace(/[\,,\.]/,"");
-	// _.each(lis, function(value, key, list){ 
-	// 	if (sentence.toLowerCase().indexOf(value)!=-1)
-	// 		features[value+"_similarity"] = 1 
-	// }, this)
+	_.each(feature, function(feat, key, list){
+		 features[feat.join(" ")] = 1
+	}, this)
 
 	return features;
 }
@@ -138,49 +80,46 @@ function featureExtractorSimilarity(sentence, features) {
 function featureExtractor(sentence, features) {
 	var words = tokenizer.tokenize(sentence);
 
+	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
+
+	_.each(feature, function(feat, key, list){
+		 features[feat.join(" ")] = 1
+	}, this)
 
 
-	// natural.PorterStemmer.attach();
-	// var words = sentence.tokenizeAndStem()
-	
-	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
-	ftrs.NGramsFromArray(2, 0, words, features);  // bigrams
+	// if ((sentence.toLowerCase().indexOf("no car")!=-1)||
+	// 	(sentence.toLowerCase().indexOf("no leased")!=-1)||
+	// 	(sentence.toLowerCase().indexOf("without car")!=-1)||
+	// 	(sentence.toLowerCase().indexOf("without leased")!=-1)
+	// 	)
+	// 	features["@noleased"] = 1 
+
+	// if ((sentence.toLowerCase().indexOf("no pension")!=-1))
+	// 	features["@nopension"] = 1 
+
+	// if 	((sentence.toLowerCase().indexOf("not ")!=-1)||
+		// (sentence.toLowerCase().indexOf("no ")!=-1))
+		// features["@negation"] = 1 
+
 
 	// lis = trainutils.retrievelabels()
 
 	// sentence = sentence.replace(/[\,,\.]/,"");
 	// _.each(lis, function(value, key, list){ 
-	// 	if (sentence.toLowerCase().indexOf(value)!=-1)
-	// 		features[value+"_similarity"] = 1 
+		// if (sentence.toLowerCase().indexOf(value)!=-1)
+			// features["@"+value+"_similarity"] = 1 
 	// }, this)
-	//ftrs.NGramsFromArray(3, 1, words, features);  // trigrams   // much slower, not better at all
-	//require('./LastLetterExtractor')(sentence, features); // last letter - not needed when using WordPunctTokenizer
+// 
 	return features;
 }
 
-// function featureExtractor(sentence) {
 
-// 	var features = {}
-// 	tokenizer = new natural.WordTokenizer();
-
-// 	var words = tokenizer.tokenize(sentence);
-// 	featurelist = words.concat(natural.NGrams.ngrams(sentence, 2, "[start]","[end]"))
-
-// 	_.each(featurelist, function(value, key, list){ 
-// 		if (_.isArray(value))
-// 			features[value.join(" ")] = 0
-// 		else
-// 			features[value] = 0
-
-// 	}, this)
-
-// 	return features;
-// }
-
-// function featureExtractorSagae(sentence, features) {
-// }
-
-
+function featureExtractorLemma(sentence, features) {
+	var words = trainutils.sentenceStem(sentence)
+	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
+	ftrs.NGramsFromArray(2, 0, words, features);  // unigrams
+	return features;
+}
 
 function featureExtractorWords(sentence, features) {
 	features = ftrs.call(ftrs.NGramsOfWords(1), sentence)
@@ -294,81 +233,25 @@ var LanguageModelClassifier = classifiers.multilabel.CrossLanguageModel.bind(thi
 	});
 };
 
-
-
 /*
  * CONSTRUCTORS:
  */
 
- var enhanceis = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel) {
-	return classifiers.EnhancedClassifier.bind(0, {
-		normalizer: normalizer,
-		inputSplitter: inputSplitter,
-
-		// spellChecker: require('wordsworth').getInstance(),
-		featureExtractor: featureExtractor,
-		
-		featureLookupTable: featureLookupTable,
-		labelLookupTable: labelLookupTable,
-		
-		featureExtractorForClassification: [
-			ftrs.Hypernyms(JSON.parse(fs.readFileSync('knowledgeresources/hypernyms.json'))),
-		],
-
-		multiplyFeaturesByIDF: true,
-		//minFeatureDocumentFrequency: 2,
-		pastTrainingSamples: [], // to enable retraining
-		classifierType: classifierType,
-
-		InputSplitLabel: InputSplitLabel,
-		OutputSplitLabel: OutputSplitLabel,
-		TestSplitLabel: TestSplitLabel
-	});
-};
-
- var enhancenois = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel) {
-	return classifiers.EnhancedClassifier.bind(0, {
-		normalizer: normalizer,
-		// inputSplitter: inputSplitter,
-		// inputSplitter: IS,
-
-		// spellChecker: require('wordsworth').getInstance(),
-		featureExtractor: featureExtractor,
-		
-		featureLookupTable: featureLookupTable,
-		labelLookupTable: labelLookupTable,
-		
-		featureExtractorForClassification: [
-			ftrs.Hypernyms(JSON.parse(fs.readFileSync('knowledgeresources/hypernyms.json'))),
-		],
-
-		multiplyFeaturesByIDF: true,
-		//minFeatureDocumentFrequency: 2,
-		pastTrainingSamples: [], // to enable retraining
-		classifierType: classifierType,
-
-		InputSplitLabel: InputSplitLabel,
-		OutputSplitLabel: OutputSplitLabel,
-		TestSplitLabel: TestSplitLabel
-	});
-};
-
 var enhancesagae = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
+
 		// inputSplitter: inputSplitter,
 		// inputSplitter: IS,
-
-		// spellChecker: require('wordsworth').getInstance(),
 		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
 
-		featureExtractor: featureExtractorSagae,
+		featureExtractor: featureExtractor,
 		
 		featureLookupTable: featureLookupTable,
 		labelLookupTable: labelLookupTable,
 		
 		featureExtractorForClassification: [
-			ftrs.Hypernyms(JSON.parse(fs.readFileSync('knowledgeresources/hypernyms.json'))),
+			ftrs.Hypernyms(JSON.parse(fs.readFileSync(__dirname + '/knowledgeresources/hypernyms.json'))),
 		],
 
 		multiplyFeaturesByIDF: true,
@@ -395,87 +278,16 @@ var enhance2 = function (classifierType, TestSplitLabel) {
 var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
-		inputSplitter: inputSplitter,
+		// inputSplitter: inputSplitter,
 		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
 		featureExtractor: featureExtractor,
-		
+		// featureExtractor: featureExtractor,
+
 		featureLookupTable: featureLookupTable,
 		labelLookupTable: labelLookupTable,
 		
 		featureExtractorForClassification: [
-			ftrs.Hypernyms(JSON.parse(fs.readFileSync('knowledgeresources/hypernyms.json'))),
-		],
-
-		multiplyFeaturesByIDF: true,
-		//minFeatureDocumentFrequency: 2,
-
-		pastTrainingSamples: [], // to enable retraining
-			
-		classifierType: classifierType,
-	});
-};
-
-
-var enhancesim = function (classifierType, featureLookupTable, labelLookupTable) {
-	return classifiers.EnhancedClassifier.bind(0, {
-		normalizer: normalizer,
-		inputSplitter: inputSplitter,
-		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
-		featureExtractor: featureExtractorSimilarity,
-		
-		featureLookupTable: featureLookupTable,
-		labelLookupTable: labelLookupTable,
-		
-		featureExtractorForClassification: [
-			ftrs.Hypernyms(JSON.parse(fs.readFileSync('knowledgeresources/hypernyms.json'))),
-		],
-
-		multiplyFeaturesByIDF: true,
-		//minFeatureDocumentFrequency: 2,
-
-		pastTrainingSamples: [], // to enable retraining
-			
-		classifierType: classifierType,
-	});
-};
-
-
-var enhancelemma = function (classifierType, featureLookupTable, labelLookupTable) {
-	return classifiers.EnhancedClassifier.bind(0, {
-		normalizer: normalizer,
-		inputSplitter: inputSplitter,
-		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
-		featureExtractor: featureExtractorLemma,
-		
-		featureLookupTable: featureLookupTable,
-		labelLookupTable: labelLookupTable,
-		
-		featureExtractorForClassification: [
-			ftrs.Hypernyms(JSON.parse(fs.readFileSync('knowledgeresources/hypernyms.json'))),
-		],
-
-		multiplyFeaturesByIDF: true,
-		//minFeatureDocumentFrequency: 2,
-
-		pastTrainingSamples: [], // to enable retraining
-			
-		classifierType: classifierType,
-	});
-};
-
-
-var enhancenospell = function (classifierType, featureLookupTable, labelLookupTable) {
-	return classifiers.EnhancedClassifier.bind(0, {
-		normalizer: normalizer,
-		inputSplitter: inputSplitter,
-		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
-		featureExtractor: featureExtractor,
-		
-		featureLookupTable: featureLookupTable,
-		labelLookupTable: labelLookupTable,
-		
-		featureExtractorForClassification: [
-			ftrs.Hypernyms(JSON.parse(fs.readFileSync('knowledgeresources/hypernyms.json'))),
+			ftrs.Hypernyms(JSON.parse(fs.readFileSync(__dirname + '/knowledgeresources/hypernyms.json'))),
 		],
 
 		multiplyFeaturesByIDF: true,
@@ -489,18 +301,17 @@ var enhancenospell = function (classifierType, featureLookupTable, labelLookupTa
 
 var WinnowSegmenter1 = 
 			classifiers.multilabel.BinarySegmentation.bind(0, {
-			binaryClassifierType: enhancenois(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
+			binaryClassifierType: enhancesagae(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
 			segmentSplitStrategy: 'cheapestSegment',
 			// strandard: true,
 });
 
-
-var WinnowSegmenter2 = 
-			classifiers.multilabel.BinarySegmentation.bind(0, {
-			binaryClassifierType: enhancesagae(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
-			segmentSplitStrategy: 'cheapestSegment',
-			// strandard: false,
-});
+// var WinnowSegmenter2 = 
+// 			classifiers.multilabel.BinarySegmentation.bind(0, {
+// 			binaryClassifierType: enhancesagae(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
+// 			segmentSplitStrategy: 'cheapestSegment',
+// 			// strandard: false,
+// });
 
 var BayesSegmenter = classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
@@ -558,7 +369,14 @@ var thresholdclassifier = function(multiclassClassifierType) {
 
 module.exports = {
 
+		tokenizer: tokenizer,
+		normalizer: normalizer,
+		featureExtractor: featureExtractor,
+		featureExtractorUnigram: featureExtractorUnigram,
+		normalizer: normalizer,
+
 		WinnowSegmenter: WinnowSegmenter1,
+		// WinnowSegmenterStd: WinnowSegmenter5,
 
 		HomerAdaboostClassifier: enhance2(homer(AdaboostClassifier)), 
 		AdaboostClassifier: enhance2(AdaboostClassifier), 
@@ -569,9 +387,10 @@ module.exports = {
 		BayesClassifier: enhance(BayesBinaryRelevanceClassifier),
 
 		SvmPerfClassifier: enhance(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
-		SvmPerfClassifierNoIS: enhancenois(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
-		SvmPerfClassifierSimilarity: enhancesim(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
-		SvmPerfClassifierLematization: enhancelemma(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
+		// SvmPerfClassifierNoIS: enhancenois(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
+		// SvmPerfClassifierSimilarity: enhancesim(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
+		// SvmPerfClassifierLematization: enhancelemma(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
+		// SvmPerfClassifierSpell: enhancespell(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
 
 		SvmLinearClassifier: enhance(SvmLinearBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
 		
@@ -588,7 +407,7 @@ module.exports = {
 		HomerSvmPerf: enhance(homer(SvmPerfBinaryRelevanceClassifier), new ftrs.FeatureLookupTable()),
 		HomerSvmLinear: enhance(homer(SvmLinearBinaryRelevanceClassifier), new ftrs.FeatureLookupTable()),
 		HomerWinnow: enhance(homer(WinnowBinaryRelevanceClassifier)),
-		HomerWinnowNoSpell: enhancenospell(homer(WinnowBinaryRelevanceClassifier)),
+		// HomerWinnowNoSpell: enhancenospell(homer(WinnowBinaryRelevanceClassifier)),
 
 		HomerPassiveAggressive: enhance(homer(PassiveAggressiveClassifier)),
 
@@ -607,30 +426,40 @@ module.exports = {
 		// PartialClassificationEquallyPlace: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.OrderLabelJoin,  undefined),
 		// at the input separate the labels to intent/attribute/value then join them in greedy approach
 		// PartialClassificationEquallyGreedy: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_label),
-		PartialClassificationEquallyGreedyNoISTrick: enhancenois(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_label_trick),
-		PartialClassificationEquallyGreedyISNoTrick: enhanceis(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_label_no_trick),
+		// PartialClassificationEquallyGreedyNoISTrick: enhancenois(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_label_trick),
+		// PartialClassificationEquallyGreedyISNoTrick: enhanceis(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_label_no_trick),
 
 		// PartialClassificationEquallyGreedyTrick: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_label_trick),
 
 		// separate to intent/attribute/value then retrieve just intent and test only on intent
 		// PartialClassificationEquallyIntent: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent),
-		PartialClassificationEquallyNoIS: enhancenois(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
-	 	PartialClassificationEquallyIS: enhanceis(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
+		// PartialClassificationEquallyNoIS: enhancenois(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
+	 	// PartialClassificationEquallyIS: enhanceis(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
 
 	 	// svm train on the standard labels then on output separate labels
-	 	SvmOutputPartialEquallyIS: enhanceis(SvmPerfBinaryRelevanceClassifier,new ftrs.FeatureLookupTable(), undefined, undefined,  Hierarchy.splitPartEqually, Hierarchy.splitPartEqually),
-	 	SvmOutputPartialEquallyNoIS: enhancenois(SvmPerfBinaryRelevanceClassifier,new ftrs.FeatureLookupTable(), undefined, undefined,  Hierarchy.splitPartEqually, Hierarchy.splitPartEqually),
+	 	// SvmOutputPartialEquallyIS: enhanceis(SvmPerfBinaryRelevanceClassifier,new ftrs.FeatureLookupTable(), undefined, undefined,  Hierarchy.splitPartEqually, Hierarchy.splitPartEqually),
+	 	// SvmOutputPartialEquallyNoIS: enhancenois(SvmPerfBinaryRelevanceClassifier,new ftrs.FeatureLookupTable(), undefined, undefined,  Hierarchy.splitPartEqually, Hierarchy.splitPartEqually),
 
-	 	PartialClassificationAttValIS: enhanceis(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartVersion2, undefined,  Hierarchy.splitPartVersion2),
+	 	// PartialClassificationAttValIS: enhanceis(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartVersion2, undefined,  Hierarchy.splitPartVersion2),
 	 	// PartialClassificationAttVal: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartVersion2, undefined,  Hierarchy.splitPartVersion2),
-	 	SvmOutputPartialAttVal: enhanceis(SvmPerfBinaryRelevanceClassifier,new ftrs.FeatureLookupTable(),undefined, undefined, Hierarchy.splitPartVersion2,  Hierarchy.splitPartVersion2),
+	 	// SvmOutputPartialAttVal: enhanceis(SvmPerfBinaryRelevanceClassifier,new ftrs.FeatureLookupTable(),undefined, undefined, Hierarchy.splitPartVersion2,  Hierarchy.splitPartVersion2),
 
 		// PartialClassificationJustTwo: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartVersion2, Hierarchy.splitPartVersion2),
 		// SvmPerfClassifierPartial: enhance3(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable(),undefined,undefined,Hierarchy.splitPartEqually),
 		// PartialClassificationEquallyNoOutput: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined),
 
-		PartialClassificationEquallySagae: enhance5(PartialClassification(WinnowSegmenter2),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_sagae_completition, undefined),
-		PartialClassificationEquallySagaeNoCompletition: enhance5(PartialClassification(WinnowSegmenter2),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_sagae_no_completition, undefined),
+		// CompositeSagaeSeparation: enhance5(WinnowSegmenter1, undefined, undefined, undefined, Hierarchy.splitPartEqually, Hierarchy.splitPartEqually),
+
+		SagaeIntent: enhance5(PartialClassification(WinnowSegmenter1),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_rilesbased,  undefined),
+		// SagaeIntent: enhance5(PartialClassification(WinnowSegmenter1),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_sagae_completition, undefined),
+		PartialClassificationEquallySagae: enhance5(PartialClassification(WinnowSegmenter1),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_sagae_completition, undefined),
+		PartialClassificationEquallySagaeNoCompletion: enhance5(PartialClassification(WinnowSegmenter1),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_sagae_no_completition, undefined),
+		
+		// PartialClassificationEquallySagaeNegation: enhance5(PartialClassification(WinnowSegmenter5),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually1, trainutils.aggregate_sagae, undefined),
+		// PartialClassificationEquallySagaeImp: enhance5(PartialClassification(WinnowSegmenter2),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_sagae_improved, undefined),
+		// PartialClassificationEquallySagaeNoCompletition: enhance5(PartialClassification(WinnowSegmenter2),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_sagae_no_completition, undefined),
+		// PartialClassificationEquallySagaeNospell: enhance5nospell(PartialClassification(WinnowSegmenter2),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_sagae_completition, undefined),
+
 };
 
 // module.exports.defaultClassifier = module.exports.SvmOutputPartialEqually;
