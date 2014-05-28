@@ -1,627 +1,21 @@
 [
     {
-        "input": "20% with 10 hours",
+        "input": "no..you be programmer",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+            "{\"Reject\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T14:04:56.428Z"
+    },
+    {
+        "input": "if you want 20% pension we have to change the agreements about working hours",
         "output": [
             "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:22:54.048Z"
-    },
-    {
-        "input": "salary 10,000",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"10,000 NIS\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:13:35.390Z"
-    },
-    {
-        "input": "its 9 hours or nothing",
-        "output": [
-            "{\"Insist\":\"Working Hours\"}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:01:22.007Z"
-    },
-    {
-        "input": "You can have the position but no car.",
-        "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Reject\":\"Leased Car\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:26:53.511Z"
-    },
-    {
-        "input": "nope, you will work 9 hours",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:06:43.321Z"
-    },
-    {
-        "input": "I can't offer that at this time.",
-        "output": [
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:51:22.423Z"
-    },
-    {
-        "input": "Well, let us talk about 10 hours.",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:47:33.637Z"
-    },
-    {
-        "input": "i will accept 9 hours, not less",
-        "output": [
-            "{\"Insist\":\"Working Hours\"}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:38:52.363Z"
-    },
-    {
-        "input": "How long are you willing to work?",
-        "output": [
-            "{\"Query\":\"Working Hours\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T12:28:26.504Z"
-    },
-    {
-        "input": "salary  7000 NIS",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:23:13.762Z"
-    },
-    {
-        "input": "fine, but no car",
-        "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:40:03.842Z"
-    },
-    {
-        "input": "since your are working 8 hours, no leased car.",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:51:25.041Z"
-    },
-    {
-        "input": "What do you want to change?",
-        "output": [
-            "{\"Query\":\"issues\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:34:38.840Z"
-    },
-    {
-        "input": "i don't accept your offer",
-        "output": [
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-12T12:01:39.901Z"
-    },
-    {
-        "input": "I can't give you a salary proposal when we didn't agree on your job description and hours per day.",
-        "output": [
-            "{\"Reject\":\"Job Description\"}",
-            "{\"Reject\":\"Job Description\"}",
             "{\"Reject\":\"Working Hours\"}"
         ],
         "is_correct": false,
-        "timestamp": "2013-10-07T13:29:11.432Z"
-    },
-    {
-        "input": "we dont want you",
-        "output": [
-            "{\"Quit\":true}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:24:55.089Z"
-    },
-    {
-        "input": "ok",
-        "output": [
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T07:18:04.678Z"
-    },
-    {
-        "input": "your salary 12000",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:04:59.297Z"
-    },
-    {
-        "input": "if you want 8 hours then accept 10% pension",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:44:56.993Z"
-    },
-    {
-        "input": "but working 10 hrs",
-        "output": [
-            "{\"Append\":\"previous\"}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:59:55.917Z"
-    },
-    {
-        "input": "whice job do you want?",
-        "output": [
-            "{\"Query\":\"Job Description\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:53:10.047Z"
-    },
-    {
-        "input": "you said 7000",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-09T16:56:42.557Z"
-    },
-    {
-        "input": "10 working hors",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:53:35.310Z"
-    },
-    {
-        "input": "I am offering you a Team Manager position that starts at 12,000 NIS",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:42:20.400Z"
-    },
-    {
-        "input": "9 hours with leased",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:57:24.660Z"
-    },
-    {
-        "input": "0% pension and slow promotion track",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:05:14.543Z"
-    },
-    {
-        "input": "you say 10%",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:54:53.641Z"
-    },
-    {
-        "input": "you are gooing to be a good programmer",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-12T11:43:38.479Z"
-    },
-    {
-        "input": "i am unable to accept fast promotion track",
-        "output": [
-            "{\"Reject\":\"Promotion Possibilities\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:57:38.405Z"
-    },
-    {
-        "input": "I choose no agreement on car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:59:48.199Z"
-    },
-    {
-        "input": "FAST TRACK",
-        "output": [
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:15:38.912Z"
-    },
-    {
-        "input": "10%?",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-09T16:55:55.307Z"
-    },
-    {
-        "input": "well then we are at an impass",
-        "output": [
-            "{\"Quit\":true}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:59:31.856Z"
-    },
-    {
-        "input": " 10 hours, no car, programmer, 7000 NIS,",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-12T11:59:23.416Z"
-    },
-    {
-        "input": "10 hrs per day",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T07:17:53.692Z"
-    },
-    {
-        "input": "PLEASE SIGN THE AGREEMENT",
-        "output": [
-            "{\"Query\":\"accept\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:15:49.259Z"
-    },
-    {
-        "input": "7000 NIS,",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-12T11:59:24.635Z"
-    },
-    {
-        "input": "THANK YOU",
-        "output": [
-            "{\"Quit\":true}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:16:08.965Z"
-    },
-    {
-        "input": "Instead of a leased car, I can give you fast promotion track",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:14:45.418Z"
-    },
-    {
-        "input": "no 10 hours as we are running out of time",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T11:01:46.722Z"
-    },
-    {
-        "input": "you will not get a car",
-        "output": [
-            "{\"Reject\":\"Leased Car\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:52:20.766Z"
-    },
-    {
-        "input": "so fast promotion track and without leased car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:55:14.322Z"
-    },
-    {
-        "input": "you have to compromise",
-        "output": [
-            "{\"Query\":\"compromise\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:49:30.807Z"
-    },
-    {
-        "input": "OK, a team manager",
-        "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:34:29.630Z"
-    },
-    {
-        "input": "you need to be a programmer job title",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:21:20.666Z"
-    },
-    {
-        "input": "7000, no car, project manager, 10%, slow promotion, 9 hours, and we can sign",
-        "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
-            "{\"Query\":\"accept\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:40:17.166Z"
-    },
-    {
-        "input": "I can not offer a car but can offer you a fast promotion track",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:45:45.377Z"
-    },
-    {
-        "input": "so, do we agree on a programming position with a leased car and a 10% pension?",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:15:09.736Z"
-    },
-    {
-        "input": "we already agreed on 12000",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:54:43.558Z"
-    },
-    {
-        "input": "No 9",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:42:29.906Z"
-    },
-    {
-        "input": "no",
-        "output": [
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:25:04.127Z"
-    },
-    {
-        "input": "NO CAR!",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-16T08:58:11.885Z"
-    },
-    {
-        "input": "12,000 NIS, 9 hours",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:31:04.238Z"
-    },
-    {
-        "input": "only without leased car you will get fast promotion track",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:16:18.864Z"
-    },
-    {
-        "input": "12000",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:25:09.723Z"
-    },
-    {
-        "input": "team manager",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-09T16:55:55.307Z"
-    },
-    {
-        "input": "Maybe we should proceed to the next issue",
-        "output": [
-            "{\"Query\":\"issues\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:20:25.735Z"
-    },
-    {
-        "input": "this is a fast promotion track, you will start with 10% pension",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:38:07.020Z"
-    },
-    {
-        "input": "without lissed car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:06:12.340Z"
-    },
-    {
-        "input": "the salary cant be 20000 NIS",
-        "output": [
-            "{\"Reject\":\"Salary\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:23:10.812Z"
-    },
-    {
-        "input": "what do I get in return",
-        "output": [
-            "{\"Query\":\"compromise\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:58:49.766Z"
-    },
-    {
-        "input": "I only have a programmer position open",
-        "output": [
-            "{\"Insist\":\"Job Description\"}",
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:46:07.825Z"
-    },
-    {
-        "input": "just have programmer",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-11T17:53:55.948Z"
-    },
-    {
-        "input": "no pesion fund",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-12T11:59:47.870Z"
-    },
-    {
-        "input": "no car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-09T16:55:55.307Z"
-    },
-    {
-        "input": "So no leased car?",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:14:49.877Z"
-    },
-    {
-        "input": "How about 7,000 NIS?",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:17:52.012Z"
-    },
-    {
-        "input": "you expect too much",
-        "output": [
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:31:21.498Z"
-    },
-    {
-        "input": "in the beggining you will get 7000 nis",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T12:20:34.310Z"
-    },
-    {
-        "input": "what about programmer position?",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T12:20:13.073Z"
-    },
-    {
-        "input": "hi",
-        "output": [
-            "{\"Greet\":true}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:14:09.908Z"
-    },
-    {
-        "input": "time is running out, so: 12000, programmer, with leased car, 0% pension, fast promotion, 9 hours",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-11T06:50:55.681Z"
-    },
-    {
-        "input": "I will accept 8 hours for a 10% pension",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:43:28.388Z"
+        "timestamp": "2013-10-07T14:00:21.680Z"
     },
     {
         "input": "with car, slow promotion",
@@ -633,6 +27,523 @@
         "timestamp": "2013-10-07T14:17:45.435Z"
     },
     {
+        "input": "project manager without car",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:30:37.627Z"
+    },
+    {
+        "input": "fine, but no car",
+        "output": [
+            "{\"Accept\":\"previous\"}",
+            "{\"Reject\":\"Leased Car\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T13:40:03.842Z"
+    },
+    {
+        "input": "No, it is 9 hour days",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+            "{\"Reject\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:33:29.009Z"
+    },
+    {
+        "input": "we will not agree",
+        "output": [
+            "{\"Reject\":\"previous\"}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:53:26.480Z"
+    },
+    {
+        "input": "How does 20,000 NIS long term sound to you?",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:50:29.650Z"
+    },
+    {
+        "input": "sign agreement",
+        "output": [
+            "{\"Query\":\"accept\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:31:49.776Z"
+    },
+    {
+        "input": "I offer 10000 and a leased car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+            "{\"Offer\":{\"Salary\":\"10,000 NIS\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T14:16:40.847Z"
+    },
+    {
+        "input": "you will get 10000",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"10,000 NIS\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T14:16:48.110Z"
+    },
+    {
+        "input": "this is my final offer",
+        "output": [
+            "{\"Insist\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-09-09T16:57:14.323Z"
+    },
+    {
+        "input": "HOW ARE YOU ?",
+        "output": [
+            "{\"Greet\":true}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-09T16:57:24.073Z"
+    },
+    {
+        "input": "20000. 9 hour days and 10% pension fund",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:33:45.610Z"
+    },
+    {
+        "input": "I am thinking 7,000 NIS as the role is for QA. However, the promotion track is fast.",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"QA\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:08:50.667Z"
+    },
+    {
+        "input": "12000, programmer, without leased car, 0% pension, fast promotion track, 8 hours",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+            "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-11T06:49:39.182Z"
+    },
+    {
+        "input": "what do you think about 9?",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T13:26:03.043Z"
+    },
+    {
+        "input": "i will give you 7000 nis and 10 hours",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:23:39.024Z"
+    },
+    {
+        "input": "you will get 7000 nis",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T12:24:51.087Z"
+    },
+    {
+        "input": "we already agreed 10 hours",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-12T11:58:12.948Z"
+    },
+    {
+        "input": "you will work 9 hours",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:52:25.892Z"
+    },
+    {
+        "input": "I can give you 8 hours, but no leased car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:39:25.312Z"
+    },
+    {
+        "input": "with car and 9 hours",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:44:03.187Z"
+    },
+    {
+        "input": "9 hours a day as QA",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"QA\"}}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:06:27.589Z"
+    },
+    {
+        "input": "Are you willing to take 10% pension?",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:56:19.726Z"
+    },
+    {
+        "input": "i offer 7000 NIS",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T13:36:49.967Z"
+    },
+    {
+        "input": "we are wasting time and losing points",
+        "output": [
+            "{\"Query\":\"compromise\"}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:20:41.194Z"
+    },
+    {
+        "input": "compromise only on 9 hours.",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+            "{\"Query\":\"compromise\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T13:49:18.570Z"
+    },
+    {
+        "input": "i counter with programmer",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T10:52:12.599Z"
+    },
+    {
+        "input": "get a leased car and work 9 hours",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:11:01.466Z"
+    },
+    {
+        "input": "no car!",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-12T12:00:01.385Z"
+    },
+    {
+        "input": "ok I accept with leased car",
+        "output": [
+            "{\"Accept\":\"Leased Car\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T11:00:05.673Z"
+    },
+    {
+        "input": "if you want a car you need to work 10 hours",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:16:23.170Z"
+    },
+    {
+        "input": "we can opt out",
+        "output": [
+            "{\"Insist\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T14:23:24.045Z"
+    },
+    {
+        "input": "9 hours",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-09T16:55:44.244Z"
+    },
+    {
+        "input": "Okay then",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:40:34.203Z"
+    },
+    {
+        "input": "What job you want?",
+        "output": [
+            "{\"Query\":\"Job Description\"}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:53:12.169Z"
+    },
+    {
+        "input": "i will give you 12,000",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:17:53.946Z"
+    },
+    {
+        "input": "my only offer",
+        "output": [
+            "{\"Insist\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:42:24.701Z"
+    },
+    {
+        "input": "9 hours, I can't do less, please accept",
+        "output": [
+            "{\"Insist\":\"Working Hours\"}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+            "{\"Query\":\"accept\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:19:13.832Z"
+    },
+    {
+        "input": "10 hours and a car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:41:24.723Z"
+    },
+    {
+        "input": "Pension funds cannot be given",
+        "output": [
+            "{\"Reject\":\"Pension Fund\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:40:25.470Z"
+    },
+    {
+        "input": "I dont think that will work.",
+        "output": [
+            "{\"Reject\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T07:17:32.322Z"
+    },
+    {
+        "input": "I agree to the 10% pension fund",
+        "output": [
+            "{\"Accept\":\"Pension Fund\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T13:23:21.144Z"
+    },
+    {
+        "input": "I would be willing to offer 12,000.",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:51:10.762Z"
+    },
+    {
+        "input": "whithout a car ",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-09-12T12:00:28.104Z"
+    },
+    {
+        "input": "12000?",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-16T08:57:43.370Z"
+    },
+    {
+        "input": "ok, 9 hours, 12000 nis, programmer.",
+        "output": [
+            "{\"Accept\":\"previous\"}",
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-11T06:49:57.354Z"
+    },
+    {
+        "input": "no lissed car but you be team manager",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T14:05:41.442Z"
+    },
+    {
+        "input": "slow is batter",
+        "output": [
+            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:54:36.298Z"
+    },
+    {
+        "input": "i will give you a leased car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:22:56.984Z"
+    },
+    {
+        "input": "i didnt accept the salary will be 7000",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T13:37:24.858Z"
+    },
+    {
+        "input": "cant accept",
+        "output": [
+            "{\"Reject\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T14:22:48.693Z"
+    },
+    {
+        "input": "there is no agreement on the leased car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:21:28.219Z"
+    },
+    {
+        "input": "without liased car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-09-09T16:55:55.307Z"
+    },
+    {
+        "input": "how are you",
+        "output": [
+            "{\"Greet\":true}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-09T16:57:24.073Z"
+    },
+    {
+        "input": "no chance only slow track is possible",
+        "output": [
+            "{\"Insist\":\"Promotion Possibilities\"}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T10:41:40.917Z"
+    },
+    {
+        "input": "OK, a team manager",
+        "output": [
+            "{\"Accept\":\"previous\"}",
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:34:29.630Z"
+    },
+    {
+        "input": "My offer is 12,000 NIS",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:44:33.953Z"
+    },
+    {
+        "input": "fast track promotion is fine",
+        "output": [
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:35:18.080Z"
+    },
+    {
+        "input": "I will give you the Project Manager job but nothing else.",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Project Manager\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:50:57.148Z"
+    },
+    {
+        "input": "what is your job?",
+        "output": [
+            "{\"Query\":\"Job Description\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-09-11T06:57:50.620Z"
+    },
+    {
+        "input": "please accept and sign",
+        "output": [
+            "{\"Query\":\"accept\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:12:46.281Z"
+    },
+    {
+        "input": "I ofeer 7000",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T13:37:12.250Z"
+    },
+    {
         "input": "salary 12000 and 8 hours",
         "output": [
             "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
@@ -642,47 +553,321 @@
         "timestamp": "2013-10-07T14:06:14.653Z"
     },
     {
-        "input": "the salary will be 7000 NIS",
+        "input": "you have to work at least 9 hours",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:50:44.567Z"
+    },
+    {
+        "input": "so we both agreement",
+        "output": [
+            "{\"Query\":\"accept\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T13:57:15.606Z"
+    },
+    {
+        "input": "Only 10 hours is possible but we will promisse fast promotion track and 20% pension fund",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:15:57.975Z"
+    },
+    {
+        "input": "what do you think about team manager?",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:23:48.926Z"
+    },
+    {
+        "input": "10 hours a day is my final offer",
+        "output": [
+            "{\"Insist\":\"Working Hours\"}",
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T11:01:58.930Z"
+    },
+    {
+        "input": "I am willing to pay that amount if you commit to working 10 hours for our company",
+        "output": [
+            "{\"Accept\":\"Salary\"}",
+            "{\"Insist\":\"Working Hours\"}",
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:19:37.537Z"
+    },
+    {
+        "input": "no, only 0%",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+            "{\"Reject\":\"previous\"}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-16T08:57:38.916Z"
+    },
+    {
+        "input": "I accept",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T07:18:04.678Z"
+    },
+    {
+        "input": "9 hours for 12000",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:21:38.226Z"
+    },
+    {
+        "input": "we already agreed on 12000",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:54:43.558Z"
+    },
+    {
+        "input": "you are gooing to be a good programmer",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-12T11:43:38.479Z"
+    },
+    {
+        "input": "YOU GET 7000 nis",
         "output": [
             "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
         ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:37:30.761Z"
+        "is_correct": true,
+        "timestamp": "2013-09-12T11:59:52.729Z"
     },
     {
-        "input": "9 hours with leased car",
+        "input": "how about 20,000 NIS, programmer, 10 pension fund with leased car?",
         "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
             "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T14:17:24.149Z"
+        "timestamp": "2013-10-07T14:02:41.606Z"
     },
     {
-        "input": "ok but you work 9 hours",
+        "input": "12000",
         "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:25:09.723Z"
+    },
+    {
+        "input": "Excellent.",
+        "output": [
+            "{\"Accept\":\"previous\"}"
         ],
         "is_correct": false,
-        "timestamp": "2013-10-07T14:00:53.660Z"
+        "timestamp": "2013-10-08T10:56:17.681Z"
     },
     {
-        "input": "I can promise you a low promotion track then.",
+        "input": "project manager but NO car",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:30:42.315Z"
+    },
+    {
+        "input": "no, we agreed on 9",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+            "{\"Reject\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T13:39:56.110Z"
+    },
+    {
+        "input": "no car but fast promotion track",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-12T12:00:17.713Z"
+    },
+    {
+        "input": "are you looking to be a project manager?",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Project Manager\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:10:22.992Z"
+    },
+    {
+        "input": "in the beggining you will get 7000 nis",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T12:20:34.310Z"
+    },
+    {
+        "input": "no;with leased car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+            "{\"Reject\":\"previous\"}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-11T17:53:25.495Z"
+    },
+    {
+        "input": "that can be earned with time",
+        "output": [
+            "{\"Reject\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T10:58:38.246Z"
+    },
+    {
+        "input": "I don't offer a leased car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:59:34.984Z"
+    },
+    {
+        "input": "ok please accept",
+        "output": [
+            "{\"Accept\":\"previous\"}",
+            "{\"Query\":\"accept\"}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:12:30.041Z"
+    },
+    {
+        "input": "for 8 hours",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:40:49.474Z"
+    },
+    {
+        "input": "I would like to offer you a job in QA at 12000",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"QA\"}}",
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:41:23.071Z"
+    },
+    {
+        "input": "Ok, 8 hours is acceptable",
+        "output": [
+            "{\"Accept\":\"previous\"}",
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:20:54.784Z"
+    },
+    {
+        "input": "9 hours is middle of the orad",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+            "{\"Query\":\"compromise\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T10:43:31.434Z"
+    },
+    {
+        "input": "FAST TRACK",
+        "output": [
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:15:38.912Z"
+    },
+    {
+        "input": "SLOW TRACK",
         "output": [
             "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
         ],
-        "is_correct": false,
-        "timestamp": "2013-09-11T06:43:06.542Z"
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:15:37.535Z"
     },
     {
-        "input": "i can not give you a leased car, no leased car",
+        "input": "hi, does that sound good?",
         "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+            "{\"Greet\":true}",
+            "{\"Query\":\"accept\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:14:09.908Z"
+    },
+    {
+        "input": "without, please",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:20:34.710Z"
+    },
+    {
+        "input": "you will not get a car",
+        "output": [
             "{\"Reject\":\"Leased Car\"}"
         ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T10:52:20.766Z"
+    },
+    {
+        "input": "make it fast promotion",
+        "output": [
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
         "is_correct": true,
-        "timestamp": "2013-10-07T13:10:55.535Z"
+        "timestamp": "2013-09-09T16:59:37.042Z"
+    },
+    {
+        "input": "agreed on 8 hours",
+        "output": [
+            "{\"Accept\":\"Working Hours\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T13:51:09.952Z"
+    },
+    {
+        "input": "You can have the job, but no car at this time.",
+        "output": [
+            "{\"Accept\":\"previous\"}",
+            "{\"Reject\":\"Leased Car\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:27:44.830Z"
+    },
+    {
+        "input": "I only have a programmer position open",
+        "output": [
+            "{\"Insist\":\"Job Description\"}",
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:46:07.825Z"
     },
     {
         "input": "and no car 10%",
@@ -704,428 +889,28 @@
         "timestamp": "2013-10-07T14:05:11.887Z"
     },
     {
-        "input": "the maximum is Team Manager",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:13:48.662Z"
-    },
-    {
-        "input": "10 is normal",
-        "output": [
-            "{\"Insist\":\"Working Hours\"}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:10:16.068Z"
-    },
-    {
-        "input": "So take this or leave it.",
-        "output": [
-            "{\"Insist\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:44:38.552Z"
-    },
-    {
-        "input": "9 hours 20% pension",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:43:35.817Z"
-    },
-    {
-        "input": "I need you to work 10 hours because there is a lot of job to do",
+        "input": "I offer you 10 hrs working",
         "output": [
             "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
         ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:19:54.274Z"
-    },
-    {
-        "input": "9 hours with leased car and fast promotion",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:17:30.352Z"
-    },
-    {
-        "input": "fine",
-        "output": [
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-09T16:57:20.995Z"
-    },
-    {
-        "input": "Will you take 12,000",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
         "is_correct": false,
-        "timestamp": "2013-10-08T08:41:50.052Z"
+        "timestamp": "2013-10-08T11:00:22.035Z"
     },
     {
-        "input": "do you want my offer",
+        "input": "are you ready to sign",
         "output": [
             "{\"Query\":\"accept\"}"
         ],
         "is_correct": false,
-        "timestamp": "2013-10-08T08:15:52.105Z"
+        "timestamp": "2013-10-08T08:12:38.821Z"
     },
     {
-        "input": "get a leased car and work 9 hours",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:11:01.466Z"
-    },
-    {
-        "input": "done",
-        "output": [
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T07:18:04.678Z"
-    },
-    {
-        "input": "so without a car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:54:15.058Z"
-    },
-    {
-        "input": "with car and 9 hours",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:44:03.187Z"
-    },
-    {
-        "input": "I AM OFFERINg leased car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:41:32.625Z"
-    },
-    {
-        "input": "no, 12,000",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:15:38.223Z"
-    },
-    {
-        "input": "SLOW TRACK",
-        "output": [
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:15:37.535Z"
-    },
-    {
-        "input": "lets start with the job  title ",
-        "output": [
-            "{\"Query\":\"Job Description\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-11T17:50:33.291Z"
-    },
-    {
-        "input": "12000 NIS",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:25:09.723Z"
-    },
-    {
-        "input": "i will give you 7000 nis",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:06:10.298Z"
-    },
-    {
-        "input": "will you accept 7000?",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:57:04.718Z"
-    },
-    {
-        "input": "Promotion possibilities?",
-        "output": [
-            "{\"Query\":\"Promotion Possibilities\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:54:06.894Z"
-    },
-    {
-        "input": "maybe 9?",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T11:07:15.695Z"
-    },
-    {
-        "input": "unacceptable",
+        "input": "i dont think so",
         "output": [
             "{\"Reject\":\"previous\"}"
         ],
         "is_correct": false,
-        "timestamp": "2013-10-08T10:58:41.562Z"
-    },
-    {
-        "input": "ok, but work 9 hours",
-        "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:10:49.480Z"
-    },
-    {
-        "input": "pension fund 0%",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-12T11:59:51.401Z"
-    },
-    {
-        "input": "no car but fast promotion track",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-12T12:00:17.713Z"
-    },
-    {
-        "input": "no leased car but you will get fast prmotion track",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:55:06.990Z"
-    },
-    {
-        "input": "12000, programmer, car,10%,fast promotion 9 hours",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:42:43.107Z"
-    },
-    {
-        "input": "You can be Team Manager",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:40:11.659Z"
-    },
-    {
-        "input": "12000 and i accept",
-        "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:42:25.105Z"
-    },
-    {
-        "input": "why not an programmer?",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:52:55.415Z"
-    },
-    {
-        "input": "I can offer 12,000 NIS",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:50:53.349Z"
-    },
-    {
-        "input": "get out of my office, or I call the police",
-        "output": [
-            "{\"Quit\":true}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:35:40.995Z"
-    },
-    {
-        "input": "There will be no agreement for car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:40:51.605Z"
-    },
-    {
-        "input": "10000 NIS",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"10,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:25:09.723Z"
-    },
-    {
-        "input": "how are you",
-        "output": [
-            "{\"Greet\":true}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-09T16:57:24.073Z"
-    },
-    {
-        "input": "we already agreed on 12000 nis",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:34:32.183Z"
-    },
-    {
-        "input": "you will get 7000 nis",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T12:24:51.087Z"
-    },
-    {
-        "input": "Opting out",
-        "output": [
-            "{\"Quit\":true}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:45:17.988Z"
-    },
-    {
-        "input": "I am sorry, could not be done",
-        "output": [
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:14:59.570Z"
-    },
-    {
-        "input": "ok",
-        "output": [
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-09T16:55:44.244Z"
-    },
-    {
-        "input": "8 hours 12000 NIS",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:01:53.152Z"
-    },
-    {
-        "input": "go to hell",
-        "output": [
-            "{\"Quit\":true}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:24:58.048Z"
-    },
-    {
-        "input": "pension of 10%",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-11T17:51:06.541Z"
-    },
-    {
-        "input": "12000 NIS, 8 hours, 0% pension, slow track, no car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:31:18.928Z"
-    },
-    {
-        "input": "Ok, 8 hours is acceptable",
-        "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:20:54.784Z"
-    },
-    {
-        "input": "Leased car is only possible with programmer and 10% pension",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:15:33.239Z"
-    },
-    {
-        "input": "My offer is 12,000 NIS",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:44:33.953Z"
-    },
-    {
-        "input": "Perhaps considering the agreements we have made so far, you might agree to a 9 hour day.",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:56:13.850Z"
-    },
-    {
-        "input": "whithout a car ",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-12T12:00:28.104Z"
+        "timestamp": "2013-10-07T13:54:12.696Z"
     },
     {
         "input": "I can offer a 7,000 NIS",
@@ -1136,185 +921,175 @@
         "timestamp": "2013-10-08T08:17:55.502Z"
     },
     {
-        "input": "it is much too high.",
+        "input": "do we have an agreement",
         "output": [
-            "{\"Reject\":\"Salary\"}"
+            "{\"Query\":\"accept\"}"
         ],
         "is_correct": false,
-        "timestamp": "2013-10-07T13:37:44.291Z"
+        "timestamp": "2013-10-08T10:57:54.354Z"
     },
     {
-        "input": "Our counter proposal is 12,000 NIS",
+        "input": "no leased car is possible",
         "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-08T10:50:39.162Z"
+        "timestamp": "2013-10-08T08:14:53.775Z"
     },
     {
-        "input": "maby 9 hour?",
+        "input": "I will let you think about it again, my offer is 9 hours",
         "output": [
+            "{\"Insist\":\"previous\"}",
             "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
         ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:54:01.453Z"
+        "is_correct": false,
+        "timestamp": "2013-10-07T14:20:14.052Z"
     },
     {
-        "input": "with a 10% pension fund, a fast promotion track and a leased car",
+        "input": "and we'll throw in 10% pension fund",
         "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:21:44.706Z"
+    },
+    {
+        "input": "But fast promotion is on",
+        "output": [
             "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-08T08:23:42.202Z"
+        "timestamp": "2013-10-07T14:15:07.141Z"
     },
     {
-        "input": "there is no agreement on that issue",
+        "input": "Leased car for 9 hours",
         "output": [
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:21:14.229Z"
-    },
-    {
-        "input": "Our policy allows for 0-10%. I am offering the 10%",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:50:46.170Z"
-    },
-    {
-        "input": "no lissed car but you be team manager",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:05:41.442Z"
-    },
-    {
-        "input": "lets make it 10%",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T14:17:10.120Z"
+        "timestamp": "2013-10-08T08:42:49.512Z"
     },
     {
-        "input": "I ofeer 7000",
+        "input": "pension 20% and 10 hours ",
         "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+            "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
         ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:37:12.250Z"
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:06:24.004Z"
     },
     {
-        "input": "i can not give you a car at all.",
+        "input": "We are not prepared to offer a leased car with this position at this time.",
         "output": [
             "{\"Reject\":\"Leased Car\"}"
         ],
         "is_correct": false,
-        "timestamp": "2013-10-07T13:51:21.464Z"
+        "timestamp": "2013-10-08T08:26:17.031Z"
     },
     {
-        "input": "9 hours then and we close a deal",
+        "input": "maybe 9?",
         "output": [
             "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
         ],
         "is_correct": false,
-        "timestamp": "2013-10-07T14:01:49.921Z"
+        "timestamp": "2013-10-07T11:07:15.695Z"
     },
     {
-        "input": "a leased car only",
+        "input": "7000 NIS, 10 hours, no car, programmer",
         "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-09-11T17:53:22.291Z"
+        "timestamp": "2013-09-12T11:58:21.995Z"
     },
     {
-        "input": "leased car",
+        "input": "i think 7000 is good",
         "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:37:47.898Z"
+    },
+    {
+        "input": "You can have 7000 NIS for Leased car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
         ],
         "is_correct": false,
-        "timestamp": "2013-09-09T16:55:55.307Z"
+        "timestamp": "2013-10-08T08:41:08.318Z"
     },
     {
-        "input": "How about 10 hours?",
+        "input": "Fine, I agree",
         "output": [
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            "{\"Accept\":\"previous\"}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:14:33.551Z"
+    },
+    {
+        "input": "12000 nis",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:25:09.723Z"
+    },
+    {
+        "input": "Would you be ok with working as a team manager?",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:50:32.828Z"
+    },
+    {
+        "input": "how about 10,000 NIS, QA, no agreement on pension, no agreement on car",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"10,000 NIS\"}}",
+            "{\"Offer\":{\"Job Description\":\"QA\"}}",
+            "{\"Offer\":{\"Leased Car\":\"No agreement\"}}",
+            "{\"Offer\":{\"Pension Fund\":\"No agreement\"}}"
         ],
         "is_correct": true,
         "timestamp": "2013-09-09T16:55:44.244Z"
     },
     {
-        "input": "pension 10%",
+        "input": "not 20000",
         "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+            "{\"Reject\":\"Salary\"}"
         ],
         "is_correct": false,
-        "timestamp": "2013-09-09T16:55:55.307Z"
+        "timestamp": "2013-10-07T12:23:06.143Z"
     },
     {
-        "input": "is this good enough?",
+        "input": "I AM OFFERINg leased car",
         "output": [
-            "{\"Query\":\"accept\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:43:24.628Z"
-    },
-    {
-        "input": "i can wait, but you are losing too",
-        "output": [
-            "{\"Query\":\"compromise\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:20:52.050Z"
-    },
-    {
-        "input": "i will offer you the programmer position",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-08T10:52:14.800Z"
+        "timestamp": "2013-10-08T10:41:32.625Z"
     },
     {
-        "input": "without leased car ",
+        "input": "atleast 9 hours",
         "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T13:36:36.500Z"
+        "timestamp": "2013-10-07T14:10:06.683Z"
     },
     {
-        "input": "you will get leased car if you will agree to salary of 7000 NIS",
+        "input": "My last offer is 9 hours",
         "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+            "{\"Insist\":\"Working Hours\"}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T13:26:24.385Z"
-    },
-    {
-        "input": "YOU GET 7000 nis",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-12T11:59:52.729Z"
-    },
-    {
-        "input": "Programmer for 12,000?",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:42:00.666Z"
+        "timestamp": "2013-10-07T14:20:00.762Z"
     },
     {
         "input": "I propose 9 hours, with car",
@@ -1326,1019 +1101,20 @@
         "timestamp": "2013-09-11T06:50:41.103Z"
     },
     {
-        "input": "Okay, you can have a leased car. ",
-        "output": [
-            "{\"Accept\":\"Leased Car\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:15:21.006Z"
-    },
-    {
-        "input": "i accept leased car issue",
-        "output": [
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T12:23:32.365Z"
-    },
-    {
-        "input": "20000 nis, no penssion as qa",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"QA\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
-            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:34:56.644Z"
-    },
-    {
-        "input": "7,000 NIS",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:30:47.202Z"
-    },
-    {
-        "input": "programer",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:54:41.916Z"
-    },
-    {
-        "input": "trying to sign the agreement",
-        "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Query\":\"accept\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:43:58.902Z"
-    },
-    {
-        "input": "Programmer",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-09T16:55:45.400Z"
-    },
-    {
-        "input": "i offer a QA",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"QA\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:21:54.396Z"
-    },
-    {
-        "input": "you will get fat promotion",
-        "output": [
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-11T17:51:05.229Z"
-    },
-    {
-        "input": "You can't get it all, I offer 10 hours as a programmer and 12000 nis",
-        "output": [
-            "{\"Reject\":\"previous\"}",
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:29:18.630Z"
-    },
-    {
-        "input": "20000 NIS",
+        "input": "how about 20000 with nothing else",
         "output": [
             "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T14:25:09.723Z"
+        "timestamp": "2013-10-08T08:32:42.311Z"
     },
     {
-        "input": "7,000 with leased car 8 hours a day",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:30:53.443Z"
-    },
-    {
-        "input": "I will offer 10%",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:45:33.295Z"
-    },
-    {
-        "input": "I don't think I'll hire you after all...",
-        "output": [
-            "{\"Quit\":true}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:30:13.929Z"
-    },
-    {
-        "input": "I offer 10000 and a leased car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Salary\":\"10,000 NIS\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:16:40.847Z"
-    },
-    {
-        "input": "compromise",
-        "output": [
-            "{\"Query\":\"compromise\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:50:46.074Z"
-    },
-    {
-        "input": "yes we can",
-        "output": [
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T07:18:04.678Z"
-    },
-    {
-        "input": "I would like you to work 9 hour days.",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:33:20.072Z"
-    },
-    {
-        "input": "compromise only on 9 hours.",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
-            "{\"Query\":\"compromise\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:49:18.570Z"
-    },
-    {
-        "input": "so we both agreement",
-        "output": [
-            "{\"Query\":\"accept\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:57:15.606Z"
-    },
-    {
-        "input": "I can go to 12,000 NIS with a fast promotion track.",
-        "output": [
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:08:54.142Z"
-    },
-    {
-        "input": "12000 with leased car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-09T16:59:33.448Z"
-    },
-    {
-        "input": "all i have is a programmer position",
-        "output": [
-            "{\"Insist\":\"Job Description\"}",
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T12:19:22.294Z"
-    },
-    {
-        "input": "fine",
-        "output": [
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T07:18:04.678Z"
-    },
-    {
-        "input": "no im not accept",
-        "output": [
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-09T16:58:35.369Z"
-    },
-    {
-        "input": "10%",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:53:17.416Z"
-    },
-    {
-        "input": "without a leased car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-09T16:55:55.307Z"
-    },
-    {
-        "input": "hi, my name is john and I will potentially be your new employer.",
-        "output": [
-            "{\"Greet\":true}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:51:09.001Z"
-    },
-    {
-        "input": "but without leased car",
-        "output": [
-            "{\"Append\":\"previous\"}",
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-09T16:59:30.511Z"
-    },
-    {
-        "input": "the position is without a leased car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:51:24.774Z"
-    },
-    {
-        "input": "for 7000 nis?",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T12:22:56.928Z"
-    },
-    {
-        "input": "you have to compromise, i did",
-        "output": [
-            "{\"Query\":\"compromise\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:51:39.581Z"
-    },
-    {
-        "input": "well you should accept it you will get fast promotion track.",
-        "output": [
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:37:57.029Z"
-    },
-    {
-        "input": "How about programmer, 20000, without leased car, 0% pension fund, slow promotion track, 10 hours a day?",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
-            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-11T06:43:42.151Z"
-    },
-    {
-        "input": "with 7000 nis we can give you a car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:22:51.825Z"
-    },
-    {
-        "input": "You are not compromising on anything",
-        "output": [
-            "{\"Query\":\"compromise\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:19:47.198Z"
-    },
-    {
-        "input": "i offer 10 for pension ",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:12:21.481Z"
-    },
-    {
-        "input": "I can do 10",
+        "input": "Our stand work day is 10 hours for all employees.",
         "output": [
             "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
         ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T11:00:47.037Z"
-    },
-    {
-        "input": "My counter offer would be 9 hours, 12,000 for programmer without a leased car",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
         "is_correct": true,
-        "timestamp": "2013-10-08T08:44:03.836Z"
-    },
-    {
-        "input": "I sujest we start with a lower price",
-        "output": [
-            "{\"Reject\":\"Salary\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:19:52.129Z"
-    },
-    {
-        "input": "10 % ",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-09T16:59:43.214Z"
-    },
-    {
-        "input": "8 hour without leased",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:57:22.602Z"
-    },
-    {
-        "input": "you want work?",
-        "output": [
-            "{\"Query\":\"accept\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T12:25:54.353Z"
-    },
-    {
-        "input": "I reject that idea",
-        "output": [
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-16T08:58:02.416Z"
-    },
-    {
-        "input": "do you accept my offer",
-        "output": [
-            "{\"Query\":\"accept\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:15:54.732Z"
-    },
-    {
-        "input": "AS A PROGRAMMER",
-        "output": [
-            "{\"Append\":\"previous\"}",
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-12T12:00:00.026Z"
-    },
-    {
-        "input": "you will not get a lease",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:52:33.976Z"
-    },
-    {
-        "input": "No, it is 9 hour days",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:33:29.009Z"
-    },
-    {
-        "input": "now, GET OUT! I't my browzer",
-        "output": [
-            "{\"Quit\":true}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:35:56.330Z"
-    },
-    {
-        "input": "you just said ok for 9 hours",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:26:14.327Z"
-    },
-    {
-        "input": "slow promotion is best",
-        "output": [
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-09T16:59:35.120Z"
-    },
-    {
-        "input": "12000, programmer, without leased car, 0% pension, fast promotion track, 9 hours",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-11T06:49:43.354Z"
-    },
-    {
-        "input": "9 hours or nothing",
-        "output": [
-            "{\"Insist\":\"Working Hours\"}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:01:02.301Z"
-    },
-    {
-        "input": "No you said early you would work 10 hour days, if you do not want to work 10 hour days you do not get a car",
-        "output": [
-            "{\"Insist\":\"Working Hours\"}",
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:35:15.780Z"
-    },
-    {
-        "input": "You want 20000, that will only happen if you work 10 hours. ",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:24:56.326Z"
-    },
-    {
-        "input": "no way",
-        "output": [
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-09T16:58:35.369Z"
-    },
-    {
-        "input": "fast track promotion is fine",
-        "output": [
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:35:18.080Z"
-    },
-    {
-        "input": "No leased car.",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:14:59.181Z"
-    },
-    {
-        "input": "12000 nis, a leased car, and 9 hours",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:35:23.240Z"
-    },
-    {
-        "input": "I dont think that will work.",
-        "output": [
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T07:17:32.322Z"
-    },
-    {
-        "input": "yes, sure",
-        "output": [
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T12:18:51.996Z"
-    },
-    {
-        "input": "still too high",
-        "output": [
-            "{\"Reject\":\"Salary\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:05:25.261Z"
-    },
-    {
-        "input": "12000, programmer, without leased car, 0% pension, fast promotion track, 8 hours",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-11T06:49:39.182Z"
-    },
-    {
-        "input": "I can also provide pension",
-        "output": [
-            "{\"Append\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T07:17:33.343Z"
-    },
-    {
-        "input": "12,000 NIS?",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:17:59.569Z"
-    },
-    {
-        "input": "if you will be good as you say you are, fast pormotion track is an option",
-        "output": [
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:26:43.091Z"
-    },
-    {
-        "input": "That is acceptable",
-        "output": [
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:39:31.499Z"
-    },
-    {
-        "input": "deal?",
-        "output": [
-            "{\"Query\":\"accept\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-11T17:53:57.416Z"
-    },
-    {
-        "input": "20 pension, without leased",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:53:11.018Z"
-    },
-    {
-        "input": "i will give you 12,000",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:17:53.946Z"
-    },
-    {
-        "input": "what do you think about team manager?",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:23:48.926Z"
-    },
-    {
-        "input": "7000 nis last offer ",
-        "output": [
-            "{\"Insist\":\"Salary\"}",
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:24:46.527Z"
-    },
-    {
-        "input": "no agrrement",
-        "output": [
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:23:44.286Z"
-    },
-    {
-        "input": "12000 nis",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:25:09.723Z"
-    },
-    {
-        "input": "A leased car is not needed in this position",
-        "output": [
-            "{\"Reject\":\"Leased Car\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:43:48.957Z"
-    },
-    {
-        "input": "hi, does that sound good?",
-        "output": [
-            "{\"Greet\":true}",
-            "{\"Query\":\"accept\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:14:09.908Z"
-    },
-    {
-        "input": "9 hours with 12,000 NIS",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:16:13.539Z"
-    },
-    {
-        "input": "Then I think you should think our offer over and let me know whether you are interested in the position with no car.",
-        "output": [
-            "{\"Insist\":\"previous\"}",
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:27:23.008Z"
-    },
-    {
-        "input": "How about you compromise on 9 hours.",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
-            "{\"Query\":\"compromise\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:49:44.461Z"
-    },
-    {
-        "input": "OK THEN LEASED CAR WITH SLOW TRACK PROMOTION AND THAT IS FINAL",
-        "output": [
-            "{\"Insist\":\"Leased Car\"}",
-            "{\"Insist\":\"Promotion Possibilities\"}",
-            "{\"Insist\":\"previous\"}",
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:41:15.684Z"
-    },
-    {
-        "input": "We have to meet half way, 10%.",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
-            "{\"Query\":\"compromise\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:47:29.684Z"
-    },
-    {
-        "input": "withour liased car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-09T16:55:55.307Z"
-    },
-    {
-        "input": "work as team manager",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:13:30.608Z"
-    },
-    {
-        "input": "ok, slow and 9 hours",
-        "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:10:55.217Z"
-    },
-    {
-        "input": "we can opt out",
-        "output": [
-            "{\"Insist\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:23:24.045Z"
-    },
-    {
-        "input": "9 hours is middle of the orad",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
-            "{\"Query\":\"compromise\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:43:31.434Z"
-    },
-    {
-        "input": "Your offer is not going to happen.",
-        "output": [
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:23:54.545Z"
-    },
-    {
-        "input": "How about programmer, 20000, without leased car, 0% pension fund, slow promotion track, 9 hours a day?",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
-            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-11T06:43:49.261Z"
-    },
-    {
-        "input": "I can give for QA",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"QA\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:40:32.523Z"
-    },
-    {
-        "input": "I agree to with leased @ 8 hours with slow promotion track",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:57:30.471Z"
-    },
-    {
-        "input": "I would need 9 hours",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:51:16.209Z"
-    },
-    {
-        "input": "only 9 hours, that is final.",
-        "output": [
-            "{\"Insist\":\"Working Hours\"}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:50:55.235Z"
-    },
-    {
-        "input": "no pension with leased car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-09T16:56:52.573Z"
-    },
-    {
-        "input": "ok 8 hours 10% pension",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:45:27.903Z"
-    },
-    {
-        "input": "No, we agreed on programmer",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-16T08:58:20.495Z"
-    },
-    {
-        "input": "your salary will be 10000",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"10,000 NIS\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:16:54.323Z"
-    },
-    {
-        "input": "ok , 8 hours",
-        "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-09T16:55:44.244Z"
-    },
-    {
-        "input": "slow promotion and we can sign",
-        "output": [
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:41:32.671Z"
-    },
-    {
-        "input": "thats the last offer",
-        "output": [
-            "{\"Insist\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:41:38.683Z"
-    },
-    {
-        "input": "I will offer slow track promotion",
-        "output": [
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:21:23.534Z"
-    },
-    {
-        "input": "that is not available since you will start at a high salary",
-        "output": [
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:58:30.333Z"
-    },
-    {
-        "input": "9 hours is fine by me",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:20:02.067Z"
-    },
-    {
-        "input": "If you were to work any less than 10 hours, you would be considered part time and would receive no benefits other than an hourly wage.",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:25:34.611Z"
-    },
-    {
-        "input": "there is no agreement on the leased car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:21:28.219Z"
-    },
-    {
-        "input": "how about 10 percent pension",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:06:35.752Z"
-    },
-    {
-        "input": "No agreement on leased car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:21:45.258Z"
-    },
-    {
-        "input": "accept ",
-        "output": [
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:55:20.335Z"
-    },
-    {
-        "input": "What offer do you not accept?",
-        "output": [
-            "{\"Query\":\"issues\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:34:49.064Z"
-    },
-    {
-        "input": "ok but 10 hours",
-        "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T12:21:43.208Z"
-    },
-    {
-        "input": "will you accept 7000?",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:57:04.718Z"
-    },
-    {
-        "input": "I can do 20000 if you do 10 hour days",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:14:46.179Z"
-    },
-    {
-        "input": "i will not accept 8 hours a day",
-        "output": [
-            "{\"Reject\":\"Working Hours\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:39:07.699Z"
-    },
-    {
-        "input": "what about salary?",
-        "output": [
-            "{\"Query\":\"Salary\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:26:51.045Z"
-    },
-    {
-        "input": "without leased car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-09T16:55:55.307Z"
-    },
-    {
-        "input": "no team manager i need a QA",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"QA\"}}",
-            "{\"Reject\":\"Job Description\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:09:49.112Z"
-    },
-    {
-        "input": "9 working hours.",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:15:34.997Z"
-    },
-    {
-        "input": "I don't think you understand, we are not offering a leased car.",
-        "output": [
-            "{\"Reject\":\"Leased Car\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:26:34.540Z"
-    },
-    {
-        "input": "Would you be ok with working as a team manager?",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:50:32.828Z"
+        "timestamp": "2013-10-08T08:25:23.853Z"
     },
     {
         "input": "20,000 NIS, Team Manager, without leased car, 10% pension, fast promotion, 10 working hours",
@@ -2354,7 +1130,96 @@
         "timestamp": "2013-10-08T10:53:00.630Z"
     },
     {
-        "input": "agreed",
+        "input": "12,000 NIS, Programmer, with car, 20% pension slow promotion track, 9 hours",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+            "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:31:40.649Z"
+    },
+    {
+        "input": "I'm sorry, I meant project manager.",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Project Manager\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:50:35.954Z"
+    },
+    {
+        "input": "I think you should be a Programmer.",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:15:29.476Z"
+    },
+    {
+        "input": "ok, 7000, programmer, without leased car, 20% pension,fast promotion track, but - 8 hours a day",
+        "output": [
+            "{\"Accept\":\"previous\"}",
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+            "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-11T06:49:34.839Z"
+    },
+    {
+        "input": "Leased car?",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:57:24.660Z"
+    },
+    {
+        "input": "yes, fast promotion track",
+        "output": [
+            "{\"Accept\":\"Promotion Possibilities\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T10:42:54.268Z"
+    },
+    {
+        "input": "time is running out, so: 12000, programmer, with leased car, 0% pension, fast promotion, 9 hours",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+            "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-09-11T06:50:55.681Z"
+    },
+    {
+        "input": "12,000 as agreed or nothing",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:13:57.142Z"
+    },
+    {
+        "input": "With 10% pension you can get a car.",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:42:27.455Z"
+    },
+    {
+        "input": "yes we can",
         "output": [
             "{\"Accept\":\"previous\"}"
         ],
@@ -2362,288 +1227,283 @@
         "timestamp": "2013-10-07T07:18:04.678Z"
     },
     {
-        "input": "YOU CAN WORK FOR ONLY 8 HOURS A DAY",
+        "input": "I will add a leased car",
         "output": [
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T14:15:34.358Z"
+        "timestamp": "2013-10-08T08:42:45.733Z"
     },
     {
-        "input": "fast or slow promotion track?",
+        "input": "10 hours in the beggining",
         "output": [
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T12:23:02.266Z"
+    },
+    {
+        "input": "Leased car but slow promotion track",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
             "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-09-11T06:50:40.181Z"
+        "timestamp": "2013-10-07T14:19:41.419Z"
     },
     {
-        "input": "agreed",
+        "input": "I can not offer a car but can offer you a fast promotion track",
         "output": [
-            "{\"Accept\":\"previous\"}"
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:45:45.377Z"
+    },
+    {
+        "input": "no agrrement",
+        "output": [
+            "{\"Reject\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T14:23:44.286Z"
+    },
+    {
+        "input": "anf 9 hours",
+        "output": [
+            "{\"Append\":\"previous\"}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-09-11T17:51:36.745Z"
+    },
+    {
+        "input": "10 hrs per day",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T07:17:53.692Z"
+    },
+    {
+        "input": "10 % ",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-09-09T16:59:43.214Z"
+    },
+    {
+        "input": "I reject that idea",
+        "output": [
+            "{\"Reject\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-09-16T08:58:02.416Z"
+    },
+    {
+        "input": "ok you can have 20000",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-09-09T16:57:20.995Z"
+        "timestamp": "2013-10-08T08:33:12.688Z"
     },
     {
-        "input": "i can give you 7000 nis with a car",
+        "input": "you can work for 10h so you will get mor mony",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-09T16:55:44.244Z"
+    },
+    {
+        "input": "7000 nis with car",
         "output": [
             "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
             "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T14:23:08.025Z"
+        "timestamp": "2013-10-07T14:23:02.681Z"
     },
     {
-        "input": "there is no agreement on leased car",
+        "input": "Then I think you should think our offer over and let me know whether you are interested in the position with no car.",
         "output": [
-            "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:21:17.155Z"
-    },
-    {
-        "input": "sign agreement",
-        "output": [
-            "{\"Query\":\"accept\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:31:49.776Z"
-    },
-    {
-        "input": "no car!",
-        "output": [
+            "{\"Insist\":\"previous\"}",
             "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
         ],
-        "is_correct": true,
-        "timestamp": "2013-09-12T12:00:01.385Z"
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:27:23.008Z"
     },
     {
-        "input": "With those bonuses, I cannot do 8 hours. I can however grant a 9 hour day",
+        "input": "Slow track is what I have",
         "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:50:49.732Z"
+    },
+    {
+        "input": "with 7000 nis we can give you a car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:22:51.825Z"
+    },
+    {
+        "input": "8 hourse is not enough",
+        "output": [
             "{\"Reject\":\"Working Hours\"}"
         ],
         "is_correct": false,
-        "timestamp": "2013-10-08T08:39:22.014Z"
+        "timestamp": "2013-10-07T13:25:51.331Z"
     },
     {
-        "input": "what say you?",
+        "input": "I can't give you a salary proposal when we didn't agree on your job description and hours per day.",
         "output": [
-            "{\"Query\":\"accept\"}"
+            "{\"Reject\":\"Job Description\"}",
+            "{\"Reject\":\"Job Description\"}",
+            "{\"Reject\":\"Working Hours\"}"
         ],
         "is_correct": false,
-        "timestamp": "2013-10-08T10:43:13.777Z"
+        "timestamp": "2013-10-07T13:29:11.432Z"
     },
     {
-        "input": "no leasd car",
+        "input": "i would only offer 10",
         "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}",
+            "{\"Insist\":\"Working Hours\"}"
         ],
         "is_correct": false,
-        "timestamp": "2013-09-12T12:00:47.901Z"
+        "timestamp": "2013-10-08T08:09:56.228Z"
     },
     {
-        "input": "ok but what about the salary?",
+        "input": "Okay let's compromise on 9 hours per day.",
         "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Query\":\"Salary\"}"
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+            "{\"Query\":\"compromise\"}"
         ],
         "is_correct": false,
-        "timestamp": "2013-10-07T13:21:04.583Z"
+        "timestamp": "2013-10-08T08:26:22.061Z"
     },
     {
-        "input": "no car and 20000",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:34:43.042Z"
-    },
-    {
-        "input": "Do we have an agreement?",
-        "output": [
-            "{\"Query\":\"accept\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:51:03.841Z"
-    },
-    {
-        "input": "7000 nis is final",
-        "output": [
-            "{\"Insist\":\"Salary\"}",
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:42:08.055Z"
-    },
-    {
-        "input": "sign agreement",
-        "output": [
-            "{\"Query\":\"accept\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-09T16:55:44.244Z"
-    },
-    {
-        "input": "Okay then",
-        "output": [
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:40:34.203Z"
-    },
-    {
-        "input": "10 hours is my best offer",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-09T16:59:10.729Z"
-    },
-    {
-        "input": "i offer a salary of 7000 NIS",
+        "input": "my suggestion is 7,000 nis",
         "output": [
             "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
         ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:36:54.954Z"
+        "is_correct": true,
+        "timestamp": "2013-10-07T11:07:04.885Z"
     },
     {
-        "input": "we already talked about 7,000 NIS and agreed on it",
+        "input": "I am offering you a Team Manager position that starts at 12,000 NIS",
         "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
         ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:21:34.273Z"
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:42:20.400Z"
     },
     {
-        "input": "no..you be programmer",
+        "input": "A Programmer does not have a leased car, I'm afraid",
         "output": [
             "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:04:56.428Z"
-    },
-    {
-        "input": "without a leased car, but fast track promotion",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-08T10:53:21.356Z"
+        "timestamp": "2013-10-07T14:15:15.295Z"
     },
     {
-        "input": "then 9 hours",
+        "input": "i  offer 10% pension",
         "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:39:00.405Z"
-    },
-    {
-        "input": "yes, for a programmer",
-        "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T13:42:47.576Z"
+        "timestamp": "2013-10-07T13:38:04.169Z"
     },
     {
-        "input": "I will offer 12,000 NIS",
+        "input": "The best I can do is 12000",
         "output": [
             "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-08T08:45:25.224Z"
+        "timestamp": "2013-10-08T10:57:18.225Z"
     },
     {
-        "input": "please 9 hours",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-09T16:55:44.244Z"
-    },
-    {
-        "input": "let's settle leased car",
-        "output": [
-            "{\"Query\":\"Leased Car\"}",
-            "{\"Query\":\"compromise\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:22:42.943Z"
-    },
-    {
-        "input": "is alot ",
-        "output": [
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:16:42.509Z"
-    },
-    {
-        "input": "Programmer and 8 hours",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:18:41.460Z"
-    },
-    {
-        "input": "the salary is 7000 NIS",
+        "input": "i will give you 7000 nis",
         "output": [
             "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
         ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:37:07.797Z"
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:06:10.298Z"
     },
     {
-        "input": "We cannot give pension funds",
+        "input": "no I cannot agree to leased car",
         "output": [
-            "{\"Reject\":\"Pension Fund\"}"
+            "{\"Reject\":\"Leased Car\"}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:59:37.688Z"
+    },
+    {
+        "input": "hi",
+        "output": [
+            "{\"Greet\":true}"
         ],
         "is_correct": false,
-        "timestamp": "2013-10-08T08:40:18.972Z"
+        "timestamp": "2013-10-08T08:14:09.908Z"
     },
     {
-        "input": "Please hurry",
+        "input": "7000 NIS",
         "output": [
-            "{\"Query\":\"accept\"}"
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
         ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:43:43.941Z"
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:39:43.184Z"
     },
     {
-        "input": "and i agree if you work 9 hours",
-        "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T12:23:42.792Z"
-    },
-    {
-        "input": "i will accept for 10 hours",
+        "input": "so 10 hours",
         "output": [
             "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T13:43:59.278Z"
+        "timestamp": "2013-09-09T16:59:31.932Z"
     },
     {
-        "input": "without liased car",
+        "input": "I'm sorry, Project Manager is only for expeirenced ",
         "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            "{\"Reject\":\"Job Description\"}"
         ],
         "is_correct": false,
-        "timestamp": "2013-09-09T16:55:55.307Z"
+        "timestamp": "2013-10-07T14:17:06.886Z"
+    },
+    {
+        "input": "hi what is your skills",
+        "output": [
+            "{\"Greet\":true}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-09T16:57:24.073Z"
+    },
+    {
+        "input": "pension 10, no car, 9 hours, fast promotion",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:38:18.713Z"
+    },
+    {
+        "input": "12,000 NIS?",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:17:59.569Z"
     },
     {
         "input": "nope about to opt out",
@@ -2654,105 +1514,129 @@
         "timestamp": "2013-10-08T08:44:26.957Z"
     },
     {
-        "input": "20% is acceptable",
+        "input": "No agreement then on pension",
         "output": [
-            "{\"Accept\":\"Pension Fund\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T11:01:22.491Z"
-    },
-    {
-        "input": "12 nis salary",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+            "{\"Offer\":{\"Pension Fund\":\"No agreement\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-08T10:52:41.470Z"
+        "timestamp": "2013-09-16T08:58:27.370Z"
     },
     {
-        "input": "I disagree.",
+        "input": "you can't get it all!",
         "output": [
             "{\"Reject\":\"previous\"}"
         ],
         "is_correct": false,
-        "timestamp": "2013-10-08T08:14:57.646Z"
+        "timestamp": "2013-10-07T13:35:02.692Z"
     },
     {
-        "input": "10 hours",
+        "input": "without a car, with fast promotion",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:17:42.628Z"
+    },
+    {
+        "input": "What job are you looking for?",
+        "output": [
+            "{\"Query\":\"Job Description\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T13:10:18.823Z"
+    },
+    {
+        "input": "9 hours then and we close a deal",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T14:01:49.921Z"
+    },
+    {
+        "input": "no car for now",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-11T17:51:08.698Z"
+    },
+    {
+        "input": "NO CAR!!!",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-12T12:01:25.620Z"
+    },
+    {
+        "input": "Think it over.  Its a good job, and a good offer.",
+        "output": [
+            "{\"Insist\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:27:32.095Z"
+    },
+    {
+        "input": "9 hours final",
+        "output": [
+            "{\"Insist\":\"previous\"}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:23:37.064Z"
+    },
+    {
+        "input": "what about 12000 without a car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:23:05.871Z"
+    },
+    {
+        "input": "you will work 10 hours a day",
         "output": [
             "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-09-09T16:55:44.244Z"
+        "timestamp": "2013-10-07T14:06:22.304Z"
     },
     {
-        "input": "I will not accept the leased car",
+        "input": "working 10 hrs",
         "output": [
-            "{\"Reject\":\"Leased Car\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:21:26.134Z"
-    },
-    {
-        "input": "let's compromise without a leased car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Query\":\"compromise\"}"
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
         ],
         "is_correct": false,
-        "timestamp": "2013-10-08T08:20:23.849Z"
+        "timestamp": "2013-10-08T11:00:15.649Z"
     },
     {
-        "input": "Hi my name is Sandy and I am interviewing you day.",
+        "input": "I can also provide pension",
         "output": [
-            "{\"Greet\":true}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:25:08.708Z"
-    },
-    {
-        "input": "no, 10 hours and 20000",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}",
-            "{\"Reject\":\"previous\"}"
+            "{\"Append\":\"previous\"}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T14:22:45.171Z"
+        "timestamp": "2013-10-07T07:17:33.343Z"
     },
     {
-        "input": "I can do 8 hours, but only if you work as a programmer",
+        "input": "salart 7000 nis",
         "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-08T08:39:29.648Z"
+        "timestamp": "2013-10-07T14:24:36.238Z"
     },
     {
-        "input": "Yes, fast promotion track is accepted",
+        "input": "with a 10% pension fund, a fast promotion track and a leased car",
         "output": [
-            "{\"Accept\":\"Promotion Possibilities\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:42:41.930Z"
-    },
-    {
-        "input": "you will work nine hours",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-08T10:52:39.893Z"
-    },
-    {
-        "input": "So Programmer with a leased car",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:15:17.414Z"
+        "timestamp": "2013-10-08T08:23:42.202Z"
     },
     {
         "input": "leased car, no pension, QA",
@@ -2765,239 +1649,126 @@
         "timestamp": "2013-09-09T16:56:38.542Z"
     },
     {
-        "input": "what is your job?",
+        "input": "what are you willing to compromise about, since i wanyt you to work 10 hours.",
         "output": [
-            "{\"Query\":\"Job Description\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-11T06:57:50.620Z"
-    },
-    {
-        "input": "What job you want?",
-        "output": [
-            "{\"Query\":\"Job Description\"}"
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}",
+            "{\"Query\":\"compromise\"}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T13:53:12.169Z"
+        "timestamp": "2013-10-07T13:50:14.826Z"
     },
     {
-        "input": "We offer you 7,000 NIS",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:14:12.559Z"
-    },
-    {
-        "input": "working 8 hours would be fine for the team manager position",
+        "input": "team manager gets 12000 NIS",
         "output": [
             "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:57:46.374Z"
-    },
-    {
-        "input": "I am thinking 7,000 NIS as the role is for QA. However, the promotion track is fast.",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"QA\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:08:50.667Z"
-    },
-    {
-        "input": "0% ",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:50:51.232Z"
-    },
-    {
-        "input": "Then salary would be 12000 NIS",
-        "output": [
             "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-08T08:40:47.043Z"
+        "timestamp": "2013-10-07T14:00:12.912Z"
     },
     {
-        "input": "so slow promotion track and with leased car",
+        "input": "oka",
         "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+            "{\"Accept\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T13:52:07.385Z"
+    },
+    {
+        "input": "its a little bit high dont you think?",
+        "output": [
+            "{\"Reject\":\"Salary\"}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T13:55:10.336Z"
+        "timestamp": "2013-09-09T16:55:42.510Z"
     },
     {
-        "input": "QA",
+        "input": "YOU UNDERSTAND RIGHT",
         "output": [
-            "{\"Offer\":{\"Job Description\":\"QA\"}}"
+            "{\"Accept\":\"previous\"}"
         ],
-        "is_correct": true,
-        "timestamp": "2013-09-09T16:55:45.400Z"
+        "is_correct": false,
+        "timestamp": "2013-10-07T14:16:19.019Z"
     },
     {
-        "input": "no car, 12000 NIS, 8 hours",
+        "input": "go get another job",
         "output": [
+            "{\"Quit\":true}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-09-12T12:01:37.932Z"
+    },
+    {
+        "input": "I am willing to compromise on a 20% pension fund",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+            "{\"Query\":\"compromise\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:18:58.571Z"
+    },
+    {
+        "input": "and i agree if you work 9 hours",
+        "output": [
+            "{\"Accept\":\"previous\"}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T12:23:42.792Z"
+    },
+    {
+        "input": "10 hrs",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T11:00:27.513Z"
+    },
+    {
+        "input": "Ok. My offer is: 8 hours a day, programmer, without leased car, no pension fund, slow promotion track.",
+        "output": [
+            "{\"Accept\":\"previous\"}",
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
             "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+            "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
             "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-08T08:31:01.029Z"
+        "timestamp": "2013-09-11T06:43:35.604Z"
     },
     {
-        "input": "I would negotiate lower. ",
+        "input": "7000 NIS!",
         "output": [
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:44:24.800Z"
-    },
-    {
-        "input": "programmer",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-09-09T16:55:45.400Z"
+        "timestamp": "2013-09-12T11:59:25.401Z"
     },
     {
-        "input": "what job do you take?",
-        "output": [
-            "{\"Query\":\"Job Description\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:59:24.893Z"
-    },
-    {
-        "input": "I will offer you 9 hours",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:45:48.663Z"
-    },
-    {
-        "input": "no lease car",
+        "input": "No leased car. Use your own car.",
         "output": [
             "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-08T10:53:03.450Z"
+        "timestamp": "2013-10-08T08:14:51.003Z"
     },
     {
-        "input": "salart 7000 nis",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:24:36.238Z"
-    },
-    {
-        "input": "7000 NIS FOR A PTOGGRAMER",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:39:49.913Z"
-    },
-    {
-        "input": "Yes",
-        "output": [
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-16T08:58:12.885Z"
-    },
-    {
-        "input": "SORRY THAT IS FINAL",
-        "output": [
-            "{\"Insist\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:40:59.181Z"
-    },
-    {
-        "input": " 9 hours",
+        "input": "9 hours",
         "output": [
             "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T13:55:22.152Z"
+        "timestamp": "2013-09-09T16:55:44.244Z"
     },
     {
-        "input": "I will add a leased car",
+        "input": "i can give you 7000 nis with a car",
         "output": [
-            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:42:45.733Z"
-    },
-    {
-        "input": "i must give you 7000",
-        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
             "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T14:24:38.006Z"
-    },
-    {
-        "input": "ok you can have 20000",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:33:12.688Z"
-    },
-    {
-        "input": "lets talk about job description first",
-        "output": [
-            "{\"Query\":\"Job Description\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:59:16.871Z"
-    },
-    {
-        "input": "12000 NIS, programmer,withour lissed car",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:03:01.032Z"
-    },
-    {
-        "input": "7000 NIS, 10 hours, no car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-12T11:58:14.760Z"
-    },
-    {
-        "input": "Okay",
-        "output": [
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:40:09.053Z"
-    },
-    {
-        "input": "9 working hours",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T11:01:46.722Z"
+        "timestamp": "2013-10-07T14:23:08.025Z"
     },
     {
         "input": "I'm offering a job: programmer, 10 hours a day, 12000, no car, fast promotion track",
@@ -3012,506 +1783,36 @@
         "timestamp": "2013-09-11T06:43:23.292Z"
     },
     {
-        "input": "No, If you want 8 hour day you can have  a salary of 12000 and the 10% pension fund",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:33:40.653Z"
-    },
-    {
-        "input": "slow promotion track",
-        "output": [
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-09T16:59:35.120Z"
-    },
-    {
-        "input": "hi your salary will be 12000 NIs",
-        "output": [
-            "{\"Greet\":true}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:15:21.608Z"
-    },
-    {
-        "input": "can you give 10?",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:53:25.061Z"
-    },
-    {
-        "input": "come on, in this company you have to work hard. cannot be less then 10 hourse",
-        "output": [
-            "{\"Insist\":\"Working Hours\"}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:23:40.346Z"
-    },
-    {
-        "input": "you will take a 10% pension",
+        "input": "10%?",
         "output": [
             "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
         ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:52:38.153Z"
-    },
-    {
-        "input": "ok?",
-        "output": [
-            "{\"Query\":\"accept\"}"
-        ],
         "is_correct": false,
-        "timestamp": "2013-10-07T12:21:57.934Z"
+        "timestamp": "2013-09-09T16:55:55.307Z"
     },
     {
-        "input": "The work is massive and I have you work 10 hours",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T12:20:39.183Z"
-    },
-    {
-        "input": "i will give 7000 without car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:23:10.234Z"
-    },
-    {
-        "input": "we already agreed 10 hours",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-12T11:58:12.948Z"
-    },
-    {
-        "input": "I need you for 10hrs",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T07:17:52.573Z"
-    },
-    {
-        "input": "ok 8 hours and 7000 NIS",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:01:38.652Z"
-    },
-    {
-        "input": "You will have to work for 10 hours",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:40:43.869Z"
-    },
-    {
-        "input": "ok 20000. 9 hour days and 10% pension fund",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
-            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:33:45.610Z"
-    },
-    {
-        "input": "hi, what is your name?",
+        "input": "hey ",
         "output": [
             "{\"Greet\":true}"
         ],
         "is_correct": false,
-        "timestamp": "2013-10-07T12:27:39.966Z"
+        "timestamp": "2013-10-07T13:55:17.103Z"
     },
     {
-        "input": "no..",
-        "output": [
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:10:08.673Z"
-    },
-    {
-        "input": "I'm sorry, Project Manager is only for expeirenced ",
-        "output": [
-            "{\"Reject\":\"Job Description\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:17:06.886Z"
-    },
-    {
-        "input": "I think we have reached an agreement",
-        "output": [
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:57:50.067Z"
-    },
-    {
-        "input": "i can offer 7 K nis",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-11T17:51:32.432Z"
-    },
-    {
-        "input": "12,000 as agreed or nothing",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:13:57.142Z"
-    },
-    {
-        "input": "20000 nis",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:53:27.527Z"
-    },
-    {
-        "input": "I can offer slow promotion track but no car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:18:52.670Z"
-    },
-    {
-        "input": "then we can't agree on the salary",
-        "output": [
-            "{\"Reject\":\"Salary\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:19:50.843Z"
-    },
-    {
-        "input": "I can offer 9 hours",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:18:13.662Z"
-    },
-    {
-        "input": "Ok let's compromise on 8 hours a day. I don't want to lose more points.",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
-            "{\"Query\":\"compromise\"}",
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:23:51.458Z"
-    },
-    {
-        "input": "how about 8 hours a day and slow promotion?",
-        "output": [
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:02:45.054Z"
-    },
-    {
-        "input": "and you will work 10 hours",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T12:24:52.952Z"
-    },
-    {
-        "input": "no, you can be a programer",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:53:57.433Z"
-    },
-    {
-        "input": "sorry, but without lease car, you have to compromise.",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Query\":\"compromise\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:51:54.685Z"
-    },
-    {
-        "input": "and you will work 9 hours",
-        "output": [
-            "{\"Append\":\"previous\"}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T12:22:05.075Z"
-    },
-    {
-        "input": "fast promotion track but no car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-12T12:00:52.416Z"
-    },
-    {
-        "input": "programmer is good for you ?",
+        "input": "I told you, lets start with something small, like programmer ",
         "output": [
             "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-09-09T16:58:38.978Z"
+        "timestamp": "2013-10-07T13:23:46.547Z"
     },
     {
-        "input": "I offer you 10 hrs working",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T11:00:22.035Z"
-    },
-    {
-        "input": "OK",
+        "input": "ok, perhaps we should end negotiation",
         "output": [
             "{\"Accept\":\"previous\"}"
         ],
         "is_correct": true,
-        "timestamp": "2013-09-09T16:55:44.244Z"
-    },
-    {
-        "input": "the Maximum i can give you is 10%",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:13:52.239Z"
-    },
-    {
-        "input": "no car is provided",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:09:22.737Z"
-    },
-    {
-        "input": "I am willing to compromise on a 20% pension fund",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
-            "{\"Query\":\"compromise\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:18:58.571Z"
-    },
-    {
-        "input": "10000",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"10,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:25:09.723Z"
-    },
-    {
-        "input": "do you want to talk about your pension fund?",
-        "output": [
-            "{\"Query\":\"Pension Fund\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:12:22.039Z"
-    },
-    {
-        "input": "Only 10 hours is possible but we will promisse fast promotion track and 20% pension fund",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:15:57.975Z"
-    },
-    {
-        "input": "oka",
-        "output": [
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:52:07.385Z"
-    },
-    {
-        "input": "7,000 with 8 hours of working hours",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-09T16:55:44.244Z"
-    },
-    {
-        "input": "you will start with no more than 12K NIS",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-11T17:50:55.338Z"
-    },
-    {
-        "input": "you will work 10 hours a day",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:06:22.304Z"
-    },
-    {
-        "input": "Excellent.",
-        "output": [
-            "{\"Accept\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:56:17.681Z"
-    },
-    {
-        "input": "I offer 10000 and 20% pension",
-        "output": [
-            "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
-            "{\"Offer\":{\"Salary\":\"10,000 NIS\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:16:35.626Z"
-    },
-    {
-        "input": "no, we agreed on 9",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
-            "{\"Reject\":\"previous\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:39:56.110Z"
-    },
-    {
-        "input": "I understand that you desire a salary of 20000 NIS.  We are prepared to offer you 7000 NIS.",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
-            "{\"Reject\":\"Salary\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:25:18.681Z"
-    },
-    {
-        "input": "for 8 hours you get 7000 NIS",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:05:17.129Z"
-    },
-    {
-        "input": "how about 20000 with nothing else",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:32:42.311Z"
-    },
-    {
-        "input": "you can be a project manager",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Project Manager\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:30:37.627Z"
-    },
-    {
-        "input": "good by",
-        "output": [
-            "{\"Quit\":true}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:30:23.801Z"
-    },
-    {
-        "input": "what about 12000 without a car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:23:05.871Z"
-    },
-    {
-        "input": "fast promotion goes with 7000.",
-        "output": [
-            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:37:59.694Z"
-    },
-    {
-        "input": "ok, but slow promotion possibilities",
-        "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-16T08:58:22.963Z"
-    },
-    {
-        "input": "How does 20,000 NIS long term sound to you?",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:50:29.650Z"
-    },
-    {
-        "input": "9 hours a day as QA",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"QA\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:06:27.589Z"
-    },
-    {
-        "input": "I said without leased car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:21:06.702Z"
-    },
-    {
-        "input": "HOW CAN A PROJECT MANAGER GET 7000 ONLY",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
-            "{\"Reject\":\"Salary\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:40:04.236Z"
+        "timestamp": "2013-10-08T08:09:36.958Z"
     },
     {
         "input": "8 hours is fine",
@@ -3522,122 +1823,295 @@
         "timestamp": "2013-10-08T10:57:21.001Z"
     },
     {
-        "input": "I would like to work with you without a leased car",
+        "input": "i offer a QA",
         "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            "{\"Offer\":{\"Job Description\":\"QA\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T14:21:21.342Z"
+        "timestamp": "2013-10-07T14:21:54.396Z"
     },
     {
-        "input": "I would like 12000",
+        "input": "7,000 NIS",
         "output": [
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-09-16T08:57:35.401Z"
+        "timestamp": "2013-10-08T08:30:47.202Z"
     },
     {
-        "input": "no less then 10 hours as a programmer!",
+        "input": "SORRY THAT IS FINAL",
         "output": [
-            "{\"Insist\":\"Working Hours\"}",
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+            "{\"Insist\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T10:40:59.181Z"
+    },
+    {
+        "input": "and you get a car",
+        "output": [
+            "{\"Append\":\"previous\"}",
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-09-11T17:51:20.307Z"
+    },
+    {
+        "input": "10 hours ?",
+        "output": [
             "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
         ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:33:23.661Z"
-    },
-    {
-        "input": "I cant offer you a leased car",
-        "output": [
-            "{\"Reject\":\"Leased Car\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:21:03.725Z"
-    },
-    {
-        "input": "team manager gets 12000 NIS",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
-        ],
         "is_correct": true,
-        "timestamp": "2013-10-07T14:00:12.912Z"
+        "timestamp": "2013-09-09T16:59:12.151Z"
     },
     {
-        "input": "I am waiting for your answer",
-        "output": [
-            "{\"Query\":\"accept\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T13:11:04.703Z"
-    },
-    {
-        "input": "I am prepared to offer you a position as a programmer at this time",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T10:51:14.394Z"
-    },
-    {
-        "input": "you are intreviewing for a programmer job",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T12:21:05.130Z"
-    },
-    {
-        "input": "hi, why do you think you deserve this salary?",
+        "input": "hi, my name is john and I will potentially be your new employer.",
         "output": [
             "{\"Greet\":true}"
         ],
         "is_correct": true,
-        "timestamp": "2013-09-09T16:57:24.073Z"
+        "timestamp": "2013-10-08T10:51:09.001Z"
     },
     {
-        "input": "pension 10, no car, 10 hours",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T13:42:57.249Z"
-    },
-    {
-        "input": "and we'll throw in 10% pension fund",
+        "input": "i offer 10 for pension ",
         "output": [
             "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
         ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:21:44.706Z"
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:12:21.481Z"
     },
     {
-        "input": "BYE",
+        "input": "for 12,000",
         "output": [
-            "{\"Quit\":true}"
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
         ],
-        "is_correct": false,
-        "timestamp": "2013-09-12T12:01:37.932Z"
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:58:51.465Z"
     },
     {
-        "input": "what do you think about programmer?",
+        "input": "you need to be a programmer job title",
         "output": [
             "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T13:20:20.529Z"
+        "timestamp": "2013-10-08T08:21:20.666Z"
     },
     {
-        "input": "I would like to offer you a job in QA at 12000",
+        "input": "you are working 10 hours",
         "output": [
-            "{\"Offer\":{\"Job Description\":\"QA\"}}",
-            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-08T08:41:23.071Z"
+        "timestamp": "2013-10-08T10:52:24.623Z"
+    },
+    {
+        "input": "ok , 8 hours",
+        "output": [
+            "{\"Accept\":\"previous\"}",
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-09T16:55:44.244Z"
+    },
+    {
+        "input": "EVERY WORK IS 9 HRS",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:40:18.936Z"
+    },
+    {
+        "input": "no leased car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-09-09T16:55:55.307Z"
+    },
+    {
+        "input": "i offer a salary of 7000 NIS",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T13:36:54.954Z"
+    },
+    {
+        "input": "since your are working 8 hours, no leased car.",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:51:25.041Z"
+    },
+    {
+        "input": "Ok, with leased car.",
+        "output": [
+            "{\"Accept\":\"previous\"}",
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:21:48.279Z"
+    },
+    {
+        "input": "there will be no car. you will only recieve a car if you work 10 hour days",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:34:09.309Z"
+    },
+    {
+        "input": "Leased car is only possible with programmer and 10% pension",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:15:33.239Z"
+    },
+    {
+        "input": "whice job do you want?",
+        "output": [
+            "{\"Query\":\"Job Description\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T13:53:10.047Z"
+    },
+    {
+        "input": "12000 NIS, 8 hours, 0% pension, slow track, no car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+            "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+            "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:31:18.928Z"
+    },
+    {
+        "input": "sorry dude",
+        "output": [
+            "{\"Reject\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:43:32.563Z"
+    },
+    {
+        "input": "if you will be good as you say you are, fast pormotion track is an option",
+        "output": [
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:26:43.091Z"
+    },
+    {
+        "input": "How about programmer, 20000, without leased car, 0% pension fund, slow promotion track, 10 hours a day?",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+            "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-11T06:43:42.151Z"
+    },
+    {
+        "input": "OK",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T07:18:04.678Z"
+    },
+    {
+        "input": "i'll agree for 8 hours if you will be a programer",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T13:54:07.933Z"
+    },
+    {
+        "input": "come on, dont be so hard",
+        "output": [
+            "{\"Query\":\"compromise\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-09-09T16:56:11.042Z"
+    },
+    {
+        "input": "0%",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-09-09T16:55:55.307Z"
+    },
+    {
+        "input": "this is a fast promotion track, you will start with 10% pension",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:38:07.020Z"
+    },
+    {
+        "input": "is this good enough?",
+        "output": [
+            "{\"Query\":\"accept\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:43:24.628Z"
+    },
+    {
+        "input": "all i have is a programmer position",
+        "output": [
+            "{\"Insist\":\"Job Description\"}",
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T12:19:22.294Z"
+    },
+    {
+        "input": "you will work 10 hours",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T10:52:35.547Z"
+    },
+    {
+        "input": "10000",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"10,000 NIS\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:25:09.723Z"
+    },
+    {
+        "input": "Actually, I had in mind offering you a Programmers job",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T14:14:11.108Z"
+    },
+    {
+        "input": "What offer do you not accept?",
+        "output": [
+            "{\"Query\":\"issues\"}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:34:49.064Z"
     },
     {
         "input": "let's compromise you be a programmer",
@@ -3649,183 +2123,143 @@
         "timestamp": "2013-10-08T08:21:16.055Z"
     },
     {
-        "input": "7,000 NIS it is.",
+        "input": "How about programmer, 20000, without leased car, 0% pension fund, slow promotion track, 9 hours a day?",
         "output": [
-            "{\"Accept\":\"Salary\"}"
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+            "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
         ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T12:28:10.249Z"
+        "is_correct": true,
+        "timestamp": "2013-09-11T06:43:49.261Z"
     },
     {
-        "input": "do we have an agreement",
+        "input": "For 20,000 I want a hard working employee who can commit to 10 hours. Otherwise the answer is no",
         "output": [
+            "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T08:20:59.767Z"
+    },
+    {
+        "input": "what do you think about programmer?",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T13:20:20.529Z"
+    },
+    {
+        "input": "programmer is good for you ?",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-09-09T16:58:38.978Z"
+    },
+    {
+        "input": "How about QA or Team Manager?",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"QA\"}}",
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:45:30.368Z"
+    },
+    {
+        "input": "I can offer slow promotion track but no car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:18:52.670Z"
+    },
+    {
+        "input": "I can do 8 hours, but only if you work as a programmer",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:39:29.648Z"
+    },
+    {
+        "input": "while you think let's talk about the position. I need a programmer",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-08T08:20:08.045Z"
+    },
+    {
+        "input": "now get out please\\",
+        "output": [
+            "{\"Quit\":true}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-07T13:31:03.624Z"
+    },
+    {
+        "input": "We can sign the agreement then.",
+        "output": [
+            "{\"Accept\":\"previous\"}",
             "{\"Query\":\"accept\"}"
         ],
         "is_correct": false,
-        "timestamp": "2013-10-08T10:57:54.354Z"
+        "timestamp": "2013-10-08T08:36:24.303Z"
     },
     {
-        "input": "AGREE",
+        "input": "20%",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-09-09T16:55:55.307Z"
+    },
+    {
+        "input": "7000 nis is final",
+        "output": [
+            "{\"Insist\":\"Salary\"}",
+            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+        ],
+        "is_correct": false,
+        "timestamp": "2013-10-08T10:42:08.055Z"
+    },
+    {
+        "input": "project manager and work 9 hours",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "is_correct": true,
+        "timestamp": "2013-10-07T14:11:05.781Z"
+    },
+    {
+        "input": "agreed",
         "output": [
             "{\"Accept\":\"previous\"}"
         ],
         "is_correct": true,
-        "timestamp": "2013-10-07T14:16:29.879Z"
+        "timestamp": "2013-09-09T16:57:20.995Z"
     },
     {
-        "input": "We have already agreed on Programmer",
+        "input": "With leased car",
         "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:15:10.472Z"
-    },
-    {
-        "input": "I accepted the pension",
-        "output": [
-            "{\"Accept\":\"Pension Fund\"}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T11:01:07.591Z"
-    },
-    {
-        "input": "SIGN",
-        "output": [
-            "{\"Query\":\"accept\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:16:27.442Z"
-    },
-    {
-        "input": "you can't get a car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
         ],
         "is_correct": false,
         "timestamp": "2013-09-09T16:55:55.307Z"
     },
     {
-        "input": "slow and 10 hours",
-        "output": [
-            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:10:44.831Z"
-    },
-    {
-        "input": "let's compromise 9 hours a day",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
-            "{\"Query\":\"compromise\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:19:59.849Z"
-    },
-    {
-        "input": "are you here?",
-        "output": [
-            "{\"Greet\":true}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T12:20:15.913Z"
-    },
-    {
-        "input": "then sallary of 7K",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-11T17:51:11.073Z"
-    },
-    {
-        "input": "in order for 20% pension I will require 9 hours of work per day and no car",
-        "output": [
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
-            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-08T08:41:58.903Z"
-    },
-    {
-        "input": "ok. but in this job no liased car",
-        "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-09-09T16:55:55.307Z"
-    },
-    {
-        "input": "Actually, I had in mind offering you a Programmers job",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-07T14:14:11.108Z"
-    },
-    {
-        "input": "ok project manager without car and without pension",
-        "output": [
-            "{\"Accept\":\"previous\"}",
-            "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-09T16:56:02.167Z"
-    },
-    {
-        "input": "no 20K is to much",
+        "input": "then it's a no on the salary",
         "output": [
             "{\"Reject\":\"Salary\"}"
         ],
         "is_correct": false,
-        "timestamp": "2013-09-09T16:57:02.636Z"
-    },
-    {
-        "input": "Tell you what, let's compromise on 10 hours a day and I'll concede on the next aspect",
-        "output": [
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}",
-            "{\"Query\":\"compromise\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T08:18:08.743Z"
-    },
-    {
-        "input": "I'm willing to pay 7000",
-        "output": [
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-10-07T14:19:43.414Z"
-    },
-    {
-        "input": "SORRY COMPANY DOESNOT ALLOW TO GIVE LEASED CAR",
-        "output": [
-            "{\"Reject\":\"Leased Car\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:40:41.272Z"
-    },
-    {
-        "input": "7000 NIS, 10 hours, no car, programmer",
-        "output": [
-            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
-            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
-            "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
-            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
-        ],
-        "is_correct": true,
-        "timestamp": "2013-09-12T11:58:21.995Z"
-    },
-    {
-        "input": "LEASED CAR OK",
-        "output": [
-            "{\"Accept\":\"Leased Car\"}"
-        ],
-        "is_correct": false,
-        "timestamp": "2013-10-08T10:41:23.465Z"
+        "timestamp": "2013-10-08T08:22:54.424Z"
     }
 ]
