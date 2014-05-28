@@ -24,7 +24,7 @@ describe('Classifiers functions', function() {
 	it('correctly create bigram', function() {
 		var features = {}
 		classifiers.featureExtractor("pension,", features)
-		_.isEqual(features,{ pension: 1 }).should.equal(true)
+		_.isEqual(features,{ pension: 1, '[start] pension': 1, 'pension [end]': 1 }).should.equal(true)
 	});
 
 	//TODO in different domain currency witth have digits after decimal point.
@@ -60,7 +60,7 @@ describe('Classifiers functions', function() {
 			classifierType: SvmPerfBinaryRelevanceClassifier, 
 			featureLookupTable: new ftrs.FeatureLookupTable(),
 			normalizer: classifiers.normalizer,
-			featureExtractor: classifiers.featureExtractor,
+			featureExtractor: classifiers.featureExtractorUnigram,
 			multiplyFeaturesByIDF: true,
 		});
 
@@ -71,9 +71,11 @@ describe('Classifiers functions', function() {
 		data.should.equal("i offer 10000 nis or 20000 nis and 15% pension")
 
 		var features = cl.sampleToFeatures(data, cl.featureExtractors);
-	
+
 		_.isEqual(features, { '10000': 1, '20000': 1, i: 1, offer: 1, nis: 1, or: 1, and: 1, '15%': 1, pension: 1, 'i offer': 1, 'offer 10000': 1, '10000 nis': 1, 'nis or': 1, 'or 20000': 1, '20000 nis': 1, 'nis and': 1, 'and 15%': 1, '15% pension': 1 }).should.equal(true)
 		
+		// features['@checkfeature'] = 1
+
 		if (cl.tfidf) cl.tfidf.addDocument(features);
 
 		cl.normalizedSample("I offer 10,000NIS or 20.000NIS");
