@@ -35,12 +35,56 @@ function OrderLabelJoin(classes, Observable, sample, explanation)
 //   [ 'Without leased car', '20%' ] ]
 
 
+// function splitPartEqually1(json) {
+// 	// return _.map(_.uniq(_.flatten(json.map(this.splitJson)) ), function(num){ return [num];})
+// 	var label = []	
+
+// 	if (json == null)
+// 		return null
+
+// 	if (!(_.isArray(json)))
+// 		json = [json]
+
+// 	_(3).times(function(n){
+// 		var buf = []
+// 		_.each(json.map(Compensate1), function(value, key, list){
+// 			if (value.length > n)
+// 			{
+// 			if (_.compact(value[n].toString()).length != 0)
+// 				buf = buf.concat(value[n])
+// 			}
+// 		})
+		
+// 		// buf = _.uniq(_.compact(buf))
+// 		// buf = _.uniq(_.compact(buf))
+// 	 	// if (buf.length != 0) label[n] = buf
+
+// 		buf = _.uniq(buf)
+
+// 		if ((buf.length > 0) && (typeof(buf[0])!="undefined"))
+// 			label[n] = buf
+// 		if ((typeof(buf[0])=="undefined"))
+// 			label[n] = []
+
+// 	})
+
+// 	return label
+// }
+
+
+
 function splitPartEqually(json) {
 	// return _.map(_.uniq(_.flatten(json.map(this.splitJson)) ), function(num){ return [num];})
-	label = []	
+	var label = []	
+
+	if (json == null)
+		return null
+
+	if (!(_.isArray(json)))
+		json = [json]
 
 	_(3).times(function(n){
-		buf = []
+		var buf = []
 		_.each(json.map(Compensate), function(value, key, list){
 			if (value.length > n)
 			{
@@ -178,16 +222,46 @@ function splitPartVersion2(json) {
 // [ 'Offer', 'Promotion Possibilities', 'Fast promotion track' ]
 
 function Compensate(json) {
+	// console.log(json)
+	// if (json == "{\"Accept\":\"previous\"}")
+		// return ['','','']
 	js = splitJson(json)
 	if ((js.length == 2) && (js[1].toString()[0] != js[1].toString()[0].toUpperCase()))
 		{
 		js.push(js[1])
 		js[1] = ""
 		}
+
+	// if ((js[0]=="Accept") && (js[2]=="previous"))	
+	// if ((js[2]=="previous"))	
+		// {
+		// js[2] = ""
+		// js[1] = ""
+		// js[2] = ""
+		// }
 	// if ((js[2] == 'previous') && (js[1]==''))
 		// js[2] = js[0] + js[2]
 	return js
 }
+
+
+// function Compensate1(json) {
+// 	js = splitJson(json)
+// 	if ((js.length == 2) && (js[1].toString()[0] != js[1].toString()[0].toUpperCase()))
+// 		{
+// 		js.push(js[1])
+// 		js[1] = ""
+// 		}
+
+// 	// if ((js[2]=="previous"))	
+// 		// js[2] = ""
+// 		// js[1] = ""
+// 		// js[2] = ""
+// 		// }
+// 	// if ((js[2] == 'previous') && (js[1]==''))
+// 		// js[2] = js[0] + js[2]
+// 	return js
+// }
 
 function splitJson(json) {
 	return splitJsonRecursive(_.isString(json) && /{.*}/.test(json)?
@@ -270,5 +344,6 @@ module.exports = {
 	retrieveIntent: retrieveIntent,
 	splitPartEquallyIntent: splitPartEquallyIntent,
 	OrderLabelJoin: OrderLabelJoin,
+	// splitPartEqually1:splitPartEqually1
 }
 
