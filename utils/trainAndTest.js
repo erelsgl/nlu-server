@@ -466,8 +466,10 @@ module.exports.trainAndTest_hash = function(
 
 		classifier.trainBatch(trainSet1);
 
+
 		// stat_hash = module.exports.test_hash(classifier, testSet1, verbosity, microAverage, macroSum, classifier_compare);
-		stat_hash = module.exports.test_hash(classifier, testSet1, verbosity, microAverage, macroSum);
+		var stat_hash = module.exports.test_hash(classifier, testSet1, verbosity, microAverage, macroSum);
+		
 		// stat_hash['train_time'] = new Date()-startTime;
 
 
