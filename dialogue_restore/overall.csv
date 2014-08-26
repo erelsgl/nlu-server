@@ -6529,7 +6529,6 @@
 2014-01-02T20:10:50.650Z^58^Promotion Possibilities^Slow promotion track^184.7.176.149:2014-01-02T20:07:06.902Z^Employer^1620^Change
 2014-01-02T20:10:50.650Z^59^Promotion Possibilities^Fast promotion track^184.7.176.149:2014-01-02T20:07:06.902Z^Employer^1620^Change
 2014-01-02T20:10:50.650Z^60^NaN^"How about leased car"^NegoChatAgent2014-01-02T20:15:23.114Z^Candidate^1600^Message
-2014-01-02T20:10:50.650Z^61^NaN^"If i give a leased car I have to change salary"^184.7.176.149:2014-01-02T20:07:06.902Z^Employer^1585^Message
 2014-01-02T20:10:50.650Z^62^NaN^""^184.7.176.149:2014-01-02T20:07:06.902Z^Employer^1585^Translation
 2014-01-02T20:10:50.650Z^64^Salary^90,000 USD^184.7.176.149:2014-01-02T20:07:06.902Z^Employer^1575^Change
 2014-01-02T20:10:50.650Z^65^NaN^"how about i get a raise to 21,000 USD with a leased car"^NegoChatAgent2014-01-02T20:15:23.114Z^Candidate^1575^Message
@@ -6799,10 +6798,8 @@
 2014-01-06T19:27:45.522Z^37^NaN^"I accept your offer about {\"Job Description\":\"Programmer\",\"Working Hours\":\"8 hours\"}. Now let's talk about the other issues. my offer is leased car"^NegoChatAgent2014-01-06T19:32:19.146Z^Candidate^1600^Message
 2014-01-06T19:27:45.522Z^38^Job Description^Programmer^190.80.250.99:2014-01-06T19:24:16.381Z^Employer^1590^Change
 2014-01-06T19:27:45.522Z^39^Working Hours^8 hours^190.80.250.99:2014-01-06T19:24:16.381Z^Employer^1585^Change
-2014-01-06T19:27:45.522Z^40^NaN^"I will give you a leased car if you work 10 hours"^190.80.250.99:2014-01-06T19:24:16.381Z^Employer^1560^Message
 2014-01-06T19:27:45.522Z^41^NaN^{"translate":[{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Working Hours":"10 hours"}}],"text":"I will give you a leased car if you work 10 hours"}^190.80.250.99:2014-01-06T19:24:16.381Z^Employer^1560^Translation
 2014-01-06T19:27:45.522Z^43^NaN^"Your offer {\"Working Hours\":\"10 hours\",\"Leased Car\":\"With leased car\"} is unacceptable"^NegoChatAgent2014-01-06T19:32:19.146Z^Candidate^1555^Message
-2014-01-06T19:27:45.522Z^44^NaN^"I cannot give you a car if you only work 8 hours"^190.80.250.99:2014-01-06T19:24:16.381Z^Employer^1545^Message
 2014-01-06T19:27:45.522Z^45^NaN^{"translate":[{"Reject":"Leased Car"}],"text":"I cannot give you a car if you only work 8 hours"}^190.80.250.99:2014-01-06T19:24:16.381Z^Employer^1545^Translation
 2014-01-06T19:27:45.522Z^47^NaN^"What do you reject?"^NegoChatAgent2014-01-06T19:32:19.146Z^Candidate^1545^Message
 2014-01-06T19:27:45.522Z^48^NaN^"Just a minute, I need to think a bit."^NegoChatAgent2014-01-06T19:32:19.146Z^Candidate^1540^Message
@@ -6814,7 +6811,6 @@
 2014-01-06T19:27:45.522Z^55^NaN^"Leased car for 10 hours and fast track promotion"^190.80.250.99:2014-01-06T19:24:16.381Z^Employer^1445^Message
 2014-01-06T19:27:45.522Z^56^NaN^{"translate":[{"Offer":{"Working Hours":"10 hours"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Promotion Possibilities":"Fast promotion track"}}],"text":"Leased car for 10 hours and fast track promotion"}^190.80.250.99:2014-01-06T19:24:16.381Z^Employer^1445^Translation
 2014-01-06T19:27:45.522Z^58^NaN^"I cannot agree to {\"Promotion Possibilities\":\"Fast promotion track\",\"Working Hours\":\"10 hours\",\"Leased Car\":\"With leased car\"}"^NegoChatAgent2014-01-06T19:32:19.146Z^Candidate^1445^Message
-2014-01-06T19:27:45.522Z^59^NaN^"I cannot give you a car if you do not work 10 hours"^190.80.250.99:2014-01-06T19:24:16.381Z^Employer^1430^Message
 2014-01-06T19:27:45.522Z^60^NaN^{"translate":[{"Offer":{"Working Hours":"10 hours"}}],"text":"I cannot give you a car if you do not work 10 hours"}^190.80.250.99:2014-01-06T19:24:16.381Z^Employer^1425^Translation
 2014-01-06T19:27:45.522Z^62^NaN^"I don't accept your offer about {\"Working Hours\":\"10 hours\"}. 8 working hours"^NegoChatAgent2014-01-06T19:32:19.146Z^Candidate^1425^Message
 2014-01-06T19:27:45.522Z^63^NaN^"8 hours with no car"^190.80.250.99:2014-01-06T19:24:16.381Z^Employer^1410^Message
@@ -6871,7 +6867,6 @@
 2014-01-06T19:27:45.522Z^128^NaN^"8 hours"^190.80.250.99:2014-01-06T19:24:16.381Z^Employer^1010^Message
 2014-01-06T19:27:45.522Z^129^NaN^{"translate":[{"Offer":{"Working Hours":"8 hours"}}],"text":"8 hours"}^190.80.250.99:2014-01-06T19:24:16.381Z^Employer^1010^Translation
 2014-01-06T19:27:45.522Z^131^NaN^"I cannot agree to {\"Working Hours\":\"8 hours\"}. my offer is 9 hours"^NegoChatAgent2014-01-06T19:32:19.146Z^Candidate^1010^Message
-2014-01-06T19:27:45.522Z^132^NaN^"ok 9 hours"^190.80.250.99:2014-01-06T19:24:16.381Z^Employer^1000^Message
 2014-01-06T19:27:45.522Z^133^NaN^{"translate":[{"Offer":{"Working Hours":"9 hours"}},{"Accept":"previous"}],"text":"ok 9 hours"}^190.80.250.99:2014-01-06T19:24:16.381Z^Employer^1000^Translation
 2014-01-06T19:27:45.522Z^135^NaN^"I'm happy that you accept.{\"Working Hours\":\"9 hours\"}"^NegoChatAgent2014-01-06T19:32:19.146Z^Candidate^995^Message
 2014-01-06T19:27:45.522Z^136^NaN^"I would like to work with a fast promotion track"^NegoChatAgent2014-01-06T19:32:19.146Z^Candidate^995^Message
