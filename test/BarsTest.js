@@ -243,7 +243,7 @@ describe('Bars utilities', function() {
 		_.isEqual(res, [['Reject','no..you', [0,1],{Reject:[Object]}],['Offer','be programmer',[1,3],{Offer:[Object]}],['Reject','be programmer',[1,3], {Reject:[Object]}]])
 	})
 
-	it('correctly resolve emptiness', function() {
+	it('correctly connect Offers', function() {
 	a  = [
         ["Offer"," I can go", [0,3]],
         ["Offer","12,000",[4,5]],
@@ -251,13 +251,26 @@ describe('Bars utilities', function() {
     	]
 
 
-    a_tested = [["Offer","  I can go",[0,3]],
-    			["Offer"," 12,000  NIS with a fast promotion",[4,10]]
+    a_tested =  [
+    			["Offer","I can go",[0,3]],
+    			["Offer","12,000  NIS with a fast promotion",[4,10]]
 				]
 
 	a_after = bars.aggreate_similar(a)
 
+	// console.log(JSON.stringify(a_after, null, 4))
+	// process.exit(0)
+	// a = [ [ [ "Offer", "'start'", [ 0, 1 ], [ { "Offer": [ [ "bias", 0.032924794 ] ] } ] ], [ "Offer", "can wait but you", [ 2, 6 ], [ { "Offer": [ [ "can", 0.0673212107400951 ], [ "bias", 0.032924794 ] ] }, { "Offer": [ [ "bias", 0.032924794 ] ] }, { "Offer": [ [ "bias", 0.032924794 ], [ "but", 0.0018114377419201698 ] ] }, { "Offer": [ [ "bias", 0.032924794 ], [ "you", 0.026276993986689784 ] ] } ] ], [ "Offer", "'end'", [ 9, 10 ], [ { "Offer": [ [ "bias", 0.032924794 ] ] } ] ] ], [], [] ]
+	
+	// a_after = bars.aggreate_similar(a)
+
+	// console.log(JSON.stringify(a_after, null, 4))
+	// process.exit(0)
+
 	// console.log(a_after)
+
+	a_after[0].pop()
+	a_after[1].pop()
 
 	_.isEqual(a_tested, a_after).should.equal(true)
 	})
@@ -272,6 +285,15 @@ describe('Bars utilities', function() {
 	  { input: '', output: [ '{"Offer":{"Salary":"20,000 NIS"}}' ] } ]
 		
 		_.isEqual(f, gold).should.equal(true)
+	})
+
+	it('correctly separate dataset', function() {
+		bars.intersection([1,3],[2,5]).should.equal(true)
+		bars.intersection([5,8],[1,2]).should.equal(false)
+		bars.intersection([5,7],[5,7]).should.equal(true)
+		bars.intersection([8,14],[1,9]).should.equal(true)
+		bars.intersection([0,9],[0,10]).should.equal(true)
+
 	})
 
 	it('correctly separate dataset', function() {
@@ -293,6 +315,17 @@ describe('Bars utilities', function() {
 			value['output'].length.should.not.be.below(2);
 		}, this)
 
+	})
+
+	it('correctly separate dataset', function() {
+		var str = "I reject 8 hours"
+		var begin = bars.treatstring(9, str, 'first')
+		var end = bars.treatstring(16, str, 'last')
+		// console.log("begin "+begin)
+		// console.log("end "+end)
+		// a = a - 1
+		// console.log(JSON.stringify(a, null, 4))
+		// console.log(JSON.stringify(str.substring(0,a), null, 4))
 	})
 
 
