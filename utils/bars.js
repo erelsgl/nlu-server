@@ -137,6 +137,200 @@ labeltree = { Offer:
   Append: { previous: {} },
   Quit: { true: {} } }
 
+function treatstring(num, str, ind)
+{
+	if (num == 0) return num
+	if (str[num] == " ") return num
+
+		// console.log(str[num])
+	if (str[num-1] != " ")
+		{	
+		var findex = num - str.substring(0, num).lastIndexOf(" ")
+		var lindex = str.substring(num).indexOf(" ")
+		// console.log("findex"+findex)
+		// console.log("lindex"+lindex)
+
+		if (ind == 'last')
+			if (findex > lindex)
+				return num + lindex + 1
+			else
+				return num - findex
+
+		if (ind == 'first')
+			if (findex > lindex)
+				return num - findex
+			else
+				return num + lindex
+		}
+
+	return num
+}
+
+function convert_to_train(data)
+{
+	var newdataset = []
+	_.each(data, function(value, key, list){ 
+		_.each(value['output']['single_labels'], function(value1, key1, list){ 
+			if (value1['position'][0].length != 0)
+			_.each(value1['position'], function(value3, key3, list){
+				// console.log(JSON.stringify(value3, null, 4))
+				// console.log(JSON.stringify("INP", null, 4)) 
+				// console.log(JSON.stringify(value['input'], null, 4))
+				// console.log(JSON.stringify(value['input'][value3[0]], null, 4))
+				// console.log(JSON.stringify(value['input'][value3[1]+1], null, 4))
+				var sttt = value['input'].substring(treatstring(value3[0],value['input'], 'first'),treatstring(value3[1]+1,value['input'], 'last')).trim()
+				if (sttt.length > 0)
+					newdataset.push({
+								'sentence': value['input'],
+								'input': value['input'].substring(treatstring(value3[0],value['input'], 'first'),treatstring(value3[1]+1,value['input'], 'last')).trim(),
+								'output': key1})
+				// console.log(JSON.stringify({'input': value['input'].substring(value3[0],value3[1]+1),
+								// 'output': key1}, null, 4))
+			}, this)
+		}, this)
+	}, this)
+	return newdataset
+}
+
+function convert_to_test(data)
+{
+	// var test = []
+
+	_.each(data, function(record, key, list){ 
+		_.each(record['output']['single_labels'], function(value1, key1, list1){
+			if (value1['position'][0].length > 0)
+				_.each(value1['position'], function(value2, key2, list2){
+					if (value2[0]!=0) value2[0] = value2[0] + 1
+					var str = record['input'].substr(0,value2[0])
+					var spaces = str.split(" ")
+					var innerspace = record['input'].substring(value2[0],value2[1] + 1).trim().split(" ")
+					// console.log("str_before "+str)
+					// console.log("inner text "+ innerspace)
+					// console.log("coord:"+value2)
+					// console.log("inner original:" +record['input'].substring(value2[0],value2[1] + 1))
+					// console.log("spaces_start "+spaces.length)
+					// console.log("inner_space"+ innerspavbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbce.length)
+					data[key]['output']['single_labels'][key1]['position'][key2] = [spaces.length, spaces.length + innerspace.length]
+			 	}, this) 
+		}, this)
+		// console.log(JSON.stringify(record, null, 4))
+	}, this)
+
+// console.log("DATA")
+// console.log(JSON.stringify(data, null, 4))
+// console.log()
+// process.exit(0)
+	return data
+}
+
+function intersection(begin, end)
+{
+	if ((begin[0]<=end[0])&&(begin[1]>=end[0]))
+		return true
+	if ((begin[0]>=end[0])&&(begin[0]<=end[1]))
+		return true
+	return false
+}
+
+function extractactual(data)
+{
+	// if (data.length == 0) return []
+	var acdata = []
+	_.each(data['explanation'], function(value, key, list){ 
+		// console.log(value)
+		// process.exit(0)
+		acdata.push([value[0],value[2]])
+	}, this)
+	return acdata
+}
+
+function sequencetest(original)
+{
+	var classes = []
+	_.each(original['single_labels'], function(value, key, list){ 
+		if (_.flatten(value['position']).length > 0)
+			classes.push(key)
+	}, this)
+	return classes
+}
+
+function deal(classes, classifier, parts, explanations, original)
+{
+	// console.log(parts)
+	// console.log(JSON.stringify(classes, null, 4))
+	// console.log(JSON.stringify(explanations, null, 4))
+	// console.log(JSON.stringify(original, null, 4))
+
+	var convertedexp = []
+	_.each(explanations, function(value, key, list){ 
+		value[1] = value[1].replace(" 'end'", "")
+		value[1] = value[1].replace("'start' ", "")
+		convertedexp.push([value[0],[parts.indexOf(value[1]), parts.indexOf(value[1])+value[1].length]])
+	}, this)
+
+	// console.log(convertedexp)
+	var classes = []
+	_.each(convertedexp, function(value, key, list){ 
+		if (value[0] in original['single_labels'])
+			_.each(original['single_labels'][value[0]]['position'], function(value1, key, list){ 
+				if (intersection(value1, value[1]))
+					classes.push(value[0])
+			}, this)
+	}, this)
+
+	return classes
+	// console.log(classes)
+	// process.exit(0)
+}
+
+function average(list)
+	{
+		var sum = _.reduce(list, function(memo, num){ return memo + num; }, 0);
+		return sum/list.length
+	}
+
+function extractturnssingle(dataset)
+	{
+		data = []
+		_.each(dataset, function(value, key, list){ 
+			_.each(value['turns'], function(set, key1, list1){ 
+
+				if ('output' in set)
+					{
+					_.each(set['parts'], function(value2, key2, list2){ 
+						// if (value2['input'].split(" ").length > 3)
+						data.push({'input': value2['input'], 'output': value2['output']})
+					}, this)
+					}
+				}, this)
+		}, this)
+		return data
+	}
+
+function extractturns(dataset)
+	{
+		data = []
+		_.each(dataset, function(value, key, list){ 
+			_.each(value['turns'], function(set, key, list){ 
+				if ('output' in set)
+					data.push({'output': set['output'], 'input': set['input']})
+				}, this)
+		}, this)
+		return data
+	}
+
+function isDialogue(dataset)
+	{
+		if (dataset.length == 0)
+			return false
+
+		if ("id" in dataset[0])
+			return true
+		else
+			return false
+	}
+
+
 function comparelabels(labels1, labels2)
 {
 
@@ -345,7 +539,7 @@ function find_path(mat)
 
 	}) 
 
-	console.log(d)
+	// console.log(d)
 	
 	var v = 0
 	var path = [v]
@@ -380,6 +574,81 @@ function find_path(mat)
 	return d
 }
 
+function generate_string(words)
+{
+
+	var list = []
+	if (words.length < 2) return [words.join(" ")]
+	for (var i = 0; i <= words.length; i++) 
+		for (var j = i + 1; j <= words.length; j++) 
+			list.push(words.slice(i, j).join(" "))
+
+	return list
+}
+
+function truth_sentence(sentence)
+{
+
+	if (sentence == "'start'") return sentence
+	if (sentence == "'end'") return sentence
+
+	var start = 0
+	var end = 0
+
+	if (sentence.indexOf("'start'") != 1)
+		start = 1
+	
+	if (sentence.indexOf("'end'") != 1)
+		end = 1
+
+	sentence = sentence.replace("['start']", "")
+	sentence = sentence.replace("'start'", "")
+	sentence = sentence.replace("['end']", "")
+	sentence = sentence.replace("'end'", "")
+	sentence = sentence.trim()
+
+	var sentencelist = []
+	var sentencevocab = fs.readFileSync('truthteller/truth_teller/examples.txt').toString().split("\n");
+	console.log(sentence)
+	var index = sentencevocab.indexOf(sentence)
+	console.log(index)
+	console.log(complement_number(index + 1, 5))
+	var lines = fs.readFileSync('truthteller/truth_teller/annotatedSentences/sentence_' + complement_number(index + 1, 5) + '.cnt').toString().split("\n");
+	lines.pop()
+	lines.pop()
+
+	_.each(lines, function(line, key, list){
+		sentencelist.push(line.split('\t')) 
+		// console.log(line.split('\t').length)
+	}, this)
+
+	_.each(sentencelist, function(row, key, list){ 
+		if ((row[3] == 'VERB') && (row[13] == "N"))
+			sentence = sentence.replace(row[1], row[1]+"&"+row[13]);
+
+		if ((row[3] == 'NOUN') && (row[11] == "N"))
+			sentence = sentence.replace(row[1], row[1]+"&"+row[11]);
+
+	}, this)
+
+	if (start == 1)
+		sentence = "'start' " + sentence
+
+	if (end == 1)
+		sentence = sentence + " 'end'"
+
+	return sentence
+}
+
+function complement_number(num, digits)
+{
+	var numstr = num.toString()
+	while (numstr.length < digits) {
+    	numstr = '0'+numstr
+    }
+    return numstr
+}
+
 function aggreate_similar(list)
 {
 	var buf = []
@@ -396,8 +665,8 @@ function aggreate_similar(list)
 		else
 			{
 				if (buf.length!=0) 
-					// clean.push(['Offer',str,[buf[0][2][0], buf[buf.length-1][2][1]], _.map(buf, function(num){return num[3]})])				
-					clean.push(['Offer',str,[buf[0][2][0], buf[buf.length-1][2][1]]])				
+					clean.push(['Offer',str.trim(),[buf[0][2][0], buf[buf.length-1][2][1]], _.map(buf, function(num){return num[3]})])				
+					// clean.push(['Offer',str,[buf[0][2][0], buf[buf.length-1][2][1]]])				
 
 				buf = []
 				str = ""
@@ -417,14 +686,14 @@ function aggreate_similar(list)
 
 	}, this)
 	if (buf.length!=0)
-		// clean.push(['Offer',str,[buf[0][2][0], buf[buf.length-1][2][1]], _.map(buf, function(num){return num[3]})])
-		clean.push(['Offer',str,[buf[0][2][0], buf[buf.length-1][2][1]]])
+		clean.push(['Offer',str.trim(),[buf[0][2][0], buf[buf.length-1][2][1]], _.map(buf, function(num){return num[3]})])
+		// clean.push(['Offer',str,[buf[0][2][0], buf[buf.length-1][2][1]]])
 	return clean
 }
 
 function dividedataset(dataset)
 {
-	datasetd = {'one':[], 'two':[]}
+	var datasetd = {'one':[], 'two':[]}
 
 	_.each(dataset, function(value, key, list){ 
 		if (value.output.length == 1)
@@ -594,7 +863,6 @@ function aggregate_sagae(classes, classifier, parts, explanations, original, com
 	// console.log("explanation")
 	// console.log(JSON.stringify(explanations, null, 4))
 	
-
 	_.each(explanations[2], function(value, key, list){
 		clas.push([[],[],[value[0]]])
 	})
@@ -657,6 +925,8 @@ function aggregate_sagae(classes, classifier, parts, explanations, original, com
 			js = js.concat(generate_possible_labels((lab)))
 
 	}, this)
+
+
 
 	// console.log("composite label:")
 	// console.log(JSON.stringify(_.uniq(js), null, 4))
@@ -1579,5 +1849,19 @@ module.exports = {
 	filteraccept:filteraccept,
 	filterreject:filterreject,
 	comparelabels:comparelabels,
-	aggregate_rilesbased:aggregate_rilesbased
+	aggregate_rilesbased:aggregate_rilesbased,
+	extractturnssingle: extractturnssingle,
+	extractturns: extractturns,
+	isDialogue:isDialogue,
+	average:average,
+	complement_number:complement_number,
+	truth_sentence:truth_sentence,
+	generate_string:generate_string,
+	deal:deal,
+	intersection:intersection,
+	sequencetest:sequencetest,
+	convert_to_test:convert_to_test,
+	convert_to_train:convert_to_train,
+	extractactual:extractactual,
+	treatstring:treatstring
 }
