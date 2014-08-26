@@ -172,7 +172,7 @@
                 "timestamp": "2014-04-04T16:03:52.761Z",
                 "turn": "97",
                 "output": [
-                    "{\"Reject\":\"Working Hours\"}"
+                    "{\"Reject\":\"Working Hours\":\"8 hours\"}"
                 ]
             },
             {
