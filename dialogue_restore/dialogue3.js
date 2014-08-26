@@ -6,7 +6,7 @@ filename = "overall.csv"
 
 //jsonfile = "../datasets/Employer/nlu_ncagent_students_negonlpnc.json"
 // jsonfile = "../datasets/Employer/5_woz_ncagent_turkers_negonlp2ncAMT.json"
-jsonfile = "../datasets/Employer/nlu_ncagent_turkers_negonlpncAMT.json"
+jsonfile = "employer_usa.json"
 // 
 
 bad = ['2013-10-04T09:37:20.686Z', '2013-10-02T18:45:22.628Z', '2013-10-04T11:42:15.834Z', '2013-10-04T12:06:37.488Z', '2013-10-05T17:50:39.807Z','2014-02-17T09:26:38.991Z',
