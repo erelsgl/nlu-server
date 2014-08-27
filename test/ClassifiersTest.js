@@ -10,7 +10,6 @@ var _ = require('underscore');
 var limdu_classifiers = require('limdu/classifiers');
 var ftrs = require('limdu/features');
 
-
 // curves.learning_curves(classifiers, data, parameters, 3, 5)
 
 describe('Classifiers functions', function() {
@@ -24,7 +23,8 @@ describe('Classifiers functions', function() {
 	it('correctly create bigram', function() {
 		var features = {}
 		classifiers.featureExtractor("pension,", features)
-		_.isEqual(features,{ pension: 1, '[start] pension': 1, 'pension [end]': 1 }).should.equal(true)
+		// _.isEqual(features,{ pension: 1, '[start] pension': 1, 'pension [end]': 1 }).should.equal(true)
+		_.isEqual(features,{ pension: 1 }).should.equal(true)
 	});
 
 	//TODO in different domain currency witth have digits after decimal point.
@@ -35,9 +35,13 @@ describe('Classifiers functions', function() {
 		classifiers.normalizer("pension 14%").should.equal("pension 14%")
 		classifiers.normalizer("14hours").should.equal("14 hours")
 		classifiers.normalizer("pension 14 % I offer").should.equal("pension 14% i offer")
-		classifiers.normalizer("10,000NIS").should.equal("10000 nis")
-		classifiers.normalizer("10.000NIS").should.equal("10000 nis")
+		classifiers.normalizer("abc 10,000NIS xyz").should.equal("abc 10000 nis xyz")
+		classifiers.normalizer("abc 10.000NIS xyz").should.equal("abc 10000 nis xyz")
+		
 
+		classifiers.normalizer("5.450 EGP").should.equal("5450 egp")
+		classifiers.normalizer("5,450 EGP").should.equal("5450 egp")
+		// process.exit(0)
 		// var a  = classifiers.normalizer("10,000NIS")
 		// console.log(a)
 		// console.log()
