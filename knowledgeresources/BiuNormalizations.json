@@ -42,10 +42,13 @@
 , {"source": "\\b(\\d+) thousands?\\b", "target": "$1000"}
 
 , {"source": "\\b(\\d+)\\s*k\\b", "target": "$1000"}
-, {"source": "\\b(\\d+),(\\d+)\\b", "target": "$1$2"}
-, {"source": "\\b(\\d+)\\.(\\d+)\\b", "target": "$1$2"}
+, {"source": "(\\d+),(\\d+)", "target": "$1$2"}
+, {"source": "(\\d+)\\.(\\d+)", "target": "$1$2"}
 , {"source": "\\b(\\d+)\\s*percent\\b", "target": "$1%"}
 , {"source": "\\b(\\d+)\\s+%\\b", "target": "$1%"}
+
+, {"source": "(\\d+)([^\\d\\s%])", "target": "$1 $2"}
+, {"source": "(\\d+)\\s+%", "target": "$1%"}
 
 , {"source": "\\b[o][.][k][.]?", "target": "okay"}
 , {"source": "\\b[o][k]\\b", "target": "okay"}
