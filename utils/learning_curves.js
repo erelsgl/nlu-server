@@ -77,28 +77,6 @@ function checkGnuPlot()
 		}
 	}
 
-function extractturns(dataset)
-	{
-		data = []
-		_.each(dataset, function(value, key, list){ 
-			_.each(value['turns'], function(set, key, list){ 
-				data.push(set)
-				}, this)
-		}, this)
-		return data
-	}
-
-function isDialogue(dataset)
-	{
-		if (dataset.length == 0)
-			return false
-
-		if ("id" in dataset[0])
-			return true
-		else
-			return false
-	}
-
 function learning_curves(classifiers, dataset, parameters, step, step2, numOfFolds, datatest) {
 
 	var dir = "./learning_curves/"
@@ -132,6 +110,12 @@ function learning_curves(classifiers, dataset, parameters, step, step2, numOfFol
 	var testtitle = ""
 	var traintitle = ""
 
+	// var test = []
+	// var mytest = []
+
+	var mytrain = []
+	// var mytrainset = []
+
 	partitions.partitions(dataset, numOfFolds, function(train, test, fold) {
 		index = step
 		// index = 200
@@ -142,23 +126,19 @@ function learning_curves(classifiers, dataset, parameters, step, step2, numOfFol
 	  		}
 	  		// test = _.sample(datatest,  Math.round(train.length/2))
 
-		if (isDialogue(test))
+		if (bars.isDialogue(test))
 			{
-			test = extractturns(test)
+			// var testset = bars.dividedataset(bars.extractturns(test))['one']
+			var testset = bars.extractturns(test)
 			testtitle = testtitle + "test extracted from dialogue"
 			}
+		else
+			var testset = test
 
 		while (index < train.length)
   		{
 
 	  	mytrain = train.slice(0, index)
-	  	if (isDialogue(mytrain))	
-	  		{
-	  		traintitle = "train extracted from dialogue"
-	  		mytrainset = extractturns(mytrain)
-	  		}
-	  	else
-	  		mytrainset = mytrain
 
 	  	if (index < 100)
 	  		index += step
@@ -168,13 +148,48 @@ function learning_curves(classifiers, dataset, parameters, step, step2, numOfFol
   		report = []
 
 	    _.each(cl, function(value, classifier, list) { 
-	    	stats = trainAndTest_hash(value[1], mytrainset, test, 5)
 
-	    	console.log(value[0])
-	    	console.log(stats[0]['stats'])
+	    	if (bars.isDialogue(mytrain))	
+	  		{
+	  			traintitle = "train extracted from dialogue"
+	  			// if (value[0] == "Current_baseline")
+	  				var mytrainset = bars.extractturns(mytrain)
+	  			// else
+	  				// var mytrainset = bars.extractturnssingle(mytrain)
+	  		}
+	  		else
+	  			mytrainset = mytrain
+
+	    	var stats = trainAndTest_hash(value[1], mytrainset, testset, 5)
+
+	     	// console.log(value[0])
+	    	// console.log(JSON.stringify(stats[0]['data'], null, 4))
+	    	// console.log(JSON.stringify(stats[0]['labels'], null, 4))
+	    	// console.log(JSON.stringify(stats[0]['labels'], null, 4))
+	    	// console.log()
+	    	// process.exit(0)
+
+	    	// console.log(JSON.stringify(stats[0], null, 4))
+	    	// console.log(JSON.stringify(stats[0]['labels'], null, 4))
+
+	    	// console.log()
+	    	// process.exit(0)
+
+	    	console.log(mytrainset.length)
+
+	    	// if (stats[0]['labels']['Reject']['F1'] == -1)
+	    		// stats[0]['labels']['Reject']['F1'] = 0
+	    	// console.log(stats)
+	    	// process.exit(0)
 
 	    	report.push(_.pick(stats[0]['stats'], parameters))
+	    	// report.push(_.pick(stats[0]['labels']['Reject'], parameters))
+
 	    })
+
+		console.log(JSON.stringify(report, null, 4))
+		// console.log()
+		// process.exit(0)
 
 	    // console.log()
 	    // process.exit(0)
@@ -203,7 +218,7 @@ function learning_curves(classifiers, dataset, parameters, step, step2, numOfFol
 				// },this)
 			},this)
 			plotfor = plotfor.substring(0,plotfor.length-2);
-			command = "gnuplot -p -e \"reset; set yrange [0:1]; set title \' Folds "+numOfFolds+" "+traintitle+" "+testtitle+"\'; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+".png\'; set key autotitle columnhead; "+plotfor +"\""
+			command = "gnuplot -p -e \"reset; set yrange [0:1]; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+".png\'; set key autotitle columnhead; "+plotfor +"\""
 			result = execSync.run(command)
 		}, this)
 
@@ -216,7 +231,7 @@ function learning_curves(classifiers, dataset, parameters, step, step2, numOfFol
 			}, this)
 
 			foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+param+"average"+"\' using 1:i with linespoints linecolor i"
-			com = "gnuplot -p -e \"reset; ; set title \' Folds "+numOfFolds+" "+traintitle+" "+testtitle+"\'; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + param+"average.png\'; set key autotitle columnhead; plot "+foldcom +"\""
+			com = "gnuplot -p -e \"reset; set yrange [0:1]; set xlabel \'Number of dialogues\'; set ylabel \'"+param+"\' ;set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + param+"average.png\'; set key autotitle columnhead; plot "+foldcom +"\""
 			result = execSync.run(com)
 		}, this)
 
