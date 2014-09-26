@@ -1,6 +1,30 @@
-[ {"input":"","output":[]}
- , {"input":"hi","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-04-23T09:06:48.417Z"}
-, {"input":"good after noon","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2014-04-23T09:06:53.985Z"}
+[ 
+{"input":"we'll talk in a month about a car, so for now no agreement","output":["{\"Offer\":{\"Leased Car\":\"No agreement\"}}"]},
+{"input":"what will be your job description?","output":["{\"Query\":\"Job Description\"}"]},
+{"input":"Yes, fast promotion","output":["{\"Accept\":\"Promotion Possibilities\"}"]},
+{"input":"Yes, slow promotion","output":["{\"Accept\":\"Promotion Possibilities\"}"]},
+{"input":"Yes, programmer","output":["{\"Accept\":\"Job Description\"}"]},
+{"input":"Yes, qa","output":["{\"Accept\":\"Job Description\"}"]},
+{"input":"Yes, project manager","output":["{\"Accept\":\"Job Description\"}"]},
+{"input":"Yes, team manager","output":["{\"Accept\":\"Job Description\"}"]},
+{"input":"Yes, 5400","output":["{\"Accept\":\"Salary\"}"]},
+{"input":"o.k.","output":["{\"Accept\":\"previous\"}"]},
+{"input":"Yes, 9000","output":["{\"Accept\":\"Salary\"}"]},
+{"input":"Yes, 3150","output":["{\"Accept\":\"Salary\"}"]},
+{"input":"Yes, 8 hours","output":["{\"Accept\":\"Working Hours\"}"]},
+{"input":"Yes, 9 hours","output":["{\"Accept\":\"Working Hours\"}"]},
+{"input":"Yes, 10 hours","output":["{\"Accept\":\"Working Hours\"}"]},
+{"input":"right now we do not need a project manager, we only need a QA","output":["{\"Reject\":\"Job Description\"}","{\"Offer\":{\"Job Description\":\"QA\"}}"]},
+{"input":"i don't need a project manager. i need a QA","output":["{\"Reject\":\"Job Description\"}","{\"Offer\":{\"Job Description\":\"QA\"}}"]},
+{"input":"I can't pay 3150","output":["{\"Reject\":\"Salary\"}"]},
+{"input":"I can't pay 9000","output":["{\"Reject\":\"Salary\"}"]},
+{"input":"I can't pay 5400","output":["{\"Reject\":\"Salary\"}"]},
+{"input":"ok?","output":["{\"Query\":\"accept\"}"]},
+{"input":"we do not give cars","output":["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"]},
+{"input":"cars are only for project managers","output":["{\"Offer\":{\"Leased Car\":\"With leased car\"}}", "{\"Offer\":{\"Job Description\":\"Project Manager\"}}"]},
+{"input":"How many hours will you work?","output":["{\"Query\":\"Working Hours\"}"]},
+  {"input":"hi","output":["{\"Greet\":true}"],"is_correct":true,"timestamp":"2014-04-23T09:06:48.417Z"}
+, {"input":"good afternoon","output":["{\"Greet\":true}"],"is_correct":false,"timestamp":"2014-04-23T09:06:53.985Z"}
 , {"input":"good but i need u to wort as programmer ","output":["{\"Offer\":{\"Job Description\":\"Programmer\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:08:51.575Z"}
 , {"input":"no i will give you 5400 ","output":["{\"Offer\":{\"Salary\":\"5,400 EGP\"}}","{\"Reject\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:09:45.767Z"}
 , {"input":"i know but i cannot pay you more than 5400","output":["{\"Offer\":{\"Salary\":\"5,400 EGP\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:10:01.745Z"}
@@ -73,7 +97,6 @@
 , {"input":" the working hours will be 10 hours","output":["{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.182Z"}
 , {"input":"if you want ok","output":["{\"Accept\":\"previous\"}"],"is_correct":false,"timestamp":"2014-04-23T09:29:59.185Z"}
 , {"input":"ok i will give you what you want but the promotion track will be slow every 4 years ","output":["{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.186Z"}
-, {"input":"no just slow every 4 years ","output":["{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.187Z"}
 , {"input":"ok it will be fast but working hours will be just 9 this or this it up to you ","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Working Hours\":\"9 hours\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:29:59.199Z"}
 , {"input":"sorry it will be 10 and the the promotion  will be fast ","output":["{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}","{\"Offer\":{\"Working Hours\":\"10 hours\"}}"],"is_correct":false,"timestamp":"2014-04-23T09:29:59.200Z"}
 , {"input":"do you agree for all this /","output":["{\"Query\":\"accept\"}"],"is_correct":true,"timestamp":"2014-04-23T09:29:59.202Z"}
@@ -127,4 +150,7 @@
 , {"input":"what about leased car?","output":["{\"Query\":\"Leased Car\"}"],"is_correct":false,"timestamp":"2014-04-23T09:36:34.637Z"}
 , {"input":"what about working hourses?","output":["{\"Query\":\"Working Hours\"}"],"is_correct":false,"timestamp":"2014-04-23T09:36:39.385Z"}
 , {"input":"what about salary","output":["{\"Query\":\"Salary\"}"],"is_correct":true,"timestamp":"2014-04-23T09:36:47.687Z"}
-] 
+, {"input":"Are you agree ?","output":["{\"Query\":\"accept\"}"],"is_correct":true,"timestamp":"2014-04-23T09:36:47.687Z"}
+, {"input":"what's your opinion ?","output":["{\"Query\":\"bid\"}"],"is_correct":true,"timestamp":"2014-04-23T09:36:47.687Z"}
+, {"input":"this is my offer","output":["{\"Insist\":\"previous\"}"],"is_correct":true,"timestamp":"2014-04-23T09:36:47.687Z"}
+]

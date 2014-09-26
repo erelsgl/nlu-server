@@ -1,0 +1,1248 @@
+[
+    {
+        "input": "9000",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"9,000 EGP\"}}"
+        ],
+        "timestamp": "2014-06-24T03:28:57.392Z"
+    },
+    {
+        "input": "good afternoon",
+        "output": [
+            "{\"Greet\":true}"
+        ],
+        "timestamp": "2014-06-27T13:14:57.951Z"
+    },
+    {
+        "input": "I want to be a team manager ",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "timestamp": "2014-06-27T13:17:12.478Z"
+    },
+    {
+        "input": "but i can work as aprogrammer if you pay me 9000",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+            "{\"Offer\":{\"Salary\":\"9,000 EGP\"}}"
+        ],
+        "timestamp": "2014-06-27T13:17:28.134Z"
+    },
+    {
+        "input": "ok 9000",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"9,000 EGP\"}}"
+        ],
+        "timestamp": "2014-06-27T13:17:32.309Z"
+    },
+    {
+        "input": "no I don't accept this position",
+        "output": [
+            "{\"Reject\":\"Job Description\"}"
+        ],
+        "timestamp": "2014-06-27T13:17:39.333Z"
+    },
+    {
+        "input": "give me 9000",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"9,000 EGP\"}}"
+        ],
+        "timestamp": "2014-06-27T13:17:47.148Z"
+    },
+    {
+        "input": "ok i can work 10 hours?",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "timestamp": "2014-06-27T13:17:52.564Z"
+    },
+    {
+        "input": "give me 5400",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"5,400 EGP\"}}"
+        ],
+        "timestamp": "2014-06-27T13:18:00.396Z"
+    },
+    {
+        "input": "ok that good for me ",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-27T13:18:06.516Z"
+    },
+    {
+        "input": "i accept ",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-27T13:18:08.973Z"
+    },
+    {
+        "input": "i am satisfied about the leased car ",
+        "output": [
+            "{\"Accept\":\"Leased Car\"}"
+        ],
+        "timestamp": "2014-06-27T13:21:47.382Z"
+    },
+    {
+        "input": "what is it?",
+        "output": [
+            "{\"Query\":\"issues\"}"
+        ],
+        "timestamp": "2014-06-27T13:22:00.532Z"
+    },
+    {
+        "input": "and that sound good",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-27T13:22:07.963Z"
+    },
+    {
+        "input": "what else?",
+        "output": [
+            "{\"Query\":\"issues\"}"
+        ],
+        "timestamp": "2014-06-27T13:22:11.845Z"
+    },
+    {
+        "input": "yes i can start from tomorrow if you want",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-27T13:22:31.284Z"
+    },
+    {
+        "input": "do you want anything else?",
+        "output": [
+            "{\"Query\":\"issues\"}"
+        ],
+        "timestamp": "2014-06-27T13:22:43.299Z"
+    },
+    {
+        "input": "ok nice to talk to you",
+        "output": [
+            "{\"Quit\":true}"
+        ],
+        "timestamp": "2014-06-27T13:22:48.404Z"
+    },
+    {
+        "input": "good afternoon",
+        "output": [
+            "{\"Greet\":true}"
+        ],
+        "timestamp": "2014-06-27T13:22:54.063Z"
+    },
+    {
+        "input": "I look for be a project manager in your company ",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Project Manager\"}}"
+        ],
+        "timestamp": "2014-06-27T13:23:07.582Z"
+    },
+    {
+        "input": "its pleasure to me so i will be a project manager",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Project Manager\"}}"
+        ],
+        "timestamp": "2014-06-27T13:23:29.590Z"
+    },
+    {
+        "input": "i suppose to have 9000",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"9,000 EGP\"}}"
+        ],
+        "timestamp": "2014-06-27T13:24:00.723Z"
+    },
+    {
+        "input": "so i will be a project manager",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Project Manager\"}}"
+        ],
+        "timestamp": "2014-06-27T13:24:07.010Z"
+    },
+    {
+        "input": "what your opinion about the salary?",
+        "output": [
+            "{\"Query\":\"Salary\"}"
+        ],
+        "timestamp": "2014-06-27T13:24:11.891Z"
+    },
+    {
+        "input": "what about be the salary 5400 and no agreement on leased car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"No agreement\"}}",
+            "{\"Offer\":{\"Salary\":\"5,400 EGP\"}}"
+        ],
+        "timestamp": "2014-06-27T13:24:27.741Z"
+    },
+    {
+        "input": "I think you should be more flexible ",
+        "output": [
+            "{\"Query\":\"compromise\"}"
+        ],
+        "timestamp": "2014-06-27T13:24:32.506Z"
+    },
+    {
+        "input": "so i will accept the 3100 salary and no agreement on leased car?",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"No agreement\"}}",
+            "{\"Offer\":{\"Salary\":\"3,150 EGP\"}}"
+        ],
+        "timestamp": "2014-06-27T13:24:45.534Z"
+    },
+    {
+        "input": "yes with no agreement on leased car",
+        "output": [
+            "{\"Accept\":\"previous\"}",
+            "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+        ],
+        "timestamp": "2014-06-27T13:24:58.646Z"
+    },
+    {
+        "input": "i have a car and don't need it",
+        "output": [
+            "{\"Reject\":\"Leased Car\"}"
+        ],
+        "timestamp": "2014-06-27T13:25:07.908Z"
+    },
+    {
+        "input": "whats is the problem now?",
+        "output": [
+            "{\"Query\":\"issues\"}"
+        ],
+        "timestamp": "2014-06-27T13:25:14.465Z"
+    },
+    {
+        "input": "i accept the salary",
+        "output": [
+            "{\"Accept\":\"Salary\"}"
+        ],
+        "timestamp": "2014-06-27T13:25:21.715Z"
+    },
+    {
+        "input": "I accept the leased car",
+        "output": [
+            "{\"Accept\":\"Leased Car\"}"
+        ],
+        "timestamp": "2014-06-27T13:25:34.003Z"
+    },
+    {
+        "input": "hello",
+        "output": [
+            "{\"Greet\":true}"
+        ],
+        "timestamp": "2014-06-27T13:25:42.337Z"
+    },
+    {
+        "input": " i'm here to getting a job can you tell me about the work here in this company ",
+        "output": [
+            "{\"Query\":\"bid\"}"
+        ],
+        "timestamp": "2014-06-27T13:25:52.637Z"
+    },
+    {
+        "input": "but I want to work as a programmer",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+        ],
+        "timestamp": "2014-06-27T13:26:20.218Z"
+    },
+    {
+        "input": "no could i take 9000 egp plz ",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"9,000 EGP\"}}"
+        ],
+        "timestamp": "2014-06-27T13:26:25.066Z"
+    },
+    {
+        "input": "okay that is fine what about leased car can i get one ",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+        ],
+        "timestamp": "2014-06-27T13:26:32.066Z"
+    },
+    {
+        "input": "okay that is fine i agree ",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-27T13:26:35.384Z"
+    },
+    {
+        "input": "what about working hours ??",
+        "output": [
+            "{\"Query\":\"Working Hours\"}"
+        ],
+        "timestamp": "2014-06-27T13:26:39.986Z"
+    },
+    {
+        "input": "okay i agree with it",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-27T13:26:45.296Z"
+    },
+    {
+        "input": "okay nice to talk to you",
+        "output": [
+            "{\"Quit\":true}"
+        ],
+        "timestamp": "2014-06-27T13:26:57.627Z"
+    },
+    {
+        "input": "yes it seems good",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-27T13:27:02.732Z"
+    },
+    {
+        "input": "I want to be a team manger",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "timestamp": "2014-06-27T13:27:12.427Z"
+    },
+    {
+        "input": "but my qualification makes me a team manger ",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "timestamp": "2014-06-27T13:27:19.039Z"
+    },
+    {
+        "input": "i think as a programmer i will take a salary 9000",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+            "{\"Offer\":{\"Salary\":\"9,000 EGP\"}}"
+        ],
+        "timestamp": "2014-06-27T13:27:28.873Z"
+    },
+    {
+        "input": "10 hours is so long lets make it 8 hours",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
+            "{\"Reject\":\"Working Hours\"}"
+        ],
+        "timestamp": "2014-06-27T13:27:47.234Z"
+    },
+    {
+        "input": "i agree with the a pension",
+        "output": [
+            "{\"Accept\":\"Pension Fund\"}"
+        ],
+        "timestamp": "2014-06-27T13:28:09.849Z"
+    },
+    {
+        "input": "i agree with your pension so agree on the salary",
+        "output": [
+            "{\"Accept\":\"Pension Fund\"}"
+        ],
+        "timestamp": "2014-06-27T13:28:57.352Z"
+    },
+    {
+        "input": "ok lets make a deal .. team manager with salary 5400 and 8 hours work",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+            "{\"Offer\":{\"Salary\":\"5,400 EGP\"}}",
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+        ],
+        "timestamp": "2014-06-27T13:29:18.039Z"
+    },
+    {
+        "input": "no way ",
+        "output": [
+            "{\"Reject\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-27T13:29:22.567Z"
+    },
+    {
+        "input": "no I don't accept the salary",
+        "output": [
+            "{\"Reject\":\"Salary\"}"
+        ],
+        "timestamp": "2014-06-27T13:29:27.421Z"
+    },
+    {
+        "input": "no i must take a car because i live away ",
+        "output": [
+            "{\"Insist\":\"Leased Car\"}"
+        ],
+        "timestamp": "2014-06-27T13:29:31.495Z"
+    },
+    {
+        "input": "no i cant do that ",
+        "output": [
+            "{\"Reject\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-27T13:29:35.471Z"
+    },
+    {
+        "input": "no fast promotion track",
+        "output": [
+            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+        ],
+        "timestamp": "2014-06-27T13:29:41.509Z"
+    },
+    {
+        "input": "so agree",
+        "output": [
+            "{\"Query\":\"accept\"}"
+        ],
+        "timestamp": "2014-06-27T13:29:59.358Z"
+    },
+    {
+        "input": "no i cant realy do that ",
+        "output": [
+            "{\"Reject\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-27T13:30:07.585Z"
+    },
+    {
+        "input": "it fast with 20 %",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
+        "timestamp": "2014-06-27T13:31:12.043Z"
+    },
+    {
+        "input": "fast promotion with 10 %",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
+        "timestamp": "2014-06-27T13:31:18.504Z"
+    },
+    {
+        "input": "i heard about a job in the company",
+        "output": [
+            "{\"Query\":\"Job Description\"}"
+        ],
+        "timestamp": "2014-06-27T13:31:27.926Z"
+    },
+    {
+        "input": "programmer",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+        ],
+        "timestamp": "2014-06-27T13:31:56.213Z"
+    },
+    {
+        "input": "fine, i want 5,400",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"5,400 EGP\"}}"
+        ],
+        "timestamp": "2014-06-28T14:09:51.218Z"
+    },
+    {
+        "input": "8 hours",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+        ],
+        "timestamp": "2014-06-28T14:10:04.146Z"
+    },
+    {
+        "input": "fast",
+        "output": [
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
+        "timestamp": "2014-06-28T14:10:21.553Z"
+    },
+    {
+        "input": "and i would like the pension fund to be 10%",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+        ],
+        "timestamp": "2014-06-28T14:10:28.026Z"
+    },
+    {
+        "input": "i need 9,000 egp",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"9,000 EGP\"}}"
+        ],
+        "timestamp": "2014-06-28T14:10:36.401Z"
+    },
+    {
+        "input": "i don't accept 8 hours",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
+            "{\"Reject\":\"Working Hours\"}"
+        ],
+        "timestamp": "2014-06-28T14:10:47.963Z"
+    },
+    {
+        "input": "i want to work as project manager, do you agree ?",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Project Manager\"}}"
+        ],
+        "timestamp": "2014-06-28T14:10:54.031Z"
+    },
+    {
+        "input": "yes, i agree",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-28T14:10:56.429Z"
+    },
+    {
+        "input": "what about pension fund ?",
+        "output": [
+            "{\"Query\":\"Pension Fund\"}"
+        ],
+        "timestamp": "2014-06-28T14:11:05.083Z"
+    },
+    {
+        "input": "i prefer team manager",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "timestamp": "2014-06-28T14:11:11.929Z"
+    },
+    {
+        "input": "but i want to get 9000 now",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"9,000 EGP\"}}"
+        ],
+        "timestamp": "2014-06-28T14:11:20.791Z"
+    },
+    {
+        "input": "ok i agree",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-28T14:11:26.034Z"
+    },
+    {
+        "input": "but i want to get a car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+        ],
+        "timestamp": "2014-06-28T14:11:31.518Z"
+    },
+    {
+        "input": "i don't need that until now it's ok",
+        "output": [
+            "{\"Reject\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-28T14:11:38.193Z"
+    },
+    {
+        "input": "what about the working hour ?",
+        "output": [
+            "{\"Query\":\"Working Hours\"}"
+        ],
+        "timestamp": "2014-06-28T14:11:42.393Z"
+    },
+    {
+        "input": "it's to much i can't ",
+        "output": [
+            "{\"Reject\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-28T14:11:46.928Z"
+    },
+    {
+        "input": "what about 9 hours",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "timestamp": "2014-06-28T14:11:51.417Z"
+    },
+    {
+        "input": "i don't think so i want 9 hours only",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+            "{\"Reject\":\"Working Hours\"}"
+        ],
+        "timestamp": "2014-06-28T14:12:03.002Z"
+    },
+    {
+        "input": "at first what about promotion possibilities?",
+        "output": [
+            "{\"Query\":\"Promotion Possibilities\"}"
+        ],
+        "timestamp": "2014-06-28T14:12:07.265Z"
+    },
+    {
+        "input": "what about fast promotion",
+        "output": [
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
+        "timestamp": "2014-06-28T14:12:15.345Z"
+    },
+    {
+        "input": "i agree it's will be then 10 hours",
+        "output": [
+            "{\"Accept\":\"Working Hours\"}"
+        ],
+        "timestamp": "2014-06-28T14:12:30.825Z"
+    },
+    {
+        "input": "my condition about the salary i want 5400 egp",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"5,400 EGP\"}}"
+        ],
+        "timestamp": "2014-06-28T14:12:36.489Z"
+    },
+    {
+        "input": "yes i want a car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+        ],
+        "timestamp": "2014-06-28T14:12:46.216Z"
+    },
+    {
+        "input": "10% will be ok",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+        ],
+        "timestamp": "2014-06-28T14:12:52.976Z"
+    },
+    {
+        "input": "slow promotion will be ok",
+        "output": [
+            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+        ],
+        "timestamp": "2014-06-28T14:13:02.020Z"
+    },
+    {
+        "input": "i think a programmer will be good",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+        ],
+        "timestamp": "2014-06-28T14:13:06.656Z"
+    },
+    {
+        "input": "ok as you want",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-28T14:13:17.616Z"
+    },
+    {
+        "input": "what about salary ?",
+        "output": [
+            "{\"Query\":\"Salary\"}"
+        ],
+        "timestamp": "2014-06-28T14:13:28.015Z"
+    },
+    {
+        "input": "i want to take 5,400 EGP ?",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"5,400 EGP\"}}"
+        ],
+        "timestamp": "2014-06-28T14:13:31.889Z"
+    },
+    {
+        "input": "ok, what is my job description ?",
+        "output": [
+            "{\"Query\":\"Job Description\"}"
+        ],
+        "timestamp": "2014-06-28T14:13:38.880Z"
+    },
+    {
+        "input": "i prefer programmer than team manger ",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+            "{\"Reject\":\"Job Description\"}"
+        ],
+        "timestamp": "2014-06-28T14:13:58.194Z"
+    },
+    {
+        "input": "tell me about leased car ?",
+        "output": [
+            "{\"Query\":\"Leased Car\"}"
+        ],
+        "timestamp": "2014-06-28T14:14:03.583Z"
+    },
+    {
+        "input": "but i would like with car ?",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+        ],
+        "timestamp": "2014-06-28T14:14:09.903Z"
+    },
+    {
+        "input": "i agree with this offer",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-28T14:14:14.783Z"
+    },
+    {
+        "input": "but i want 20% pension fund ?",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+        ],
+        "timestamp": "2014-06-28T14:14:21.381Z"
+    },
+    {
+        "input": "now, what is the promotion possibilities ?",
+        "output": [
+            "{\"Query\":\"Promotion Possibilities\"}"
+        ],
+        "timestamp": "2014-06-28T14:14:26.720Z"
+    },
+    {
+        "input": "i want a fast promotion",
+        "output": [
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
+        "timestamp": "2014-06-28T14:14:32.673Z"
+    },
+    {
+        "input": "ok i agree ",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-28T14:14:34.999Z"
+    },
+    {
+        "input": "how long the job take time ?",
+        "output": [
+            "{\"Query\":\"Working Hours\"}"
+        ],
+        "timestamp": "2014-06-28T14:14:40.159Z"
+    },
+    {
+        "input": "could i work for 8 hours only ?",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+        ],
+        "timestamp": "2014-06-28T14:14:46.031Z"
+    },
+    {
+        "input": "ok i could work for 9 hours",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "timestamp": "2014-06-28T14:14:55.816Z"
+    },
+    {
+        "input": "i think my salary is 5,400",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"5,400 EGP\"}}"
+        ],
+        "timestamp": "2014-06-28T14:14:59.327Z"
+    },
+    {
+        "input": "ok no problem, i agree",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-28T14:15:01.727Z"
+    },
+    {
+        "input": "i like a team managr",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "timestamp": "2014-06-28T14:15:08.689Z"
+    },
+    {
+        "input": "i want take a car in this job ?",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+        ],
+        "timestamp": "2014-06-28T14:15:27.391Z"
+    },
+    {
+        "input": "Okay i agree",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-28T14:15:32.158Z"
+    },
+    {
+        "input": "what is the promotion track in this job ?",
+        "output": [
+            "{\"Query\":\"Promotion Possibilities\"}"
+        ],
+        "timestamp": "2014-06-28T14:15:40.159Z"
+    },
+    {
+        "input": "Okay i agree",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-28T14:15:47.773Z"
+    },
+    {
+        "input": "yes i agree",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-28T14:15:51.222Z"
+    },
+    {
+        "input": "i want a 9.000 egp",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"9,000 EGP\"}}"
+        ],
+        "timestamp": "2014-06-28T14:16:01.393Z"
+    },
+    {
+        "input": "okay deal",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-28T14:16:16.343Z"
+    },
+    {
+        "input": "i want to be a team manager",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "timestamp": "2014-06-28T14:16:22.688Z"
+    },
+    {
+        "input": "you agree?",
+        "output": [
+            "{\"Query\":\"accept\"}"
+        ],
+        "timestamp": "2014-06-28T14:16:27.956Z"
+    },
+    {
+        "input": "i want 20 %",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+        ],
+        "timestamp": "2014-06-28T14:16:52.246Z"
+    },
+    {
+        "input": "i want to be a fast promotion track",
+        "output": [
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
+        "timestamp": "2014-06-28T14:16:58.087Z"
+    },
+    {
+        "input": "i want to be a team manager",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "timestamp": "2014-06-28T14:17:04.654Z"
+    },
+    {
+        "input": "i don't want a car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+        ],
+        "timestamp": "2014-06-28T14:18:21.582Z"
+    },
+    {
+        "input": "i want 20%",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+        ],
+        "timestamp": "2014-06-28T14:18:26.332Z"
+    },
+    {
+        "input": "i want a fast promotion track",
+        "output": [
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
+        "timestamp": "2014-06-28T14:18:33.177Z"
+    },
+    {
+        "input": "i want to work 8 hours in the day",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+        ],
+        "timestamp": "2014-06-28T14:18:39.278Z"
+    },
+    {
+        "input": "i want 3.150 EGP",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"3,150 EGP\"}}"
+        ],
+        "timestamp": "2014-06-28T14:18:44.390Z"
+    },
+    {
+        "input": "I want to work as a programmer",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+        ],
+        "timestamp": "2014-06-28T14:18:48.277Z"
+    },
+    {
+        "input": "but i need high salary",
+        "output": [
+            "{\"Reject\":\"Salary\"}"
+        ],
+        "timestamp": "2014-06-28T14:18:57.157Z"
+    },
+    {
+        "input": "but i need slow promotion",
+        "output": [
+            "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+            "{\"Reject\":\"Promotion Possibilities\"}"
+        ],
+        "timestamp": "2014-06-28T14:19:11.369Z"
+    },
+    {
+        "input": "and car with my work",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+        ],
+        "timestamp": "2014-06-28T14:19:17.260Z"
+    },
+    {
+        "input": "how many hours",
+        "output": [
+            "{\"Query\":\"Working Hours\"}"
+        ],
+        "timestamp": "2014-06-28T14:19:21.781Z"
+    },
+    {
+        "input": "ok nice to meet you",
+        "output": [
+            "{\"Greet\":true}"
+        ],
+        "timestamp": "2014-06-28T14:19:26.916Z"
+    },
+    {
+        "input": "bye",
+        "output": [
+            "{\"Quit\":true}"
+        ],
+        "timestamp": "2014-06-28T14:19:30.300Z"
+    },
+    {
+        "input": "i want my salary to be 5,400 per month",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"5,400 EGP\"}}"
+        ],
+        "timestamp": "2014-06-28T14:19:50.838Z"
+    },
+    {
+        "input": "team manager",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "timestamp": "2014-06-28T14:19:55.749Z"
+    },
+    {
+        "input": "Hello",
+        "output": [
+            "{\"Greet\":true}"
+        ],
+        "timestamp": "2014-06-28T14:19:57.750Z"
+    },
+    {
+        "input": "what about working hours ",
+        "output": [
+            "{\"Query\":\"Working Hours\"}"
+        ],
+        "timestamp": "2014-06-28T14:20:18.204Z"
+    },
+    {
+        "input": "what about promotion possibilities",
+        "output": [
+            "{\"Query\":\"Promotion Possibilities\"}"
+        ],
+        "timestamp": "2014-06-28T14:20:31.380Z"
+    },
+    {
+        "input": "i'd like to be a team manager in this company ",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "timestamp": "2014-06-28T14:20:41.071Z"
+    },
+    {
+        "input": "what about the salary?",
+        "output": [
+            "{\"Query\":\"Salary\"}"
+        ],
+        "timestamp": "2014-06-28T14:20:58.149Z"
+    },
+    {
+        "input": "what about the promotion ?",
+        "output": [
+            "{\"Query\":\"Promotion Possibilities\"}"
+        ],
+        "timestamp": "2014-06-28T14:21:20.131Z"
+    },
+    {
+        "input": "i want pension 20%",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+        ],
+        "timestamp": "2014-06-28T14:21:26.459Z"
+    },
+    {
+        "input": "ok i'll agree",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-28T14:21:29.859Z"
+    },
+    {
+        "input": "no no i want 9 hours ",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "timestamp": "2014-06-28T14:22:06.051Z"
+    },
+    {
+        "input": "i want to work as a team manager",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "timestamp": "2014-06-28T14:22:11.428Z"
+    },
+    {
+        "input": "what salary",
+        "output": [
+            "{\"Query\":\"Salary\"}"
+        ],
+        "timestamp": "2014-06-28T14:22:43.507Z"
+    },
+    {
+        "input": "i want 9000 egp",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"9,000 EGP\"}}"
+        ],
+        "timestamp": "2014-06-28T14:22:47.627Z"
+    },
+    {
+        "input": "or i want 5400 as you like but with leased car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+            "{\"Offer\":{\"Salary\":\"5,400 EGP\"}}"
+        ],
+        "timestamp": "2014-06-28T14:22:57.486Z"
+    },
+    {
+        "input": "what about the time",
+        "output": [
+            "{\"Query\":\"Working Hours\"}"
+        ],
+        "timestamp": "2014-06-28T14:23:02.826Z"
+    },
+    {
+        "input": "what about a pension fund",
+        "output": [
+            "{\"Query\":\"Pension Fund\"}"
+        ],
+        "timestamp": "2014-06-28T14:23:14.002Z"
+    },
+    {
+        "input": "what about promotion possibilities",
+        "output": [
+            "{\"Query\":\"Promotion Possibilities\"}"
+        ],
+        "timestamp": "2014-06-28T14:23:23.843Z"
+    },
+    {
+        "input": "but i want fast promotion track",
+        "output": [
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
+        "timestamp": "2014-06-28T14:23:30.066Z"
+    },
+    {
+        "input": "hi, nice to meet you ",
+        "output": [
+            "{\"Greet\":true}"
+        ],
+        "timestamp": "2014-06-28T14:23:36.914Z"
+    },
+    {
+        "input": "well you can say 5,400",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"5,400 EGP\"}}"
+        ],
+        "timestamp": "2014-06-28T14:24:28.710Z"
+    },
+    {
+        "input": "this is not negotiable as I didn't ask for much money, so reasonably I will ask for a car   ",
+        "output": [
+            "{\"Insist\":\"Salary\"}",
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+        ],
+        "timestamp": "2014-06-28T14:24:47.355Z"
+    },
+    {
+        "input": "so, I will accept the concept of getting slow promotion ",
+        "output": [
+            "{\"Accept\":\"Promotion Possibilities\"}"
+        ],
+        "timestamp": "2014-06-28T14:25:10.066Z"
+    },
+    {
+        "input": "how about 9 working hours ",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "timestamp": "2014-06-28T14:25:21.955Z"
+    },
+    {
+        "input": "Team Manager",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "timestamp": "2014-06-28T14:25:33.128Z"
+    },
+    {
+        "input": "Oh my God!! Congratulation for me and you have just won a good employee ",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-28T14:25:48.485Z"
+    },
+    {
+        "input": "it was nice to meet you",
+        "output": [
+            "{\"Quit\":true}"
+        ],
+        "timestamp": "2014-06-28T14:25:54.913Z"
+    },
+    {
+        "input": "hi. welcome nice to see u",
+        "output": [
+            "{\"Greet\":true}"
+        ],
+        "timestamp": "2014-06-28T14:26:00.928Z"
+    },
+    {
+        "input": "hello",
+        "output": [
+            "{\"Greet\":true}"
+        ],
+        "timestamp": "2014-06-28T14:26:05.168Z"
+    },
+    {
+        "input": "what about the salary you need?",
+        "output": [
+            "{\"Query\":\"Salary\"}"
+        ],
+        "timestamp": "2014-06-28T14:27:09.112Z"
+    },
+    {
+        "input": "okay, we offer team manager position",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "timestamp": "2014-06-28T14:27:18.521Z"
+    },
+    {
+        "input": "okay you will work for 9 hours per day",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+        ],
+        "timestamp": "2014-06-28T14:27:23.888Z"
+    },
+    {
+        "input": "no in our company its 9 hours",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+            "{\"Reject\":\"Working Hours\"}"
+        ],
+        "timestamp": "2014-06-28T14:27:42.120Z"
+    },
+    {
+        "input": "there is pension fund 10%",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+        ],
+        "timestamp": "2014-06-28T14:27:49.529Z"
+    },
+    {
+        "input": "20%",
+        "output": [
+            "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+        ],
+        "timestamp": "2014-06-28T14:28:07.423Z"
+    },
+    {
+        "input": "but you will get your own car because with this pension fund its without leased  car",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+        ],
+        "timestamp": "2014-06-28T14:28:38.720Z"
+    },
+    {
+        "input": "what is the salary?",
+        "output": [
+            "{\"Query\":\"Salary\"}"
+        ],
+        "timestamp": "2014-06-28T14:28:48.006Z"
+    },
+    {
+        "input": "for your note you will get fast promotion track",
+        "output": [
+            "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+        ],
+        "timestamp": "2014-06-28T14:29:10.142Z"
+    },
+    {
+        "input": "okay with all of this benefits your salary will be 3.150 EGP",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"3,150 EGP\"}}"
+        ],
+        "timestamp": "2014-06-28T14:29:19.430Z"
+    },
+    {
+        "input": "this is your job candidate, how do you do",
+        "output": [
+            "{\"Greet\":true}"
+        ],
+        "timestamp": "2014-06-28T14:29:25.631Z"
+    },
+    {
+        "input": "According to my preferred job description which is team manager , I think 5400 matches MY EXPECTATIONS ",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+            "{\"Offer\":{\"Salary\":\"5,400 EGP\"}}"
+        ],
+        "timestamp": "2014-06-28T14:29:41.240Z"
+    },
+    {
+        "input": "actually it is not my interest. I can work better as a team manager as for my other responsibilities  ",
+        "output": [
+            "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+        ],
+        "timestamp": "2014-06-28T14:29:47.938Z"
+    },
+    {
+        "input": "8 hours are fair for 5400",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"5,400 EGP\"}}",
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+        ],
+        "timestamp": "2014-06-28T14:30:23.472Z"
+    },
+    {
+        "input": "10 hours means a higher salary up to 9000 and I think you can not",
+        "output": [
+            "{\"Offer\":{\"Salary\":\"9,000 EGP\"}}",
+            "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+        ],
+        "timestamp": "2014-06-28T14:30:34.984Z"
+    },
+    {
+        "input": "I have never worked without a car ",
+        "output": [
+            "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+        ],
+        "timestamp": "2014-06-28T14:31:37.358Z"
+    },
+    {
+        "input": "thanks for your time and consideration ..I will send you a thank you email",
+        "output": [
+            "{\"Quit\":true}"
+        ],
+        "timestamp": "2014-06-28T14:32:00.158Z"
+    },
+    {
+        "input": "looking forward to signing the contract ",
+        "output": [
+            "{\"Accept\":\"previous\"}"
+        ],
+        "timestamp": "2014-06-28T14:32:08.253Z"
+    }
+]
+

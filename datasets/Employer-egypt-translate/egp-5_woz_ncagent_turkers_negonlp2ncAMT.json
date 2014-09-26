@@ -1,5 +1,4 @@
 [
-{"input":"hiya","output":[{"Greet":true}],"is_correct":false,"timestamp":"2013-10-08T17:34:49.784Z"},
 {"input":"Will you take 5400?","output":[{"Offer":{"Salary":"5,400 EGP"}}],"is_correct":false,"timestamp":"2013-10-08T19:38:38.413Z"},
 {"input":"Would you agree to team manager?","output":[{"Offer":{"Job Description":"Team Manager"}}],"is_correct":true,"timestamp":"2013-10-08T19:39:36.419Z"},
 {"input":"How about a QA?","output":[{"Offer":{"Job Description":"QA"}}],"is_correct":true,"timestamp":"2013-10-08T19:39:11.761Z"},
@@ -17,7 +16,7 @@
 {"input":"Hello, how are you today?","output":[{"Greet":true}],"is_correct":true,"timestamp":"2013-10-08T21:03:37.140Z"},
 {"input":"I will offer no car and a slow promotion track.","output":[{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Promotion Possibilities":"Slow promotion track"}}],"is_correct":true,"timestamp":"2013-10-08T19:43:54.517Z"},
 {"input":"How about 5400 and 10 hour workdays?","output":[{"Offer":{"Salary":"5,400 EGP"}},{"Offer":{"Working Hours":"10 hours"}}],"is_correct":true,"timestamp":"2013-10-08T21:04:13.304Z"},
-{"input":"90000 is a bit much, how about 5400 and 8 hour workdays?","output":[{"Offer":{"Salary":"5,400 EGP"}},{"Offer":{"Working Hours":"8 hours"}},{"Reject":"Salary"}],"is_correct":false,"timestamp":"2013-10-08T21:04:53.113Z"},
+{"input":"9000 is a bit much, how about 5400 and 8 hour workdays?","output":[{"Offer":{"Salary":"5,400 EGP"}},{"Offer":{"Working Hours":"8 hours"}},{"Reject":"Salary"}],"is_correct":false,"timestamp":"2013-10-08T21:04:53.113Z"},
 {"input":"Done, what about your job? Do you want to be a programmer?","output":[{"Accept":"previous"},{"Offer":{"Job Description":"Programmer"}},{"Query":"Job Description"}],"is_correct":false,"timestamp":"2013-10-08T21:05:47.225Z"},
 {"input":"I can do 10%","output":[{"Offer":{"Pension Fund":"10%"}}],"is_correct":true,"timestamp":"2013-10-08T21:06:10.250Z"},
 {"input":"No leased car and a slow promotion track?","output":[{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Promotion Possibilities":"Slow promotion track"}}],"is_correct":true,"timestamp":"2013-10-08T21:07:00.195Z"},

@@ -4,8 +4,16 @@ This folder contains datasets that we collected during experiments with agents.
 
 They are organized according to the classifier used:
 
+
 * Employer folder - for games where the human played the employer;
 * Candidate folder - for games where the human played the candidate.
+* Employer-egypt-translate - 
+
+
+* Egypt
+* Candidate-egypt-generate-honor - dataset that is used for generation of the agent role with honor additions from Michele, the dataset was adapted from the role of Employer to the role of Candidate.
+* Candidate-egypt-generate-basic - dataset that is used for generation of the agent, sentences are real sentences of the Egypt human vs human games
+* Employer-egypt-translate - translation of the Egypt games that is used in "honor" and "basic" mode, and converted data from Israel were added 
 
 Each folder contains the following files:
 * NegotiationGrammar*.txt - a description of a SCFG (Synchronous Context-Free Grammar) used for generating a single natural-language sentence and its corresponding semantic representation.

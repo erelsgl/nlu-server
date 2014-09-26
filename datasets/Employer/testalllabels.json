@@ -39,7 +39,7 @@
         "input": "fine, but no car",
         "output": [
             "{\"Accept\":\"previous\"}",
-            "{\"Reject\":\"Leased Car\"}}"
+            "{\"Reject\":\"Leased Car\"}"
         ],
         "is_correct": false,
         "timestamp": "2013-10-07T13:40:03.842Z"
