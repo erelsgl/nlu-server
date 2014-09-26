@@ -20,12 +20,29 @@ var DefaultDict = require('defaultdict')
 var Hierarchy = require('../Hierarchy');
 
 var splitJson = Hierarchy.splitJson
+var joinJson = Hierarchy.joinJson
+
 var splitJsonRecursive = Hierarchy.splitJsonRecursive
 var splitPartEqually = Hierarchy.splitPartEqually
 var splitPartEqually1 = Hierarchy.splitPartEqually1
 
-var joinJson = Hierarchy.joinJson
 var joinJsonRecursive = Hierarchy.joinJsonRecursive
+
+
+var ValueTransition =
+{
+	"8 hours": "8",
+	"9 hours": "9",
+	"10 hours": "10",
+	"7,000 NIS": "7000",
+	"12,000 NIS": "12000",
+	"20,000 NIS": "20000",
+	"0%": "0%",
+	"10%": "10%",
+	"20%": "20%",
+	"Fast promotion track": "fast",
+	"Slow promotion track": "slow"
+} 
 
 
 semlang = [ '{"Reject":"previous"}',
@@ -84,6 +101,167 @@ semlang = [ '{"Reject":"previous"}',
   '{"Offer":{"Pension Fund":"No agreement"}}',
   '{"Insist":"Leased Car"}' ]
 
+
+// semlang = [ '{"Reject":"previous"}',
+//   '{"Append":"previous"}',
+//   '{"Offer":{"Leased Car":"With leased car"}}',
+//   '{"Accept":{"Leased Car":"With leased car"}}',
+//   '{"Reject":{"Leased Car":"With leased car"}}',
+//   '{"Reject":"Salary"}',
+//   '{"Offer":{"Working Hours":"9 hours"}}',
+//   '{"Accept":{"Working Hours":"9 hours"}}',
+//   '{"Reject":{"Working Hours":"9 hours"}}',
+//   '{"Insist":"Job Description"}',
+//   '{"Offer":{"Job Description":"Programmer"}}',
+//   '{"Accept":{"Job Description":"Programmer"}}',
+//   '{"Reject":{"Job Description":"Programmer"}}',
+//   '{"Offer":{"Working Hours":"10 hours"}}',
+//   '{"Accept":{"Working Hours":"10 hours"}}',
+//   '{"Reject":{"Working Hours":"10 hours"}}',
+//   '{"Reject":"Leased Car"}',
+//   '{"Offer":{"Leased Car":"No agreement"}}',
+//   '{"Offer":{"Leased Car":"Without leased car"}}',
+//   '{"Accept":{"Leased Car":"Without leased car"}}',
+//   '{"Reject":{"Leased Car":"Without leased car"}}',
+//   '{"Accept":"Salary"}',
+//   '{"Insist":"Working Hours"}',
+//   '{"Offer":{"Promotion Possibilities":"Slow promotion track"}}',
+//   '{"Accept":{"Promotion Possibilities":"Slow promotion track"}}',
+//   '{"Reject":{"Promotion Possibilities":"Slow promotion track"}}',
+//   '{"Accept":"previous"}',
+//   '{"Offer":{"Working Hours":"8 hours"}}',
+//   '{"Accept":{"Working Hours":"8 hours"}}',
+//   '{"Reject":{"Working Hours":"8 hours"}}',
+//   '{"Offer":{"Job Description":"Project Manager"}}',
+//   '{"Accept":{"Job Description":"Project Manager"}}',
+//   '{"Reject":{"Job Description":"Project Manager"}}',
+//   '{"Offer":{"Salary":"7,000 NIS"}}',
+//   '{"Accept":{"Salary":"7,000 NIS"}}',
+//   '{"Reject":{"Salary":"7,000 NIS"}}',
+//   '{"Offer":{"Salary":"10,000 NIS"}}',
+//   '{"Accept":{"Salary":"10,000 NIS"}}',
+//   '{"Reject":{"Salary":"10,000 NIS"}}',
+//   '{"Offer":{"Pension Fund":"10%"}}',
+//   '{"Accept":{"Pension Fund":"10%"}}',
+//   '{"Reject":{"Pension Fund":"10%"}}',
+//   '{"Offer":{"Promotion Possibilities":"Fast promotion track"}}',
+//   '{"Accept":{"Promotion Possibilities":"Fast promotion track"}}',
+//   '{"Reject":{"Promotion Possibilities":"Fast promotion track"}}',
+//   '{"Offer":{"Salary":"12,000 NIS"}}',
+//   '{"Accept":{"Salary":"12,000 NIS"}}',
+//   '{"Reject":{"Salary":"12,000 NIS"}}',
+//   '{"Offer":{"Pension Fund":"0%"}}',
+//   '{"Accept":{"Pension Fund":"0%"}}',
+//   '{"Reject":{"Pension Fund":"0%"}}',
+//   '{"Offer":{"Job Description":"QA"}}',
+//   '{"Accept":{"Job Description":"QA"}}',
+//   '{"Reject":{"Job Description":"QA"}}',
+//   '{"Query":"accept"}',
+//   '{"Greet":true}',
+//   '{"Offer":{"Pension Fund":"20%"}}',
+//   '{"Accept":{"Pension Fund":"20%"}}',
+//   '{"Reject":{"Pension Fund":"20%"}}',
+//   '{"Offer":{"Job Description":"Team Manager"}}',
+//   '{"Accept":{"Job Description":"Team Manager"}}',
+//   '{"Reject":{"Job Description":"Team Manager"}}',
+//   '{"Quit":true}',
+//   '{"Query":"issues"}',
+//   '{"Query":"Salary"}',
+//   '{"Query":"compromise"}',
+//   '{"Query":"Job Description"}',
+//   '{"Reject":"Working Hours"}',
+//   '{"Accept":"Leased Car"}',
+//   '{"Accept":"Pension Fund"}',
+//   '{"Reject":"Pension Fund"}',
+//   '{"Insist":"previous"}',
+//   '{"Insist":"Salary"}',
+//   '{"Query":"Leased Car"}',
+//   '{"Reject":"Job Description"}',
+//   '{"Reject":"Promotion Possibilities"}',
+//   '{"Offer":{"Salary":"20,000 NIS"}}',
+//   '{"Accept":{"Salary":"20,000 NIS"}}',
+//   '{"Reject":{"Salary":"20,000 NIS"}}',
+//   '{"Accept":"Working Hours"}',
+//   '{"Accept":"Job Description"}',
+//   '{"Insist":"Promotion Possibilities"}',
+//   '{"Query":"Promotion Possibilities"}',
+//   // '{"Offer":{"Salary":"10,000 NIS"}}',
+//   '{"Query":"Working Hours"}',
+//   '{"Insist":"Pension Fund"}',
+//   '{"Query":"bid"}',
+//   '{"Accept":"Promotion Possibilities"}',
+//   '{"Query":"Pension Fund"}',
+//   '{"Offer":{"Pension Fund":"No agreement"}}',
+//   '{"Insist":"Leased Car"}' ]
+
+newsemlang = [ '{"Reject":null}',
+  '{"Append":null}',
+  '{"Offer":{"Leased Car":"With leased car"}}',
+  '{"Reject":"Salary"}',
+  '{"Reject":"Leased Car"}',
+  '{"Offer":{"Leased Car":"With leased car"}}',
+  '{"Offer":{"Working Hours":"9 hours"}}',
+  '{"Insist":"Job Description"}',
+  '{"Offer":{"Job Description":"Programmer"}}',
+  '{"Offer":{"Working Hours":"10 hours"}}',
+  '{"Offer":{"Leased Car":"No agreement"}}',
+  '{"Offer":{"Leased Car":"Without leased car"}}',
+  '{"Accept":null}',
+  '{"Accept":"Salary"}',
+  '{"Insist":"Working Hours"}',
+  '{"Offer":{"Promotion Possibilities":"Slow promotion track"}}',
+  '{"Offer":{"Working Hours":"8 hours"}}',
+  '{"Offer":{"Job Description":"Project Manager"}}',
+  '{"Offer":{"Salary":"7,000 NIS"}}',
+  '{"Offer":{"Salary":"10,000 NIS"}}',
+  '{"Offer":{"Pension Fund":"10%"}}',
+  '{"Offer":{"Promotion Possibilities":"Fast promotion track"}}',
+  '{"Offer":{"Salary":"12,000 NIS"}}',
+  '{"Offer":{"Pension Fund":"0%"}}',
+  '{"Offer":{"Job Description":"QA"}}',
+  '{"Query":"accept"}',
+  '{"Greet":null}',
+  '{"Offer":{"Pension Fund":"20%"}}',
+  '{"Offer":{"Job Description":"Team Manager"}}',
+  '{"Quit":null}',
+  '{"Query":"issues"}',
+  '{"Query":"Salary"}',
+  '{"Query":"compromise"}',
+  '{"Query":"Job Description"}',
+  '{"Reject":"Working Hours"}',
+  '{"Accept":"Leased Car"}',
+  '{"Accept":"Pension Fund"}',
+  '{"Reject":"Pension Fund"}',
+  '{"Insist":"previous"}',
+  '{"Insist":"Salary"}',
+  '{"Query":"Leased Car"}',
+  '{"Reject":"Job Description"}',
+  '{"Reject":"Promotion Possibilities"}',
+  '{"Offer":{"Salary":"20,000 NIS"}}',
+  '{"Accept":"Working Hours"}',
+  '{"Accept":"Job Description"}',
+  '{"Insist":"Promotion Possibilities"}',
+  '{"Query":"Promotion Possibilities"}',
+  // '{"Offer":{"Salary":"10,000 NIS"}}',
+  '{"Query":"Working Hours"}',
+  '{"Insist":"Pension Fund"}',
+  '{"Query":"bid"}',
+  '{"Accept":"Promotion Possibilities"}',
+  '{"Query":"Pension Fund"}',
+  '{"Offer":{"Pension Fund":"No agreement"}}',
+  '{"Insist":"Leased Car"}' ]
+
+
+Itents = ['Offer', 'Accept', 'Reject', 'Insist', 'QueryYN', 'QueryWH']
+IntentsSingle = ['Greet', 'Quit']
+Attributes = ['Salary', 'Pension Fund', 'Working Hours', 'Promotion Possibilities', 'Job Description', 'Leased Car']
+Values = {'Salary': ['7000','10000','12000'],
+		  'Pension Fund': ['10','15','20'],
+		  'Promotion Possibilities': ['fast','slow'],
+		  'Working Hours': ['8','9','10'],
+		  'Job description': ['QA','Programmer','Team Manager','Project Manager']
+		}
+
 labeltree = { Offer: 
    { Salary: { '12,000 NIS': {}, '7,000 NIS': {}, '20,000 NIS': {} },
      'Job Description': 
@@ -137,6 +315,11 @@ labeltree = { Offer:
   Append: { previous: {} },
   Quit: { true: {} } }
 
+function returnValues()
+{
+
+}
+
 function treatstring(num, str, ind)
 {
 	if (num == 0) return num
@@ -165,7 +348,9 @@ function treatstring(num, str, ind)
 
 	return num
 }
-
+// { sentence: 'I said without leased car',
+    // input: 'without leased car',
+    // output: 'Without leased car' },
 function convert_to_train(data)
 {
 	var newdataset = []
@@ -383,11 +568,38 @@ function sentenceStem(sentence)
 	return 	sentenceout
 }
 
+
+function translateLabel(label)
+{
+var lablist = splitJson(label)
+if (lablist.length == 3 )
+	if (lablist[2] in ValueTransition)
+		{
+		lablist[2] = ValueTransition[lablist[2]]
+		return Hierarchy.joinJson(lablist)
+		}
+return label
+}
+
 function retrievelabels()
 {
 	lis = []
 	_.each(semlang, function(value, key, list){ 
 		lablist = splitJson(value)
+		_.each(lablist, function(labitem, key, list){ 
+			lis.push(labitem)
+		}, this)
+	}, this)
+	return _.uniq(lis)
+}
+
+function retrievelabelsbytypes()
+{
+	lis = []
+	_.each(newsemlang, function(value, key, list){ 
+		lablist = splitJson(value)
+		console.log(lablist)
+		process.exit(0)
 		_.each(lablist, function(labitem, key, list){ 
 			lis.push(labitem)
 		}, this)
@@ -691,6 +903,9 @@ function aggreate_similar(list)
 	return clean
 }
 
+// divide dataset to 
+// - where output is just one labels
+// - where output is more than one label 
 function dividedataset(dataset)
 {
 	var datasetd = {'one':[], 'two':[]}
@@ -832,29 +1047,108 @@ lis = {}
 	return lis
 }
 
-function aggregate_rilesbased(classes, classifier, parts, explanations, original)
+function aggregate_rilesbased(classes, classifier, parts, explanations, original, classifier, initial)
 {
+	var rules = require("../research/rule-based/rules.js")
 
+  console.log(initial)
+  console.log(original)
 
-var lis  = getlabelhier()
-	console.log(lis)
-	process.exit(0)
-
-// retrievelabels()	
 	console.log(parts)
-	console.log(explanations)
-	console.log()
-	process.exit(0)
+	var data = rules.findData(initial)
+
+  console.log(JSON.stringify(data, null, 4))
+	explanations[0] = aggreate_similar(explanations[0])
+  explanations[1] = data[0]
+  explanations[2] = data[1]
+  console.log(JSON.stringify(explanations, null, 4))
+
+  var clas = []
+
+	_.each(explanations[2], function(value, key, list){
+    clas.push([[],[],[value[0]]])
+  })
+  _.each(explanations[0], function(intent, key, list){ 
+    if (intent[0] != null)
+      clas.push([[intent[0]],[],[]])
+
+    // _.each(explanations[1], function(attr, key, list){ 
+      // if ((intent[2][0]-1<=value[2][0])&&(intent[2][1]+1>=value[2][1]))
+      // if ((intent[2][0]<=value[2][0])&&(intent[2][1]>=value[2][1]))
+      // if (((intent[2][0]<=attr[2][0])&&(intent[2][1]>=attr[2][0])) ||
+        // ((intent[2][0]<=attr[2][1])&&(intent[2][1]>=attr[2][1]))
+        // )
+        // {
+        // clas.push([[intent[0]],[attr[0]], []])
+        // }
+    // }, this)
+    
+    _.each(explanations[2], function(value, key, list){ 
+      // if ((intent[2][0]-1<=value[2][0])&&(intent[2][1]+1>=value[2][1]))
+      if ((intent[2][0]<=value[2][0])&&(intent[2][1]>=value[2][1]))
+        {
+        if ((intent[0]!=null)&&(value[0]!=null))
+        clas.push([[intent[0]],[], [value[0]]])
+        }
+    }, this)
+
+    _.each(explanations[1], function(attr, key, list){ 
+      // if ((intent[2][0]-1<=attr[2][0])&&(intent[2][1]+1>=attr[2][1]))
+      if ((intent[2][0]<=attr[2][0])&&(intent[2][1]>=attr[2][1]))
+        if ((intent[0]!=null)&&(attr[0]!=null))
+          clas.push([[intent[0]],[attr[0]], []])
+
+      _.each(explanations[2], function(value, key, list){ 
+        // if ((attr[2][0]-1<=value[2][0])&&(attr[2][1]+1>=value[2][1])&&
+          // (intent[2][0]-1<=attr[2][0])&&(intent[2][1]+1>=attr[2][1]))
+        if ((attr[2][0]<=value[2][0])&&(attr[2][1]>=value[2][1])&&
+          (intent[2][0]<=attr[2][0])&&(intent[2][1]>=attr[2][1]))
+          if ((intent[0]!=null)&&(attr[0]!=null)&&(value[0]!=null))
+
+            clas.push([[intent[0]],[attr[0]], [value[0]]])
+      }, this)
+    }, this)
+        
+  }, this)
+
+  // console.log(clas)
+  // process.exit(0)
+  
+  var js = []
+  _.each(clas, function(lab, key, list){ 
+    // if (completition)
+      // {
+      var res = resolve_emptiness(lab)
+      js = js.concat(generate_possible_labels(res))
+      // }
+      // console.log(js)
+    // else
+      // js = js.concat(generate_possible_labels((lab)))
+
+  }, this)
 
 
-	"a10,000".match(/10,000/)
+  console.log(_.uniq(js))
+  // console.log()
+  // process.exit(0)
 
+  // console.log("composite label:")
+  // console.log(JSON.stringify(_.uniq(js), null, 4))
+  // console.log("gold composite label:")
+  // console.log(JSON.stringify(original, null, 4))
+  
+  return _.uniq(js)
 }
-
+/*
+INPUT
+OUTPUT
+*/
 function aggregate_sagae(classes, classifier, parts, explanations, original, completition)
 {
 	var clas = []
 
+
+	
 	explanations[0] = aggreate_similar(explanations[0])
 	// explanations[0] = filterreject(explanations[0])
 	// explanations[2] = filterreject(explanations[2])
@@ -1206,6 +1500,9 @@ function resolve_emptiness(label)
 		if (amb.length==1)
 				label = join_labels(label,amb[0])
 	}, this)
+
+  if ((label[0]=='Accept')||(label[0]=='Reject'))
+    label[2].push('previous')
 
 	_(3).times(function(n){
 		label[n] = _.uniq(label[n])
@@ -1863,5 +2160,7 @@ module.exports = {
 	convert_to_test:convert_to_test,
 	convert_to_train:convert_to_train,
 	extractactual:extractactual,
-	treatstring:treatstring
+	treatstring:treatstring,
+	retrievelabelsbytypes:retrievelabelsbytypes,
+	translateLabel:translateLabel
 }
