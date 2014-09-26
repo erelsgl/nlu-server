@@ -210,6 +210,7 @@ describe('Bars utilities', function() {
 	})
 
 	it('correctly generate labels', function() {
+		// _.isEqual(bars.generate_possible_labels([ [ 'Accept' ], [''], [ '' ] ]), [ '{"Accept":"previous"}' ]).should.equal(true)
 		_.isEqual(bars.generate_possible_labels([ [ 'Accept' ], [''], [ 'previous' ] ]), [ '{"Accept":"previous"}' ]).should.equal(true)
 		_.isEqual(bars.generate_possible_labels([['Offer'],['Salary'],['10,000 NIS']]),['{"Offer":{"Salary":"10,000 NIS"}}'])
 		_.isEqual(bars.generate_possible_labels([['Offer'],['Salary'],['20,000 NIS']]), [ '{"Offer":{"Salary":"20,000 NIS"}}' ]).should.equal(true)
@@ -222,11 +223,17 @@ describe('Bars utilities', function() {
 	})
 
 	it('correctly resolve emptiness', function() {
+
+		// console.log(bars.resolve_emptiness([['Reject'],[],[]]))
+		// process.exit(0)
+
+		_.isEqual(bars.resolve_emptiness([['Reject'],[],[]]),[['Reject'],[],['previous']]).should.equal(true)
+		_.isEqual(bars.resolve_emptiness([['Accept'],[],[]]),[['Accept'],[],['previous']]).should.equal(true)
 		_.isEqual(bars.resolve_emptiness([[],[],['Without leased car']]),[['Offer'],['Leased Car'],['Without leased car']])
 		_.isEqual(bars.resolve_emptiness([['Greet'],[],[]]), [ ['Greet' ],[  ],[ true ] ]).should.equal(true)
 		_.isEqual(bars.resolve_emptiness([['Accept'],[],['20,000 NIS', 'QA']]), [ [ 'Accept', 'Offer' ],[ 'Salary', 'Job Description' ],[ '20,000 NIS', 'QA' ] ]).should.equal(true)
 		_.isEqual(bars.resolve_emptiness([[],[],['20,000 NIS']]), [['Offer'],['Salary'],['20,000 NIS']]).should.equal(true)
-		_.isEqual(bars.resolve_emptiness([['Accept'],[],[]]), [['Accept'],[],['previous']]).should.equal(false)
+		// _.isEqual(bars.resolve_emptiness([['Accept'],[],[]]), [['Accept'],[],['previous']]).should.equal(false)
 		_.isEqual(bars.resolve_emptiness([['Insist'],[],[]]), [['Insist'],[],['previous']]).should.equal(false)
 		_.isEqual(bars.resolve_emptiness([['Offer'],[],[]]), [['Offer'],[],['previous']]).should.equal(false)
 
