@@ -3,6 +3,7 @@
 , {"source": "don't", "target": "do not"}
 , {"source": "doesn't", "target": "does not"}
 , {"source": "doesn't", "target": "does not"}
+, {"source": "hrs", "target": "hours"}
 , {"source": "didn't", "target": "did not"}
 , {"source": "wouldn't", "target": "would not"}
 , {"source": "shouldn't", "target": "should not"}
@@ -10,6 +11,7 @@
 , {"source": "cannot", "target": "can not"}
 , {"source": "there'st", "target": "there is"}
 , {"source": "that's", "target": "that is"}
+, {"source": "let's", "target": "let us"}
 , {"source": "it's", "target": "it is"}
 , {"source": "kilograms", "target": "kg"}
 , {"source": "kilogram", "target": "kg"}
