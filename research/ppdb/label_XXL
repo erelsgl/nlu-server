@@ -1,0 +1,254 @@
+[
+    {
+        "X": "accept",
+        "Y": "greet",
+        "X best fitted from PPDB to Y": "greet",
+        "X part to compare": [
+            "greet"
+        ],
+        "Y part to compare": [
+            "greet"
+        ],
+        "score": 1
+    },
+    {
+        "X": "accept",
+        "Y": "reject",
+        "X best fitted from PPDB to Y": "reject",
+        "X part to compare": [
+            "reject"
+        ],
+        "Y part to compare": [
+            "reject"
+        ],
+        "score": 1
+    },
+    {
+        "X": "reject",
+        "Y": "insist",
+        "X best fitted from PPDB to Y": "resist",
+        "X part to compare": [
+            "resist"
+        ],
+        "Y part to compare": [
+            "insist"
+        ],
+        "score": 0.6
+    },
+    {
+        "X": "offer",
+        "Y": "insist",
+        "X best fitted from PPDB to Y": "assist",
+        "X part to compare": [
+            "assist"
+        ],
+        "Y part to compare": [
+            "insist"
+        ],
+        "score": 0.6
+    },
+    {
+        "X": "reject",
+        "Y": "greet",
+        "X best fitted from PPDB to Y": "agree with",
+        "X part to compare": [
+            "agree"
+        ],
+        "Y part to compare": [
+            "greet"
+        ],
+        "score": 0.5
+    },
+    {
+        "X": "accept",
+        "Y": "quit",
+        "X best fitted from PPDB to Y": "fit in",
+        "X part to compare": [
+            "fit"
+        ],
+        "Y part to compare": [
+            "quit"
+        ],
+        "score": 0.4
+    },
+    {
+        "X": "offer",
+        "Y": "query",
+        "X best fitted from PPDB to Y": "the delivery",
+        "X part to compare": [
+            "delivery"
+        ],
+        "Y part to compare": [
+            "query"
+        ],
+        "score": 0.36363636363636365
+    },
+    {
+        "X": "insist",
+        "Y": "query",
+        "X best fitted from PPDB to Y": "try harder",
+        "X part to compare": [
+            "try"
+        ],
+        "Y part to compare": [
+            "query"
+        ],
+        "score": 0.3333333333333333
+    },
+    {
+        "X": "reject",
+        "Y": "quit",
+        "X best fitted from PPDB to Y": "emit",
+        "X part to compare": [
+            "emit"
+        ],
+        "Y part to compare": [
+            "quit"
+        ],
+        "score": 0.3333333333333333
+    },
+    {
+        "X": "offer",
+        "Y": "greet",
+        "X best fitted from PPDB to Y": "get you",
+        "X part to compare": [
+            "get"
+        ],
+        "Y part to compare": [
+            "greet"
+        ],
+        "score": 0.3333333333333333
+    },
+    {
+        "X": "query",
+        "Y": "quit",
+        "X best fitted from PPDB to Y": "visit",
+        "X part to compare": [
+            "visit"
+        ],
+        "Y part to compare": [
+            "quit"
+        ],
+        "score": 0.2857142857142857
+    },
+    {
+        "X": "offer",
+        "Y": "quit",
+        "X best fitted from PPDB to Y": "equip",
+        "X part to compare": [
+            "equip"
+        ],
+        "Y part to compare": [
+            "quit"
+        ],
+        "score": 0.2857142857142857
+    },
+    {
+        "X": "accept",
+        "Y": "query",
+        "X best fitted from PPDB to Y": "carry out",
+        "X part to compare": [
+            "carry"
+        ],
+        "Y part to compare": [
+            "query"
+        ],
+        "score": 0.25
+    },
+    {
+        "X": "accept",
+        "Y": "insist",
+        "X best fitted from PPDB to Y": "host",
+        "X part to compare": [
+            "host"
+        ],
+        "Y part to compare": [
+            "insist"
+        ],
+        "score": 0.25
+    },
+    {
+        "X": "insist",
+        "Y": "quit",
+        "X best fitted from PPDB to Y": "require",
+        "X part to compare": [
+            "require"
+        ],
+        "Y part to compare": [
+            "quit"
+        ],
+        "score": 0.2222222222222222
+    },
+    {
+        "X": "offer",
+        "Y": "reject",
+        "X best fitted from PPDB to Y": "conduct",
+        "X part to compare": [
+            "conduct"
+        ],
+        "Y part to compare": [
+            "reject"
+        ],
+        "score": 0.18181818181818182
+    },
+    {
+        "X": "offer",
+        "Y": "accept",
+        "X best fitted from PPDB to Y": "an account",
+        "X part to compare": [
+            "account"
+        ],
+        "Y part to compare": [
+            "accept"
+        ],
+        "score": 0.18181818181818182
+    },
+    {
+        "X": "greet",
+        "Y": "quit",
+        "X best fitted from PPDB to Y": "greet",
+        "X part to compare": [
+            "greet"
+        ],
+        "Y part to compare": [
+            "quit"
+        ],
+        "score": 0
+    },
+    {
+        "X": "query",
+        "Y": "greet",
+        "X best fitted from PPDB to Y": "query",
+        "X part to compare": [
+            "query"
+        ],
+        "Y part to compare": [
+            "greet"
+        ],
+        "score": 0
+    },
+    {
+        "X": "insist",
+        "Y": "greet",
+        "X best fitted from PPDB to Y": "insist",
+        "X part to compare": [
+            "insist"
+        ],
+        "Y part to compare": [
+            "greet"
+        ],
+        "score": 0
+    },
+    {
+        "X": "reject",
+        "Y": "query",
+        "X best fitted from PPDB to Y": "reject",
+        "X part to compare": [
+            "reject"
+        ],
+        "Y part to compare": [
+            "query"
+        ],
+        "score": 0
+    }
+]

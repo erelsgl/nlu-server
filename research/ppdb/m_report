@@ -1,0 +1,40 @@
+seed
+[I offer you]
+ppdb
+[ 'is offering',
+  'the supply',
+  'supply side',
+  'are offering',
+  'provide',
+  'be offered',
+  'buy you',
+  'your help',
+  'you people',
+  'you , sir ,',
+  'you guys',
+  'you got',
+  'you two',
+  'you here',
+  'you \'re',
+  'you yourself' ]
+TP6
+FP14
+FN82
+FP list
+[ 'the supply',
+  'supply side',
+  'are offering',
+  'provide',
+  'buy ',
+  'r help',
+  ' people',
+  ' , sir ,',
+  ' guys',
+  ' got',
+  ' two',
+  ' here',
+  ' \'re',
+  ' yourself' ]
+Precision 0.3
+Recall 0.06818181818181818
+F1 0.11111111111111109

@@ -1,0 +1,2656 @@
+[ 'i think',
+  'you will start',
+  'i offer',
+  'i will accept',
+  'we agreed',
+  'you can work for',
+  'you can be',
+  'i\'ll agree',
+  'we already agreed',
+  'so we agreed',
+  'i want to give',
+  'why not an',
+  'i want you to be a',
+  'can you give',
+  'be',
+  'in this job',
+  'you get',
+  'the maximum is',
+  'i can give you',
+  'you can\'t get' ]
+{
+    "0": [
+        {
+            "X": "i can give you",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "i can give you",
+            "X part to compare": [
+                "give"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "the maximum is",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "the maximum is",
+            "X part to compare": [
+                "maximum",
+                "is"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "the maximum is",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "the maximum is",
+            "X part to compare": [
+                "maximum",
+                "is"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you get",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "you get",
+            "X part to compare": [
+                "get"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you get",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "you get",
+            "X part to compare": [
+                "get"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "in this job",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "in this job",
+            "X part to compare": [
+                "job"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "in this job",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "in this job",
+            "X part to compare": [
+                "job"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "in this job",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "in this job",
+            "X part to compare": [
+                "job"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "in this job",
+            "Y": "you get",
+            "X best fitted from PPDB to Y": "in this job",
+            "X part to compare": [
+                "job"
+            ],
+            "Y part to compare": [
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "be",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "be",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "be",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "be",
+            "Y": "you get",
+            "X best fitted from PPDB to Y": "be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "be",
+            "Y": "in this job",
+            "X best fitted from PPDB to Y": "be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "job"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "can you give",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "can you give",
+            "X part to compare": [
+                "give"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "can you give",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "can you give",
+            "X part to compare": [
+                "give"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "can you give",
+            "Y": "you get",
+            "X best fitted from PPDB to Y": "can you give",
+            "X part to compare": [
+                "give"
+            ],
+            "Y part to compare": [
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "can you give",
+            "Y": "in this job",
+            "X best fitted from PPDB to Y": "can you give",
+            "X part to compare": [
+                "give"
+            ],
+            "Y part to compare": [
+                "job"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i want you to be a",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "i want you to be a",
+            "X part to compare": [
+                "want",
+                "be"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i want you to be a",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "i want you to be a",
+            "X part to compare": [
+                "want",
+                "be"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i want you to be a",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "i want you to be a",
+            "X part to compare": [
+                "want",
+                "be"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i want you to be a",
+            "Y": "you get",
+            "X best fitted from PPDB to Y": "i want you to be a",
+            "X part to compare": [
+                "want",
+                "be"
+            ],
+            "Y part to compare": [
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i want you to be a",
+            "Y": "in this job",
+            "X best fitted from PPDB to Y": "i want you to be a",
+            "X part to compare": [
+                "want",
+                "be"
+            ],
+            "Y part to compare": [
+                "job"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i want you to be a",
+            "Y": "can you give",
+            "X best fitted from PPDB to Y": "i want you to be a",
+            "X part to compare": [
+                "want",
+                "be"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "why not an",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "why not an",
+            "X part to compare": [
+                "not"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "why not an",
+            "Y": "in this job",
+            "X best fitted from PPDB to Y": "why not an",
+            "X part to compare": [
+                "not"
+            ],
+            "Y part to compare": [
+                "job"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "why not an",
+            "Y": "be",
+            "X best fitted from PPDB to Y": "why not an",
+            "X part to compare": [
+                "not"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "why not an",
+            "Y": "can you give",
+            "X best fitted from PPDB to Y": "why not an",
+            "X part to compare": [
+                "not"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "why not an",
+            "Y": "i want you to be a",
+            "X best fitted from PPDB to Y": "why not an",
+            "X part to compare": [
+                "not"
+            ],
+            "Y part to compare": [
+                "want",
+                "be"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i want to give",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "i want to give",
+            "X part to compare": [
+                "want",
+                "give"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i want to give",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "i want to give",
+            "X part to compare": [
+                "want",
+                "give"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i want to give",
+            "Y": "you get",
+            "X best fitted from PPDB to Y": "i want to give",
+            "X part to compare": [
+                "want",
+                "give"
+            ],
+            "Y part to compare": [
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i want to give",
+            "Y": "in this job",
+            "X best fitted from PPDB to Y": "i want to give",
+            "X part to compare": [
+                "want",
+                "give"
+            ],
+            "Y part to compare": [
+                "job"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i want to give",
+            "Y": "why not an",
+            "X best fitted from PPDB to Y": "i want to give",
+            "X part to compare": [
+                "want",
+                "give"
+            ],
+            "Y part to compare": [
+                "not"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "so we agreed",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "so we agreed",
+            "X part to compare": [
+                "agreed"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "so we agreed",
+            "Y": "you get",
+            "X best fitted from PPDB to Y": "so we agreed",
+            "X part to compare": [
+                "agreed"
+            ],
+            "Y part to compare": [
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "so we agreed",
+            "Y": "in this job",
+            "X best fitted from PPDB to Y": "so we agreed",
+            "X part to compare": [
+                "agreed"
+            ],
+            "Y part to compare": [
+                "job"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "so we agreed",
+            "Y": "be",
+            "X best fitted from PPDB to Y": "so we agreed",
+            "X part to compare": [
+                "agreed"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "so we agreed",
+            "Y": "why not an",
+            "X best fitted from PPDB to Y": "so we agreed",
+            "X part to compare": [
+                "agreed"
+            ],
+            "Y part to compare": [
+                "not"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "we already agreed",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "we already agreed",
+            "X part to compare": [
+                "already",
+                "agreed"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "we already agreed",
+            "Y": "you get",
+            "X best fitted from PPDB to Y": "we already agreed",
+            "X part to compare": [
+                "already",
+                "agreed"
+            ],
+            "Y part to compare": [
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "we already agreed",
+            "Y": "in this job",
+            "X best fitted from PPDB to Y": "we already agreed",
+            "X part to compare": [
+                "already",
+                "agreed"
+            ],
+            "Y part to compare": [
+                "job"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "we already agreed",
+            "Y": "be",
+            "X best fitted from PPDB to Y": "we already agreed",
+            "X part to compare": [
+                "already",
+                "agreed"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "we already agreed",
+            "Y": "why not an",
+            "X best fitted from PPDB to Y": "we already agreed",
+            "X part to compare": [
+                "already",
+                "agreed"
+            ],
+            "Y part to compare": [
+                "not"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i'll agree",
+            "Y": "in this job",
+            "X best fitted from PPDB to Y": "i'll agree",
+            "X part to compare": [
+                "agree"
+            ],
+            "Y part to compare": [
+                "job"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i'll agree",
+            "Y": "why not an",
+            "X best fitted from PPDB to Y": "i'll agree",
+            "X part to compare": [
+                "agree"
+            ],
+            "Y part to compare": [
+                "not"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you can be",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "you can be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you can be",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "you can be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you can be",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "you can be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you can be",
+            "Y": "you get",
+            "X best fitted from PPDB to Y": "you can be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you can be",
+            "Y": "in this job",
+            "X best fitted from PPDB to Y": "you can be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "job"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you can be",
+            "Y": "can you give",
+            "X best fitted from PPDB to Y": "you can be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you can be",
+            "Y": "why not an",
+            "X best fitted from PPDB to Y": "you can be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "not"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you can be",
+            "Y": "i want to give",
+            "X best fitted from PPDB to Y": "you can be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "want",
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you can be",
+            "Y": "so we agreed",
+            "X best fitted from PPDB to Y": "you can be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "agreed"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you can be",
+            "Y": "we already agreed",
+            "X best fitted from PPDB to Y": "you can be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "already",
+                "agreed"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you can be",
+            "Y": "i'll agree",
+            "X best fitted from PPDB to Y": "you can be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "agree"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you can work for",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "you can work for",
+            "X part to compare": [
+                "work"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you can work for",
+            "Y": "can you give",
+            "X best fitted from PPDB to Y": "you can work for",
+            "X part to compare": [
+                "work"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you can work for",
+            "Y": "why not an",
+            "X best fitted from PPDB to Y": "you can work for",
+            "X part to compare": [
+                "work"
+            ],
+            "Y part to compare": [
+                "not"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you can work for",
+            "Y": "i want to give",
+            "X best fitted from PPDB to Y": "you can work for",
+            "X part to compare": [
+                "work"
+            ],
+            "Y part to compare": [
+                "want",
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you can work for",
+            "Y": "i'll agree",
+            "X best fitted from PPDB to Y": "you can work for",
+            "X part to compare": [
+                "work"
+            ],
+            "Y part to compare": [
+                "agree"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "we agreed",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "we agreed",
+            "X part to compare": [
+                "agreed"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "we agreed",
+            "Y": "you get",
+            "X best fitted from PPDB to Y": "we agreed",
+            "X part to compare": [
+                "agreed"
+            ],
+            "Y part to compare": [
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "we agreed",
+            "Y": "in this job",
+            "X best fitted from PPDB to Y": "we agreed",
+            "X part to compare": [
+                "agreed"
+            ],
+            "Y part to compare": [
+                "job"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "we agreed",
+            "Y": "be",
+            "X best fitted from PPDB to Y": "we agreed",
+            "X part to compare": [
+                "agreed"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "we agreed",
+            "Y": "why not an",
+            "X best fitted from PPDB to Y": "we agreed",
+            "X part to compare": [
+                "agreed"
+            ],
+            "Y part to compare": [
+                "not"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "we agreed",
+            "Y": "you can be",
+            "X best fitted from PPDB to Y": "we agreed",
+            "X part to compare": [
+                "agreed"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "we agreed",
+            "Y": "you can work for",
+            "X best fitted from PPDB to Y": "we agreed",
+            "X part to compare": [
+                "agreed"
+            ],
+            "Y part to compare": [
+                "work"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i will accept",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "i will accept",
+            "X part to compare": [
+                "accept"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i will accept",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "i will accept",
+            "X part to compare": [
+                "accept"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i will accept",
+            "Y": "you get",
+            "X best fitted from PPDB to Y": "i will accept",
+            "X part to compare": [
+                "accept"
+            ],
+            "Y part to compare": [
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i will accept",
+            "Y": "in this job",
+            "X best fitted from PPDB to Y": "i will accept",
+            "X part to compare": [
+                "accept"
+            ],
+            "Y part to compare": [
+                "job"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i will accept",
+            "Y": "why not an",
+            "X best fitted from PPDB to Y": "i will accept",
+            "X part to compare": [
+                "accept"
+            ],
+            "Y part to compare": [
+                "not"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i will accept",
+            "Y": "you can work for",
+            "X best fitted from PPDB to Y": "i will accept",
+            "X part to compare": [
+                "accept"
+            ],
+            "Y part to compare": [
+                "work"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i offer",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "i offer",
+            "X part to compare": [
+                "offer"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i offer",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "i offer",
+            "X part to compare": [
+                "offer"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i offer",
+            "Y": "you get",
+            "X best fitted from PPDB to Y": "i offer",
+            "X part to compare": [
+                "offer"
+            ],
+            "Y part to compare": [
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i offer",
+            "Y": "in this job",
+            "X best fitted from PPDB to Y": "i offer",
+            "X part to compare": [
+                "offer"
+            ],
+            "Y part to compare": [
+                "job"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i offer",
+            "Y": "can you give",
+            "X best fitted from PPDB to Y": "i offer",
+            "X part to compare": [
+                "offer"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i offer",
+            "Y": "why not an",
+            "X best fitted from PPDB to Y": "i offer",
+            "X part to compare": [
+                "offer"
+            ],
+            "Y part to compare": [
+                "not"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i offer",
+            "Y": "i want to give",
+            "X best fitted from PPDB to Y": "i offer",
+            "X part to compare": [
+                "offer"
+            ],
+            "Y part to compare": [
+                "want",
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i offer",
+            "Y": "i'll agree",
+            "X best fitted from PPDB to Y": "i offer",
+            "X part to compare": [
+                "offer"
+            ],
+            "Y part to compare": [
+                "agree"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i offer",
+            "Y": "you can work for",
+            "X best fitted from PPDB to Y": "i offer",
+            "X part to compare": [
+                "offer"
+            ],
+            "Y part to compare": [
+                "work"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i offer",
+            "Y": "i will accept",
+            "X best fitted from PPDB to Y": "i offer",
+            "X part to compare": [
+                "offer"
+            ],
+            "Y part to compare": [
+                "accept"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you will start",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "you will start",
+            "X part to compare": [
+                "start"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you will start",
+            "Y": "in this job",
+            "X best fitted from PPDB to Y": "you will start",
+            "X part to compare": [
+                "start"
+            ],
+            "Y part to compare": [
+                "job"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you will start",
+            "Y": "can you give",
+            "X best fitted from PPDB to Y": "you will start",
+            "X part to compare": [
+                "start"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you will start",
+            "Y": "why not an",
+            "X best fitted from PPDB to Y": "you will start",
+            "X part to compare": [
+                "start"
+            ],
+            "Y part to compare": [
+                "not"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you will start",
+            "Y": "i'll agree",
+            "X best fitted from PPDB to Y": "you will start",
+            "X part to compare": [
+                "start"
+            ],
+            "Y part to compare": [
+                "agree"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you will start",
+            "Y": "you can work for",
+            "X best fitted from PPDB to Y": "you will start",
+            "X part to compare": [
+                "start"
+            ],
+            "Y part to compare": [
+                "work"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you will start",
+            "Y": "i will accept",
+            "X best fitted from PPDB to Y": "you will start",
+            "X part to compare": [
+                "start"
+            ],
+            "Y part to compare": [
+                "accept"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "you will start",
+            "Y": "i offer",
+            "X best fitted from PPDB to Y": "you will start",
+            "X part to compare": [
+                "start"
+            ],
+            "Y part to compare": [
+                "offer"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i think",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "i think",
+            "X part to compare": [
+                "think"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i think",
+            "Y": "you get",
+            "X best fitted from PPDB to Y": "i think",
+            "X part to compare": [
+                "think"
+            ],
+            "Y part to compare": [
+                "get"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i think",
+            "Y": "in this job",
+            "X best fitted from PPDB to Y": "i think",
+            "X part to compare": [
+                "think"
+            ],
+            "Y part to compare": [
+                "job"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i think",
+            "Y": "be",
+            "X best fitted from PPDB to Y": "i think",
+            "X part to compare": [
+                "think"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i think",
+            "Y": "i want you to be a",
+            "X best fitted from PPDB to Y": "i think",
+            "X part to compare": [
+                "think"
+            ],
+            "Y part to compare": [
+                "want",
+                "be"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i think",
+            "Y": "why not an",
+            "X best fitted from PPDB to Y": "i think",
+            "X part to compare": [
+                "think"
+            ],
+            "Y part to compare": [
+                "not"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i think",
+            "Y": "i'll agree",
+            "X best fitted from PPDB to Y": "i think",
+            "X part to compare": [
+                "think"
+            ],
+            "Y part to compare": [
+                "agree"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i think",
+            "Y": "you can be",
+            "X best fitted from PPDB to Y": "i think",
+            "X part to compare": [
+                "think"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i think",
+            "Y": "you can work for",
+            "X best fitted from PPDB to Y": "i think",
+            "X part to compare": [
+                "think"
+            ],
+            "Y part to compare": [
+                "work"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i think",
+            "Y": "i will accept",
+            "X best fitted from PPDB to Y": "i think",
+            "X part to compare": [
+                "think"
+            ],
+            "Y part to compare": [
+                "accept"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "i think",
+            "Y": "you will start",
+            "X best fitted from PPDB to Y": "i think",
+            "X part to compare": [
+                "think"
+            ],
+            "Y part to compare": [
+                "start"
+            ],
+            "score": 0,
+            "score floored": 0
+        }
+    ],
+    "10": [
+        {
+            "X": "you can work for",
+            "Y": "i want you to be a",
+            "X best fitted from PPDB to Y": "be working",
+            "X part to compare": [
+                "be",
+                "working"
+            ],
+            "Y part to compare": [
+                "want",
+                "be"
+            ],
+            "score": 0.18181818181818182,
+            "score floored": 10
+        },
+        {
+            "X": "i offer",
+            "Y": "i want you to be a",
+            "X best fitted from PPDB to Y": "be offered",
+            "X part to compare": [
+                "be",
+                "offered"
+            ],
+            "Y part to compare": [
+                "want",
+                "be"
+            ],
+            "score": 0.18181818181818182,
+            "score floored": 10
+        },
+        {
+            "X": "you will start",
+            "Y": "i want you to be a",
+            "X best fitted from PPDB to Y": "be started",
+            "X part to compare": [
+                "be",
+                "started"
+            ],
+            "Y part to compare": [
+                "want",
+                "be"
+            ],
+            "score": 0.18181818181818182,
+            "score floored": 10
+        },
+        {
+            "X": "i think",
+            "Y": "i offer",
+            "X best fitted from PPDB to Y": "consider that",
+            "X part to compare": [
+                "consider"
+            ],
+            "Y part to compare": [
+                "offer"
+            ],
+            "score": 0.18181818181818182,
+            "score floored": 10
+        },
+        {
+            "X": "i'll agree",
+            "Y": "i want to give",
+            "X best fitted from PPDB to Y": "have a deal",
+            "X part to compare": [
+                "have",
+                "deal"
+            ],
+            "Y part to compare": [
+                "want",
+                "give"
+            ],
+            "score": 0.16666666666666666,
+            "score floored": 10
+        },
+        {
+            "X": "you can work for",
+            "Y": "you get",
+            "X best fitted from PPDB to Y": "work together",
+            "X part to compare": [
+                "work",
+                "together"
+            ],
+            "Y part to compare": [
+                "get"
+            ],
+            "score": 0.16666666666666666,
+            "score floored": 10
+        },
+        {
+            "X": "i will accept",
+            "Y": "i want you to be a",
+            "X best fitted from PPDB to Y": "be accepted",
+            "X part to compare": [
+                "be",
+                "accepted"
+            ],
+            "Y part to compare": [
+                "want",
+                "be"
+            ],
+            "score": 0.16666666666666666,
+            "score floored": 10
+        },
+        {
+            "X": "i offer",
+            "Y": "so we agreed",
+            "X best fitted from PPDB to Y": "be offered",
+            "X part to compare": [
+                "be",
+                "offered"
+            ],
+            "Y part to compare": [
+                "agreed"
+            ],
+            "score": 0.16666666666666666,
+            "score floored": 10
+        },
+        {
+            "X": "i offer",
+            "Y": "we agreed",
+            "X best fitted from PPDB to Y": "be offered",
+            "X part to compare": [
+                "be",
+                "offered"
+            ],
+            "Y part to compare": [
+                "agreed"
+            ],
+            "score": 0.16666666666666666,
+            "score floored": 10
+        },
+        {
+            "X": "you will start",
+            "Y": "so we agreed",
+            "X best fitted from PPDB to Y": "be started",
+            "X part to compare": [
+                "be",
+                "started"
+            ],
+            "Y part to compare": [
+                "agreed"
+            ],
+            "score": 0.16666666666666666,
+            "score floored": 10
+        },
+        {
+            "X": "you will start",
+            "Y": "we agreed",
+            "X best fitted from PPDB to Y": "be started",
+            "X part to compare": [
+                "be",
+                "started"
+            ],
+            "Y part to compare": [
+                "agreed"
+            ],
+            "score": 0.16666666666666666,
+            "score floored": 10
+        },
+        {
+            "X": "i think",
+            "Y": "i want to give",
+            "X best fitted from PPDB to Y": "believe him",
+            "X part to compare": [
+                "believe"
+            ],
+            "Y part to compare": [
+                "want",
+                "give"
+            ],
+            "score": 0.16666666666666666,
+            "score floored": 10
+        },
+        {
+            "X": "so we agreed",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "have accepted",
+            "X part to compare": [
+                "have",
+                "accepted"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0.15384615384615385,
+            "score floored": 10
+        },
+        {
+            "X": "so we agreed",
+            "Y": "can you give",
+            "X best fitted from PPDB to Y": "have accepted",
+            "X part to compare": [
+                "have",
+                "accepted"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0.15384615384615385,
+            "score floored": 10
+        },
+        {
+            "X": "so we agreed",
+            "Y": "i want you to be a",
+            "X best fitted from PPDB to Y": "is in agreement",
+            "X part to compare": [
+                "is",
+                "agreement"
+            ],
+            "Y part to compare": [
+                "want",
+                "be"
+            ],
+            "score": 0.15384615384615385,
+            "score floored": 10
+        },
+        {
+            "X": "we already agreed",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "have accepted",
+            "X part to compare": [
+                "have",
+                "accepted"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0.15384615384615385,
+            "score floored": 10
+        },
+        {
+            "X": "we already agreed",
+            "Y": "can you give",
+            "X best fitted from PPDB to Y": "have accepted",
+            "X part to compare": [
+                "have",
+                "accepted"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0.15384615384615385,
+            "score floored": 10
+        },
+        {
+            "X": "we already agreed",
+            "Y": "i want you to be a",
+            "X best fitted from PPDB to Y": "is in agreement",
+            "X part to compare": [
+                "is",
+                "agreement"
+            ],
+            "Y part to compare": [
+                "want",
+                "be"
+            ],
+            "score": 0.15384615384615385,
+            "score floored": 10
+        },
+        {
+            "X": "we agreed",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "have accepted",
+            "X part to compare": [
+                "have",
+                "accepted"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0.15384615384615385,
+            "score floored": 10
+        },
+        {
+            "X": "we agreed",
+            "Y": "can you give",
+            "X best fitted from PPDB to Y": "have accepted",
+            "X part to compare": [
+                "have",
+                "accepted"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0.15384615384615385,
+            "score floored": 10
+        },
+        {
+            "X": "we agreed",
+            "Y": "i want you to be a",
+            "X best fitted from PPDB to Y": "is in agreement",
+            "X part to compare": [
+                "is",
+                "agreement"
+            ],
+            "Y part to compare": [
+                "want",
+                "be"
+            ],
+            "score": 0.15384615384615385,
+            "score floored": 10
+        },
+        {
+            "X": "you can work for",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "work together",
+            "X part to compare": [
+                "work",
+                "together"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0.14285714285714285,
+            "score floored": 10
+        },
+        {
+            "X": "you can work for",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "is working",
+            "X part to compare": [
+                "is",
+                "working"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0.14285714285714285,
+            "score floored": 10
+        },
+        {
+            "X": "you can work for",
+            "Y": "so we agreed",
+            "X best fitted from PPDB to Y": "are employed",
+            "X part to compare": [
+                "are",
+                "employed"
+            ],
+            "Y part to compare": [
+                "agreed"
+            ],
+            "score": 0.14285714285714285,
+            "score floored": 10
+        },
+        {
+            "X": "i think",
+            "Y": "so we agreed",
+            "X best fitted from PPDB to Y": "considered that",
+            "X part to compare": [
+                "considered"
+            ],
+            "Y part to compare": [
+                "agreed"
+            ],
+            "score": 0.14285714285714285,
+            "score floored": 10
+        },
+        {
+            "X": "i think",
+            "Y": "we agreed",
+            "X best fitted from PPDB to Y": "considered that",
+            "X part to compare": [
+                "considered"
+            ],
+            "Y part to compare": [
+                "agreed"
+            ],
+            "score": 0.14285714285714285,
+            "score floored": 10
+        },
+        {
+            "X": "so we agreed",
+            "Y": "i want to give",
+            "X best fitted from PPDB to Y": "is in agreement",
+            "X part to compare": [
+                "is",
+                "agreement"
+            ],
+            "Y part to compare": [
+                "want",
+                "give"
+            ],
+            "score": 0.13333333333333333,
+            "score floored": 10
+        },
+        {
+            "X": "we already agreed",
+            "Y": "i want to give",
+            "X best fitted from PPDB to Y": "is in agreement",
+            "X part to compare": [
+                "is",
+                "agreement"
+            ],
+            "Y part to compare": [
+                "want",
+                "give"
+            ],
+            "score": 0.13333333333333333,
+            "score floored": 10
+        },
+        {
+            "X": "we agreed",
+            "Y": "i want to give",
+            "X best fitted from PPDB to Y": "is in agreement",
+            "X part to compare": [
+                "is",
+                "agreement"
+            ],
+            "Y part to compare": [
+                "want",
+                "give"
+            ],
+            "score": 0.13333333333333333,
+            "score floored": 10
+        },
+        {
+            "X": "i offer",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "is offering",
+            "X part to compare": [
+                "is",
+                "offering"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0.13333333333333333,
+            "score floored": 10
+        },
+        {
+            "X": "you will start",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "is starting",
+            "X part to compare": [
+                "is",
+                "starting"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0.13333333333333333,
+            "score floored": 10
+        },
+        {
+            "X": "so we agreed",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "is in agreement",
+            "X part to compare": [
+                "is",
+                "agreement"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0.125,
+            "score floored": 10
+        },
+        {
+            "X": "we already agreed",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "is in agreement",
+            "X part to compare": [
+                "is",
+                "agreement"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0.125,
+            "score floored": 10
+        },
+        {
+            "X": "i'll agree",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "is in agreement",
+            "X part to compare": [
+                "is",
+                "agreement"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0.125,
+            "score floored": 10
+        },
+        {
+            "X": "we agreed",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "is in agreement",
+            "X part to compare": [
+                "is",
+                "agreement"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0.125,
+            "score floored": 10
+        },
+        {
+            "X": "you will start",
+            "Y": "i want to give",
+            "X best fitted from PPDB to Y": "the commencement",
+            "X part to compare": [
+                "commencement"
+            ],
+            "Y part to compare": [
+                "want",
+                "give"
+            ],
+            "score": 0.11764705882352941,
+            "score floored": 10
+        },
+        {
+            "X": "i offer",
+            "Y": "we already agreed",
+            "X best fitted from PPDB to Y": "be offered",
+            "X part to compare": [
+                "be",
+                "offered"
+            ],
+            "Y part to compare": [
+                "already",
+                "agreed"
+            ],
+            "score": 0.1111111111111111,
+            "score floored": 10
+        },
+        {
+            "X": "you will start",
+            "Y": "we already agreed",
+            "X best fitted from PPDB to Y": "be started",
+            "X part to compare": [
+                "be",
+                "started"
+            ],
+            "Y part to compare": [
+                "already",
+                "agreed"
+            ],
+            "score": 0.1111111111111111,
+            "score floored": 10
+        },
+        {
+            "X": "you can work for",
+            "Y": "we already agreed",
+            "X best fitted from PPDB to Y": "are employed",
+            "X part to compare": [
+                "are",
+                "employed"
+            ],
+            "Y part to compare": [
+                "already",
+                "agreed"
+            ],
+            "score": 0.1,
+            "score floored": 10
+        },
+        {
+            "X": "i think",
+            "Y": "we already agreed",
+            "X best fitted from PPDB to Y": "considered that",
+            "X part to compare": [
+                "considered"
+            ],
+            "Y part to compare": [
+                "already",
+                "agreed"
+            ],
+            "score": 0.1,
+            "score floored": 10
+        }
+    ],
+    "20": [
+        {
+            "X": "i'll agree",
+            "Y": "be",
+            "X best fitted from PPDB to Y": "be agreed upon",
+            "X part to compare": [
+                "be",
+                "agreed"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0.2857142857142857,
+            "score floored": 20
+        },
+        {
+            "X": "you can work for",
+            "Y": "be",
+            "X best fitted from PPDB to Y": "be working",
+            "X part to compare": [
+                "be",
+                "working"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0.25,
+            "score floored": 20
+        },
+        {
+            "X": "you can work for",
+            "Y": "you can be",
+            "X best fitted from PPDB to Y": "be working",
+            "X part to compare": [
+                "be",
+                "working"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0.25,
+            "score floored": 20
+        },
+        {
+            "X": "i offer",
+            "Y": "be",
+            "X best fitted from PPDB to Y": "be offered",
+            "X part to compare": [
+                "be",
+                "offered"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0.25,
+            "score floored": 20
+        },
+        {
+            "X": "i offer",
+            "Y": "you can be",
+            "X best fitted from PPDB to Y": "be offered",
+            "X part to compare": [
+                "be",
+                "offered"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0.25,
+            "score floored": 20
+        },
+        {
+            "X": "you will start",
+            "Y": "be",
+            "X best fitted from PPDB to Y": "be started",
+            "X part to compare": [
+                "be",
+                "started"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0.25,
+            "score floored": 20
+        },
+        {
+            "X": "you will start",
+            "Y": "you can be",
+            "X best fitted from PPDB to Y": "be started",
+            "X part to compare": [
+                "be",
+                "started"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0.25,
+            "score floored": 20
+        },
+        {
+            "X": "i'll agree",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "have a deal",
+            "X part to compare": [
+                "have",
+                "deal"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0.2222222222222222,
+            "score floored": 20
+        },
+        {
+            "X": "i'll agree",
+            "Y": "can you give",
+            "X best fitted from PPDB to Y": "have a deal",
+            "X part to compare": [
+                "have",
+                "deal"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0.2222222222222222,
+            "score floored": 20
+        },
+        {
+            "X": "i will accept",
+            "Y": "be",
+            "X best fitted from PPDB to Y": "be accepted",
+            "X part to compare": [
+                "be",
+                "accepted"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0.2222222222222222,
+            "score floored": 20
+        },
+        {
+            "X": "i will accept",
+            "Y": "you can be",
+            "X best fitted from PPDB to Y": "be accepted",
+            "X part to compare": [
+                "be",
+                "accepted"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0.2222222222222222,
+            "score floored": 20
+        },
+        {
+            "X": "i think",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "believe him",
+            "X part to compare": [
+                "believe"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0.2222222222222222,
+            "score floored": 20
+        },
+        {
+            "X": "i think",
+            "Y": "can you give",
+            "X best fitted from PPDB to Y": "believe him",
+            "X part to compare": [
+                "believe"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0.2222222222222222,
+            "score floored": 20
+        },
+        {
+            "X": "why not an",
+            "Y": "the maximum is",
+            "X best fitted from PPDB to Y": "is n't it",
+            "X part to compare": [
+                "is",
+                "n't"
+            ],
+            "Y part to compare": [
+                "maximum",
+                "is"
+            ],
+            "score": 0.2,
+            "score floored": 20
+        }
+    ],
+    "30": [
+        {
+            "X": "i think",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "do n't think",
+            "X part to compare": [
+                "do",
+                "n't",
+                "think"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0.36363636363636365,
+            "score floored": 30
+        },
+        {
+            "X": "can you give",
+            "Y": "be",
+            "X best fitted from PPDB to Y": "be given",
+            "X part to compare": [
+                "be",
+                "given"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0.3333333333333333,
+            "score floored": 30
+        },
+        {
+            "X": "why not an",
+            "Y": "you get",
+            "X best fitted from PPDB to Y": "not yet",
+            "X part to compare": [
+                "not",
+                "yet"
+            ],
+            "Y part to compare": [
+                "get"
+            ],
+            "score": 0.3333333333333333,
+            "score floored": 30
+        },
+        {
+            "X": "i want to give",
+            "Y": "be",
+            "X best fitted from PPDB to Y": "be given",
+            "X part to compare": [
+                "be",
+                "given"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 0.3333333333333333,
+            "score floored": 30
+        },
+        {
+            "X": "you will start",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "get started",
+            "X part to compare": [
+                "get",
+                "started"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0.3333333333333333,
+            "score floored": 30
+        },
+        {
+            "X": "i'll agree",
+            "Y": "i want you to be a",
+            "X best fitted from PPDB to Y": "be in agreement",
+            "X part to compare": [
+                "be",
+                "agreement"
+            ],
+            "Y part to compare": [
+                "want",
+                "be"
+            ],
+            "score": 0.3076923076923077,
+            "score floored": 30
+        }
+    ],
+    "40": [
+        {
+            "X": "i will accept",
+            "Y": "i want to give",
+            "X best fitted from PPDB to Y": "live with",
+            "X part to compare": [
+                "live"
+            ],
+            "Y part to compare": [
+                "want",
+                "give"
+            ],
+            "score": 0.4444444444444444,
+            "score floored": 40
+        },
+        {
+            "X": "you can be",
+            "Y": "i want you to be a",
+            "X best fitted from PPDB to Y": "you can be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "want",
+                "be"
+            ],
+            "score": 0.4,
+            "score floored": 40
+        },
+        {
+            "X": "i will accept",
+            "Y": "we already agreed",
+            "X best fitted from PPDB to Y": "agree with",
+            "X part to compare": [
+                "agree"
+            ],
+            "Y part to compare": [
+                "already",
+                "agreed"
+            ],
+            "score": 0.4,
+            "score floored": 40
+        },
+        {
+            "X": "you will start",
+            "Y": "you get",
+            "X best fitted from PPDB to Y": "get started",
+            "X part to compare": [
+                "get",
+                "started"
+            ],
+            "Y part to compare": [
+                "get"
+            ],
+            "score": 0.4,
+            "score floored": 40
+        }
+    ],
+    "60": [
+        {
+            "X": "you get",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "you get",
+            "X part to compare": [
+                "get"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0.6666666666666666,
+            "score floored": 60
+        },
+        {
+            "X": "why not an",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "would n't",
+            "X part to compare": [
+                "n't"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0.6666666666666666,
+            "score floored": 60
+        },
+        {
+            "X": "i want to give",
+            "Y": "i want you to be a",
+            "X best fitted from PPDB to Y": "want to see",
+            "X part to compare": [
+                "want",
+                "see"
+            ],
+            "Y part to compare": [
+                "want",
+                "be"
+            ],
+            "score": 0.6666666666666666,
+            "score floored": 60
+        },
+        {
+            "X": "we already agreed",
+            "Y": "so we agreed",
+            "X best fitted from PPDB to Y": "agree to",
+            "X part to compare": [
+                "agree"
+            ],
+            "Y part to compare": [
+                "agreed"
+            ],
+            "score": 0.6666666666666666,
+            "score floored": 60
+        },
+        {
+            "X": "i'll agree",
+            "Y": "you can't get",
+            "X best fitted from PPDB to Y": "get along",
+            "X part to compare": [
+                "get"
+            ],
+            "Y part to compare": [
+                "n't",
+                "get"
+            ],
+            "score": 0.6666666666666666,
+            "score floored": 60
+        },
+        {
+            "X": "i will accept",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "live with",
+            "X part to compare": [
+                "live"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0.6666666666666666,
+            "score floored": 60
+        },
+        {
+            "X": "i will accept",
+            "Y": "can you give",
+            "X best fitted from PPDB to Y": "live with",
+            "X part to compare": [
+                "live"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 0.6666666666666666,
+            "score floored": 60
+        },
+        {
+            "X": "i will accept",
+            "Y": "so we agreed",
+            "X best fitted from PPDB to Y": "agree with",
+            "X part to compare": [
+                "agree"
+            ],
+            "Y part to compare": [
+                "agreed"
+            ],
+            "score": 0.6666666666666666,
+            "score floored": 60
+        },
+        {
+            "X": "i will accept",
+            "Y": "we agreed",
+            "X best fitted from PPDB to Y": "agree with",
+            "X part to compare": [
+                "agree"
+            ],
+            "Y part to compare": [
+                "agreed"
+            ],
+            "score": 0.6666666666666666,
+            "score floored": 60
+        },
+        {
+            "X": "i'll agree",
+            "Y": "we already agreed",
+            "X best fitted from PPDB to Y": "agreed upon",
+            "X part to compare": [
+                "agreed"
+            ],
+            "Y part to compare": [
+                "already",
+                "agreed"
+            ],
+            "score": 0.625,
+            "score floored": 60
+        },
+        {
+            "X": "we agreed",
+            "Y": "we already agreed",
+            "X best fitted from PPDB to Y": "we agreed",
+            "X part to compare": [
+                "agreed"
+            ],
+            "Y part to compare": [
+                "already",
+                "agreed"
+            ],
+            "score": 0.625,
+            "score floored": 60
+        }
+    ],
+    "100": [
+        {
+            "X": "can you give",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "can you give",
+            "X part to compare": [
+                "give"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 1,
+            "score floored": 100
+        },
+        {
+            "X": "i want you to be a",
+            "Y": "be",
+            "X best fitted from PPDB to Y": "'d be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 1,
+            "score floored": 100
+        },
+        {
+            "X": "i want to give",
+            "Y": "i can give you",
+            "X best fitted from PPDB to Y": "give away",
+            "X part to compare": [
+                "give"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 1,
+            "score floored": 100
+        },
+        {
+            "X": "i want to give",
+            "Y": "can you give",
+            "X best fitted from PPDB to Y": "give away",
+            "X part to compare": [
+                "give"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 1,
+            "score floored": 100
+        },
+        {
+            "X": "i'll agree",
+            "Y": "you get",
+            "X best fitted from PPDB to Y": "get along",
+            "X part to compare": [
+                "get"
+            ],
+            "Y part to compare": [
+                "get"
+            ],
+            "score": 1,
+            "score floored": 100
+        },
+        {
+            "X": "i'll agree",
+            "Y": "so we agreed",
+            "X best fitted from PPDB to Y": "agreed upon",
+            "X part to compare": [
+                "agreed"
+            ],
+            "Y part to compare": [
+                "agreed"
+            ],
+            "score": 1,
+            "score floored": 100
+        },
+        {
+            "X": "you can be",
+            "Y": "be",
+            "X best fitted from PPDB to Y": "you can be",
+            "X part to compare": [
+                "be"
+            ],
+            "Y part to compare": [
+                "be"
+            ],
+            "score": 1,
+            "score floored": 100
+        },
+        {
+            "X": "you can work for",
+            "Y": "in this job",
+            "X best fitted from PPDB to Y": "the job",
+            "X part to compare": [
+                "job"
+            ],
+            "Y part to compare": [
+                "job"
+            ],
+            "score": 1,
+            "score floored": 100
+        },
+        {
+            "X": "we agreed",
+            "Y": "so we agreed",
+            "X best fitted from PPDB to Y": "we agreed",
+            "X part to compare": [
+                "agreed"
+            ],
+            "Y part to compare": [
+                "agreed"
+            ],
+            "score": 1,
+            "score floored": 100
+        },
+        {
+            "X": "we agreed",
+            "Y": "i'll agree",
+            "X best fitted from PPDB to Y": "agree to",
+            "X part to compare": [
+                "agree"
+            ],
+            "Y part to compare": [
+                "agree"
+            ],
+            "score": 1,
+            "score floored": 100
+        },
+        {
+            "X": "i will accept",
+            "Y": "i'll agree",
+            "X best fitted from PPDB to Y": "agree with",
+            "X part to compare": [
+                "agree"
+            ],
+            "Y part to compare": [
+                "agree"
+            ],
+            "score": 1,
+            "score floored": 100
+        }
+    ]
+}
+1 -- 6%
+0.9 -- 6%
+0.8 -- 6%
+0.7 -- 6%
+0.6 -- 12%
+0.5 -- 12%
+0.4 -- 14%
+0.3 -- 17%
+0.2 -- 24%
+0.1 -- 45%
+0 -- 100%

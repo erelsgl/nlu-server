@@ -1,0 +1,980 @@
+seeds: offer,suggest
+{
+    "0": [
+        {
+            "keyphrase": "and we'll throw in",
+            "the nearest seed": "throw away",
+            "keyphrase to compare": [
+                "throw"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "i want",
+            "the nearest seed": "want to see",
+            "keyphrase to compare": [
+                "want",
+                "see"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "i will give you",
+            "the nearest seed": "addressed to",
+            "keyphrase to compare": [
+                "addressed"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "you need to be",
+            "the nearest seed": "'d be",
+            "keyphrase to compare": [
+                "be"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "you be a",
+            "the nearest seed": "'d be",
+            "keyphrase to compare": [
+                "be"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "i am willing",
+            "the nearest seed": "wants it",
+            "keyphrase to compare": [
+                "wants"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "let's agree",
+            "the nearest seed": "all right",
+            "keyphrase to compare": [
+                "right"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 2,
+            "keyphrase influence": 0.022222222222222223,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "we decided",
+            "the nearest seed": "agreed upon",
+            "keyphrase to compare": [
+                "agreed"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "is possile",
+            "the nearest seed": "she 's",
+            "keyphrase to compare": [
+                "'s"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "we agree on",
+            "the nearest seed": "all right",
+            "keyphrase to compare": [
+                "right"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "is possible",
+            "the nearest seed": "it 's possible",
+            "keyphrase to compare": [
+                "'s",
+                "possible"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "i can do",
+            "the nearest seed": "'s true",
+            "keyphrase to compare": [
+                "true"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "i said",
+            "the nearest seed": "told me that",
+            "keyphrase to compare": [
+                "told"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "need you",
+            "the nearest seed": "is necessary",
+            "keyphrase to compare": [
+                "is",
+                "necessary"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "you got",
+            "the nearest seed": "has had",
+            "keyphrase to compare": [
+                "has",
+                "had"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "we need",
+            "the nearest seed": "is necessary",
+            "keyphrase to compare": [
+                "is",
+                "necessary"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "i will need you",
+            "the nearest seed": "is necessary",
+            "keyphrase to compare": [
+                "is",
+                "necessary"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "lets make it",
+            "the nearest seed": "be taken",
+            "keyphrase to compare": [
+                "be",
+                "taken"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 2,
+            "keyphrase influence": 0.022222222222222223,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "you will get",
+            "the nearest seed": "looking for",
+            "keyphrase to compare": [
+                "looking"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "i will give",
+            "the nearest seed": "addressed to",
+            "keyphrase to compare": [
+                "addressed"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "will be",
+            "the nearest seed": "'d be",
+            "keyphrase to compare": [
+                "be"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "we have already agreed",
+            "the nearest seed": "was in agreement",
+            "keyphrase to compare": [
+                "was",
+                "agreement"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 2,
+            "keyphrase influence": 0.022222222222222223,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "is on",
+            "the nearest seed": "she 's",
+            "keyphrase to compare": [
+                "'s"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "would ... be okay?",
+            "the nearest seed": "ok",
+            "keyphrase to compare": [
+                "ok"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "you will be needed",
+            "the nearest seed": "are required",
+            "keyphrase to compare": [
+                "are",
+                "required"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "i can give",
+            "the nearest seed": "addressed to",
+            "keyphrase to compare": [
+                "addressed"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "you can't get",
+            "the nearest seed": "looking for",
+            "keyphrase to compare": [
+                "looking"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "you get",
+            "the nearest seed": "looking for",
+            "keyphrase to compare": [
+                "looking"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "in this job",
+            "the nearest seed": "employment",
+            "keyphrase to compare": [
+                "employment"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "be",
+            "the nearest seed": "'d be",
+            "keyphrase to compare": [
+                "be"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "can you give",
+            "the nearest seed": "addressed to",
+            "keyphrase to compare": [
+                "addressed"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 3,
+            "keyphrase influence": 0.03333333333333333,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "i want you to be a",
+            "the nearest seed": "'d be",
+            "keyphrase to compare": [
+                "be"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "i want to give",
+            "the nearest seed": "addressed to",
+            "keyphrase to compare": [
+                "addressed"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "so we agreed",
+            "the nearest seed": "was in agreement",
+            "keyphrase to compare": [
+                "was",
+                "agreement"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "we already agreed",
+            "the nearest seed": "was in agreement",
+            "keyphrase to compare": [
+                "was",
+                "agreement"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "i'll agree",
+            "the nearest seed": "all right",
+            "keyphrase to compare": [
+                "right"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "we agreed",
+            "the nearest seed": "was in agreement",
+            "keyphrase to compare": [
+                "was",
+                "agreement"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 0
+        },
+        {
+            "keyphrase": "i will accept",
+            "the nearest seed": "be accepted",
+            "keyphrase to compare": [
+                "be",
+                "accepted"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0,
+            "keyphrase sentences": 2,
+            "keyphrase influence": 0.022222222222222223,
+            "score floored": 0
+        }
+    ],
+    "10": [
+        {
+            "keyphrase": "i think you",
+            "the nearest seed": "consider that",
+            "keyphrase to compare": [
+                "consider"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 0.18181818181818182,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 10
+        },
+        {
+            "keyphrase": "you will start",
+            "the nearest seed": "go first",
+            "keyphrase to compare": [
+                "go",
+                "first"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0.18181818181818182,
+            "keyphrase sentences": 3,
+            "keyphrase influence": 0.03333333333333333,
+            "score floored": 10
+        },
+        {
+            "keyphrase": "i think",
+            "the nearest seed": "consider that",
+            "keyphrase to compare": [
+                "consider"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 0.18181818181818182,
+            "keyphrase sentences": 2,
+            "keyphrase influence": 0.022222222222222223,
+            "score floored": 10
+        },
+        {
+            "keyphrase": "i need a",
+            "the nearest seed": "i just need a",
+            "keyphrase to compare": [
+                "just",
+                "need"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0.16666666666666666,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 10
+        },
+        {
+            "keyphrase": "is fine by me",
+            "the nearest seed": "just fine",
+            "keyphrase to compare": [
+                "just",
+                "fine"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0.16666666666666666,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 10
+        },
+        {
+            "keyphrase": "i need you to work",
+            "the nearest seed": "work together",
+            "keyphrase to compare": [
+                "work",
+                "together"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 0.14285714285714285,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 10
+        },
+        {
+            "keyphrase": "you work",
+            "the nearest seed": "work together",
+            "keyphrase to compare": [
+                "work",
+                "together"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 0.14285714285714285,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 10
+        },
+        {
+            "keyphrase": "how about",
+            "the nearest seed": "an estimated",
+            "keyphrase to compare": [
+                "estimated"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0.14285714285714285,
+            "keyphrase sentences": 2,
+            "keyphrase influence": 0.022222222222222223,
+            "score floored": 10
+        },
+        {
+            "keyphrase": "you can work for",
+            "the nearest seed": "work together",
+            "keyphrase to compare": [
+                "work",
+                "together"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 0.14285714285714285,
+            "keyphrase sentences": 2,
+            "keyphrase influence": 0.022222222222222223,
+            "score floored": 10
+        }
+    ],
+    "20": [
+        {
+            "keyphrase": "i would like to work",
+            "the nearest seed": "just as",
+            "keyphrase to compare": [
+                "just"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0.2222222222222222,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 20
+        },
+        {
+            "keyphrase": "let's not include",
+            "the nearest seed": "rather than",
+            "keyphrase to compare": [
+                "rather"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 0.2222222222222222,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 20
+        },
+        {
+            "keyphrase": "why not an",
+            "the nearest seed": "rather than",
+            "keyphrase to compare": [
+                "rather"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 0.2222222222222222,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 20
+        },
+        {
+            "keyphrase": "there is",
+            "the nearest seed": "exist",
+            "keyphrase to compare": [
+                "exist"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0.2,
+            "keyphrase sentences": 2,
+            "keyphrase influence": 0.022222222222222223,
+            "score floored": 20
+        },
+        {
+            "keyphrase": "i'm willing",
+            "the nearest seed": "'il just",
+            "keyphrase to compare": [
+                "il",
+                "just"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0.2,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 20
+        }
+    ],
+    "30": [
+        {
+            "keyphrase": "i am once again suggestiong",
+            "the nearest seed": "its request",
+            "keyphrase to compare": [
+                "request"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0.3333333333333333,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 30
+        }
+    ],
+    "40": [
+        {
+            "keyphrase": "would you prefer",
+            "the nearest seed": "like best",
+            "keyphrase to compare": [
+                "best"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0.4444444444444444,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 40
+        },
+        {
+            "keyphrase": "you can be",
+            "the nearest seed": "you may rest",
+            "keyphrase to compare": [
+                "rest"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0.4444444444444444,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 40
+        }
+    ],
+    "50": [
+        {
+            "keyphrase": "i will offer you",
+            "the nearest seed": "be offered",
+            "keyphrase to compare": [
+                "be",
+                "offered"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 0.5454545454545454,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 50
+        },
+        {
+            "keyphrase": "i can only offer",
+            "the nearest seed": "be offered",
+            "keyphrase to compare": [
+                "be",
+                "offered"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 0.5454545454545454,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 50
+        },
+        {
+            "keyphrase": "i want to offer",
+            "the nearest seed": "be offered",
+            "keyphrase to compare": [
+                "be",
+                "offered"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 0.5454545454545454,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 50
+        },
+        {
+            "keyphrase": "i will offer",
+            "the nearest seed": "be offered",
+            "keyphrase to compare": [
+                "be",
+                "offered"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 0.5454545454545454,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 50
+        },
+        {
+            "keyphrase": "my offer",
+            "the nearest seed": "be offered",
+            "keyphrase to compare": [
+                "be",
+                "offered"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 0.5454545454545454,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 50
+        },
+        {
+            "keyphrase": "can offer",
+            "the nearest seed": "be offered",
+            "keyphrase to compare": [
+                "be",
+                "offered"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 0.5454545454545454,
+            "keyphrase sentences": 6,
+            "keyphrase influence": 0.06666666666666667,
+            "score floored": 50
+        },
+        {
+            "keyphrase": "i could offer",
+            "the nearest seed": "be offered",
+            "keyphrase to compare": [
+                "be",
+                "offered"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 0.5454545454545454,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 50
+        },
+        {
+            "keyphrase": "i offer",
+            "the nearest seed": "be offered",
+            "keyphrase to compare": [
+                "be",
+                "offered"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 0.5454545454545454,
+            "keyphrase sentences": 6,
+            "keyphrase influence": 0.06666666666666667,
+            "score floored": 50
+        },
+        {
+            "keyphrase": "the maximum is",
+            "the nearest seed": "the largest",
+            "keyphrase to compare": [
+                "largest"
+            ],
+            "seed to compare": [
+                "suggest"
+            ],
+            "score": 0.5,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 50
+        }
+    ],
+    "100": [
+        {
+            "keyphrase": "i had in mind offering you",
+            "the nearest seed": "to offer",
+            "keyphrase to compare": [
+                "offer"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 1,
+            "keyphrase sentences": 1,
+            "keyphrase influence": 0.011111111111111112,
+            "score floored": 100
+        },
+        {
+            "keyphrase": "i can give you",
+            "the nearest seed": "i can offer you",
+            "keyphrase to compare": [
+                "offer"
+            ],
+            "seed to compare": [
+                "offer"
+            ],
+            "score": 1,
+            "keyphrase sentences": 2,
+            "keyphrase influence": 0.022222222222222223,
+            "score floored": 100
+        }
+    ]
+}
+1 -- 3% -- 3%
+0.9 -- 3% -- 3%
+0.8 -- 3% -- 3%
+0.7 -- 3% -- 3%
+0.6 -- 3% -- 3%
+0.5 -- 17% -- 24%
+0.4 -- 20% -- 27%
+0.3 -- 21% -- 28%
+0.2 -- 29% -- 34%
+0.1 -- 42% -- 50%
+0 -- 100% -- 100%

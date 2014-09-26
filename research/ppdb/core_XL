@@ -1,0 +1,424 @@
+[ 'I can offer',
+  'I offer',
+  'can you give',
+  'you will start',
+  'there is',
+  'lets make it',
+  'how about',
+  'i will accept' ]
+{
+    "0": [
+        {
+            "X": "how about",
+            "Y": "i will accept",
+            "X best fitted from PPDB to Y": "what would you say if",
+            "X part to compare": [
+                "say"
+            ],
+            "Y part to compare": [
+                "accept"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "there is",
+            "Y": "i will accept",
+            "X best fitted from PPDB to Y": "eu",
+            "X part to compare": [
+                "eu"
+            ],
+            "Y part to compare": [
+                "accept"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "I offer",
+            "Y": "i will accept",
+            "X best fitted from PPDB to Y": "are proposing",
+            "X part to compare": [
+                "proposing"
+            ],
+            "Y part to compare": [
+                "accept"
+            ],
+            "score": 0,
+            "score floored": 0
+        },
+        {
+            "X": "I can offer",
+            "Y": "i will accept",
+            "X best fitted from PPDB to Y": "are proposing",
+            "X part to compare": [
+                "proposing"
+            ],
+            "Y part to compare": [
+                "accept"
+            ],
+            "score": 0,
+            "score floored": 0
+        }
+    ],
+    "10": [
+        {
+            "X": "there is",
+            "Y": "lets make it",
+            "X best fitted from PPDB to Y": "there exists",
+            "X part to compare": [
+                "exists"
+            ],
+            "Y part to compare": [
+                "lets",
+                "make"
+            ],
+            "score": 0.18181818181818182,
+            "score floored": 10
+        },
+        {
+            "X": "there is",
+            "Y": "how about",
+            "X best fitted from PPDB to Y": "are available",
+            "X part to compare": [
+                "available"
+            ],
+            "Y part to compare": [
+                "how",
+                "about"
+            ],
+            "score": 0.14285714285714285,
+            "score floored": 10
+        }
+    ],
+    "20": [
+        {
+            "X": "lets make it",
+            "Y": "how about",
+            "X best fitted from PPDB to Y": "put on",
+            "X part to compare": [
+                "put"
+            ],
+            "Y part to compare": [
+                "how",
+                "about"
+            ],
+            "score": 0.25,
+            "score floored": 20
+        },
+        {
+            "X": "can you give",
+            "Y": "how about",
+            "X best fitted from PPDB to Y": "put",
+            "X part to compare": [
+                "put"
+            ],
+            "Y part to compare": [
+                "how",
+                "about"
+            ],
+            "score": 0.25,
+            "score floored": 20
+        },
+        {
+            "X": "I offer",
+            "Y": "you will start",
+            "X best fitted from PPDB to Y": "the parade",
+            "X part to compare": [
+                "parade"
+            ],
+            "Y part to compare": [
+                "start"
+            ],
+            "score": 0.2222222222222222,
+            "score floored": 20
+        },
+        {
+            "X": "I can offer",
+            "Y": "you will start",
+            "X best fitted from PPDB to Y": "the parade",
+            "X part to compare": [
+                "parade"
+            ],
+            "Y part to compare": [
+                "start"
+            ],
+            "score": 0.2222222222222222,
+            "score floored": 20
+        }
+    ],
+    "30": [
+        {
+            "X": "you will start",
+            "Y": "how about",
+            "X best fitted from PPDB to Y": "the outset",
+            "X part to compare": [
+                "outset"
+            ],
+            "Y part to compare": [
+                "how",
+                "about"
+            ],
+            "score": 0.36363636363636365,
+            "score floored": 30
+        },
+        {
+            "X": "I offer",
+            "Y": "there is",
+            "X best fitted from PPDB to Y": "be offered",
+            "X part to compare": [
+                "offered"
+            ],
+            "Y part to compare": [
+                "there",
+                "is"
+            ],
+            "score": 0.36363636363636365,
+            "score floored": 30
+        },
+        {
+            "X": "I can offer",
+            "Y": "there is",
+            "X best fitted from PPDB to Y": "be offered",
+            "X part to compare": [
+                "offered"
+            ],
+            "Y part to compare": [
+                "there",
+                "is"
+            ],
+            "score": 0.36363636363636365,
+            "score floored": 30
+        },
+        {
+            "X": "lets make it",
+            "Y": "i will accept",
+            "X best fitted from PPDB to Y": "take place",
+            "X part to compare": [
+                "take",
+                "place"
+            ],
+            "Y part to compare": [
+                "accept"
+            ],
+            "score": 0.3333333333333333,
+            "score floored": 30
+        },
+        {
+            "X": "can you give",
+            "Y": "you will start",
+            "X best fitted from PPDB to Y": "dar",
+            "X part to compare": [
+                "dar"
+            ],
+            "Y part to compare": [
+                "start"
+            ],
+            "score": 0.3333333333333333,
+            "score floored": 30
+        }
+    ],
+    "40": [
+        {
+            "X": "I offer",
+            "Y": "lets make it",
+            "X best fitted from PPDB to Y": "make available",
+            "X part to compare": [
+                "make",
+                "available"
+            ],
+            "Y part to compare": [
+                "lets",
+                "make"
+            ],
+            "score": 0.47058823529411764,
+            "score floored": 40
+        },
+        {
+            "X": "I can offer",
+            "Y": "lets make it",
+            "X best fitted from PPDB to Y": "make available",
+            "X part to compare": [
+                "make",
+                "available"
+            ],
+            "Y part to compare": [
+                "lets",
+                "make"
+            ],
+            "score": 0.47058823529411764,
+            "score floored": 40
+        },
+        {
+            "X": "you will start",
+            "Y": "i will accept",
+            "X best fitted from PPDB to Y": "the inception",
+            "X part to compare": [
+                "inception"
+            ],
+            "Y part to compare": [
+                "accept"
+            ],
+            "score": 0.46153846153846156,
+            "score floored": 40
+        },
+        {
+            "X": "I offer",
+            "Y": "how about",
+            "X best fitted from PPDB to Y": "the show",
+            "X part to compare": [
+                "show"
+            ],
+            "Y part to compare": [
+                "how",
+                "about"
+            ],
+            "score": 0.4444444444444444,
+            "score floored": 40
+        },
+        {
+            "X": "I can offer",
+            "Y": "how about",
+            "X best fitted from PPDB to Y": "the show",
+            "X part to compare": [
+                "show"
+            ],
+            "Y part to compare": [
+                "how",
+                "about"
+            ],
+            "score": 0.4444444444444444,
+            "score floored": 40
+        },
+        {
+            "X": "you will start",
+            "Y": "lets make it",
+            "X best fitted from PPDB to Y": "let her rip",
+            "X part to compare": [
+                "let",
+                "rip"
+            ],
+            "Y part to compare": [
+                "lets",
+                "make"
+            ],
+            "score": 0.4,
+            "score floored": 40
+        },
+        {
+            "X": "you will start",
+            "Y": "there is",
+            "X best fitted from PPDB to Y": "hold it together",
+            "X part to compare": [
+                "hold",
+                "together"
+            ],
+            "Y part to compare": [
+                "there",
+                "is"
+            ],
+            "score": 0.4,
+            "score floored": 40
+        },
+        {
+            "X": "can you give",
+            "Y": "i will accept",
+            "X best fitted from PPDB to Y": "accord",
+            "X part to compare": [
+                "accord"
+            ],
+            "Y part to compare": [
+                "accept"
+            ],
+            "score": 0.4,
+            "score floored": 40
+        }
+    ],
+    "50": [
+        {
+            "X": "can you give",
+            "Y": "there is",
+            "X best fitted from PPDB to Y": "give it here",
+            "X part to compare": [
+                "give",
+                "here"
+            ],
+            "Y part to compare": [
+                "there",
+                "is"
+            ],
+            "score": 0.5454545454545454,
+            "score floored": 50
+        }
+    ],
+    "60": [
+        {
+            "X": "can you give",
+            "Y": "lets make it",
+            "X best fitted from PPDB to Y": "to make",
+            "X part to compare": [
+                "make"
+            ],
+            "Y part to compare": [
+                "lets",
+                "make"
+            ],
+            "score": 0.6666666666666666,
+            "score floored": 60
+        }
+    ],
+    "100": [
+        {
+            "X": "I offer",
+            "Y": "can you give",
+            "X best fitted from PPDB to Y": "give you",
+            "X part to compare": [
+                "give"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 1,
+            "score floored": 100
+        },
+        {
+            "X": "I can offer",
+            "Y": "can you give",
+            "X best fitted from PPDB to Y": "give you",
+            "X part to compare": [
+                "give"
+            ],
+            "Y part to compare": [
+                "give"
+            ],
+            "score": 1,
+            "score floored": 100
+        },
+        {
+            "X": "I can offer",
+            "Y": "I offer",
+            "X best fitted from PPDB to Y": "I can offer",
+            "X part to compare": [
+                "I",
+                "offer"
+            ],
+            "Y part to compare": [
+                "I",
+                "offer"
+            ],
+            "score": 1,
+            "score floored": 100
+        }
+    ]
+}
+1 -- 11%
+0.9 -- 11%
+0.8 -- 11%
+0.7 -- 11%
+0.6 -- 14%
+0.5 -- 18%
+0.4 -- 46%
+0.3 -- 64%
+0.2 -- 79%
+0.1 -- 86%
+0 -- 100%

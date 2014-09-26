@@ -1,0 +1,1461 @@
+<html><body>
+Train: on full utterances ( not separated ), train three models : intent, attribute, value.
+Test: on full utterances, no segmentation.
+<table border="1" style="white-space: pre-wrap;"><tr><td><a href="#1">Insist FP</a></td><td>1</td><td>0.01%</td></tr><tr><td><a href="#2">Query FP: grip query word (ok, only, compomise)</a></td><td>3</td><td>0.02%</td></tr><tr><td><a href="#4">Query FN</a></td><td>12</td><td>0.07%</td></tr><tr><td><a href="#5">Insist vs Offer</a></td><td>1</td><td>0.01%</td></tr><tr><td><a href="#7">Accept FP: grip accept related word</a></td><td>18</td><td>0.10%</td></tr><tr><td><a href="#8">Reject FP: grip reject related word</a></td><td>11</td><td>0.06%</td></tr><tr><td><a href="#10">Accept vs Reject in the same sentence</a></td><td>6</td><td>0.03%</td></tr><tr><td><a href="#11">Offer:nothing vs Reject:something</a></td><td>13</td><td>0.07%</td></tr><tr><td><a href="#13">unknown word/misspelled/complicated phrase</a></td><td>24</td><td>0.13%</td></tr><tr><td><a href="#21">Job description FP correlated 'job'</a></td><td>1</td><td>0.01%</td></tr><tr><td><a href="#22">Append FP</a></td><td>3</td><td>0.02%</td></tr><tr><td><a href="#23">Append FN</a></td><td>2</td><td>0.01%</td></tr><tr><td><a href="#24">Offer FP: grip the value string</a></td><td>8</td><td>0.04%</td></tr><tr><td><a href="#25">Pension fund FN</a></td><td>6</td><td>0.03%</td></tr><tr><td><a href="#26">Salary FN</a></td><td>6</td><td>0.03%</td></tr><tr><td><a href="#27">previous FP</a></td><td>41</td><td>0.23%</td></tr><tr><td><a href="#28">Value confusion with vs without</a></td><td>14</td><td>0.08%</td></tr><tr><td><a href="#29">Value where there is no value just string</a></td><td>7</td><td>0.04%</td></tr><tr><td><a href="#30">confusiong between similar values</a></td><td>3</td><td>0.02%</td></tr></table><a name="1"><i>Insist FP</i></a><table style="white-space: pre-wrap;"><tr><td><b>We both losing points, I am once again suggestiong without leased car</b></td></tr><tr><td>{
+    "TP": [
+        "Offer",
+        "Query"
+    ],
+    "FP": [
+        "Insist"
+    ],
+    "FN": []
+}</td></tr></table><a name="2"><i>Query FP: grip query word (ok, only, compomise)</i></a><table style="white-space: pre-wrap;"><tr><td><b>ok</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Query"
+    ],
+    "FN": [
+        "Accept"
+    ]
+}</td></tr><tr><td><b>ok , 8 hours</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Query"
+    ],
+    "FN": [
+        "Accept"
+    ]
+}</td></tr><tr><td><b>OK</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Query"
+    ],
+    "FN": [
+        "Accept"
+    ]
+}</td></tr></table><a name="4"><i>Query FN</i></a><table style="white-space: pre-wrap;"><tr><td><b>come on, dont be so hard</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Query"
+    ]
+}</td></tr><tr><td><b>i dont have a time</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Query"
+    ]
+}</td></tr><tr><td><b>you agree?</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Accept"
+    ],
+    "FN": [
+        "Query"
+    ]
+}</td></tr><tr><td><b>i am understand you are agree so welcome</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Accept"
+    ],
+    "FN": [
+        "Query"
+    ]
+}</td></tr><tr><td><b>what about salary?</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Query"
+    ]
+}</td></tr><tr><td><b>wich job do you want?</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Query"
+    ]
+}</td></tr><tr><td><b>you have to compromise, i did</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Query"
+    ]
+}</td></tr><tr><td><b>you have to compromise</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Query"
+    ]
+}</td></tr><tr><td><b>whice job do you want?</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Query"
+    ]
+}</td></tr><tr><td><b>what are you willing to compromise about, since i wanyt you to work 10 hours.</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Greet"
+    ],
+    "FN": [
+        "Query"
+    ]
+}</td></tr><tr><td><b>lets talk about job description first</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Query"
+    ]
+}</td></tr><tr><td><b>SIGN</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Query"
+    ]
+}</td></tr></table><a name="5"><i>Insist vs Offer</i></a><table style="white-space: pre-wrap;"><tr><td><b>I will offer you 0% once again.</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [],
+    "FN": [
+        "Insist"
+    ]
+}</td></tr></table><a name="7"><i>Accept FP: grip accept related word</i></a><table style="white-space: pre-wrap;"><tr><td><b>then work for 10 hours</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Accept"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>we already agreed 10 hours</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Accept"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>fine thank you. how are you?</b></td></tr><tr><td>{
+    "TP": [
+        "Greet"
+    ],
+    "FP": [
+        "Accept",
+        "Quit"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>ok?</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Accept"
+    ],
+    "FN": [
+        "Query"
+    ]
+}</td></tr><tr><td><b>you agree?</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Accept"
+    ],
+    "FN": [
+        "Query"
+    ]
+}</td></tr><tr><td><b>i am understand you are agree so welcome</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Accept"
+    ],
+    "FN": [
+        "Query"
+    ]
+}</td></tr><tr><td><b>you just said ok for 9 hours</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Accept"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>if you will be good as you say you are, fast pormotion track is an option</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Accept"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>I can not agree to 20000</b></td></tr><tr><td>{
+    "TP": [
+        "Reject"
+    ],
+    "FP": [
+        "Accept"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>let's not agree about the car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Accept"
+    ],
+    "FN": [
+        "Offer"
+    ]
+}</td></tr><tr><td><b>i will accept for 10 hours</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Accept"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>not good</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Accept"
+    ],
+    "FN": [
+        "Reject"
+    ]
+}</td></tr><tr><td><b>i think 7000 is good</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Accept"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>it is much too high.</b></td></tr><tr><td>{
+    "TP": [
+        "Reject"
+    ],
+    "FP": [
+        "Accept"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>so we agreed on 9 hours?</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Accept"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>i'll agree for 8 hours if you will be a programer</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Accept"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>we already agreed on 12000</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Accept"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>i do not accept!!</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Accept"
+    ],
+    "FN": [
+        "Reject"
+    ]
+}</td></tr></table><a name="8"><i>Reject FP: grip reject related word</i></a><table style="white-space: pre-wrap;"><tr><td><b>I don't think I'll hire you after all...</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Reject"
+    ],
+    "FN": [
+        "Quit"
+    ]
+}</td></tr><tr><td><b>no less then 10 hours as a programmer!</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Append",
+        "Reject"
+    ],
+    "FN": [
+        "Insist"
+    ]
+}</td></tr><tr><td><b>no leased car but you will get fast prmotion track</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Reject"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>my offer is, project manager, 10 hours work , no pension, no car , you get 12 000 NIS</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Reject"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>10 hours and no more</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Reject"
+    ],
+    "FN": [
+        "Insist"
+    ]
+}</td></tr><tr><td><b>no lissed car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Reject"
+    ],
+    "FN": [
+        "Offer"
+    ]
+}</td></tr><tr><td><b>ok. but in this job no lissed car</b></td></tr><tr><td>{
+    "TP": [
+        "Accept"
+    ],
+    "FP": [
+        "Reject"
+    ],
+    "FN": [
+        "Offer"
+    ]
+}</td></tr><tr><td><b>there is no agreement on leased car</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Reject"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>no leased car</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Reject"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>there is no agreement on the leased car</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Reject"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>ok. but in this job no liased car</b></td></tr><tr><td>{
+    "TP": [
+        "Accept"
+    ],
+    "FP": [
+        "Query",
+        "Reject"
+    ],
+    "FN": [
+        "Offer"
+    ]
+}</td></tr></table><a name="10"><i>Accept vs Reject in the same sentence</i></a><table style="white-space: pre-wrap;"><tr><td><b>i don't accept your offer</b></td></tr><tr><td>{
+    "TP": [
+        "Reject"
+    ],
+    "FP": [
+        "Accept"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>I can not agree to 20000</b></td></tr><tr><td>{
+    "TP": [
+        "Reject"
+    ],
+    "FP": [
+        "Accept"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>i will not accept 8 hours a day</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Accept",
+        "Offer"
+    ],
+    "FN": [
+        "Reject"
+    ]
+}</td></tr><tr><td><b>not good</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Accept"
+    ],
+    "FN": [
+        "Reject"
+    ]
+}</td></tr><tr><td><b>i do not accept!!</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Accept"
+    ],
+    "FN": [
+        "Reject"
+    ]
+}</td></tr><tr><td><b>ok. but in this job no liased car</b></td></tr><tr><td>{
+    "TP": [
+        "Accept"
+    ],
+    "FP": [
+        "Query",
+        "Reject"
+    ],
+    "FN": [
+        "Offer"
+    ]
+}</td></tr></table><a name="11"><i>Offer:nothing vs Reject:something</i></a><table style="white-space: pre-wrap;"><tr><td><b>no pension with leased car</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Reject"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>7k, leased car, QA, no pension, slow promotion</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Reject"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>no pesion fund</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Reject"
+    ],
+    "FN": [
+        "Offer"
+    ]
+}</td></tr><tr><td><b>no agreement on the car?</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Reject"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>I cannot give you a leased car.</b></td></tr><tr><td>{
+    "TP": [
+        "Reject"
+    ],
+    "FP": [
+        "Offer"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>no leased car but you will get fast prmotion track</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Reject"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>i can not give you a car at all.</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Offer"
+    ],
+    "FN": [
+        "Reject"
+    ]
+}</td></tr><tr><td><b>my offer is, project manager, 10 hours work , no pension, no car , you get 12 000 NIS</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Reject"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>no lissed car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Reject"
+    ],
+    "FN": [
+        "Offer"
+    ]
+}</td></tr><tr><td><b>ok. but in this job no lissed car</b></td></tr><tr><td>{
+    "TP": [
+        "Accept"
+    ],
+    "FP": [
+        "Reject"
+    ],
+    "FN": [
+        "Offer"
+    ]
+}</td></tr><tr><td><b>I cant offer you a leased car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Offer"
+    ],
+    "FN": [
+        "Reject"
+    ]
+}</td></tr><tr><td><b>no leased car</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Reject"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>ok. but in this job no liased car</b></td></tr><tr><td>{
+    "TP": [
+        "Accept"
+    ],
+    "FP": [
+        "Query",
+        "Reject"
+    ],
+    "FN": [
+        "Offer"
+    ]
+}</td></tr></table><a name="13"><i>unknown word/misspelled/complicated phrase</i></a><table style="white-space: pre-wrap;"><tr><td><b>no pesion fund</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Reject"
+    ],
+    "FN": [
+        "Offer"
+    ]
+}</td></tr><tr><td><b>go get another job</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Quit"
+    ]
+}</td></tr><tr><td><b>get out of my office, or I call the police</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Quit"
+    ]
+}</td></tr><tr><td><b>programer</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Offer"
+    ]
+}</td></tr><tr><td><b>Actually, I had in mind offering you a Programmers job</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Offer"
+    ]
+}</td></tr><tr><td><b>YOU UNDERSTAND RIGHT</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Accept"
+    ]
+}</td></tr><tr><td><b>cancel all </b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Reject"
+    ]
+}</td></tr><tr><td><b>and no pention</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Pension Fund"
+    ]
+}</td></tr><tr><td><b>programer</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Job Description"
+    ]
+}</td></tr><tr><td><b>12000 NIS, programmer,withour lissed car</b></td></tr><tr><td>{
+    "TP": [
+        "Job Description",
+        "Salary"
+    ],
+    "FP": [],
+    "FN": [
+        "Leased Car"
+    ]
+}</td></tr><tr><td><b>Actually, I had in mind offering you a Programmers job</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Job Description"
+    ]
+}</td></tr><tr><td><b>12000 NIS, programmer,without liased car</b></td></tr><tr><td>{
+    "TP": [
+        "Job Description",
+        "Salary"
+    ],
+    "FP": [],
+    "FN": [
+        "Leased Car"
+    ]
+}</td></tr><tr><td><b>you can work for 10h so you will get mor mony</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Pension Fund"
+    ],
+    "FN": [
+        "Working Hours"
+    ]
+}</td></tr><tr><td><b>you will get fat promotion</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "7,000 NIS"
+    ],
+    "FN": [
+        "Fast promotion track"
+    ]
+}</td></tr><tr><td><b>no leasd car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "previous"
+    ],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr><tr><td><b>its not enghuf</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "previous"
+    ]
+}</td></tr><tr><td><b>sorry, but without lease car, you have to compromise.</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "previous"
+    ],
+    "FN": [
+        "Without leased car",
+        "compromise"
+    ]
+}</td></tr><tr><td><b>oka</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "previous"
+    ]
+}</td></tr><tr><td><b>withour lissed car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr><tr><td><b>no lissed car but you be team manager</b></td></tr><tr><td>{
+    "TP": [
+        "Team Manager"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr><tr><td><b>Actually, I had in mind offering you a Programmers job</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Programmer"
+    ]
+}</td></tr><tr><td><b>go to hell</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "true"
+    ]
+}</td></tr><tr><td><b>no liased car but you be team manager</b></td></tr><tr><td>{
+    "TP": [
+        "Team Manager"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr><tr><td><b>12000 NIS, programmer,without liased car</b></td></tr><tr><td>{
+    "TP": [
+        "12,000 NIS",
+        "Programmer"
+    ],
+    "FP": [],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr></table><a name="21"><i>Job description FP correlated 'job'</i></a><table style="white-space: pre-wrap;"><tr><td><b>what about this job?</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Salary"
+    ],
+    "FN": []
+}</td></tr></table><a name="22"><i>Append FP</i></a><table style="white-space: pre-wrap;"><tr><td><b>id want you to work as a programmer </b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Append"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>no less then 10 hours as a programmer!</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Append",
+        "Reject"
+    ],
+    "FN": [
+        "Insist"
+    ]
+}</td></tr><tr><td><b>you will work as a programmer and work 10 hours</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [
+        "Append"
+    ],
+    "FN": []
+}</td></tr></table><a name="23"><i>Append FN</i></a><table style="white-space: pre-wrap;"><tr><td><b>but without leased car</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [],
+    "FN": [
+        "Append"
+    ]
+}</td></tr><tr><td><b>and no car 10%</b></td></tr><tr><td>{
+    "TP": [
+        "Offer"
+    ],
+    "FP": [],
+    "FN": [
+        "Append"
+    ]
+}</td></tr></table><a name="24"><i>Offer FP: grip the value string</i></a><table style="white-space: pre-wrap;"><tr><td><b>I agree to the 10% pension fund</b></td></tr><tr><td>{
+    "TP": [
+        "Accept"
+    ],
+    "FP": [
+        "Offer"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>the salary cant be 20000 NIS</b></td></tr><tr><td>{
+    "TP": [
+        "Reject"
+    ],
+    "FP": [
+        "Offer"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>8 hourse is not enough</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Offer"
+    ],
+    "FN": [
+        "Reject"
+    ]
+}</td></tr><tr><td><b>no 8 hours is not enough</b></td></tr><tr><td>{
+    "TP": [
+        "Reject"
+    ],
+    "FP": [
+        "Offer"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>i will not accept 8 hours a day</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Accept",
+        "Offer"
+    ],
+    "FN": [
+        "Reject"
+    ]
+}</td></tr><tr><td><b>hi 20000 NIS does not proper the QA JOB</b></td></tr><tr><td>{
+    "TP": [
+        "Greet",
+        "Offer"
+    ],
+    "FP": [],
+    "FN": [
+        "Reject"
+    ]
+}</td></tr><tr><td><b>agreed on 8 hours</b></td></tr><tr><td>{
+    "TP": [
+        "Accept"
+    ],
+    "FP": [
+        "Offer"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>I cant offer you a leased car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Offer"
+    ],
+    "FN": [
+        "Reject"
+    ]
+}</td></tr></table><a name="25"><i>Pension fund FN</i></a><table style="white-space: pre-wrap;"><tr><td><b>leased car, no pension, QA</b></td></tr><tr><td>{
+    "TP": [
+        "Job Description",
+        "Leased Car"
+    ],
+    "FP": [],
+    "FN": [
+        "Pension Fund"
+    ]
+}</td></tr><tr><td><b>ok project manager without car and without pension</b></td></tr><tr><td>{
+    "TP": [
+        "Job Description",
+        "Leased Car"
+    ],
+    "FP": [],
+    "FN": [
+        "Pension Fund"
+    ]
+}</td></tr><tr><td><b>Ok. My offer is: 8 hours a day, programmer, without leased car, no pension fund, slow promotion track.</b></td></tr><tr><td>{
+    "TP": [
+        "Job Description",
+        "Leased Car",
+        "Promotion Possibilities",
+        "Working Hours"
+    ],
+    "FP": [],
+    "FN": [
+        "Pension Fund"
+    ]
+}</td></tr><tr><td><b>and no pention</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Pension Fund"
+    ]
+}</td></tr><tr><td><b>No agreement then on pension</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Pension Fund"
+    ]
+}</td></tr><tr><td><b>do you want to talk about your pension fund?</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Job Description"
+    ],
+    "FN": [
+        "Pension Fund"
+    ]
+}</td></tr></table><a name="26"><i>Salary FN</i></a><table style="white-space: pre-wrap;"><tr><td><b>ok 10 hours 20000</b></td></tr><tr><td>{
+    "TP": [
+        "Working Hours"
+    ],
+    "FP": [],
+    "FN": [
+        "Salary"
+    ]
+}</td></tr><tr><td><b>How about programmer, 20000, without leased car, 0% pension fund, slow promotion track, 10 hours a day?</b></td></tr><tr><td>{
+    "TP": [
+        "Job Description",
+        "Leased Car",
+        "Pension Fund",
+        "Promotion Possibilities",
+        "Working Hours"
+    ],
+    "FP": [],
+    "FN": [
+        "Salary"
+    ]
+}</td></tr><tr><td><b>no 20K is to much</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Salary"
+    ]
+}</td></tr><tr><td><b>what about salary?</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Salary"
+    ]
+}</td></tr><tr><td><b>ok but what about the salary?</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Salary"
+    ]
+}</td></tr><tr><td><b>I sujest we start with a lower price</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "Salary"
+    ]
+}</td></tr></table><a name="27"><i>previous FP</i></a><table style="white-space: pre-wrap;"><tr><td><b>no 20K is to much</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>programmer is good for you ?</b></td></tr><tr><td>{
+    "TP": [
+        "Programmer"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>7k, leased car, QA, no pension, slow promotion</b></td></tr><tr><td>{
+    "TP": [
+        "7,000 NIS",
+        "QA",
+        "Slow promotion track",
+        "With leased car"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": [
+        "0%"
+    ]
+}</td></tr><tr><td><b>That won't do for me. I agreed to give you 12000, therefore I'll need you to work 10 hours a day.</b></td></tr><tr><td>{
+    "TP": [
+        "10 hours",
+        "12,000 NIS"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>anf 9 hours</b></td></tr><tr><td>{
+    "TP": [
+        "9 hours"
+    ],
+    "FP": [],
+    "FN": [
+        "previous"
+    ]
+}</td></tr><tr><td><b>no agreement on the car?</b></td></tr><tr><td>{
+    "TP": [
+        "No agreement"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>no leasd car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "previous"
+    ],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr><tr><td><b>AS A PROGRAMMER</b></td></tr><tr><td>{
+    "TP": [
+        "Programmer"
+    ],
+    "FP": [],
+    "FN": [
+        "previous"
+    ]
+}</td></tr><tr><td><b>ok?</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "previous"
+    ],
+    "FN": [
+        "accept"
+    ]
+}</td></tr><tr><td><b>Yes</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "previous"
+    ]
+}</td></tr><tr><td><b>i cannot give you a car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "With leased car",
+        "previous"
+    ],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr><tr><td><b>i can not give you a leased car, no leased car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "With leased car",
+        "previous"
+    ],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr><tr><td><b>its not enghuf</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "previous"
+    ]
+}</td></tr><tr><td><b>all i have is a programmer position</b></td></tr><tr><td>{
+    "TP": [
+        "Programmer"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>You offer me a leased car?!</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "With leased car"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>if you will be good as you say you are, fast pormotion track is an option</b></td></tr><tr><td>{
+    "TP": [
+        "Fast promotion track"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>I agree to the 10% pension fund</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "10%",
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>I don't think I'll hire you after all...</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "previous"
+    ],
+    "FN": [
+        "true"
+    ]
+}</td></tr><tr><td><b>you will get leased car if you will agree to salary of 7000 NIS</b></td></tr><tr><td>{
+    "TP": [
+        "7,000 NIS",
+        "With leased car"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>we already agreed on 12000 nis</b></td></tr><tr><td>{
+    "TP": [
+        "12,000 NIS"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>I can not agree to 20000</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>i think 7000 is good</b></td></tr><tr><td>{
+    "TP": [
+        "7,000 NIS"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>i will accept 9 hours, not less</b></td></tr><tr><td>{
+    "TP": [
+        "9 hours"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>i will accept it if you will start with no car and work 10 hours</b></td></tr><tr><td>{
+    "TP": [
+        "10 hours",
+        "Without leased car"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>sorry, but without lease car, you have to compromise.</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "previous"
+    ],
+    "FN": [
+        "Without leased car",
+        "compromise"
+    ]
+}</td></tr><tr><td><b>oka</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "previous"
+    ]
+}</td></tr><tr><td><b>accept </b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "previous"
+    ]
+}</td></tr><tr><td><b>no leased car but you will get fast prmotion track</b></td></tr><tr><td>{
+    "TP": [
+        "Fast promotion track"
+    ],
+    "FP": [
+        "With leased car",
+        "previous"
+    ],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr><tr><td><b>since your are working 8 hours, no leased car.</b></td></tr><tr><td>{
+    "TP": [
+        "8 hours"
+    ],
+    "FP": [
+        "With leased car",
+        "previous"
+    ],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr><tr><td><b>I dont accept 20%</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "20%",
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>no lissed car but you be team manager</b></td></tr><tr><td>{
+    "TP": [
+        "Team Manager"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr><tr><td><b>AGREE</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "previous"
+    ]
+}</td></tr><tr><td><b>We have already agreed on Programmer</b></td></tr><tr><td>{
+    "TP": [
+        "Programmer"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>last offer</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "previous"
+    ]
+}</td></tr><tr><td><b>I will let you think about it again</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "previous"
+    ]
+}</td></tr><tr><td><b>we can opt out</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "previous"
+    ]
+}</td></tr><tr><td><b>I will not accept the leased car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "With leased car",
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>no liased car but you be team manager</b></td></tr><tr><td>{
+    "TP": [
+        "Team Manager"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr><tr><td><b>ok</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "accept"
+    ],
+    "FN": [
+        "previous"
+    ]
+}</td></tr><tr><td><b>ok , 8 hours</b></td></tr><tr><td>{
+    "TP": [
+        "8 hours"
+    ],
+    "FP": [
+        "accept"
+    ],
+    "FN": [
+        "previous"
+    ]
+}</td></tr><tr><td><b>how about 10,000 NIS, QA, no agreement on pension, no agreement on car</b></td></tr><tr><td>{
+    "TP": [
+        "10,000 NIS",
+        "No agreement",
+        "QA"
+    ],
+    "FP": [
+        "previous"
+    ],
+    "FN": []
+}</td></tr></table><a name="28"><i>Value confusion with vs without</i></a><table style="white-space: pre-wrap;"><tr><td><b>How about programmer, 20000, without leased car, 0% pension fund, slow promotion track, 10 hours a day?</b></td></tr><tr><td>{
+    "TP": [
+        "0%",
+        "10 hours",
+        "Programmer",
+        "Slow promotion track",
+        "Without leased car"
+    ],
+    "FP": [
+        "With leased car"
+    ],
+    "FN": [
+        "20,000 NIS"
+    ]
+}</td></tr><tr><td><b>Ok. My offer is: 8 hours a day, programmer, without leased car, no pension fund, slow promotion track.</b></td></tr><tr><td>{
+    "TP": [
+        "8 hours",
+        "Programmer",
+        "Slow promotion track",
+        "Without leased car",
+        "previous"
+    ],
+    "FP": [
+        "With leased car"
+    ],
+    "FN": [
+        "0%"
+    ]
+}</td></tr><tr><td><b>without leased car but with 10 % pension</b></td></tr><tr><td>{
+    "TP": [
+        "10%",
+        "Without leased car"
+    ],
+    "FP": [
+        "With leased car"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>How about programmer, 7000, without leased car, 0% pension fund, slow promotion track, 8 hours a day?</b></td></tr><tr><td>{
+    "TP": [
+        "0%",
+        "7,000 NIS",
+        "8 hours",
+        "Programmer",
+        "Slow promotion track",
+        "Without leased car"
+    ],
+    "FP": [
+        "With leased car"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>and you get a car</b></td></tr><tr><td>{
+    "TP": [
+        "previous"
+    ],
+    "FP": [
+        "Without leased car"
+    ],
+    "FN": [
+        "With leased car"
+    ]
+}</td></tr><tr><td><b>i cannot give you a car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "With leased car",
+        "previous"
+    ],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr><tr><td><b>i can not give you a leased car, no leased car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "With leased car",
+        "previous"
+    ],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr><tr><td><b>I cannot give you a leased car.</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "With leased car",
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>no leased car but you will get fast prmotion track</b></td></tr><tr><td>{
+    "TP": [
+        "Fast promotion track"
+    ],
+    "FP": [
+        "With leased car",
+        "previous"
+    ],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr><tr><td><b>since your are working 8 hours, no leased car.</b></td></tr><tr><td>{
+    "TP": [
+        "8 hours"
+    ],
+    "FP": [
+        "With leased car",
+        "previous"
+    ],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr><tr><td><b>ok I give you a car</b></td></tr><tr><td>{
+    "TP": [
+        "previous"
+    ],
+    "FP": [
+        "Without leased car"
+    ],
+    "FN": [
+        "With leased car"
+    ]
+}</td></tr><tr><td><b>A Programmer does not have a leased car, I'm afraid</b></td></tr><tr><td>{
+    "TP": [
+        "Programmer"
+    ],
+    "FP": [
+        "With leased car"
+    ],
+    "FN": [
+        "Without leased car"
+    ]
+}</td></tr><tr><td><b>without a leased car</b></td></tr><tr><td>{
+    "TP": [
+        "Without leased car"
+    ],
+    "FP": [
+        "With leased car"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>I said without leased car</b></td></tr><tr><td>{
+    "TP": [
+        "Without leased car"
+    ],
+    "FP": [
+        "With leased car"
+    ],
+    "FN": []
+}</td></tr></table><a name="29"><i>Value where there is no value just string</i></a><table style="white-space: pre-wrap;"><tr><td><b>i accept leased car issue</b></td></tr><tr><td>{
+    "TP": [
+        "previous"
+    ],
+    "FP": [
+        "With leased car"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>7,000 NIS it is.</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "7,000 NIS"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>I cannot give you a leased car.</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "With leased car",
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>I agree to the 10% pension fund</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "10%",
+        "previous"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>lets not agree on the leased car and talk about it again after you start to work</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "With leased car",
+        "previous"
+    ],
+    "FN": [
+        "No agreement"
+    ]
+}</td></tr><tr><td><b>hi 20000 NIS does not proper the QA JOB</b></td></tr><tr><td>{
+    "TP": [
+        "QA",
+        "true"
+    ],
+    "FP": [
+        "20,000 NIS"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>I dont accept fast promotion</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "Fast promotion track",
+        "previous"
+    ],
+    "FN": []
+}</td></tr></table><a name="30"><i>confusiong between similar values</i></a><table style="white-space: pre-wrap;"><tr><td><b>if you work 10h I can give you 20% pension fund and a car </b></td></tr><tr><td>{
+    "TP": [
+        "20%",
+        "With leased car"
+    ],
+    "FP": [
+        "10%"
+    ],
+    "FN": [
+        "10 hours"
+    ]
+}</td></tr><tr><td><b>can you give 10 hores</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "10%"
+    ],
+    "FN": [
+        "10 hours"
+    ]
+}</td></tr><tr><td><b>I dont accept 20%</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "20%",
+        "previous"
+    ],
+    "FN": []
+}</td></tr></table></body></html>

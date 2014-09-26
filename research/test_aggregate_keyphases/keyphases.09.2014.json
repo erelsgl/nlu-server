@@ -1,0 +1,4440 @@
+[
+    {
+        "sentence": "it is much too high.",
+        "labels": {
+            "Reject": [
+                ""
+            ],
+            "Salary": [
+                ""
+            ]
+        }
+    },
+    {
+        "sentence": "i think 7000 is good",
+        "labels": {
+            "Offer": [
+                "i think"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "7,000 NIS": [
+                "7000"
+            ]
+        }
+    },
+    {
+        "sentence": "well you should accept it you will get fast promotion track.",
+        "labels": {
+            "Offer": [
+                ""
+            ],
+            "Promotion Possibilities": [
+                ""
+            ],
+            "Fast promotion track": [
+                ""
+            ]
+        }
+    },
+    {
+        "sentence": "fast promotion goes with 7000.",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "7,000 NIS": [
+                "7000"
+            ]
+        }
+    },
+    {
+        "sentence": "as a start you will start as a programmer",
+        "labels": {
+            "Offer": [
+                "will start"
+            ],
+            "Job Description": [
+                "programmer"
+            ],
+            "Programmer": [
+                "programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "i  offer 10% pension",
+        "labels": {
+            "Offer": [
+                "I offer"
+            ],
+            "Pension Fund": [
+                "pension"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "this is a fast promotion track, you will start with 10% pension",
+        "labels": {
+            "Offer": [
+                "will start"
+            ],
+            "Pension Fund": [
+                "pension"
+            ],
+            "10%": [
+                "10%"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ]
+        }
+    },
+    {
+        "sentence": "i will accept it if you will start with no car and work 10 hours",
+        "labels": {
+            "Offer": [
+                "will start"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "pension 10, no car, 9 hours, fast promotion",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ],
+            "Pension Fund": [
+                "pension"
+            ],
+            "10%": [
+                "10"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "i cannot agree to that",
+        "labels": {
+            "Reject": [
+                "i cannot agree"
+            ],
+            "previous": [
+                "to that"
+            ]
+        }
+    },
+    {
+        "sentence": "i cannot agree to your suggest",
+        "labels": {
+            "Reject": [
+                "i cannot agree"
+            ],
+            "previous": [
+                "to your suggest"
+            ]
+        }
+    },
+    {
+        "sentence": "no",
+        "labels": {
+            "Reject": [
+                "no"
+            ],
+            "previous": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "fine",
+        "labels": {
+            "Accept": [
+                "fine"
+            ],
+            "previous": [
+                "fine"
+            ]
+        }
+    },
+    {
+        "sentence": "10 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "i will accept 9 hours, not less",
+        "labels": {
+            "Insist": [
+                "not less"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "Offer": [
+                "will accept"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "10 hours and a leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "ATTRIBUTE KEYPHASE"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "then 9 hours",
+        "labels": {
+            "Accept": [
+                "then"
+            ],
+            "previous": [
+                "then"
+            ],
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "i will not accept 8 hours a day",
+        "labels": {
+            "Reject": [
+                "i will not accept"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "8 hours": [
+                "8"
+            ]
+        }
+    },
+    {
+        "sentence": "no",
+        "labels": {
+            "Reject": [
+                "no"
+            ],
+            "previous": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "no, we agreed on 9",
+        "labels": {
+            "Offer": [
+                "we agreed"
+            ],
+            "Working Hours": [
+                "VALUE"
+            ],
+            "9 hours": [
+                "9"
+            ],
+            "Reject": [
+                "no"
+            ],
+            "previous": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "7000, no car, project manager, 10%, slow promotion, 9 hours, and we can sign",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Project Manager": [
+                "project manager"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "10%": [
+                "10%"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Slow promotion track": [
+                "slow"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "7,000 NIS": [
+                "7000"
+
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ],
+            "Query": [
+                "and we can sign"
+            ],
+            "accept": [
+                "and we can sign"
+            ]
+        }
+    },
+    {
+        "sentence": "10 hours and a car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "ATTRIBUTE KEYPHASE"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "fine",
+        "labels": {
+            "Accept": [
+                "fine"
+            ],
+            "previous": [
+                "fine"
+            ]
+        }
+    },
+    {
+        "sentence": "slow promotion and we can sign",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Slow promotion track": [
+                "slow"
+            ]
+        }
+    },
+    {
+        "sentence": "7000, fast promotion",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "7,000 NIS": [
+                "7000"
+            ]
+        }
+    },
+    {
+        "sentence": "thats the last offer",
+        "labels": {
+            "Insist": [
+                "last offer"
+            ],
+            "previous": [
+                "last offer"
+            ]
+        }
+    },
+    {
+        "sentence": "not good",
+        "labels": {
+            "Reject": [
+                "not good"
+            ],
+            "previous": [
+                "not good"
+            ]
+        }
+    },
+    {
+        "sentence": "last offer: 7000 and fast promotion",
+        "labels": {
+            "Insist": [
+                "last offer"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ],
+            "7,000 NIS": [
+                "7000"
+            ]
+        }
+    },
+    {
+        "sentence": "no",
+        "labels": {
+            "Reject": [
+                "no"
+            ],
+            "previous": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "no",
+        "labels": {
+            "Reject": [
+                "no"
+            ],
+            "previous": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "12000 and i accept",
+        "labels": {
+            "Accept": [
+                "i accept"
+            ],
+            "previous": [
+                "i accept"
+            ],
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "12,000 NIS": [
+                "12000"
+            ]
+        }
+    },
+    {
+        "sentence": "12000, programmer, car,10%,fast promotion 9 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programmer"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "ATTRIBUTE KEYPHASE"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "10%": [
+                "10%"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "12,000 NIS": [
+                "12000"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "no",
+        "labels": {
+            "Reject": [
+                "no"
+            ],
+            "previous": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "yes, for a programmer",
+        "labels": {
+            "Accept": [
+                "yes"
+            ],
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "pension 10, no car, 10 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ],
+            "Pension Fund": [
+                "pension"
+            ],
+            "10%": [
+                "10"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "no way",
+        "labels": {
+            "Reject": [
+                "no way"
+            ]
+        }
+    },
+    {
+        "sentence": "and no car 10%",
+        "labels": {
+            "Append": [
+                "and ..."
+            ],
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "i will accept for 10 hours",
+        "labels": {
+            "Offer": [
+                "will accept"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "no leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "with car and 9 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "with"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "10%",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "hi, why do you think you deserve this salary?",
+        "labels": {
+            "Greet": [
+                "hi"
+            ]
+        }
+    },
+    {
+        "sentence": "you can work for 10h so you will get mor mony",
+        "labels": {
+            "Offer": [
+                "you can work for"
+            ],
+            "Working Hours": [
+                "VALUE"
+            ],
+            "10 hours": [
+                "10h"
+            ]
+        }
+    },
+    {
+        "sentence": "if you work for more houres you will get more salary",
+        "labels": {
+            "Reject": [
+                ""
+            ],
+            "Salary": [
+                ""
+            ],
+            "Working Hours": [
+                ""
+            ]
+        }
+    },
+    {
+        "sentence": "wich job do you want?",
+        "labels": {
+            "Query": [
+                "wich ... do you want?"
+            ],
+            "Job Description": [
+                "job"
+            ]
+        }
+    },
+    {
+        "sentence": "whice job do you want?",
+        "labels": {
+            "Query": [
+                "whice ... do you want?"
+            ],
+            "Job Description": [
+                "job"
+            ]
+        }
+    },
+    {
+        "sentence": "What job you want?",
+        "labels": {
+            "Query": [
+                "What ... you want?"
+            ],
+            "Job Description": [
+                "job"
+            ]
+        }
+    },
+    {
+        "sentence": "no, you can be a programer",
+        "labels": {
+            "Offer": [
+                "you can be"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programer"
+            ],
+            "Reject": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "i'll agree for 8 hours if you will be a programer",
+        "labels": {
+            "Offer": [
+                "i'll agree"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programer"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "8 hours": [
+                "8"
+            ]
+        }
+    },
+    {
+        "sentence": "so without a car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ]
+        }
+    },
+    {
+        "sentence": "no without leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ],
+            "Reject": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "and 8 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "8 hours": [
+                "8"
+            ]
+        }
+    },
+    {
+        "sentence": "no",
+        "labels": {
+            "Reject": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "programer",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programer"
+            ]
+        }
+    },
+    {
+        "sentence": "programmer",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "we already agreed on 12000",
+        "labels": {
+            "Offer": [
+                "we already agreed"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "12,000 NIS": [
+                "12000"
+            ]
+        }
+    },
+    {
+        "sentence": "so we agreed on 9 hours?",
+        "labels": {
+            "Offer": [
+                "so we agreed"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "no leased car but you will get fast prmotion track",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ],
+            "Promotion Possibilities": [
+                "prmotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ]
+        }
+    },
+    {
+        "sentence": "without a leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ]
+        }
+    },
+    {
+        "sentence": "so slow promotion track and with leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "with"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Slow promotion track": [
+                "slow"
+            ]
+        }
+    },
+    {
+        "sentence": "so fast promotion track and without leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ]
+        }
+    },
+    {
+        "sentence": "i want to give you only 12000",
+        "labels": {
+            "Offer": [
+                "i want to give"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "12,000 NIS": [
+                "12000"
+            ]
+        }
+    },
+    {
+        "sentence": "why not an programmer?",
+        "labels": {
+            "Offer": [
+                "why not an"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "i want you to be an programmer",
+        "labels": {
+            "Offer": [
+                "i want you to be a"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "ok",
+        "labels": {
+            "Accept": [
+                "ok"
+            ]
+        }
+    },
+    {
+        "sentence": "can you give 10?",
+        "labels": {
+            "Offer": [
+                "can you give"
+            ],
+            "Working Hours": [
+                "VALUE"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "can you give 10 hores",
+        "labels": {
+            "Offer": [
+                "can you give"
+            ],
+            "Working Hours": [
+                "hores"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "can you give 10 hours",
+        "labels": {
+            "Offer": [
+                "can you give"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "maby 9 hour?",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hour"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "ok",
+        "labels": {
+            "Accept": [
+                "ok"
+            ]
+        }
+    },
+    {
+        "sentence": "i dont think so",
+        "labels": {
+            "Reject": [
+                "i dont think"
+            ]
+        }
+    },
+    {
+        "sentence": "i ma not ready to give you car at all",
+        "labels": {
+            "Reject": [
+                "i ma not ready"
+            ],
+            "Leased Car": [
+                "car"
+            ]
+        }
+    },
+    {
+        "sentence": "no car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "ok",
+        "labels": {
+            "Accept": [
+                "ok"
+            ]
+        }
+    },
+    {
+        "sentence": "slow is batter",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Promotion Possibilities": [
+                "VALUE"
+            ],
+            "Slow promotion track": [
+                "slow"
+            ]
+        }
+    },
+    {
+        "sentence": "12000 NIS, programmer,without liased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "12,000 NIS": [
+                "12000"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programmer"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ]
+        }
+    },
+    {
+        "sentence": "12000 NIS",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "12,000 NIS": [
+                "12000"
+            ]
+        }
+    },
+    {
+        "sentence": "your salary 12000",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "salary"
+            ],
+            "12,000 NIS": [
+                "12000"
+            ]
+        }
+    },
+    {
+        "sentence": "no..you be programmer",
+        "labels": {
+            "Offer": [
+                "be"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programmer"
+            ],
+            "Reject": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "ok. but in this job no liased car",
+        "labels": {
+            "Accept": [
+                "ok"
+            ],
+            "Offer": [
+                "in this job"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "0% pension and slow promotion track",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Pension Fund": [
+                "pension"
+            ],
+            "0%": [
+                "0%"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Slow promotion track": [
+                "slow"
+            ]
+        }
+    },
+    {
+        "sentence": "10 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "9 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "for 8 hours you get 7000 NIS",
+        "labels": {
+            "Offer": [
+                "you get"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "7,000 NIS": [
+                "7000"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "8 hours": [
+                "8"
+            ]
+        }
+    },
+    {
+        "sentence": "9 hours,12000 NIS",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "12,000 NIS": [
+                "12000"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "no liased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "no liased car but you be team manager",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Team Manager": [
+                "team manager"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "without liased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ]
+        }
+    },
+    {
+        "sentence": "salary 12000 and 8 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "salary"
+            ],
+            "12,000 NIS": [
+                "12000"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "8 hours": [
+                "8"
+            ]
+        }
+    },
+    {
+        "sentence": "10 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "pension 20% and 10 hours ",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Pension Fund": [
+                "pension"
+            ],
+            "20%": [
+                "20%"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "10 hours and no more",
+        "labels": {
+            "Insist": [
+                "no more"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "ok",
+        "labels": {
+            "Accept": [
+                "ok"
+            ]
+        }
+    },
+    {
+        "sentence": "no..",
+        "labels": {
+            "Reject": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "withour liased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "withour"
+            ]
+        }
+    },
+    {
+        "sentence": "without leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ]
+        }
+    },
+    {
+        "sentence": "7000",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "7,000 NIS": [
+                "7000"
+            ]
+        }
+    },
+    {
+        "sentence": "salary 7,000",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "salary"
+            ],
+            "7,000 NIS": [
+                "7,000"
+            ]
+        }
+    },
+    {
+        "sentence": "12000",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "12,000 NIS": [
+                "12000"
+            ]
+        }
+    },
+    {
+        "sentence": "only QA",
+        "labels": {
+            "Insist": [
+                "only"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "QA": [
+                "QA"
+            ]
+        }
+    },
+    {
+        "sentence": "QA",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "QA": [
+                "QA"
+            ]
+        }
+    },
+    {
+        "sentence": "the maximum is Team Manager",
+        "labels": {
+            "Offer": [
+                "the maximum is"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Team Manager": [
+                "Team Manager"
+            ]
+        }
+    },
+    {
+        "sentence": "0%",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "0%": [
+                "0%"
+            ]
+        }
+    },
+    {
+        "sentence": "0%",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "0%": [
+                "0%"
+            ]
+        }
+    },
+    {
+        "sentence": "the Maximum i can give you is 10%",
+        "labels": {
+            "Offer": [
+                "i can give you"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "ok",
+        "labels": {
+            "Accept": [
+                "ok"
+            ]
+        }
+    },
+    {
+        "sentence": "i can't give you this",
+        "labels": {
+            "Reject": [
+                "i can't"
+            ]
+        }
+    },
+    {
+        "sentence": "you can't get a car",
+        "labels": {
+            "Offer": [
+                "you can't get"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "can't"
+            ]
+        }
+    },
+    {
+        "sentence": "i can give you fast promotion if without car",
+        "labels": {
+            "Offer": [
+                "i can give"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ]
+        }
+    },
+    {
+        "sentence": "ok",
+        "labels": {
+            "Accept": [
+                "ok"
+            ]
+        }
+    },
+    {
+        "sentence": "hi",
+        "labels": {
+            "Greet": [
+                "hi"
+            ]
+        }
+    },
+    {
+        "sentence": "How about 12,000 NIS salary?",
+        "labels": {
+            "Offer": [
+                "How about"
+            ],
+            "Salary": [
+                "salary"
+            ],
+            "12,000 NIS": [
+                "12,000"
+            ]
+        }
+    },
+    {
+        "sentence": "Actually, I had in mind offering you a Programmers job",
+        "labels": {
+            "Offer": [
+                "I had in mind offering you"
+            ],
+            "Job Description": [
+                "job"
+            ],
+            "Programmer": [
+                "Programmers"
+            ]
+        }
+    },
+    {
+        "sentence": "Would you prefer working as a Programmer?",
+        "labels": {
+            "Offer": [
+                "Would you prefer"
+            ],
+            "Job Description": [
+                "working as"
+            ],
+            "Programmer": [
+                "Programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "I could offer only 10% pension",
+        "labels": {
+            "Offer": [
+                "I could offer"
+            ],
+            "Pension Fund": [
+                "pension"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "You will be needed around 10 hours",
+        "labels": {
+            "Offer": [
+                "You will be needed"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "Would 9 hours be okay?",
+        "labels": {
+            "Offer": [
+                "Would ... be okay?"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "Fine, I agree",
+        "labels": {
+            "Accept": [
+                "Fine, I agree"
+            ]
+        }
+    },
+    {
+        "sentence": "Instead of a leased car, I can give you fast promotion track",
+        "labels": {
+            "Offer": [
+                "I can give you"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "Instead of"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ]
+        }
+    },
+    {
+        "sentence": "So no leased  car?",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "I am sorry, could not be done",
+        "labels": {
+            "Reject": [
+                "could not be done"
+            ]
+        }
+    },
+    {
+        "sentence": "But fast promotion is on",
+        "labels": {
+            "Offer": [
+                "is on"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ]
+        }
+    },
+    {
+        "sentence": "We have already agreed on Programmer",
+        "labels": {
+            "Offer": [
+                "already agreed"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "Programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "A Programmer does not have a leased car, I'm afraid",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "Programmer"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "does not have"
+            ]
+        }
+    },
+    {
+        "sentence": "So Programmer with a leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "Programmer"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "with"
+            ]
+        }
+    },
+    {
+        "sentence": "We have already agreed on Programmer",
+        "labels": {
+            "Offer": [
+                "already agreed"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "Programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "With leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "With"
+            ]
+        }
+    },
+    {
+        "sentence": "hi your salary will be 12000 NIs",
+        "labels": {
+            "Greet": [
+                "hi"
+            ],
+            "Offer": [
+                "will be"
+            ],
+            "Salary": [
+                "salary"
+            ],
+            "12,000 NIS": [
+                "12000"
+            ]
+        }
+    },
+    {
+        "sentence": "THAT'S FINE",
+        "labels": {
+            "Accept": [
+                "THAT'S FINE"
+            ]
+        }
+    },
+    {
+        "sentence": "OK",
+        "labels": {
+            "Accept": [
+                "OK"
+            ]
+        }
+    },
+    {
+        "sentence": "ONLY 10%",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "YOU CAN WORK FOR ONLY 8 HOURS A DAY",
+        "labels": {
+            "Offer": [
+                "YOU CAN WORK FOR"
+            ],
+            "Working Hours": [
+                "HOURS"
+            ],
+            "8 hours": [
+                "8"
+            ]
+        }
+    },
+    {
+        "sentence": "10%",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "FINE",
+        "labels": {
+            "Accept": [
+                "FINE"
+            ]
+        }
+    },
+    {
+        "sentence": "SLOW TRACK",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Promotion Possibilities": [
+                "TRACK"
+            ],
+            "Slow promotion track": [
+                "SLOW"
+            ]
+        }
+    },
+    {
+        "sentence": "FAST TRACK",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Promotion Possibilities": [
+                "TRACK"
+            ],
+            "Fast promotion track": [
+                "FAST"
+            ]
+        }
+    },
+    {
+        "sentence": "PLEASE SIGN THE AGREEMENT",
+        "labels": {
+            "Query": [
+                "PLEASE"
+            ],
+            "accept": [
+                "SIGN"
+            ]
+        }
+    },
+    {
+        "sentence": "LET'S SIGN",
+        "labels": {
+            "Query": [
+                "LET'S"
+            ],
+            "accept": [
+                "SIGN"
+            ]
+        }
+    },
+    {
+        "sentence": "THANK YOU",
+        "labels": {
+            "Quit": [
+                "THANK YOU"
+            ]
+        }
+    },
+    {
+        "sentence": "BYE",
+        "labels": {
+            "Quit": [
+                "BYE"
+            ]
+        }
+    },
+    {
+        "sentence": "SIGN",
+        "labels": {
+            "Query": [
+                "SIGN"
+            ],
+            "accept": [
+                "SIGN"
+            ]
+        }
+    },
+    {
+        "sentence": "AGREE",
+        "labels": {
+            "Accept": [
+                "AGREE"
+            ]
+        }
+    },
+    {
+        "sentence": "I offer 7000 and 20% pension",
+        "labels": {
+            "Offer": [
+                "I offer"
+            ],
+            "Pension Fund": [
+                "pension"
+            ],
+            "20%": [
+                "20%"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "7,000 NIS": [
+                "7000"
+            ]
+        }
+    },
+    {
+        "sentence": "I offer 7000 and a leased car",
+        "labels": {
+            "Offer": [
+                "I offer"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "ATTRIBUTE KEYPHASE"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "7,000 NIS": [
+                "7000"
+            ]
+        }
+    },
+    {
+        "sentence": "i will give you 8 working hours",
+        "labels": {
+            "Offer": [
+                "i will give"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "8 hours": [
+                "8"
+            ]
+        }
+    },
+    {
+        "sentence": "7000",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "7,000 NIS": [
+                "7000"
+            ]
+        }
+    },
+    {
+        "sentence": "you will get 7000",
+        "labels": {
+            "Offer": [
+                "you will get"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "7,000 NIS": [
+                "7000"
+            ]
+        }
+    },
+    {
+        "sentence": "your salary will be 7000",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "salary"
+            ],
+            "7,000 NIS": [
+                "7000"
+            ]
+        }
+    },
+    {
+        "sentence": "ok",
+        "labels": {
+            "Accept": [
+                "ok"
+            ]
+        }
+    },
+    {
+        "sentence": "ok",
+        "labels": {
+            "Accept": [
+                "ok"
+            ]
+        }
+    },
+    {
+        "sentence": "I offer 7000 NIS",
+        "labels": {
+            "Offer": [
+                "I offer"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "7,000 NIS": [
+                "7000"
+            ]
+        }
+    },
+    {
+        "sentence": "so lets make it 12,000 NIS",
+        "labels": {
+            "Offer": [
+                "lets make it"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "12,000 NIS": [
+                "12,000"
+            ]
+        }
+    },
+    {
+        "sentence": "I'm sorry, Project Manager is only for expeirenced ",
+        "labels": {
+            "Reject": [
+                "I'm sorry ... is only for expeirenced"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Project Manager": [
+                "Project Manager"
+            ]
+        }
+    },
+    {
+        "sentence": "lets make it 10%",
+        "labels": {
+            "Offer": [
+                "lets make it"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "I will need you for 9",
+        "labels": {
+            "Offer": [
+                "I will need you"
+            ],
+            "Working Hours": [
+                "VALUE"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "9 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "9 hours with leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "with"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "9 hours with leased car and fast promotion",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "with"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "ok , 8 hours",
+        "labels": {
+            "Accept": [
+                "ok"
+            ],
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "8 hours": [
+                "8"
+            ]
+        }
+    },
+    {
+        "sentence": "lets make it fast, leased car and slow promotion",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "ATTRIBUTE KEYPHASE"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Slow promotion track": [
+                "slow"
+            ]
+        }
+    },
+    {
+        "sentence": "12,000",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "12,000 NIS": [
+                "12,000"
+            ]
+        }
+    },
+    {
+        "sentence": "team manager",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Team Manager": [
+                "tema manager"
+            ]
+        }
+    },
+    {
+        "sentence": "10%",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "8 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "8 hours": [
+                "8"
+            ]
+        }
+    },
+    {
+        "sentence": "without a car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ]
+        }
+    },
+    {
+        "sentence": "without a car, with fast promotion",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ]
+        }
+    },
+    {
+        "sentence": "with car, slow promotion",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "with"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Slow promotion track": [
+                "slow"
+            ]
+        }
+    },
+    {
+        "sentence": "hi",
+        "labels": {
+            "Greet": [
+                "hi"
+            ]
+        }
+    },
+    {
+        "sentence": "How about 7,000 NIS?",
+        "labels": {
+            "Offer": [
+                "How about"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "7,000 NIS": [
+                "7,000"
+            ]
+        }
+    },
+    {
+        "sentence": "12,000 NIS?",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "12,000 NIS": [
+                "12,000"
+            ]
+        }
+    },
+    {
+        "sentence": "But we need a Programmer",
+        "labels": {
+            "Offer": [
+                "we need"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "Programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "10%?",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "9?",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "VALUE"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "I can offer 9 hours",
+        "labels": {
+            "Offer": [
+                "can offer"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "Team Manager with 9 hours?",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Team Manager": [
+                "Team Manager"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "Programmer and 8 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "Programmer"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "8 hours": [
+                "8"
+            ]
+        }
+    },
+    {
+        "sentence": "I can offer fast promotion but no car",
+        "labels": {
+            "Offer": [
+                "can offer"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ]
+        }
+    },
+    {
+        "sentence": "I can offer slow promotion track but no car",
+        "labels": {
+            "Offer": [
+                "can offer"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Slow promotion track": [
+                "slow"
+            ]
+        }
+    },
+    {
+        "sentence": "I can offer fast promotion but no car",
+        "labels": {
+            "Offer": [
+                "can offer"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ]
+        }
+    },
+    {
+        "sentence": "Let's not include the car in the agreement",
+        "labels": {
+            "Offer": [
+                "Let's not include"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "No agreement": [
+                "agreement"
+            ]
+        }
+    },
+    {
+        "sentence": "Leased car but slow promotion track",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "ATTRIBUTE KEYPHASE"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Slow promotion track": [
+                "slow"
+            ]
+        }
+    },
+    {
+        "sentence": "I'm willing to pay 7000",
+        "labels": {
+            "Offer": [
+                "I'm willing"
+            ],
+            "Salary": [
+                "to pay"
+            ],
+            "7,000 NIS": [
+                "7000"
+            ]
+        }
+    },
+    {
+        "sentence": "I need a programmer",
+        "labels": {
+            "Offer": [
+                "I need"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "I can offer 10% pension",
+        "labels": {
+            "Offer": [
+                "can offer"
+            ],
+            "Pension Fund": [
+                "pension"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "Ok, you got 20% pension",
+        "labels": {
+            "Accept": [
+                "Ok"
+            ],
+            "Offer": [
+                "you got"
+            ],
+            "Pension Fund": [
+                "pension"
+            ],
+            "20%": [
+                "20%"
+            ]
+        }
+    },
+    {
+        "sentence": "I need you to work 10 hours because there is a lot of job to do",
+        "labels": {
+            "Offer": [
+                "need you"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "My last offer is 9 hours",
+        "labels": {
+            "Insist": [
+                "My last offer"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "I will let you think about it again",
+        "labels": {
+            "Insist": [
+                "think about it again"
+            ]
+        }
+    },
+    {
+        "sentence": "I will let you think about it again, my offer is 9 hours",
+        "labels": {
+            "Insist": [
+                "think about it again"
+            ],
+            "Offer": [
+                "my offer"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "I think 9 hours is optimal",
+        "labels": {
+            "Offer": [
+                "I think"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "Maybe we should proceed to the next issue",
+        "labels": {
+            "Query": [
+                "Maybe we should"
+            ],
+            "issues": [
+                "proceed to the next issue"
+            ]
+        }
+    },
+    {
+        "sentence": "Ok, 8 hours is acceptable",
+        "labels": {
+            "Accept": [
+                "Ok ... is acceptable"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "8 hours": [
+                "8"
+            ]
+        }
+    },
+    {
+        "sentence": "I cant offer you a leased car",
+        "labels": {
+            "Reject": [
+                "I cant offer"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "ATTRIBUTE KEYPHASE"
+            ]
+        }
+    },
+    {
+        "sentence": "I said without leased car",
+        "labels": {
+            "Offer": [
+                "I said"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ]
+        }
+    },
+    {
+        "sentence": "there is no agreement on that issue",
+        "labels": {
+            "Reject": [
+                "no agreement"
+            ]
+        }
+    },
+    {
+        "sentence": "there is no agreement on leased car",
+        "labels": {
+            "Offer": [
+                "there is"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "No agreement": [
+                "no agreement"
+            ]
+        }
+    },
+    {
+        "sentence": "I would like to work with you without a leased car",
+        "labels": {
+            "Offer": [
+                "I would like to work"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ]
+        }
+    },
+    {
+        "sentence": "I will offer slow track promotion",
+        "labels": {
+            "Offer": [
+                "will offer"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Slow promotion track": [
+                "slow"
+            ]
+        }
+    },
+    {
+        "sentence": "I will not accept the leased car",
+        "labels": {
+            "Reject": [
+                "I will not accept"
+            ],
+            "Leased Car": [
+                "car"
+            ]
+        }
+    },
+    {
+        "sentence": "there is no agreement on the leased car",
+        "labels": {
+            "Offer": [
+                "there is"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "No agreement": [
+                "agreement"
+            ]
+        }
+    },
+    {
+        "sentence": "We both losing points, I am once again suggestiong without leased car",
+        "labels": {
+            "Offer": [
+                "I am once again suggestiong"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ]
+        }
+    },
+    {
+        "sentence": "My offer is: No agreement",
+        "labels": {
+            "Reject": [
+                ""
+            ],
+            "previous": [
+                ""
+            ]
+        }
+    },
+    {
+        "sentence": "No agreement on leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "No agreement": [
+                "No agreement"
+            ]
+        }
+    },
+    {
+        "sentence": "Ok, with leased car.",
+        "labels": {
+            "Accept": [
+                "Ok"
+            ],
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "with"
+            ]
+        }
+    },
+    {
+        "sentence": "hi what is your skills",
+        "labels": {
+            "Greet": [
+                "hi"
+            ]
+        }
+    },
+    {
+        "sentence": "12000 nis",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "12,000 NIS": [
+                "12000"
+            ]
+        }
+    },
+    {
+        "sentence": "i offer a QA",
+        "labels": {
+            "Offer": [
+                "I offer"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "QA": [
+                "QA"
+            ]
+        }
+    },
+    {
+        "sentence": "i offer programmer",
+        "labels": {
+            "Offer": [
+                "I offer"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "10%",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "10 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "VALUE"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "9 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "ATTRIBUTE KEYPHASE"
+            ]
+        }
+    },
+    {
+        "sentence": "9 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "8 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "8 hours": [
+                "8"
+            ]
+        }
+    },
+    {
+        "sentence": "slow promotion track",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Slow promotion track": [
+                "slow"
+            ]
+        }
+    },
+    {
+        "sentence": "7000 nis",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "7,000 NIS": [
+                "7000"
+            ]
+        }
+    },
+    {
+        "sentence": "12000 nis",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "12,000 NIS": [
+                "12000"
+            ]
+        }
+    },
+    {
+        "sentence": "without least car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ]
+        }
+    },
+    {
+        "sentence": "no leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "9 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "0%",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "0%": [
+                "0%"
+            ]
+        }
+    },
+    {
+        "sentence": "20% no car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "20%": [
+                "20%"
+            ]
+        }
+    },
+    {
+        "sentence": "ok",
+        "labels": {
+            "Accept": [
+                "ok"
+            ]
+        }
+    },
+    {
+        "sentence": "10 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "9 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "no",
+        "labels": {
+            "Reject": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "ok",
+        "labels": {
+            "Accept": [
+                "ok"
+            ]
+        }
+    },
+    {
+        "sentence": "12000 NIS salary",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "salary"
+            ],
+            "12,000 NIS": [
+                "12000"
+            ]
+        }
+    },
+    {
+        "sentence": "programmer",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "20%",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "20%": [
+                "20%"
+            ]
+        }
+    },
+    {
+        "sentence": "9 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "please 9 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "8 hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "8 hours": [
+                "8"
+            ]
+        }
+    },
+    {
+        "sentence": "without leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ]
+        }
+    },
+    {
+        "sentence": "without leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ]
+        }
+    },
+    {
+        "sentence": "without leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ]
+        }
+    },
+    {
+        "sentence": "you work 8 hours",
+        "labels": {
+            "Offer": [
+                "you work"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "8 hours": [
+                "8"
+            ]
+        }
+    },
+    {
+        "sentence": "no",
+        "labels": {
+            "Reject": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "without leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ]
+        }
+    },
+    {
+        "sentence": "without leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ]
+        }
+    },
+    {
+        "sentence": "programmer",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "ATTRIBUTE KEYPHASE"
+            ]
+        }
+    },
+    {
+        "sentence": "ok",
+        "labels": {
+            "Accept": [
+                "ok"
+            ]
+        }
+    },
+    {
+        "sentence": "pension 10%",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Pension Fund": [
+                "pension"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "sign agreement",
+        "labels": {
+            "Query": [
+                "sign"
+            ],
+            "accept": [
+                "agreement"
+            ]
+        }
+    },
+    {
+        "sentence": "hi, does that sound good?",
+        "labels": {
+            "Greet": [
+                "hi"
+            ],
+            "Query": [
+                "does that"
+            ],
+            "accept": [
+                "sound good"
+            ]
+        }
+    },
+    {
+        "sentence": "9 working hours",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "no leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "No leased car. Use your own car.",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "No"
+            ]
+        }
+    },
+    {
+        "sentence": "I disagree.",
+        "labels": {
+            "Reject": [
+                "I disagree"
+            ]
+        }
+    },
+    {
+        "sentence": "No leased car.",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "No"
+            ]
+        }
+    },
+    {
+        "sentence": "Okay, you can have a leased car. ",
+        "labels": {
+            "Accept": [
+                "Okay, you can have"
+            ],
+            "Leased Car": [
+                "car"
+            ]
+        }
+    },
+    {
+        "sentence": "I think you should be a Programmer.",
+        "labels": {
+            "Offer": [
+                "I think you"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "Programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "yes",
+        "labels": {
+            "Accept": [
+                "yes"
+            ]
+        }
+    },
+    {
+        "sentence": "10%",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Pension Fund": [
+                "VALUE"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "9 working hours.",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "12,000 NIS",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "12,000 NIS": [
+                "12,000"
+            ]
+        }
+    },
+    {
+        "sentence": "no, 12,000",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "12,000 NIS": [
+                "12,000"
+            ],
+            "Reject": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "yes",
+        "labels": {
+            "Accept": [
+                "yes"
+            ]
+        }
+    },
+    {
+        "sentence": "hi I want to offer you a fast track promotion",
+        "labels": {
+            "Greet": [
+                "hi"
+            ],
+            "Offer": [
+                "I want to offer"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ]
+        }
+    },
+    {
+        "sentence": "I can do 20000 if you do 10 hour days",
+        "labels": {
+            "Offer": [
+                "I can do"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "20,000 NIS": [
+                "20000"
+            ],
+            "Working Hours": [
+                "hour"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "no leased car is possible",
+        "labels": {
+            "Offer": [
+                "is possible"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "no"
+            ]
+        }
+    },
+    {
+        "sentence": "so, do we agree on a programming position with a leased car and a 10% pension?",
+        "labels": {
+            "Offer": [
+                "we agree on"
+            ],
+            "Job Description": [
+                "position"
+            ],
+            "Programmer": [
+                "programming"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "with"
+            ],
+            "Pension Fund": [
+                "pension"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "I can only offer programmer",
+        "labels": {
+            "Offer": [
+                "I can only offer"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "Leased car is only possible with programmer and 10% pension",
+        "labels": {
+            "Offer": [
+                "is possile"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programmer"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "ATTRIBUTE KEYPHASE"
+            ],
+            "Pension Fund": [
+                "pension"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "ok",
+        "labels": {
+            "Accept": [
+                "ok"
+            ]
+        }
+    },
+    {
+        "sentence": "done",
+        "labels": {
+            "Accept": [
+                "done"
+            ]
+        }
+    },
+    {
+        "sentence": "we decided on programmer",
+        "labels": {
+            "Offer": [
+                "we decided"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "I can offer a 7,000 NIS",
+        "labels": {
+            "Offer": [
+                "can offer"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "7,000 NIS": [
+                "7,000"
+            ]
+        }
+    },
+    {
+        "sentence": "Let's agree on 9 hours, but be flexible",
+        "labels": {
+            "Offer": [
+                "Let's agree"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ],
+            "Query": [
+                "be flexible"
+            ],
+            "compromise": [
+                "be flexible"
+            ]
+        }
+    },
+    {
+        "sentence": "I need you to work 10 hours. but 9 will do",
+        "labels": {
+            "Offer": [
+                "I need you to work"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "9 hours, and that is a good compromise, I can't offer you any other",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "I am willing to compromise on a 20% pension fund",
+        "labels": {
+            "Offer": [
+                "I am willing"
+            ],
+            "Pension Fund": [
+                "pension"
+            ],
+            "20%": [
+                "20%"
+            ],
+            "Query": [
+                "compromise"
+            ],
+            "compromise": [
+                "compromise"
+            ]
+        }
+    },
+    {
+        "sentence": "9 hours, I can't do less, please accept",
+        "labels": {
+            "Insist": [
+                "I can't do less"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ],
+            "Query": [
+                "please"
+            ],
+            "accept": [
+                "accept"
+            ]
+        }
+    },
+    {
+        "sentence": "I can compromise on a fast promotion track ",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ],
+            "Query": [
+                "I can compromise"
+            ],
+            "compromise": [
+                "compromise"
+            ]
+        }
+    },
+    {
+        "sentence": "You are not compromising on anything",
+        "labels": {
+            "Query": [
+                ""
+            ],
+            "compromise": [
+                ""
+            ]
+        }
+    },
+    {
+        "sentence": "let's compromise 9 hours a day",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ],
+            "Query": [
+                "let's"
+            ],
+            "compromise": [
+                "compromise"
+            ]
+        }
+    },
+    {
+        "sentence": "9 hours is fine by me",
+        "labels": {
+            "Offer": [
+                "is fine by me"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "9 hours day sounds cool to me",
+        "labels": {
+            "Accept": [
+                "sounds cool to me"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "let's compromise without a leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "Without leased car": [
+                "without"
+            ],
+            "Query": [
+                "let's"
+            ],
+            "compromise": [
+                "compromise"
+            ]
+        }
+    },
+    {
+        "sentence": "without, please",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "VALUE"
+            ],
+            "Without leased car": [
+                "without"
+            ]
+        }
+    },
+    {
+        "sentence": "we are wasting time and losing points",
+        "labels": {
+            "Query": [
+                ""
+            ],
+            "compromise": [
+                ""
+            ]
+        }
+    },
+    {
+        "sentence": "i can wait, but you are losing too",
+        "labels": {
+            "Query": [
+                ""
+            ],
+            "compromise": [
+                ""
+            ]
+        }
+    },
+    {
+        "sentence": "let's compromise you be a programmer",
+        "labels": {
+            "Offer": [
+                "you be a"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programmer"
+            ],
+            "Query": [
+                "let's"
+            ],
+            "compromise": [
+                "compromise"
+            ]
+        }
+    },
+    {
+        "sentence": "you need to be a programmer job title",
+        "labels": {
+            "Offer": [
+                "you need to be"
+            ],
+            "Job Description": [
+                "job title"
+            ],
+            "Programmer": [
+                "programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "we already talked about 7,000 NIS and agreed on it",
+        "labels": {
+            "Offer": [
+                ""
+            ],
+            "Salary": [
+                ""
+            ],
+            "7,000 NIS": [
+                ""
+            ]
+        }
+    },
+    {
+        "sentence": "let's agree on 10 hours with a leased car",
+        "labels": {
+            "Offer": [
+                "let's agree"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "with"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "let's settle leased car",
+        "labels": {
+            "Query": [
+                "let's settle"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "compromise": [
+                ""
+            ]
+        }
+    },
+    {
+        "sentence": "i will give you a leased car",
+        "labels": {
+            "Offer": [
+                "will give"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "ATTRIBUTE KEYPHASE"
+            ]
+        }
+    },
+    {
+        "sentence": "I will offer you with a leased car",
+        "labels": {
+            "Offer": [
+                "will offer"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "with"
+            ]
+        }
+    },
+    {
+        "sentence": "9 hours final",
+        "labels": {
+            "Insist": [
+                "final"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "Ok let's compromise on 8 hours a day. I don't want to lose more points.",
+        "labels": {
+            "Offer": [
+                ""
+            ],
+            "Working Hours": [
+                ""
+            ],
+            "8 hours": [
+                ""
+            ],
+            "Query": [
+                ""
+            ],
+            "compromise": [
+                ""
+            ]
+        }
+    },
+    {
+        "sentence": "hi",
+        "labels": {
+            "Greet": [
+                "hi"
+            ]
+        }
+    },
+    {
+        "sentence": "I am willing to pay that amount if you commit to working 10 hours for our company",
+        "labels": {
+            "Accept": [
+                ""
+            ],
+            "Salary": [
+                ""
+            ],
+            "Insist": [
+                ""
+            ],
+            "Working Hours": [
+                ""
+            ],
+            "Offer": [
+                ""
+            ],
+            "10 hours": [
+                ""
+            ]
+        }
+    },
+    {
+        "sentence": "then we can't agree on the salary",
+        "labels": {
+            "Reject": [
+                ""
+            ],
+            "Salary": [
+                ""
+            ]
+        }
+    },
+    {
+        "sentence": "while you think let's talk about the position. I need a programmer",
+        "labels": {
+            "Offer": [
+                "I need a"
+            ],
+            "Job Description": [
+                "VALUE"
+            ],
+            "Programmer": [
+                "programmer"
+            ]
+        }
+    },
+    {
+        "sentence": "For 20,000 I want a hard working employee who can commit to 10 hours. Otherwise the answer is no",
+        "labels": {
+            "Offer": [
+                "I want"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "20,000 NIS": [
+                "20,000"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "10 hours": [
+                "10"
+            ]
+        }
+    },
+    {
+        "sentence": "9 hours for 12000",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Salary": [
+                "VALUE"
+            ],
+            "12,000 NIS": [
+                "12000"
+            ],
+            "Working Hours": [
+                "hours"
+            ],
+            "9 hours": [
+                "9"
+            ]
+        }
+    },
+    {
+        "sentence": "and we'll throw in 10% pension fund",
+        "labels": {
+            "Offer": [
+                "and we'll throw in"
+            ],
+            "Pension Fund": [
+                "pension"
+            ],
+            "10%": [
+                "10%"
+            ]
+        }
+    },
+    {
+        "sentence": "I offered 12000 for 9 hours or 10 hours for 20000. Those are my final offers. ",
+        "labels": {
+            "Insist": [
+                ""
+            ],
+            "previous": [
+                ""
+            ],
+            "Offer": [
+                ""
+            ],
+            "Salary": [
+                ""
+            ],
+            "12,000 NIS": [
+                ""
+            ],
+            "20,000 NIS": [
+                ""
+            ],
+            "Working Hours": [
+                ""
+            ],
+            "10 hours": [
+                ""
+            ],
+            "9 hours": [
+                ""
+            ]
+        }
+    },
+    {
+        "sentence": "with a 10% pension fund, a fast promotion track and a leased car",
+        "labels": {
+            "Offer": [
+                "DEFAULT INTENT"
+            ],
+            "Leased Car": [
+                "car"
+            ],
+            "With leased car": [
+                "with"
+            ],
+            "Pension Fund": [
+                "pension"
+            ],
+            "10%": [
+                "10%"
+            ],
+            "Promotion Possibilities": [
+                "promotion"
+            ],
+            "Fast promotion track": [
+                "fast"
+            ]
+        }
+    }
+]
+

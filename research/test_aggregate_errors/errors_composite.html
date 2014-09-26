@@ -1,0 +1,825 @@
+<html><body><table border="1" style="white-space: pre-wrap;"><tr><td><a href="#1">negation:with and without car (in case when 'without' in sentence it classified with 'with' and 'without')</a></td><td>17</td><td>0.19%</td></tr><tr><td><a href="#2">Offer:Attribute:Negative Value vs Reject:Attribute</a></td><td>14</td><td>0.16%</td></tr><tr><td><a href="#4">Query:compomise FN</a></td><td>3</td><td>0.03%</td></tr><tr><td><a href="#5">Reject:previous vs Reject:specific</a></td><td>5</td><td>0.06%</td></tr><tr><td><a href="#6">Accept FP: grip accept word</a></td><td>15</td><td>0.17%</td></tr><tr><td><a href="#7">with Leased car correlated with 'with'</a></td><td>3</td><td>0.03%</td></tr><tr><td><a href="#8">Reject FP: grip negative meaning word</a></td><td>9</td><td>0.10%</td></tr><tr><td><a href="#9">Reject vs Accept: confusing</a></td><td>4</td><td>0.05%</td></tr><tr><td><a href="#10">unknown words/misspelling</a></td><td>7</td><td>0.08%</td></tr><tr><td><a href="#11">Offer: grip offer word</a></td><td>4</td><td>0.05%</td></tr><tr><td><a href="#12">Insist FN</a></td><td>3</td><td>0.03%</td></tr><tr><td><a href="#13">Query:accept vs Query:specific</a></td><td>1</td><td>0.01%</td></tr><tr><td><a href="#14">Insist FP</a></td><td>3</td><td>0.03%</td></tr></table><a name="1"><i>negation:with and without car (in case when 'without' in sentence it classified with 'with' and 'without')</i></a><table style="white-space: pre-wrap;"><tr><td><b>12000, programmer, without leased car, 0% pension, fast promotion track, 9 hours</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+        "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+        "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+        "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+    ],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>ok, 7000, programmer, without leased car, 0% pension, but - 8 hours a day</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Accept\":\"previous\"}",
+        "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+        "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
+        "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+    ],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>How about programmer, 12000, without leased car, 0% pension fund, slow promotion track, 8 hours a day?</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+        "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+        "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+        "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+    ],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>7000 NIS, 10 hours, no car, programmer</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
+        "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+    ],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b> 10 hours, no car, programmer, 7000 NIS,</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
+        "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+    ],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>i can not give you a leased car, no leased car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Reject\":\"Leased Car\"}"
+    ]
+}</td></tr><tr><td><b>only without leased car you will get fast promotion track</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+    ],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>I told you, lets start with something small, like programmer </b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+    ],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Query\":\"Job Description\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>fine but with no car</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Accept\":\"previous\"}",
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+    ],
+    "FP": [
+        "{\"Append\":\"previous\"}",
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Reject\":\"Leased Car\"}"
+    ]
+}</td></tr><tr><td><b>i will accept it if you will start with no car and work 10 hours</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+    ],
+    "FP": [
+        "{\"Accept\":\"previous\"}",
+        "{\"Append\":\"previous\"}",
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>since your are working 8 hours, no leased car.</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+    ],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+    ]
+}</td></tr><tr><td><b>i can not give you a car at all.</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Insist\":\"previous\"}",
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Reject\":\"Leased Car\"}"
+    ]
+}</td></tr><tr><td><b>ok I give you a car</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Accept\":\"previous\"}",
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+    ],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>without a car, with fast promotion</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+    ],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>So no leased car?</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+    ]
+}</td></tr><tr><td><b>Instead of a leased car, I can give you fast promotion track</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+    ],
+    "FP": [
+        "{\"Insist\":\"previous\"}",
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+    ]
+}</td></tr><tr><td><b>you can't get a car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+    ]
+}</td></tr></table><a name="2"><i>Offer:Attribute:Negative Value vs Reject:Attribute</i></a><table style="white-space: pre-wrap;"><tr><td><b>leased car, no pension, QA</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Job Description\":\"QA\"}}",
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+    ],
+    "FP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+    ]
+}</td></tr><tr><td><b>7k, leased car, QA, no pension, slow promotion</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Job Description\":\"QA\"}}",
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+        "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+    ],
+    "FP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+    ]
+}</td></tr><tr><td><b>7000 NIS, 10 hours, no car</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
+        "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+    ],
+    "FP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>no pesion fund</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+    ]
+}</td></tr><tr><td><b>no car!</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+    ],
+    "FP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>no leasd car\</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+    ]
+}</td></tr><tr><td><b>NO CAR!</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+    ]
+}</td></tr><tr><td><b>i can not give you a leased car, no leased car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Reject\":\"Leased Car\"}"
+    ]
+}</td></tr><tr><td><b>no car and 20000</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
+    ],
+    "FP": [
+        "{\"Append\":\"previous\"}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>fine but with no car</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Accept\":\"previous\"}",
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+    ],
+    "FP": [
+        "{\"Append\":\"previous\"}",
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Reject\":\"Leased Car\"}"
+    ]
+}</td></tr><tr><td><b>fine, but no car</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Accept\":\"previous\"}",
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+    ],
+    "FP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>i can not give you a car at all.</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Insist\":\"previous\"}",
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Reject\":\"Leased Car\"}"
+    ]
+}</td></tr><tr><td><b>I cant offer you a leased car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+    ],
+    "FN": [
+        "{\"Reject\":\"Leased Car\"}"
+    ]
+}</td></tr><tr><td><b>ok. but in this job no liased car</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Accept\":\"previous\"}",
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+    ],
+    "FP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr></table><a name="4"><i>Query:compomise FN</i></a><table style="white-space: pre-wrap;"><tr><td><b>come on, dont be so hard</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Query\":\"compromise\"}"
+    ]
+}</td></tr><tr><td><b>you have to compromise</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "{\"Query\":\"compromise\"}"
+    ]
+}</td></tr><tr><td><b>but you are not compromising, 9 hours.</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+    ],
+    "FP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Query\":\"compromise\"}"
+    ]
+}</td></tr></table><a name="5"><i>Reject:previous vs Reject:specific</i></a><table style="white-space: pre-wrap;"><tr><td><b>no 20K is to much</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Reject\":\"Salary\"}"
+    ]
+}</td></tr><tr><td><b>i ma not ready to give you car at all</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Reject\":\"Salary\"}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Reject\":\"Leased Car\"}"
+    ]
+}</td></tr><tr><td><b>i can not give you a car at all.</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Insist\":\"previous\"}",
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Reject\":\"Leased Car\"}"
+    ]
+}</td></tr><tr><td><b>agreed</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Accept\":\"Working Hours\"}"
+    ],
+    "FN": [
+        "{\"Accept\":\"previous\"}"
+    ]
+}</td></tr><tr><td><b>I will not accept the leased car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Accept\":\"previous\"}",
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Reject\":\"Leased Car\"}"
+    ]
+}</td></tr></table><a name="6"><i>Accept FP: grip accept word</i></a><table style="white-space: pre-wrap;"><tr><td><b>programmer is good for you ?</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+    ],
+    "FP": [
+        "{\"Accept\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>i am understand you are agree so welcome</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Accept\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Query\":\"accept\"}"
+    ]
+}</td></tr><tr><td><b>do you agree to work at my company?</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Accept\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Query\":\"accept\"}"
+    ]
+}</td></tr><tr><td><b>you will get leased car if you will agree to salary of 7000 NIS</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+    ],
+    "FP": [
+        "{\"Accept\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>I can not agree to 20000</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Accept\":\"previous\"}",
+        "{\"Insist\":\"previous\"}",
+        "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Reject\":\"Salary\"}"
+    ]
+}</td></tr><tr><td><b>I agree to the 10% pension fund</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Accept\":\"previous\"}",
+        "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+        "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+    ],
+    "FN": [
+        "{\"Accept\":\"Pension Fund\"}"
+    ]
+}</td></tr><tr><td><b>i cannot agree to your suggest</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Accept\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Reject\":\"previous\"}"
+    ]
+}</td></tr><tr><td><b>i will accept 9 hours, not less</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+    ],
+    "FP": [
+        "{\"Accept\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Insist\":\"Working Hours\"}"
+    ]
+}</td></tr><tr><td><b>i think 7000 is good</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+    ],
+    "FP": [
+        "{\"Accept\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>i will accept it if you will start with no car and work 10 hours</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+    ],
+    "FP": [
+        "{\"Accept\":\"previous\"}",
+        "{\"Append\":\"previous\"}",
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>we already agreed on 12000</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+    ],
+    "FP": [
+        "{\"Accept\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>i'll agree for 8 hours if you will be a programer</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+    ],
+    "FP": [
+        "{\"Accept\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+    ]
+}</td></tr><tr><td><b>I will give you this much only if you work as programmer</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+    ],
+    "FP": [
+        "{\"Accept\":\"previous\"}",
+        "{\"Append\":\"previous\"}",
+        "{\"Reject\":\"Salary\"}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>YOU CAN WORK FOR ONLY 8 HOURS A DAY</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+    ],
+    "FP": [
+        "{\"Accept\":\"previous\"}",
+        "{\"Insist\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>We have already agreed on Programmer</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+    ],
+    "FP": [
+        "{\"Accept\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr></table><a name="7"><i>with Leased car correlated with 'with'</i></a><table style="white-space: pre-wrap;"><tr><td><b>lets start with the job  title </b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+    ],
+    "FN": [
+        "{\"Query\":\"Job Description\"}"
+    ]
+}</td></tr><tr><td><b>fast promotion goes with 7000.</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+        "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+    ],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>Team Manager with 9 hours?</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+        "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+    ],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+    ],
+    "FN": []
+}</td></tr></table><a name="8"><i>Reject FP: grip negative meaning word</i></a><table style="white-space: pre-wrap;"><tr><td><b>come on, dont be so hard</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Query\":\"compromise\"}"
+    ]
+}</td></tr><tr><td><b>you are gooing to be a good programmer</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+    ],
+    "FP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>No agreement then on pension</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Query\":\"accept\"}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Pension Fund\":\"No agreement\"}}"
+    ]
+}</td></tr><tr><td><b>no agreement on the car?</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+    ],
+    "FP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>come on, in this company you have to work hard. cannot be less then 10 hourse</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Insist\":\"Working Hours\"}"
+    ],
+    "FP": [
+        "{\"Query\":\"compromise\"}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+    ]
+}</td></tr><tr><td><b>and no car 10%</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Append\":\"previous\"}",
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+        "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+    ],
+    "FP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>I will give you this much only if you work as programmer</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+    ],
+    "FP": [
+        "{\"Accept\":\"previous\"}",
+        "{\"Append\":\"previous\"}",
+        "{\"Reject\":\"Salary\"}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>So no leased car?</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+    ]
+}</td></tr></table><a name="9"><i>Reject vs Accept: confusing</i></a><table style="white-space: pre-wrap;"><tr><td><b>i don't accept your offer</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FP": [
+        "{\"Accept\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>not good</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Accept\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Reject\":\"previous\"}"
+    ]
+}</td></tr><tr><td><b>i do not accept!!</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FP": [
+        "{\"Accept\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>I will not accept the leased car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Accept\":\"previous\"}",
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Reject\":\"Leased Car\"}"
+    ]
+}</td></tr></table><a name="10"><i>unknown words/misspelling</i></a><table style="white-space: pre-wrap;"><tr><td><b>done</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "{\"Accept\":\"previous\"}"
+    ]
+}</td></tr><tr><td><b>8 hourse is not enough</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Reject\":\"Working Hours\"}"
+    ]
+}</td></tr><tr><td><b>come on, in this company you have to work hard. cannot be less then 10 hourse</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Insist\":\"Working Hours\"}"
+    ],
+    "FP": [
+        "{\"Query\":\"compromise\"}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+    ]
+}</td></tr><tr><td><b>can you give 10 hores</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Insist\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+    ]
+}</td></tr><tr><td><b>no, you can be a programer</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FP": [
+        "{\"Insist\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+    ]
+}</td></tr><tr><td><b>YOU UNDERSTAND RIGHT</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "{\"Accept\":\"previous\"}"
+    ]
+}</td></tr><tr><td><b>AGREE</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "{\"Accept\":\"previous\"}"
+    ]
+}</td></tr></table><a name="11"><i>Offer: grip offer word</i></a><table style="white-space: pre-wrap;"><tr><td><b>not 20000</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Reject\":\"Salary\"}"
+    ]
+}</td></tr><tr><td><b>I can not agree to 20000</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Accept\":\"previous\"}",
+        "{\"Insist\":\"previous\"}",
+        "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Reject\":\"Salary\"}"
+    ]
+}</td></tr><tr><td><b>no 8 hours is not enough</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Reject\":\"Working Hours\"}"
+    ]
+}</td></tr><tr><td><b>hi 20000 NIS does not proper the QA JOB</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Greet\":true}",
+        "{\"Offer\":{\"Job Description\":\"QA\"}}"
+    ],
+    "FP": [
+        "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
+    ],
+    "FN": [
+        "{\"Reject\":\"Salary\"}"
+    ]
+}</td></tr></table><a name="12"><i>Insist FN</i></a><table style="white-space: pre-wrap;"><tr><td><b>I will offer you 0% once again.</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+    ],
+    "FP": [],
+    "FN": [
+        "{\"Insist\":\"Pension Fund\"}"
+    ]
+}</td></tr><tr><td><b>9 hours or nothing</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+    ],
+    "FP": [],
+    "FN": [
+        "{\"Insist\":\"Working Hours\"}"
+    ]
+}</td></tr><tr><td><b>I will let you think about it again</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [],
+    "FN": [
+        "{\"Insist\":\"previous\"}"
+    ]
+}</td></tr></table><a name="13"><i>Query:accept vs Query:specific</i></a><table style="white-space: pre-wrap;"><tr><td><b>whice job do you want?</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Query\":\"Job Description\"}"
+    ],
+    "FP": [
+        "{\"Query\":\"accept\"}"
+    ],
+    "FN": []
+}</td></tr></table><a name="14"><i>Insist FP</i></a><table style="white-space: pre-wrap;"><tr><td><b>the Maximum i can give you is 10%</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+    ],
+    "FP": [
+        "{\"Insist\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>i can give you 7000 nis with a car</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+    ],
+    "FP": [
+        "{\"Insist\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr><tr><td><b>I can offer 10% pension</b></td></tr><tr><td>{
+    "TP": [
+        "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+    ],
+    "FP": [
+        "{\"Insist\":\"previous\"}"
+    ],
+    "FN": []
+}</td></tr></table><a name="15"><i>no agreement FN</i></a><table style="white-space: pre-wrap;"><tr><td><b>there is no agreement on leased car</b></td></tr><tr><td>{
+    "TP": [],
+    "FP": [
+        "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+        "{\"Query\":\"accept\"}",
+        "{\"Reject\":\"previous\"}"
+    ],
+    "FN": [
+        "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+    ]
+}</td></tr></table></body></html>
