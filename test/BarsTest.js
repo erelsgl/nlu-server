@@ -4,13 +4,136 @@
  * @since 2013-08
  */
 
-var should = require('should');
-var bars = require('../utils/bars');
-var _ = require('underscore');
-
+var should = require('should')
+var bars = require('../utils/bars')
+var _ = require('underscore')
+var rules = require("../research/rule-based/rules.js")
+var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
+
+	it('correctly filter labels with Accept and etc', function() {
+		// _.isEqual(bars.labelFilter([["Accept"],["Salary"],["20,000 NIS"]]),[ [ 'Accept' ], [ 'Salary' ], [ '20,000 NIS' ] ]).should.be.true
+		// console.log("filter")
+		// var a = 
+		_.isEqual(bars.labelFilter(['{"Accept":"Salary"}', '{"Accept":{"Salary":"20,000 NIS"}}']), [ '{"Accept":{"Salary":"20,000 NIS"}}' ]).should.be.true
+		// console.log(a)
+		// process.exit(0)
+
+	})
+
+
+	// then we can not agree on the salary
+	// '{"Reject":"Salary"}'
+
+	it('sample1', function(done) {
+		var nopuntc = 'then we can not agree on the salary'
+  		ppdb.cachepos(nopuntc, function(err, tagged){
+  			ppdb.dep(tagged, function(depparsed){
+  				var data = rules.findData(nopuntc)
+				var intents = [ [ 'Reject', '', [ 1, 5 ], [ [] ] ] ]
+				var output = bars.buildlabel(data, depparsed, intents)
+				
+				var js = []
+				_.each(output, function(lab, key, list){ 
+			    	var res = bars.resolve_emptiness_rule(lab)
+      				js = js.concat(bars.generate_possible_labels(res))
+  				}, this)
+
+				js = bars.labelFilter(js)
+  				_.isEqual(js, [ '{"Reject":"Salary"}' ]).should.be.true
+				done()
+  			})
+		})
+	})
+
+	// there is no agreement on leased car"
+	// '{"Offer":{"Leased Car":"No agreement"}}'
+
+	it('sample2', function(done) {
+		var nopuntc = 'there is no agreement on leased car'
+  		ppdb.cachepos(nopuntc, function(err, tagged){
+  			ppdb.dep(tagged, function(depparsed){
+  				var data = rules.findData(nopuntc)
+				var intents = [ [ 'Offer', 'there is no agreement on', [ 0, 5 ], [ [] ] ] ]
+				var output = bars.buildlabel(data, depparsed, intents)
+
+				var js = []
+				_.each(output, function(lab, key, list){ 
+			    	var res = bars.resolve_emptiness_rule(lab)
+      				js = js.concat(bars.generate_possible_labels(res))
+  				}, this)
+
+				js = bars.labelFilter(js)
+
+  				_.isEqual(js, [ '{"Offer":{"Leased Car":"No agreement"}}' ]).should.be.true
+
+				done()
+  			})
+		})
+	})
+
+	// i agree to with leased @ 8 hours with slow promotion track
+	// '{"Accept":{"Promotion Possibilities":"Slow promotion track"}}',
+  	// '{"Accept":{"Working Hours":"8 hours"}}',
+  	// '{"Accept":{"Leased Car":"With leased car"}}'
+
+	it('sample3', function(done) {
+		var nopuntc = 'i agree to with leased @ 8 hours with slow promotion track'
+  		ppdb.cachepos(nopuntc, function(err, tagged){
+  			ppdb.dep(tagged, function(depparsed){
+  				var data = rules.findData(nopuntc)
+				var intents = [["Accept","i agree+ to with",[0,4]]]
+				var output = bars.buildlabel(data, depparsed, intents)
+
+				var js = []
+				_.each(output, function(lab, key, list){ 
+			    	var res = bars.resolve_emptiness_rule(lab)
+      				js = js.concat(bars.generate_possible_labels(res))
+  				}, this)
+
+				js = bars.labelFilter(js)
+
+  				_.isEqual(js, [ '{"Accept":{"Promotion Possibilities":"Slow promotion track"}}',
+  '{"Accept":{"Working Hours":"8 hours"}}',
+  '{"Accept":{"Leased Car":"With leased car"}}' ]).should.be.true
+
+				done()
+  			})
+		})
+	})
 	
+	// it('correctly depparse and labels', function(done) {
+	// 	var nopuntc = 'i can do 8 hours, but only if you work as a programmer'
+ //  		ppdb.cachepos(nopuntc, function(err, tagged){
+ //  			ppdb.dep(tagged, function(depparsed){
+ //  				var data = rules.findData(nopuntc)
+	// 			var intents = [["Offer","i can do+ but only if you work+ as a",[0,10]]]
+	// 			var output = bars.buildlabel(data, depparsed, intents)
+	// 			console.log(output)
+	// 			// [ [ [ 'Offer' ], [ 'Working Hours' ], [] ],
+	// 			// [ [ 'Offer' ], [], [ '8 hours' ] ],
+ //  				// [ [ 'Offer' ], [], [ 'Programmer' ] ],
+ //  				// [ [ 'Offer' ], [], [] ] ]
+	// 			done()
+ //  			})
+	// 	})
+	// })
+
+	// it('correctly depparse and labels1', function(done) {
+	// 	var nopuntc = 'i can not agree to your suggest'
+ //  		ppdb.cachepos(nopuntc, function(err, tagged){
+ //  			ppdb.dep(tagged, function(depparsed){
+ //  				var data = rules.findData(nopuntc)
+	// 			var intents = [["Reject","i can not agree-",[0,4]]]
+	// 			var output = bars.buildlabel(data, depparsed, intents)
+	// 			// [ [ [ 'Reject' ], [], [] ] ]
+	// 			console.log(output)
+	// 			done()
+ //  			})
+	// 	})
+	// })
+
 	it('correctly aggregate nested hashes', function() {
 		stats = [{
 			'F1' : 1,
@@ -25,7 +148,7 @@ describe('Bars utilities', function() {
 	results = bars.aggregate_results(stats)
 	results['F1'].should.equal(0.9);
 	results['Precision'].should.equal(3.5);
-	results['Recall'].should.equal(0.575);
+	results['Recall'].should.equniqueual(0.575);
 	})
 
 	it('correctly aggregate nested hashes', function() {
@@ -204,8 +327,8 @@ describe('Bars utilities', function() {
 		_.isEqual(bars.semlang_ambiguity(['accept']), [[['Query'],[], ['accept']]]).should.equal(true)
 		_.isEqual(bars.semlang_ambiguity(['Offer', '20,000 NIS']), [[[ 'Offer'], ['Salary'], ['20,000 NIS' ]]]).should.equal(true)
 		_.isEqual(bars.semlang_ambiguity([true]), [ [ [ 'Greet' ], [], [ true ] ], [ [ 'Quit' ], [], [ true ] ] ]).should.equal(true)
-		_.isEqual(bars.semlang_ambiguity(['Accept', '20,000 NIS']), []).should.equal(true)
-		_.isEqual(bars.semlang_ambiguity(['20,000 NIS']), [[['Offer'],['Salary'],['20,000 NIS']]]).should.equal(true)
+		_.isEqual(bars.semlang_ambiguity(['Accept', '20,000 NIS']), [[['Accept'],['Salary'],['20,000 NIS']]]).should.equal(true)
+		// _.isEqual(bars.semlang_ambiguity(['20,000 NIS']), [[['Offer'],['Salary'],['20,000 NIS']]]).should.equal(true)
 		bars.semlang_ambiguity(['previous']).length.should.equal(4)
 	})
 
@@ -214,8 +337,9 @@ describe('Bars utilities', function() {
 		_.isEqual(bars.generate_possible_labels([ [ 'Accept' ], [''], [ 'previous' ] ]), [ '{"Accept":"previous"}' ]).should.equal(true)
 		_.isEqual(bars.generate_possible_labels([['Offer'],['Salary'],['10,000 NIS']]),['{"Offer":{"Salary":"10,000 NIS"}}'])
 		_.isEqual(bars.generate_possible_labels([['Offer'],['Salary'],['20,000 NIS']]), [ '{"Offer":{"Salary":"20,000 NIS"}}' ]).should.equal(true)
-		_.isEqual(bars.generate_possible_labels([['Offer', 'Accept', 'Reject', 'Greet'],['Salary', 'Job description'],['20,000 NIS','previous']]),[ '{"Offer":{"Salary":"20,000 NIS"}}','{"Accept":"previous"}','{"Accept":"Salary"}','{"Reject":"previous"}','{"Reject":"Salary"}' ]).should.equal(true)
+		// _.isEqual(bars.generate_possible_labels([['Offer', 'Accept', 'Reject', 'Greet'],['Salary', 'Job description'],['20,000 NIS','previous']]),[ '{"Offer":{"Salary":"20,000 NIS"}}','{"Accept":"previous"}','{"Accept":"Salary"}','{"Reject":"previous"}','{"Reject":"Salary"}' ]).should.equal(true)
 		_.isEqual(bars.generate_possible_labels([['Greet'],[],[true]]),[ '{"Greet":true}' ]).should.equal(true)
+		_.isEqual(bars.generate_possible_labels([['Accept'],['Salary'],['20,000 NIS']]),[ '{"Accept":"Salary"}', '{"Accept":{"Salary":"20,000 NIS"}}' ]).should.equal(true)
 	})
 	
 	it('correctly join labels', function() {
@@ -224,20 +348,27 @@ describe('Bars utilities', function() {
 
 	it('correctly resolve emptiness', function() {
 
-		// console.log(bars.resolve_emptiness([['Reject'],[],[]]))
-		// process.exit(0)
-
 		_.isEqual(bars.resolve_emptiness([['Reject'],[],[]]),[['Reject'],[],['previous']]).should.equal(true)
 		_.isEqual(bars.resolve_emptiness([['Accept'],[],[]]),[['Accept'],[],['previous']]).should.equal(true)
 		_.isEqual(bars.resolve_emptiness([[],[],['Without leased car']]),[['Offer'],['Leased Car'],['Without leased car']])
 		_.isEqual(bars.resolve_emptiness([['Greet'],[],[]]), [ ['Greet' ],[  ],[ true ] ]).should.equal(true)
-		_.isEqual(bars.resolve_emptiness([['Accept'],[],['20,000 NIS', 'QA']]), [ [ 'Accept', 'Offer' ],[ 'Salary', 'Job Description' ],[ '20,000 NIS', 'QA' ] ]).should.equal(true)
-		_.isEqual(bars.resolve_emptiness([[],[],['20,000 NIS']]), [['Offer'],['Salary'],['20,000 NIS']]).should.equal(true)
+		// _.isEqual(bars.resolve_emptiness([['Accept'],[],['20,000 NIS', 'QA']]), [ [ 'Accept', 'Offer' ],[ 'Salary', 'Job Description' ],[ '20,000 NIS', 'QA' ] ]).should.equal(true)
+		// _.isEqual(bars.resolve_emptiness([[],[],['20,000 NIS']]), [['Offer'],['Salary'],['20,000 NIS']]).should.equal(true)
 		// _.isEqual(bars.resolve_emptiness([['Accept'],[],[]]), [['Accept'],[],['previous']]).should.equal(false)
 		_.isEqual(bars.resolve_emptiness([['Insist'],[],[]]), [['Insist'],[],['previous']]).should.equal(false)
 		_.isEqual(bars.resolve_emptiness([['Offer'],[],[]]), [['Offer'],[],['previous']]).should.equal(false)
 
 	})
+	
+	it('correctly filter values', function() {
+		_.isEqual(bars.filterValues([['Offer'],['Accept'],['accept'],['compromise']]), [['accept'],['compromise']]).should.be.true
+	})
+
+	it('correctly resolve emptiness only attribute not sem lang oriented', function() {
+		_.isEqual(bars.resolve_emptiness_rule([['Greet'],[],[]]), [ ['Greet' ],[  ],[ true ] ]).should.equal(true)
+		_.isEqual(bars.resolve_emptiness_rule([['Accept'],[],[]]), [ [ 'Accept' ], [], [ 'previous' ] ]).should.equal(true)
+		_.isEqual(bars.resolve_emptiness_rule([['Accept'],[],['20,000 NIS']]), [ [ 'Accept' ], [ 'Salary' ], [ '20,000 NIS' ] ]).should.equal(true)
+		})
 
 	it('correctly resolve emptiness', function() {
 		var res = bars.filterreject([[ 'Reject', 'no..you', [0,1], {Reject:[Object]}], ['Accept','be programmer',[1,3], {Offer:[Object]}]])
