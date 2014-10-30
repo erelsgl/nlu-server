@@ -9,10 +9,15 @@ var classifiers = require('../classifiers');
 var _ = require('underscore');
 var limdu_classifiers = require('limdu/classifiers');
 var ftrs = require('limdu/features');
+var natural = require('natural');
 
 // curves.learning_curves(classifiers, data, parameters, 3, 5)
 
 describe('Classifiers functions', function() {
+
+	it('correctly filters instances', function() {
+		classifiers.instanceFilter("1 2  3").should.be.equal.true
+	})
 	
 	it('correctly separate utterance to tokens', function() {
 		_.isEqual(classifiers.tokenizer.tokenize("I offer your a salary of 10000"), [ 'I', 'offer', 'your', 'a', 'salary', 'of', '10000' ]).should.equal(true)
@@ -66,6 +71,7 @@ describe('Classifiers functions', function() {
 			normalizer: classifiers.normalizer,
 			featureExtractor: classifiers.featureExtractorUnigram,
 			multiplyFeaturesByIDF: true,
+			TfIdfImpl: natural.TfIdf
 		});
 
 		var cl = new SvmClassifierStringFeatures();
