@@ -1,0 +1,355 @@
+Gold Standard Keyphrases for Intent 'Offer' after Filtering
+size 45
+[ 'i think',
+  'you will start',
+  'i offer',
+  'i will accept',
+  'we agreed',
+  'you can work for',
+  'you can be',
+  'we already agreed',
+  'i want to give',
+  'why not an',
+  'i want you to be a',
+  'can you give',
+  'be',
+  'in this job',
+  'you get',
+  'the maximum is',
+  'how about',
+  'i had in mind offering you',
+  'would you prefer',
+  'i could offer',
+  'you will be needed',
+  'would ... be okay?',
+  'is on',
+  'we have already agreed',
+  'will be',
+  'i will give',
+  'lets make it',
+  'let\'s not include',
+  'i\'m willing',
+  'my offer',
+  'i said',
+  'there is',
+  'i would like to work',
+  'i am once again suggestiong',
+  'you work',
+  'i want to offer',
+  'i can do',
+  'is possible',
+  'is possile',
+  'we decided',
+  'i need you to work',
+  'i am willing',
+  'is fine by me',
+  'you be a',
+  'and we\'ll throw in' ]
+
+Generated Keyphrases for seed 'offer'
+size 75
+[ 'offer',
+  'to provide',
+  'being offered',
+  'make offers',
+  'the supply of',
+  'this offering',
+  'provision',
+  'the submission',
+  'the supply',
+  'the quote',
+  'the bid',
+  'are offered',
+  'the supply side',
+  'are provided',
+  'provide',
+  'are available',
+  'a presentation',
+  'is proposing',
+  'make available',
+  'have provided',
+  'tender',
+  'a show',
+  'be provided',
+  'delivering',
+  'the provision',
+  'to propose',
+  'bid',
+  'have proposed',
+  'providing',
+  'supply side',
+  'be proposed',
+  'is offered',
+  'is provided',
+  'offered',
+  'the availability',
+  'provided',
+  'the presentation',
+  'is available',
+  'an offering',
+  'the victims',
+  'make proposals',
+  'be offered',
+  'the show',
+  'a tender',
+  'quotation',
+  'propose',
+  'are offering',
+  'has proposed',
+  'give her',
+  'give',
+  'can provide',
+  'provides',
+  'supply',
+  'a parade',
+  'proposal',
+  'submit',
+  'the tenders',
+  'give away',
+  'delivers',
+  'the tender',
+  'offers',
+  'the delivery',
+  'the quotation',
+  'give you',
+  'deliver',
+  'is offering',
+  'buy you',
+  'put forward',
+  'the parade',
+  'offering',
+  'a bid',
+  'the offering',
+  'will provide',
+  'made available',
+  'are proposing' ]
+
+0
+10
+20
+30
+40
+50
+60
+70
+{
+    "stats": {
+        "TP": 16,
+        "FP": 59,
+        "FN": 43
+    },
+    "data": {
+        "TP": [
+            [
+                "offer",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "being offered",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "this offering",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "are offered",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "is offered",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "offered",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "an offering",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "be offered",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "are offering",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "give her",
+                [
+                    "i will give"
+                ]
+            ],
+            [
+                "give",
+                [
+                    "i will give"
+                ]
+            ],
+            [
+                "offers",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "give you",
+                [
+                    "i will give"
+                ]
+            ],
+            [
+                "is offering",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "offering",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "the offering",
+                [
+                    "i offer"
+                ]
+            ]
+        ],
+        "FP": [
+            "to provide",
+            "make offers",
+            "the supply of",
+            "provision",
+            "the submission",
+            "the supply",
+            "the quote",
+            "the bid",
+            "the supply side",
+            "are provided",
+            "provide",
+            "are available",
+            "a presentation",
+            "is proposing",
+            "make available",
+            "have provided",
+            "tender",
+            "a show",
+            "be provided",
+            "delivering",
+            "the provision",
+            "to propose",
+            "bid",
+            "have proposed",
+            "providing",
+            "supply side",
+            "be proposed",
+            "is provided",
+            "the availability",
+            "provided",
+            "the presentation",
+            "is available",
+            "the victims",
+            "make proposals",
+            "the show",
+            "a tender",
+            "quotation",
+            "propose",
+            "has proposed",
+            "can provide",
+            "provides",
+            "supply",
+            "a parade",
+            "proposal",
+            "submit",
+            "the tenders",
+            "give away",
+            "delivers",
+            "the tender",
+            "the delivery",
+            "the quotation",
+            "deliver",
+            "buy you",
+            "put forward",
+            "the parade",
+            "a bid",
+            "will provide",
+            "made available",
+            "are proposing"
+        ],
+        "FN": [
+            "i think",
+            "you will start",
+            "i will accept",
+            "we agreed",
+            "you can work for",
+            "you can be",
+            "we already agreed",
+            "i want to give",
+            "why not an",
+            "i want you to be a",
+            "can you give",
+            "be",
+            "in this job",
+            "you get",
+            "the maximum is",
+            "how about",
+            "i had in mind offering you",
+            "would you prefer",
+            "i could offer",
+            "you will be needed",
+            "would ... be okay?",
+            "is on",
+            "we have already agreed",
+            "will be",
+            "lets make it",
+            "let's not include",
+            "i'm willing",
+            "my offer",
+            "i said",
+            "there is",
+            "i would like to work",
+            "i am once again suggestiong",
+            "you work",
+            "i want to offer",
+            "i can do",
+            "is possible",
+            "is possile",
+            "we decided",
+            "i need you to work",
+            "i am willing",
+            "is fine by me",
+            "you be a",
+            "and we'll throw in"
+        ]
+    }
+}
+{
+    "Precision": 0.21333333333333335,
+    "Recall": 0.2711864406779661,
+    "F1": 0.23880597014925375,
+    "TP": 16,
+    "FP": 59,
+    "FN": 43
+}

@@ -1,0 +1,30 @@
+// TP - the number of retrieved paraphrases that cover at least one phrase in the gold standard data
+// FP - the number of retrieved paraphases that doesn't cover any record
+// FN - the number of records that was left uncovered in gold standard data
+
+var _ = require('underscore')._; 
+var fs = require('fs');
+var natural = require('natural');
+var redis = require("redis")
+var client = redis.createClient(6369, '127.0.0.1', {});
+//var client = redis.createClient("6369, 132.70.6.156")
+// var async = require('async');
+
+
+///client.select(1, function(err,res) {
+	
+console.log(res)
+console.log(err)
+
+    client.select(1).smembers("offer", function (err, replies) {
+            // if(!err){
+		console.log("hewre")
+                console.log(replies)
+                // process.exit(0)
+                // afterAll();
+            })
+
+//});
+
+client.quit();
+

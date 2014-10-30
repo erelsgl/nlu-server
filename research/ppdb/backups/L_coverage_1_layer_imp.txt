@@ -1,0 +1,214 @@
+Gold Standard Keyphrases for Intent 'Offer' after Filtering
+size 45
+[ 'i think',
+  'you will start',
+  'i offer',
+  'i will accept',
+  'we agreed',
+  'you can work for',
+  'you can be',
+  'we already agreed',
+  'i want to give',
+  'why not an',
+  'i want you to be a',
+  'can you give',
+  'be',
+  'in this job',
+  'you get',
+  'the maximum is',
+  'how about',
+  'i had in mind offering you',
+  'would you prefer',
+  'i could offer',
+  'you will be needed',
+  'would ... be okay?',
+  'is on',
+  'we have already agreed',
+  'will be',
+  'i will give',
+  'lets make it',
+  'let\'s not include',
+  'i\'m willing',
+  'my offer',
+  'i said',
+  'there is',
+  'i would like to work',
+  'i am once again suggestiong',
+  'you work',
+  'i want to offer',
+  'i can do',
+  'is possible',
+  'is possile',
+  'we decided',
+  'i need you to work',
+  'i am willing',
+  'is fine by me',
+  'you be a',
+  'and we\'ll throw in' ]
+
+Generated Keyphrases for seed 'offer'
+size 24
+[ 'offer',
+  'to provide',
+  'make available',
+  'the show',
+  'be offered',
+  'the tender',
+  'a tender',
+  'offers',
+  'are offering',
+  'the provision',
+  'deliver',
+  'is offering',
+  'provides',
+  'buy you',
+  'supply',
+  'the supply',
+  'offering',
+  'the offering',
+  'supply side',
+  'are offered',
+  'is offered',
+  'made available',
+  'are proposing',
+  'provide' ]
+
+0
+10
+20
+{
+    "stats": {
+        "TP": 9,
+        "FP": 15,
+        "FN": 44
+    },
+    "data": {
+        "TP": [
+            [
+                "offer",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "be offered",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "offers",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "are offering",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "is offering",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "offering",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "the offering",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "are offered",
+                [
+                    "i offer"
+                ]
+            ],
+            [
+                "is offered",
+                [
+                    "i offer"
+                ]
+            ]
+        ],
+        "FP": [
+            "to provide",
+            "make available",
+            "the show",
+            "the tender",
+            "a tender",
+            "the provision",
+            "deliver",
+            "provides",
+            "buy you",
+            "supply",
+            "the supply",
+            "supply side",
+            "made available",
+            "are proposing",
+            "provide"
+        ],
+        "FN": [
+            "i think",
+            "you will start",
+            "i will accept",
+            "we agreed",
+            "you can work for",
+            "you can be",
+            "we already agreed",
+            "i want to give",
+            "why not an",
+            "i want you to be a",
+            "can you give",
+            "be",
+            "in this job",
+            "you get",
+            "the maximum is",
+            "how about",
+            "i had in mind offering you",
+            "would you prefer",
+            "i could offer",
+            "you will be needed",
+            "would ... be okay?",
+            "is on",
+            "we have already agreed",
+            "will be",
+            "i will give",
+            "lets make it",
+            "let's not include",
+            "i'm willing",
+            "my offer",
+            "i said",
+            "there is",
+            "i would like to work",
+            "i am once again suggestiong",
+            "you work",
+            "i want to offer",
+            "i can do",
+            "is possible",
+            "is possile",
+            "we decided",
+            "i need you to work",
+            "i am willing",
+            "is fine by me",
+            "you be a",
+            "and we'll throw in"
+        ]
+    }
+}
+{
+    "Precision": 0.375,
+    "Recall": 0.16981132075471697,
+    "F1": 0.2337662337662338,
+    "TP": 9,
+    "FP": 15,
+    "FN": 44
+}
