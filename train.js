@@ -39,8 +39,16 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_checking_tag = false
 // var do_small_temporary_test = false
 // var do_small_temporary_serialization_test = false
+
+var test_gaby = false
+var new_dial_stats = false
+var test_dataset = false
+var prepare_dataset_for_gaby1 = false
+var prepare_dataset_for_gaby = false
+var do_keyphrase_only_rule = false
+var do_small_temporary_serialization_test = false
 var do_mlrule = true
-var do_learning_curves = true
+var do_learning_curves = false
 var do_test_sagae = false
 var do_cross_dataset_testing = false
 var do_learning_curves_dialogue = false
@@ -56,6 +64,10 @@ var count_2_intents_2_attributes = false
 var do_comparison = false
 var regexnor = false
 var just_test = false
+var do_keyphrase_annotaiton = false
+var do_keyphrase_gold_annotaiton = false
+var do_keyphrase_predict_annotaiton = false
+var do_pull_all_utterance_to_file = false
 
 var _ = require('underscore')._;
 var fs = require('fs');
@@ -64,7 +76,7 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
 var trainutils = require('./utils/bars')
 // var Lemmer = require('node-lemmer').Lemmer;
-
+var rules = require("./research/rule-based/rules.js")
 
 var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/0_grammar.json"));
 var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students.json"));
@@ -94,9 +106,17 @@ var curves = require('./utils/learning_curves');
 // var unseen_words_curves = require('limdu/utils/unseen_curves').unseen_word_curves;
 // var unseen_correlation = require('limdu/utils/unseen_correlation').unseen_correlation;
 // var tokenize = require('limdu/utils/unseen_correlation').tokenize;
-var classifier = require(__dirname+'/classifiers')
+
 var limdu = require("limdu");
 var ftrs = limdu.features;
+
+var Fiber = require('fibers');
+
+var f = Fiber(function() {
+  		var fiber = Fiber.current;
+
+
+var classifier = require(__dirname+'/classifiers')
 
 // var regexpNormalizer = ftrs.RegexpNormalizer(
 		// JSON.parse(fs.readFileSync('knowledgeresources/BiuNormalizations1.json')));
@@ -119,6 +139,12 @@ var normalizeClasses = function (expectedClasses) {
 	expectedClasses.sort();
 	return expectedClasses;
 };
+
+function normalizer(sentence) {
+	sentence = sentence.toLowerCase().trim();
+	return regexpNormalizer(sentence);
+}
+
 
 // var clonedataset  = function(dataset) {
 
@@ -147,37 +173,601 @@ var datasetNames = [
 			];
 
 
-if (do_mlrule)
-	{
+// sentence = sentence.toLowerCase().trim();
+// 	sentence = regexpNormalizer(sentence)
+// 	sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+// 	// sentence = sentence.replace(/<VALUE>/g,'')
+// 	// sentence = sentence.replace(/<ATTRIBUTE>/g,'')
+// 	sentence = sentence.trim()
+// 	sentence = sentence.replace(/\s+/g,' ')
 
-		trainset = trainutils.filteraccept(JSON.parse(fs.readFileSync("datasets/Employer/trainonelabel.json")))
-	testset = trainutils.filteraccept(JSON.parse(fs.readFileSync("datasets/Employer/testalllabels.json")))
 
+
+/*performs 
+turkers_keyphrases_only_rule.json
+students_keyphrases_only_rule.json*/
+
+
+if (test_dataset)
+{
+	
+	var data = JSON.parse(fs.readFileSync("./test2.json"))
+	console.log()
+	process.exit(0)
+
+}
+
+if (prepare_dataset_for_gaby1)
+{
+
+	var utdata = []
+
+	var olddata = JSON.parse(fs.readFileSync("./dialogue_restore/dial_usa.json"))
+
+	var oldddata = JSON.parse(fs.readFileSync("./datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
+	oldddata = trainutils.extractturns(oldddata)
+	var transfer = []
+
+	var scfg = JSON.parse(fs.readFileSync("./scfg_detailed.json"))
+	
+	// _.each(trainutils.dividedataset(oldddata)['one'], function(value, key, list){ 
+	_.each(oldddata, function(value, key, list){ 
+		value['input'] = normalizer(value['input'])
+		if (
+			(value['input'].indexOf('salary') == -1) &&
+			(value['input'].indexOf('NIS') == -1) &&
+			(value['input'].indexOf('12000') == -1) &&
+			(value['input'].indexOf('7000') == -1)&&
+			(value['input'].indexOf('20000') == -1)
+			)
+		{
+			transfer.push({'input':value['input'], 'output':value['output']})
+		}
+	}, this)
+
+	// 
+	// utdata = _.shuffle(utdata)
+	// var clean = partitions.partition(utdata, 1, Math.round(utdata.length*0.4))
+
+	// console.log("one "+trainutils.dividedataset(utdata)['one'].length)
+	// console.log("two "+trainutils.dividedataset(utdata)['two'].length)
+	
+	// console.log()
+	// process.exit(0)
+	// var filename = './dialogue_restore/new_ag1.json'
+	// data = JSON.parse(fs.readFileSync(filename))
+
+
+	_.each(olddata, function(dialogue, key, list){ 
+		// console.log(dialogue['status'])
+		if (_.find(dialogue['users'], function(num){ return num.indexOf("NewAgent")}) != -1)
+		{
+			_.each(dialogue['turns'], function(turn, key, list){ 
+				if ((turn['user'].toLowerCase().indexOf('agent') == -1) &&
+					(turn['output'] != ''))
+				{
+					utdata.push({'input': normalizer(turn['input']),
+								'output': turn['output']})
+				}
+			}, this)
+		}
+	}, this)
+
+
+	utdata = utdata.concat(transfer)
+	// console.log(utdata.length)
+	// console.log(JSON.stringify(utdata, null, 4))
+
+	// utdata = utdata.concat(olddata)
+	utdata = _.shuffle(utdata)
+
+	var dataset = partitions.partition(utdata, 1, Math.round(utdata.length*0.4))
+
+	// console.log("one "+trainutils.dividedataset(utdata)['one'].length)
+	// console.log("two "+trainutils.dividedataset(utdata)['two'].length)
+
+	_.each(scfg, function(value, key, list){ 
+		dataset['train'].push({'input': normalizer(value['input']),
+								'output': value['output']})
+	}, this)
+	
+	var output = {}
+	var zero = 0
+	var inputs = []
+
+	// _.each(dataset['train'], function(value, key, list){ 
+		// if (value["output"]  == "")
+			// inputs.push(value['input'])
+	// }, this)
+
+	// console.log(inputs)
+	// process.exit(0)
+
+	_.each(trainutils.dividedataset(dataset['train'])['one'], function(value, key, list){
+		
+		// console.log(value)
+		// process.exit(0)
+		// console.log(value['output'][0])
+		var str = _.isString(value['output'][0])? value['output'][0]: JSON.stringify(value['output'][0])
+		
+		// var str = JSON.stringify(value['output'][0])
+		if (!(str in output))
+			 output[str] = []
+		output[str].push(normalizer(value['input']))
+		output[str] = _.compact(_.unique(output[str]))
+	}, this)
+
+	// console.log(zero)
+		
+	_.each(output, function(value, key, list){ 
+		output[key] = _.sample(value,50)
+	}, this)
+
+
+	var test = []
+	_.each(dataset['test'], function(value, key, list){ 
+			var out = []
+
+			// console.log(value['output'])
+			_.each(value['output'], function(value1, key1, list1){ 
+
+					out.push(_.isString(value1)? JSON.parse(value1): value1)
+			}, this)
+
+		test.push({'input': normalizer(value['input']),
+					// 'output': _.isString(value['output'])? value['output']: JSON.stringify(value['output'])})
+					'output': out})
+	}, this)
+
+	console.log(JSON.stringify(output, null, 4))
+	
+	
+	test = _.sample(test, 200)
+
+	console.log(JSON.stringify(test, null, 4))
+	process.exit(0)
+}
+
+
+if (prepare_dataset_for_gaby)
+{
+	
+	var olddata = []
+	var utdata = []
+	
+	olddata = olddata.concat(JSON.parse(fs.readFileSync("./datasets/Employer/Dialogue/students_keyphrases_only_rule.json")))
+	olddata = olddata.concat(JSON.parse(fs.readFileSync("./datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json")))
+	olddata = trainutils.extractturns(olddata)
+	
+	// utdata = _.shuffle(utdata)
+	// var clean = partitions.partition(utdata, 1, Math.round(utdata.length*0.4))
+
+	// console.log("one "+trainutils.dividedataset(utdata)['one'].length)
+	// console.log("two "+trainutils.dividedataset(utdata)['two'].length)
+	
+	// console.log()
+	// process.exit(0)
+	var filename = './dialogue_restore/new_ag1.json'
+	data = JSON.parse(fs.readFileSync(filename))
+
+
+	_.each(data, function(dialogue, key, list){ 
+		// console.log(dialogue['status'])
+		if (dialogue['status'] == 'goodconv')
+		{
+			_.each(dialogue['turns'], function(turn, key, list){ 
+				if (turn['user'].toLowerCase().indexOf('agent') == -1)
+				{
+					utdata.push({'input': normalizer(turn['input']),
+								'output': turn['output']})
+				}
+			}, this)
+		}
+	}, this)
+
+	// console.log(utdata.length)
+	// console.log(JSON.stringify(utdata, null, 4))
+
+	utdata = utdata.concat(olddata)
+	utdata = _.shuffle(utdata)
+
+	var dataset = partitions.partition(utdata, 1, Math.round(utdata.length*0.4))
+
+	// console.log("one "+trainutils.dividedataset(utdata)['one'].length)
+	// console.log("two "+trainutils.dividedataset(utdata)['two'].length)
+	
+	var output = {}
+	var zero = 0
+	var inputs = []
+
+	// _.each(dataset['train'], function(value, key, list){ 
+		// if (value["output"]  == "")
+			// inputs.push(value['input'])
+	// }, this)
+
+	// console.log(inputs)
+	// process.exit(0)
+
+	_.each(trainutils.dividedataset(dataset['train'])['one'], function(value, key, list){
+		
+		// console.log(value)
+		// process.exit(0)
+		// console.log(value['output'][0])
+		var str = _.isString(value['output'][0])? value['output'][0]: JSON.stringify(value['output'][0])
+		
+		// var str = JSON.stringify(value['output'][0])
+		if (!(str in output))
+			 output[str] = []
+		output[str].push(normalizer(value['input']))
+		output[str] = _.compact(_.unique(output[str]))
+	}, this)
+
+	// console.log(zero)
+	console.log(JSON.stringify(output, null, 4))
+
+
+	var test = []
+	_.each(dataset['train'], function(value, key, list){ 
+		test.push({'input': normalizer(value['input']),
+					'output': _.isString(value['output'])? value['output']: JSON.stringify(value['output'])})
+	}, this)
+
+	console.log(JSON.stringify(test, null, 4))
+	process.exit(0)
+}
+
+if (do_keyphrase_only_rule)
+{
 	var datalist = [
-			// "datasetrules.js",
-			// "datasetrules1.js"
-			"trainonelabel.json",
-			"testalllabels.json"	
+				"students_keyphrases_gold_rule.json"
+				// "turkers_keyphrases_only_rule.json"
 			]
 
 	var data = []
 	_.each(datalist, function(value, key, list){ 
-		data = data.concat(JSON.parse(fs.readFileSync("./datasets/Employer/"+value)))
+		data = data.concat(JSON.parse(fs.readFileSync("./datasets/Employer/Dialogue/"+value)))
 	})
+
+	_.each(data, function(dialogue, key, list){ 
+		_.each(dialogue['turns'], function(turn, key1, list1){ 
+			
+			if (!('intent_keyphrases_rule' in turn))
+				turn['intent_keyphrases_rule'] = {}
+
+			if ('intent_keyphrases_gold' in turn)
+				{
+					_.each(turn['intent_keyphrases_gold'], function(value, intent, list){ 
+						if (!(intent in turn['intent_keyphrases_rule']))
+							turn['intent_keyphrases_rule'][intent] = value[1]
+					}, this)
+				}
+
+			if ('Offer' in turn['intent_keyphrases_rule'])
+				{
+				if (turn['intent_keyphrases_rule']['Offer'] == "")	
+					turn['intent_keyphrases_rule']['Offer'] = "DEFAULT INTENT"
+				}
+
+			delete data[key]['turns'][key1]['intent_keyphrases_gold']
+			delete data[key]['turns'][key1]['is_correct']
+			
+			turn['status'] = 'active'
+
+		}, this)
+	}, this)
+
+	console.log(JSON.stringify(data, null, 4))
+	process.exit(0)
+}
+
+
+
+if (do_pull_all_utterance_to_file)
+	{
+	var datalist = [
+			// "turkers_keyphrases_gold.json"
+				// "students_keyphrases_.json"
+				'turkers_keyphrases_only_rule.json',
+				'students_keyphrases_only_rule.json'
+			]
+
+	var data = []
+	_.each(datalist, function(value, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("./datasets/Employer/Dialogue/"+value)))
+	})
+	
+	var data = trainutils.extractturns(data)
+	// normalizer
+	var output = []
+	_.each(data, function(value, key, list){ 
+		output.push(normalizer(value['input']))
+	}, this)
+	
+	output = _.unique(output)
+	_.each(output, function(value, key, list){ 
+		console.log(value)
+	}, this)
+	process.exit(0)
+	}
+
+
+// takes the dialogues dataset and senetnce with only single label, then omit attribute and value and add
+// only salient phrase of intent to the dataset
+if (do_keyphrase_predict_annotaiton)
+	{
+	var datalist = [
+			// "turkers_keyphrases_gold.json"
+				"students_keyphrases_gold.json"
+			]
+
+	var data = []
+	_.each(datalist, function(value, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("./datasets/Employer/Dialogue/"+value)))
+	})
+
+	_.each(data, function(dialogue, key, list){ 
+		_.each(dialogue['turns'], function(turn, key1, list1){ 
+			// if ('intent_keyphrases_gold' in turn)
+				// {
+					var intent_list = Hierarchy.splitPartEquallyIntent(turn['output'])
+					// console.log("series "+intent)
+
+					if (intent_list.length == 1)
+					{
+							// console.log("---------------------")
+
+						// console.log(turn['output'])
+						// console.log(turn['input'])
+						// console.log(intent_list)
+						var intent = intent_list[0] 
+						if (!('intent_keyphrases_rule' in turn))
+							turn['intent_keyphrases_rule'] = {}
+						// var intent = Hierarchy.splitPartEquallyIntent(turn['output'])
+						if (!(intent in turn['intent_keyphrases_rule']))
+							{
+							var sentence = turn['input']
+							var original = turn['input']
+							sentence = sentence.toLowerCase().trim()
+							sentence = regexpNormalizer(sentence)
+							sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+							sentence = sentence.replace(/<VALUE>/g,'')
+							sentence = sentence.replace(/<ATTRIBUTE>/g,'')
+							sentence = sentence.replace(/NIS/,'')
+							sentence = sentence.replace(/nis/,'')
+							sentence = sentence.replace(/track/,'')
+							sentence = sentence.replace(/USD/,'')
+							sentence = sentence.trim()
+
+							var keyphrase = sentence
+							// console.log("intent "+intent)
+							// console.log("original "+original)
+							// console.log("sentence "+sentence)
+							if (sentence.replace(" ","").length == 0)
+								keyphrase = "DEFAULT INTENT"
+
+							data[key]['turns'][key1]['intent_keyphrases_rule'][intent] = keyphrase
+							}
+							// else
+							// process.exit(0)
+					}
+					else
+					{
+						// console.log(turn['output'])
+					}
+				// }
+		}, this)
+	}, this)
+
+	// var keyphrases = JSON.parse(fs.readFileSync("./research/test_aggregate_keyphases/keyphases.09.2014.json"))
+
+console.log(JSON.stringify(data, null, 4))
+process.exit(0)
+}
+
+// takes dialogues datasets and keyphrase set and combines them = dialogues with gold standard keyphrases
+if (do_keyphrase_gold_annotaiton)
+	{
+	var datalist = [
+			"turkers.json"
+			]
+
+	var data = []
+	_.each(datalist, function(value, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("./datasets/Employer/Dialogue/"+value)))
+	})
+
+	var keyphrases = JSON.parse(fs.readFileSync("./research/test_aggregate_keyphases/keyphases.09.2014.json"))
+
+
+
+// [
+//     {
+//         "sentence": "it is much too high.",
+//         "labels": {
+//             "Reject": [
+//                 ""
+//             ],
+//             "Salary": [
+//                 ""
+//             ]
+//         }
+//     },
+//     {
+//         "sentence": "i think 7000 is good",
+//         "labels": {
+//             "Offer": [
+//                 "i think"
+//             ],
+//             "Salary": [
+//                 "VALUE"
+//             ],
+//             "7,000 NIS": [
+//                 "7000"
+//             ]
+//         }
+//     },
+
+// console.log("keyphrases "+keyphrases.length)
+// console.log("data "+data.length)
+
+var got = 0
+var Itents = ['Append', 'Offer', 'Accept', 'Reject', 'Insist', 'Query', 'Greet', 'Quit', 'accept', 'compromise', 'bid', 'issues']
+
+	_.each(keyphrases, function(keysentence, key2, list2){ 
+		// console.log("@"+key2)
+		_.each(data, function(dialogue, key, list){ 
+			// console.log(key)
+			_.each(dialogue['turns'], function(utterance, key1, list1){
+				if (keysentence['sentence'] == utterance['input'])
+					{
+					got = got + 1
+					data[key]['turns'][key1]['intent_keyphrases_gold'] = {}
+
+					_.each(keysentence['labels'], function(keyphrase, intent, list){ 
+						keyphrase = keyphrase['0']
+						if (keyphrase.length>0)
+						{
+							if (Itents.indexOf(intent)!=-1)
+								{
+
+								var begin = utterance['input'].indexOf(keyphrase)
+								var end = begin + keyphrase.length - 1
+
+								if (keyphrase == "DEFAULT INTENT")
+									{
+										begin = -2
+										end = -2
+									}
+
+								if (begin == -1)
+									{	console.log("error"+keyphrase+" "+utterance['input'])
+											process.exit(0)
+									}
+
+								data[key]['turns'][key1]['intent_keyphrases_gold'][intent] = []
+								data[key]['turns'][key1]['intent_keyphrases_gold'][intent].push([begin, end])
+								data[key]['turns'][key1]['intent_keyphrases_gold'][intent].push(keyphrase)
+								}
+						}
+					}, this)
+					}
+			}, this)
+		}, this)
+	}, this)
+
+console.log(JSON.stringify(data, null, 4))
+// console.log()
+process.exit(0)
+}
+
+// new prototype
+
+
+if (new_dial_stats)
+	{
+
+		// dial_usa.json
+		// dial_isr.json
+
+		// dialogies = JSON.parse(fs.readFileSync("./dialogue_restore/dial_isr.json"))
+		dialogies = JSON.parse(fs.readFileSync("./dialogue_restore/dial_usa.json"))
+
+		var gooddial = 0
+		var utter = 0
+
+		_.each(dialogies, function(dialogue, key, list){ 
+			if (dialogue['status'] == 'goodconv')
+				gooddial = gooddial + 1
+		}, this)
+
+		
+		var agents = []
+		_.each(dialogies, function(dialogue, key, list){ 
+			if (dialogue['status'] == 'goodconv')
+			{
+				utter = utter  + dialogue['turns'].length
+				var agent = ""
+				_.each(dialogue['turns'], function(turn, key1, list1){ 
+					if (turn['user'].indexOf('NewAgent')!=-1)	agent = 'NewAgent'
+					if (turn['user'].indexOf('KBAgent')!=-1)	agent = 'KBAgent'
+				}, this)
+			agents.push(agent)
+			}
+		}, this)
+
+		
+		var agentshash = _.countBy(agents, function(num) { return num})
+
+
+		console.log("good dialogues")
+		console.log(gooddial)
+
+		console.log("agents")
+		console.log(agentshash)
+
+		console.log("utterances")
+		console.log(utter)
+
+		process.exit(0)
+	}
+
+
+if (do_mlrule)
+	{
+
+	// trainset = trainutils.filteraccept(JSON.parse(fs.readFileSync("datasets/Employer/trainonelabel.json")))
+	// testset = trainutils.filteraccept(JSON.parse(fs.readFileSync("datasets/Employer/testalllabels.json")))
+
+	var datalist = [
+			// "datasetrules.js",
+			// "datasetrules1.js"
+			// "trainonelabel.json",
+			// "testalllabels.json"	
+			"turkers_keyphrases_only_rule.json",
+			"students_keyphrases_only_rule.json"
+			]
+
+	var data = []
+	_.each(datalist, function(value, key, list){ 
+		// data = data.concat(JSON.parse(fs.readFileSync("./datasets/Employer/"+value)))
+		data = data.concat(JSON.parse(fs.readFileSync("./datasets/Employer/Dialogue/"+value)))
+	})
+
+	// var ppdb = require("./research/ppdb/utils.js")
+
+	var data = trainutils.extractturns(data)
 
 	_.each(data, function(value, key, list){ 
 		var str = value['input'].toLowerCase().trim();
 		data[key]['input'] = regexpNormalizer(str)
+		
+		// ppdb.cachepos(data[key]['input'].replace(/\./g,""), function(err, response){	
+  		// })
 	}, this)
+
+	// console.log()
+	// process.exit(0)
 
 	data = _.shuffle(data)
 
 	var dataset = partitions.partition(data, 1, Math.round(data.length*0.3))
 
+	// console.log(trainutils.dividedataset(dataset['train'])['one'].length)
+	// console.log(dataset['test'].length)
+	// console.log(JSON.stringify(trainutils.dividedataset(dataset['train'])['one'], null, 4))
+	// process.exit(0)
+	
+	console.log("sizes")
+	console.log("train "+trainutils.dividedataset(dataset['train'])['one'].length)
+	console.log("test "+dataset['test'].length)
+
+	// console.log()
+	// process.exit(0)
+
     // var stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, train, trainutils.dividedataset(test)['one'], 5)
-    var stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, trainutils.dividedataset(dataset['train'])['one'], dataset['test'], 5)
-    console.log(JSON.stringify(stats, null, 4))
-    process.exit(0)
+   		var stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, trainutils.dividedataset(dataset['train'])['one'], dataset['test'], 5)
+   		console.log(JSON.stringify(stats, null, 4))
+   
 	}
 
 if (just_test)
@@ -549,3 +1139,10 @@ if (do_serialization) {
 			, 'utf8');
 	});
 } // do_serialization
+
+
+
+})
+
+
+f.run();
