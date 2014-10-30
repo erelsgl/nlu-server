@@ -6,18 +6,8 @@ var _ = require('underscore')._;
 var fs = require('fs');
 var natural = require('natural');
 var utils = require('./utils');
-
-// var WordPOS = require('wordpos')
-
-// var Lemmer = require('../../node-lemmer').Lemmer;
-
+var Fiber = require('fibers');
 var async = require('async');
-
-// var redis = require("redis")
-// var client = redis.createClient();
-// var client = redis.createClient(6369, "127.0.0.1", {})
-
-// var pos = require('pos');
 
 var crosslist = function (list)
 {
@@ -34,233 +24,49 @@ var crosslist = function (list)
     return crossl
 }
 
-
-// no cleaning before unisg ppdb, but might be useful to use substring to feath 
-// in order to improve recall
-// mayeb it's usefull to use 
-// *the entire phrase 
-// *separated lemmatized content words
-
-// lemmatizing only when comparing distance (optionally)
-// very carefull comparison
-// -- when y has content words - compare only content words - lemmatized
-
-
-// retrieve all possible substring 
-// INPUT: [ '1234567' ]
-// OUTPUT: [ '12',
-  // '12 34',
-  // '12 34 56',
-  // '12 34 56 78',
-  // '34',
-  // '34 56',
-  // '34 56 78',
-  // '56',
-  // '56 78',
-  // '78' ]
-
-var subst = function (str) {
-	var subst = []
-	var str = str.split(" ")
-	for (var start=0; start<=str.length; ++start) {
-		for (var end=start+1; end<=str.length; ++end) {
-				subst.push(str.slice(start,end).join(" "));
-  };
-}
-return subst
-}
-
-// get the list of seeds and calculate the number of substrings
-// INPUT ['11 22','22 33']
-// OUTPUT 6
-
-var seednum = function (seeds)
-{
-    var ind = 0
-    _.each(seeds, function(seed, key, list){
-        ind = ind + subst(seed).length
-    }, this)
-    return ind
-}
-
 var keyph = ['offer','accept','reject','insist','query','greet','quit']
 var cross = crosslist(keyph)
 var crossX = _.map(cross, function(num){ return num['X']; });
 
-async.mapSeries(crossX, utils.onepairfetch, function(err, resultArr) {
-    var ind = 0
-
-    async.series([
-        function(callback){
-            async.eachSeries(resultArr, function(pairlist, callbackDone){ 
-                console.log(ind)
-                pairlist.push(cross[ind]['X'])
-
-                var convertlist = _.map(pairlist, function(num){ return [num,cross[ind]['Y']] });
-
-                var bestlist = []
-
-                async.mapSeries(convertlist, utils.compare, function(err, bestlist) {
-
-                    bestlist = _.sortBy(bestlist, function(num){ return num[4] });
-
-                    bestlist.reverse()
-
-                    if (bestlist.length != 0)
-                    {
-
-                        cross[ind]['X best fitted from PPDB to Y'] = bestlist[0][0]
-                        // cross[key5]['Y control poin'] = bestlist[0][1]
-                        cross[ind]['X part to compare'] = bestlist[0][2]
-                        cross[ind]['Y part to compare'] = bestlist[0][3]
-                        cross[ind]['score'] = bestlist[0][4]
-                        
-                    }
-        
-                    ind = ind + 1
-                    callbackDone();
-                })
-            }, 
-            function (err) {
-                callback(null, "ok")
-                })
-        },
-        
-        function(callback){
-            cross = _.sortBy(cross,  function(num){ return num['score'] })
-            cross.reverse()
-            console.log(JSON.stringify(cross, null, 4))
-            utils.closeredis()
-            }
-            ],
-        function(err, results){
-            });
-        })
-  
-
-
-    // console.log(toretrieve)
-    // process.exit(0)
-
-    // value['X'] = onlycontent(value['X'])
-    // comparedist("asd","asd")
-
-
-    // console.log(value['X'])
-    // process.exit(0)
-
-    // var callback3=function(){
-
-    //     console.log(fetched[0])
-    //     process.exit(0)
-
-    // }
-
-
-    // var fetched = []
-    // var afterAll = _.after(3,callback3) //afterAll's callback is a function which will be run after be called 10 times
-
-    //     for (var col=0; col<=2; ++col) {
-
-    //         ppdbfetcher(value['X'], col, function(returnValue) {
-    //             fetched.push(returnValue)
-    //             afterAll();
-    //         })
-    //     }
-
-// }, this)
-// _.each(seeds, function(seed, key, list){
-//     _.each(subst(seed), function(subseed, key, list){ 
-//         client.smembers(subseed, function (err, replies) {
-//             if(!err){
-//                 retrieved = retrieved.concat(replies)
-//                 afterAll();
-//             }
-//         })
-//     }, this) 
-// }, this)
-
-
-// console.log("ex")
-// var seeds = ['I offer you', 'I suggest']
-// var retrieved = []
-// var calls = []
-
-// var callback=function(){
-//     console.log("ex")
-//     console.log(retrieved.length)
-//     retrieved = _.uniq(retrieved)
-//     console.log(retrieved.length)
-//     console.log(retrieved)
-
-//     var TPlist = []
-//     var TPlistret = []
-//     var flag = 0
-//     var TP = 0
-//     var FP = 0
-//     var rightpairs = []
-//     var wrongpairs = []
-
-//     _.each(retrieved, function(value, key, list){
-//         var flag = 0
-        
-//         var comparison = value.replace("you","")
-//         comparison = comparison.replace("we","")
-
-//         _.each(Object.keys(stats['Offer']), function(gold, key, list){ 
-//             if (natural.JaroWinklerDistance(comparison, gold)>Distance_threshold)
-//                 {
-//                     // if (!(gold in TPlist))
-//                         // {
-//                         // TP = TP + 1
-//                         TPlist.push(gold)
-//                         TPlistret.push(value)
-//                         flag = 1
-//                         // rightpairs.push([value,gold])
-//                         // }
-//                 }
-//         }, this) 
-
-//         if (flag == 0) 
-//             {
-//                 FP = FP + 1
-//                 wrongpairs.push(value)
-//             }
-//     }, this)
-
-//     var FN = Object.keys(stats['Offer']).length - _.unique(TPlist).length
-
-//     TPlistret = _.unique(TPlistret)
-//     TP = TPlistret.length
+var f = Fiber(function() {
     
-//     var Precision = TP/(TP+FP)
-//     var Recall = TP/(TP+FN)
-//     var F1 = 2*Precision*Recall/(Recall+Precision)
+    var fiber = Fiber.current;
 
-//     console.log("TP"+TP)
-//     console.log("FP"+FP)
-//     console.log("FN"+FN)
-//     console.log("TP list")
-//     console.log(TPlistret)
-//     console.log("FP list")
-//     console.log(wrongpairs)
-//     console.log('Precision '+Precision)
-//     console.log('Recall '+Recall)
-//     console.log('F1 '+F1)
-//     process.exit(0)
-// }
+    async.mapSeries(crossX, utils.cleanredis, function(err, resp) {
+        fiber.run(resp)
+    })
 
-// var afterAll = _.after(seednum(seeds),callback) //afterAll's callback is a function which will be run after be called 10 times
+    var resultArr = Fiber.yield()
 
-// _.each(seeds, function(seed, key, list){
-//     _.each(subst(seed), function(subseed, key, list){ 
-//         client.smembers(subseed, function (err, replies) {
-//             if(!err){
-//                 retrieved = retrieved.concat(replies)
-//                 afterAll();
-//             }
-//         })
-//     }, this) 
-// }, this)
+    _.each(resultArr, function(pairlist, key, list){ 
 
-// client.quit();
+        pairlist.push(cross[key]['X'])
+
+        var convertlist = _.map(pairlist, function(num){ return [num,cross[key]['Y']] });
+
+        async.mapSeries(convertlist, utils.compare, function(err, resp) {
+            fiber.run(resp)
+        })
+
+        var bestlist = Fiber.yield();
+        bestlist = _.sortBy(bestlist, function(num){ return num[4] });
+        bestlist.reverse()
+
+        if (bestlist.length != 0)
+        {
+
+            cross[key]['X best fitted from PPDB to Y'] = bestlist[0][0]
+            // cross[key5]['Y control poin'] = bestlist[0][1]
+            cross[key]['X part to compare'] = bestlist[0][2]
+            cross[key]['Y part to compare'] = bestlist[0][3]
+            cross[key]['score'] = bestlist[0][4]            
+        }
+    })
+        
+    cross = _.sortBy(cross,  function(num){ return num['score'] })
+    cross.reverse()
+    console.log(JSON.stringify(cross, null, 4))
+    utils.closeredis()
+})
+
+f.run()

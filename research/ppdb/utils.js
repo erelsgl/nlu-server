@@ -1,6 +1,11 @@
-var sync = require('synchronize')
+// var sync = require('synchronize')
+// docker run -t -i -p 9000:9000 cuzzo/stanford-pos-tagger
+ // sudo tcpdump -s 0 -A 'tcp dst port 10345 and (tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x504f5354)' -i lo
 
-
+var Fiber = require('fibers');
+var fs = require('fs');
+var limdu = require("limdu");
+var ftrs = limdu.features
 var _ = require('underscore')._;
 var natural = require('natural');
 var Lemmer = require('node-lemmer').Lemmer;
@@ -9,18 +14,29 @@ var lemmerEng = new Lemmer('english');
 var Tagger = require("../../node-stanford-postagger/postagger").Tagger;
 var tagger = new Tagger({
   port: "9000",
-  host: "localhost"
+  host: "54.191.84.213"
 });
 // tagger.denodeify(Q);
 
 var wordnet = new natural.WordNet();
 var async = require('async');
 var redis = require("redis")
+
 var client = redis.createClient(6369)
-// var client = redis.createClient(6369, "132.70.6.156", {})
 var clientpos = redis.createClient();
-// var clientpos = client
-var DBSELECT = 2
+
+var DBSELECT = 0
+
+var requestify = require('requestify'); 
+var querystring = require('querystring');
+
+var regexpNormalizer = ftrs.RegexpNormalizer(
+    JSON.parse(fs.readFileSync(__dirname+'/../../knowledgeresources/BiuNormalizations.json')));
+
+function biunormalizer(sentence) {
+  sentence = sentence.toLowerCase().trim();
+  return regexpNormalizer(sentence);
+}
 
 // sync(client,'select')
 // sync(client,'smembers')
@@ -32,7 +48,7 @@ var DBSELECT = 2
 // [ 'you_PRP ca_MD n\'t_RB get_VB\n' ]
 // is_VBZ
 // [ 'be_VB working_VBG\n' ]
-var CONTENT = ['FW','NN','VBN','VBP','JJ', 'VB','VBD','RB', 'NNS', 'VBG', 'VBZ', 'JJS']
+var CONTENT = ['FW','NN','VBN','VBP','JJ', 'VB','VBD','RB', 'NNS', 'VBG', 'VBZ', 'JJS', 'MD']
 // FW - foreign word
 
 function wordnetsyn(word, callback) {
@@ -43,6 +59,43 @@ var out = []
 	})
 }
 
+function dep(tagged_data, callback)
+{
+var post_data = {'tagged_text' : tagged_data}
+
+requestify.request('http://localhost:10345/parse', {
+    method: 'POST',
+    body: post_data,
+    dataType: 'form-url-encoded'
+})
+.then(function(response) {
+    callback(normalizedepbody(response['body']))
+    // console.log(response['body'])
+});
+// return "123"
+}
+
+function normalizedepbody(body)
+{
+	var output = []
+
+	_.each(body.split('\n'), function(row, key, list){
+		// console.log(encodeURI(row))
+		// row = row.replace(/\s+/g,'')
+		row = row.trim()
+		row = row.replace('\n','')
+		var elems = row.split(" ")
+		output.push({'num': elems[0],
+					 'word': elems[1],
+					 'lemma': elems[2],
+					 'pos': elems[3],
+					 'pos1': elems[4],
+					 'root': elems[6],
+					 'role': elems[7]})
+	}, this)
+
+	return output.slice(0, -2)
+}
 
 function lookupSynonyms(word, callback) {
   quickfetch(word, function(err,results) {
@@ -56,11 +109,20 @@ function lookupSynonyms(word, callback) {
 
 function wordnetquickfetch(seed, callback)
 {
-	wordnet.lookupSynonyms(seed, function(results) {
-		var output = []
+	// wordnet.lookupSynonyms(seed, function(results) {
+	// 	var output = []
+	// 	_.each(results, function(value, key, list){ 
+	// 		if (value['pos'] = "v")
+	// 			output.push(value['lemma'].split("_").join(" "))
+	// 	}, this)
+	// 	callback(null, _.unique(output))
+	// })
+
+	var output = []
+	wordnet.onlySynonyms(seed, function(results) {
 		_.each(results, function(value, key, list){ 
-			if (value['pos'] = "v")
-				output.push(value['lemma'].split("_").join(" "))
+			var list = _.map(value['synonyms'], function(num){ return num.split("_").join(" ") })
+			output = output.concat(list)
 		}, this)
 		callback(null, _.unique(output))
 	})
@@ -87,81 +149,40 @@ function wordnetsynonyms(seeds, callback)
 	})
 }
 
+function clusteration(list, callback)
+{
+	var found = false
+	var clusthash = {}
+	async.eachSeries(list, function(input, callback1){ 
+		found = false	
+		async.eachSeries(Object.keys(clusthash), function(key, callback2){ 
+			// console.log(input1)
+			compare([input, key], function(err, result){
+				if (result[4] == 1)
+					{
+						found = true
+						clusthash[key].push(input)
+					}
+				callback2()
+				})
+		}, function(err){
+			if (found == false)
+				clusthash[input] = []
+			callback1()
+		})
+	}, function(err){
+		var clustlist = []
+		_.each(clusthash, function(value, key, list){ 
+			clustlist.push(value.concat(key))
+		}, this)
+		
+		callback(err, clustlist)
+	})
+}
 
-
-// function listeval(actual, expected, maincallback)
-// { 
-
-// var expectedcopy = expected
-// var TP = 0
-// var FP = 0
-// var FN = 0
-
-// var TPdetails = []
-// var FPdetails = []
-// var FNdetails = []
-
-// async.series([
-//     function(callback){
-//       async.eachSeries(actual, function(actkey, callbackact){
-//       	// console.log(actkey)
-//       	if (actual.indexOf(actkey)%10==0)
-//         	// console.log(actual.indexOf(actkey))
-//         var found = false
-//         async.series([
-//           function(callback){
-//             async.eachSeries(expected, function(expkey, callbackexp){
-//               // console.log("-"+expkey)
-//               compare([actkey,expkey], function(err, res){
-//                 // console.log("@ "+actkey+" "+expkey)
-//                 // console.log(res)
-//                 if (res[4] = 1 )
-//                   expectedcopy = _.without(expectedcopy,expkey)
-
-//                 if ((res[4] = 1) && (found == false))
-//                   {
-//                   TP = TP + 1
-//                   found = true
-//                   TPdetails.push([actkey, expkey])
-//                   }
-//               callbackexp()
-//               })
-//             }, function (err) {
-//                 callback(null, "ok")
-//               })
-//           },
-//           function(callback){
-
-//             if (found == false) 
-//             	{
-//             		FP = FP + 1
-//             		FPdetails.push(actkey)
-
-//             	}
-//             callbackact()
-//         	// console.log()
-//         	// process.exit(0)
-
-//           }])
-//       }, function (err) {
-//                 callback(null, "ok")
-//               })
-//     },
-//     function(callback){
-//       FN = expectedcopy.length
-//       FNdetails = expectedcopy
-
-//       maincallback(null, {'stats':{'TP':TP,'FP':FP,'FN':FN},
-//       					  'data': {'TP': TPdetails,
-//       							   'FP': FPdetails,
-//       							   'FN': FNdetails
-//       							   }})
-  		
-// 	    }])}
-
-
-function cleanlisteval(actual, expected, maincallback)
+function cleanlisteval(actual, expected)
 { 
+
 var expectedcopy = expected
 var TP = 0
 var FP = 0
@@ -170,42 +191,54 @@ var FN = 0
 var TPdetails = []
 var FPdetails = []
 var FNdetails = []
+var found = false
 
-_.each(actual, function(actkey, key, list){ 
-	if (actual.indexOf(actkey)%10 == 0)
-        // console.log(actual.indexOf(actkey))
-    var found = false
-	_.each(expected, function(expkey, key, list){ 
-        var res = cleancompare([actkey,expkey])
-        if (res[4] = 1 )
-            expectedcopy = _.without(expectedcopy,expkey)
+// var f = Fiber(function() {
+ var fiber = Fiber.current
 
-        if ((res[4] = 1) && (found == false))
-          	{
-          	TP = TP + 1
-          	found = true
-          	TPdetails.push([actkey, expkey])
-          	}
-    })
+	_.each(actual, function(actkey, key, list){ 
+		if ((actual.indexOf(actkey)%10 == 0) && (actual.indexOf(actkey) != 0))
+	        console.log(actual.indexOf(actkey))
+		
+		found = false
+		var tempTP = []
+		_.each(expected, function(expkey, key, list){ 
+	        compare([actkey,expkey], function (err, resp){
+    			fiber.run(resp);
+			})
 
-    if (found == false) 
+	        var res = Fiber.yield();
+
+	        if (res[4] == 1 )
+		        {
+	            expectedcopy = _.without(expectedcopy,expkey)
+	            tempTP.push(expkey)
+	            }
+
+	    })
+	    
+	    if (tempTP.length > 0)
+		{
+	    	TPdetails.push([actkey, tempTP])
+	    	TP = TP + 1
+		}
+		else
        	{
-        FP = FP + 1
-       	FPdetails.push(actkey)
+	        FP = FP + 1
+	       	FPdetails.push(actkey)
         }
-})
+	})
 
-FN = expectedcopy.length
-FNdetails = expectedcopy
+	FN = expectedcopy.length
+	FNdetails = expectedcopy
 
-return {'stats':{'TP':TP,'FP':FP,'FN':FN},
-	    'data': {'TP': TPdetails,
-			     'FP': FPdetails,
-			     'FN': FNdetails
-			    }}
+	return {'stats':{'TP':TP,'FP':FP,'FN':FN},
+		    'data': {'TP': TPdetails,
+				     'FP': FPdetails,
+				     'FN': FNdetails
+				    }}
   		
 }      
-
 
 function stat(data)
 {
@@ -214,64 +247,11 @@ function stat(data)
 return {
 		'Precision':Precision,
 		'Recall':Recall,
-		'F1':2*Precision*Recall/(Precision+Recall)
+		'F1':2*Precision*Recall/(Precision+Recall),
+		'TP':data['TP'],
+		'FP':data['FP'],
+		'FN':data['FN']
 		}
-}
-
-function loadResultSynonyms(synonyms, results, callback2) {
-// console.log("loadResultSynonyms")
-// console.log(result.ptrs)
-// console.log()
-// process.exit(0)
-  // if(results.length > 0) {
-    // var result = results.pop();
-    // loadSynonyms(synonyms, results, result.ptrs, callback);
-  // } else
-    // callback(synonyms);
-
-    // console.log("synonyms")
-    // console.log(synonyms)
-
-    // console.log("result")
-    // console.log(results)
-
-
- async.series([
-    function(callback){
-    async.eachSeries(results, function(res, callbackDone){ 
-    // _.each(results, function(res, key, list){ 
-    	// console.log("check "+ res)
-    	if (synonyms.indexOf(res) == -1)
-		    {
-		    	// console.log("yes")
-	    		synonyms.push(res)
-		    	quickfetch(res, function(err,results) {
-	    			loadResultSynonyms(synonyms, results)
-	    			callbackDone();
-				});
-			}
-		else
-			{
-			// console.log("no")
-    		callbackDone();
-    		}
-    	 }
-        // function(err){
-                // callback(null, "ok")
-                // }
-                )},
-        
-        function(callback){
-        	callback2(null, synonyms)
-        }
-         ]
-        // function(err){
-            
-        // }
-        )
-       
-
-//     function(callback){
 }
 
 function loadSynonyms(synonyms, results, ptrs, callback) {
@@ -289,21 +269,37 @@ function loadSynonyms(synonyms, results, ptrs, callback) {
   }
 }
 
-var quickfetch = function (seed, callback)
-{	
-    client.select(DBSELECT, function() {
-        client.smembers(seed, function (err, replies) {
-            callback(err,replies)
-         })
-    })
+
+var cleanposfromredis = function(data)
+{
+	_.each(data, function(value, key, list){
+		data[key] = value.split("^")[0] 
+	}, this)
+	return data
 }
 
-// var contentlist = function (list, callback)
-// {
-
-	// onlycontent()
-
-// }
+var recursionredis = function (seeds, order, callback)
+{	
+	var fetched = seeds
+	async.timesSeries(order.length, function(n, next)
+		{
+		DBSELECT = order[n]
+		console.log(n)
+		async.mapSeries(fetched, cleanredis, function(err, bestli) 
+			{
+				bestli = cleanposfromredis(_.flatten(bestli))
+				fetched = fetched.concat(bestli)
+				fetched = _.unique(_.flatten(fetched))
+				console.log(fetched.length)
+				next()
+			})
+		},
+		function(err, res)
+		{
+			callback(null, cleanposfromredis(_.unique(_.flatten(fetched))))
+		}
+	)
+}
 
 var threelayercross = function (seed, callback)
 {	
@@ -321,40 +317,6 @@ var threelayercross = function (seed, callback)
 	})
 }
 
-
-var cleanthreelayer = function (seeds, depth)
-{	
-
-	console.log("seeds"+seeds)
-
-	var data = sync.await(cleanredis(seeds[0], sync.defer()))
-
-	console.log(data)
-	// return cleanredis(seeds[0])
-	// _(depth).times(function(n){
-		// seeds = seeds.concat(_.map(seeds, cleanredis))
-		// seeds = seeds.concat(_.map(seeds, sync.await(cleanredis(sync.defer()))))
-		// return sync.await(cleanredis(seeds[0], sync.defer()))
-
-		return data
-	// })
-	// return seeds
-}
-	// async.mapSeries(seed, quickfetch, function(err, bestlist1) {
-		// async.mapSeries(_.flatten(bestlist1), quickfetch, function(err, bestlist2) {
-			// async.mapSeries(_.flatten(bestlist2), quickfetch, function(err, bestlist3) {
-				// fetched = fetched.concat(bestlist1).concat(bestlist2).concat(bestlist3)
-				// fetched = fetched.concat(bestlist1).concat(bestlist2)
-				// fetched = fetched.concat(bestlist1)
-
-				// console.log(fetched)
-				// process.exit(0)
-				// callback(null, _.unique(_.flatten(fetched)))
-			// })
-		// })
-	// })
-// }
-
 var onepairfetch = function (seed, callback)
 {
     var toretrieve = []
@@ -369,12 +331,11 @@ var onepairfetch = function (seed, callback)
 	   	async.mapSeries(toretrieve, quickfetch, function(err, resultArr) {
 	        callback(err,_.compact(_.unique(_.flatten(resultArr))))
 	    })
-
     })
-
-
 }
 
+// what it does?
+// it looks like it just rearrange the keyphrases to the structure of stats
 function formkeyphrases(keyphrases)
 {
 	var stats = {}
@@ -439,9 +400,8 @@ function getcontent(string,callback)
 
 function cleanposoutput(resp)
 {
-
 	var out = []
-	// console.log(resp)
+	
 	var cleaned = resp.replace(/\n|\r/g, "");
 	var pairlist = cleaned.split(" ")
 	var POS = []
@@ -451,148 +411,177 @@ function cleanposoutput(resp)
 	}, this)
 
 	_.each(POS, function(value, key, list){ 
+		// if (value[0] == "not")
+			// out.push(value[0])
 		if (CONTENT.indexOf(value[1]) != -1)
 			out.push(value[0])
 	}, this)
 	
-	// console.log(out)
 	return out
 }
 
 // tagger returns list
 // in redis we store strings
 
+function crosslist(list)
+{
+
+    var crossl = []
+
+    for (i = 0; i < list.length; i++) { 
+        for (j = i + 1; j < list.length; j++) { 
+            crossl.push([
+            				list[i],
+                         	list[j]
+                        ])
+        }    
+    }
+    return crossl
+}
+
+
+/*
+input: data - dialogues where turn consist of 'intent_keyphrases_rule'
+output: keyphrases of intent Offer and not DEFAULT INTENT
+*/
+function extractkeyphrases(data)
+{
+var keyphrases = []
+	_.each(data, function(dialogue, key, list){ 
+	    _.each(dialogue['turns'], function(turn, key, list){
+	        if (turn['status'] == 'active')
+	            if ('intent_keyphrases_rule' in turn)    
+	                _.each(turn['intent_keyphrases_rule'], function(keyphrase, intent, list){ 
+	                    if ((intent == 'Offer') && (keyphrase != 'DEFAULT INTENT'))
+	                        {
+	                        keyphrase = keyphrase.replace('<VALUE>','')
+	                        keyphrase = keyphrase.replace('<ATTRIBUTE>','')
+	                        keyphrase = keyphrase.replace('^','')
+	                        keyphrase = keyphrase.replace('$','')
+	                        keyphrase = keyphrase.replace('?','')
+	                        keyphrase = keyphrase.trim()
+	                        keyphrases.push(keyphrase)
+	                        }
+	                }, this)
+	    }, this)
+	}, this)
+return keyphrases
+}
+
 function retrievepos(string, callback)
 {
-	tagger.tag(string, function(err, resp) {
-		var res = resp
-    	clientpos.select(10, function(err, resp) {
-			clientpos.set(string,resp, function (err, pos) {
-				callback(err, res[0].replace(/\n|\r/g, ""))
+	
+	tagger.tag(string, function(err, tag) {
+	   	clientpos.select(10, function(err, response) {
+			clientpos.set(string, tag, function (err, response) {
+				callback(err, tag[0].replace(/\n|\r/g, ""))
 			})
 		})
 	})
 }
 
-// function writepos(key, value)
-// {
-// 	clientpos.select(10, function() {
-// 		clientpos.set(key, value, function (err, pos) {
-// 		})
-// 	})
-// }
+function onlycontent(string, callback)
+{
+
+	cachepos(string,function(err, response){
+		callback(err, cleanposoutput(response))
+	})
+  //   clientpos.select(10, function() {
+		// clientpos.get(string, function (err, pos) {
+  //           if ((pos == null) || (pos == "OK"))
+	 //        {
+		//         retrievepos(string, function (err, response){
+		// 			callback(err, cleanposoutput(response))
+		//         })
+		//     }
+		//     else
+		//     {
+		//     	// console.log("redis")
+		// 		callback(err, cleanposoutput(pos))
+		//     }
+  //        })
+  //   })
+}
 
 
-// function cleanredis(string, callback)
-// {
-// 	client.select(DBSELECT, function() {
-//         client.smembers(string, function (err, replies) {
-//             callback(err,replies)
-//          })
-//     })
-// }
-
-
-
-// function cleanpos(string)
-// {
-
-// 	sync(tagger, 'tag')
-// 	var tagged =  tagger.tag(string)
-// 	sync(writepos)
-// 	writepos(string, tagged)
-// 	return tagged
-// }
-
-
-function onlycontent(string,callback)
+function cachepos(string, callback)
 {
     clientpos.select(10, function() {
 		clientpos.get(string, function (err, pos) {
-            if (pos == null)
+            if ((pos == null) || (pos == "OK"))
 	        {
 		        retrievepos(string, function (err, response){
-					callback(err, cleanposoutput(response))
+					callback(err, response)
 		        })
 		    }
 		    else
 		    {
 		    	// console.log("redis")
-				callback(err, cleanposoutput(pos))
+				callback(err, pos)
 		    }
          })
     })
-
-	// tagger.tag(string, function(err, resp) {
-	// 	var cleaned = resp[0].replace(/\n|\r/g, "");
-	// 	var pairlist =.split(" ") cleaned.split(" ")
-	// 	var POS = []
-
-	// 	_.each(pairlist, function(value, key, list){
-	// 		POS.push(value.split("_"))
-	// 	}, this)
-
-
-	// 	_.each(POS, function(value, key, list){ 
-	// 		if (CONTENT.indexOf(value[1]) != -1)
-	// 			out.push(value[0])
-	// 	}, this)
-
-	// 	// POSS[string] = out
-	// 	callback(err, out)
-	// });
-
 }
+
+function subst(str) {
+	var subst = []	
+	var str = str.split(" ")
+	for (var start=0; start<=str.length; ++start) {
+		for (var end=start+1; end<=str.length; ++end) {
+			subst.push(str.slice(start,end).join(" "));
+  		}
+	}
+return _.compact(subst)
+}
+
+// input: string
+// output: normlized string
+function normalizer(str, callback)
+{
+	if (_.isArray(str))
+		{
+		console.log("array")
+		str = str[0]
+		}
+	str = str.trim()
+	str = biunormalizer(str)
+
+	var elim = ['i','follow','good','instead','do','maximum','mind','actually','prepare','willing','want','ha', 'has','have','is', 'are', 'be', 'will', 'let', 'i', 'I', 'to', 'you', 'we', 'for',
+	'i\'ll', 'so', 'the', 'can\'t', 'let\'s', 'only', 'can', 'on','her','an', 'it', 'is', 'on', 'this', 'make', 'made']
+
+	onlycontent(str, function (err,strcontent){
+
+		if (_.compact(strcontent).length == 0) 
+       		strcontent = str.split(" ")
+    
+    	strcontentlemma = lemmatize(strcontent)
+
+    	_.each(elim, function(value, key, list){ 
+    		strcontentlemma = _.without(strcontentlemma,value)
+    	}, this)
+
+    	if (strcontentlemma.length == 0) 
+       		strcontentlemma = strcontent
+       	
+       	strcontentlemma = _.compact(strcontentlemma)
+       	callback(err, strcontentlemma)
+    })
+}
+
 /*
-input: [X,Y]
+input: [X-string,Y-string]
 output: distance*/
 function compare(ar,callback)
-// function compare(X,Y)
 {
-
-// var elim = []
-var elim = ['is', 'are', 'be', 'will', 'let', 'i', 'I', 'no', 'not', 'to', 'you', 'we', 'for',
-'i\'ll', 'so', 'the', 'can\'t', 'let\'s', 'only', 'on']
 
 var X = ar[0]
 var Y = ar[1]
 
-onlycontent(X, function (err,replies){
-	var compX = replies
-	onlycontent(Y, function (err1,replies1){
-		var compY = replies1
-
-		if (compY.length == 0) 
-       		compY = Y.split(" ")
-    
-    	if (compX.length == 0)
-        	compX = X.split(" ")
-
-        compX = lemmatize(compX)
-    	compY = lemmatize(compY)
-
-    	var compXX = compX
-    	var compYY = compY
-
-    	_.each(elim, function(value, key, list){ 
-    		compXX = _.without(compXX,value)
-	    	compYY = _.without(compYY,value)
-    	}, this)
-
-    	if (compYY.length == 0) 
-       		compYY = Y.split(" ")
-       	
-       	if (compXX.length == 0) 
-       		compXX = X.split(" ")
-    	
-       	compXX = _.compact(compXX)
-       	compYY = _.compact(compYY)
-
-    	callback(err1+err,[X, Y, compXX, compYY, distance(compXX, compYY)])
-
+normalizer(X, function (err, norm_X){
+	normalizer(Y, function (err1, norm_Y){
+	   	callback(err1+err,[X, Y, norm_X, norm_Y, distance(norm_X, norm_Y)])
 	})
 })
-
 }
 /*
 input: ['offered','found']
@@ -600,7 +589,7 @@ output ['offer','find']
 */
 var lemmatize = function(X)
 {
-// console.log("lem input"+X)
+
 var newX = []
 
 _.each(X, function(value, key, list){ 
@@ -615,7 +604,6 @@ _.each(X, function(value, key, list){
 }, this)
 
 // console.log("lem output"+newX)
-
 return newX
 }
 
@@ -653,34 +641,96 @@ function readpos(key, callback)
 	})	
 }
 
-function cleanredis(string, callback)
+function sortedredis(string, callback)
 {
-	// console.log("cleanredis")
-	// console.log(string)
-
-	// var out = sync.await(client.select(DBSELECT, sync.defer()))
-	// console.log(out)/
-	// var data  = sync.await(client.smembers(string, sync.defer()))
-	// return data
-	// var out = client.select(DBSELECT)
-	// console.log(out)
-
-	// var data = client.smembers(string)
-	// console.log(data)
-
-	// return data
-	// cleanredis
-	client.select(2, function() {
-		// console.log("err"+err)
-		// console.log("replies"+replies)
+	client.select(DBSELECT, function() {
         client.smembers(string, function(err, replies) {
-        	// console.log("err"+err)
-        	console.log("replies"+replies)
             callback(err, replies)
          })
     })
 }
 
+
+function cleanredis(string, callback)
+{
+	client.select(DBSELECT, function() {
+        // client.smembers(string, function(err, replies) {
+        client.zrange(string, 0, -1, function(err, replies) {
+            callback(err, replies)
+         })
+    })
+}
+
+function cleandb(callback)
+{
+	client.select(DBSELECT, function() {
+        // client.smembers(string, function(err, replies) {
+            callback()
+         // })
+    })
+}
+
+// function checkinclusion(actuals, inputs, callback)
+// {	
+// 	// generate all pairs of actual and inputs
+// 	var tocompare = []
+// 	_.each(inputs, function(input, key, list){
+// 		var pairs = subst(input)
+// 		_.each(actuals, function(actual, key, list){ 
+// 			var mappedpairs = _.map(pairs, function(pair){return [pair, actual, input]})
+// 			tocompare = tocompare.concat(mappedpairs)
+// 		}, this)
+// 	}, this)
+
+// 	var output = {}
+// 	// compare all pairs
+// 	var actualsindata = []
+// 	async.mapSeries(tocompare, compare, function(err, responses){
+// 		// console.log(JSON.stringify(responses, null, 4))
+// 		_.each(responses, function(response, key, list){ 
+// 			if (response[4] == 1)
+// 				{
+// 				if (!(response[1] in output))
+// 					output[response[1]] = []
+// 				output[response[1]].push(response)
+// 				output[response[1]] = _.compact(_.unique(output[response[1]]))
+// 				}
+// 		}, this)
+
+// 		callback(err, output)
+// 		// callback(err, _.compact(_.unique(actualsindata)))
+// 	})
+// }
+
+
+function checkinclusion(actuals, inputs, callback)
+{	
+	// generate all pairs of actual and inputs
+	// var tocompare = []
+
+	var output = {}
+    async.eachSeries(inputs, function(input, callback1){
+		var pairs = subst(input)
+    	async.eachSeries(actuals, function(actual, callback2){
+		// _.each(actuals, function(actual, key, list){ 
+			var mappedpairs = _.map(pairs, function(pair){return [pair, actual]})
+			async.mapSeries(mappedpairs, compare, function(err, responses){		
+				_.each(responses, function(response, key, list){ 
+					if (response[4] == 1)
+						{
+						if (!(actual in output))
+							output[actual] = []
+						output[actual].push(input)
+						output[actual] = _.compact(_.unique(output[actual]))
+					}
+				}, this)
+				callback2()
+				})
+		},function(err){callback1()})
+	}, function(err){
+		callback(err, output)
+	})
+}
 
 
 function cleanpos(string)
@@ -699,56 +749,12 @@ function cleanpos(string)
 	// return tagged
 }
 
-function cleancompare(ar)
-// function compare(X,Y)
-{
-
-// var elim = []
-var elim = ['is', 'are', 'be', 'will', 'let', 'i', 'I', 'no', 'not', 'to', 'you', 'we', 'for',
-'i\'ll', 'so', 'the', 'can\'t', 'let\'s', 'only', 'on']
-
-var X = ar[0]
-var Y = ar[1]
-
-var compX = cleanposoutput(cleanpos(X))
-var compY = cleanposoutput(cleanpos(Y))
-
-if (compY.length == 0) 
-	compY = Y.split(" ")
-
-if (compX.length == 0)
-	compX = X.split(" ")
-
-compX = lemmatize(compX)
-compY = lemmatize(compY)
-
-var compXX = compX
-var compYY = compY
-
-_.each(elim, function(value, key, list){ 
-	compXX = _.without(compXX,value)
-	compYY = _.without(compYY,value)
-}, this)
-
-if (compYY.length == 0) 
-	compYY = Y.split(" ")
-	
-if (compXX.length == 0) 
-	compXX = X.split(" ")
-	
-compXX = _.compact(compXX)
-compYY = _.compact(compYY)
-
-return [X, Y, compXX, compYY, distance(compXX, compYY)]
-
-}
-
 module.exports = {
 	distance:distance,
 	compare:compare,
 	onlycontent: onlycontent,
 	onepairfetch:onepairfetch,
-	quickfetch:quickfetch,
+	// quickfetch:quickfetch,
 	formkeyphrases:formkeyphrases,
 	closeredis:closeredis,
 	getcontent:getcontent,
@@ -765,7 +771,18 @@ module.exports = {
 	cleanredis:cleanredis,
 	readpos:readpos,
 	writepos:writepos,
-	cleancompare:cleancompare,
+	// cleancompare:cleancompare,
 	cleanlisteval:cleanlisteval,
-	cleanthreelayer:cleanthreelayer
+	cleandb:cleandb,
+	recursionredis:recursionredis,
+	crosslist:crosslist,
+	sortedredis: sortedredis,
+	// cleanthreelayer:cleanthreelayer
+subst:subst,
+checkinclusion:checkinclusion,
+cachepos:cachepos,
+clusteration:clusteration,
+dep:dep,
+extractkeyphrases:extractkeyphrases,
+normalizer:normalizer
 }
