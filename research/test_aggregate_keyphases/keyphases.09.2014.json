@@ -76,7 +76,7 @@
         "sentence": "i  offer 10% pension",
         "labels": {
             "Offer": [
-                "I offer"
+                "i  offer"
             ],
             "Pension Fund": [
                 "pension"
@@ -631,7 +631,7 @@
         "sentence": "and no car 10%",
         "labels": {
             "Append": [
-                "and ..."
+                "and"
             ],
             "Offer": [
                 "DEFAULT INTENT"
@@ -752,7 +752,7 @@
         "sentence": "wich job do you want?",
         "labels": {
             "Query": [
-                "wich ... do you want?"
+                "do you want?"
             ],
             "Job Description": [
                 "job"
@@ -763,7 +763,7 @@
         "sentence": "whice job do you want?",
         "labels": {
             "Query": [
-                "whice ... do you want?"
+                "do you want?"
             ],
             "Job Description": [
                 "job"
@@ -774,7 +774,7 @@
         "sentence": "What job you want?",
         "labels": {
             "Query": [
-                "What ... you want?"
+                "you want?"
             ],
             "Job Description": [
                 "job"
@@ -1772,7 +1772,7 @@
         "sentence": "Would 9 hours be okay?",
         "labels": {
             "Offer": [
-                "Would ... be okay?"
+                "be okay?"
             ],
             "Working Hours": [
                 "hours"
@@ -2240,7 +2240,7 @@
         "sentence": "I'm sorry, Project Manager is only for expeirenced ",
         "labels": {
             "Reject": [
-                "I'm sorry ... is only for expeirenced"
+                "is only for expeirenced"
             ],
             "Job Description": [
                 "VALUE"
@@ -2852,7 +2852,7 @@
         "sentence": "Ok, 8 hours is acceptable",
         "labels": {
             "Accept": [
-                "Ok ... is acceptable"
+                "is acceptable"
             ],
             "Working Hours": [
                 "hours"
@@ -3047,7 +3047,7 @@
         "sentence": "i offer a QA",
         "labels": {
             "Offer": [
-                "I offer"
+                "i offer"
             ],
             "Job Description": [
                 "VALUE"
@@ -3061,7 +3061,7 @@
         "sentence": "i offer programmer",
         "labels": {
             "Offer": [
-                "I offer"
+                "i offer"
             ],
             "Job Description": [
                 "VALUE"
@@ -3835,7 +3835,7 @@
         "sentence": "Leased car is only possible with programmer and 10% pension",
         "labels": {
             "Offer": [
-                "is possile"
+                "is only possible"
             ],
             "Job Description": [
                 "VALUE"
