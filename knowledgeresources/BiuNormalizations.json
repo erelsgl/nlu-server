@@ -1,17 +1,21 @@
 [
   {"source": "won't", "target": "will not"}
 , {"source": "don't", "target": "do not"}
+, {"source": "dont", "target": "do not"}
 , {"source": "doesn't", "target": "does not"}
-, {"source": "doesn't", "target": "does not"}
+, {"source": "doesnt", "target": "does not"}
 , {"source": "hrs", "target": "hours"}
 , {"source": "didn't", "target": "did not"}
+, {"source": "didnt", "target": "did not"}
 , {"source": "wouldn't", "target": "would not"}
 , {"source": "shouldn't", "target": "should not"}
 , {"source": "can't", "target": "can not"}
+, {"source": "cant", "target": "can not"}
 , {"source": "cannot", "target": "can not"}
 , {"source": "there'st", "target": "there is"}
 , {"source": "that's", "target": "that is"}
 , {"source": "let's", "target": "let us"}
+, {"source": "lets", "target": "let us"}
 , {"source": "it's", "target": "it is"}
 , {"source": "kilograms", "target": "kg"}
 , {"source": "kilogram", "target": "kg"}
@@ -24,7 +28,7 @@
 , {"source": "kilometers per hour", "target": "kmh"}
 , {"source": "kilometers per hour", "target": "kmh"}
 , {"source": "miles per hour", "target": "mph"}
-
+, {"source": "i'm", "target": "i am"}
 , {"source": "'re", "target": " are"}
 , {"source": "'ve", "target": " have"}
 , {"source": "'ll", "target": " will"}
@@ -36,7 +40,7 @@
 , {"source": "seven", "target": "7"}
 , {"source": "eight", "target": "8"}
 , {"source": "nine", "target": "9"}
-, {"source": "ten", "target": "10"}
+, {"source": " ten ", "target": "10"}
 , {"source": "eleven", "target": "11"}
 , {"source": "twelve", "target": "12"}
 , {"source": "twenty", "target": "20"}
