@@ -15,6 +15,7 @@ var fs = require('fs');
 var limdu = require("limdu");
 var trainutils = require('./utils/bars')
 var rules = require("./research/rule-based/rules.js")
+var natural = require('natural');
 
 var classifiers = limdu.classifiers;
 var ftrs = limdu.features;
@@ -22,9 +23,7 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
-var natural = require('natural');
-
-var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$]+/});
+var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$+-]+/});
 // var tokenizer = new natural.WordTokenizer({'pattern':(/(\W+|\%)/)}); // WordTokenizer, TreebankWordTokenizer, WordPunctTokenizer
 // var ngrams = new natural.NGrams.ngrams()
 /*
@@ -34,10 +33,61 @@ var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$]+/});
 var regexpNormalizer = ftrs.RegexpNormalizer(
 		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json')));
 
+function instanceFilterShortString(datum)
+{
+	if (_.isString(datum))
+	{
+		if (datum.trim().split(/\s+/).length < 4)
+			return true
+	}
+	else
+	if (datum.input.trim().split(/\s+/).length < 4)
+		if (datum.output.length > 0)
+			if (datum.output[0].length > 0)
+				if (datum.output[0][0] == "Offer")
+					{
+						// console.log("it's short offer and it's excluded")
+						return true
+					}
+	return false
+}
+
 function normalizer1(sentence) {
+  	var truth = require("./research/rule-based/truth_utils.js")
+  	var truth_filename =  "./truthteller/truth_teller/sentence_to_truthteller.txt"
+
 	sentence = sentence.toLowerCase().trim();
 	sentence = regexpNormalizer(sentence)
+	// if ((sentence.indexOf("+")==-1) && (sentence.indexOf("-")==-1))
+		// {
+		// console.log("verbnegation")
+	var verbs = truth.verbnegation(sentence.replace('without','no'), truth_filename)
+		// }
 	sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+	
+	_.each(verbs, function(value, key, list){ 
+		if (value['polarity'] == 'P')
+			{
+			if (sentence.indexOf(value['form']+" ") != -1)
+				sentence = sentence.replace(value['form']+" ", value['form']+"+ ")
+			else
+				sentence = sentence.replace(" "+value['form'], " "+value['form']+"+")
+			}
+		else
+			{
+			if (sentence.indexOf(value['form']+" ") != -1)
+				sentence = sentence.replace(value['form']+" ", value['form']+"- ")
+			else
+				sentence = sentence.replace(" "+value['form'], " "+value['form']+"-")
+			}
+	}, this)
+
+	sentence = sentence.replace(/<VALUE>/g,'')
+	sentence = sentence.replace(/<ATTRIBUTE>/g,'')
+	sentence = sentence.trim()
+	// console.log("normalized")
+	// console.log(sentence)
+	// sentence = sentence.replace(/\s+/g,' ')
 	return sentence
 }
 
@@ -133,7 +183,31 @@ function featureExtractorTruth(sentence, features) {
 }
 
 function featureExtractor(sentence, features) {
+
+	// console.log("+++++++++++++++++++++++++")
+	// console.log(sentence)
+	// console.log("featuresEx")
+	// console.log(sentence)
+
+	var original = sentence
+
+	sentence = sentence.replace("['end']",'')
+	sentence = sentence.replace("['start']",'')
+	sentence = sentence.replace("a <value>",'')
+	sentence = sentence.replace("a <attribute>",'')
+	sentence = sentence.replace("<value>",'')
+	sentence = sentence.replace("<attribute>",'')
+	// for some reason it was not enough to eliminate <attribute> and <value> 
+	sentence = sentence.replace("value",'')
+	sentence = sentence.replace("attribute",'')
+	sentence = sentence.replace("\,/g",'')
+	sentence = sentence.trim()
+	// sentence = sentence.replace(/\s+/g,' ')
+
+	// console.log(sentence)
 	var words = tokenizer.tokenize(sentence);
+
+	// console.log(words)
 
 	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
 	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
@@ -142,8 +216,28 @@ function featureExtractor(sentence, features) {
 		 features[feat.join(" ")] = 1
 	}, this)
 
-	delete features['\'start\'']
-	delete features['\'end\'']
+	// if (original.indexOf("attribute") != -1)
+		// features["attribute_present"] = 1
+
+	// if (original.indexOf("value") != -1)
+		// features["value_present"] = 1
+
+	if ((original.indexOf("value") != -1) || (original.indexOf("value")!=-1) )
+		features["value_or_attribute_present"] = 1
+
+	if (original.indexOf("?") != -1)
+		features["?_sign"] = 1
+
+	if (original.substring(0,2) == 'do')
+		features["do_at_start"] = 1
+
+	// console.log(features)
+
+	// delete features['\'ATTRIBUTE\'']
+	// delete features['\'ATTRIBUTE\'']
+
+	// delete features['\'start\'']
+	// delete features['\'end\'']
 
 
 	// if ((sentence.toLowerCase().indexOf("no car")!=-1)||
@@ -266,7 +360,6 @@ var LanguageModelClassifier = classifiers.multilabel.CrossLanguageModel.bind(thi
  * SEGMENTERS (unused):
  */
 
-
 //  var enhance5is = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel) {
 // 	return classifiers.EnhancedClassifier.bind(0, {
 // 		normalizer: normalizer,
@@ -283,9 +376,9 @@ var LanguageModelClassifier = classifiers.multilabel.CrossLanguageModel.bind(thi
  var enhance5 = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer1,
-
 		classifierType: classifierType,
-
+		// filter only external classifier data
+		instanceFilter: instanceFilterShortString,
 		InputSplitLabel: InputSplitLabel,
 		OutputSplitLabel: OutputSplitLabel,
 		TestSplitLabel: TestSplitLabel
@@ -355,6 +448,11 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 		],
 
 		multiplyFeaturesByIDF: true,
+
+		TfIdfImpl: natural.TfIdf,
+
+		tokenizer: new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$,]+/}),
+
 		//minFeatureDocumentFrequency: 2,
 
 		pastTrainingSamples: [], // to enable retraining
@@ -473,11 +571,12 @@ var thresholdclassifier = function(multiclassClassifierType) {
 
 module.exports = {
 
+		/* the set of routines for tests*/
 		tokenizer: tokenizer,
 		normalizer: normalizer,
 		featureExtractor: featureExtractor,
 		featureExtractorUnigram: featureExtractorUnigram,
-		normalizer: normalizer,
+		instanceFilter: instanceFilterShortString,
 
 		WinnowSegmenter: WinnowSegmenterBeginEnd,
 
