@@ -11,6 +11,8 @@
 
 	@author Vasily Konovalov
  */
+var s = require('net').Socket();
+var Fiber = require('fibers');
 var natural = require('natural');
 var execSync = require('execSync')
 var _ = require('underscore')._;
@@ -45,60 +47,109 @@ var ValueTransition =
 } 
 
 
-semlang = [ '{"Reject":"previous"}',
-  '{"Append":"previous"}',
+semlang = [ 
+
   '{"Offer":{"Leased Car":"With leased car"}}',
-  '{"Reject":"Salary"}',
-  '{"Offer":{"Working Hours":"9 hours"}}',
-  '{"Insist":"Job Description"}',
-  '{"Offer":{"Job Description":"Programmer"}}',
-  '{"Offer":{"Working Hours":"10 hours"}}',
-  '{"Reject":"Leased Car"}',
   '{"Offer":{"Leased Car":"No agreement"}}',
   '{"Offer":{"Leased Car":"Without leased car"}}',
-  '{"Accept":"Salary"}',
-  '{"Insist":"Working Hours"}',
-  '{"Offer":{"Promotion Possibilities":"Slow promotion track"}}',
-  '{"Accept":"previous"}',
   '{"Offer":{"Working Hours":"8 hours"}}',
+  '{"Offer":{"Working Hours":"9 hours"}}',
+  '{"Offer":{"Working Hours":"10 hours"}}',
   '{"Offer":{"Job Description":"Project Manager"}}',
+  '{"Offer":{"Job Description":"Programmer"}}',
+  '{"Offer":{"Job Description":"QA"}}',  
+  '{"Offer":{"Job Description":"Team Manager"}}',
   '{"Offer":{"Salary":"7,000 NIS"}}',
   '{"Offer":{"Salary":"10,000 NIS"}}',
-  '{"Offer":{"Pension Fund":"10%"}}',
-  '{"Offer":{"Promotion Possibilities":"Fast promotion track"}}',
   '{"Offer":{"Salary":"12,000 NIS"}}',
+  '{"Offer":{"Salary":"20,000 NIS"}}',
   '{"Offer":{"Pension Fund":"0%"}}',
-  '{"Offer":{"Job Description":"QA"}}',
+  '{"Offer":{"Pension Fund":"10%"}}',
+  '{"Offer":{"Pension Fund":"20%"}}',
+  '{"Offer":{"Pension Fund":"No agreement"}}',
+  '{"Offer":{"Promotion Possibilities":"Fast promotion track"}}',
+  '{"Offer":{"Promotion Possibilities":"Slow promotion track"}}',
+
+  '{"Accept":{"Leased Car":"With leased car"}}',
+  '{"Accept":{"Leased Car":"No agreement"}}',
+  '{"Accept":{"Leased Car":"Without leased car"}}',
+  '{"Accept":{"Working Hours":"8 hours"}}',
+  '{"Accept":{"Working Hours":"9 hours"}}',
+  '{"Accept":{"Working Hours":"10 hours"}}',
+  '{"Accept":{"Job Description":"Project Manager"}}',
+  '{"Accept":{"Job Description":"Programmer"}}',
+  '{"Accept":{"Job Description":"QA"}}',  
+  '{"Accept":{"Job Description":"Team Manager"}}',
+  '{"Accept":{"Salary":"7,000 NIS"}}',
+  '{"Accept":{"Salary":"10,000 NIS"}}',
+  '{"Accept":{"Salary":"12,000 NIS"}}',
+  '{"Accept":{"Salary":"20,000 NIS"}}',
+  '{"Accept":{"Pension Fund":"0%"}}',
+  '{"Accept":{"Pension Fund":"10%"}}',
+  '{"Accept":{"Pension Fund":"20%"}}',
+  '{"Accept":{"Pension Fund":"No agreement"}}',
+  '{"Accept":{"Promotion Possibilities":"Fast promotion track"}}',
+  '{"Accept":{"Promotion Possibilities":"Slow promotion track"}}',
+
+  '{"Accept":"Salary"}',
+  '{"Accept":"previous"}',
+  '{"Accept":"Leased Car"}',
+  '{"Accept":"Pension Fund"}',
+  '{"Accept":"Working Hours"}',
+  '{"Accept":"Job Description"}',
+  '{"Accept":"Promotion Possibilities"}',
+  
+  '{"Reject":{"Leased Car":"With leased car"}}',
+  '{"Reject":{"Leased Car":"No agreement"}}',
+  '{"Reject":{"Leased Car":"Without leased car"}}',
+  '{"Reject":{"Working Hours":"8 hours"}}',
+  '{"Reject":{"Working Hours":"9 hours"}}',
+  '{"Reject":{"Working Hours":"10 hours"}}',
+  '{"Reject":{"Job Description":"Project Manager"}}',
+  '{"Reject":{"Job Description":"Programmer"}}',
+  '{"Reject":{"Job Description":"QA"}}',  
+  '{"Reject":{"Job Description":"Team Manager"}}',
+  '{"Reject":{"Salary":"7,000 NIS"}}',
+  '{"Reject":{"Salary":"10,000 NIS"}}',
+  '{"Reject":{"Salary":"12,000 NIS"}}',
+  '{"Reject":{"Salary":"20,000 NIS"}}',
+  '{"Reject":{"Pension Fund":"0%"}}',
+  '{"Reject":{"Pension Fund":"10%"}}',
+  '{"Reject":{"Pension Fund":"20%"}}',
+  '{"Reject":{"Pension Fund":"No agreement"}}',
+  '{"Reject":{"Promotion Possibilities":"Fast promotion track"}}',
+  '{"Reject":{"Promotion Possibilities":"Slow promotion track"}}',
+
+  '{"Reject":"previous"}',
+  '{"Reject":"Salary"}',
+  '{"Reject":"Leased Car"}',
+  '{"Reject":"Working Hours"}',
+  '{"Reject":"Pension Fund"}',
+  '{"Reject":"Job Description"}',
+  '{"Reject":"Promotion Possibilities"}',
+
+  '{"Append":"previous"}',
+  '{"Insist":"Working Hours"}',
+  '{"Insist":"Job Description"}',
+  
+
   '{"Query":"accept"}',
   '{"Greet":true}',
-  '{"Offer":{"Pension Fund":"20%"}}',
-  '{"Offer":{"Job Description":"Team Manager"}}',
   '{"Quit":true}',
   '{"Query":"issues"}',
   '{"Query":"Salary"}',
   '{"Query":"compromise"}',
   '{"Query":"Job Description"}',
-  '{"Reject":"Working Hours"}',
-  '{"Accept":"Leased Car"}',
-  '{"Accept":"Pension Fund"}',
-  '{"Reject":"Pension Fund"}',
   '{"Insist":"previous"}',
   '{"Insist":"Salary"}',
   '{"Query":"Leased Car"}',
-  '{"Reject":"Job Description"}',
-  '{"Reject":"Promotion Possibilities"}',
-  '{"Offer":{"Salary":"20,000 NIS"}}',
-  '{"Accept":"Working Hours"}',
-  '{"Accept":"Job Description"}',
   '{"Insist":"Promotion Possibilities"}',
   '{"Query":"Promotion Possibilities"}',
   // '{"Offer":{"Salary":"10,000 NIS"}}',
   '{"Query":"Working Hours"}',
   '{"Insist":"Pension Fund"}',
   '{"Query":"bid"}',
-  '{"Accept":"Promotion Possibilities"}',
   '{"Query":"Pension Fund"}',
-  '{"Offer":{"Pension Fund":"No agreement"}}',
   '{"Insist":"Leased Car"}' ]
 
 
@@ -320,6 +371,129 @@ function returnValues()
 
 }
 
+/*
+
+[ [ 'Accept', 'i agree+ to with', [ 0, 4 ] ] ]
+
+rules : [
+    [
+        [
+            "Working Hours",
+            "hours",
+            [
+                4,
+                4
+            ],
+            [
+                11,
+                16
+            ]
+        ]
+    ],
+    [
+        [
+            "8 hours",
+            "8",
+            [
+                3,
+                3
+            ],
+            [
+                9,
+                10
+            ]
+        ],
+
+depparsed: [
+    {
+        "num": "1",
+        "word": "i",
+        "lemma": "i",
+        "pos": "FW",
+        "pos1": "FW",
+        "root": "3",
+        "role": "nsubj"
+    },
+
+
+        */
+function buildlabel(ruled, depparse, intents)
+{
+
+  var output = []
+  // console.log("beg")
+  _.each(intents, function(intent, key1, list1){ 
+    var intfound = false
+    // console.log(intent)
+    var intentbegin = intent[2][0] + 1
+    var intentend = intent[2][1] + 1
+    _(3).times(function(n){
+      // console.log("times")
+      // console.log(n)
+      _.each(ruled[n], function(value, key, list){ 
+          // console.log(value)
+          var begin = value[2][0] + 1
+          var end = value[2][1] + 1
+          var found = false
+          while (depparse[begin-1]['role']!='root') {
+            // var next = _.findWhere(depparse, {"num": begin})
+            // console.log(next)
+            // begin = depparse[next]['root']
+            // console.log(begin)
+            if ((begin >= intentbegin) && (begin <= intentend))
+              found = true
+            begin = depparse[begin-1]['root']
+            intfound = found
+          }
+          if (found)
+            if (n==0)
+              output.push([[intent[0]],[value[0]], []])
+            if (n==1)
+              output.push([[intent[0]],[],[value[0]]])
+      }, this)
+    })
+
+  if (intfound == false)
+    output.push([[intent[0]],[],[]])
+  }, this)
+
+  return output
+}
+
+
+function labelFilter(labels)
+{
+    // var lab = splitPartEqually(multilabelutils.normalizeOutputLabels(semval))
+        // if (_.isEqual([intent,value],_.flatten(lab)))
+  var output = []
+  _.each(labels, function(orlabel, key, list){
+    label = (splitPartEqually(multilabelutils.normalizeOutputLabels(JSON.parse(orlabel))))
+    var champion = true
+    _.each(labels, function(orlabel1, key1, list1){ 
+      label1 = (splitPartEqually(multilabelutils.normalizeOutputLabels(JSON.parse(orlabel1))))
+      if (key != key1)
+        {
+          // console.log("ocompare")
+          // console.log(label)
+          // console.log(label1)
+          // console.log(label[0][0] == label1[0][0])
+          // console.log(label[1][0] == label1[1][0])
+          // console.log(label[2].length == 0)
+          // console.log(label1[2].length != 0)
+          if ((label[0][0] == label1[0][0]) && (label[1][0] == label1[1][0]) && (label[2].length == 0) && (label1[2].length != 0))
+            {
+            // console.log("trigger")
+            champion = false
+            }
+        }
+    }, this)  
+    if (champion == true) output.push(orlabel)
+  }, this)
+  // console.log(output)
+  // process.exit(0)
+  return output
+}
+
 function treatstring(num, str, ind)
 {
 	if (num == 0) return num
@@ -492,17 +666,39 @@ function extractturnssingle(dataset)
 		return data
 	}
 
+/*
+extract only active turns from dataset that active
+*/
 function extractturns(dataset)
 	{
 		data = []
 		_.each(dataset, function(value, key, list){ 
 			_.each(value['turns'], function(set, key, list){ 
 				if ('output' in set)
-					data.push({'output': set['output'], 'input': set['input']})
+          {
+          if ('status' in set)
+            if (set['status'] == 'active')
+              data.push(set)
+          }
+        else
+          data.push(set)
 				}, this)
 		}, this)
 		return data
 	}
+
+// function extractkeyphrasesgold(dataset)
+//   {
+//     data = []
+//     _.each(dataset, function(value, key, list){ 
+//       _.each(value['turns'], function(set, key, list){ 
+//         if ('intent_keyphrases_gold' in set)
+//           data.push(set[''])
+//         }, this)
+//     }, this)
+//     return data
+//   }
+
 
 function isDialogue(dataset)
 	{
@@ -568,7 +764,9 @@ function sentenceStem(sentence)
 	return 	sentenceout
 }
 
-
+/*
+translates 20,000 NIS to 20000
+*/
 function translateLabel(label)
 {
 var lablist = splitJson(label)
@@ -1047,78 +1245,135 @@ lis = {}
 	return lis
 }
 
+function filterValues(values)
+{
+  var out = []
+  var lista = ['accept', 'compromise', 'issues', 'bid']
+  _.each(values, function(value, key, list){
+    if (lista.indexOf(value[0])!=-1)
+      out.push(value)
+  }, this)
+  return out
+}
+
+function hasRoot(depparse)
+{
+  var root = false
+  _.each(depparse, function(value, key, list){
+    if (value['role'] == 'root')
+      root = true 
+  }, this)
+  return root
+}
+
 function aggregate_rilesbased(classes, classifier, parts, explanations, original, classifier, initial)
 {
-	var rules = require("../research/rule-based/rules.js")
+  var rules = require("../research/rule-based/rules.js")
+	var ppdb = require("../research/ppdb/utils.js")
 
-  console.log(initial)
-  console.log(original)
+  console.log("-------------------------------------") 
+ 
+  nopuntc = initial.replace(/\./g,"")
 
-	console.log(parts)
+  var fiber = Fiber.current;
+  ppdb.cachepos(nopuntc, function(err, response){
+    fiber.run(response)
+  })
+  var tag = Fiber.yield()
+  // console.log("tag" + tag)
+  
+  ppdb.dep(tag, function(response){
+    fiber.run(response)
+  })
+  var dep = Fiber.yield()
+
+  if (!(hasRoot(dep)))
+    return null
+
+  // console.log("dep")
+  // console.log(dep)
+
 	var data = rules.findData(initial)
 
-  console.log(JSON.stringify(data, null, 4))
 	explanations[0] = aggreate_similar(explanations[0])
   explanations[1] = data[0]
-  explanations[2] = data[1]
-  console.log(JSON.stringify(explanations, null, 4))
-
+  explanations[2] = data[1].concat(filterValues(explanations[2]))
   var clas = []
 
-	_.each(explanations[2], function(value, key, list){
-    clas.push([[],[],[value[0]]])
-  })
-  _.each(explanations[0], function(intent, key, list){ 
-    if (intent[0] != null)
-      clas.push([[intent[0]],[],[]])
+  // console.log(JSON.stringify("normalized "+parts, null, 4))
+  // console.log(JSON.stringify("initial "+initial, null, 4))
+  // console.log("data")
+  // console.log(JSON.stringify(data, null, 4))
+  // console.log("gold")
+  // console.log(JSON.stringify(original, null, 4))
+  // console.log("actual")
+  // console.log(JSON.stringify(_.uniq(js), null, 4))
+  // console.log(JSON.stringify(explanations, null, 4))
 
-    // _.each(explanations[1], function(attr, key, list){ 
-      // if ((intent[2][0]-1<=value[2][0])&&(intent[2][1]+1>=value[2][1]))
-      // if ((intent[2][0]<=value[2][0])&&(intent[2][1]>=value[2][1]))
-      // if (((intent[2][0]<=attr[2][0])&&(intent[2][1]>=attr[2][0])) ||
-        // ((intent[2][0]<=attr[2][1])&&(intent[2][1]>=attr[2][1]))
-        // )
-        // {
-        // clas.push([[intent[0]],[attr[0]], []])
-        // }
-    // }, this)
+  if (explanations[0].length == 0)
+    explanations[0].push(["Offer","offer",[0,100],[0,100]])
+
+	// _.each(explanations[2], function(value, key, list){
+    // clas.push([[],[],[value[0]]])
+  // })
+  // _.each(explanations[0], function(intent, key, list){ 
+  //   if (intent[0] != null)
+  //     clas.push([[intent[0]],[],[]])
+
+  //   // _.each(explanations[1], function(attr, key, list){ 
+  //     // if ((intent[2][0]-1<=value[2][0])&&(intent[2][1]+1>=value[2][1]))
+  //     // if ((intent[2][0]<=value[2][0])&&(intent[2][1]>=value[2][1]))
+  //     // if (((intent[2][0]<=attr[2][0])&&(intent[2][1]>=attr[2][0])) ||
+  //       // ((intent[2][0]<=attr[2][1])&&(intent[2][1]>=attr[2][1]))
+  //       // )
+  //       // {
+  //       // clas.push([[intent[0]],[attr[0]], []])
+  //       // }
+  //   // }, this)
     
-    _.each(explanations[2], function(value, key, list){ 
-      // if ((intent[2][0]-1<=value[2][0])&&(intent[2][1]+1>=value[2][1]))
-      if ((intent[2][0]<=value[2][0])&&(intent[2][1]>=value[2][1]))
-        {
-        if ((intent[0]!=null)&&(value[0]!=null))
-        clas.push([[intent[0]],[], [value[0]]])
-        }
-    }, this)
+  //   _.each(explanations[2], function(value, key, list){ 
+  //     // if ((intent[2][0]-1<=value[2][0])&&(intent[2][1]+1>=value[2][1]))
+  //     if ((intent[2][0]<=value[2][0])&&(intent[2][1]>=value[2][1]))
+  //       {
+  //       if ((intent[0]!=null)&&(value[0]!=null))
+  //       clas.push([[intent[0]],[], [value[0]]])
+  //       }
+  //   }, this)
 
-    _.each(explanations[1], function(attr, key, list){ 
-      // if ((intent[2][0]-1<=attr[2][0])&&(intent[2][1]+1>=attr[2][1]))
-      if ((intent[2][0]<=attr[2][0])&&(intent[2][1]>=attr[2][1]))
-        if ((intent[0]!=null)&&(attr[0]!=null))
-          clas.push([[intent[0]],[attr[0]], []])
+  //   _.each(explanations[1], function(attr, key, list){ 
+  //     // if ((intent[2][0]-1<=attr[2][0])&&(intent[2][1]+1>=attr[2][1]))
+  //     if ((intent[2][0]<=attr[2][0])&&(intent[2][1]>=attr[2][1]))
+  //       if ((intent[0]!=null)&&(attr[0]!=null))
+  //         clas.push([[intent[0]],[attr[0]], []])
 
-      _.each(explanations[2], function(value, key, list){ 
-        // if ((attr[2][0]-1<=value[2][0])&&(attr[2][1]+1>=value[2][1])&&
-          // (intent[2][0]-1<=attr[2][0])&&(intent[2][1]+1>=attr[2][1]))
-        if ((attr[2][0]<=value[2][0])&&(attr[2][1]>=value[2][1])&&
-          (intent[2][0]<=attr[2][0])&&(intent[2][1]>=attr[2][1]))
-          if ((intent[0]!=null)&&(attr[0]!=null)&&(value[0]!=null))
+  //     _.each(explanations[2], function(value, key, list){ 
+  //       // if ((attr[2][0]-1<=value[2][0])&&(attr[2][1]+1>=value[2][1])&&
+  //         // (intent[2][0]-1<=attr[2][0])&&(intent[2][1]+1>=attr[2][1]))
+  //       if ((attr[2][0]<=value[2][0])&&(attr[2][1]>=value[2][1])&&
+  //         (intent[2][0]<=attr[2][0])&&(intent[2][1]>=attr[2][1]))
+  //         if ((intent[0]!=null)&&(attr[0]!=null)&&(value[0]!=null))
 
-            clas.push([[intent[0]],[attr[0]], [value[0]]])
-      }, this)
-    }, this)
-        
-  }, this)
+  //           clas.push([[intent[0]],[attr[0]], [value[0]]])
+  //     }, this)
+  //   }, this)
+  // }, this)
 
   // console.log(clas)
   // process.exit(0)
-  
-  var js = []
+
+
+  // console.log(explanations[0])
+// console.log("comming")
+ var clas = buildlabel(data, dep, explanations[0])
+
+ // console.log("CLASS")
+ // console.log(JSON.stringify(clas, null, 4))
+
+ var js = []
   _.each(clas, function(lab, key, list){ 
     // if (completition)
       // {
-      var res = resolve_emptiness(lab)
+      var res = resolve_emptiness_rule(lab)
       js = js.concat(generate_possible_labels(res))
       // }
       // console.log(js)
@@ -1127,8 +1382,13 @@ function aggregate_rilesbased(classes, classifier, parts, explanations, original
 
   }, this)
 
+  // console.log("before labelFilter")
+  js = labelFilter(js)
+  // console.log("after labelFilter")
 
-  console.log(_.uniq(js))
+  // console.log(js)
+
+  // console.log(_.uniq(js))
   // console.log()
   // process.exit(0)
 
@@ -1136,6 +1396,31 @@ function aggregate_rilesbased(classes, classifier, parts, explanations, original
   // console.log(JSON.stringify(_.uniq(js), null, 4))
   // console.log("gold composite label:")
   // console.log(JSON.stringify(original, null, 4))
+
+_.sortBy([1, 2, 3, 4, 5, 6], function(num){ return Math.sin(num); });
+
+
+  if (_.isEqual(_.sortBy(original, function(n){return n}), _.sortBy(_.uniq(js), function(n){return n})) == false)
+  {
+    console.log("initial")
+    console.log(initial)
+    console.log("gold")
+    console.log(JSON.stringify(original, null, 4))
+    console.log("actual")
+    console.log(JSON.stringify(_.uniq(js), null, 4))
+    console.log("tagging")
+    console.log(tag)
+    console.log("depparsing")
+    console.log(dep)
+    console.log("rules")
+    console.log(JSON.stringify(data, null, 4))
+    console.log("intents")
+    console.log(JSON.stringify(explanations[0], null, 4))
+  }
+  // else
+  // {
+    // console.log("everything is correct")
+  // }
   
   return _.uniq(js)
 }
@@ -1484,6 +1769,49 @@ function aggregate_label(classifier, sample, explanations, trick, draw, original
 // 	return label
 // }
 
+function isValuesofAttribute(val)
+{
+Values = {
+            'Salary': [,'7,000 NIS','10,000 NIS','12,000 NIS','20,000 NIS'],
+            'Pension Fund': ['0%','10%','15%','20%'],
+            'Promotion Possibilities': ['Fast promotion track','Slow promotion track'],
+            'Working Hours': ['8 hours','9 hours','10 hours'],
+            'Job Description': ['QA','Programmer','Team Manager','Project Manager'],
+            'Leased Car': ['Without leased car', 'With leased car', 'No agreement']
+      // 'Leased Car': ['Ferrari']
+            }
+  var out = []
+  _.each(Values, function(value, key, list){
+    if (value.indexOf(val)!=-1)
+      out.push(key) 
+  }, this)
+return out
+}/*
+INPUT:[['Reject'],[],[]]*/
+function resolve_emptiness_rule(label)
+{
+// complete attribute only
+  _.each(label[2], function(value, key, list){
+    if (isValuesofAttribute(value).length == 1)
+      label[1].push(isValuesofAttribute(value)[0]) 
+  }, this)
+
+  // TODO: to complete the list
+  var previous = ['Accept', 'Reject', 'Insist']
+  if ((label[1].length == 0) && (label[2].length == 0) && 
+    (previous.indexOf(label[0][0])!=-1))
+    label[2].push('previous')
+
+  var truel = ['Greet','Quit']
+  if ((label[1].length == 0) && (label[2].length == 0) && 
+    (truel.indexOf(label[0][0])!=-1))
+    label[2].push(true)
+
+  _(3).times(function(n){
+    label[n] = _.uniq(label[n])
+  })
+  return label
+}
 
 function resolve_emptiness(label)
 {
@@ -1544,7 +1872,7 @@ function generate_possible_labels(label)
 				_.each(semlang, function(semval, key, list){ 
 					var lab = splitPartEqually(multilabelutils.normalizeOutputLabels(semval))
 					if (_.isEqual([intent,attr,value1],_.flatten(lab)))
-					out.push(semval)
+					 out.push(semval)
 				}, this)
 			 }, this) 
 		}, this)
@@ -2162,5 +2490,9 @@ module.exports = {
 	extractactual:extractactual,
 	treatstring:treatstring,
 	retrievelabelsbytypes:retrievelabelsbytypes,
-	translateLabel:translateLabel
+	translateLabel:translateLabel,
+  resolve_emptiness_rule:resolve_emptiness_rule,
+  filterValues:filterValues,
+  buildlabel:buildlabel,
+  labelFilter:labelFilter
 }
