@@ -6,11 +6,6 @@ TASK TO DO:
 10 10%
 find ambiguity, then the correct attribute has to be mentioned in the sentence 
 
-
-* use lemmatizer in both directions (on sentence|on phase) when split the phrase of attribute/value
-hours - hour
-leased - lease
-
 * catch argumentation by using function words like 'since','because of'....
 
 [compromise, accept, issues] - was not identified because, they were used with Intent Query and actually
@@ -185,11 +180,12 @@ var splitJson = Hierarchy.splitJson
 var PrecisionRecall = require("limdu/utils/PrecisionRecall");
 var cp = require("child_process");
 
-
-var truth_filename = __dirname + "/sentence_to_truthteller.txt"
 var path = __dirname + "/../../truthteller/truth_teller"
+var truth_filename = path + "/sentence_to_truthteller.txt"
+
 var easyfirst_path = "./run_ef.sh"
-var truth_path = "./run.sh -f ../../research/rule-based/sentence_to_truthteller.txt"
+// var truth_path = "./run.sh -f ../../research/rule-based/sentence_to_truthteller.txt"
+var truth_path = "./run.sh -f sentence_to_truthteller.txt"
 
 var regexpNormalizer = ftrs.RegexpNormalizer(
 		JSON.parse(fs.readFileSync(__dirname+'/../../knowledgeresources/BiuNormalizations.json')));
@@ -214,6 +210,7 @@ OUTPUT: add generate
 
 function generatesentence(record)
 {
+
 	var string = record['input']
 	_(2).times(function(n){
 		_.each(record['found'][n], function(value, key, list){
@@ -224,6 +221,18 @@ function generatesentence(record)
 					string = string.replace(value[1], '<VALUE>')
 		}, this)
 	})
+	
+	string = string.replace("nis",'')
+	string = string.replace("NIS",'')
+	string = string.replace("track",'')
+	string = string.replace("without",'')
+	string = string.replace("with",'')
+	string = string.replace("hours",'')
+	string = string.replace("hour",'')
+	string = string.replace("day",'')
+	// string = string.replace("a ",'')
+	string = string.trim()
+
 	record['generated'] = string
 	return record
 }
@@ -233,14 +242,14 @@ INPUT: "Leased car"
 OUTPUT: true*/
 function isAtrribute(string)
 {
-	if (Attributes.indexOf(string) != -1) return true 
+	if (RuleAttributes.indexOf(string) != -1) return true 
 	else return false	
 }
 
 function getFound(sentence)
 {
 	var data = []
-	_.each(Values, function(values, key1, list1){ 
+	_.each(RuleValues, function(values, key1, list1){ 
 		data = data.concat(inSentence(sentence, key1, key1))
 		_.each(values, function(value, key2, list2){
 			if (value instanceof Array)
@@ -265,7 +274,7 @@ function getFound(sentence)
 	datacopy.push([])
 	datacopy.push([])
 	_.each(data, function(value, key, list){
-		if (Attributes.indexOf(value[0]) != -1)
+		if (RuleAttributes.indexOf(value[0]) != -1)
 			datacopy[0].push(value)
 		else
 			datacopy[1].push(value)
@@ -274,18 +283,51 @@ function getFound(sentence)
 	return datacopy
 }
 
+// retrieves coordinates of the phrase
+// [start, end] 
 function getWords(sentence, phrase)
 {
-	var index = sentence.indexOf(phrase)
+	var index = compeletePhrase(sentence, phrase)
 	var start = sentence.slice(0,index).split(" ").length - 1
 	var end = sentence.slice(index + phrase.length).split(" ").length
 	return [start, sentence.split(" ").length - end]
 }
 
+function whatinSentence(sentence, list)
+{
+	_.each(list, function(value, key, list){ 
+		if (sentence.indexOf(value)!=-1)
+			return [sentence.indexOf(value), sentence.indexOf(value) + value.length]
+	}, this)
+	return [-1,-1]
+}
+
+
+function compeletePhrase(sentence, phrase)
+{
+	var separator = [' ', ',', '?', '.']
+	var output = -1
+	_(sentence.length).times(function(n){
+		var insen = sentence.indexOf(phrase, n)
+		if (insen != -1)
+			{
+			if (((separator.indexOf(sentence[insen-1]) != -1) || (insen == 0)) &&
+			 ((separator.indexOf(sentence[insen+phrase.length]) != -1)||(insen+phrase.length == sentence.length)))
+				{
+				if (output == -1)
+					output = insen
+				}
+			}
+	})
+	return output
+}
+
 function inSentence(sentence, keyphrase, goldLable)
 {
 	// var goldLable = keyphrase
+	// console.log(sentence)
 	keyphrase = keyphrase.toLowerCase()
+	// var sentencelist = sentence.split(" ")
 	// var output = []
 
 	// var sentenceList = sentence.split(" ")
@@ -307,35 +349,35 @@ function inSentence(sentence, keyphrase, goldLable)
 	listToFind = _.without(listToFind,'working')
 	listToFind = _.without(listToFind,'no')
 
-	// console.log(listToFind)
 	// process.exit(0)
 	var alreadycared = false
 
 	_.each(listToFind, function(phrase, key, list){ 
-		var index = sentence.indexOf(phrase)
-
+		// console.log(phrase)
+		var index = compeletePhrase(sentence, phrase)
+		// console.log(index)
 		if (index != -1)
 			{
 			if ((goldLable == 'Leased Car') && (alreadycared == false))
+
 				{
 				alreadycared = true
-				var negation = truth_utils.negation(sentence.replace('without','no'),['agreement'], truth_filename)	
+				var negation = truth_utils.negation(sentence.replace('without','no'),['agreement'], truth_filename)
 				if (negation == true)
 					{
 						// output.push([-1,-1,'No agreement',''])
-						output.push(['No agreement','',-1,-1])
+						output.push(['No agreement','agreement',getWords(sentence,"agreement"), whatinSentence(sentence,['agreement'])])
 					}
 				else
 					{	
-					var negation1 = truth_utils.negation(sentence.replace('without','no'),['car','lease'], truth_filename)	
+					var negation1 = truth_utils.negation(sentence.replace('without','no'),['car','lease'], truth_filename)
 					if (negation1 == true)
-						output.push(['Without leased car','car',getWords(sentence,"car"), [sentence.indexOf('car'),sentence.indexOf('car')+3]])
+						output.push(['Without leased car','car',getWords(sentence,"car"), whatinSentence(sentence,['car','leased'])])
 					else
-						output.push(['With leased car','car',getWords(sentence,"car"), [sentence.indexOf('car'),sentence.indexOf('car')+3]])
+						output.push(['With leased car','car',getWords(sentence,"car"), whatinSentence(sentence,['car','leased'])])
 					}
-				}
-			// return [sentence.indexOf(keyphrase)]
-			output.push([goldLable, sentence.slice(index, index + phrase.length), getWords(sentence,phrase), [index, index + phrase.length]])
+				}	
+			output.push([goldLable, sentence.slice(index, index + phrase.length), getWords(sentence, phrase), [index, index + phrase.length]])
 			}
 		// else
 			// res = false
@@ -352,6 +394,9 @@ function inSentence(sentence, keyphrase, goldLable)
 	return output
 }
 
+/*
+select only attribute and value from the label
+*/
 function onlyValue(labels)
 {
 	var output = []
@@ -362,13 +407,8 @@ function onlyValue(labels)
 		output = output.concat(lablist.slice(1))  
 	}, this)
 
-	// ignore previous and true
-	output = _.without(output, 'previous')
-	output = _.without(output, 'true')
-	output = _.without(output, true)
-	output = _.without(output, 'accept')
-	output = _.without(output, 'issues')
-	output = _.without(output, 'compromise')
+	var elim = ['bid','compromise','accept', 'previous', true, 'issues', ]	
+	var output = _.filter(output, function(num){ return elim.indexOf(num)  == -1 })
 	return output
 }
 
@@ -377,7 +417,7 @@ function uniqueValues(data)
 	var lab = []
 	_.each(data, function(label, key, list){ 
 		lab.push(label)
-		_.each(Values, function(value1, key1, list1){
+		_.each(RuleValues, function(value1, key1, list1){
 			 if ((value1.indexOf(label) != -1) && (data.indexOf(key1) == -1))
 			 	lab.push(key1)
 		}, this)
@@ -388,13 +428,12 @@ function uniqueValues(data)
 function getFilter(data)
 {
 	var toelim = []
-	// console.log(data)
 	_(2).times(function(n){
 		_.each(data[n], function(elem1, key1, list1){
 			_.each(data[n], function(elem2, key2, list2){
 				if (((elem1[3][0]<elem2[3][0]) && (elem1[3][1]>=elem2[3][1])) ||
 					((elem1[3][0]<=elem2[3][0]) && (elem1[3][1]>elem2[3][1])))
-						toelim.push([n,key2])
+						toelim.push([n, key2])
 			 }, this) 
 		}, this)
 	})
@@ -419,13 +458,40 @@ function getFilter(data)
 function findData(string)
 {
 	var found = getFound(string)
-	return getFilter(found)
+	var filtered = getFilter(found)
+	return filtered
 }	
+/*
+input : ['20,000 NIS']
+output: ['20,000 NIS', 'Salary']
+*/
+function addcomplement(data)
+{
+	_.each(RuleValues, function(values, attribute, list){ 
+		_.each(values, function(value, key2, list2){ 
+			if (_.isArray(value))
+				value = value[1]
+			if (data.indexOf(value) != -1)
+			data.push(attribute)
+		}, this)
+	}, this)
+	return _.unique(data)
+}
 
-Itents = ['Offer', 'Accept', 'Reject', 'Insist', 'QueryYN', 'QueryWH']
-IntentsSingle = ['Greet', 'Quit']
-Attributes = ['Salary', 'Pension Fund', 'Working Hours', 'Promotion Possibilities', 'Job Description', 'Leased Car']
-Values = {'Salary': [['7000','7,000 NIS'],['10000','10,000 NIS'],['12000','12,000 NIS'], ['20000','20,000 NIS']],
+function filterValues(items)
+{
+	return _.filter(items, function(num){ return RuleAttributes.indexOf(num) == -1; });
+}
+
+function filterAttributes(items)
+{
+	return _.filter(items, function(num){ return RuleAttributes.indexOf(num) != -1; });
+}
+
+var RuleItents = ['Offer', 'Accept', 'Reject', 'Insist', 'QueryYN', 'QueryWH']
+var RuleIntentsSingle = ['Greet', 'Quit']
+var RuleAttributes = ['Salary', 'Pension Fund', 'Working Hours', 'Promotion Possibilities', 'Job Description', 'Leased Car']
+var RuleValues = {'Salary': [['7000','7,000 NIS'],['10000','10,000 NIS'],['12000','12,000 NIS'], ['20000','20,000 NIS']],
 		  'Pension Fund': ['0%','10%','15%','20%'],
 		  'Promotion Possibilities': [['fast','Fast promotion track'],['slow','Slow promotion track']],
 		  'Working Hours': [['8','8 hours'],['9','9 hours'],['10','10 hours']],
@@ -435,134 +501,111 @@ Values = {'Salary': [['7000','7,000 NIS'],['10000','10,000 NIS'],['12000','12,00
 		}
 
 var stats = new PrecisionRecall();
-
+var stats_value = new PrecisionRecall();
+var stats_attribute = new PrecisionRecall();
 
 if (process.argv[1] === __filename)
 {
 
 dataset = [
-"trainonelabel.json",
-"testalllabels.json"
-		//	"5_woz_ncagent_turkers_negonlp2ncAMT_fixed.json",
-		  //  "nlu_ncagent_turkers_negonlpncAMT_fixed.json"
+			// "4_various.json",
+			// "3_woz_kbagent_turkers_negonlp2.json"
+			"turkers_keyphrases_only_rule.json",
+			"students_keyphrases_only_rule.json"
 			]
 
 var data = []
 _.each(dataset, function(value, key, list){ 
-	data = data.concat(JSON.parse(fs.readFileSync("../../datasets/Employer/"+value)))
+	data = data.concat(JSON.parse(fs.readFileSync("../../datasets/Employer/Dialogue/"+value)))
+	// data = data.concat(JSON.parse(fs.readFileSync("../../datasets/Candidate/"+value)))
 })
 
-// normalization
+data = bars.extractturns(data)
+data = _.shuffle(data)
+
+var datanew = []
 _.each(data, function(record, key, list){ 
-	record['input'] = normalizer(record['input'])
-	_.each(record['output'], function(value, key, list){
-		 record['output'][key] = bars.translateLabel(value)
-	}, this)
+	data[key]['input'] = normalizer(record['input'])
+	if (data[key]['input'] != "")
+		datanew.push(data[key])
 }, this)
+
+data = datanew
 
 var file_content = _.reduce(data, function(memo, num){ 
 	if (memo == 0) memo = ""
 	return memo+num['input'].replace('without','no')+"\n"; }, 0);
 fs.writeFileSync(truth_filename, file_content, 'utf-8', function(err) {})
 
-cp.exec(easyfirst_path, {cwd: path}, function(error,stdout,stderr){
-})
+// cp.exec(easyfirst_path, {cwd: path}, function(error,stdout,stderr){
+// })
 
+	console.log("Wait 10 sec default timeout")
 
+	setTimeout(function() {
 
-setTimeout(function() {
-  // console.log('hello world!');
+		cp.exec(truth_path, {cwd: path}, function(error,stdout,stderr){
+			console.log(error + stdout + stderr)
 
-		// console.log("1")
-		// console.log("error"+error)
-		// console.log("stdout"+stdout)
-		// console.log("stderr"+stderr)
-	cp.exec(truth_path, {cwd: path}, function(error,stdout,stderr){
-		_.each(data, function(record, key, list){
-			data[key]['found'] = getFound(record['input'])
-			// data[key]['found'] = getFound('programmer')
-			// console.log(data[key]['found'])
-			// console.log(filtering(data[key]['found']))
-			// process.exit(0)
+			_.each(data, function(record, key, list){
 
-			data[key]['found'] = getFilter(data[key]['found'])
+				data[key]['found'] = findData(record['input'])
 
-			data[key]['found'] = findData(record['input'])
+				data[key]['got'] = _.map(data[key]['found'][0], function(num){ return num[0]; });
+			
+				data[key]['got'] = data[key]['got'].concat(_.map(data[key]['found'][1], function(num){ return num[0]; }))
 
-			data[key]['got'] = _.map(data[key]['found'], function(num){ return num[2]; });
-
-			data[key]['got'] = uniqueValues(data[key]['got'])	
-
+				data[key]['got'] = uniqueValues(data[key]['got'])	
 				
-			// 	if (inSentence(record['input'], key1) == true)
-			// 		data[key]['found'].push(key1)
+				/* 
+				is there is 20,000 NIS in the sentence then add Salary too
+				*/
 
-			// 	_.each(values, function(value, key2, list2){
-			// 		var found = inSentence(record['input'], value)
-			// 		// if (found.length != 0)
-			// 			// {
-			// 			// data[key]['found'].push([found, value])
-			// 			// }
-			// 		if (found == true)
-			// 			data[key]['found'].push(value)
+				data[key]['got'] = addcomplement(data[key]['got'])	
+		
+			}, this)
 
-			// 	}, this)
-			//  }, this) 
-		}, this)
+			console.log("evaluation")
 
-	// evaluation
-		// _.each(data, function(record, key, list){
-		// 	var expl = stats.addCasesHash(onlyValue(record['output']), record['got'], true);
-		// 	if ((expl['FP'].length!=0) || (expl['FN'].length!=0))
-		// 	{
-		// 		console.log(record)
-		// 		process.exit(0)
-		// 		console.log(record['input'])
-		// 		console.log("Gold: "+record['output'])
-		// 		console.log("Found: "+record['got'])
-		// 		console.log("Placement: ")
-		// 		console.log(record['found'])
-		// 		console.log(expl)
-		// 		console.log("---------------------------") 
-		// 	}
-		// }, this)
-		// console.log(stats.retrieveStats())
+		// evaluation
+			_.each(data, function(record, key, list){
+				
+				stats_value.addCasesHash(filterValues(onlyValue(record['output'])), filterValues(record['got']))
+				stats_attribute.addCasesHash(filterAttributes(onlyValue(record['output'])), filterAttributes(record['got']))
+				
+				var expl = stats.addCasesHash(onlyValue(record['output']), record['got'], true);
+				if ((expl['FP'].length!=0) || (expl['FN'].length!=0))
+				{
+					// console.log(record)
+					// process.exit(0)
+					console.log(record['input'])
+					console.log("Gold: "+record['output'])
+					console.log("Found: "+record['got'])
+					console.log("Placement: ")
+					console.log(record['found'])
+					console.log(expl)
+					console.log("---------------------------") 
+				}
+			}, this)
 
+			console.log(stats.retrieveStats())
+			console.log("value stats")
+			console.log(stats_value.retrieveStats())
+			console.log("attribute stats")
+			console.log(stats_attribute.retrieveStats())
+			
 
-		var output = []
-		_.each(data, function(record, key, list){
-			output.push({'input':generatesentence(record)['generated'],
-						'output':record['output'],
-						'initial':record['input']
-						})
 		})
-
-		console.log(JSON.stringify(output, null, 4))	
-		process.exit(0)
-
-
-	})
-}, 10000);
-
-
-
-
-// console.log(bars.Values)
-// process.exit(0)
-
-// console.log(data)
-// process.exit(0)
-
-// console.log(natural.JaroWinklerDistance('10','1'))
-// var a = trainutils.retrievelabelsbytypes()
-// console.log(a)
-// process.exit(0)
+	}, 10000);
 }
-
 module.exports = {
         generatesentence:generatesentence,
         findData:findData,
         getFound:getFound,
         getFilter:getFilter,
-        getWords:getWords
+        getWords:getWords,
+        addcomplement:addcomplement,
+        compeletePhrase:compeletePhrase,
+        filterAttributes:filterAttributes,
+        filterValues:filterValues
     }

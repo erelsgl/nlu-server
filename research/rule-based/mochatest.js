@@ -7,10 +7,48 @@
 
 var should = require('should');
 var rules = require(__dirname+'/rules.js');
+var truth = require(__dirname+'/truth_utils.js');
 var _ = require('underscore');
 
+var path = __dirname + "/../../truthteller/truth_teller"
+var truth_filename = path + "/sentence_to_truthteller.txt"
 
 describe('Util test', function() {
+
+
+	it('check filter', function() {
+		var data = rules.getFound("let us compromise without a leased car")
+		var filtered = rules.getFilter(data)
+		_.isEqual([[["Leased Car","leased car",[5,6],[28,38]]],[["Without leased car","car",[6,6],[-1,-1]]]], filtered).should.be.true
+	})
+			
+
+	it('check filter', function() {
+		var fil = rules.filterValues(['Salary', 'Pension Fund', 'car'])
+		fil[0].should.be.equal('car')
+	})
+
+	it('check generation', function() {
+		var data = rules.compeletePhrase('12000 nis working as programmer, with leased car, no promotion agreement, 8 working hours','programmer')	
+		data.should.equal(21)
+
+		var data = rules.compeletePhrase('pension fund is ok', 'pension fund')
+		data.should.equal(0)
+
+		var data = rules.compeletePhrase('i accept pension fund', 'pension fund')
+		data.should.equal(9)
+
+		var data = rules.compeletePhrase('pension fund 10% is ok', '10')
+		data.should.equal(-1)
+
+		var data = rules.compeletePhrase('working hours 10', '10%')
+		data.should.equal(-1)
+	})
+	
+	it('check generation', function() {
+		var data = rules.addcomplement(['20,000 NIS'])
+		_.isEqual(data, [ '20,000 NIS', 'Salary' ]).should.be.true
+	})
 	
 	it('check generation', function() {
 
@@ -40,6 +78,18 @@ describe('Util test', function() {
 
 	it('check the process except for Leased car', function (){
 
+				
+			var data = rules.getFound("how about 1200 nis, programmer, with a leased car, 10% pension, and 10 hours")
+
+			var data = rules.getFound("how about 1200 nis, programmer, with a leased car, 10% pension, and 10 hours")
+			_.isEqual(data[1], [["10%","10%",[9,9],[51,54]],["10 hours","10",[12,12],[68,70]],["With leased car","car",[13,0],[-1,-1]]]).should.be.true
+			// var filtered = rules.getFilter(data)
+			// _.isEqual(filtered[1], [["9 hours","9",[0,0],[0,1]],["With leased car","car",[3,1],[-1,-1]]]).should.be.true
+			
+			var data = rules.getFound("9 hours with leased")
+			var filtered = rules.getFilter(data)
+			_.isEqual(filtered[1], [["9 hours","9",[0,0],[0,1]],["With leased car","car",[3,1],[-1,-1]]]).should.be.true
+			
 			var sentence = "i'm offering a job: programmer, 10 hours a day, 12000 , no car, fast promotion track"
 			var data = rules.getFound(sentence)
 
@@ -54,7 +104,8 @@ describe('Util test', function() {
 			
 			var data = rules.getFound("no liased car")
 			_.isEqual(data, [ [ [ 'Leased Car', 'car', [2,2], [10,13] ] ],
-  							[ [ 'Without leased car', '', [2,2], [10,13] ] ] ]).should.be.true
+  							[ [ 'Without leased car', 'car', [2,2], [10,13] ] ] ]).should.be.true
+			
 	})
 
 	it('check the filtering', function (){
@@ -81,15 +132,44 @@ describe('Util test', function() {
 	})
 
 	it('check the overall procedure', function (){
-			var sentence = "i'm offering a job: programmer, 10 hours a day, 12000 , no car, fast promotion track"
+			var sentence = "12000 nis"
 			var data = rules.findData(sentence)
 			
-var a = rules.generatesentence({ input: sentence,
+			var a = rules.generatesentence({ input: sentence,
 								 found: data })
 
-			console.log(JSON.stringify(data, null, 4))
-			console.log(JSON.stringify(a, null, 4))
-			process.exit(0)
+			_.isEqual(a['generated'],'<VALUE>').should.be.true
+
+			var sentence = "our counter proposal is 12000 nis"
+			var data = rules.findData(sentence)
+			
+			var a = rules.generatesentence({ input: sentence,
+								 found: data })
+
+			var sentence = "fast promotion track"
+			var data = rules.findData(sentence)
+			
+			var a = rules.generatesentence({ input: sentence,
+								 found: data })
+
+			_.isEqual(a['generated'],'<VALUE> <ATTRIBUTE>').should.be.true
+
+			var sentence = "without a leased car"
+			var data = rules.findData(sentence)
+			
+			var a = rules.generatesentence({ input: sentence,
+								 found: data })
+
+			_.isEqual(a['generated'],'a <ATTRIBUTE>').should.be.true
+
+			// console.log(JSON.stringify(a, null, 4))
+			// console.log(JSON.stringify(data, null, 4))
+	})
+
+	it('check truth value', function (){
+		var sentence = "we are not prepared to offer a leased car with this position at this time."
+		var a = truth.verbnegation(sentence, truth_filename)
+		console.log(a)
 	})
 
 })
