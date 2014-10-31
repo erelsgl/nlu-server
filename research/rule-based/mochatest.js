@@ -10,7 +10,7 @@ var rules = require(__dirname+'/rules.js');
 var truth = require(__dirname+'/truth_utils.js');
 var _ = require('underscore');
 
-var path = __dirname + "/../../truthteller/truth_teller"
+var path = __dirname + "/../../../truth_teller"
 var truth_filename = path + "/sentence_to_truthteller.txt"
 
 describe('Util test', function() {
