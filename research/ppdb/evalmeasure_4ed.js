@@ -104,7 +104,7 @@ var f = Fiber(function() {
   console.log(seeds)
 		
   // retrieve all generated paraphases to the seeds
-  utils.recursionredis(seeds, [2,2], function(err,actual) {
+  utils.recursionredis(seeds, [1], function(err,actual) {
     console.log("number of PPDB paraphrases " + actual.length)
     utils.clusteration(_.unique(actual), function(err, clusters){
       fiber.run(clusters)

@@ -11,7 +11,7 @@ var natural = require('natural');
 var Lemmer = require('node-lemmer').Lemmer;
 var lemmerEng = new Lemmer('english');
 
-var Tagger = require("../../node-stanford-postagger/postagger").Tagger;
+var Tagger = require("../../node_modules/node-stanford-postagger/postagger").Tagger;
 var tagger = new Tagger({
   port: "9000",
   host: "54.191.84.213"
