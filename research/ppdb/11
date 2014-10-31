@@ -1,0 +1,687 @@
+number of seeds 1
+[ 'offer' ]
+0
+24
+1
+280
+number of PPDB paraphrases 280
+number of clusters 125
+[ [ 'offering',
+    'offers',
+    'are offering',
+    'be offered',
+    'is offering',
+    'the offering',
+    'are offered',
+    'is offered',
+    'offer them',
+    'to offer',
+    'the offer',
+    'an offer',
+    'make offers',
+    'this offer',
+    'the offers',
+    'your offer',
+    'that offer',
+    'make an offer',
+    'offer you',
+    'they offer',
+    'has to offer',
+    'can offer',
+    'will offer',
+    'it offered',
+    'it offers',
+    'offered',
+    'an offering',
+    'offer' ],
+  [ 'provides',
+    'to provide',
+    'providing',
+    'be provided',
+    'provided',
+    'are providing',
+    'is provided',
+    'are provided',
+    'provides for',
+    'provided for',
+    'it provides',
+    'provides as follows',
+    'provide as follows',
+    'provide for',
+    'provides for the following',
+    'will provide',
+    'has provided',
+    'to providing',
+    'of providing',
+    'for providing',
+    'in providing',
+    'at providing',
+    'to be provided',
+    'on providing',
+    'provide' ],
+  [ 'the supply',
+    'be supplied',
+    'supplies',
+    'the supplies',
+    'is supplied',
+    'supplied',
+    'a supply',
+    'to supply',
+    'supply' ],
+  [ 'be delivered',
+    'deliver the goods',
+    'delivers',
+    'can deliver',
+    'delivered',
+    'delivering',
+    'are delivered',
+    'is delivered',
+    'to deliver',
+    'deliver' ],
+  [ 'made available',
+    'has available',
+    'are available',
+    'is available',
+    'were available',
+    'be available',
+    'be made available',
+    'making available',
+    'make available' ],
+  [ 'buy yourself', 'buy you' ],
+  [ 'provision', 'provisioning', 'provisions', 'the provision' ],
+  [ 'a tender',
+    'tenders',
+    'the tenders',
+    'tender',
+    'tendering',
+    'the tender' ],
+  [ 'is proposing',
+    'proposes that',
+    'be proposed',
+    'propose',
+    'we propose',
+    'proposes',
+    'proposed',
+    'are proposed',
+    'is proposed',
+    'are proposing' ],
+  [ 'the show' ],
+  [ 'the supply side', 'supply side' ],
+  [ 'be given',
+    'give them',
+    'give you',
+    'give him',
+    'to give',
+    'give her',
+    'gives',
+    'gives you',
+    'give me',
+    'given',
+    'give' ],
+  [ 'be furnished', 'furnished', 'to furnish', 'furnish' ],
+  [ 'to ensure', 'ensure' ],
+  [ 'submitted', 'to submit', 'be submitted' ],
+  [ 'delivery', 'deliveries', 'the delivery' ],
+  [ 'facilitate',
+    'facilitated',
+    'facilitates',
+    'facilitating',
+    'to facilitate' ],
+  [ 'please provide' ],
+  [ 'the procurement', 'procurement' ],
+  [ 'sourcing' ],
+  [ 'energy supplies',
+    'the energy supply',
+    'the supply of energy',
+    'energy supply' ],
+  [ 'availability', 'the availability' ],
+  [ 'bids', 'the bids', 'bidding', 'the bid' ],
+  [ 'quote', 'the quote' ],
+  [ 'the quotation' ],
+  [ 'water supplies', 'water supply' ],
+  [ 'the parade' ],
+  [ 'electricity supply' ],
+  [ 'power supply' ],
+  [ 'housing supply' ],
+  [ 'achieve results' ],
+  [ 'keep its promises' ],
+  [ 'produce results' ],
+  [ 'delivering results', 'deliver results' ],
+  [ 'hand over' ],
+  [ 'bear fruit' ],
+  [ 'get results' ],
+  [ 'obtain results' ],
+  [ 'give birth' ],
+  [ 'carry out' ],
+  [ 'comply with' ],
+  [ '\'m a man of my word' ],
+  [ 'offerings' ],
+  [ 'public tenders' ],
+  [ 'parcel number' ],
+  [ 'stipulates as follows',
+    'stipulates that',
+    'stipulates the following',
+    'stipulates' ],
+  [ 'contains' ],
+  [ 'lays down' ],
+  [ 'the disposal', 'disposal', 'has at its disposal' ],
+  [ 'is anticipated' ],
+  [ 'reads as follows' ],
+  [ 'is set', 'sets out' ],
+  [ 'states as follows' ],
+  [ 'plans to' ],
+  [ 'is established' ],
+  [ 'allows you to', 'allows for' ],
+  [ 'is used' ],
+  [ 'is expected' ],
+  [ 'makes it possible' ],
+  [ 'enables you to' ],
+  [ 'shall establish' ],
+  [ 'receive' ],
+  [ 'shipments' ],
+  [ 'access' ],
+  [ 'distribution' ],
+  [ 'intakes', 'intake' ],
+  [ 'disseminated', 'disseminate' ],
+  [ 'placed at the disposal' ],
+  [ 'made accessible' ],
+  [ 'distributed' ],
+  [ 'communicated' ],
+  [ 'allocated' ],
+  [ 'circulated' ],
+  [ 'releases', 'released' ],
+  [ 'disclosed' ],
+  [ 'the granting', 'granting', 'granted' ],
+  [ 'published' ],
+  [ 'transmitted' ],
+  [ 'consulted' ],
+  [ 'issuing', 'issued' ],
+  [ 'rendering', 'rendered' ],
+  [ 'broadcast' ],
+  [ 'reported' ],
+  [ 'notified' ],
+  [ 'pay you' ],
+  [ 'get you' ],
+  [ 'i \'il buy you' ],
+  [ '\'m offering you', 'i \'m offering you' ],
+  [ 'slaughter' ],
+  [ 'disposition', 'dispositions', 'the disposition' ],
+  [ 'readiness', 'the readiness' ],
+  [ 'government-provided' ],
+  [ 'credits', 'credit' ],
+  [ 'facilitation' ],
+  [ 'submission' ],
+  [ 'communication' ],
+  [ 'benefits', 'benefit' ],
+  [ 'dissemination' ],
+  [ 'services' ],
+  [ 'input' ],
+  [ 'layout' ],
+  [ 'allocation' ],
+  [ 'disposing' ],
+  [ 'willingness' ],
+  [ 'clause' ],
+  [ 'the invitation to tender' ],
+  [ 'the solicitation' ],
+  [ 'suggests', 'suggest' ],
+  [ 'the command show' ],
+  [ 'the spectacle' ],
+  [ 'series', 'the series' ],
+  [ 'the concert' ],
+  [ 'issuance', 'the issuance' ],
+  [ 'emission', 'the emission' ],
+  [ 'exposure' ],
+  [ 'entertainment' ],
+  [ 'expo' ],
+  [ 'showtime' ],
+  [ 'exhibitions', 'exhibition' ],
+  [ 'dancing', 'dance' ],
+  [ 'fans' ],
+  [ 'exhibit' ],
+  [ 'presentation' ],
+  [ 'order to provide', 'in order to provide' ],
+  [ 'to make' ] ]
+number of turns 410
+0
+10
+20
+30
+40
+50
+60
+70
+80
+90
+100
+110
+120
+130
+140
+150
+160
+170
+180
+190
+200
+210
+220
+230
+240
+250
+260
+270
+280
+290
+300
+310
+320
+330
+340
+350
+360
+370
+380
+390
+400
+{
+    "cluster0": {
+        "TP": [
+            [
+                "hi I want to offer you a fast track promotion",
+                "I want to offer"
+            ],
+            [
+                "I can only offer programmer",
+                "i can only offer"
+            ],
+            [
+                "I can offer a 7,000 NIS",
+                "i can offer a"
+            ],
+            [
+                "I will offer you with a leased car",
+                "i will offer you"
+            ],
+            [
+                "I offered 12000 for 9 hours or 10 hours for 20000. Those are my final offers. ",
+                "I offered"
+            ],
+            [
+                "Hello.Currently I'm willing to offer you the following: 12,000 a month salary and a position as a team manager. You'll get a 10% pention fund  and a leased car",
+                "I'm willing to offer you the following"
+            ],
+            [
+                "I will offer 12,000 NIS",
+                "i will offer"
+            ],
+            [
+                "I will offer 10%",
+                "i will offer"
+            ],
+            [
+                "I will offer you 9 hours",
+                "i will offer you"
+            ],
+            [
+                "I am offering you a Team Manager position that starts at 12,000 NIS",
+                "i am offering you"
+            ],
+            [
+                "We can offer the 20% pension, but that means no car allowance.",
+                "we can offer"
+            ],
+            [
+                "Our policy allows for 0-10%. I am offering the 10%",
+                "I am offering"
+            ],
+            [
+                "I would be willing to offer 12,000.",
+                "i would be willing to offer"
+            ],
+            [
+                "i  offer 10% pension",
+                "i offer"
+            ],
+            [
+                "Actually, I had in mind offering you a Programmers job",
+                "actually, i had in mind offering you"
+            ],
+            [
+                "I could offer only 10% pension",
+                "i could offer only"
+            ],
+            [
+                "I offer 7000 and 20% pension",
+                "i offer"
+            ],
+            [
+                "I offer 7000 and a leased car",
+                "i offer"
+            ],
+            [
+                "I offer 7000 NIS",
+                "i offer"
+            ],
+            [
+                "I can offer 9 hours",
+                "i can offer"
+            ],
+            [
+                "I can offer fast promotion but no car",
+                "i can offer"
+            ],
+            [
+                "I can offer slow promotion track but no car",
+                "i can offer"
+            ],
+            [
+                "I can offer fast promotion but no car",
+                "i can offer"
+            ],
+            [
+                "I can offer 10% pension",
+                "i can offer"
+            ],
+            [
+                "I will let you think about it again, my offer is 9 hours",
+                "my offer"
+            ],
+            [
+                "I will offer slow track promotion",
+                "i will offer"
+            ],
+            [
+                "i offer a QA",
+                "i offer a"
+            ],
+            [
+                "i offer programmer",
+                "i offer"
+            ]
+        ],
+        "FP": [],
+        "keyphrases": [
+            "offering",
+            "offers",
+            "are offering",
+            "be offered",
+            "is offering",
+            "the offering",
+            "are offered",
+            "is offered",
+            "offer them",
+            "to offer",
+            "the offer",
+            "an offer",
+            "make offers",
+            "this offer",
+            "the offers",
+            "your offer",
+            "that offer",
+            "make an offer",
+            "offer you",
+            "they offer",
+            "has to offer",
+            "can offer",
+            "will offer",
+            "it offered",
+            "it offers",
+            "offered",
+            "an offering",
+            "offer"
+        ]
+    },
+    "cluster58": {
+        "TP": [
+            [
+                "no leased car is possible",
+                "is possible"
+            ],
+            [
+                "Leased car is only possible with programmer and 10% pension",
+                "is only possible"
+            ]
+        ],
+        "FP": [],
+        "keyphrases": [
+            "makes it possible"
+        ]
+    },
+    "cluster11": {
+        "TP": [
+            [
+                "i will give you a leased car",
+                "i will give you a"
+            ],
+            [
+                "i will give you 10%.",
+                "i will give you"
+            ],
+            [
+                "I can give you 8 hours, but no leased car",
+                "i can give you"
+            ],
+            [
+                "I can give for QA",
+                "i can give for"
+            ],
+            [
+                "I am willing to give you 20% pension.",
+                "i am willing to give you"
+            ],
+            [
+                "i want to give you only 12000",
+                "i want to give you"
+            ],
+            [
+                "can you give 10?",
+                "can you give ?"
+            ],
+            [
+                "can you give 10 hores",
+                "can you give "
+            ],
+            [
+                "can you give 10 hours",
+                "can you give "
+            ],
+            [
+                "the Maximum i can give you is 10%",
+                "the maximum i can give you is"
+            ],
+            [
+                "i can give you fast promotion if without car",
+                "i can give you if without"
+            ],
+            [
+                "i will give you 8 working hours",
+                "i will give you"
+            ]
+        ],
+        "FP": [],
+        "keyphrases": [
+            "be given",
+            "give them",
+            "give you",
+            "give him",
+            "to give",
+            "give her",
+            "gives",
+            "gives you",
+            "give me",
+            "given",
+            "give"
+        ]
+    },
+    "cluster85": {
+        "TP": [
+            [
+                "no leased car but you will get fast prmotion track",
+                "you will get"
+            ],
+            [
+                "for 8 hours you get 7000 NIS",
+                "for you get"
+            ],
+            [
+                "you will get 7000",
+                "you will get"
+            ],
+            [
+                "Ok, you got 20% pension",
+                "you got"
+            ]
+        ],
+        "FP": [],
+        "keyphrases": [
+            "get you"
+        ]
+    }
+}
+number of FN 101
+[ [ 'I think you should be a Programmer.', 'i think you' ],
+  [ 'I can do 20000 if you do 10 hour days', 'i can do' ],
+  [ 'so, do we agree on a programming position with a leased car and a 10% pension?',
+    'do we agree on' ],
+  [ 'Let\'s agree on 9 hours, but be flexible', 'Let\'s agree' ],
+  [ 'I need you to work 10 hours. but 9 will do',
+    'i need you to work' ],
+  [ 'I am willing to compromise on a 20% pension fund',
+    'I am willing' ],
+  [ '9 hours is fine by me', 'is fine by me' ],
+  [ '9 hours day sounds cool to me', 'sounds cool to me' ],
+  [ 'let\'s compromise you be a programmer', 'you be a' ],
+  [ 'you need to be a programmer job title', 'you need to be' ],
+  [ 'let\'s agree on 10 hours with a leased car', 'let\'s agree' ],
+  [ 'while you think let\'s talk about the position. I need a programmer',
+    'i need a' ],
+  [ 'For 20,000 I want a hard working employee who can commit to 10 hours. Otherwise the answer is no',
+    'i want' ],
+  [ 'and we\'ll throw in 10% pension fund',
+    'and we\'ll throw in' ],
+  [ 'You want 20000, that will only happen if you work 10 hours. ',
+    'you want' ],
+  [ 'If you want 12000 that will only happen if you work 9 hours. ',
+    'if you want' ],
+  [ 'you can be a project manager', 'you can be a' ],
+  [ 'I would like you to work 9 hour days.',
+    'i would like you to work' ],
+  [ 'No, If you want 8 hour day you can have  a salary of 12000 and the 10% pension fund',
+    'you can have' ],
+  [ 'there will be no car. you will only recieve a car if you work 10 hour days',
+    'you will only recieve' ],
+  [ 'fast promotion track is ok', 'is ok' ],
+  [ 'fast track promotion is fine', ' is fine' ],
+  [ 'With those bonuses, I cannot do 8 hours. I can however grant a 9 hour day',
+    'I can however grant' ],
+  [ 'I can do 8 hours, but only if you work as a programmer',
+    'i can do ' ],
+  [ 'You can be Team Manager', 'you can be' ],
+  [ 'You will have to work for 10 hrs', 'you will have to work' ],
+  [ 'You will have to work for 10 hours',
+    'you will have to work for' ],
+  [ 'Then salary would be 12000 NIS', 'would be' ],
+  [ 'There will be no agreement for car',
+    'there will be no agreement for' ],
+  [ 'You can have 7000 NIS for Leased car', 'you can have' ],
+  [ 'How about QA or Team Manager?', 'how about' ],
+  [ 'We can start at 12,000 and work your way up to 20,000',
+    'we can start' ],
+  [ 'do you agree to start with 12,000',
+    'do you agree to start with' ],
+  [ 'we start with 10% and the longer you work, the higher the pension goes up',
+    'we start with' ],
+  [ 'No need for a leased car in this position', 'no need for' ],
+  [ 'How does 20,000 NIS long term sound to you?',
+    'how does sound to you' ],
+  [ 'Would you be ok with working as a team manager?',
+    'would you be okay with working as' ],
+  [ 'I\'m sorry, I meant project manager.',
+    'i\'m sorry, i meant' ],
+  [ 'Our counter proposal is 12,000 NIS',
+    'our counter proposal is' ],
+  [ 'Slow track is what I have', ' is what i have' ],
+  [ 'I am prepared to offer you a position as a programmer at this time',
+    'i am prepared to offer you a position' ],
+  [ 'I would need 9 hours', 'i would need' ],
+  [ 'You can have the 20% pension fund.', 'you can have the' ],
+  [ 'Perhaps considering the agreements we have made so far, you might agree to a 9 hour day.',
+    'perhaps considering the agreements we have made so far, you might agree to a' ],
+  [ 'Are you willing to take 10% pension?',
+    'are you willing to take' ],
+  [ 'Will you accept 12000?', 'will you accept' ],
+  [ 'Will you accept 7000?', 'will you accept' ],
+  [ 'Instead, will you accept 10 hours?',
+    'instead, will you accept' ],
+  [ 'Will you accept no leased car?', 'will you accept' ],
+  [ 'will you accept 7000?', 'will you accept' ],
+  [ 'The best I can do is 12000', 'the best i can do is' ],
+  [ 'project manager would be fine', 'would be fine' ],
+  [ '8 hours is fine', ' is fine' ],
+  [ 'I agree to with leased @ 8 hours with slow promotion track',
+    'i agree to with' ],
+  [ 'working 8 hours would be fine for the team manager position',
+    'would be fine' ],
+  [ 'i think 7000 is good', 'i think is good' ],
+  [ 'as a start you will start as a programmer',
+    'as a start you will start as a' ],
+  [ 'this is a fast promotion track, you will start with 10% pension',
+    'you will start with' ],
+  [ 'i will accept it if you will start with no car and work 10 hours',
+    'you will start with' ],
+  [ 'i will accept 9 hours, not less', 'will accept' ],
+  [ 'no, we agreed on 9', 'we agreed' ],
+  [ 'i will accept for 10 hours', 'i will accept ' ],
+  [ 'you can work for 10h so you will get mor mony',
+    'you can work for' ],
+  [ 'no, you can be a programer', 'you can be a ' ],
+  [ 'i\'ll agree for 8 hours if you will be a programer',
+    'i will agree for' ],
+  [ 'we already agreed on 12000', 'we already agreed on' ],
+  [ 'you say 10%', 'you say' ],
+  [ 'so we agreed on 9 hours?', 'so we agreed on ?' ],
+  [ 'why not an programmer?', 'why not an ?' ],
+  [ 'i want you to be an programmer', 'i want you to be an' ],
+  [ 'maby 9 hour?', 'maby ?' ],
+  [ 'ok. but in this job no liased car', 'in this job' ],
+  [ 'the maximum is Team Manager', 'the maximum is' ],
+  [ 'you can\'t get a car', 'you can\'t get a' ],
+  [ 'How about 12,000 NIS salary?', 'how about ?' ],
+  [ 'Would you prefer working as a Programmer?',
+    'would you prefer working' ],
+  [ 'You will be needed around 10 hours', 'you will be needed' ],
+  [ 'Would 9 hours be okay?', 'would be okay?' ],
+  [ 'But fast promotion is on', 'is on' ],
+  [ 'We have already agreed on Programmer',
+    'we have already agreed on' ],
+  [ 'We have already agreed on Programmer',
+    'we have already agreed on' ],
+  [ 'hi your salary will be 12000 NIs', 'your will be' ],
+  [ 'ONLY 10%', 'only ' ],
+  [ 'YOU CAN WORK FOR ONLY 8 HOURS A DAY',
+    'you can work for only' ],
+  [ 'your salary will be 7000', 'your will be' ],
+  [ 'so lets make it 12,000 NIS', 'so lets make it ' ],
+  [ 'lets make it 10%', 'lets make it ' ],
+  [ 'I will need you for 9', 'i will need you' ],
+  [ 'How about 7,000 NIS?', 'how about ?' ],
+  [ 'But we need a Programmer', 'but we need' ],
+  [ 'Let\'s not include the car in the agreement',
+    'let us not include' ],
+  [ 'I\'m willing to pay 7000', 'i\'m willing to' ],
+  [ 'I need a programmer', 'i need' ],
+  [ 'I need you to work 10 hours because there is a lot of job to do',
+    'i need you to work' ],
+  [ 'I think 9 hours is optimal', 'i think is optimal' ],
+  [ 'I said without leased car', 'I said ' ],
+  [ 'there is no agreement on leased car',
+    'there is no agreement on' ],
+  [ 'I would like to work with you without a leased car',
+    'i would like to work with' ],
+  [ 'there is no agreement on the leased car',
+    'there is no agreement on the' ],
+  [ 'We both losing points, I am once again suggestiong without leased car',
+    'I am once again suggestiong' ],
+  [ 'please 9 hours', 'please ' ] ]
+Precision 1
+Recall 0.3129251700680272

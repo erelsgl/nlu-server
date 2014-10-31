@@ -1,0 +1,3110 @@
+{
+    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}": {
+        "single label sentence": [
+            {
+                "input": "I will offer 12,000 NIS",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "your salary 12000",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "i want to give you only 12000",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "Then salary would be 12000 NIS",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "12000 NIS salary",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "I would be willing to offer 12,000.",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "I'll give 12,000 with a leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "hi your salary will be 12000 NIs",
+                "output": [
+                    "{\"Greet\":true}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "I can give you 12000 with 10% pension",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "If you want 12000 that will only happen if you work 9 hours. ",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "I am offering you a Team Manager position that starts at 12,000 NIS",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "Hello.Currently I'm willing to offer you the following: 12,000 a month salary and a position as a team manager. You'll get a 10% pention fund  and a leased car",
+                "output": [
+                    "{\"Greet\":true}",
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "9 hours for 12000",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "I am not willing to pay top dollar to a new hire.  I will however like to offer you the 12K, with fast promotion track, 10% pension and a leased car.  This is my final offer.",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "9 hours,12000 NIS",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "No, If you want 8 hour day you can have  a salary of 12000 and the 10% pension fund",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ]
+            }
+        ]
+    },
+    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}": {
+        "single label sentence": [
+            {
+                "input": "project manager would be fine",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}"
+                ]
+            },
+            {
+                "input": "I'm sorry, I meant project manager.",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}"
+                ]
+            },
+            {
+                "input": "you can be a project manager",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "salary 20000, project manager, with leased car, 10% pension fund, fast promotion track and 10 hour days?",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "So your salary is 20,000. You are a project manager with a leased car. Your pension fund is 10% and you are on the fast promotion track. You work 10 hour days. Do you accept/",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}",
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "I will hire you as a Project Manager if you agree to a slow promotion track.",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "7000, no car, project manager, 10%, slow promotion, 9 hours, and we can sign",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "Project Manager with 10 hours",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Offer\":{\"Pension Fund\":\"10%\"}}": {
+        "single label sentence": [
+            {
+                "input": "Our policy allows for 0-10%. I am offering the 10%",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "I can offer 10% pension",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "Are you willing to take 10% pension?",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "10% pension fund",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "I could offer only 10% pension",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "you say 10%",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "and we'll throw in 10% pension fund",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "I will offer 10%",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "How about 10% pension",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "I will offer you 10% in your pension, and no leased car.",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "ok 20000. 9 hour days and 10% pension fund",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "and no car 10%",
+                "output": [
+                    "{\"Append\":\"previous\"}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "I am not willing to pay top dollar to a new hire.  I will however like to offer you the 12K, with fast promotion track, 10% pension and a leased car.  This is my final offer.",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "10% pension without a leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "So your salary is 20,000. You are a project manager with a leased car. Your pension fund is 10% and you are on the fast promotion track. You work 10 hour days. Do you accept/",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}",
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "pension 10, no car, 9 hours, fast promotion",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "salary 20000, project manager, with leased car, 10% pension fund, fast promotion track and 10 hour days?",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "7000, no car, project manager, 10%, slow promotion, 9 hours, and we can sign",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "Leased car is only possible with programmer and 10% pension",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}": {
+        "single label sentence": [
+            {
+                "input": "because you work 8 hours",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "8 hours is accepted.",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "for 8 hours",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "8 hours is fine",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "and 8 hours",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "YOU CAN WORK FOR ONLY 8 HOURS A DAY",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "i will give you 8 working hours",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "No, If you want 8 hour day you can have  a salary of 12000 and the 10% pension fund",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "8 hours with car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "8 hours with no car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "Programmer and 8 hours",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "Programmer 8 hours",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "I can do 8 hours, but only if you work as a programmer",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "I can give you 8 hours, but no leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "8 hours is accepted with occasional 9 hours at busy times",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "20k, team manager, no leased car, 20%, fast track promotion, 8 hours",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "Ok let's compromise on 8 hours a day. I don't want to lose more points.",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            }
+        ]
+    },
+    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}": {
+        "single label sentence": [
+            {
+                "input": "without leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            {
+                "input": "I said without leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            {
+                "input": "No leased car.",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            {
+                "input": "no liased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            {
+                "input": "without a leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            {
+                "input": "without least car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            {
+                "input": "without a car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            {
+                "input": "no leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            {
+                "input": "no leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            {
+                "input": "without, please",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "Without leased car, but fast promotion track",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            {
+                "input": "12000 NIS, programmer,without liased car",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            {
+                "input": "pension 10, no car, 10 hours",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "i can give you fast promotion if without car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            {
+                "input": "pension 10, no car, 9 hours, fast promotion",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "We both losing points, I am once again suggestiong without leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            {
+                "input": "I can offer fast promotion but no car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            {
+                "input": "10% pension without a leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "8 hours with no car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "ok. but in this job no liased car",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}": {
+        "single label sentence": [
+            {
+                "input": "I will offer you with a leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ]
+            },
+            {
+                "input": "leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ]
+            },
+            {
+                "input": "i will give you a leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ]
+            },
+            {
+                "input": "leased car?",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ]
+            },
+            {
+                "input": "Leased car?",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ]
+            },
+            {
+                "input": "leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ]
+            },
+            {
+                "input": "With leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "and leased car",
+                "output": [
+                    "{\"Append\":\"previous\"}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ]
+            },
+            {
+                "input": "9 hours with leased car and fast promotion",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "Leased car 9 hours",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "9 hours with leased",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "Leased car but slow promotion track",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "Leased car is only possible with programmer and 10% pension",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "Leased car with fast promotion track and 9 hours",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "I will give you a leased car for 9 hours",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "with car, slow promotion",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "Hello.Currently I'm willing to offer you the following: 12,000 a month salary and a position as a team manager. You'll get a 10% pention fund  and a leased car",
+                "output": [
+                    "{\"Greet\":true}",
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}": {
+        "single label sentence": [
+            {
+                "input": "9 hours day sounds cool to me",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "I will need you for 9",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "I will offer you 9 hours",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "9 would be better",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "The position requires 9 hours of work",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "9 working hours.",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "9 hours is fine by me",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "9 hours with leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "I will give you a leased car for 9 hours",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "8 hours is accepted with occasional 9 hours at busy times",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "12000, programmer, car,10%,fast promotion 9 hours",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "9 hours,12000 NIS",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "No, it is 9 hour days",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "let's compromise 9 hours a day",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            {
+                "input": "then 9 hours",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "9 hours is middle of the orad",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            {
+                "input": "With those bonuses, I cannot do 8 hours. I can however grant a 9 hour day",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Reject\":\"Working Hours\"}"
+                ]
+            }
+        ]
+    },
+    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}": {
+        "single label sentence": [
+            {
+                "input": "slow is batter",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "SLOW TRACK",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "I will offer slow track promotion",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "slow promotion and we can sign",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "Slow track is what I have",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "slow promotion track",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "with car, slow promotion",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "lets make it fast, leased car and slow promotion",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "I can offer slow promotion track but no car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "Leased car but slow promotion track",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "so slow promotion track and with leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "7000, no car, project manager, 10%, slow promotion, 9 hours, and we can sign",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "I will hire you as a Project Manager if you agree to a slow promotion track.",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "slow promotion track and with leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "0% pension and slow promotion track",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            },
+            {
+                "input": "I agree to with leased @ 8 hours with slow promotion track",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Accept\":\"previous\"}": {
+        "single label sentence": [
+            {
+                "input": "ok",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "yes",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "I think we have reached an agreement",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "OK",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "ok",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "I think we agree.",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "That sounds fair.",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "Excellent.",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "Ok good with me",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "ok",
+                "output": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "yes, for a programmer",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ]
+            },
+            {
+                "input": "Ok, 8 hours is acceptable",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "then 9 hours",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "ok , 8 hours",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "7000, no car, project manager, 10%, slow promotion, 9 hours, and we can sign",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "fine, but no car",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            {
+                "input": "Ok, with leased car.",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ]
+            },
+            {
+                "input": "fine but with no car",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            {
+                "input": "12000 and i accept",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "i will accept for 10 hours",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Reject\":\"Promotion Possibilities\"}": {
+        "single label sentence": [
+            {
+                "input": "i am unable to accept fast promotion track",
+                "output": [
+                    "{\"Reject\":\"Promotion Possibilities\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": []
+    },
+    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}": {
+        "single label sentence": [
+            {
+                "input": "the maximum is Team Manager",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+                ]
+            },
+            {
+                "input": "Would you like to be team manager?",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+                ]
+            },
+            {
+                "input": "The position is one of team manager",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+                ]
+            },
+            {
+                "input": "team manager",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+                ]
+            },
+            {
+                "input": "You can be Team Manager",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+                ]
+            },
+            {
+                "input": "Would you be ok with working as a team manager?",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+                ]
+            },
+            {
+                "input": "no, what  about team  manager",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+                ]
+            },
+            {
+                "input": "what about team manager",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "I am offering you a Team Manager position that starts at 12,000 NIS",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "Team Manager with 9 hours?",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "How about QA or Team Manager?",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"QA\"}}",
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+                ]
+            },
+            {
+                "input": "Hello.Currently I'm willing to offer you the following: 12,000 a month salary and a position as a team manager. You'll get a 10% pention fund  and a leased car",
+                "output": [
+                    "{\"Greet\":true}",
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "working 8 hours would be fine for the team manager position",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "no liased car but you be team manager",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            {
+                "input": "20k, team manager, no leased car, 20%, fast track promotion, 8 hours",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Query\":\"accept\"}": {
+        "single label sentence": [
+            {
+                "input": "LET'S SIGN",
+                "output": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "SIGN",
+                "output": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "Ok lets sign.",
+                "output": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "do we have an agreement",
+                "output": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "PLEASE SIGN THE AGREEMENT",
+                "output": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "what say you?",
+                "output": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "sign agreement",
+                "output": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "9 hours, I can't do less, please accept",
+                "output": [
+                    "{\"Insist\":\"Working Hours\"}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "So your salary is 20,000. You are a project manager with a leased car. Your pension fund is 10% and you are on the fast promotion track. You work 10 hour days. Do you accept/",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}",
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "hi, does that sound good?",
+                "output": [
+                    "{\"Greet\":true}",
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "7000, no car, project manager, 10%, slow promotion, 9 hours, and we can sign",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Query\":\"accept\"}"
+                ]
+            }
+        ]
+    },
+    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}": {
+        "single label sentence": [
+            {
+                "input": "can you give 10 hores",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "10 hours",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "You will be needed around 10 hours",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "10 hours",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "You will have to work for 10 hrs",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "10 hours",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "10 hours",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "10 hours",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "Can you work 10",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "can you give 10?",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "I need you to work 10 hours. but 9 will do",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "let's agree on 10 hours with a leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "i will accept it if you will start with no car and work 10 hours",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "Leased car for 10 hours",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "10 hours and no more",
+                "output": [
+                    "{\"Insist\":\"Working Hours\"}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "i will accept for 10 hours",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "10 hours and a car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "I offered 12000 for 9 hours or 10 hours for 20000. Those are my final offers. ",
+                "output": [
+                    "{\"Insist\":\"previous\"}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "with 20% pension and a leased car you have to agree to working 10 hrs per day",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "Tell you what, let's compromise on 10 hours a day and I'll concede on the next aspect",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            }
+        ]
+    },
+    "{\"Query\":\"Pension Fund\"}": {
+        "single label sentence": [
+            {
+                "input": "how important is pension to you",
+                "output": [
+                    "{\"Query\":\"Pension Fund\"}"
+                ]
+            },
+            {
+                "input": "is 20% the only pension you will accept?",
+                "output": [
+                    "{\"Query\":\"Pension Fund\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": []
+    },
+    "{\"Offer\":{\"Pension Fund\":\"20%\"}}": {
+        "single label sentence": [
+            {
+                "input": "You can have the 20% pension fund.",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+                ]
+            },
+            {
+                "input": "I am willing to give you 20% pension.",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+                ]
+            },
+            {
+                "input": "20%",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "We can offer the 20% pension, but that means no car allowance.",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+                ]
+            },
+            {
+                "input": "20k, team manager, no leased car, 20%, fast track promotion, 8 hours",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "I am willing to compromise on a 20% pension fund",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            {
+                "input": "I can get you 20% but i can not offer you a leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+                ]
+            },
+            {
+                "input": "I offer 20% pension fund and no leased car.",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+                ]
+            },
+            {
+                "input": "Ok, you got 20% pension",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+                ]
+            },
+            {
+                "input": "20% no car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+                ]
+            },
+            {
+                "input": "pension 20% and 10 hours ",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "I offer 7000 and 20% pension",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "do we agree on 20% pension without a leased car?",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}": {
+        "single label sentence": [
+            {
+                "input": "FAST TRACK",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            {
+                "input": "well you should accept it you will get fast promotion track.",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            {
+                "input": "But fast promotion is on",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            {
+                "input": "Ill give fast track",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            {
+                "input": "fast track promotion is fine",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            {
+                "input": "fast promotion track is ok",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "last offer: 7000 and fast promotion",
+                "output": [
+                    "{\"Insist\":\"Promotion Possibilities\"}",
+                    "{\"Insist\":\"Salary\"}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "I can offer fast promotion but no car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            {
+                "input": "no leased car but you will get fast prmotion track",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            {
+                "input": "Leased car with fast promotion track and 9 hours",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "20k, team manager, no leased car, 20%, fast track promotion, 8 hours",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "fast promotion goes with 7000.",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "we can offer you a 10% pension fund with a possibility for a fast promotion",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            {
+                "input": "Without leased car, but fast promotion track",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            {
+                "input": "i can give you fast promotion if without car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            {
+                "input": "9 hours with leased car and fast promotion",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}": {
+        "single label sentence": [
+            {
+                "input": "How does 20,000 NIS long term sound to you?",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "ok you can have 20000",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "You want 20000, that will only happen if you work 10 hours. ",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "For 20,000 I want a hard working employee who can commit to 10 hours. Otherwise the answer is no",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "salary 20000, project manager, with leased car, 10% pension fund, fast promotion track and 10 hour days?",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "So your salary is 20,000. You are a project manager with a leased car. Your pension fund is 10% and you are on the fast promotion track. You work 10 hour days. Do you accept/",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}",
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "I offered 12000 for 9 hours or 10 hours for 20000. Those are my final offers. ",
+                "output": [
+                    "{\"Insist\":\"previous\"}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "We can start at 12,000 and work your way up to 20,000",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "I can do 20000 if you do 10 hour days",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "ok 20000. 9 hour days and 10% pension fund",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "20k, team manager, no leased car, 20%, fast track promotion, 8 hours",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}": {
+        "single label sentence": [
+            {
+                "input": "your salary will be 7000",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "I'm willing to pay 7000",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "we already talked about 7,000 NIS and agreed on it",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "I offer 7000 NIS",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "I can offer a 7,000 NIS",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "salary 7,000",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "will you accept 7000?",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "How about 7,000 NIS?",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "you will get 7000",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "Will you accept 7000?",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "fast promotion goes with 7000.",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "7000 with a car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "for 8 hours you get 7000 NIS",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "7000, no car, project manager, 10%, slow promotion, 9 hours, and we can sign",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "You can have 7000 NIS for Leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "hi we want to offer you a programmer position that has a starting pay of 7,000 usd per year",
+                "output": [
+                    "{\"Greet\":true}",
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "Leased car and 7000 NIS",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "last offer: 7000 and fast promotion",
+                "output": [
+                    "{\"Insist\":\"Promotion Possibilities\"}",
+                    "{\"Insist\":\"Salary\"}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "I offer 7000 and a leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "I offer 7000 and 20% pension",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Greet\":true}": {
+        "single label sentence": [
+            {
+                "input": "hi",
+                "output": [
+                    "{\"Greet\":true}"
+                ]
+            },
+            {
+                "input": "hi, why do you think you deserve this salary?",
+                "output": [
+                    "{\"Greet\":true}"
+                ]
+            },
+            {
+                "input": "hello are you still there?",
+                "output": [
+                    "{\"Greet\":true}"
+                ]
+            },
+            {
+                "input": "hi",
+                "output": [
+                    "{\"Greet\":true}"
+                ]
+            },
+            {
+                "input": "hello?",
+                "output": [
+                    "{\"Greet\":true}"
+                ]
+            },
+            {
+                "input": "hi, my name is john and I will potentially be your new employer.",
+                "output": [
+                    "{\"Greet\":true}"
+                ]
+            },
+            {
+                "input": "hi",
+                "output": [
+                    "{\"Greet\":true}"
+                ]
+            },
+            {
+                "input": "hi what is your skills",
+                "output": [
+                    "{\"Greet\":true}"
+                ]
+            },
+            {
+                "input": "hi ready",
+                "output": [
+                    "{\"Greet\":true}"
+                ]
+            },
+            {
+                "input": "Hello.",
+                "output": [
+                    "{\"Greet\":true}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "hi I want to offer you a fast track promotion",
+                "output": [
+                    "{\"Greet\":true}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            {
+                "input": "Hello.Currently I'm willing to offer you the following: 12,000 a month salary and a position as a team manager. You'll get a 10% pention fund  and a leased car",
+                "output": [
+                    "{\"Greet\":true}",
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "hi, does that sound good?",
+                "output": [
+                    "{\"Greet\":true}",
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            {
+                "input": "hi we want to offer you a programmer position that has a starting pay of 7,000 usd per year",
+                "output": [
+                    "{\"Greet\":true}",
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "hi your salary will be 12000 NIs",
+                "output": [
+                    "{\"Greet\":true}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Reject\":\"Working Hours\"}": {
+        "single label sentence": [
+            {
+                "input": "I reject 8 hours",
+                "output": [
+                    "{\"Reject\":\"Working Hours\"}"
+                ]
+            },
+            {
+                "input": "i will not accept 8 hours a day",
+                "output": [
+                    "{\"Reject\":\"Working Hours\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "With those bonuses, I cannot do 8 hours. I can however grant a 9 hour day",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Reject\":\"Working Hours\"}"
+                ]
+            },
+            {
+                "input": "if you work for more houres you will get more salary",
+                "output": [
+                    "{\"Reject\":\"Salary\"}",
+                    "{\"Reject\":\"Working Hours\"}"
+                ]
+            }
+        ]
+    },
+    "{\"Offer\":{\"Job Description\":\"Programmer\"}}": {
+        "single label sentence": [
+            {
+                "input": "I think you should be a Programmer.",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ]
+            },
+            {
+                "input": "i want you to be an programmer",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ]
+            },
+            {
+                "input": "while you think let's talk about the position. I need a programmer",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ]
+            },
+            {
+                "input": "I can only offer programmer",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ]
+            },
+            {
+                "input": "programmer",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ]
+            },
+            {
+                "input": "i offer programmer",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ]
+            },
+            {
+                "input": "we decided on programmer",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ]
+            },
+            {
+                "input": "I am prepared to offer you a position as a programmer at this time",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ]
+            },
+            {
+                "input": "I need a programmer",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ]
+            },
+            {
+                "input": "We have already agreed on Programmer",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "no, you can be a programer",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "hi we want to offer you a programmer position that has a starting pay of 7,000 usd per year",
+                "output": [
+                    "{\"Greet\":true}",
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            {
+                "input": "Programmer and 8 hours",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "Programmer 8 hours",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ]
+            },
+            {
+                "input": "A Programmer does not have a leased car, I'm afraid",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            {
+                "input": "so, do we agree on a programming position with a leased car and a 10% pension?",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "no..you be programmer",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "12000, programmer, car,10%,fast promotion 9 hours",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "So Programmer with a leased car",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ]
+            },
+            {
+                "input": "Leased car is only possible with programmer and 10% pension",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Query\":\"compromise\"}": {
+        "single label sentence": [
+            {
+                "input": "we are wasting time and losing points",
+                "output": [
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            {
+                "input": "i can wait, but you are losing too",
+                "output": [
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            {
+                "input": "You are not compromising on anything",
+                "output": [
+                    "{\"Query\":\"compromise\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "Let's agree on 9 hours, but be flexible",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            {
+                "input": "I can compromise on a fast promotion track ",
+                "output": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            {
+                "input": "let's compromise without a leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            {
+                "input": "9 hours is middle of the orad",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            {
+                "input": "9 hours, and that is a good compromise, I can't offer you any other",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            {
+                "input": "We both losing points, I am once again suggestiong without leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            {
+                "input": "I am willing to compromise on a 20% pension fund",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            {
+                "input": "Ok let's compromise on 8 hours a day. I don't want to lose more points.",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            {
+                "input": "let's compromise 9 hours a day",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            {
+                "input": "Tell you what, let's compromise on 10 hours a day and I'll concede on the next aspect",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            }
+        ]
+    },
+    "{\"Insist\":\"Working Hours\"}": {
+        "single label sentence": [],
+        "multi-label sentence": [
+            {
+                "input": "i will accept 9 hours, not less",
+                "output": [
+                    "{\"Insist\":\"Working Hours\"}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "10 hours and no more",
+                "output": [
+                    "{\"Insist\":\"Working Hours\"}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            {
+                "input": "My last offer is 9 hours",
+                "output": [
+                    "{\"Insist\":\"Working Hours\"}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "9 hours, I can't do less, please accept",
+                "output": [
+                    "{\"Insist\":\"Working Hours\"}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Query\":\"accept\"}"
+                ]
+            }
+        ]
+    },
+    "{\"Query\":\"Leased Car\"}": {
+        "single label sentence": [
+            {
+                "input": "let's settle leased car",
+                "output": [
+                    "{\"Query\":\"Leased Car\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": []
+    },
+    "{\"Insist\":\"previous\"}": {
+        "single label sentence": [
+            {
+                "input": "thats the last offer",
+                "output": [
+                    "{\"Insist\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "I stand by my offer.  I will be opting out.",
+                "output": [
+                    "{\"Insist\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "I will let you think about it again",
+                "output": [
+                    "{\"Insist\":\"previous\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "9 hours final",
+                "output": [
+                    "{\"Insist\":\"previous\"}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "I offered 12000 for 9 hours or 10 hours for 20000. Those are my final offers. ",
+                "output": [
+                    "{\"Insist\":\"previous\"}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            },
+            {
+                "input": "I will let you think about it again, my offer is 9 hours",
+                "output": [
+                    "{\"Insist\":\"previous\"}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Reject\":\"previous\"}": {
+        "single label sentence": [
+            {
+                "input": "i can't give you this",
+                "output": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "No that's the last offer",
+                "output": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "i dont think so",
+                "output": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "no",
+                "output": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "no way",
+                "output": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "Your offer is not going to happen.",
+                "output": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "then you will not work for me",
+                "output": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "No I do not accept that",
+                "output": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "No, ",
+                "output": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "no",
+                "output": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "no without leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "no, 12,000",
+                "output": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "no, we agreed on 9",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "No, If you want 8 hour day you can have  a salary of 12000 and the 10% pension fund",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "No, it is 9 hour days",
+                "output": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "no, you can be a programer",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            {
+                "input": "no..you be programmer",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ]
+            }
+        ]
+    },
+    "{\"Accept\":\"Leased Car\"}": {
+        "single label sentence": [
+            {
+                "input": "Okay, you can have a leased car. ",
+                "output": [
+                    "{\"Accept\":\"Leased Car\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "I will accept 0% with a leased car",
+                "output": [
+                    "{\"Accept\":\"Leased Car\"}",
+                    "{\"Accept\":\"Pension Fund\"}"
+                ]
+            },
+            {
+                "input": "we have no agreement on the pension and the leased car",
+                "output": [
+                    "{\"Accept\":\"Leased Car\"}",
+                    "{\"Accept\":\"Pension Fund\"}"
+                ]
+            }
+        ]
+    },
+    "{\"Accept\":\"Promotion Possibilities\"}": {
+        "single label sentence": [
+            {
+                "input": "we can agree on the slow promotion track",
+                "output": [
+                    "{\"Accept\":\"Promotion Possibilities\"}"
+                ]
+            },
+            {
+                "input": "Yes, we accept that fast promotion track",
+                "output": [
+                    "{\"Accept\":\"Promotion Possibilities\"}"
+                ]
+            },
+            {
+                "input": "yes, fast promotion track",
+                "output": [
+                    "{\"Accept\":\"Promotion Possibilities\"}"
+                ]
+            },
+            {
+                "input": "Yes, fast promotion track is accepted",
+                "output": [
+                    "{\"Accept\":\"Promotion Possibilities\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": []
+    },
+    "{\"Offer\":{\"Job Description\":\"QA\"}}": {
+        "single label sentence": [
+            {
+                "input": "QA",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"QA\"}}"
+                ]
+            },
+            {
+                "input": "i offer a QA",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"QA\"}}"
+                ]
+            },
+            {
+                "input": "I can give for QA",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"QA\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "How about QA or Team Manager?",
+                "output": [
+                    "{\"Offer\":{\"Job Description\":\"QA\"}}",
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+                ]
+            },
+            {
+                "input": "only QA",
+                "output": [
+                    "{\"Insist\":\"Job Description\"}",
+                    "{\"Offer\":{\"Job Description\":\"QA\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Offer\":{\"Pension Fund\":\"0%\"}}": {
+        "single label sentence": [
+            {
+                "input": "0%",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+                ]
+            },
+            {
+                "input": "0%",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+                ]
+            },
+            {
+                "input": "0%",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "I would like to offer you 0% pension with a leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+                ]
+            },
+            {
+                "input": "0% pension and slow promotion track",
+                "output": [
+                    "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Reject\":\"Salary\"}": {
+        "single label sentence": [
+            {
+                "input": "i cannot agree to 20000",
+                "output": [
+                    "{\"Reject\":\"Salary\"}"
+                ]
+            },
+            {
+                "input": "we've already been over salary",
+                "output": [
+                    "{\"Reject\":\"Salary\"}"
+                ]
+            },
+            {
+                "input": "then we can't agree on the salary",
+                "output": [
+                    "{\"Reject\":\"Salary\"}"
+                ]
+            },
+            {
+                "input": "it is much too high.",
+                "output": [
+                    "{\"Reject\":\"Salary\"}"
+                ]
+            },
+            {
+                "input": "then it's a no on the salary",
+                "output": [
+                    "{\"Reject\":\"Salary\"}"
+                ]
+            },
+            {
+                "input": "you and i already agreed on 12000",
+                "output": [
+                    "{\"Reject\":\"Salary\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "if you work for more houres you will get more salary",
+                "output": [
+                    "{\"Reject\":\"Salary\"}",
+                    "{\"Reject\":\"Working Hours\"}"
+                ]
+            }
+        ]
+    },
+    "{\"Query\":\"Job Description\"}": {
+        "single label sentence": [
+            {
+                "input": "What job you want?",
+                "output": [
+                    "{\"Query\":\"Job Description\"}"
+                ]
+            },
+            {
+                "input": "wich job do you want?",
+                "output": [
+                    "{\"Query\":\"Job Description\"}"
+                ]
+            },
+            {
+                "input": "whice job do you want?",
+                "output": [
+                    "{\"Query\":\"Job Description\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": []
+    },
+    "{\"Accept\":\"Job Description\"}": {
+        "single label sentence": [
+            {
+                "input": "Yes, I have team manager available.",
+                "output": [
+                    "{\"Accept\":\"Job Description\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": []
+    },
+    "{\"Query\":\"Promotion Possibilities\"}": {
+        "single label sentence": [
+            {
+                "input": "Promotion possibilities?",
+                "output": [
+                    "{\"Query\":\"Promotion Possibilities\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": []
+    },
+    "{\"Query\":\"Working Hours\"}": {
+        "single label sentence": [
+            {
+                "input": "what about your working hours",
+                "output": [
+                    "{\"Query\":\"Working Hours\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": []
+    },
+    "{\"Offer\":{\"Leased Car\":\"No agreement\"}}": {
+        "single label sentence": [
+            {
+                "input": "there is no agreement on the leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+                ]
+            },
+            {
+                "input": "No agreement on leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+                ]
+            },
+            {
+                "input": "Let's not include the car in the agreement",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+                ]
+            },
+            {
+                "input": "there is no agreement on leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+                ]
+            },
+            {
+                "input": "There will be no agreement for car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "we have no agreement on pension fund, working hours, and leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"No agreement\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"No agreement\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"No agreement\"}}"
+                ]
+            },
+            {
+                "input": "12000 NIS and no agreement for car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"No agreement\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Offer\":{\"Pension Fund\":\"No agreement\"}}": {
+        "single label sentence": [],
+        "multi-label sentence": [
+            {
+                "input": "we have no agreement on pension fund, working hours, and leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"No agreement\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"No agreement\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"No agreement\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Offer\":{\"Working Hours\":\"No agreement\"}}": {
+        "single label sentence": [],
+        "multi-label sentence": [
+            {
+                "input": "we have no agreement on pension fund, working hours, and leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"No agreement\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"No agreement\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"No agreement\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Accept\":\"Working Hours\"}": {
+        "single label sentence": [
+            {
+                "input": "I will accept 8 working hours",
+                "output": [
+                    "{\"Accept\":\"Working Hours\"}"
+                ]
+            },
+            {
+                "input": "Fine, 8 hours it is",
+                "output": [
+                    "{\"Accept\":\"Working Hours\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": []
+    },
+    "{\"Accept\":\"Pension Fund\"}": {
+        "single label sentence": [],
+        "multi-label sentence": [
+            {
+                "input": "I will accept 0% with a leased car",
+                "output": [
+                    "{\"Accept\":\"Leased Car\"}",
+                    "{\"Accept\":\"Pension Fund\"}"
+                ]
+            },
+            {
+                "input": "we have no agreement on the pension and the leased car",
+                "output": [
+                    "{\"Accept\":\"Leased Car\"}",
+                    "{\"Accept\":\"Pension Fund\"}"
+                ]
+            }
+        ]
+    },
+    "{\"Accept\":\"Salary\"}": {
+        "single label sentence": [],
+        "multi-label sentence": [
+            {
+                "input": "I am willing to pay that amount if you commit to working 10 hours for our company",
+                "output": [
+                    "{\"Accept\":\"Salary\"}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Reject\":\"Leased Car\"}": {
+        "single label sentence": [
+            {
+                "input": "Your offer for a car is unaccaptable",
+                "output": [
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            {
+                "input": "No, without leased car",
+                "output": [
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            {
+                "input": "i ma not ready to give you car at all",
+                "output": [
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            {
+                "input": "I cant offer you a leased car",
+                "output": [
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            {
+                "input": "A leased car is not needed in this position",
+                "output": [
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            {
+                "input": "I will not accept the leased car",
+                "output": [
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            {
+                "input": "You will not get a car with 8 hours",
+                "output": [
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": [
+            {
+                "input": "fine but with no car",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            {
+                "input": "I will not offer a leased car",
+                "output": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            {
+                "input": "fine, but no car",
+                "output": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            }
+        ]
+    },
+    "{\"Query\":\"issues\"}": {
+        "single label sentence": [
+            {
+                "input": "Maybe we should proceed to the next issue",
+                "output": [
+                    "{\"Query\":\"issues\"}"
+                ]
+            },
+            {
+                "input": "What offer do you not accept?",
+                "output": [
+                    "{\"Query\":\"issues\"}"
+                ]
+            },
+            {
+                "input": "What do you want to change?",
+                "output": [
+                    "{\"Query\":\"issues\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": []
+    },
+    "{\"Reject\":\"Pension Fund\"}": {
+        "single label sentence": [
+            {
+                "input": "Pension funds cannot be given",
+                "output": [
+                    "{\"Reject\":\"Pension Fund\"}"
+                ]
+            },
+            {
+                "input": "We cannot give pension funds",
+                "output": [
+                    "{\"Reject\":\"Pension Fund\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": []
+    },
+    "{\"Reject\":\"Job Description\"}": {
+        "single label sentence": [
+            {
+                "input": "I'm sorry, Project Manager is only for expeirenced ",
+                "output": [
+                    "{\"Reject\":\"Job Description\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": []
+    },
+    "{\"Query\":\"bid\"}": {
+        "single label sentence": [
+            {
+                "input": "then what do you want?",
+                "output": [
+                    "{\"Query\":\"bid\"}"
+                ]
+            }
+        ],
+        "multi-label sentence": []
+    },
+    "{\"Append\":\"previous\"}": {
+        "single label sentence": [],
+        "multi-label sentence": [
+            {
+                "input": "and no car 10%",
+                "output": [
+                    "{\"Append\":\"previous\"}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ]
+            },
+            {
+                "input": "and leased car",
+                "output": [
+                    "{\"Append\":\"previous\"}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ]
+            },
+            {
+                "input": "and you will get 12000",
+                "output": [
+                    "{\"Append\":\"previous\"}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Insist\":\"Job Description\"}": {
+        "single label sentence": [],
+        "multi-label sentence": [
+            {
+                "input": "only QA",
+                "output": [
+                    "{\"Insist\":\"Job Description\"}",
+                    "{\"Offer\":{\"Job Description\":\"QA\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Quit\":true}": {
+        "single label sentence": [
+            {
+                "input": "BYE",
+                "output": [
+                    "{\"Quit\":true}"
+                ]
+            },
+            {
+                "input": "THANK YOU",
+                "output": [
+                    "{\"Quit\":true}"
+                ]
+            }
+        ],
+        "multi-label sentence": []
+    },
+    "{\"Insist\":\"Promotion Possibilities\"}": {
+        "single label sentence": [],
+        "multi-label sentence": [
+            {
+                "input": "last offer: 7000 and fast promotion",
+                "output": [
+                    "{\"Insist\":\"Promotion Possibilities\"}",
+                    "{\"Insist\":\"Salary\"}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            }
+        ]
+    },
+    "{\"Insist\":\"Salary\"}": {
+        "single label sentence": [],
+        "multi-label sentence": [
+            {
+                "input": "last offer: 7000 and fast promotion",
+                "output": [
+                    "{\"Insist\":\"Promotion Possibilities\"}",
+                    "{\"Insist\":\"Salary\"}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            }
+        ]
+    }
+}
+

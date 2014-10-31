@@ -1,0 +1,96 @@
+Reject Offer problem: "input": "I will not offer a leased car",
+
+* truthteller 
+check 'no' and 'without'
+
+* problem of attribute/vaue identification with intent annotation, ex. in the following example 'no leased car' can be annotated as 'without leased car' or 'no' can be annotated as Reject of Leased car.
+"no leased car but you will get fast prmotion track"
+'without leased car' aatribute or 'no' reject
+
+* polarity of attributes, the following example doesn't accept salary, so it's reject
+'offer accepted about car, not salary'
+
+* This is a good example for seeking root for every attribute/value
+'9 hours, i can not do less, please accept'
+
+* depparser mistake
+'9 hours, i can not do less, please accept'
+9 is a child of do in dep parser which is an error
+
+reject, here was classified correctly becuase of NO 
+* great example of polarity, this example has a strong keyphrase of offer, but 'no' changes the polarity of the sentence to Reject
+'your offer is not going to happen'
+'I cant offer you a leased car'
+
+* for some reson Query has a positive bias
+this is very simialr to Query
+'how does 20000 nis long term sound to you?'
+
+* truthteller,the th annotation is correct, but human use the Accept in this way, the meaning of the sentence is Accept but the polarity is unknown 
+i think+ we agree-
+Accept
+but agree with - sign
+
+* comparison scheme can not distinguish different phrasal verbs
+throw in
+throw out
+for comparison it is the same meaning, because in POS tagger is considered as different words
+
+* motivation for truthteller, if truthteller recognize future sense
+"input": "I will accept 8 working hours",
+Offer but correlate with "accept"
+
+* in the run of evaluation it s shown the relation between Offer-Accept-Reject
+Reject is negation of Offer and Accept
+Offer is the future of Accept
+
+Query":"reject"
+# how agent use it
+
+"Query":"accept"
+# how agent use it
+# it is ambiguous
+# intersection with insist?
+
+"Query":"compromise"
+# how to use compomise
+
+"Query":"issues" == "Query":"bid"
+
+"Insist"
+# how agent use insist
+
+"Insist":"previous"
+
+# no aggrement == reject
+
+# '9 hours day sounds cool to me'
+were classified as Accept but annotated as "offer"
+where Accept is more appropriate but human chooses this way to express Offer
+
+# easy first problem
+
+i need you to work 10 hours
+
+1 i i FW FW _ 7 nsubj _ _
+2 need need MD MD _ 7 aux _ _
+3 you you PRP PRP _ 7 nsubj _ _
+4 to to TO TO _ 7 aux _ _
+5 work work VB VB _ 7 cop _ _
+6 10 10 CD CD _ 7 num _ _
+7 hours hours NNS NNS _ 0 root _ _
+8 . . . . _ 7 punct _ _
+
+sentence with no ROOT
+
+as_IN a_DT start_NN you_PRP will_MD start_VB as_IN a_DT programmer_NN
+1 as as IN IN _ 0 prep _ _
+2 a a DT DT _ 3 det _ _
+3 start start NN NN _ 1 pobj _ _
+4 you you PRP PRP _ 6 nsubj _ _
+5 will will MD MD _ 6 aux _ _
+6 start start VB VB _ 3 rcmod _ _
+7 as as IN IN _ 6 prep _ _
+8 a a DT DT _ 9 det _ _
+9 programmer programmer NN NN _ 7 pobj _ _
+

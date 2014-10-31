@@ -1,0 +1,1159 @@
+i will offer no car and a slow promotion track.
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Promotion Possibilities":"slow"}}
+Found: Promotion Possibilities,slow,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 31, 40, 'Promotion Possibilities', 'promotion' ],
+  [ 26, 30, 'slow', 'slow' ],
+  [ 16, 19, 'Leased Car', 'car' ],
+  [ 16, 19, 'Without leased car', 'car' ],
+  [ 16, 19, 'With leased car', 'car' ] ]
+{ TP: 
+   [ 'Leased Car',
+     'Promotion Possibilities',
+     'Without leased car',
+     'slow' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+i will offer a car and a fast promotion track.
+Gold: {"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Promotion Possibilities":"fast"}}
+Found: Promotion Possibilities,fast,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 30, 39, 'Promotion Possibilities', 'promotion' ],
+  [ 25, 29, 'fast', 'fast' ],
+  [ 15, 18, 'Leased Car', 'car' ],
+  [ 15, 18, 'Without leased car', 'car' ],
+  [ 15, 18, 'With leased car', 'car' ] ]
+{ TP: 
+   [ 'Leased Car',
+     'Promotion Possibilities',
+     'With leased car',
+     'fast' ],
+  FP: [ 'Without leased car' ],
+  FN: [] }
+---------------------------
+let's go with no car.
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 17, 20, 'Leased Car', 'car' ],
+  [ 17, 20, 'Without leased car', 'car' ],
+  [ 17, 20, 'With leased car', 'car' ] ]
+{ TP: [ 'Leased Car', 'Without leased car' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+no leased car and a slow promotion track?
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Promotion Possibilities":"slow"}}
+Found: Promotion Possibilities,slow,Leased Car
+Placement: 
+[ [ 25, 34, 'Promotion Possibilities', 'promotion' ],
+  [ 20, 24, 'slow', 'slow' ],
+  [ 3, 13, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car', 'Promotion Possibilities', 'slow' ],
+  FP: [],
+  FN: [ 'Without leased car' ] }
+---------------------------
+no car
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 3, 6, 'Leased Car', 'car' ],
+  [ 3, 6, 'Without leased car', 'car' ],
+  [ 3, 6, 'With leased car', 'car' ] ]
+{ TP: [ 'Leased Car', 'Without leased car' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+10 hours for your pension
+Gold: {"Offer":{"Working Hours":"10"}}
+Found: Pension Fund,Working Hours,10
+Placement: 
+[ [ 18, 25, 'Pension Fund', 'pension' ],
+  [ 3, 8, 'Working Hours', 'hours' ],
+  [ 0, 2, '10', '10' ] ]
+{ TP: [ '10', 'Working Hours' ], FP: [ 'Pension Fund' ], FN: [] }
+---------------------------
+whatever is needed to sign the agreement
+Gold: {"Accept":"previous"}
+Found: No agreement,Leased Car
+Placement: 
+[ [ 31, 40, 'No agreement', 'agreement' ] ]
+{ TP: [], FP: [ 'Leased Car', 'No agreement' ], FN: [] }
+---------------------------
+do u wish to sign the agreement?
+Gold: {"Query":"accept"}
+Found: No agreement,Leased Car
+Placement: 
+[ [ 22, 31, 'No agreement', 'agreement' ] ]
+{ TP: [], FP: [ 'Leased Car', 'No agreement' ], FN: [] }
+---------------------------
+will yo sign the agreement
+Gold: {"Accept":"previous"},{"Query":"accept"}
+Found: No agreement,Leased Car
+Placement: 
+[ [ 17, 26, 'No agreement', 'agreement' ] ]
+{ TP: [], FP: [ 'Leased Car', 'No agreement' ], FN: [] }
+---------------------------
+actually i need you work 10 hours for an agreement
+Gold: {"Insist":"Working Hours"},{"Offer":{"Working Hours":"10"}}
+Found: Working Hours,10,No agreement,Leased Car
+Placement: 
+[ [ 28, 33, 'Working Hours', 'hours' ],
+  [ 25, 27, '10', '10' ],
+  [ 41, 50, 'No agreement', 'agreement' ] ]
+{ TP: [ '10', 'Working Hours' ],
+  FP: [ 'Leased Car', 'No agreement' ],
+  FN: [] }
+---------------------------
+but i feel as given the maximum amount salary it is fair to relinquish the company car
+Gold: {"Reject":"Leased Car"}
+Found: Salary,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 39, 45, 'Salary', 'salary' ],
+  [ 83, 86, 'Leased Car', 'car' ],
+  [ 83, 86, 'Without leased car', 'car' ],
+  [ 83, 86, 'With leased car', 'car' ] ]
+{ TP: [ 'Leased Car' ],
+  FP: [ 'Salary', 'With leased car', 'Without leased car' ],
+  FN: [] }
+---------------------------
+no agreement
+Gold: {"Reject":"previous"}
+Found: No agreement,Leased Car
+Placement: 
+[ [ 0, 12, 'No agreement', 'no agreement' ] ]
+{ TP: [], FP: [ 'Leased Car', 'No agreement' ], FN: [] }
+---------------------------
+no company car
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 11, 14, 'Leased Car', 'car' ],
+  [ 11, 14, 'Without leased car', 'car' ],
+  [ 11, 14, 'With leased car', 'car' ] ]
+{ TP: [ 'Leased Car', 'Without leased car' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+no leased car since i had to increase the salary
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Salary,Leased Car
+Placement: 
+[ [ 42, 48, 'Salary', 'salary' ],
+  [ 3, 13, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ],
+  FP: [ 'Salary' ],
+  FN: [ 'Without leased car' ] }
+---------------------------
+no car is provided
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 3, 6, 'Leased Car', 'car' ],
+  [ 3, 6, 'Without leased car', 'car' ],
+  [ 3, 6, 'With leased car', 'car' ] ]
+{ TP: [ 'Leased Car', 'Without leased car' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+i offer 10 for pension
+Gold: {"Offer":{"Pension Fund":"10%"}}
+Found: Pension Fund,10,Working Hours
+Placement: 
+[ [ 15, 22, 'Pension Fund', 'pension' ], [ 8, 10, '10', '10' ] ]
+{ TP: [ 'Pension Fund' ],
+  FP: [ '10', 'Working Hours' ],
+  FN: [ '10%' ] }
+---------------------------
+no leased car. use your own car.
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car
+Placement: 
+[ [ 3, 13, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'Without leased car' ] }
+---------------------------
+no leased car is possible
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car
+Placement: 
+[ [ 3, 13, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'Without leased car' ] }
+---------------------------
+no leased car.
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car
+Placement: 
+[ [ 3, 13, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'Without leased car' ] }
+---------------------------
+so, do we agree on a programming position with a leased car and a 10% pension?
+Gold: {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}}
+Found: Pension Fund,10%,Leased Car
+Placement: 
+[ [ 70, 77, 'Pension Fund', 'pension' ],
+  [ 66, 69, '10%', '10%' ],
+  [ 49, 59, 'Leased Car', 'leased car' ] ]
+{ TP: [ '10%', 'Leased Car', 'Pension Fund' ],
+  FP: [],
+  FN: [ 'Job Description', 'Programmer', 'With leased car' ] }
+---------------------------
+leased car is only possible with programmer and 10% pension
+Gold: {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}}
+Found: Pension Fund,10%,Programmer,Job Description,Leased Car
+Placement: 
+[ [ 52, 59, 'Pension Fund', 'pension' ],
+  [ 48, 51, '10%', '10%' ],
+  [ 33, 43, 'Programmer', 'programmer' ],
+  [ 0, 10, 'Leased Car', 'leased car' ] ]
+{ TP: 
+   [ '10%',
+     'Job Description',
+     'Leased Car',
+     'Pension Fund',
+     'Programmer' ],
+  FP: [],
+  FN: [ 'With leased car' ] }
+---------------------------
+i am willing to pay that amount if you commit to working 10 hours for our company
+Gold: {"Accept":"Salary"},{"Insist":"Working Hours"},{"Offer":{"Working Hours":"10"}}
+Found: Working Hours,10
+Placement: 
+[ [ 60, 65, 'Working Hours', 'hours' ], [ 57, 59, '10', '10' ] ]
+{ TP: [ '10', 'Working Hours' ], FP: [], FN: [ 'Salary' ] }
+---------------------------
+let's compromise without a leased car
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Query":"compromise"}
+Found: Leased Car
+Placement: 
+[ [ 27, 37, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'Without leased car' ] }
+---------------------------
+without, please
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: 
+Placement: 
+[]
+{ TP: [], FP: [], FN: [ 'Leased Car', 'Without leased car' ] }
+---------------------------
+let's agree on 10 hours with a leased car
+Gold: {"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Working Hours":"10"}}
+Found: Working Hours,10,Leased Car
+Placement: 
+[ [ 18, 23, 'Working Hours', 'hours' ],
+  [ 15, 17, '10', '10' ],
+  [ 31, 41, 'Leased Car', 'leased car' ] ]
+{ TP: [ '10', 'Leased Car', 'Working Hours' ],
+  FP: [],
+  FN: [ 'With leased car' ] }
+---------------------------
+i will give you a leased car
+Gold: {"Offer":{"Leased Car":"With leased car"}}
+Found: Leased Car
+Placement: 
+[ [ 18, 28, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'With leased car' ] }
+---------------------------
+i will offer you with a leased car
+Gold: {"Offer":{"Leased Car":"With leased car"}}
+Found: Leased Car
+Placement: 
+[ [ 24, 34, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'With leased car' ] }
+---------------------------
+with a 10% pension fund, a fast promotion track and a leased car
+Gold: {"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"fast"}}
+Found: Pension Fund,10%,Promotion Possibilities,fast,Leased Car
+Placement: 
+[ [ 11, 23, 'Pension Fund', 'pension fund' ],
+  [ 7, 10, '10%', '10%' ],
+  [ 32, 41, 'Promotion Possibilities', 'promotion' ],
+  [ 27, 31, 'fast', 'fast' ],
+  [ 54, 64, 'Leased Car', 'leased car' ] ]
+{ TP: 
+   [ '10%',
+     'Leased Car',
+     'Pension Fund',
+     'Promotion Possibilities',
+     'fast' ],
+  FP: [],
+  FN: [ 'With leased car' ] }
+---------------------------
+you can have the position but no car.
+Gold: {"Accept":"previous"},{"Offer":{"Leased Car":"Without leased car"}},{"Reject":"Leased Car"}
+Found: Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 33, 36, 'Leased Car', 'car' ],
+  [ 33, 36, 'Without leased car', 'car' ],
+  [ 33, 36, 'With leased car', 'car' ] ]
+{ TP: [ 'Leased Car', 'Without leased car' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+then i think you should think our offer over and let me know whether you are interested in the position with no car.
+Gold: {"Insist":"previous"},{"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 112, 115, 'Leased Car', 'car' ],
+  [ 112, 115, 'Without leased car', 'car' ],
+  [ 112, 115, 'With leased car', 'car' ] ]
+{ TP: [ 'Leased Car', 'Without leased car' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+think it over.  its a good job, and a good offer.
+Gold: {"Insist":"previous"}
+Found: Job Description
+Placement: 
+[ [ 27, 30, 'Job Description', 'job' ] ]
+{ TP: [], FP: [ 'Job Description' ], FN: [] }
+---------------------------
+you can have the job, but no car at this time.
+Gold: {"Accept":"previous"},{"Reject":"Leased Car"}
+Found: Job Description,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 17, 20, 'Job Description', 'job' ],
+  [ 29, 32, 'Leased Car', 'car' ],
+  [ 29, 32, 'Without leased car', 'car' ],
+  [ 29, 32, 'With leased car', 'car' ] ]
+{ TP: [ 'Leased Car' ],
+  FP: [ 'Job Description', 'With leased car', 'Without leased car' ],
+  FN: [] }
+---------------------------
+you can have the job, but no car.
+Gold: {"Accept":"previous"},{"Reject":"Leased Car"}
+Found: Job Description,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 17, 20, 'Job Description', 'job' ],
+  [ 29, 32, 'Leased Car', 'car' ],
+  [ 29, 32, 'Without leased car', 'car' ],
+  [ 29, 32, 'With leased car', 'car' ] ]
+{ TP: [ 'Leased Car' ],
+  FP: [ 'Job Description', 'With leased car', 'Without leased car' ],
+  FN: [] }
+---------------------------
+project manager without car
+Gold: {"Offer":{"Job Description":"Project Manager"}},{"Offer":{"Leased Car":"Without leased car"}}
+Found: Project Manager,Job Description,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 0, 15, 'Project Manager', 'project manager' ],
+  [ 24, 27, 'Leased Car', 'car' ],
+  [ 24, 27, 'Without leased car', 'car' ],
+  [ 24, 27, 'With leased car', 'car' ] ]
+{ TP: 
+   [ 'Job Description',
+     'Leased Car',
+     'Project Manager',
+     'Without leased car' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+no car
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 3, 6, 'Leased Car', 'car' ],
+  [ 3, 6, 'Without leased car', 'car' ],
+  [ 3, 6, 'With leased car', 'car' ] ]
+{ TP: [ 'Leased Car', 'Without leased car' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+project manager but no car
+Gold: {"Offer":{"Job Description":"Project Manager"}},{"Offer":{"Leased Car":"Without leased car"}}
+Found: Project Manager,Job Description,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 0, 15, 'Project Manager', 'project manager' ],
+  [ 23, 26, 'Leased Car', 'car' ],
+  [ 23, 26, 'Without leased car', 'car' ],
+  [ 23, 26, 'With leased car', 'car' ] ]
+{ TP: 
+   [ 'Job Description',
+     'Leased Car',
+     'Project Manager',
+     'Without leased car' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+9 hours a day and leased car
+Gold: {"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Working Hours":"9"}}
+Found: Working Hours,9,Leased Car
+Placement: 
+[ [ 2, 7, 'Working Hours', 'hours' ],
+  [ 0, 1, '9', '9' ],
+  [ 18, 28, 'Leased Car', 'leased car' ] ]
+{ TP: [ '9', 'Leased Car', 'Working Hours' ],
+  FP: [],
+  FN: [ 'With leased car' ] }
+---------------------------
+no car, 7000 nis, 8 hours
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Salary":"7000"}},{"Offer":{"Working Hours":"8"}}
+Found: 7000,Salary,Working Hours,8,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 8, 12, '7000', '7000' ],
+  [ 20, 25, 'Working Hours', 'hours' ],
+  [ 18, 19, '8', '8' ],
+  [ 3, 6, 'Leased Car', 'car' ],
+  [ 3, 6, 'Without leased car', 'car' ],
+  [ 3, 6, 'With leased car', 'car' ] ]
+{ TP: 
+   [ '7000',
+     '8',
+     'Leased Car',
+     'Salary',
+     'Without leased car',
+     'Working Hours' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+no car, 12000 nis, 8 hours
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Salary":"12000"}},{"Offer":{"Working Hours":"8"}}
+Found: 12000,Salary,Working Hours,8,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 8, 13, '12000', '12000' ],
+  [ 21, 26, 'Working Hours', 'hours' ],
+  [ 19, 20, '8', '8' ],
+  [ 3, 6, 'Leased Car', 'car' ],
+  [ 3, 6, 'Without leased car', 'car' ],
+  [ 3, 6, 'With leased car', 'car' ] ]
+{ TP: 
+   [ '12000',
+     '8',
+     'Leased Car',
+     'Salary',
+     'Without leased car',
+     'Working Hours' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+12000 nis, 8 hours, 0% pension, slow track, no car
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"0%"}},{"Offer":{"Promotion Possibilities":"slow"}},{"Offer":{"Salary":"12000"}},{"Offer":{"Working Hours":"8"}}
+Found: 12000,Salary,Pension Fund,0%,slow,Promotion Possibilities,Working Hours,8,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 0, 5, '12000', '12000' ],
+  [ 23, 30, 'Pension Fund', 'pension' ],
+  [ 20, 22, '0%', '0%' ],
+  [ 32, 36, 'slow', 'slow' ],
+  [ 13, 18, 'Working Hours', 'hours' ],
+  [ 11, 12, '8', '8' ],
+  [ 47, 50, 'Leased Car', 'car' ],
+  [ 47, 50, 'Without leased car', 'car' ],
+  [ 47, 50, 'With leased car', 'car' ] ]
+{ TP: 
+   [ '0%',
+     '12000',
+     '8',
+     'Leased Car',
+     'Pension Fund',
+     'Promotion Possibilities',
+     'Salary',
+     'Without leased car',
+     'Working Hours',
+     'slow' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+no car no car no car
+Gold: {"Insist":"Leased Car"},{"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 3, 6, 'Leased Car', 'car' ],
+  [ 3, 6, 'Without leased car', 'car' ],
+  [ 3, 6, 'With leased car', 'car' ] ]
+{ TP: [ 'Leased Car', 'Without leased car' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+12000 nis, programmer, with car, 20% pension slow promotion track, 9 hours
+Gold: {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Promotion Possibilities":"slow"}},{"Offer":{"Salary":"12000"}},{"Offer":{"Working Hours":"9"}}
+Found: 12000,Salary,Pension Fund,20%,Promotion Possibilities,slow,Working Hours,9,Programmer,Job Description,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 0, 5, '12000', '12000' ],
+  [ 37, 44, 'Pension Fund', 'pension' ],
+  [ 33, 36, '20%', '20%' ],
+  [ 50, 59, 'Promotion Possibilities', 'promotion' ],
+  [ 45, 49, 'slow', 'slow' ],
+  [ 69, 74, 'Working Hours', 'hours' ],
+  [ 67, 68, '9', '9' ],
+  [ 11, 21, 'Programmer', 'programmer' ],
+  [ 28, 31, 'Leased Car', 'car' ],
+  [ 28, 31, 'Without leased car', 'car' ],
+  [ 28, 31, 'With leased car', 'car' ] ]
+{ TP: 
+   [ '12000',
+     '20%',
+     '9',
+     'Job Description',
+     'Leased Car',
+     'Pension Fund',
+     'Programmer',
+     'Promotion Possibilities',
+     'Salary',
+     'With leased car',
+     'Working Hours',
+     'slow' ],
+  FP: [ 'Without leased car' ],
+  FN: [] }
+---------------------------
+sign agreement
+Gold: {"Query":"accept"}
+Found: No agreement,Leased Car
+Placement: 
+[ [ 5, 14, 'No agreement', 'agreement' ] ]
+{ TP: [], FP: [ 'Leased Car', 'No agreement' ], FN: [] }
+---------------------------
+hi, i will offer 12000 with a car and a pension
+Gold: {"Greet":true},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Salary":"12000"}}
+Found: 12000,Salary,Pension Fund,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 17, 22, '12000', '12000' ],
+  [ 40, 47, 'Pension Fund', 'pension' ],
+  [ 30, 33, 'Leased Car', 'car' ],
+  [ 30, 33, 'Without leased car', 'car' ],
+  [ 30, 33, 'With leased car', 'car' ] ]
+{ TP: [ '12000', 'Leased Car', 'Salary', 'With leased car' ],
+  FP: [ 'Pension Fund', 'Without leased car' ],
+  FN: [] }
+---------------------------
+there will be no car. you will only recieve a car if you work 10 hour days
+Gold: {"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Working Hours":"10"}}
+Found: 10,Working Hours,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 62, 64, '10', '10' ],
+  [ 17, 20, 'Leased Car', 'car' ],
+  [ 17, 20, 'Without leased car', 'car' ],
+  [ 17, 20, 'With leased car', 'car' ] ]
+{ TP: [ '10', 'Leased Car', 'With leased car', 'Working Hours' ],
+  FP: [ 'Without leased car' ],
+  FN: [] }
+---------------------------
+salary 20000 , project manager, with leased car, 10% pension fund, fast promotion track and 10 hour days?
+Gold: {"Offer":{"Job Description":"Project Manager"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"fast"}},{"Offer":{"Salary":"20000"}},{"Offer":{"Working Hours":"10"}}
+Found: Salary,20000,Pension Fund,10%,Promotion Possibilities,fast,Project Manager,Job Description,With leased car,Leased Car
+Placement: 
+[ [ 0, 6, 'Salary', 'salary' ],
+  [ 7, 12, '20000', '20000' ],
+  [ 53, 65, 'Pension Fund', 'pension fund' ],
+  [ 49, 52, '10%', '10%' ],
+  [ 72, 81, 'Promotion Possibilities', 'promotion' ],
+  [ 67, 71, 'fast', 'fast' ],
+  [ 15, 30, 'Project Manager', 'project manager' ],
+  [ 32, 47, 'With leased car', 'with leased car' ] ]
+{ TP: 
+   [ '10%',
+     '20000',
+     'Job Description',
+     'Leased Car',
+     'Pension Fund',
+     'Project Manager',
+     'Promotion Possibilities',
+     'Salary',
+     'With leased car',
+     'fast' ],
+  FP: [],
+  FN: [ '10', 'Working Hours' ] }
+---------------------------
+no you said early you would work 10 hour days, if you do not want to work 10 hour days you do not get a car
+Gold: {"Insist":"Working Hours"},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Working Hours":"10"}}
+Found: 10,Working Hours,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 33, 35, '10', '10' ],
+  [ 104, 107, 'Leased Car', 'car' ],
+  [ 104, 107, 'Without leased car', 'car' ],
+  [ 104, 107, 'With leased car', 'car' ] ]
+{ TP: [ '10', 'Leased Car', 'With leased car', 'Working Hours' ],
+  FP: [ 'Without leased car' ],
+  FN: [] }
+---------------------------
+so your salary is 20000 . you are a project manager with a leased car. your pension fund is 10% and you are on the fast promotion track. you work 10 hour days. do you accept/
+Gold: {"Offer":{"Job Description":"Project Manager"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"fast"}},{"Offer":{"Salary":"20000"}},{"Offer":{"Working Hours":"10"}},{"Query":"accept"}
+Found: Salary,20000,Pension Fund,10%,Promotion Possibilities,fast,Project Manager,Job Description,Leased Car
+Placement: 
+[ [ 8, 14, 'Salary', 'salary' ],
+  [ 18, 23, '20000', '20000' ],
+  [ 76, 88, 'Pension Fund', 'pension fund' ],
+  [ 92, 95, '10%', '10%' ],
+  [ 120, 129, 'Promotion Possibilities', 'promotion' ],
+  [ 115, 119, 'fast', 'fast' ],
+  [ 36, 51, 'Project Manager', 'project manager' ],
+  [ 59, 69, 'Leased Car', 'leased car' ] ]
+{ TP: 
+   [ '10%',
+     '20000',
+     'Job Description',
+     'Leased Car',
+     'Pension Fund',
+     'Project Manager',
+     'Promotion Possibilities',
+     'Salary',
+     'fast' ],
+  FP: [],
+  FN: [ '10', 'With leased car', 'Working Hours' ] }
+---------------------------
+we can sign the agreement then.
+Gold: {"Accept":"previous"},{"Query":"accept"}
+Found: No agreement,Leased Car
+Placement: 
+[ [ 16, 25, 'No agreement', 'agreement' ] ]
+{ TP: [], FP: [ 'Leased Car', 'No agreement' ], FN: [] }
+---------------------------
+hello.currently i'm willing to offer you the following: 12000 a month salary and a position as a team manager. you will get a 10% pention fund  and a leased car
+Gold: {"Greet":true},{"Offer":{"Job Description":"Team Manager"}},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Salary":"12000"}}
+Found: Salary,12000,Pension Fund,10%,Team Manager,Job Description,Leased Car
+Placement: 
+[ [ 70, 76, 'Salary', 'salary' ],
+  [ 56, 61, '12000', '12000' ],
+  [ 138, 142, 'Pension Fund', 'fund' ],
+  [ 126, 129, '10%', '10%' ],
+  [ 97, 109, 'Team Manager', 'team manager' ],
+  [ 150, 160, 'Leased Car', 'leased car' ] ]
+{ TP: 
+   [ '10%',
+     '12000',
+     'Job Description',
+     'Leased Car',
+     'Pension Fund',
+     'Salary',
+     'Team Manager' ],
+  FP: [],
+  FN: [ 'With leased car' ] }
+---------------------------
+i can give you 8 hours, but no leased car
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Working Hours":"8"}}
+Found: Working Hours,8,Leased Car
+Placement: 
+[ [ 17, 22, 'Working Hours', 'hours' ],
+  [ 15, 16, '8', '8' ],
+  [ 31, 41, 'Leased Car', 'leased car' ] ]
+{ TP: [ '8', 'Leased Car', 'Working Hours' ],
+  FP: [],
+  FN: [ 'Without leased car' ] }
+---------------------------
+there will be no agreement for car
+Gold: {"Offer":{"Leased Car":"No agreement"}}
+Found: Leased Car,Without leased car,With leased car,No agreement
+Placement: 
+[ [ 31, 34, 'Leased Car', 'car' ],
+  [ 31, 34, 'Without leased car', 'car' ],
+  [ 31, 34, 'With leased car', 'car' ],
+  [ 14, 26, 'No agreement', 'no agreement' ] ]
+{ TP: [ 'Leased Car', 'No agreement' ],
+  FP: [ 'With leased car', 'Without leased car' ],
+  FN: [] }
+---------------------------
+you can have 7000 nis for leased car
+Gold: {"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Salary":"7000"}}
+Found: 7000,Salary,Leased Car
+Placement: 
+[ [ 13, 17, '7000', '7000' ],
+  [ 26, 36, 'Leased Car', 'leased car' ] ]
+{ TP: [ '7000', 'Leased Car', 'Salary' ],
+  FP: [],
+  FN: [ 'With leased car' ] }
+---------------------------
+leased car and 7000 nis
+Gold: {"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Salary":"7000"}}
+Found: 7000,Salary,Leased Car
+Placement: 
+[ [ 15, 19, '7000', '7000' ],
+  [ 0, 10, 'Leased Car', 'leased car' ] ]
+{ TP: [ '7000', 'Leased Car', 'Salary' ],
+  FP: [],
+  FN: [ 'With leased car' ] }
+---------------------------
+12000 nis and no agreement for car
+Gold: {"Offer":{"Leased Car":"No agreement"}},{"Offer":{"Salary":"12000"}}
+Found: 12000,Salary,Leased Car,Without leased car,With leased car,No agreement
+Placement: 
+[ [ 0, 5, '12000', '12000' ],
+  [ 31, 34, 'Leased Car', 'car' ],
+  [ 31, 34, 'Without leased car', 'car' ],
+  [ 31, 34, 'With leased car', 'car' ],
+  [ 14, 26, 'No agreement', 'no agreement' ] ]
+{ TP: [ '12000', 'Leased Car', 'No agreement', 'Salary' ],
+  FP: [ 'With leased car', 'Without leased car' ],
+  FN: [] }
+---------------------------
+in order for 20% pension i will require 9 hours of work per day and no car
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"20%"}},{"Offer":{"Working Hours":"9"}}
+Found: Pension Fund,20%,Working Hours,9,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 17, 24, 'Pension Fund', 'pension' ],
+  [ 13, 16, '20%', '20%' ],
+  [ 42, 47, 'Working Hours', 'hours' ],
+  [ 40, 41, '9', '9' ],
+  [ 71, 74, 'Leased Car', 'car' ],
+  [ 71, 74, 'Without leased car', 'car' ],
+  [ 71, 74, 'With leased car', 'car' ] ]
+{ TP: 
+   [ '20%',
+     '9',
+     'Leased Car',
+     'Pension Fund',
+     'Without leased car',
+     'Working Hours' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+i will add a leased car
+Gold: {"Offer":{"Leased Car":"With leased car"}}
+Found: Leased Car
+Placement: 
+[ [ 13, 23, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'With leased car' ] }
+---------------------------
+leased car for 9 hours
+Gold: {"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Working Hours":"9"}}
+Found: Working Hours,9,Leased Car
+Placement: 
+[ [ 17, 22, 'Working Hours', 'hours' ],
+  [ 15, 16, '9', '9' ],
+  [ 0, 10, 'Leased Car', 'leased car' ] ]
+{ TP: [ '9', 'Leased Car', 'Working Hours' ],
+  FP: [],
+  FN: [ 'With leased car' ] }
+---------------------------
+9 hours per day because of the generous pension
+Gold: {"Offer":{"Working Hours":"9"}}
+Found: Pension Fund,Working Hours,9
+Placement: 
+[ [ 40, 47, 'Pension Fund', 'pension' ],
+  [ 2, 7, 'Working Hours', 'hours' ],
+  [ 0, 1, '9', '9' ] ]
+{ TP: [ '9', 'Working Hours' ], FP: [ 'Pension Fund' ], FN: [] }
+---------------------------
+my counter offer would be 9 hours, 12000 for programmer without a leased car
+Gold: {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Salary":"12000"}},{"Offer":{"Working Hours":"9"}}
+Found: 12000,Salary,Working Hours,9,Programmer,Job Description,Leased Car
+Placement: 
+[ [ 35, 40, '12000', '12000' ],
+  [ 28, 33, 'Working Hours', 'hours' ],
+  [ 26, 27, '9', '9' ],
+  [ 45, 55, 'Programmer', 'programmer' ],
+  [ 66, 76, 'Leased Car', 'leased car' ] ]
+{ TP: 
+   [ '12000',
+     '9',
+     'Job Description',
+     'Leased Car',
+     'Programmer',
+     'Salary',
+     'Working Hours' ],
+  FP: [],
+  FN: [ 'Without leased car' ] }
+---------------------------
+i can not offer a car but can offer you a fast promotion track
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Promotion Possibilities":"fast"}}
+Found: Promotion Possibilities,fast,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 47, 56, 'Promotion Possibilities', 'promotion' ],
+  [ 42, 46, 'fast', 'fast' ],
+  [ 18, 21, 'Leased Car', 'car' ],
+  [ 18, 21, 'Without leased car', 'car' ],
+  [ 18, 21, 'With leased car', 'car' ] ]
+{ TP: 
+   [ 'Leased Car',
+     'Promotion Possibilities',
+     'Without leased car',
+     'fast' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+i will not offer a leased car
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car
+Placement: 
+[ [ 19, 29, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'Without leased car' ] }
+---------------------------
+offer accepted about car, not salary
+Gold: {"Accept":"Leased Car"},{"Reject":"Salary"}
+Found: Salary,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 30, 36, 'Salary', 'salary' ],
+  [ 21, 24, 'Leased Car', 'car' ],
+  [ 21, 24, 'Without leased car', 'car' ],
+  [ 21, 24, 'With leased car', 'car' ] ]
+{ TP: [ 'Leased Car', 'Salary' ],
+  FP: [ 'With leased car', 'Without leased car' ],
+  FN: [] }
+---------------------------
+7000 nis for a ptoggramer
+Gold: {"Offer":{"Job Description":"Programmer"}},{"Offer":{"Salary":"7000"}}
+Found: 7000,Salary
+Placement: 
+[ [ 0, 4, '7000', '7000' ] ]
+{ TP: [ '7000', 'Salary' ],
+  FP: [],
+  FN: [ 'Job Description', 'Programmer' ] }
+---------------------------
+no car may be try for slow track promotion
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Promotion Possibilities":"slow"}}
+Found: Promotion Possibilities,slow,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 33, 42, 'Promotion Possibilities', 'promotion' ],
+  [ 22, 26, 'slow', 'slow' ],
+  [ 3, 6, 'Leased Car', 'car' ],
+  [ 3, 6, 'Without leased car', 'car' ],
+  [ 3, 6, 'With leased car', 'car' ] ]
+{ TP: 
+   [ 'Leased Car',
+     'Promotion Possibilities',
+     'Without leased car',
+     'slow' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+okay then leased car with slow track promotion and that is final
+Gold: {"Insist":"Leased Car"},{"Insist":"Promotion Possibilities"},{"Insist":"previous"},{"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Promotion Possibilities":"slow"}}
+Found: Promotion Possibilities,slow,Leased Car
+Placement: 
+[ [ 37, 46, 'Promotion Possibilities', 'promotion' ],
+  [ 26, 30, 'slow', 'slow' ],
+  [ 10, 20, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car', 'Promotion Possibilities', 'slow' ],
+  FP: [],
+  FN: [ 'With leased car' ] }
+---------------------------
+i am offering leased car
+Gold: {"Offer":{"Leased Car":"With leased car"}}
+Found: Leased Car
+Placement: 
+[ [ 14, 24, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'With leased car' ] }
+---------------------------
+we can offer the 20% pension, but that means no car allowance.
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"20%"}}
+Found: Pension Fund,20%,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 21, 28, 'Pension Fund', 'pension' ],
+  [ 17, 20, '20%', '20%' ],
+  [ 48, 51, 'Leased Car', 'car' ],
+  [ 48, 51, 'Without leased car', 'car' ],
+  [ 48, 51, 'With leased car', 'car' ] ]
+{ TP: [ '20%', 'Leased Car', 'Pension Fund', 'Without leased car' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+with 10% pension you can get a car.
+Gold: {"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Pension Fund":"10%"}}
+Found: Pension Fund,10%,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 9, 16, 'Pension Fund', 'pension' ],
+  [ 5, 8, '10%', '10%' ],
+  [ 31, 34, 'Leased Car', 'car' ],
+  [ 31, 34, 'Without leased car', 'car' ],
+  [ 31, 34, 'With leased car', 'car' ] ]
+{ TP: [ '10%', 'Leased Car', 'Pension Fund', 'With leased car' ],
+  FP: [ 'Without leased car' ],
+  FN: [] }
+---------------------------
+no need for a leased car in this position
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car
+Placement: 
+[ [ 14, 24, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'Without leased car' ] }
+---------------------------
+trying to sign the agreement
+Gold: {"Accept":"previous"},{"Query":"accept"}
+Found: No agreement,Leased Car
+Placement: 
+[ [ 19, 28, 'No agreement', 'agreement' ] ]
+{ TP: [], FP: [ 'Leased Car', 'No agreement' ], FN: [] }
+---------------------------
+do we have an agreement?
+Gold: {"Query":"accept"}
+Found: No agreement,Leased Car
+Placement: 
+[ [ 14, 23, 'No agreement', 'agreement' ] ]
+{ TP: [], FP: [ 'Leased Car', 'No agreement' ], FN: [] }
+---------------------------
+hi, my name is john and i will po10 tially be your new employer.
+Gold: {"Greet":true}
+Found: 10,Working Hours
+Placement: 
+[ [ 33, 35, '10', '10' ] ]
+{ TP: [], FP: [ '10', 'Working Hours' ], FN: [] }
+---------------------------
+the position is without a leased car
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car
+Placement: 
+[ [ 26, 36, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'Without leased car' ] }
+---------------------------
+you will not get a car
+Gold: {"Reject":"Leased Car"}
+Found: Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 19, 22, 'Leased Car', 'car' ],
+  [ 19, 22, 'Without leased car', 'car' ],
+  [ 19, 22, 'With leased car', 'car' ] ]
+{ TP: [ 'Leased Car' ],
+  FP: [ 'With leased car', 'Without leased car' ],
+  FN: [] }
+---------------------------
+you will not get a lease
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: 
+Placement: 
+[]
+{ TP: [], FP: [], FN: [ 'Leased Car', 'Without leased car' ] }
+---------------------------
+12 nis salary
+Gold: {"Offer":{"Salary":"12000"}}
+Found: Salary
+Placement: 
+[ [ 7, 13, 'Salary', 'salary' ] ]
+{ TP: [ 'Salary' ], FP: [], FN: [ '12000' ] }
+---------------------------
+no car lease but fast track
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Promotion Possibilities":"fast"}}
+Found: fast,Promotion Possibilities,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 17, 21, 'fast', 'fast' ],
+  [ 3, 6, 'Leased Car', 'car' ],
+  [ 3, 6, 'Without leased car', 'car' ],
+  [ 3, 6, 'With leased car', 'car' ] ]
+{ TP: 
+   [ 'Leased Car',
+     'Promotion Possibilities',
+     'Without leased car',
+     'fast' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+20000 nis, team manager, without leased car, 10% pension, fast promotion, 10 working hours
+Gold: {"Offer":{"Job Description":"Team Manager"}},{"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"10%"}},{"Offer":{"Promotion Possibilities":"fast"}},{"Offer":{"Salary":"20000"}},{"Offer":{"Working Hours":"10"}}
+Found: 20000,Salary,Pension Fund,10%,Promotion Possibilities,fast,Working Hours,Team Manager,Job Description,Without leased car,Leased Car
+Placement: 
+[ [ 0, 5, '20000', '20000' ],
+  [ 49, 56, 'Pension Fund', 'pension' ],
+  [ 45, 48, '10%', '10%' ],
+  [ 63, 72, 'Promotion Possibilities', 'promotion' ],
+  [ 58, 62, 'fast', 'fast' ],
+  [ 77, 90, 'Working Hours', 'working hours' ],
+  [ 11, 23, 'Team Manager', 'team manager' ],
+  [ 25, 43, 'Without leased car', 'without leased car' ] ]
+{ TP: 
+   [ '10%',
+     '20000',
+     'Job Description',
+     'Leased Car',
+     'Pension Fund',
+     'Promotion Possibilities',
+     'Salary',
+     'Team Manager',
+     'Without leased car',
+     'Working Hours',
+     'fast' ],
+  FP: [],
+  FN: [ '10' ] }
+---------------------------
+no lease car
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 9, 12, 'Leased Car', 'car' ],
+  [ 9, 12, 'Without leased car', 'car' ],
+  [ 9, 12, 'With leased car', 'car' ] ]
+{ TP: [ 'Leased Car', 'Without leased car' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+without lease car, 20%
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"20%"}}
+Found: 20%,Pension Fund,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 19, 22, '20%', '20%' ],
+  [ 14, 17, 'Leased Car', 'car' ],
+  [ 14, 17, 'Without leased car', 'car' ],
+  [ 14, 17, 'With leased car', 'car' ] ]
+{ TP: [ '20%', 'Leased Car', 'Pension Fund', 'Without leased car' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+20 pension, without leased
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"20%"}}
+Found: Pension Fund,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 3, 10, 'Pension Fund', 'pension' ],
+  [ 20, 26, 'Leased Car', 'leased' ],
+  [ 20, 26, 'Without leased car', 'leased' ],
+  [ 20, 26, 'With leased car', 'leased' ] ]
+{ TP: [ 'Leased Car', 'Pension Fund', 'Without leased car' ],
+  FP: [ 'With leased car' ],
+  FN: [ '20%' ] }
+---------------------------
+10% pension, no leased car
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"10%"}}
+Found: Pension Fund,10%,Leased Car
+Placement: 
+[ [ 4, 11, 'Pension Fund', 'pension' ],
+  [ 0, 3, '10%', '10%' ],
+  [ 16, 26, 'Leased Car', 'leased car' ] ]
+{ TP: [ '10%', 'Leased Car', 'Pension Fund' ],
+  FP: [],
+  FN: [ 'Without leased car' ] }
+---------------------------
+without a leased car, but fast track promotion
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Promotion Possibilities":"fast"}}
+Found: Promotion Possibilities,fast,Leased Car
+Placement: 
+[ [ 37, 46, 'Promotion Possibilities', 'promotion' ],
+  [ 26, 30, 'fast', 'fast' ],
+  [ 10, 20, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car', 'Promotion Possibilities', 'fast' ],
+  FP: [],
+  FN: [ 'Without leased car' ] }
+---------------------------
+my offer is no leased car
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car
+Placement: 
+[ [ 15, 25, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'Without leased car' ] }
+---------------------------
+perhaps considering the agreements we have made so far, you might agree to a 9 hour day.
+Gold: {"Offer":{"Working Hours":"9"}}
+Found: 9,Working Hours,No agreement,Leased Car
+Placement: 
+[ [ 77, 78, '9', '9' ],
+  [ 24, 33, 'No agreement', 'agreement' ] ]
+{ TP: [ '9', 'Working Hours' ],
+  FP: [ 'Leased Car', 'No agreement' ],
+  FN: [] }
+---------------------------
+will you accept no leased car?
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car
+Placement: 
+[ [ 19, 29, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'Without leased car' ] }
+---------------------------
+8 hour without leased
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Working Hours":"8"}}
+Found: 8,Working Hours,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 0, 1, '8', '8' ],
+  [ 15, 21, 'Leased Car', 'leased' ],
+  [ 15, 21, 'Without leased car', 'leased' ],
+  [ 15, 21, 'With leased car', 'leased' ] ]
+{ TP: [ '8', 'Leased Car', 'Without leased car', 'Working Hours' ],
+  FP: [ 'With leased car' ],
+  FN: [] }
+---------------------------
+9 hours with leased
+Gold: {"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Working Hours":"9"}}
+Found: Working Hours,9,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 2, 7, 'Working Hours', 'hours' ],
+  [ 0, 1, '9', '9' ],
+  [ 13, 19, 'Leased Car', 'leased' ],
+  [ 13, 19, 'Without leased car', 'leased' ],
+  [ 13, 19, 'With leased car', 'leased' ] ]
+{ TP: [ '9', 'Leased Car', 'With leased car', 'Working Hours' ],
+  FP: [ 'Without leased car' ],
+  FN: [] }
+---------------------------
+i agree to with leased @ 8 hours with slow promotion track
+Gold: {"Offer":{"Leased Car":"With leased car"}},{"Offer":{"Promotion Possibilities":"slow"}},{"Offer":{"Working Hours":"8"}}
+Found: Promotion Possibilities,slow,Working Hours,8,Leased Car,Without leased car,With leased car
+Placement: 
+[ [ 43, 52, 'Promotion Possibilities', 'promotion' ],
+  [ 38, 42, 'slow', 'slow' ],
+  [ 27, 32, 'Working Hours', 'hours' ],
+  [ 25, 26, '8', '8' ],
+  [ 16, 22, 'Leased Car', 'leased' ],
+  [ 16, 22, 'Without leased car', 'leased' ],
+  [ 16, 22, 'With leased car', 'leased' ] ]
+{ TP: 
+   [ '8',
+     'Leased Car',
+     'Promotion Possibilities',
+     'With leased car',
+     'Working Hours',
+     'slow' ],
+  FP: [ 'Without leased car' ],
+  FN: [] }
+---------------------------
+i think we have reached an agreement
+Gold: {"Accept":"previous"}
+Found: No agreement,Leased Car
+Placement: 
+[ [ 27, 36, 'No agreement', 'agreement' ] ]
+{ TP: [], FP: [ 'Leased Car', 'No agreement' ], FN: [] }
+---------------------------
+do we have an agreement
+Gold: {"Query":"accept"}
+Found: No agreement,Leased Car
+Placement: 
+[ [ 14, 23, 'No agreement', 'agreement' ] ]
+{ TP: [], FP: [ 'Leased Car', 'No agreement' ], FN: [] }
+---------------------------
+that is not available since you will start at a high salary
+Gold: {"Reject":"previous"}
+Found: Salary
+Placement: 
+[ [ 53, 59, 'Salary', 'salary' ] ]
+{ TP: [], FP: [ 'Salary' ], FN: [] }
+---------------------------
+that finishes us at status quo i can not do a leased car
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car
+Placement: 
+[ [ 46, 56, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'Without leased car' ] }
+---------------------------
+i do not offer a leased car
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car
+Placement: 
+[ [ 17, 27, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'Without leased car' ] }
+---------------------------
+i can offer 10% pension and no leased car
+Gold: {"Offer":{"Leased Car":"Without leased car"}},{"Offer":{"Pension Fund":"10%"}}
+Found: Pension Fund,10%,Leased Car
+Placement: 
+[ [ 16, 23, 'Pension Fund', 'pension' ],
+  [ 12, 15, '10%', '10%' ],
+  [ 31, 41, 'Leased Car', 'leased car' ] ]
+{ TP: [ '10%', 'Leased Car', 'Pension Fund' ],
+  FP: [],
+  FN: [ 'Without leased car' ] }
+---------------------------
+i choose no agreement on car
+Gold: {"Offer":{"Leased Car":"No agreement"}}
+Found: Leased Car,Without leased car,With leased car,No agreement
+Placement: 
+[ [ 25, 28, 'Leased Car', 'car' ],
+  [ 25, 28, 'Without leased car', 'car' ],
+  [ 25, 28, 'With leased car', 'car' ],
+  [ 9, 21, 'No agreement', 'no agreement' ] ]
+{ TP: [ 'Leased Car', 'No agreement' ],
+  FP: [ 'With leased car', 'Without leased car' ],
+  FN: [] }
+---------------------------
+no leased car
+Gold: {"Offer":{"Leased Car":"Without leased car"}}
+Found: Leased Car
+Placement: 
+[ [ 3, 13, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'Without leased car' ] }
+---------------------------
+leased car?
+Gold: {"Offer":{"Leased Car":"With leased car"}}
+Found: Leased Car
+Placement: 
+[ [ 0, 10, 'Leased Car', 'leased car' ] ]
+{ TP: [ 'Leased Car' ], FP: [], FN: [ 'With leased car' ] }
+---------------------------
+{ Accuracy: 0.7461538461538462,
+  HammingLoss: 0.17063989962358847,
+  HammingGain: 0.8293601003764115,
+  Precision: 0.8986731001206273,
+  Recall: 0.9347553324968633,
+  F1: 0.9163591635916359,
+  shortStatsString: 'Accuracy=291/390=75% HammingGain=1-136/797=83% Precision=90% Recall=93% F1=92% timePerSample=1[ms]' }

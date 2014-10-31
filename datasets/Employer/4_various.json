@@ -261,7 +261,6 @@
 , {"input":"are you there?","output":["{\"Greet\":true}"]}
 , {"input":"I don't accept!","output":["{\"Reject\":\"previous\"}"]}
 , {"input":"Accept what?","output":["{\"Query\":\"accept\"}"]}
-, {"input":"You are asd;flkjasd;fljasdf;lasjdf","output":["{\"Greet\":true}"]}
 , {"input":"blah!","output":["{\"Greet\":true}"]}
 , {"input":"Please propose something...","output":["{\"Query\":\"bid\"}"]}
 , {"input":"However, i don't want you to get a pension","output":["{\"Offer\":{\"Pension Fund\":\"0%\"}}"]}

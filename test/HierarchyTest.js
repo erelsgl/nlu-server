@@ -23,10 +23,23 @@ describe('splitJson', function() {
 
 describe('splitPartEqually', function() {
 	it('should separate labels correctly', function() {
+		_.isEqual(Hierarchy.splitPartEqually([{"Accept":"Job Description"}]), [ [ 'Accept' ], [ 'Job Description' ], [] ]).should.equal(true);
 		_.isEqual(Hierarchy.splitPartEqually([{Offer: {Salary: "20000"}}]), [["Offer"], ["Salary"], ["20000"]]).should.equal(true);
-		_.isEqual(Hierarchy.splitPartEqually([{Accept: "previous"}]), [["Accept"], [], ["previous"]]).should.equal(true)
-		_.isEqual(Hierarchy.splitPartEqually([{Insist: "Salary"}]), [["Insist"], ["Salary"], []]).should.equal(true)	
-		_.isEqual(Hierarchy.splitPartEqually([{Insist: "Salary"}, {Accept: "previous"}]), [["Insist", "Accept"], ["Salary"], ["previous"]]);	
+		_.isEqual(Hierarchy.splitPartEqually([{"Accept": "previous"}]), [["Accept"], [], []]).should.equal(false)
+		// _.isEqual(Hierarchy.splitPartEqually([{"Accept": "previous"}]), [["Accept"], [], ["previous"]]).should.equal(true)
+		_.isEqual(Hierarchy.splitPartEqually([{"Insist": "Salary"}]), [["Insist"], ["Salary"], []]).should.equal(true)	
+		_.isEqual(Hierarchy.splitPartEqually([{"Insist": "Salary"}, {Accept: "previous"}]), [["Insist", "Accept"], ["Salary"], ["previous"]]);	
+	
+	});
+})
+
+describe('splitPartAtrributeValue', function() {
+	it('should separate labels correctly', function() {
+		_.isEqual(Hierarchy.splitPartVersion2([{Offer: {Salary: "20000"}}]), [[ 'Offer' ],[ 'Salary:20000' ]]).should.equal(true);
+		_.isEqual(Hierarchy.splitPartVersion2([{Accept: "previous"}]), [[ 'Accept' ],[ 'previous' ]]).should.equal(true);
+		_.isEqual(Hierarchy.splitPartVersion2([{Insist: "Salary"}]), [[ 'Insist' ],[ 'Salary' ]]).should.equal(true)
+		_.isEqual(Hierarchy.splitPartVersion2([{Offer: {Salary: "20000"}},{Insist: {Pension: "10"}}]), [ [ 'Offer', 'Insist'],['Salary:20000','Pension:10']]).should.equal(true)	
+		_.isEqual(Hierarchy.splitPartVersion2([{Insist: "Salary"}, {Accept: "previous"}]), [[ 'Insist', 'Accept' ],[ 'Salary', 'previous' ]]);	
 	});
 })
 

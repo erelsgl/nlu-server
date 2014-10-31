@@ -28,7 +28,9 @@
     "wordsworth": "*",
     "natural": "*",
     "underscore" : ">=1.1.0",
-    "seed-random": "*"
+    "seed-random": "*",
+    "defaultdict": "*",
+    "rimraf": "*"
   },
   "devDependencies": {
 	  "mocha": "*",

@@ -1,9 +1,15 @@
 *.seed
 *.out
 *.pid
+*.bk
 
 npm-debug.log
 /retrainedClassifiers
 /.project
 /node_modules_1
 /node_modules
+/truthteller
+/negex
+/domains
+/ppdb
+/turboparser

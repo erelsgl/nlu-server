@@ -1,0 +1,3331 @@
+[
+    [
+        {
+            "input": "this is my final offer",
+            "errorclass": [
+                "16"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Insist\":\"Working Hours\"}"
+                ],
+                "FN": [
+                    "{\"Insist\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Insist\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "id want you to work as a programmer ",
+            "errorclass": [
+                "17"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ],
+                "FP": [
+                    "{\"Append\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+            ]
+        },
+        {
+            "input": "How about programmer, 20000, without leased car, 0% pension fund, slow promotion track, 10 hours a day?",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+                "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+                "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "Ok. My offer is: 8 hours a day, programmer, without leased car, no pension fund, slow promotion track.",
+            "errorclass": [
+                "2"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ],
+                "FP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}",
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+                "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+                "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+            ]
+        },
+        {
+            "input": "what is your job?",
+            "errorclass": [
+                "13"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Query\":\"issues\"}"
+                ],
+                "FN": [
+                    "{\"Query\":\"Job Description\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"Job Description\"}"
+            ]
+        },
+        {
+            "input": "without leased car but with 10 % pension",
+            "errorclass": [
+                "1"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+            ]
+        },
+        {
+            "input": "no 20K is to much",
+            "errorclass": [
+                "5"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"Salary\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"Salary\"}"
+            ]
+        },
+        {
+            "input": "ok project manager without car and without pension",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}",
+                "{\"Offer\":{\"Job Description\":\"Project Manager\"}}",
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+            ]
+        },
+        {
+            "input": "you will start with no more than 12K NIS",
+            "errorclass": [
+                "8"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ],
+                "FP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+            ]
+        },
+        {
+            "input": "ok 10 hours 20000",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}",
+                "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "you can not change",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Insist\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Insist\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "but without leased car",
+            "errorclass": [
+                "18"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Append\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Append\":\"previous\"}",
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            ]
+        },
+        {
+            "input": "How about programmer, 20000, without leased car, 0% pension fund, slow promotion track, 9 hours a day?",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+                "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}",
+                "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+            ]
+        },
+        {
+            "input": "I did not accept the previous offer",
+            "errorclass": [
+                "9"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "its a little bit high dont you think?",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Reject\":\"Salary\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"Salary\"}"
+            ]
+        },
+        {
+            "input": "ok ?",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"accept\"}"
+            ]
+        },
+        {
+            "input": "you will get fat promotion",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+            ]
+        },
+        {
+            "input": "That won't do for me. I agreed to give you 12000, therefore I'll need you to work 10 hours a day.",
+            "errorclass": [
+                "6","8","9"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "no leasd car\\",
+            "errorclass": [
+                "2"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            ]
+        },
+        {
+            "input": "I'm happy that you accept.{ Job Description : Programmer }",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+            ]
+        },
+        {
+            "input": "yes you can",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Insist\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Insist\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "we already agreed 10 hours",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "deal?",
+            "errorclass": [
+                "4"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    ""
+                ],
+                "FN": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"accept\"}"
+            ]
+        },
+        {
+            "input": "GOOD",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    ""
+                ],
+                "FN": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "and 10 hours!",
+            "errorclass": [
+                "18"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Append\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Append\":\"previous\"}",
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "go get another job",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Quit\":true}"
+                ]
+            },
+            "original": [
+                "{\"Quit\":true}"
+            ]
+        },
+        {
+            "input": "AS A PROGRAMMER",
+            "errorclass": [
+                "18"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Append\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Append\":\"previous\"}",
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+            ]
+        },
+        {
+            "input": "i don't accept your offer",
+            "errorclass": [
+                "9"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Reject\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "Your offer { Leased Car : Without leased car } is acceptable",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ],
+                "FN": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "and no pention",
+            "errorclass": [
+                "18","2"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Append\":\"previous\"}",
+                    "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+                ]
+            },
+            "original": [
+                "{\"Append\":\"previous\"}",
+                "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+            ]
+        },
+        {
+            "input": "i cannot give you a car",
+            "errorclass": [
+                "1","8"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            ]
+        },
+        {
+            "input": "are you looking to be a project manager?",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Project Manager\"}}"
+                ],
+                "FP": [
+                    "{\"Greet\":true}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Project Manager\"}}"
+            ]
+        },
+        {
+            "input": "do you agree to work at my company?",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"accept\"}"
+            ]
+        },
+        {
+            "input": "but i do not need this job",
+            "errorclass": [
+                "5"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"Job Description\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"Job Description\"}"
+            ]
+        },
+        {
+            "input": "time is runningg out",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Query\":\"bid\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"bid\"}"
+            ]
+        },
+        {
+            "input": "you agree?",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"accept\"}"
+            ]
+        },
+        {
+            "input": "ok?",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"accept\"}"
+            ]
+        },
+        {
+            "input": "No, we agreed on programmer",
+            "errorclass": [
+                "9"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                "{\"Reject\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "no agreement on the car?",
+            "errorclass": [
+                "8"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+                ],
+                "FP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+            ]
+        },
+        {
+            "input": "i accept leased car issue",
+            "errorclass": [
+                "11"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "i am understand you are agree so welcome",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"accept\"}"
+            ]
+        },
+        {
+            "input": "ok, let sign",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FP": [
+                    "{\"Query\":\"accept\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "ok, but no pension",
+            "errorclass": [
+                "2"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}",
+                "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+            ]
+        },
+        {
+            "input": "How long are you willing to work?",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Greet\":true}"
+                ],
+                "FN": [
+                    "{\"Query\":\"Working Hours\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"Working Hours\"}"
+            ]
+        },
+        {
+            "input": "Yes",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    ""
+                ],
+                "FN": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "fine thank you. how are you?",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Greet\":true}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Quit\":true}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Greet\":true}"
+            ]
+        },
+        {
+            "input": "you want work?",
+            "errorclass": [
+                "4"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"accept\"}"
+            ]
+        },
+        {
+            "input": "is the candidate still here?",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Greet\":true}"
+                ]
+            },
+            "original": [
+                "{\"Greet\":true}"
+            ]
+        },
+        {
+            "input": "and you will work 10 hours",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ],
+                "FP": [
+                    "{\"Append\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "i dont have a time",
+            "errorclass": [
+                "4","10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"accept\"}"
+            ]
+        },
+        {
+            "input": "what about this job?",
+            "errorclass": [
+                "13"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Query\":\"Salary\"}"
+                ],
+                "FN": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"accept\"}"
+            ]
+        },
+        {
+            "input": "7,000 NIS it is.",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ],
+                "FN": [
+                    "{\"Accept\":\"Salary\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"Salary\"}"
+            ]
+        },
+        {
+            "input": "yes, sure",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "I agree to the 10% pension fund",
+            "errorclass": [
+                "11"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ],
+                "FN": [
+                    "{\"Accept\":\"Pension Fund\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"Pension Fund\"}"
+            ]
+        },
+        {
+            "input": "I cannot give you a leased car.",
+            "errorclass": [
+                "2","5"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"Leased Car\"}"
+            ]
+        },
+        {
+            "input": "the salary cant be 20000 NIS",
+            "errorclass": [
+                "11"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"Salary\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"Salary\"}"
+            ]
+        },
+        {
+            "input": "I'll give 20000 nis for a 10 hours programmer job",
+            "errorclass": [
+                "19"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}",
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "is alot ",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "you just said ok for 9 hours",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+            ]
+        },
+        {
+            "input": "you will get leased car if you will agree to salary of 7000 NIS",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+            ]
+        },
+        {
+            "input": "if you will be good as you say you are, fast pormotion track is an option",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+            ]
+        },
+        {
+            "input": "now get out please\\",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Quit\":true}"
+                ]
+            },
+            "original": [
+                "{\"Quit\":true}"
+            ]
+        },
+        {
+            "input": "I don't think I'll hire you after all...",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Quit\":true}"
+                ]
+            },
+            "original": [
+                "{\"Quit\":true}"
+            ]
+        },
+        {
+            "input": "ok but what about the salary?",
+            "errorclass": [
+                "4"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Query\":\"Salary\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}",
+                "{\"Query\":\"Salary\"}"
+            ]
+        },
+        {
+            "input": "do you want to talk about your pension fund?",
+            "errorclass": [
+                "13"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Query\":\"Job Description\"}"
+                ],
+                "FN": [
+                    "{\"Query\":\"Pension Fund\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"Pension Fund\"}"
+            ]
+        },
+        {
+            "input": "lets not agree on the leased car and talk about it again after you start to work",
+            "errorclass": [
+                "2"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Insist\":\"previous\"}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"No agreement\"}}",
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"No agreement\"}}",
+                "{\"Reject\":\"Leased Car\"}"
+            ]
+        },
+        {
+            "input": "Only 10 hours is possible but we will promisse fast promotion track and 20% pension fund",
+            "errorclass": [
+                "19"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+                "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "no 8 hours is not enough",
+            "errorclass": [
+                "19"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"Working Hours\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"Working Hours\"}"
+            ]
+        },
+        {
+            "input": "No, only 9 hours",
+            "errorclass": [
+                "12"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Insist\":\"Working Hours\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"previous\"}",
+                "{\"Insist\":\"Working Hours\"}",
+                "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+            ]
+        },
+        {
+            "input": "You offer me a leased car?!",
+            "errorclass": [
+                "11"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ],
+                "FN": [
+                    "{\"Query\":\"Leased Car\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"Leased Car\"}"
+            ]
+        },
+        {
+            "input": "You can't get it all, I offer 10 hours as a programmer and 12000 nis",
+            "errorclass": [
+                "19"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ],
+                "FP": [
+                    "{\"Append\":\"previous\"}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"previous\"}",
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "no less then 10 hours as a programmer!",
+            "errorclass": [
+                "19","17","12"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ],
+                "FP": [
+                    "{\"Append\":\"previous\"}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Insist\":\"Working Hours\"}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            "original": [
+                "{\"Insist\":\"Working Hours\"}",
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "I sujest we start with a lower price",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Reject\":\"Salary\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"Salary\"}"
+            ]
+        },
+        {
+            "input": "I can't give you a salary proposal when we didn't agree on your job description and hours per day.",
+            "errorclass": [
+                "5","9"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Query\":\"Job Description\"}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"Job Description\"}",
+                    "{\"Reject\":\"Working Hours\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"Job Description\"}",
+                "{\"Reject\":\"Job Description\"}",
+                "{\"Reject\":\"Working Hours\"}"
+            ]
+        },
+        {
+            "input": "let me see how you work as a programmer first",
+            "errorclass": [
+                "17"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ],
+                "FP": [
+                    "{\"Append\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+            ]
+        },
+        {
+            "input": "20000 nis, no penssion as qa",
+            "errorclass": [
+                "2"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"QA\"}}",
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
+                ],
+                "FP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"QA\"}}",
+                "{\"Offer\":{\"Pension Fund\":\"0%\"}}",
+                "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
+            ]
+        },
+        {
+            "input": "if you work 10h I can give you 20% pension fund and a car ",
+            "errorclass": [
+                "19"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "we already agreed on 12000 nis",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+            ]
+        },
+        {
+            "input": "i cannot agree to your suggest",
+            "errorclass": [
+                "9"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "i will accept for 10 hours",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "I can only offer you 7,000 NIS.",
+            "errorclass": [
+                "12"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Insist\":\"Salary\"}"
+                ]
+            },
+            "original": [
+                "{\"Insist\":\"Salary\"}",
+                "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+            ]
+        },
+        {
+            "input": "without leased car ",
+            "errorclass": [
+                "1"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            ]
+        },
+        {
+            "input": "I will offer you 0% once again.",
+            "errorclass": [
+                "12"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Insist\":\"Pension Fund\"}"
+                ]
+            },
+            "original": [
+                "{\"Insist\":\"Pension Fund\"}",
+                "{\"Offer\":{\"Pension Fund\":\"0%\"}}"
+            ]
+        },
+        {
+            "input": "last offer: 7000 and fast promotion",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ],
+                "FP": [
+                    "{\"Insist\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+            ]
+        },
+        {
+            "input": "and no car 10%",
+            "errorclass": [
+                "18"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Append\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Append\":\"previous\"}",
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+            ]
+        },
+        {
+            "input": "fine but with no car",
+            "errorclass": [
+                "2"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}",
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                "{\"Reject\":\"Leased Car\"}"
+            ]
+        },
+        {
+            "input": "i cannot agree to that",
+            "errorclass": [
+                "9"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "well you should accept it you will get fast promotion track.",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+            ]
+        },
+        {
+            "input": "get out of my office, or I call the police",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Quit\":true}"
+                ]
+            },
+            "original": [
+                "{\"Quit\":true}"
+            ]
+        },
+        {
+            "input": "i will accept it if you will start with no car and work 10 hours",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "slow promotion and we can sign",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ],
+                "FP": [
+                    "{\"Query\":\"accept\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+            ]
+        },
+        {
+            "input": "i didnt accept the salary will be 7000",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+            ]
+        },
+        {
+            "input": "12000, programmer, car,10%,fast promotion 9 hours",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                "{\"Offer\":{\"Pension Fund\":\"10%\"}}",
+                "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}",
+                "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+            ]
+        },
+        {
+            "input": "hi 20000 NIS does not proper the QA JOB",
+            "errorclass": [
+                "11"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Greet\":true}",
+                    "{\"Offer\":{\"Job Description\":\"QA\"}}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Salary\":\"20,000 NIS\"}}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"Salary\"}"
+                ]
+            },
+            "original": [
+                "{\"Greet\":true}",
+                "{\"Offer\":{\"Job Description\":\"QA\"}}",
+                "{\"Reject\":\"Salary\"}"
+            ]
+        },
+        {
+            "input": "i will accept 9 hours, not less",
+            "errorclass": [
+                "12","6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Insist\":\"Working Hours\"}"
+                ]
+            },
+            "original": [
+                "{\"Insist\":\"Working Hours\"}",
+                "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+            ]
+        },
+        {
+            "input": "no, we agreed on 9",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                "{\"Reject\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "i think 7000 is good",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+            ]
+        },
+        {
+            "input": "no, you can be a programer",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                "{\"Reject\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "so fast promotion track and without leased car",
+            "errorclass": [
+                "1"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+            ]
+        },
+        {
+            "input": "i dont think so",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "accept ",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "what are you willing to compromise about, since i wanyt you to work 10 hours.",
+            "errorclass": [
+                "4"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ],
+                "FP": [
+                    "{\"Greet\":true}"
+                ],
+                "FN": [
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}",
+                "{\"Query\":\"compromise\"}"
+            ]
+        },
+        {
+            "input": "withouth",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    ""
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            ]
+        },
+        {
+            "input": "9 hours final?",
+            "errorclass": [
+                "12"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Insist\":\"Working Hours\"}"
+                ]
+            },
+            "original": [
+                "{\"Insist\":\"Working Hours\"}",
+                "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+            ]
+        },
+        {
+            "input": "i can not give you a car at all.",
+            "errorclass": [
+                "2"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"Leased Car\"}"
+            ]
+        },
+        {
+            "input": "you have to compromise",
+            "errorclass": [
+                "4"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"compromise\"}"
+            ]
+        },
+        {
+            "input": "compromise",
+            "errorclass": [
+                "4"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    ""
+                ],
+                "FN": [
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"compromise\"}"
+            ]
+        },
+        {
+            "input": "can you give 10?",
+            "errorclass": [
+                "19"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "wich job do you want?",
+            "errorclass": [
+                "4"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Query\":\"Job Description\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"Job Description\"}"
+            ]
+        },
+        {
+            "input": "so we both agreement",
+            "errorclass": [
+                "4"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"accept\"}"
+            ]
+        },
+        {
+            "input": "we already agreed on 12000",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+            ]
+        },
+        {
+            "input": "since your are working 8 hours, no leased car.",
+            "errorclass": [
+                "1","8"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+            ]
+        },
+        {
+            "input": "oka",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    ""
+                ],
+                "FN": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "hey ",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Greet\":true}"
+                ]
+            },
+            "original": [
+                "{\"Greet\":true}"
+            ]
+        },
+        {
+            "input": "agreed on 8 hours",
+            "errorclass": [
+                "11"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ],
+                "FN": [
+                    "{\"Accept\":\"Working Hours\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"Working Hours\"}"
+            ]
+        },
+        {
+            "input": "sorry, but without lease car, you have to compromise.",
+            "errorclass": [
+                "4","17","10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Append\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                "{\"Query\":\"compromise\"}"
+            ]
+        },
+        {
+            "input": "no without leased car",
+            "errorclass": [
+                "1"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                "{\"Reject\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "i can not change that agreement,",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Insist\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "so both agreement",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"accept\"}"
+            ]
+        },
+        {
+            "input": "i am willing to compromise on 9 hours.",
+            "errorclass": [
+                "4"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Working Hours\":\"9 hours\"}}",
+                "{\"Query\":\"compromise\"}"
+            ]
+        },
+        {
+            "input": "programer",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    ""
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+            ]
+        },
+        {
+            "input": "you have to compromise, i did",
+            "errorclass": [
+                "4"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"compromise\"}"
+            ]
+        },
+        {
+            "input": "can you give 10 hores",
+            "errorclass": [
+                "19"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "12000 NIS, programmer,withour lissed car",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+            ]
+        },
+        {
+            "input": "I dont accept 20%",
+            "errorclass": [
+                "9","11"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"Pension Fund\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"Pension Fund\"}"
+            ]
+        },
+        {
+            "input": "lets talk about job description first",
+            "errorclass": [
+                "4","10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Query\":\"Job Description\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"Job Description\"}"
+            ]
+        },
+        {
+            "input": "agreed on team manager, but work 9 hours",
+            "errorclass": [
+                "11","6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+                ],
+                "FN": [
+                    "{\"Accept\":{\"Job Description\"}}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":{\"Job Description\"}}",
+                "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+            ]
+        },
+        {
+            "input": "no lissed car but you be team manager",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Team Manager\"}}"
+                ],
+                "FP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Team Manager\"}}",
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            ]
+        },
+        {
+            "input": "ok 8 hours and 7000 NIS",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}",
+                "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+            ]
+        },
+        {
+            "input": "9 hours or nothing",
+            "errorclass": [
+                "12"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Insist\":\"Working Hours\"}"
+                ]
+            },
+            "original": [
+                "{\"Insist\":\"Working Hours\"}",
+                "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+            ]
+        },
+        {
+            "input": "10 hours and no more",
+            "errorclass": [
+                "8","12"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ],
+                "FP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Insist\":\"Working Hours\"}"
+                ]
+            },
+            "original": [
+                "{\"Insist\":\"Working Hours\"}",
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "you will work as a programmer and work 10 hours",
+            "errorclass": [
+                "17"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ],
+                "FP": [
+                    "{\"Append\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "salary 10,000",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Salary\":\"10,000 NIS\"}}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+            ]
+        },
+        {
+            "input": "any thing else ?",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Query\":\"issues\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"issues\"}"
+            ]
+        },
+        {
+            "input": "I dont accept fast promotion",
+            "errorclass": [
+                "8"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"Promotion Possibilities\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"Promotion Possibilities\"}"
+            ]
+        },
+        {
+            "input": "ok. but in this job no lissed car",
+            "errorclass": [
+                "10","9"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}",
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            ]
+        },
+        {
+            "input": "then work 9 hours",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}",
+                "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+            ]
+        },
+        {
+            "input": "ok I give you a car",
+            "errorclass": [
+                "1"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}",
+                "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+            ]
+        },
+        {
+            "input": "SIGN",
+            "errorclass": [
+                "4"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    ""
+                ],
+                "FN": [
+                    "{\"Query\":\"accept\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"accept\"}"
+            ]
+        },
+        {
+            "input": "i can't give you this",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "AGREE",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    ""
+                ],
+                "FN": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "THANK YOU",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Quit\":true}"
+                ]
+            },
+            "original": [
+                "{\"Quit\":true}"
+            ]
+        },
+        {
+            "input": "YOU UNDERSTAND RIGHT",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "Actually, I had in mind offering you a Programmers job",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+            ]
+        },
+        {
+            "input": "So no leased car?",
+            "errorclass": [
+                "1"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            ]
+        },
+        {
+            "input": "We have already agreed on Programmer",
+            "errorclass": [
+                "6"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+            ]
+        },
+        {
+            "input": "A Programmer does not have a leased car, I'm afraid",
+            "errorclass": [
+                "1"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            ]
+        },
+        {
+            "input": "Instead of a leased car, I can give you fast promotion track",
+            "errorclass": [
+                "1"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+            ]
+        },
+        {
+            "input": "lets make it fast, leased car and slow promotion",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Promotion Possibilities\":\"Fast promotion track\"}}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                "{\"Offer\":{\"Promotion Possibilities\":\"Slow promotion track\"}}"
+            ]
+        },
+        {
+            "input": "only QA",
+            "errorclass": [
+                "12"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"QA\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Insist\":\"Job Description\"}"
+                ]
+            },
+            "original": [
+                "{\"Insist\":\"Job Description\"}",
+                "{\"Offer\":{\"Job Description\":\"QA\"}}"
+            ]
+        },
+        {
+            "input": "Would you prefer working as a Programmer?",
+            "errorclass": [
+                "17"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+                ],
+                "FP": [
+                    "{\"Append\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}"
+            ]
+        },
+        {
+            "input": "I will let you think about it again",
+            "errorclass": [
+                "12"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Insist\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Insist\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "I will not accept the leased car",
+            "errorclass": [
+                "11","9"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}",
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"Leased Car\"}"
+            ]
+        },
+        {
+            "input": "go to hell",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Quit\":true}"
+                ]
+            },
+            "original": [
+                "{\"Quit\":true}"
+            ]
+        },
+        {
+            "input": "we dont want you",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Quit\":true}"
+                ]
+            },
+            "original": [
+                "{\"Quit\":true}"
+            ]
+        },
+        {
+            "input": "We both losing points, I am once again suggestiong without leased car",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ],
+                "FP": [
+                    "{\"Insist\":\"Pension Fund\"}",
+                    "{\"Query\":\"accept\"}"
+                ],
+                "FN": [
+                    "{\"Query\":\"compromise\"}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}",
+                "{\"Query\":\"compromise\"}"
+            ]
+        },
+        {
+            "input": "with 7000 nis we can give you a car",
+            "errorclass": [
+                "1"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+            ]
+        },
+        {
+            "input": "My last offer is 9 hours",
+            "errorclass": [
+                "12"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Insist\":\"Working Hours\"}"
+                ]
+            },
+            "original": [
+                "{\"Insist\":\"Working Hours\"}",
+                "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+            ]
+        },
+        {
+            "input": "20% with 10 hours",
+            "errorclass": [
+                "19"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Pension Fund\":\"20%\"}}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Pension Fund\":\"20%\"}}",
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "cant accept",
+            "errorclass": [
+                "9"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Accept\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "I would like to work with you without a leased car",
+            "errorclass": [
+                "1"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            ]
+        },
+        {
+            "input": "I will let you think about it again, my offer is 9 hours",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Insist\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Insist\":\"previous\"}",
+                "{\"Offer\":{\"Working Hours\":\"9 hours\"}}"
+            ]
+        },
+        {
+            "input": "there is no agreement on leased car",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+            ]
+        },
+        {
+            "input": "we can opt out",
+            "errorclass": [
+                "10","12"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Insist\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Insist\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "I cant offer you a leased car",
+            "errorclass": [
+                "2","11"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}"
+                ],
+                "FN": [
+                    "{\"Reject\":\"Leased Car\"}"
+                ]
+            },
+            "original": [
+                "{\"Reject\":\"Leased Car\"}"
+            ]
+        },
+        {
+            "input": "there is no agreement on the leased car",
+            "errorclass": [
+                "8"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+                ],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": []
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+            ]
+        },
+        {
+            "input": "No agreement on leased car",
+            "errorclass": [
+                "8"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Leased Car\":\"With leased car\"}}",
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"No agreement\"}}"
+            ]
+        },
+        {
+            "input": "Maybe we should proceed to the next issue",
+            "errorclass": [
+                "10","4"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Query\":\"issues\"}"
+                ]
+            },
+            "original": [
+                "{\"Query\":\"issues\"}"
+            ]
+        },
+        {
+            "input": "ok",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Query\":\"accept\"}"
+                ],
+                "FN": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "10000 NIS",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Offer\":{\"Salary\":\"7,000 NIS\"}}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Salary\":\"10,000 NIS\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Salary\":\"10,000 NIS\"}}"
+            ]
+        },
+        {
+            "input": "withour liased car",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            ]
+        },
+        {
+            "input": "OK",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Query\":\"accept\"}"
+                ],
+                "FN": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}"
+            ]
+        },
+        {
+            "input": "ok , 8 hours",
+            "errorclass": [
+                ""
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+                ],
+                "FP": [
+                    "{\"Query\":\"accept\"}"
+                ],
+                "FN": [
+                    "{\"Accept\":\"previous\"}"
+                ]
+            },
+            "original": [
+                "{\"Accept\":\"previous\"}",
+                "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+            ]
+        },
+        {
+            "input": "12000 NIS, programmer,without liased car",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [
+                    "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                    "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}"
+                ],
+                "FP": [],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}",
+                "{\"Offer\":{\"Job Description\":\"Programmer\"}}",
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            ]
+        },
+        {
+            "input": "you can work for 10h so you will get mor mony",
+            "errorclass": [
+                "19"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Insist\":\"previous\"}",
+                    "{\"Offer\":{\"Pension Fund\":\"10%\"}}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Working Hours\":\"10 hours\"}}"
+            ]
+        },
+        {
+            "input": "no liased car",
+            "errorclass": [
+                "10"
+            ],
+            "stat": {
+                "TP": [],
+                "FP": [
+                    "{\"Reject\":\"previous\"}"
+                ],
+                "FN": [
+                    "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+                ]
+            },
+            "original": [
+                "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"
+            ]
+        }
+    ],
+    [],
+    []
+]
