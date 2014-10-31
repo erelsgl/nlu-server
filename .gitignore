@@ -1,6 +1,7 @@
 *.seed
 *.out
 *.pid
+*.bk
 
 npm-debug.log
 /retrainedClassifiers
@@ -11,3 +12,4 @@ npm-debug.log
 /negex
 /domains
 /ppdb
+/turboparser
