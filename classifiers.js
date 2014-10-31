@@ -54,7 +54,7 @@ function instanceFilterShortString(datum)
 
 function normalizer1(sentence) {
   	var truth = require("./research/rule-based/truth_utils.js")
-  	var truth_filename =  "./truthteller/truth_teller/sentence_to_truthteller.txt"
+  	var truth_filename =  "../truth_teller/sentence_to_truthteller.txt"
 
 	sentence = sentence.toLowerCase().trim();
 	sentence = regexpNormalizer(sentence)
