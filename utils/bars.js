@@ -673,15 +673,21 @@ function extractturns(dataset)
 	{
 		data = []
 		_.each(dataset, function(value, key, list){ 
+        // if ('status' in value)
+        // if (value['status'].indexOf("goodconv") != -1)
 			_.each(value['turns'], function(set, key, list){ 
-				if ('output' in set)
-          {
-          if ('status' in set)
-            if (set['status'] == 'active')
-              data.push(set)
-          }
-        else
-          data.push(set)
+        set['input'] = set['input'].replace(/[^\x00-\x7F]/g, "")
+        // if ('user' in set)
+          // if (set['user'].indexOf('Agent') == -1)
+            if (set['input'] != "")
+      				if ('output' in set)
+                {
+                if ('status' in set)
+                  if (set['status'] == 'active')
+                    data.push(set)
+                }
+              else
+                data.push(set)
 				}, this)
 		}, this)
 		return data
