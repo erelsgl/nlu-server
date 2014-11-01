@@ -491,7 +491,9 @@ function filterAttributes(items)
 var RuleItents = ['Offer', 'Accept', 'Reject', 'Insist', 'QueryYN', 'QueryWH']
 var RuleIntentsSingle = ['Greet', 'Quit']
 var RuleAttributes = ['Salary', 'Pension Fund', 'Working Hours', 'Promotion Possibilities', 'Job Description', 'Leased Car']
-var RuleValues = {'Salary': [['7000','7,000 NIS'],['10000','10,000 NIS'],['12000','12,000 NIS'], ['20000','20,000 NIS']],
+var RuleValues = {
+		  // 'Salary': [['7000','7,000 NIS'],['10000','10,000 NIS'],['12000','12,000 NIS'], ['20000','20,000 NIS']],
+		  'Salary': [['60000','60,000 USD'],['90000','90,000 USD'],['120000','120,000 USD']],
 		  'Pension Fund': ['0%','10%','15%','20%'],
 		  'Promotion Possibilities': [['fast','Fast promotion track'],['slow','Slow promotion track']],
 		  'Working Hours': [['8','8 hours'],['9','9 hours'],['10','10 hours']],
@@ -510,13 +512,15 @@ if (process.argv[1] === __filename)
 dataset = [
 			// "4_various.json",
 			// "3_woz_kbagent_turkers_negonlp2.json"
-			"turkers_keyphrases_only_rule.json",
-			"students_keyphrases_only_rule.json"
+			// "turkers_keyphrases_only_rule.json",
+			// "students_keyphrases_only_rule.json"
+			"dial_usa.json"
 			]
 
 var data = []
 _.each(dataset, function(value, key, list){ 
-	data = data.concat(JSON.parse(fs.readFileSync("../../datasets/Employer/Dialogue/"+value)))
+	data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/"+value)))
+	// data = data.concat(JSON.parse(fs.readFileSync("../../datasets/Employer/Dialogue/"+value)))
 	// data = data.concat(JSON.parse(fs.readFileSync("../../datasets/Candidate/"+value)))
 })
 
