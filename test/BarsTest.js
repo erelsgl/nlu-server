@@ -466,5 +466,35 @@ describe('Bars utilities', function() {
 		// console.log(JSON.stringify(str.substring(0,a), null, 4))
 	})
 
+	it('currrr filters the fetures', function() {
+		var intents = 
+		[["Offer","",[0,4],[{
+						"Offer": 
+						[["a1",1],
+	                    ["a2",0],
+	                    ["a3",2]],
 
+	                    "Accept": 
+						[["a9",0],
+	                    ["a7",0],
+	                    ["a13",2]]
+	            }]
+	    ],
+	    ["Reject","",[0,4],[{
+						"Offer": 
+						[["a4",1],
+	                    ["a5",0],
+	                    ["a6",0]]
+	            }]
+	    ]
+	    ]
+
+	    var filtered = bars.filterzerofeatures(intents)
+
+	    // console.log(JSON.stringify(filtered, null, 4))
+
+	    _.isEqual(filtered, [["Offer","",[0,4],[{"Offer": [["a1",1],["a3",2]], "Accept": [["a13",2]]}]],
+        ["Reject","",[0,4],[{"Offer": [[ "a4",1]]}]]])
+	    
+    })
 })
