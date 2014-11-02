@@ -228,8 +228,17 @@ function featureExtractor(sentence, features) {
 	if (original.indexOf("?") != -1)
 		features["?_sign"] = 1
 
-	if (original.substring(0,2) == 'do')
-		features["do_at_start"] = 1
+	var question_words = ['what', 'which', 'why', 'how', 'do']
+
+	// if (original.substring(0,2) == 'do')
+		// features["do_at_start"] = 1
+
+	if (_.some(question_words, function(num){return original.substring(0,num.length) == num}))
+		features["wh_word_at_start"] = 1
+
+	if (_.some(question_words, function(num){return original.indexOf(num)}))
+		features["wh_word"] = 1
+
 
 	// console.log(features)
 
