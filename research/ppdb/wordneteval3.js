@@ -33,19 +33,29 @@ var datasets = [
 
 var data = []
 _.each(datasets, function(value, key, list){
-        data = data.concat(JSON.parse(fs.readFileSync("../../datasets/Employer/Dialogue/"+value)))
+        data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value)))
 }, this)
+
+data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json")))
+
+var turns = bars.extractturns(data)
+
+var filtered = []
+_.each(turns, function(turn, key, list){
+  if ('intent_keyphrases_rule' in turn)
+    filtered.push(turn)
+}, this)
+
+turns = filtered
 
 // intent_keyphrases_gold
 // intent_keyphrases_rule
-
-var turns = bars.extractturns(data)
 
 // collect only offer keyphrases
 // var keyph = []
 // _.each(turns, function(value, key, list){ 
 //   if ('intent_keyphrases_rule' in value)
-//     if ('Offer' in value['intent_keyphrases_rule'])
+//     if ('Offer' in value['intent_keyphrawordnetses_rule'])
 //       {
 //         var phrase = value['intent_keyphrases_rule']['Offer']
 //         // phrase = phrase.replace("<ATTRIBUTE>","")
