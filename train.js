@@ -47,7 +47,7 @@ var prepare_dataset_for_gaby1 = false
 var prepare_dataset_for_gaby = false
 var do_keyphrase_only_rule = false
 var do_small_temporary_serialization_test = false
-var do_mlrule = false
+var do_mlrule = true
 var do_learning_curves = false
 var do_test_sagae = false
 var do_cross_dataset_testing = false
@@ -66,7 +66,7 @@ var regexnor = false
 var just_test = false
 var do_keyphrase_annotaiton = false
 var do_keyphrase_gold_annotaiton = false
-var do_keyphrase_predict_annotaiton = true
+var do_keyphrase_predict_annotaiton = false
 var do_pull_all_utterance_to_file = false
 
 var _ = require('underscore')._;
@@ -734,7 +734,7 @@ if (do_mlrule)
 	var data = []
 	_.each(datalist, function(value, key, list){ 
 		// data = data.concat(JSON.parse(fs.readFileSync("./datasets/Employer/"+value)))
-		data = data.concat(JSON.parse(fs.readFileSync("./datasets/Employer/Dialogue/"+value)))
+		data = data.concat(JSON.parse(fs.readFileSync("../datasets/Employer/Dialogue/"+value)))
 	})
 
 	// var ppdb = require("./research/ppdb/utils.js")

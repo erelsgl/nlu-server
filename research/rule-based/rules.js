@@ -512,15 +512,15 @@ if (process.argv[1] === __filename)
 dataset = [
 			// "4_various.json",
 			// "3_woz_kbagent_turkers_negonlp2.json"
-			// "turkers_keyphrases_only_rule.json",
-			// "students_keyphrases_only_rule.json"
-			"dial_usa.json"
+			"turkers_keyphrases_only_rule.json",
+			"students_keyphrases_only_rule.json"
+			// "dial_usa.json"
 			]
 
 var data = []
 _.each(dataset, function(value, key, list){ 
-	data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/"+value)))
-	// data = data.concat(JSON.parse(fs.readFileSync("../../datasets/Employer/Dialogue/"+value)))
+	// data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/"+value)))
+	data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value)))
 	// data = data.concat(JSON.parse(fs.readFileSync("../../datasets/Candidate/"+value)))
 })
 
