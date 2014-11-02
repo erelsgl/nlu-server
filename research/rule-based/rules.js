@@ -366,7 +366,7 @@ function inSentence(sentence, keyphrase, goldLable)
 				if (negation == true)
 					{
 						// output.push([-1,-1,'No agreement',''])
-						output.push(['No agreement','agreement',getWords(sentence,"agreement"), whatinSentence(sentence,['agreement'])])
+						output.push(['No agreement','no agreement',getWords(sentence,"no agreement"), whatinSentence(sentence,['no agreement'])])
 					}
 				else
 					{	
@@ -492,8 +492,8 @@ var RuleItents = ['Offer', 'Accept', 'Reject', 'Insist', 'QueryYN', 'QueryWH']
 var RuleIntentsSingle = ['Greet', 'Quit']
 var RuleAttributes = ['Salary', 'Pension Fund', 'Working Hours', 'Promotion Possibilities', 'Job Description', 'Leased Car']
 var RuleValues = {
-		  // 'Salary': [['7000','7,000 NIS'],['10000','10,000 NIS'],['12000','12,000 NIS'], ['20000','20,000 NIS']],
-		  'Salary': [['60000','60,000 USD'],['90000','90,000 USD'],['120000','120,000 USD']],
+		  'Salary': [['7000','7,000 NIS'],['10000','10,000 NIS'],['12000','12,000 NIS'], ['20000','20,000 NIS']],
+		  // 'Salary': [['60000','60,000 USD'],['90000','90,000 USD'],['120000','120,000 USD']],
 		  'Pension Fund': ['0%','10%','15%','20%'],
 		  'Promotion Possibilities': [['fast','Fast promotion track'],['slow','Slow promotion track']],
 		  'Working Hours': [['8','8 hours'],['9','9 hours'],['10','10 hours']],
