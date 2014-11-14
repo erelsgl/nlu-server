@@ -148,7 +148,7 @@ describe('Bars utilities', function() {
 	results = bars.aggregate_results(stats)
 	results['F1'].should.equal(0.9);
 	results['Precision'].should.equal(3.5);
-	results['Recall'].should.equniqueual(0.575);
+	results['Recall'].should.equal(0.575);
 	})
 
 	it('correctly aggregate nested hashes', function() {
@@ -649,8 +649,8 @@ describe('Bars utilities', function() {
 ]
 
 	var results = bars.buildlabel(rule,dep,intents)
-	console.log(results)
-	process.exit(0)
+	//console.log(results)
+	//process.exit(0)
 
     })
 
