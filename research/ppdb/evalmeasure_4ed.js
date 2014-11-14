@@ -85,9 +85,10 @@ var datasets = [
             ]
 
 var data = []
-_.each(datasets, function(value, key, list){
-        data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value)))
-}, this)
+
+// _.each(datasets, function(value, key, list){
+        // data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value)))
+// }, this)
 
 data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json")))
 
