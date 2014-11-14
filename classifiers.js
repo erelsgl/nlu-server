@@ -222,7 +222,7 @@ function featureExtractor(sentence, features) {
 	// if (original.indexOf("value") != -1)
 		// features["value_present"] = 1
 
-	if ((original.indexOf("value") != -1) || (original.indexOf("value")!=-1) )
+	if ((original.indexOf("value") != -1) || (original.indexOf("value")!=-1))
 		features["value_or_attribute_present"] = 1
 
 	if (original.indexOf("?") != -1)
@@ -236,7 +236,7 @@ function featureExtractor(sentence, features) {
 	if (_.some(question_words, function(num){return original.substring(0,num.length) == num}))
 		features["wh_word_at_start"] = 1
 
-	if (_.some(question_words, function(num){return original.indexOf(num)}))
+	if (_.some(question_words, function(num){return original.indexOf(num) != -1}))
 		features["wh_word"] = 1
 
 
