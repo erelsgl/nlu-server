@@ -1324,7 +1324,6 @@ function aggregate_rilesbased(classes, classifier, parts, explanations, original
 
 	var data = rules.findData(initial)
 
-  
 	explanations[0] = filterzerofeatures(aggreate_similar(explanations[0]))
   explanations[1] = data[0]
   explanations[2] = data[1].concat(filterValues(explanations[2]))
