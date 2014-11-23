@@ -5,16 +5,20 @@ Extract seeds from train (think about an approach). Fetch new paraphrases from P
 
 */
 
+var Fiber = require('fibers');
+
+var f = Fiber(function() {
+  var fiber = Fiber.current;
+
+
 var _ = require('underscore')._; 
 var fs = require('fs');
 var natural = require('natural');
 var utils = require('./utils');
 var async = require('async');
-var Fiber = require('fibers');
 var bars = require('../../utils/bars.js');
 var partitions = require('limdu/utils/partitions');
 
-// var INTENT = "Offer"
 
 var outstats = []
 // var keyphrases = JSON.parse(fs.readFileSync("../test_aggregate_keyphases/keyphases.08.2014.json"))
@@ -31,33 +35,89 @@ var datasets = [
 var data = []
 
 _.each(datasets, function(value, key, list){
-  data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value)))
+    data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value)))
 }, this)
 
 // data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json")))
 
+var dataset = partitions.partition(data, 1, Math.round(data.length*0.8))
 
+// console.log(dataset['train'].length)
+// console.log(dataset['test'].length)
 
-var dataset = partitions.partition(data, 1, Math.round(data.length*0.2))
+var train_turns = bars.extractturns(dataset['train'])
 
-
-console.log(JSON.stringify(dataset['train'], null, 4))
-
-process.exit(0)
-
-var turns = bars.extractturns(data)
-
-var filtered = []
-_.each(turns, function(turn, key, list){
+// load only keyphrases from train
+var seeds = {}
+_.each(train_turns, function(turn, key, list){
   if ('intent_keyphrases_rule' in turn)
-    filtered.push(turn)
+    _.each(turn['intent_keyphrases_rule'], function(keyphrase, intent, list){ 
+      if (!(intent in seeds))
+        seeds[intent] = []
+
+      if ((keyphrase != 'DEFAULT INTENT') && (keyphrase != ''))
+      {
+
+        keyphrase = keyphrase.replace("<VALUE>", "")
+        keyphrase = keyphrase.replace("<ATTRIBUTE>", "")
+        keyphrase = keyphrase.replace("^", "")
+        keyphrase = keyphrase.replace(".", "")
+        keyphrase = keyphrase.replace("!", "")
+        keyphrase = keyphrase.replace("$", "")
+        keyphrase = keyphrase.replace(/ +(?= )/g,'')
+        keyphrase = keyphrase.toLowerCase()
+
+        seeds[intent].push(keyphrase)
+        seeds[intent] = _.unique(seeds[intent])
+      } 
+    }, this)
 }, this)
 
-turns = filtered
+console.log(seeds)
+
+_.each(seeds, function(valuelist, intent, list){ 
+  console.log("intent")
+  console.log(intent)
+
+  _.each(valuelist, function(elem, key, list){
+    console.log("keyphrase")
+    console.log(elem) 
+    var dist = []
+    _.each(utils.subst(elem), function(sub, key1, list1){
+      console.log("substring")
+      console.log(sub)
+      utils.recursionredis([sub], [2], function(err,actual) {
+        fiber.run(actual)
+      })
+      var paraphr = Fiber.yield()
+
+      utils.onlycontent(sub, function (err,strcontent){
+        fiber.run(utils.elimination(strcontent))
+      })
+      var paraphrcontent = Fiber.yield()
+
+      console.log("length of paraphrases")
+      console.log(paraphr.length)
+
+      console.log("content part")
+      console.log(paraphrcontent)
+
+      var score = paraphrcontent.length==1? 1: Math.pow(paraphr.length, paraphrcontent.length)
+      console.log("score")
+      console.log(score)
+
+      dist.push(score)
+      // console.log(paraphr)
+    }, this)
+    dist = _.sortBy(dist, function(num){ return num });
+    console.log(dist)
+  }, this)
+}, this)
+
+process.exit(0)
+// turns = filtered
 
 // filtering the gold standard keyphrases that are equal according to the comparison scheme
-var f = Fiber(function() {
-  var fiber = Fiber.current;
 
 	var seeds = ['offer']
 	var report = {}
