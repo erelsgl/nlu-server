@@ -48,7 +48,7 @@ function biunormalizer(sentence) {
 // [ 'you_PRP ca_MD n\'t_RB get_VB\n' ]
 // is_VBZ
 // [ 'be_VB working_VBG\n' ]
-var CONTENT = ['FW','NN','VBN','VBP','JJ', 'VB','VBD','RB', 'NNS', 'VBG', 'VBZ', 'JJS', 'MD']
+var CONTENT = ['NN','VBN','VBP','JJ', 'VB','VBD','RB', 'NNS', 'VBG', 'VBZ', 'JJS', 'MD']
 // FW - foreign word
 
 function wordnetsyn(word, callback) {
@@ -284,13 +284,13 @@ var recursionredis = function (seeds, order, callback)
 	async.timesSeries(order.length, function(n, next)
 		{
 		DBSELECT = order[n]
-		console.log(n)
+		// console.log(n)
 		async.mapSeries(fetched, cleanredis, function(err, bestli) 
 			{
 				bestli = cleanposfromredis(_.flatten(bestli))
 				fetched = fetched.concat(bestli)
 				fetched = _.unique(_.flatten(fetched))
-				console.log(fetched.length)
+				// console.log(fetched.length)
 				next()
 			})
 		},
@@ -409,6 +409,9 @@ function cleanposoutput(resp)
 	_.each(pairlist, function(value, key, list){
 		POS.push(value.split("_"))
 	}, this)
+
+	console.log(resp)
+	console.log(POS)
 
 	_.each(POS, function(value, key, list){ 
 		// if (value[0] == "not")
@@ -534,6 +537,20 @@ function subst(str) {
 return _.compact(subst)
 }
 
+
+function elimination(strcontentlemma)
+{
+	var elim = ['i','follow','good','instead','do','maximum','mind','actually','prepare','willing','want','ha', 'has','have','is', 'are', 'be', 'will', 'let', 'i', 'I', 'to', 'you', 'we', 'for',
+		'i\'ll', 'so', 'the', 'can\'t', 'let\'s', 'only', 'can', 'on','her','an', 'it', 'is', 'on', 'this', 'make', 'made'
+		, 'am']
+
+	_.each(elim, function(value, key, list){ 
+		strcontentlemma = _.without(strcontentlemma,value)
+	}, this)
+
+	return strcontentlemma
+}
+
 // input: string
 // output: normlized string
 function normalizer(str, callback)
@@ -546,9 +563,7 @@ function normalizer(str, callback)
 	str = str.trim()
 	str = biunormalizer(str)
 
-	var elim = ['i','follow','good','instead','do','maximum','mind','actually','prepare','willing','want','ha', 'has','have','is', 'are', 'be', 'will', 'let', 'i', 'I', 'to', 'you', 'we', 'for',
-	'i\'ll', 'so', 'the', 'can\'t', 'let\'s', 'only', 'can', 'on','her','an', 'it', 'is', 'on', 'this', 'make', 'made']
-
+	
 	onlycontent(str, function (err,strcontent){
 
 		if (_.compact(strcontent).length == 0) 
@@ -556,9 +571,7 @@ function normalizer(str, callback)
     
     	strcontentlemma = lemmatize(strcontent)
 
-    	_.each(elim, function(value, key, list){ 
-    		strcontentlemma = _.without(strcontentlemma,value)
-    	}, this)
+   		strcontentlemma = elimination(strcontentlemma)
 
     	if (strcontentlemma.length == 0) 
        		strcontentlemma = strcontent
@@ -784,5 +797,6 @@ cachepos:cachepos,
 clusteration:clusteration,
 dep:dep,
 extractkeyphrases:extractkeyphrases,
-normalizer:normalizer
+normalizer:normalizer,
+elimination:elimination
 }
