@@ -180,7 +180,7 @@ var splitJson = Hierarchy.splitJson
 var PrecisionRecall = require("limdu/utils/PrecisionRecall");
 var cp = require("child_process");
 
-var path = __dirname + "/../../truthteller/truth_teller"
+var path = __dirname + "/../../../truth_teller"
 var truth_filename = path + "/sentence_to_truthteller.txt"
 
 var easyfirst_path = "./run_ef.sh"
@@ -516,7 +516,7 @@ dataset = [
 
 var data = []
 _.each(dataset, function(value, key, list){ 
-	data = data.concat(JSON.parse(fs.readFileSync("../../datasets/Employer/Dialogue/"+value)))
+	data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value)))
 	// data = data.concat(JSON.parse(fs.readFileSync("../../datasets/Candidate/"+value)))
 })
 
