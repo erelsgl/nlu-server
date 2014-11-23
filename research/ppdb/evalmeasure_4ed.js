@@ -80,15 +80,16 @@ var outstats = []
 // size = size - stats['Offer']["default intent"].length
 
 var datasets = [
-              'turkers_keyphrases_only_rule.json',
-              'students_keyphrases_only_rule.json'
+              // 'turkers_keyphrases_only_rule.json',
+              // 'students_keyphrases_only_rule.json'
+              'dial_usa_rule.json'
             ]
 
 var data = []
 _.each(datasets, function(value, key, list){
-        data = data.concat(JSON.parse(fs.readFileSync("../../datasets/Employer/Dialogue/"+value)))
+  data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/"+value)))
+  // data = data.concat(JSON.parse(fs.readFileSync("../../datasets/Employer/Dialogue/"+value)))
 }, this)
-
 
 var turns = bars.extractturns(data)
 
@@ -96,7 +97,7 @@ var turns = bars.extractturns(data)
 var f = Fiber(function() {
   var fiber = Fiber.current;
 
-	var seeds = ['offer']
+	var seeds = ['want']
 	var report = {}
   var FN = []
 
@@ -104,7 +105,7 @@ var f = Fiber(function() {
   console.log(seeds)
 		
   // retrieve all generated paraphases to the seeds
-  utils.recursionredis(seeds, [2,2], function(err,actual) {
+  utils.recursionredis(seeds, [1], function(err,actual) {
     console.log("number of PPDB paraphrases " + actual.length)
     utils.clusteration(_.unique(actual), function(err, clusters){
       fiber.run(clusters)
