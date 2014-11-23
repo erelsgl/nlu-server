@@ -25,7 +25,14 @@ function makeid(len)
 
 
 describe('Util test', function() {
-	
+
+	it('subst', function() {
+		var sublist = utils.subst("rub")
+		// console.log(sublist)
+		// console.log()
+		// process.exit(0)
+	})
+
 	it('tagger1', function(done) {
 		utils.getcontent("I accept withour leased car",function(err, result){
 			// _.isEqual(result, [ 'i think you', 'i think is good', [ 'think' ], [ 'think' ], 1 ]).should.be.true
