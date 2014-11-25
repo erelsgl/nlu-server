@@ -410,9 +410,6 @@ function cleanposoutput(resp)
 		POS.push(value.split("_"))
 	}, this)
 
-	console.log(resp)
-	console.log(POS)
-
 	_.each(POS, function(value, key, list){ 
 		// if (value[0] == "not")
 			// out.push(value[0])
