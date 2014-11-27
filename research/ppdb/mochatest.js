@@ -26,6 +26,34 @@ function makeid(len)
 
 describe('Util test', function() {
 
+	it('retrieve intent', function() {
+		var seeds = { 
+			"Offer": [
+        		{
+        		   'I offer': [
+                'i offer',
+                'i suggest',
+                'provide'
+            	]
+        	}
+        ],
+        	"Accept":[
+        	{
+        		'accept':[
+        			'i offer'
+        		]
+
+        	}
+        	]
+		}
+
+		_.isEqual(utils.retrieveIntent("my boss and i offer you a salary", seeds), ['Offer', 'Accept']).should.be.true
+		_.isEqual(utils.retrieveIntent("my boss and i provide you a salary", seeds), ['Offer']).should.be.true
+		_.isEqual(utils.retrieveIntent("my boss and i give you a salary", seeds), ['Offer']).should.be.false
+
+
+	})
+
 	it('subst', function() {
 		var sublist = utils.subst("rub")
 		// console.log(sublist)
