@@ -301,6 +301,25 @@ var recursionredis = function (seeds, order, callback)
 	)
 }
 
+var retrieveIntent = function(input, seeds)
+{
+    var output = []
+  _.each(seeds, function(value, intent, list){ 
+    _.each(value, function(paraphrases, originalphrase, list2){ 
+      _.each(paraphrases, function(phrases, key1, list1){ 
+      	_.each(phrases, function(phrase, key4, list4){ 
+         if (input.indexOf(phrase) != -1)
+        	{
+          	output.push(intent)
+        	}
+      	}, this)
+      }, this)
+    }, this)
+  }, this)
+  return output
+}
+
+
 var threelayercross = function (seed, callback)
 {	
 	var fetched = [seed]
@@ -795,5 +814,6 @@ clusteration:clusteration,
 dep:dep,
 extractkeyphrases:extractkeyphrases,
 normalizer:normalizer,
-elimination:elimination
+elimination:elimination,
+retrieveIntent:retrieveIntent
 }
