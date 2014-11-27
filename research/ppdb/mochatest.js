@@ -242,8 +242,8 @@ describe('Util test', function() {
 	// })
 
 	it('correctly get pos tags', function(done) {
-		utils.onlycontent("i hommat", function(err, results){
-			_.isEqual(results, [ 'i', 'hommat' ]).should.be.true
+		utils.onlycontent("i home", function(err, results){
+			_.isEqual(results, [ 'home' ]).should.be.true
 			done()		
 		})
 	})
