@@ -10,7 +10,7 @@ var Fiber = require('fibers');
 var f = Fiber(function() {
   var fiber = Fiber.current;
 
-
+var Hierarchy = require('../../Hierarchy');
 var _ = require('underscore')._; 
 var fs = require('fs');
 var natural = require('natural');
@@ -18,7 +18,19 @@ var utils = require('./utils');
 var async = require('async');
 var bars = require('../../utils/bars.js');
 var partitions = require('limdu/utils/partitions');
+var splitJson = Hierarchy.splitJson
+var PrecisionRecall = require("limdu/utils/PrecisionRecall");
 
+function onlyIntents(labels)
+{
+  var output = []
+  _.each(labels, function(label, key, list){ 
+    var lablist = splitJson(label)
+    output = output.concat(lablist[0])  
+  }, this)
+  
+  return output
+}
 
 var outstats = []
 // var keyphrases = JSON.parse(fs.readFileSync("../test_aggregate_keyphases/keyphases.08.2014.json"))
@@ -73,9 +85,33 @@ _.each(train_turns, function(turn, key, list){
     }, this)
 }, this)
 
-console.log(seeds)
+_.each(seeds, function(value, key, list){ 
+  _.each(value, function(value1, key1, list){ 
+      utils.recursionredis([value1], [1], function(err,actual) {
+        fiber.run(actual)
+      })
+      var list = Fiber.yield()
+      seeds[key][key1] = {}
+      seeds[key][key1][value1] = list
+  }, this)
+}, this)
 
-_.each(seeds, function(valuelist, intent, list){ 
+
+var stats = new PrecisionRecall();
+var test_turns = bars.extractturns(dataset['test'])
+
+_.each(test_turns, function(turn, key, list){ 
+    stats.addCasesHash(onlyIntents(turn['output']), retrieveIntent(turn['input'], seeds))
+}, this)
+
+console.log(stats.retrieveStats())
+
+// console.log(JSON.stringify(seeds, null, 4))
+process.exit(0)
+
+
+
+/*_.each(seeds, function(valuelist, intent, list){ 
   console.log("intent")
   console.log(intent)
 
@@ -204,5 +240,5 @@ var Recall = TP/(TP+FN.length)
 
 console.log("Precision " + Precision)
 console.log("Recall " + Recall)
-})
+*/})
 f.run();
