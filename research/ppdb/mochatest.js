@@ -23,8 +23,11 @@ function makeid(len)
     return text;
 }
 
-
 describe('Util test', function() {
+
+	it('only intents', function() {
+		_.isEqual(utils.onlyIntents(["{\"Accept\":\"previous\"}"]), ['Accept']).should.be.true
+	})
 
 	it('retrieve intent', function() {
 		var seeds = { 
@@ -47,10 +50,9 @@ describe('Util test', function() {
         	]
 		}
 
-		_.isEqual(utils.retrieveIntent("my boss and i offer you a salary", seeds), ['Offer', 'Accept']).should.be.true
-		_.isEqual(utils.retrieveIntent("my boss and i provide you a salary", seeds), ['Offer']).should.be.true
-		_.isEqual(utils.retrieveIntent("my boss and i give you a salary", seeds), ['Offer']).should.be.false
-
+		_.isEqual(utils.retrieveIntent("my boss and i offer you a salary", seeds),[ { Offer: 'i offer' }, { Accept: 'i offer' } ]).should.be.true
+		_.isEqual(utils.retrieveIntent("my boss and i provide you a salary", seeds), [ { Offer: 'provide' } ]).should.be.true
+		utils.retrieveIntent("my boss and i give you a salary", seeds).length.should.be.equal.zero
 
 	})
 
