@@ -10,6 +10,8 @@ var _ = require('underscore')._;
 var natural = require('natural');
 var Lemmer = require('node-lemmer').Lemmer;
 var lemmerEng = new Lemmer('english');
+var Hierarchy = require('../../Hierarchy');
+var splitJson = Hierarchy.splitJson
 
 var Tagger = require("../../node_modules/node-stanford-postagger/postagger").Tagger;
 var tagger = new Tagger({
@@ -301,6 +303,17 @@ var recursionredis = function (seeds, order, callback)
 	)
 }
 
+var onlyIntents = function(labels)
+{
+  var output = []
+  _.each(labels, function(label, key, list){ 
+    var lablist = splitJson(label)
+    output = output.concat(lablist[0])  
+  }, this)
+  
+  return output
+}
+
 var retrieveIntent = function(input, seeds)
 {
     var output = []
@@ -308,9 +321,14 @@ var retrieveIntent = function(input, seeds)
     _.each(value, function(paraphrases, originalphrase, list2){ 
       _.each(paraphrases, function(phrases, key1, list1){ 
       	_.each(phrases, function(phrase, key4, list4){ 
-         if (input.indexOf(phrase) != -1)
+      		var input_list = input.split(" ")
+      		var phrase_list = phrase.split(" ")
+      		
+         if (_.isEqual(phrase_list, _.intersection(input_list, phrase_list)) == true)
         	{
-          	output.push(intent)
+        	var elem = {}
+        	elem[intent] = phrase
+          	output.push(elem)
         	}
       	}, this)
       }, this)
@@ -815,5 +833,6 @@ dep:dep,
 extractkeyphrases:extractkeyphrases,
 normalizer:normalizer,
 elimination:elimination,
-retrieveIntent:retrieveIntent
+retrieveIntent:retrieveIntent,
+onlyIntents:onlyIntents
 }
