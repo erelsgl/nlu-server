@@ -675,13 +675,13 @@ function extractturns(dataset)
 		_.each(dataset, function(value, key, list){ 
 			_.each(value['turns'], function(set, key, list){ 
 				if ('output' in set)
-          {
           if ('status' in set)
+            {
             if (set['status'] == 'active')
               data.push(set)
-          }
-        else
-          data.push(set)
+            }
+          else
+            data.push(set)
 				}, this)
 		}, this)
 		return data
