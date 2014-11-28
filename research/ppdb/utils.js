@@ -11,7 +11,7 @@ var natural = require('natural');
 var Lemmer = require('node-lemmer').Lemmer;
 var lemmerEng = new Lemmer('english');
 
-var Tagger = require("../../node-stanford-postagger/postagger").Tagger;
+var Tagger = require("../../node_modules/node-stanford-postagger/postagger").Tagger;
 var tagger = new Tagger({
   port: "9000",
   host: "54.191.84.213"
@@ -23,7 +23,7 @@ var async = require('async');
 var redis = require("redis")
 
 var client = redis.createClient(6369)
-var clientpos = redis.createClient();
+var clientpos = redis.createClient(6369);
 
 var DBSELECT = 0
 

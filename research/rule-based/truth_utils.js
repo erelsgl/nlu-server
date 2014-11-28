@@ -23,7 +23,7 @@ function verbnegation(sentence, commonfilename)
 	var filename = "sentence_"+ index.toString().lpad("0",max)+".cnt"
 
 	var data = []
-	fs.readFileSync(__dirname + "/../../truthteller/truth_teller/annotatedSentences/"+filename).toString().split('\n').forEach(function (line) { 
+	fs.readFileSync(__dirname + "/../../../truth_teller/annotatedSentences/"+filename).toString().split('\n').forEach(function (line) { 
 		var list = line.split("\t")
 		if (list.length > 2)
 			data.push({
@@ -78,7 +78,7 @@ function negation(sentence, seeds, filename)
 	var filename = "sentence_"+ index.toString().lpad("0",max)+".cnt"
 
 	var data = []
-	fs.readFileSync(__dirname + "/../../truthteller/truth_teller/annotatedSentences/"+filename).toString().split('\n').forEach(function (line) { 
+	fs.readFileSync(__dirname + "/../../../truth_teller/annotatedSentences/"+filename).toString().split('\n').forEach(function (line) { 
 		var list = line.split("\t")
 
 		if ((sentence.indexOf(list[1]) == -1) && ((typeof list[1] != 'undefined')))

@@ -85,12 +85,22 @@ var datasets = [
             ]
 
 var data = []
-_.each(datasets, function(value, key, list){
-        data = data.concat(JSON.parse(fs.readFileSync("../../datasets/Employer/Dialogue/"+value)))
-}, this)
 
+// _.each(datasets, function(value, key, list){
+        // data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value)))
+// }, this)
+
+data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json")))
 
 var turns = bars.extractturns(data)
+
+var filtered = []
+_.each(turns, function(turn, key, list){
+  if ('intent_keyphrases_rule' in turn)
+    filtered.push(turn)
+}, this)
+
+turns = filtered
 
 // filtering the gold standard keyphrases that are equal according to the comparison scheme
 var f = Fiber(function() {
@@ -104,7 +114,7 @@ var f = Fiber(function() {
   console.log(seeds)
 		
   // retrieve all generated paraphases to the seeds
-  utils.recursionredis(seeds, [2,2], function(err,actual) {
+  utils.recursionredis(seeds, [1,1], function(err,actual) {
     console.log("number of PPDB paraphrases " + actual.length)
     utils.clusteration(_.unique(actual), function(err, clusters){
       fiber.run(clusters)

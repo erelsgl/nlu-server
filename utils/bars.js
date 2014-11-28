@@ -673,15 +673,21 @@ function extractturns(dataset)
 	{
 		data = []
 		_.each(dataset, function(value, key, list){ 
+        // if ('status' in value)
+        // if (value['status'].indexOf("goodconv") != -1)
 			_.each(value['turns'], function(set, key, list){ 
-				if ('output' in set)
-          {
-          if ('status' in set)
-            if (set['status'] == 'active')
-              data.push(set)
-          }
-        else
-          data.push(set)
+        set['input'] = set['input'].replace(/[^\x00-\x7F]/g, "")
+        // if ('user' in set)
+          // if (set['user'].indexOf('Agent') == -1)
+            if (set['input'] != "")
+      				if ('output' in set)
+                {
+                if ('status' in set)
+                  if (set['status'] == 'active')
+                    data.push(set)
+                }
+              else
+                data.push(set)
 				}, this)
 		}, this)
 		return data
@@ -1266,6 +1272,29 @@ function hasRoot(depparse)
   return root
 }
 
+function filterzerofeatures(intens)
+{
+
+  _.each(intens, function(intent, key, list){ 
+    if (_.isArray(intent[3]))
+    {
+    _.each(intent[3], function(subintent, subkey, list){ 
+      _.each(subintent, function(features, intentname, list){ 
+        intens[key][3][subkey][intentname] = _.filter(features, function(num){ return ((num[1] != 0) && (num != 0)) });
+      }, this)
+    }, this)
+    }
+    else
+    {
+      _.each(intent[3], function(features, intentname, list){ 
+         intens[key][3][intentname] = _.filter(features, function(num){ return ((num[1] != 0) && (num != 0)) });
+      }, this)
+    }
+
+  }, this)
+  return intens
+}
+
 function aggregate_rilesbased(classes, classifier, parts, explanations, original, classifier, initial)
 {
   var rules = require("../research/rule-based/rules.js")
@@ -1295,7 +1324,7 @@ function aggregate_rilesbased(classes, classifier, parts, explanations, original
 
 	var data = rules.findData(initial)
 
-	explanations[0] = aggreate_similar(explanations[0])
+	explanations[0] = filterzerofeatures(aggreate_similar(explanations[0]))
   explanations[1] = data[0]
   explanations[2] = data[1].concat(filterValues(explanations[2]))
   var clas = []
@@ -2494,5 +2523,6 @@ module.exports = {
   resolve_emptiness_rule:resolve_emptiness_rule,
   filterValues:filterValues,
   buildlabel:buildlabel,
-  labelFilter:labelFilter
+  labelFilter:labelFilter,
+  filterzerofeatures:filterzerofeatures
 }

@@ -78,13 +78,13 @@ var trainutils = require('./utils/bars')
 // var Lemmer = require('node-lemmer').Lemmer;
 var rules = require("./research/rule-based/rules.js")
 
-var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/0_grammar.json"));
-var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students.json"));
-var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students1class.json"));
-var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Employer/2_experts.json"));
-var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/Employer/2_experts1class.json"));
-var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Employer/3_woz_kbagent_turkers_negonlp2.json"));
-var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/4_various.json"));
+// var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/0_grammar.json"));
+// var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students.json"));
+// var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students1class.json"));
+// var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Employer/2_experts.json"));
+// var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/Employer/2_experts1class.json"));
+// var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Employer/3_woz_kbagent_turkers_negonlp2.json"));
+// var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/4_various.json"));
 
 var verbosity = 0;
 var explain = 0;
@@ -495,64 +495,68 @@ if (do_pull_all_utterance_to_file)
 // only salient phrase of intent to the dataset
 if (do_keyphrase_predict_annotaiton)
 	{
-	var datalist = [
+	// var datalist = [
 			// "turkers_keyphrases_gold.json"
-				"students_keyphrases_gold.json"
-			]
+				// "students_keyphrases_gold.json"
+			// ]
 
-	var data = []
-	_.each(datalist, function(value, key, list){ 
-		data = data.concat(JSON.parse(fs.readFileSync("./datasets/Employer/Dialogue/"+value)))
-	})
+	// var data = []
+	// _.each(datalist, function(value, key, list){ 
+		// data = data.concat(JSON.parse(fs.readFileSync("../datasets/Employer/Dialogue/"+value)))
+	// })
+	data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa.json"))
+
 
 	_.each(data, function(dialogue, key, list){ 
+        if (dialogue['status'].indexOf("goodconv") != -1)
 		_.each(dialogue['turns'], function(turn, key1, list1){ 
-			// if ('intent_keyphrases_gold' in turn)
-				// {
-					var intent_list = Hierarchy.splitPartEquallyIntent(turn['output'])
-					// console.log("series "+intent)
+			if (turn['status'] == "active")
+			{
+			turn['input'] = turn['input'].replace(/[^\x00-\x7F]/g, "")
+        		if ('user' in turn)
+          			if (turn['user'].indexOf('Agent') == -1)
+            			if (turn['input'] != "")
+            			{
+						var intent_list = Hierarchy.splitPartEquallyIntent(turn['output'])
 
-					if (intent_list.length == 1)
-					{
-							// console.log("---------------------")
+						if (intent_list.length == 1)
+						{
+							var intent = intent_list[0] 
+							if (!('intent_keyphrases_rule' in turn))
+								turn['intent_keyphrases_rule'] = {}
+							// var intent = Hierarchy.splitPartEquallyIntent(turn['output'])
+							if (!(intent in turn['intent_keyphrases_rule']))
+								{
+								var sentence = turn['input']
+								var original = turn['input']
+								sentence = sentence.toLowerCase().trim()
+								sentence = regexpNormalizer(sentence)
+								sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+								sentence = sentence.replace(/<VALUE>/g,'')
+								sentence = sentence.replace(/<ATTRIBUTE>/g,'')
+								sentence = sentence.replace(/NIS/,'')
+								sentence = sentence.replace(/nis/,'')
+								sentence = sentence.replace(/track/,'')
+								sentence = sentence.replace(/USD/,'')
+								sentence = sentence.trim()
 
-						// console.log(turn['output'])
-						// console.log(turn['input'])
-						// console.log(intent_list)
-						var intent = intent_list[0] 
-						if (!('intent_keyphrases_rule' in turn))
-							turn['intent_keyphrases_rule'] = {}
-						// var intent = Hierarchy.splitPartEquallyIntent(turn['output'])
-						if (!(intent in turn['intent_keyphrases_rule']))
-							{
-							var sentence = turn['input']
-							var original = turn['input']
-							sentence = sentence.toLowerCase().trim()
-							sentence = regexpNormalizer(sentence)
-							sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
-							sentence = sentence.replace(/<VALUE>/g,'')
-							sentence = sentence.replace(/<ATTRIBUTE>/g,'')
-							sentence = sentence.replace(/NIS/,'')
-							sentence = sentence.replace(/nis/,'')
-							sentence = sentence.replace(/track/,'')
-							sentence = sentence.replace(/USD/,'')
-							sentence = sentence.trim()
+								var keyphrase = sentence
+								// console.log("intent "+intent)
+								// console.log("original "+original)
+								// console.log("sentence "+sentence)
+								if (sentence.replace(" ","").length == 0)
+									keyphrase = "DEFAULT INTENT"
 
-							var keyphrase = sentence
-							// console.log("intent "+intent)
-							// console.log("original "+original)
-							// console.log("sentence "+sentence)
-							if (sentence.replace(" ","").length == 0)
-								keyphrase = "DEFAULT INTENT"
-
-							data[key]['turns'][key1]['intent_keyphrases_rule'][intent] = keyphrase
-							}
-							// else
+								data[key]['turns'][key1]['intent_keyphrases_rule'][intent] = keyphrase
+								}
+								// else
 							// process.exit(0)
-					}
-					else
-					{
+							}
+							else
+							{
 						// console.log(turn['output'])
+							}
+						}
 					}
 				// }
 		}, this)
@@ -730,7 +734,7 @@ if (do_mlrule)
 	var data = []
 	_.each(datalist, function(value, key, list){ 
 		// data = data.concat(JSON.parse(fs.readFileSync("./datasets/Employer/"+value)))
-		data = data.concat(JSON.parse(fs.readFileSync("./datasets/Employer/Dialogue/"+value)))
+		data = data.concat(JSON.parse(fs.readFileSync("../datasets/Employer/Dialogue/"+value)))
 	})
 
 	// var ppdb = require("./research/ppdb/utils.js")
