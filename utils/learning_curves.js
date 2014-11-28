@@ -155,7 +155,7 @@ function learning_curves(classifiers, dataset, parameters, step, step2, numOfFol
 	  		{
 	  			traintitle = "train extracted from dialogue"
 	  			// if (value[0] == "Current_baseline")
-	  				var mytrainset = bars.extractturns(mytrain)
+	  			var mytrainset = bars.extractturns(mytrain)
 	  			// else
 	  				// var mytrainset = bars.extractturnssingle(mytrain)
 	  		}
