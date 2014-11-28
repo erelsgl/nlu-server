@@ -10,7 +10,6 @@ var Fiber = require('fibers');
 var f = Fiber(function() {
   var fiber = Fiber.current;
 
-var Hierarchy = require('../../Hierarchy');
 var _ = require('underscore')._; 
 var fs = require('fs');
 var natural = require('natural');
@@ -18,19 +17,7 @@ var utils = require('./utils');
 var async = require('async');
 var bars = require('../../utils/bars.js');
 var partitions = require('limdu/utils/partitions');
-var splitJson = Hierarchy.splitJson
 var PrecisionRecall = require("limdu/utils/PrecisionRecall");
-
-function onlyIntents(labels)
-{
-  var output = []
-  _.each(labels, function(label, key, list){ 
-    var lablist = splitJson(label)
-    output = output.concat(lablist[0])  
-  }, this)
-  
-  return output
-}
 
 var outstats = []
 // var keyphrases = JSON.parse(fs.readFileSync("../test_aggregate_keyphases/keyphases.08.2014.json"))
@@ -100,11 +87,33 @@ _.each(seeds, function(value, key, list){
 var stats = new PrecisionRecall();
 var test_turns = bars.extractturns(dataset['test'])
 
+console.log(JSON.stringify(seeds, null, 4))
+
+
 _.each(test_turns, function(turn, key, list){ 
-    stats.addCasesHash(onlyIntents(turn['output']), retrieveIntent(turn['input'], seeds))
+
+    var out = utils.retrieveIntent(turn['input'], seeds)
+
+    var labs = _.map(out, function(num, key){ return Object.keys(num)[0] });
+
+    var output = stats.addPredicition(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
+    // var output = stats.addCasesLabels(_unique(utils.onlyIntents(turn['output'])), _.unique(labs))
+
+    // console.log("classification")
+    // console.log(utils.retrieveIntent(turn['input'], seeds))
+    // console.log(JSON.stringify(turn, null, 4))
+    // console.log(output)
+
+    console.log("exp")
+    console.log(utils.onlyIntents(turn['output']))
+    console.log("act")
+    console.log(out)
+    console.log(turn)
+
 }, this)
 
 console.log(stats.retrieveStats())
+console.log(stats.retrieveLabels())
 
 // console.log(JSON.stringify(seeds, null, 4))
 process.exit(0)
