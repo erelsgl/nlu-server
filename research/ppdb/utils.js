@@ -10,6 +10,8 @@ var _ = require('underscore')._;
 var natural = require('natural');
 var Lemmer = require('node-lemmer').Lemmer;
 var lemmerEng = new Lemmer('english');
+var Hierarchy = require('../../Hierarchy');
+var splitJson = Hierarchy.splitJson
 
 var Tagger = require("../../node_modules/node-stanford-postagger/postagger").Tagger;
 var tagger = new Tagger({
@@ -48,7 +50,7 @@ function biunormalizer(sentence) {
 // [ 'you_PRP ca_MD n\'t_RB get_VB\n' ]
 // is_VBZ
 // [ 'be_VB working_VBG\n' ]
-var CONTENT = ['FW','NN','VBN','VBP','JJ', 'VB','VBD','RB', 'NNS', 'VBG', 'VBZ', 'JJS', 'MD']
+var CONTENT = ['NN','VBN','VBP','JJ', 'VB','VBD','RB', 'NNS', 'VBG', 'VBZ', 'JJS', 'MD']
 // FW - foreign word
 
 function wordnetsyn(word, callback) {
@@ -284,13 +286,13 @@ var recursionredis = function (seeds, order, callback)
 	async.timesSeries(order.length, function(n, next)
 		{
 		DBSELECT = order[n]
-		console.log(n)
+		// console.log(n)
 		async.mapSeries(fetched, cleanredis, function(err, bestli) 
 			{
 				bestli = cleanposfromredis(_.flatten(bestli))
 				fetched = fetched.concat(bestli)
 				fetched = _.unique(_.flatten(fetched))
-				console.log(fetched.length)
+				// console.log(fetched.length)
 				next()
 			})
 		},
@@ -300,6 +302,41 @@ var recursionredis = function (seeds, order, callback)
 		}
 	)
 }
+
+var onlyIntents = function(labels)
+{
+  var output = []
+  _.each(labels, function(label, key, list){ 
+    var lablist = splitJson(label)
+    output = output.concat(lablist[0])  
+  }, this)
+  
+  return output
+}
+
+var retrieveIntent = function(input, seeds)
+{
+    var output = []
+  _.each(seeds, function(value, intent, list){ 
+    _.each(value, function(paraphrases, originalphrase, list2){ 
+      _.each(paraphrases, function(phrases, key1, list1){ 
+      	_.each(phrases, function(phrase, key4, list4){ 
+      		var input_list = input.split(" ")
+      		var phrase_list = phrase.split(" ")
+      		
+         if (_.isEqual(phrase_list, _.intersection(input_list, phrase_list)) == true)
+        	{
+        	var elem = {}
+        	elem[intent] = phrase
+          	output.push(elem)
+        	}
+      	}, this)
+      }, this)
+    }, this)
+  }, this)
+  return output
+}
+
 
 var threelayercross = function (seed, callback)
 {	
@@ -534,6 +571,20 @@ function subst(str) {
 return _.compact(subst)
 }
 
+
+function elimination(strcontentlemma)
+{
+	var elim = ['i','follow','good','instead','do','maximum','mind','actually','prepare','willing','want','ha', 'has','have','is', 'are', 'be', 'will', 'let', 'i', 'I', 'to', 'you', 'we', 'for',
+		'i\'ll', 'so', 'the', 'can\'t', 'let\'s', 'only', 'can', 'on','her','an', 'it', 'is', 'on', 'this', 'make', 'made'
+		, 'am']
+
+	_.each(elim, function(value, key, list){ 
+		strcontentlemma = _.without(strcontentlemma,value)
+	}, this)
+
+	return strcontentlemma
+}
+
 // input: string
 // output: normlized string
 function normalizer(str, callback)
@@ -546,9 +597,7 @@ function normalizer(str, callback)
 	str = str.trim()
 	str = biunormalizer(str)
 
-	var elim = ['i','follow','good','instead','do','maximum','mind','actually','prepare','willing','want','ha', 'has','have','is', 'are', 'be', 'will', 'let', 'i', 'I', 'to', 'you', 'we', 'for',
-	'i\'ll', 'so', 'the', 'can\'t', 'let\'s', 'only', 'can', 'on','her','an', 'it', 'is', 'on', 'this', 'make', 'made']
-
+	
 	onlycontent(str, function (err,strcontent){
 
 		if (_.compact(strcontent).length == 0) 
@@ -556,9 +605,7 @@ function normalizer(str, callback)
     
     	strcontentlemma = lemmatize(strcontent)
 
-    	_.each(elim, function(value, key, list){ 
-    		strcontentlemma = _.without(strcontentlemma,value)
-    	}, this)
+   		strcontentlemma = elimination(strcontentlemma)
 
     	if (strcontentlemma.length == 0) 
        		strcontentlemma = strcontent
@@ -784,5 +831,8 @@ cachepos:cachepos,
 clusteration:clusteration,
 dep:dep,
 extractkeyphrases:extractkeyphrases,
-normalizer:normalizer
+normalizer:normalizer,
+elimination:elimination,
+retrieveIntent:retrieveIntent,
+onlyIntents:onlyIntents
 }

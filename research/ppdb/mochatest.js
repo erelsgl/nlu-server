@@ -23,9 +23,46 @@ function makeid(len)
     return text;
 }
 
-
 describe('Util test', function() {
-	
+
+	it('only intents', function() {
+		_.isEqual(utils.onlyIntents(["{\"Accept\":\"previous\"}"]), ['Accept']).should.be.true
+	})
+
+	it('retrieve intent', function() {
+		var seeds = { 
+			"Offer": [
+        		{
+        		   'I offer': [
+                'i offer',
+                'i suggest',
+                'provide'
+            	]
+        	}
+        ],
+        	"Accept":[
+        	{
+        		'accept':[
+        			'i offer'
+        		]
+
+        	}
+        	]
+		}
+
+		_.isEqual(utils.retrieveIntent("my boss and i offer you a salary", seeds),[ { Offer: 'i offer' }, { Accept: 'i offer' } ]).should.be.true
+		_.isEqual(utils.retrieveIntent("my boss and i provide you a salary", seeds), [ { Offer: 'provide' } ]).should.be.true
+		utils.retrieveIntent("my boss and i give you a salary", seeds).length.should.be.equal.zero
+
+	})
+
+	it('subst', function() {
+		var sublist = utils.subst("rub")
+		// console.log(sublist)
+		// console.log()
+		// process.exit(0)
+	})
+
 	it('tagger1', function(done) {
 		utils.getcontent("I accept withour leased car",function(err, result){
 			// _.isEqual(result, [ 'i think you', 'i think is good', [ 'think' ], [ 'think' ], 1 ]).should.be.true
@@ -207,8 +244,8 @@ describe('Util test', function() {
 	// })
 
 	it('correctly get pos tags', function(done) {
-		utils.onlycontent("i hommat", function(err, results){
-			_.isEqual(results, [ 'i', 'hommat' ]).should.be.true
+		utils.onlycontent("i home", function(err, results){
+			_.isEqual(results, [ 'home' ]).should.be.true
 			done()		
 		})
 	})

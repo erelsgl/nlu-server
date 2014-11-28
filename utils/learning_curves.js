@@ -118,6 +118,7 @@ function learning_curves(classifiers, dataset, parameters, step, step2, numOfFol
 
 	partitions.partitions(dataset, numOfFolds, function(train, test, fold) {
 		index = step
+
 		// index = 200
 		if (datatest)
 			{
@@ -128,6 +129,7 @@ function learning_curves(classifiers, dataset, parameters, step, step2, numOfFol
 
 		if (bars.isDialogue(test))
 			{
+			console.log("dial")
 			// var testset = bars.dividedataset(bars.extractturns(test))['one']
 			var testset = bars.extractturns(test)
 			testtitle = testtitle + "test extracted from dialogue"
@@ -153,7 +155,7 @@ function learning_curves(classifiers, dataset, parameters, step, step2, numOfFol
 	  		{
 	  			traintitle = "train extracted from dialogue"
 	  			// if (value[0] == "Current_baseline")
-	  				var mytrainset = bars.extractturns(mytrain)
+	  			var mytrainset = bars.extractturns(mytrain)
 	  			// else
 	  				// var mytrainset = bars.extractturnssingle(mytrain)
 	  		}

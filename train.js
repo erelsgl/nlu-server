@@ -47,8 +47,8 @@ var prepare_dataset_for_gaby1 = false
 var prepare_dataset_for_gaby = false
 var do_keyphrase_only_rule = false
 var do_small_temporary_serialization_test = false
-var do_mlrule = true
-var do_learning_curves = false
+var do_mlrule = false
+var do_learning_curves = true
 var do_test_sagae = false
 var do_cross_dataset_testing = false
 var do_learning_curves_dialogue = false
@@ -820,12 +820,12 @@ if (do_learning_curves) {
 
 	_.each(datasetNames, function(value, key, list){ 
 		// dataset = dataset.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
-		dataset = dataset.concat(JSON.parse(fs.readFileSync("datasets/Employer/Dialogue/"+value)))
+		dataset = dataset.concat(JSON.parse(fs.readFileSync("../datasets/Employer/Dialogue/"+value)))
 	});
 
 
 	dataset = _.shuffle(dataset)
-	
+
 	// var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.4))
 
 	// data1 = []
@@ -918,11 +918,13 @@ if (do_learning_curves) {
 
 	classifiers  = {
 
+		Baseline_0: classifier.PartialClassificationEquallyIntent
 
-		Baseline_1: classifier.SvmPerfClassifier,
+		// Baseline_1: classifier.SvmPerfClassifier,
+		// Baseline_2: classifier.PartialClassificationEquallySagae,
+
 		// Composite_Sagae: classifier.WinnowSegmenter, 
-		Baseline_2: classifier.PartialClassificationEquallySagae,
-
+		
 		// Component: classifier.PartialClassificationEqually_Component,
 		// Composite: classifier.SvmOutputPartialEqually_Composite
 

@@ -519,9 +519,7 @@ dataset = [
 
 var data = []
 _.each(dataset, function(value, key, list){ 
-	// data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/"+value)))
-	data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value)))
-	// data = data.concat(JSON.parse(fs.readFileSync("../../datasets/Candidate/"+value)))
+	data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/"+value)))
 })
 
 data = bars.extractturns(data)
