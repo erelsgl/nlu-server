@@ -148,7 +148,7 @@ describe('Bars utilities', function() {
 	results = bars.aggregate_results(stats)
 	results['F1'].should.equal(0.9);
 	results['Precision'].should.equal(3.5);
-	results['Recall'].should.equniqueual(0.575);
+	results['Recall'].should.equal(0.575);
 	})
 
 	it('correctly aggregate nested hashes', function() {
@@ -465,6 +465,194 @@ describe('Bars utilities', function() {
 		// console.log(JSON.stringify(a, null, 4))
 		// console.log(JSON.stringify(str.substring(0,a), null, 4))
 	})
+
+	it('currrr filters the fetures', function() {
+		var intents = 
+		[["Offer","",[0,4],[{
+						"Offer": 
+						[["a1",1],
+	                    ["a2",0],
+	                    ["a3",2]],
+
+	                    "Accept": 
+						[["a9",0],
+	                    ["a7",0],
+	                    ["a13",2]]
+	            }]
+	    ],
+	    ["Reject","",[0,4],[{
+						"Offer": 
+						[["a4",1],
+	                    ["a5",0],
+	                    ["a6",0]]
+	            }]
+	    ]
+	    ]
+
+	    var filtered = bars.filterzerofeatures(intents)
+
+	    // console.log(JSON.stringify(filtered, null, 4))
+
+	    _.isEqual(filtered, [["Offer","",[0,4],[{"Offer": [["a1",1],["a3",2]], "Accept": [["a13",2]]}]],
+        ["Reject","",[0,4],[{"Offer": [[ "a4",1]]}]]])
+	    
+    })
+
+    it('buildlabels', function() {
+
+    	var dep = [ { num: '1',
+    word: 'i',
+    lemma: 'i',
+    pos: 'FW',
+    pos1: 'FW',
+    root: '3',
+    role: 'nsubj' },
+  { num: '2',
+    word: 'can',
+    lemma: 'can',
+    pos: 'MD',
+    pos1: 'MD',
+    root: '3',
+    role: 'aux' },
+  { num: '3',
+    word: 'offer',
+    lemma: 'offer',
+    pos: 'VB',
+    pos1: 'VB',
+    root: '0',
+    role: 'root' },
+  { num: '4',
+    word: 'slow',
+    lemma: 'slow',
+    pos: 'JJ',
+    pos1: 'JJ',
+    root: '6',
+    role: 'amod' },
+  { num: '5',
+    word: 'promotion',
+    lemma: 'promotion',
+    pos: 'NN',
+	pos1: 'NN',
+    root: '6',
+    role: 'nn' },
+  { num: '6',
+    word: 'track',
+    lemma: 'track',
+    pos: 'NN',
+    pos1: 'NN',
+    root: '3',
+    role: 'dobj' },
+  { num: '7',
+    word: 'but',
+    lemma: 'but',
+    pos: 'CC',
+    pos1: 'CC',
+    root: '6',
+    role: 'cc' },
+  { num: '8',
+    word: 'no',
+    lemma: 'no',
+    pos: 'DT',
+    pos1: 'DT',
+    root: '9',
+    role: 'det' },
+  { num: '9',
+    word: 'car',
+    lemma: 'car',
+    pos: 'NN',
+    pos1: 'NN',
+    root: '6',
+    role: 'conj' } ]
+
+    var rule = [
+    [
+        [
+            "Promotion Possibilities",
+            "promotion",
+            [
+                4,
+                4
+            ],
+            [
+                17,
+                26
+            ]
+        ],
+        [
+            "Leased Car",
+            "car",
+            [
+                8,
+                8
+            ],
+            [
+                40,
+                43
+            ]
+        ]
+    ],
+	[
+        [
+            "Slow promotion track",
+            "slow",
+            [
+                3,
+                3
+            ],
+            [
+                12,
+                16
+            ]
+        ],
+        [
+            "Without leased car",
+            "car",
+            [
+                8,
+                8
+            ],
+            [
+                -1,
+                -1
+            ]
+        ]
+    ]
+]
+
+	var intents = [
+    [
+        "Offer",
+        "i can offer+ but",
+        [
+            0,
+            4
+        ],
+        [
+            {
+                "Offer": [
+                ]
+            }
+        ]
+    ],
+    [
+        "Reject",
+        "no",
+        [
+            4,
+            5
+        ],
+		{
+            "Reject": [
+            ]
+        }
+    ]
+]
+
+	var results = bars.buildlabel(rule,dep,intents)
+	//console.log(results)
+	//process.exit(0)
+
+    })
 
 
 })

@@ -30,7 +30,8 @@
     "underscore" : ">=1.1.0",
     "seed-random": "*",
     "defaultdict": "*",
-    "rimraf": "*"
+    "rimraf": "*",
+    "node-stanford-postagger": "*"
   },
   "devDependencies": {
 	  "mocha": "*",

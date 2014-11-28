@@ -54,7 +54,7 @@ function instanceFilterShortString(datum)
 
 function normalizer1(sentence) {
   	var truth = require("./research/rule-based/truth_utils.js")
-  	var truth_filename =  "./truthteller/truth_teller/sentence_to_truthteller.txt"
+  	var truth_filename =  "../truth_teller/sentence_to_truthteller.txt"
 
 	sentence = sentence.toLowerCase().trim();
 	sentence = regexpNormalizer(sentence)
@@ -222,14 +222,23 @@ function featureExtractor(sentence, features) {
 	// if (original.indexOf("value") != -1)
 		// features["value_present"] = 1
 
-	if ((original.indexOf("value") != -1) || (original.indexOf("value")!=-1) )
+	if ((original.indexOf("value") != -1) || (original.indexOf("value")!=-1))
 		features["value_or_attribute_present"] = 1
 
 	if (original.indexOf("?") != -1)
 		features["?_sign"] = 1
 
-	if (original.substring(0,2) == 'do')
-		features["do_at_start"] = 1
+	var question_words = ['what', 'which', 'why', 'how', 'do']
+
+	// if (original.substring(0,2) == 'do')
+		// features["do_at_start"] = 1
+
+	if (_.some(question_words, function(num){return original.substring(0,num.length) == num}))
+		features["wh_word_at_start"] = 1
+
+	if (_.some(question_words, function(num){return original.indexOf(num) != -1}))
+		features["wh_word"] = 1
+
 
 	// console.log(features)
 

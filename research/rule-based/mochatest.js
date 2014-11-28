@@ -10,11 +10,18 @@ var rules = require(__dirname+'/rules.js');
 var truth = require(__dirname+'/truth_utils.js');
 var _ = require('underscore');
 
-var path = __dirname + "/../../truthteller/truth_teller"
+var path = __dirname + "/../../../truth_teller"
 var truth_filename = path + "/sentence_to_truthteller.txt"
 
 describe('Util test', function() {
 
+	it('check no agreement', function() {
+		var data = rules.getFound("there will be no agreement for car")
+		var filtered = rules.getFilter(data)
+		_.isEqual(filtered, [[["Leased Car","car",[6,6],[31,34]]],[["No agreement","no agreement",[3,4],[-1,-1]]]]).should.be.true
+		
+	})
+	
 
 	it('check filter', function() {
 		var data = rules.getFound("let us compromise without a leased car")

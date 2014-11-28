@@ -88,10 +88,24 @@ var datasets = [
 var data = []
 _.each(datasets, function(value, key, list){
   data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/"+value)))
-  // data = data.concat(JSON.parse(fs.readFileSync("../../datasets/Employer/Dialogue/"+value)))
 }, this)
 
+// _.each(datasets, function(value, key, list){
+        // data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value)))
+// }, this)
+
+data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json")))
+
+>>>>>>> 1d81f53e93598361b83e71e7103caa7b3276f792
 var turns = bars.extractturns(data)
+
+var filtered = []
+_.each(turns, function(turn, key, list){
+  if ('intent_keyphrases_rule' in turn)
+    filtered.push(turn)
+}, this)
+
+turns = filtered
 
 // filtering the gold standard keyphrases that are equal according to the comparison scheme
 var f = Fiber(function() {

@@ -94,3 +94,13 @@ as_IN a_DT start_NN you_PRP will_MD start_VB as_IN a_DT programmer_NN
 8 a a DT DT _ 9 det _ _
 9 programmer programmer NN NN _ 7 pobj _ _
 
+git remote set-url origin git@github.com:erelsgl/nlu-server.git
+
+origin	git@bitbucket.org:elgesto/nlu-server.git (fetch)
+origin	git@bitbucket.org:elgesto/nlu-server.git (push)
+
+
+git checkout -b ongoing_reseach f990a041c3ea8bac30a30455e8d0ce080566e5a0
+
+
+git branch -m "ppdb_reseach"

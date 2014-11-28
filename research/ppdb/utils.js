@@ -25,7 +25,7 @@ var async = require('async');
 var redis = require("redis")
 
 var client = redis.createClient(6369)
-var clientpos = redis.createClient();
+var clientpos = redis.createClient(6369);
 
 var DBSELECT = 0
 
