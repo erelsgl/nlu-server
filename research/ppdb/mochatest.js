@@ -11,6 +11,15 @@ var _ = require('underscore');
 var sync = require('synchronize')
 var Fiber = require('fibers');
 
+var seeds = { 
+			"Offer": [{
+        		'I offer': [ 'i offer', 'i suggest', 'provide']
+        		}],
+        	"Accept":[{
+        		'accept':[ 'i offer']
+        		}]
+			}
+
 
 function makeid(len)
 {
@@ -29,31 +38,25 @@ describe('Util test', function() {
 		_.isEqual(utils.onlyIntents(["{\"Accept\":\"previous\"}"]), ['Accept']).should.be.true
 	})
 
-	it('retrieve intent', function() {
-		var seeds = { 
-			"Offer": [
-        		{
-        		   'I offer': [
-                'i offer',
-                'i suggest',
-                'provide'
-            	]
-        	}
-        ],
-        	"Accept":[
-        	{
-        		'accept':[
-        			'i offer'
-        		]
+	it('retrieve intent', function(done) {	
+		utils.retrieveIntent("my boss and i offer you a salary", seeds, function(err, result){
+			_.isEqual(result ,[ { Offer: 'i offer' }, { Accept: 'i offer' } ]).should.be.true
+			done()
+		})
+	})
 
-        	}
-        	]
-		}
+	it('retrieve intent', function(done) {
+		utils.retrieveIntent("my boss and i provide you a salary", seeds, function(err, result){
+			_.isEqual(result ,[ { Offer: 'provide' } ]).should.be.true
+			done()
+		})
+	})
 
-		_.isEqual(utils.retrieveIntent("my boss and i offer you a salary", seeds),[ { Offer: 'i offer' }, { Accept: 'i offer' } ]).should.be.true
-		_.isEqual(utils.retrieveIntent("my boss and i provide you a salary", seeds), [ { Offer: 'provide' } ]).should.be.true
-		utils.retrieveIntent("my boss and i give you a salary", seeds).length.should.be.equal.zero
-
+	it('retrieve intent', function(done) {
+		utils.retrieveIntent("my boss and i give you a salary", seeds, function(err, result){
+			result.length.should.be.equal.zero
+			done()
+		})
 	})
 
 	it('subst', function() {
