@@ -314,27 +314,57 @@ var onlyIntents = function(labels)
   return output
 }
 
-var retrieveIntent = function(input, seeds)
+var retrieveIntent = function(input, seeds, callback)
 {
     var output = []
-  _.each(seeds, function(value, intent, list){ 
-    _.each(value, function(paraphrases, originalphrase, list2){ 
-      _.each(paraphrases, function(phrases, key1, list1){ 
-      	_.each(phrases, function(phrase, key4, list4){ 
-      		var input_list = input.split(" ")
-      		var phrase_list = phrase.split(" ")
-      		
-         if (_.isEqual(phrase_list, _.intersection(input_list, phrase_list)) == true)
-        	{
-        	var elem = {}
-        	elem[intent] = phrase
-          	output.push(elem)
-        	}
-      	}, this)
-      }, this)
-    }, this)
-  }, this)
-  return output
+
+	async.eachSeries(Object.keys(seeds), function(intent, callback1){
+   		async.eachSeries(seeds[intent], function(paraphrases, callback2){
+   			async.eachSeries(Object.keys(paraphrases), function(originalphrase, callback3){
+   				var phrases = paraphrases[originalphrase]
+   				async.eachSeries(phrases, function(phrase, callback4){
+
+		      		var input_list = input.split(" ")
+
+		      		onlycontent(phrase, function(err, response) {
+     		 			var content_phrase = (response.length != 0 ? response : phrase.split(" "));
+				        if (_.isEqual(content_phrase, _.intersection(input_list, content_phrase)) == true)
+  					      	{
+        					var elem = {}
+        					elem[intent] = phrase
+          					output.push(elem)
+        					}
+        				callback4()
+        			})
+				},function(err){callback3()})
+			},function(err){callback2()})
+		},function(err){callback1()})
+	},function(err){callback(err, output)})
+  // _.each(seeds, function(value, intent, list){ 
+  //   _.each(value, function(paraphrases, originalphrase, list2){ 
+  //     _.each(paraphrases, function(phrases, key1, list1){ 
+  //     	_.each(phrases, function(phrase, key4, list4){ 
+  //     		var input_list = input.split(" ")
+
+  //     		console.log("start")
+  //     		console.log(phrase)
+
+  //     		onlycontent(phrase, function(err, response) {
+
+  //     			var content_phrase = (response.length != 0 ? response : phrase.split(" "));
+  //     			var phrase_list = onlycontent(phrase).split(" ")
+      			
+  //        if (_.isEqual(content_phrase, _.intersection(input_list, content_phrase)) == true)
+  //       	{
+  //       	var elem = {}
+  //       	elem[intent] = phrase
+  //         	output.push(elem)
+  //       	}
+  //     	}, this)
+  //     }, this)
+  //   }, this)
+  // }, this)
+  // return output
 }
 
 
@@ -438,6 +468,8 @@ function getcontent(string,callback)
 function cleanposoutput(resp)
 {
 	var out = []
+
+	// console.log(resp)
 	
 	var cleaned = resp.replace(/\n|\r/g, "");
 	var pairlist = cleaned.split(" ")
@@ -454,7 +486,9 @@ function cleanposoutput(resp)
 			out.push(value[0])
 	}, this)
 	
+	// console.log(out)
 	return out
+
 }
 
 // tagger returns list
@@ -521,6 +555,8 @@ function onlycontent(string, callback)
 {
 
 	cachepos(string,function(err, response){
+		// console.log("onlycontent")
+		// console.log(response)
 		callback(err, cleanposoutput(response))
 	})
   //   clientpos.select(10, function() {
@@ -548,12 +584,13 @@ function cachepos(string, callback)
             if ((pos == null) || (pos == "OK"))
 	        {
 		        retrievepos(string, function (err, response){
+		        	// console.log(response)
 					callback(err, response)
 		        })
 		    }
 		    else
 		    {
-		    	// console.log("redis")
+		    	// console.log(pos)
 				callback(err, pos)
 		    }
          })
@@ -591,7 +628,7 @@ function normalizer(str, callback)
 {
 	if (_.isArray(str))
 		{
-		console.log("array")
+		// console.log("array")
 		str = str[0]
 		}
 	str = str.trim()
@@ -682,7 +719,7 @@ function readpos(key, callback)
 {
 	clientpos.select(10, function() {
 		clientpos.get(key, function (err, pos) {
-			console.log("YAH")
+			// console.log("YAH")
 			callback(err, pos)
 		})
 	})	
