@@ -83,16 +83,20 @@ _.each(seeds, function(value, key, list){
   }, this)
 }, this)
 
-
 var stats = new PrecisionRecall();
 var test_turns = bars.extractturns(dataset['test'])
 
 console.log(JSON.stringify(seeds, null, 4))
-
+// console.log(test_turns)
+// process.exit(0)
 
 _.each(test_turns, function(turn, key, list){ 
 
-    var out = utils.retrieveIntent(turn['input'], seeds)
+    utils.retrieveIntent(turn['input'], seeds, function(err, results){
+        fiber.run(results)
+    })
+
+    var out = Fiber.yield()
 
     var labs = _.map(out, function(num, key){ return Object.keys(num)[0] });
 
@@ -105,9 +109,11 @@ _.each(test_turns, function(turn, key, list){
     // console.log(output)
 
     console.log("exp")
-    console.log(utils.onlyIntents(turn['output']))
+    console.log(_.unique(utils.onlyIntents(turn['output'])))
     console.log("act")
-    console.log(out)
+    console.log(_.unique(labs))
+    console.log("out")
+    console.log(JSON.stringify(out, null, 4))
     console.log(turn)
 
 }, this)
