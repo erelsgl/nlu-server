@@ -331,7 +331,10 @@ var retrieveIntent = function(input, seeds, callback)
 				        if (_.isEqual(content_phrase, _.intersection(input_list, content_phrase)) == true)
   					      	{
         					var elem = {}
-        					elem[intent] = phrase
+        					elem[intent] = {}
+        					elem[intent]['original seed'] = originalphrase
+        					elem[intent]['generated phrase'] = phrase
+        					elem[intent]['content'] = content_phrase
           					output.push(elem)
         					}
         				callback4()
