@@ -40,14 +40,16 @@ describe('Util test', function() {
 
 	it('retrieve intent', function(done) {	
 		utils.retrieveIntent("my boss and i offer you a salary", seeds, function(err, result){
-			_.isEqual(result ,[ { Offer: 'i offer' }, { Accept: 'i offer' } ]).should.be.true
+    		var keys = _.map(result, function(num, key){ return Object.keys(num)[0] });
+			_.isEqual(['Offer', 'Accept'], keys).should.be.true
 			done()
 		})
 	})
 
 	it('retrieve intent', function(done) {
 		utils.retrieveIntent("my boss and i provide you a salary", seeds, function(err, result){
-			_.isEqual(result ,[ { Offer: 'provide' } ]).should.be.true
+    		var keys = _.map(result, function(num, key){ return Object.keys(num)[0] });
+			_.isEqual(keys, ['Offer']).should.be.true
 			done()
 		})
 	})
@@ -198,17 +200,24 @@ describe('Util test', function() {
 		    var fiber = Fiber.current;
 
 			var result = utils.cleanlisteval(['offer','suggest','offered','suppose','car'],['offer','suggest','suppose','supposed','invite','invited', 'I am offering', 'ofer'])
+			// console.log(result['stats'])
 			_.isEqual(result['stats'], { TP: 4, FP: 1, FN: 3 }).should.be.true
 			
 			var result = utils.cleanlisteval(['offer','suggest','offered','suppose','car'],['offer','suggest','suppose','supposed'])
 			_.isEqual(result['stats'], { TP: 4, FP: 1, FN: 0 }).should.be.true
+			// console.log(result['stats'])
+
 
 			var result = utils.cleanlisteval(['offer','suggest','offered','suppose'],['offer','suggest','suppose','supposed'])
 			_.isEqual(result['stats'], { TP: 4, FP: 0, FN: 0 }).should.be.true
+			// console.log(result['stats'])
+
 
 			var result = utils.cleanlisteval(['offer','suggest','suppose'],['offer','suggest','suppose'])
 			_.isEqual(result['stats'], { TP: 3, FP: 0, FN: 0 }).should.be.true
+			// console.log(result['stats'])
 			
+
 			done()
 		})
 
