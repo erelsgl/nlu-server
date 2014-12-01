@@ -86,8 +86,8 @@ _.each(seeds, function(value, key, list){
 var stats = new PrecisionRecall();
 var test_turns = bars.extractturns(dataset['test'])
 
-/*console.log(JSON.stringify(seeds, null, 4))
-
+console.log(JSON.stringify(seeds, null, 4))
+/*
 _.each(test_turns, function(turn, key, list){ 
 
     utils.retrieveIntent(turn['input'], seeds, function(err, results){
@@ -120,35 +120,39 @@ _.each(seeds, function(valuelist, intent, list){
   console.log("intent")
   console.log(intent)
 
-  _.each(valuelist, function(elem, key, list){
-    console.log("keyphrase")
-    console.log(elem) 
+  _.each(valuelist, function(orig, key, list){
+    console.log("origin seed with generated phrases")
+    console.log(orig) 
     var dist = []
-    _.each(utils.subst(elem), function(sub, key1, list1){
-      console.log("substring")
-      console.log(sub)
-      utils.recursionredis([sub], [2], function(err,actual) {
-        fiber.run(actual)
-      })
-      var paraphr = Fiber.yield()
+    _.each(orig, function(generatedlist, or, list1){
+      _.each(generatedlist, function(generated, key3, list3){
+        _.each(utils.subst(generated), function(sub, key1, list1){
+          console.log("substring")
+          console.log(sub)
+          utils.recursionredis([sub], [2], function(err,actual) {
+            fiber.run(actual)
+          })
+          var paraphr = Fiber.yield()
 
-      utils.onlycontent(sub, function (err,strcontent){
-        fiber.run(utils.elimination(strcontent))
-      })
-      var paraphrcontent = Fiber.yield()
+          utils.onlycontent(sub, function (err,strcontent){
+            fiber.run(utils.elimination(strcontent))
+          })
+          var paraphrcontent = Fiber.yield()
 
-      console.log("length of paraphrases")
-      console.log(paraphr.length)
+          console.log("length of paraphrases")
+          console.log(paraphr.length)
 
-      console.log("content part")
-      console.log(paraphrcontent)
+          console.log("content part")
+          console.log(paraphrcontent)
 
-      var score = paraphrcontent.length==1? 1: Math.pow(paraphr.length, paraphrcontent.length)
-      console.log("score")
-      console.log(score)
+          var score = paraphrcontent.length==1? 1: Math.pow(paraphr.length, paraphrcontent.length)
+          console.log("score")
+          console.log(score)
 
-      dist.push(score)
-      // console.log(paraphr)
+          dist.push(score)
+        // console.log(paraphr)
+        }, this)
+      }, this)
     }, this)
     dist = _.sortBy(dist, function(num){ return num });
     console.log(dist)

@@ -602,6 +602,8 @@ function cachepos(string, callback)
 
 function subst(str) {
 	var subst = []	
+	console.log("str")
+	console.log(str)
 	var str = str.split(" ")
 	for (var start=0; start<=str.length; ++start) {
 		for (var end=start+1; end<=str.length; ++end) {
