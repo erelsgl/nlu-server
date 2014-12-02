@@ -52,6 +52,7 @@ return sentence
 function getfeatures(sentence)
 {
   var features = {}
+  console.log("\""+sentence+"\"")
   var words = tokenizer.tokenize(sentence);
   var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
   _.each(feature, function(feat, key, list){
@@ -76,7 +77,7 @@ var datasets = [
             ]
 
 var data = []
-
+  
 _.each(datasets, function(value, key, list){
     data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value)))
 }, this)
@@ -91,23 +92,61 @@ var dataset = partitions.partition(data, 1, Math.round(data.length*0.8))
 var train_turns = bars.extractturns(dataset['train'])
 
 
-_.each(train_turns, function(turn, key, list){ 
-  var sentence = regexpNormalizer(turn['input'].toLowerCase().trim())
-  sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
-  train_turns[key]['input'] = cleanup(sentence)
-
-  var features = getfeatures(train_turns[key]['input'])
-  train_turns[key]['features'] = features
-  this.tfidf.addDocument(features);
-}, this)
-
-_.each(train_turns, function(turn, key, list){ 
-  _.each(turn['features'], function(value1, key1, list){
-    train_turn[key]['features'][key1] = value1 * this.tfidf.idf(key1)
+_.each(data, function(dialogue, key, list1){ 
+  _.each(dialogue['turns'], function(turn, key2, list2){ 
+    _.each(train_turns, function(turn1, key3, list3){ 
+      if (turn['input'] == turn1['input'])
+        data[key]['turns'][key2]['separation'] = 'train'
+    }, this)
   }, this)
 }, this)
 
-console.log(train_turns)
+var turns = bars.extractturns(data)
+
+
+_.each(turns, function(turn, key, list){ 
+  var sentence = regexpNormalizer(turn['input'].toLowerCase().trim())
+  sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+  sentence = cleanup(sentence)
+  turns[key]['input'] = sentence
+
+  if ((sentence != false) && (sentence != "false"))
+  {
+    var features = getfeatures(turns[key]['input'])
+    turns[key]['features'] = features
+    tfidf.addDocument(features);
+  }
+}, this)
+
+_.each(turns, function(turn, key, list){ 
+  // features for only training data
+  if ('separation' in turn)
+  {
+    _.each(turn['features'], function(value1, key1, list){
+      turns[key]['features'][key1] = value1 * this.tfidf.idf(key1)
+    }, this)
+  }
+}, this)
+
+var seeds = {}
+
+_.each(turns, function(turn, key, list){ 
+  if ('separation' in turn)
+  {
+    _.each(turn['features'], function(value, key1, list){ 
+      if (!(key in seeds))
+        {
+          utils.recursionredis([key1], [1], function(err,actual) {
+            fiber.run(actual)
+          })
+          seeds[key1] = Fiber.yield()
+        }
+    }, this)
+  }
+}, this)
+
+
+console.log(seeds)
 process.exit(0)
 
 
