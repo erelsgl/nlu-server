@@ -18,6 +18,34 @@ var async = require('async');
 var bars = require('../../utils/bars.js');
 var partitions = require('limdu/utils/partitions');
 var PrecisionRecall = require("limdu/utils/PrecisionRecall");
+var truth = require("../rule-based/truth_utils.js")
+var truth_filename =  "../../truth_teller/sentence_to_truthteller.txt"
+var limdu = require("limdu");
+var ftrs = limdu.features;
+var rules = require("../rule-based/rules.js")
+
+
+function cleanup(sentence)
+{
+  console.log(sentence)
+  sentence = sentence.replace(/<VALUE>/g, "")
+  sentence = sentence.replace(/<ATTRIBUTE>/g, "")
+  sentence = sentence.replace(/\^/g, "")
+  sentence = sentence.replace(/\./g, "")
+  sentence = sentence.replace(/\!/g, "")
+  sentence = sentence.replace(/\$/g, "")
+  sentence = sentence.replace(/ +(?= )/g,'')
+  sentence = sentence.toLowerCase()
+  console.log("\""+sentence+"\"")
+  if ((sentence == "") || (sentence == " "))
+    sentence = false
+  console.log(sentence)
+
+return sentence
+}
+
+var regexpNormalizer = ftrs.RegexpNormalizer(
+    JSON.parse(fs.readFileSync(__dirname+'/../../knowledgeresources/BiuNormalizations.json')));
 
 var outstats = []
 // var keyphrases = JSON.parse(fs.readFileSync("../test_aggregate_keyphases/keyphases.08.2014.json"))
@@ -46,31 +74,31 @@ var dataset = partitions.partition(data, 1, Math.round(data.length*0.8))
 
 var train_turns = bars.extractturns(dataset['train'])
 
-// load only keyphrases from train
-var seeds = {}
-_.each(train_turns, function(turn, key, list){
-  if ('intent_keyphrases_rule' in turn)
-    _.each(turn['intent_keyphrases_rule'], function(keyphrase, intent, list){ 
-      if (!(intent in seeds))
-        seeds[intent] = []
 
-      if ((keyphrase != 'DEFAULT INTENT') && (keyphrase != ''))
-      {
+_.each(train_turns, function(turn, key, list){ 
+  var sentence = regexpNormalizer(turn['input'].toLowerCase().trim())
+  sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+  train_turns[key]['input'] = cleanup(sentence)
 
-        keyphrase = keyphrase.replace("<VALUE>", "")
-        keyphrase = keyphrase.replace("<ATTRIBUTE>", "")
-        keyphrase = keyphrase.replace("^", "")
-        keyphrase = keyphrase.replace(".", "")
-        keyphrase = keyphrase.replace("!", "")
-        keyphrase = keyphrase.replace("$", "")
-        keyphrase = keyphrase.replace(/ +(?= )/g,'')
-        keyphrase = keyphrase.toLowerCase()
-
-        seeds[intent].push(keyphrase)
-        seeds[intent] = _.unique(seeds[intent])
-      } 
-    }, this)
 }, this)
+
+// console.log(train_turns)
+process.exit(0)
+
+
+  // if ((sentence.indexOf("+")==-1) && (sentence.indexOf("-")==-1))
+    // {
+    // console.log("verbnegation")
+  var verbs = truth.verbnegation(sentence.replace('without','no'), truth_filename)
+    // }
+  sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+  
+  var train_turns = bars.extractturns(dataset['train'])
+
+
+
+
+
 
 _.each(seeds, function(value, key, list){ 
   _.each(value, function(value1, key1, list){ 
