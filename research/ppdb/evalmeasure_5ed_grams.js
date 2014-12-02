@@ -24,6 +24,11 @@ var limdu = require("limdu");
 var ftrs = limdu.features;
 var rules = require("../rule-based/rules.js")
 
+TfIdf = natural.TfIdf
+tfidf = new TfIdf()
+
+var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$+-]+/});
+
 
 function cleanup(sentence)
 {
@@ -42,6 +47,17 @@ function cleanup(sentence)
   console.log(sentence)
 
 return sentence
+}
+
+function getfeatures(sentence)
+{
+  var features = {}
+  var words = tokenizer.tokenize(sentence);
+  var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
+  _.each(feature, function(feat, key, list){
+     features[feat.join(" ")] = 1
+  }, this)
+  return features;
 }
 
 var regexpNormalizer = ftrs.RegexpNormalizer(
@@ -80,9 +96,18 @@ _.each(train_turns, function(turn, key, list){
   sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
   train_turns[key]['input'] = cleanup(sentence)
 
+  var features = getfeatures(train_turns[key]['input'])
+  train_turns[key]['features'] = features
+  this.tfidf.addDocument(features);
 }, this)
 
-// console.log(train_turns)
+_.each(train_turns, function(turn, key, list){ 
+  _.each(turn['features'], function(value1, key1, list){
+    train_turn[key]['features'][key1] = value1 * this.tfidf.idf(key1)
+  }, this)
+}, this)
+
+console.log(train_turns)
 process.exit(0)
 
 
