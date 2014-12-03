@@ -35,27 +35,28 @@ function makeid(len)
 describe('Util test', function() {
 
 	it('indexOflist', function() {
+		var key = 'rabbit'
 		var value = ['geek', ['dog','1',4], 'geek1', ['cat', '2', 5]]
 		var feature = 'geek1'
-		var output = utils.indexOflist(value, feature)
-		_.isEqual(output, [ [ 'geek1', -1 ] ]).should.be.true
+		var output = utils.indexOflist(key, value, feature)
+		_.isEqual(output, [ [ 'rabbit', -1 ] ]).should.be.true
 
 		var feature = 'cat'
-		var output = utils.indexOflist(value, feature)
-		_.isEqual(output,  [ [ 'cat', 5 ] ]).should.be.true
+		var output = utils.indexOflist(key, value, feature)
+		_.isEqual(output,  [ [ 'rabbit', 5 ] ]).should.be.true
 	})
 
 	it('seekfeature', function() {	
 		var feature = 'here'
-		var seeds = { 'here': ['there','everywhere']}
+		var seeds = { 'here': ['there',['everywhere','q',3]]}
 		var output = utils.seekfeature(feature, seeds)
-		_.isEqual(output, ['here']).should.be.true
+		_.isEqual(output, [['here',-1]]).should.be.true
 
 		var feature = 'here'
-		var seeds = { 'yellow': ['here','everywhere'],
-					'submarine': ['one', 'here']}
+		var seeds = { 'yellow': [['here','s',1],'everywhere'],
+					'submarine': ['one', ['here','d',5]]}
 		var output = utils.seekfeature(feature, seeds)
-		_.isEqual(output, [ 'yellow', 'submarine' ]).should.be.true
+		_.isEqual(output, [ ['yellow',1], ['submarine',5] ]).should.be.true
 	})
 
 	it('only intents', function() {
