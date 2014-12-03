@@ -872,6 +872,66 @@ function cleanpos(string)
 	// return tagged
 }
 
+
+// [ 'an agreement',
+//      [ 'a convention', 'NP', 14.105069 ],
+//      [ 'a convention', 'NP/VP', 19.212010999999997 ],
+//      [ 'a deal', 'NP', 9.953975 ],
+//      [ 'a settlement', 'NP', 14.615390000000001 ],
+//      [ 'accord', 'NP', 22.119474 ],
+//      [ 'accordance', 'NP', 25.968919 ],
+//      [ 'agree', 'NP', 28.473899000000003 ],
+//      [ 'agreements', 'NP', 19.644709000000002 ],
+//      [ 'an accord', 'NP', 12.791467 ],
+//      [ 'an arrangement', 'NP', 12.66407 ],
+//      [ 'an understanding', 'NP', 14.932433999999999 ],
+//      [ 'arrangement', 'NP', 29.012425999999998 ],
+//      [ 'consensus', 'NP', 22.773567999999997 ],
+//      [ 'convention', 'NP', 25.112699 ],
+//      [ 'convention', 'X', 33.757616 ],
+//      [ 'deal', 'NP', 21.92968 ],
+
+function seekfeature(feature, seeds)
+{
+
+  if (feature in seeds)
+    return [[feature,-1]]
+
+  // _.each(seeds, function(value, key, list){
+    // if (indexOflist(value, feature) != -1)
+      // output.push(key)
+  // }, this)
+	var output = []
+	_.each(seeds, function(value, key, list){
+		output = output.concat(indexOflist(key, value, feature))
+	}, this)
+
+  if (output.length == 0)
+      output.push(feature)
+
+  return output
+}
+
+// universal search of feature in value where value can be the list of elements or another lists
+function indexOflist(key, value, feature)
+{
+	var withscore = []
+	_.each(value, function(value1, key1, list1){ 
+		if (_.isArray(value1))
+		{
+			if (value1[0] == feature)
+				withscore.push([key, value1[2]])
+		}
+		else
+		{
+			if (value1 == feature)
+				withscore.push([key, -1])
+		}
+	}, this)
+	return withscore
+}
+
+
 module.exports = {
 	distance:distance,
 	compare:compare,
@@ -910,5 +970,7 @@ extractkeyphrases:extractkeyphrases,
 normalizer:normalizer,
 elimination:elimination,
 retrieveIntent:retrieveIntent,
-onlyIntents:onlyIntents
+onlyIntents:onlyIntents,
+seekfeature:seekfeature,
+indexOflist:indexOflist
 }
