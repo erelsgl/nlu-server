@@ -287,14 +287,19 @@ var cleanposfromredis = function(data, withscores)
 		var temp = []
 		_.each(data, function(value, key, list){ 
 			if (key % 2 == 0)
-				temp.push(value.split("^")[0])
+				{
+				temp = temp.concat(value.split("^"))
+				}
 			else
 				{
 				temp.push(parseFloat(value))
-				output.push(temp)
-				var temp = []
+				output.push(temp.slice(0))
+				temp = []
 				}
 		}, this)
+
+		output = _.sortBy(output, function(num){ return num[0] })
+
 		return output
 	}
 }
@@ -302,22 +307,26 @@ var cleanposfromredis = function(data, withscores)
 var recursionredis = function (seeds, order, withscores, callback)
 {	
 	var fetched = seeds
+	// var fetched = []
+
 	async.timesSeries(order.length, function(n, next)
 		{
 		DBSELECT = order[n]
-		// console.log(n)
+
 		async.mapSeries(fetched, cleanredis, function(err, bestli) 
 			{
+			
 				bestli = cleanposfromredis(_.flatten(bestli), withscores)
 				fetched = fetched.concat(bestli)
-				fetched = _.unique(_.flatten(fetched))
-				// console.log(fetched.length)
+				// fetched = _.unique(_.flatten(fetched))
 				next()
+
 			})
 		},
 		function(err, res)
 		{
-			callback(null, cleanposfromredis(_.unique(_.flatten(fetched))))
+			// callback(null, cleanposfromredis(_.unique(_.flatten(fetched))))
+			callback(err, fetched)
 		}
 	)
 }
@@ -761,6 +770,12 @@ function sortedredis(string, callback)
 
 function cleanredis(string, callback)
 {
+
+	if (_.isArray(string) == true)
+		string = string[0]
+
+
+	console.log(string)
 	client.select(DBSELECT, function() {
         // client.smembers(string, function(err, replies) {
         client.zrange(string, 0, -1, 'WITHSCORES', function(err, replies) {
