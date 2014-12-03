@@ -34,6 +34,17 @@ function makeid(len)
 
 describe('Util test', function() {
 
+	it('indexOflist', function() {
+		var value = ['geek', ['dog','1',4], 'geek1', ['cat', '2', 5]]
+		var feature = 'geek1'
+		var output = utils.indexOflist(value, feature)
+		_.isEqual(output, [ [ 'geek1', -1 ] ]).should.be.true
+
+		var feature = 'cat'
+		var output = utils.indexOflist(value, feature)
+		_.isEqual(output,  [ [ 'cat', 5 ] ]).should.be.true
+	})
+
 	it('seekfeature', function() {	
 		var feature = 'here'
 		var seeds = { 'here': ['there','everywhere']}
