@@ -272,15 +272,34 @@ function loadSynonyms(synonyms, results, ptrs, callback) {
 }
 
 
-var cleanposfromredis = function(data)
+var cleanposfromredis = function(data, withscores)
 {
-	_.each(data, function(value, key, list){
-		data[key] = value.split("^")[0] 
-	}, this)
-	return data
+	if (withscores == false)
+	{
+		_.each(data, function(value, key, list){
+			data[key] = value.split("^")[0] 
+		}, this)
+		return data
+	}
+	else
+	{
+		var output = []
+		var temp = []
+		_.each(data, function(value, key, list){ 
+			if (key % 2 == 0)
+				temp.push(value.split("^")[0])
+			else
+				{
+				temp.push(parseFloat(value))
+				output.push(temp)
+				var temp = []
+				}
+		}, this)
+		return output
+	}
 }
 
-var recursionredis = function (seeds, order, callback)
+var recursionredis = function (seeds, order, withscores, callback)
 {	
 	var fetched = seeds
 	async.timesSeries(order.length, function(n, next)
@@ -289,7 +308,7 @@ var recursionredis = function (seeds, order, callback)
 		// console.log(n)
 		async.mapSeries(fetched, cleanredis, function(err, bestli) 
 			{
-				bestli = cleanposfromredis(_.flatten(bestli))
+				bestli = cleanposfromredis(_.flatten(bestli), withscores)
 				fetched = fetched.concat(bestli)
 				fetched = _.unique(_.flatten(fetched))
 				// console.log(fetched.length)
@@ -744,7 +763,7 @@ function cleanredis(string, callback)
 {
 	client.select(DBSELECT, function() {
         // client.smembers(string, function(err, replies) {
-        client.zrange(string, 0, -1, function(err, replies) {
+        client.zrange(string, 0, -1, 'WITHSCORES', function(err, replies) {
             callback(err, replies)
          })
     })
