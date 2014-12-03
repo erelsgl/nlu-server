@@ -34,6 +34,19 @@ function makeid(len)
 
 describe('Util test', function() {
 
+	it('seekfeature', function() {	
+		var feature = 'here'
+		var seeds = { 'here': ['there','everywhere']}
+		var output = utils.seekfeature(feature, seeds)
+		_.isEqual(output, ['here']).should.be.true
+
+		var feature = 'here'
+		var seeds = { 'yellow': ['here','everywhere'],
+					'submarine': ['one', 'here']}
+		var output = utils.seekfeature(feature, seeds)
+		_.isEqual(output, [ 'yellow', 'submarine' ]).should.be.true
+	})
+
 	it('only intents', function() {
 		_.isEqual(utils.onlyIntents(["{\"Accept\":\"previous\"}"]), ['Accept']).should.be.true
 	})
