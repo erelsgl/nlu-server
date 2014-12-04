@@ -258,7 +258,6 @@ return {
 
 function loadSynonyms(synonyms, results, ptrs, callback) {
 
-	console.log("load syn")
   if(ptrs.length > 0) {
     var ptr = ptrs.pop();
 
@@ -630,8 +629,6 @@ function cachepos(string, callback)
 
 function subst(str) {
 	var subst = []	
-	console.log("str")
-	console.log(str)
 	var str = str.split(" ")
 	for (var start=0; start<=str.length; ++start) {
 		for (var end=start+1; end<=str.length; ++end) {
@@ -905,7 +902,7 @@ function seekfeature(feature, seeds)
 	}, this)
 
   if (output.length == 0)
-      output.push(feature)
+      output.push([feature,1])
 
   return output
 }
@@ -948,6 +945,7 @@ function cosine(v1, v2)
 
 function buildvector(featuremap, features)
 {
+	console.log(features)
 	var output = []
 	_.each(featuremap, function(feature, key, list){ 
 		if (feature in features)
@@ -956,6 +954,30 @@ function buildvector(featuremap, features)
 			output.push(0)
 	}, this)
 	return output
+}
+
+// var features = {'dog':1, 'cat': 1, 'shark':1, 'salomon':1}
+// var seeds = {'animals':[['dog',5], ['cat',6]], 
+				// 'fish': [['shark',7]]}
+
+
+function replacefeatures(features, seeds, idf)
+{
+
+  var replace = {}
+  _.each(Object.keys(features), function(value, key, list){
+      var list = seekfeature(value, seeds)
+
+      _.each(list, function(element, key1, list1){ 
+          list[key1][1] = list[key1][1]*idf(element[0])
+      }, this)
+
+      list = _.sortBy(list, function(num){ return num[1] })
+      replace[list[0][0]] = list[0][1]
+
+  }, this)
+
+  return replace
 }
 
 
@@ -1001,5 +1023,6 @@ onlyIntents:onlyIntents,
 seekfeature:seekfeature,
 indexOflist:indexOflist,
 cosine:cosine,
-buildvector:buildvector
+buildvector:buildvector,
+replacefeatures:replacefeatures
 }
