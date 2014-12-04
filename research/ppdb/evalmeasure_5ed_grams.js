@@ -29,7 +29,6 @@ tfidf = new TfIdf()
 
 var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$+-]+/});
 
-
 function cleanup(sentence)
 {
   console.log(sentence)
@@ -103,7 +102,6 @@ _.each(data, function(dialogue, key, list1){
 
 var turns = bars.extractturns(data)
 
-
 _.each(turns, function(turn, key, list){ 
   var sentence = regexpNormalizer(turn['input'].toLowerCase().trim())
   sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
@@ -118,25 +116,26 @@ _.each(turns, function(turn, key, list){
   }
 }, this)
 
+// update feature value for training set
 _.each(turns, function(turn, key, list){ 
-  // features for only training data
   if ('separation' in turn)
   {
     _.each(turn['features'], function(value1, key1, list){
-      turns[key]['features'][key1] = value1 * this.tfidf.idf(key1)
+      turns[key]['features'][key1] = value1 * tfidf.idf(key1)
     }, this)
   }
 }, this)
 
 var seeds = {}
 
+// full up seeds with features from train
 _.each(turns, function(turn, key, list){ 
   if ('separation' in turn)
   {
     _.each(turn['features'], function(value, key1, list){ 
       if (!(key in seeds))
         {
-          utils.recursionredis([key1], [1], function(err,actual) {
+          utils.recursionredis([key1], [1], true, function(err,actual) {
             fiber.run(actual)
           })
           seeds[key1] = Fiber.yield()
@@ -145,12 +144,66 @@ _.each(turns, function(turn, key, list){
   }
 }, this)
 
+// console.log(seeds)
+// process.exit(0)
 
-console.log(seeds)
+/*
+ { hi: 1,
+     i: 1,
+     want: 1,
+     to: 1,
+     offer: 1,
+     you: 1,
+     a: 1,
+     '[start] hi': 1,
+     'hi i': 1,
+     'i want': 1,
+     'want to': */
+_.each(turns, function(turn, key, list){ 
+  if (!('separation' in turn))
+  {
+    turn['features'] = utils.replacefeatures(turn['features'], seeds, function (a){return tfidf.idf(a)})
+  }
+}, this)
+
+// create map of features, simple list of features
+var featuremap = []
+_.each(turns, function(turn, key, list){ 
+  _.each(turn['features'], function(value1, key1, list1){ 
+    if (featuremap.indexOf(key1) == -1)
+      featuremap.push(key1)
+  }, this)
+}, this)
+
+// rnu over all test examples and compare to train examples
+// and write results to test example
+_.each(turns, function(testturn, key, list){ 
+    // only test samples
+    if (!('separation' in testturn))
+      {
+       turns[key]['evaluation']   = {}
+       _.each(turns, function(trainturn, key1, list1){ 
+          if (('separation' in trainturn) && (trainturn['input'] != false))
+          {
+            var intents = utils.onlyIntents(trainturn['output'])
+            if (intents.length == 1)
+              {
+              if (!(intents[0] in  turns[key]['evaluation']))
+                turns[key]['evaluation'][intents[0]] = []
+
+              var score = utils.cosine(utils.buildvector(featuremap, testturn['features']), utils.buildvector(featuremap, trainturn['features']))
+
+              turns[key]['evaluation'][intents[0]].push([score,trainturn['input']])
+              }
+          }
+        }, this)
+      }
+}, this)
+
+
+console.log(JSON.stringify(turns, null, 4))
 process.exit(0)
-
-
-  // if ((sentence.indexOf("+")==-1) && (sentence.indexOf("-")==-1))
+// if ((sentence.indexOf("+")==-1) && (sentence.indexOf("-")==-1))
     // {
     // console.log("verbnegation")
   var verbs = truth.verbnegation(sentence.replace('without','no'), truth_filename)
