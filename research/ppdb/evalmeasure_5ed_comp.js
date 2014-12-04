@@ -74,10 +74,15 @@ _.each(train_turns, function(turn, key, list){
 
 _.each(seeds, function(value, key, list){ 
   _.each(value, function(value1, key1, list){ 
-      utils.recursionredis([value1], [1], function(err,actual) {
+      utils.recursionredis([value1], [1], true, function(err,actual) {
         fiber.run(actual)
       })
       var list = Fiber.yield()
+
+      console.log(list)
+      process.exit(0)
+
+
       seeds[key][key1] = {}
       seeds[key][key1][value1] = list
   }, this)

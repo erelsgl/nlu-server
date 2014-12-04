@@ -945,7 +945,6 @@ function cosine(v1, v2)
 
 function buildvector(featuremap, features)
 {
-	console.log(features)
 	var output = []
 	_.each(featuremap, function(feature, key, list){ 
 		if (feature in features)
