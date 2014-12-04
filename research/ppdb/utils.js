@@ -873,6 +873,8 @@ function cleanpos(string)
 }
 
 
+// Given features and the list of seeds with scores return for the feature the list of 
+// keys with scores
 // [ 'an agreement',
 //      [ 'a convention', 'NP', 14.105069 ],
 //      [ 'a convention', 'NP/VP', 19.212010999999997 ],
@@ -895,12 +897,8 @@ function seekfeature(feature, seeds)
 {
 
   if (feature in seeds)
-    return [[feature,-1]]
+    return [[feature,1]]
 
-  // _.each(seeds, function(value, key, list){
-    // if (indexOflist(value, feature) != -1)
-      // output.push(key)
-  // }, this)
 	var output = []
 	_.each(seeds, function(value, key, list){
 		output = output.concat(indexOflist(key, value, feature))
@@ -925,7 +923,7 @@ function indexOflist(key, value, feature)
 		else
 		{
 			if (value1 == feature)
-				withscore.push([key, -1])
+				withscore.push([key, 1])
 		}
 	}, this)
 	return withscore
