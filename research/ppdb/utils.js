@@ -929,6 +929,35 @@ function indexOflist(key, value, feature)
 	return withscore
 }
 
+function dot(v1, v2) {
+  return _.reduce(_.zip(v1, v2), function(acc, els) {
+    return acc + els[0] * els[1];
+  }, 0); 
+};
+ 
+function mag(v) {
+  return Math.sqrt(_.reduce(v, function(acc, el) {
+    return acc + el * el; 
+  }, 0));
+};
+
+function cosine(v1, v2)
+{
+	return dot(v1, v2) / (mag(v1) * mag(v2));	
+}
+
+function buildvector(featuremap, features)
+{
+	var output = []
+	_.each(featuremap, function(feature, key, list){ 
+		if (feature in features)
+			output.push(features[feature])
+		else
+			output.push(0)
+	}, this)
+	return output
+}
+
 
 module.exports = {
 	distance:distance,
@@ -970,5 +999,7 @@ elimination:elimination,
 retrieveIntent:retrieveIntent,
 onlyIntents:onlyIntents,
 seekfeature:seekfeature,
-indexOflist:indexOflist
+indexOflist:indexOflist,
+cosine:cosine,
+buildvector:buildvector
 }
