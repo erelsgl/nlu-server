@@ -34,6 +34,20 @@ function makeid(len)
 
 describe('Util test', function() {
 
+	it('buildvector', function() {
+		var featuremap = ['rabbit', 'cat', 'fish', 'horse']
+		var features = {'dog':2, 'cat':3, 'horse':4}
+		var output = utils.buildvector(featuremap, features)
+		_.isEqual(output, [ 0, 3, 0, 4 ]).should.be.true
+	})
+
+	it('cosine', function() {
+		var v1 = [2, 1, 0, 2, 0, 1, 1, 1]
+		var v2 = [2, 1, 1, 1, 1, 0, 1, 1]
+		var cosine = utils.cosine(v1,v2)
+		cosine.should.equal(0.8215838362577491)
+	})
+	
 	it('indexOflist', function() {
 		var key = 'rabbit'
 		var value = ['geek', ['dog','1',4], 'geek1', ['cat', '2', 5]]
