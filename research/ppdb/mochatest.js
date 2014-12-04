@@ -34,6 +34,15 @@ function makeid(len)
 
 describe('Util test', function() {
 
+	it('takeIntent', function() {
+		var eval = {'Offer':[[1,'1'],[2,'1']],
+					'Accept':[[4,'1'],[1,'1']],
+					'Reject':[[6,'1'],[3,'1']],
+				}
+		var output = utils.takeIntent(eval)
+		output.should.be.equal('Reject')
+	})
+
 	it('replacefeatures', function() {
 		var features = {'dog':1, 'cat': 1, 'shark':1, 'salomon':1}
 		var seeds = {'animals':[['dog','NN',5], ['cat','NN',6]], 
