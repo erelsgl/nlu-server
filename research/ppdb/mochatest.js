@@ -34,6 +34,15 @@ function makeid(len)
 
 describe('Util test', function() {
 
+	it('replacefeatures', function() {
+		var features = {'dog':1, 'cat': 1, 'shark':1, 'salomon':1}
+		var seeds = {'animals':[['dog','NN',5], ['cat','NN',6]], 
+					'fish': [['shark','NN',7]]}
+
+		var output = utils.replacefeatures(features, seeds, function(a){return 1})
+		_.isEqual(output, { animals: 6, fish: 7, salomon: 1 }).should.be.true
+	})
+
 	it('buildvector', function() {
 		var featuremap = ['rabbit', 'cat', 'fish', 'horse']
 		var features = {'dog':2, 'cat':3, 'horse':4}
@@ -66,11 +75,17 @@ describe('Util test', function() {
 		var output = utils.seekfeature(feature, seeds)
 		_.isEqual(output, [['here',1]]).should.be.true
 
-		var feature = 'here'
-		var seeds = { 'yellow': [['here','s',1],'everywhere'],
+		feature = 'here'
+		seeds = { 'yellow': [['here','s',1],'everywhere'],
 					'submarine': ['one', ['here','d',5]]}
 		var output = utils.seekfeature(feature, seeds)
 		_.isEqual(output, [ ['yellow',1], ['submarine',5] ]).should.be.true
+
+		feature = 'dog'
+		seeds = {'animals':[['dog','NN',5], ['cat','NN',6]], 
+				'fish': [['shark','NN',7]]}
+		output = utils.seekfeature(feature, seeds)
+		_.isEqual(output, [['animals',5]]).should.be.true
 	})
 
 	it('only intents', function() {
