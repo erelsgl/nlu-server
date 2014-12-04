@@ -212,7 +212,7 @@ describe('Util test', function() {
 
 	it('correctly compare 2', function(done) {
 		utils.compare(["has proposed", "have proposed"], function(err, result){
-			console.log(result)
+			// console.log(result)
 			done()
 		})
 	})	
