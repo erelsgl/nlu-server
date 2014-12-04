@@ -11,6 +11,15 @@ var _ = require('underscore');
 var sync = require('synchronize')
 var Fiber = require('fibers');
 
+var seeds = { 
+			"Offer": [{
+        		'I offer': [ 'i offer', 'i suggest', 'provide']
+        		}],
+        	"Accept":[{
+        		'accept':[ 'i offer']
+        		}]
+			}
+
 
 function makeid(len)
 {
@@ -25,35 +34,85 @@ function makeid(len)
 
 describe('Util test', function() {
 
+	it('replacefeatures', function() {
+		var features = {'dog':1, 'cat': 1, 'shark':1, 'salomon':1}
+		var seeds = {'animals':[['dog','NN',5], ['cat','NN',6]], 
+					'fish': [['shark','NN',7]]}
+
+		var output = utils.replacefeatures(features, seeds, function(a){return 1})
+		_.isEqual(output, { animals: 6, fish: 7, salomon: 1 }).should.be.true
+	})
+
+	it('buildvector', function() {
+		var featuremap = ['rabbit', 'cat', 'fish', 'horse']
+		var features = {'dog':2, 'cat':3, 'horse':4}
+		var output = utils.buildvector(featuremap, features)
+		_.isEqual(output, [ 0, 3, 0, 4 ]).should.be.true
+	})
+
+	it('cosine', function() {
+		var v1 = [2, 1, 0, 2, 0, 1, 1, 1]
+		var v2 = [2, 1, 1, 1, 1, 0, 1, 1]
+		var cosine = utils.cosine(v1,v2)
+		cosine.should.equal(0.8215838362577491)
+	})
+	
+	it('indexOflist', function() {
+		var key = 'rabbit'
+		var value = ['geek', ['dog','1',4], 'geek1', ['cat', '2', 5]]
+		var feature = 'geek1'
+		var output = utils.indexOflist(key, value, feature)
+		_.isEqual(output, [ [ 'rabbit', 1 ] ]).should.be.true
+
+		var feature = 'cat'
+		var output = utils.indexOflist(key, value, feature)
+		_.isEqual(output,  [ [ 'rabbit', 5 ] ]).should.be.true
+	})
+
+	it('seekfeature', function() {	
+		var feature = 'here'
+		var seeds = { 'here': ['there',['everywhere','q',3]]}
+		var output = utils.seekfeature(feature, seeds)
+		_.isEqual(output, [['here',1]]).should.be.true
+
+		feature = 'here'
+		seeds = { 'yellow': [['here','s',1],'everywhere'],
+					'submarine': ['one', ['here','d',5]]}
+		var output = utils.seekfeature(feature, seeds)
+		_.isEqual(output, [ ['yellow',1], ['submarine',5] ]).should.be.true
+
+		feature = 'dog'
+		seeds = {'animals':[['dog','NN',5], ['cat','NN',6]], 
+				'fish': [['shark','NN',7]]}
+		output = utils.seekfeature(feature, seeds)
+		_.isEqual(output, [['animals',5]]).should.be.true
+	})
+
 	it('only intents', function() {
 		_.isEqual(utils.onlyIntents(["{\"Accept\":\"previous\"}"]), ['Accept']).should.be.true
 	})
 
-	it('retrieve intent', function() {
-		var seeds = { 
-			"Offer": [
-        		{
-        		   'I offer': [
-                'i offer',
-                'i suggest',
-                'provide'
-            	]
-        	}
-        ],
-        	"Accept":[
-        	{
-        		'accept':[
-        			'i offer'
-        		]
+	it('retrieve intent', function(done) {	
+		utils.retrieveIntent("my boss and i offer you a salary", seeds, function(err, result){
+    		var keys = _.map(result, function(num, key){ return Object.keys(num)[0] });
+			_.isEqual(['Offer', 'Accept'], keys).should.be.true
+			done()
+		})
+	})
 
-        	}
-        	]
-		}
+	it('retrieve intent', function(done) {
+		utils.retrieveIntent("my boss and i provide you a salary", seeds, function(err, result){
+    		var keys = _.map(result, function(num, key){ return Object.keys(num)[0] });
+			_.isEqual(keys, ['Offer']).should.be.true
+			done()
+		})
+	})
 
-		_.isEqual(utils.retrieveIntent("my boss and i offer you a salary", seeds),[ { Offer: 'i offer' }, { Accept: 'i offer' } ]).should.be.true
-		_.isEqual(utils.retrieveIntent("my boss and i provide you a salary", seeds), [ { Offer: 'provide' } ]).should.be.true
-		utils.retrieveIntent("my boss and i give you a salary", seeds).length.should.be.equal.zero
-
+	it('retrieve intent', function(done) {
+		utils.retrieveIntent("my boss and i give you a salary", seeds, function(err, result){
+			result.length.should.be.equal.zero
+			done()
+		})
 	})
 
 	it('subst', function() {
@@ -168,7 +227,7 @@ describe('Util test', function() {
 
 	it('correctly compare 2', function(done) {
 		utils.compare(["has proposed", "have proposed"], function(err, result){
-			console.log(result)
+			// console.log(result)
 			done()
 		})
 	})	
@@ -195,17 +254,24 @@ describe('Util test', function() {
 		    var fiber = Fiber.current;
 
 			var result = utils.cleanlisteval(['offer','suggest','offered','suppose','car'],['offer','suggest','suppose','supposed','invite','invited', 'I am offering', 'ofer'])
+			// console.log(result['stats'])
 			_.isEqual(result['stats'], { TP: 4, FP: 1, FN: 3 }).should.be.true
 			
 			var result = utils.cleanlisteval(['offer','suggest','offered','suppose','car'],['offer','suggest','suppose','supposed'])
 			_.isEqual(result['stats'], { TP: 4, FP: 1, FN: 0 }).should.be.true
+			// console.log(result['stats'])
+
 
 			var result = utils.cleanlisteval(['offer','suggest','offered','suppose'],['offer','suggest','suppose','supposed'])
 			_.isEqual(result['stats'], { TP: 4, FP: 0, FN: 0 }).should.be.true
+			// console.log(result['stats'])
+
 
 			var result = utils.cleanlisteval(['offer','suggest','suppose'],['offer','suggest','suppose'])
 			_.isEqual(result['stats'], { TP: 3, FP: 0, FN: 0 }).should.be.true
+			// console.log(result['stats'])
 			
+
 			done()
 		})
 

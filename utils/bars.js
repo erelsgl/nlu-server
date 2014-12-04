@@ -684,19 +684,18 @@ function extractturns(dataset)
             }
           else
             data.push(set)
-        set['input'] = set['input'].replace(/[^\x00-\x7F]/g, "")
+        // set['input'] = set['input'].replace(/[^\x00-\x7F]/g, "")
         // if ('user' in set)
           // if (set['user'].indexOf('Agent') == -1)
-            if (set['input'] != "")
-      				if ('output' in set)
-                {
-                if ('status' in set)
-                  if (set['status'] == 'active')
-                    data.push(set)
-                }
-              else
-                data.push(set)
->>>>>>> 1d81f53e93598361b83e71e7103caa7b3276f792
+            // if (set['input'] != "")
+      				// if ('output' in set)
+                // {
+                // if ('status' in set)
+                  // if (set['status'] == 'active')
+                    // data.push(set)
+                // }
+              // else/
+                // data.push(set)
 				}, this)
 		}, this)
 		return data

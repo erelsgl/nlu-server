@@ -74,10 +74,15 @@ _.each(train_turns, function(turn, key, list){
 
 _.each(seeds, function(value, key, list){ 
   _.each(value, function(value1, key1, list){ 
-      utils.recursionredis([value1], [1], function(err,actual) {
+      utils.recursionredis([value1], [1], true, function(err,actual) {
         fiber.run(actual)
       })
       var list = Fiber.yield()
+
+      console.log(list)
+      process.exit(0)
+
+
       seeds[key][key1] = {}
       seeds[key][key1][value1] = list
   }, this)
@@ -87,9 +92,7 @@ var stats = new PrecisionRecall();
 var test_turns = bars.extractturns(dataset['test'])
 
 console.log(JSON.stringify(seeds, null, 4))
-// console.log(test_turns)
-// process.exit(0)
-
+/*
 _.each(test_turns, function(turn, key, list){ 
 
     utils.retrieveIntent(turn['input'], seeds, function(err, results){
@@ -101,12 +104,6 @@ _.each(test_turns, function(turn, key, list){
     var labs = _.map(out, function(num, key){ return Object.keys(num)[0] });
 
     var output = stats.addPredicition(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
-    // var output = stats.addCasesLabels(_unique(utils.onlyIntents(turn['output'])), _.unique(labs))
-
-    // console.log("classification")
-    // console.log(utils.retrieveIntent(turn['input'], seeds))
-    // console.log(JSON.stringify(turn, null, 4))
-    // console.log(output)
 
     console.log("exp")
     console.log(_.unique(utils.onlyIntents(turn['output'])))
@@ -120,45 +117,51 @@ _.each(test_turns, function(turn, key, list){
 
 console.log(stats.retrieveStats())
 console.log(stats.retrieveLabels())
-
-// console.log(JSON.stringify(seeds, null, 4))
 process.exit(0)
+*/
 
 
-
-/*_.each(seeds, function(valuelist, intent, list){ 
+_.each(seeds, function(valuelist, intent, list){ 
   console.log("intent")
   console.log(intent)
 
-  _.each(valuelist, function(elem, key, list){
-    console.log("keyphrase")
-    console.log(elem) 
+  _.each(valuelist, function(orig, key, list){
+    console.log("origin seed with generated phrases")
+    console.log(orig) 
     var dist = []
-    _.each(utils.subst(elem), function(sub, key1, list1){
-      console.log("substring")
-      console.log(sub)
-      utils.recursionredis([sub], [2], function(err,actual) {
-        fiber.run(actual)
-      })
-      var paraphr = Fiber.yield()
+    _.each(orig, function(generatedlist, or, list1){
+      _.each(generatedlist, function(generated, key3, list3){
+        _.each(utils.subst(generated), function(sub, key1, list1){
+          console.log("original seed")
+          console.log(or)
+          console.log("from ppdb")
+          console.log(generated)
+          console.log("substring")
+          console.log(sub)
+          utils.recursionredis([sub], [1], function(err,actual) {
+            fiber.run(actual)
+          })
+          var paraphr = Fiber.yield()
 
-      utils.onlycontent(sub, function (err,strcontent){
-        fiber.run(utils.elimination(strcontent))
-      })
-      var paraphrcontent = Fiber.yield()
+          utils.onlycontent(sub, function (err,strcontent){
+            fiber.run(utils.elimination(strcontent))
+          })
+          var paraphrcontent = Fiber.yield()
 
-      console.log("length of paraphrases")
-      console.log(paraphr.length)
+          console.log("length of paraphrases")
+          console.log(paraphr.length)
 
-      console.log("content part")
-      console.log(paraphrcontent)
+          console.log("content part")
+          console.log(paraphrcontent)
 
-      var score = paraphrcontent.length==1? 1: Math.pow(paraphr.length, paraphrcontent.length)
-      console.log("score")
-      console.log(score)
+          var score = paraphrcontent.length==1? 1: Math.pow(paraphr.length, paraphrcontent.length)
+          console.log("score")
+          console.log(score)
 
-      dist.push(score)
-      // console.log(paraphr)
+          dist.push(score)
+        // console.log(paraphr)
+        }, this)
+      }, this)
     }, this)
     dist = _.sortBy(dist, function(num){ return num });
     console.log(dist)
@@ -255,5 +258,5 @@ var Recall = TP/(TP+FN.length)
 
 console.log("Precision " + Precision)
 console.log("Recall " + Recall)
-*/})
+})
 f.run();

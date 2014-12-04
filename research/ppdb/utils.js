@@ -258,7 +258,6 @@ return {
 
 function loadSynonyms(synonyms, results, ptrs, callback) {
 
-	console.log("load syn")
   if(ptrs.length > 0) {
     var ptr = ptrs.pop();
 
@@ -272,33 +271,61 @@ function loadSynonyms(synonyms, results, ptrs, callback) {
 }
 
 
-var cleanposfromredis = function(data)
+var cleanposfromredis = function(data, withscores)
 {
-	_.each(data, function(value, key, list){
-		data[key] = value.split("^")[0] 
-	}, this)
-	return data
+	if (withscores == false)
+	{
+		_.each(data, function(value, key, list){
+			data[key] = value.split("^")[0] 
+		}, this)
+		return data
+	}
+	else
+	{
+		var output = []
+		var temp = []
+		_.each(data, function(value, key, list){ 
+			if (key % 2 == 0)
+				{
+				temp = temp.concat(value.split("^"))
+				}
+			else
+				{
+				temp.push(parseFloat(value))
+				output.push(temp.slice(0))
+				temp = []
+				}
+		}, this)
+
+		output = _.sortBy(output, function(num){ return num[0] })
+
+		return output
+	}
 }
 
-var recursionredis = function (seeds, order, callback)
+var recursionredis = function (seeds, order, withscores, callback)
 {	
 	var fetched = seeds
+	// var fetched = []
+
 	async.timesSeries(order.length, function(n, next)
 		{
 		DBSELECT = order[n]
-		// console.log(n)
+
 		async.mapSeries(fetched, cleanredis, function(err, bestli) 
 			{
-				bestli = cleanposfromredis(_.flatten(bestli))
+			
+				bestli = cleanposfromredis(_.flatten(bestli), withscores)
 				fetched = fetched.concat(bestli)
-				fetched = _.unique(_.flatten(fetched))
-				// console.log(fetched.length)
+				// fetched = _.unique(_.flatten(fetched))
 				next()
+
 			})
 		},
 		function(err, res)
 		{
-			callback(null, cleanposfromredis(_.unique(_.flatten(fetched))))
+			// callback(null, cleanposfromredis(_.unique(_.flatten(fetched))))
+			callback(err, fetched)
 		}
 	)
 }
@@ -314,27 +341,60 @@ var onlyIntents = function(labels)
   return output
 }
 
-var retrieveIntent = function(input, seeds)
+var retrieveIntent = function(input, seeds, callback)
 {
     var output = []
-  _.each(seeds, function(value, intent, list){ 
-    _.each(value, function(paraphrases, originalphrase, list2){ 
-      _.each(paraphrases, function(phrases, key1, list1){ 
-      	_.each(phrases, function(phrase, key4, list4){ 
-      		var input_list = input.split(" ")
-      		var phrase_list = phrase.split(" ")
-      		
-         if (_.isEqual(phrase_list, _.intersection(input_list, phrase_list)) == true)
-        	{
-        	var elem = {}
-        	elem[intent] = phrase
-          	output.push(elem)
-        	}
-      	}, this)
-      }, this)
-    }, this)
-  }, this)
-  return output
+
+	async.eachSeries(Object.keys(seeds), function(intent, callback1){
+   		async.eachSeries(seeds[intent], function(paraphrases, callback2){
+   			async.eachSeries(Object.keys(paraphrases), function(originalphrase, callback3){
+   				var phrases = paraphrases[originalphrase]
+   				async.eachSeries(phrases, function(phrase, callback4){
+
+		      		var input_list = input.split(" ")
+
+		      		onlycontent(phrase, function(err, response) {
+     		 			var content_phrase = (response.length != 0 ? response : phrase.split(" "));
+				        if (_.isEqual(content_phrase, _.intersection(input_list, content_phrase)) == true)
+  					      	{
+        					var elem = {}
+        					elem[intent] = {}
+        					elem[intent]['original seed'] = originalphrase
+        					elem[intent]['generated phrase'] = phrase
+        					elem[intent]['content'] = content_phrase
+          					output.push(elem)
+        					}
+        				callback4()
+        			})
+				},function(err){callback3()})
+			},function(err){callback2()})
+		},function(err){callback1()})
+	},function(err){callback(err, output)})
+  // _.each(seeds, function(value, intent, list){ 
+  //   _.each(value, function(paraphrases, originalphrase, list2){ 
+  //     _.each(paraphrases, function(phrases, key1, list1){ 
+  //     	_.each(phrases, function(phrase, key4, list4){ 
+  //     		var input_list = input.split(" ")
+
+  //     		console.log("start")
+  //     		console.log(phrase)
+
+  //     		onlycontent(phrase, function(err, response) {
+
+  //     			var content_phrase = (response.length != 0 ? response : phrase.split(" "));
+  //     			var phrase_list = onlycontent(phrase).split(" ")
+      			
+  //        if (_.isEqual(content_phrase, _.intersection(input_list, content_phrase)) == true)
+  //       	{
+  //       	var elem = {}
+  //       	elem[intent] = phrase
+  //         	output.push(elem)
+  //       	}
+  //     	}, this)
+  //     }, this)
+  //   }, this)
+  // }, this)
+  // return output
 }
 
 
@@ -438,6 +498,8 @@ function getcontent(string,callback)
 function cleanposoutput(resp)
 {
 	var out = []
+
+	// console.log(resp)
 	
 	var cleaned = resp.replace(/\n|\r/g, "");
 	var pairlist = cleaned.split(" ")
@@ -454,7 +516,9 @@ function cleanposoutput(resp)
 			out.push(value[0])
 	}, this)
 	
+	// console.log(out)
 	return out
+
 }
 
 // tagger returns list
@@ -521,6 +585,8 @@ function onlycontent(string, callback)
 {
 
 	cachepos(string,function(err, response){
+		// console.log("onlycontent")
+		// console.log(response)
 		callback(err, cleanposoutput(response))
 	})
   //   clientpos.select(10, function() {
@@ -548,12 +614,13 @@ function cachepos(string, callback)
             if ((pos == null) || (pos == "OK"))
 	        {
 		        retrievepos(string, function (err, response){
+		        	// console.log(response)
 					callback(err, response)
 		        })
 		    }
 		    else
 		    {
-		    	// console.log("redis")
+		    	// console.log(pos)
 				callback(err, pos)
 		    }
          })
@@ -591,7 +658,7 @@ function normalizer(str, callback)
 {
 	if (_.isArray(str))
 		{
-		console.log("array")
+		// console.log("array")
 		str = str[0]
 		}
 	str = str.trim()
@@ -682,7 +749,7 @@ function readpos(key, callback)
 {
 	clientpos.select(10, function() {
 		clientpos.get(key, function (err, pos) {
-			console.log("YAH")
+			// console.log("YAH")
 			callback(err, pos)
 		})
 	})	
@@ -700,9 +767,15 @@ function sortedredis(string, callback)
 
 function cleanredis(string, callback)
 {
+
+	if (_.isArray(string) == true)
+		string = string[0]
+
+
+	console.log(string)
 	client.select(DBSELECT, function() {
         // client.smembers(string, function(err, replies) {
-        client.zrange(string, 0, -1, function(err, replies) {
+        client.zrange(string, 0, -1, 'WITHSCORES', function(err, replies) {
             callback(err, replies)
          })
     })
@@ -796,6 +869,117 @@ function cleanpos(string)
 	// return tagged
 }
 
+
+// Given features and the list of seeds with scores return for the feature the list of 
+// keys with scores
+// [ 'an agreement',
+//      [ 'a convention', 'NP', 14.105069 ],
+//      [ 'a convention', 'NP/VP', 19.212010999999997 ],
+//      [ 'a deal', 'NP', 9.953975 ],
+//      [ 'a settlement', 'NP', 14.615390000000001 ],
+//      [ 'accord', 'NP', 22.119474 ],
+//      [ 'accordance', 'NP', 25.968919 ],
+//      [ 'agree', 'NP', 28.473899000000003 ],
+//      [ 'agreements', 'NP', 19.644709000000002 ],
+//      [ 'an accord', 'NP', 12.791467 ],
+//      [ 'an arrangement', 'NP', 12.66407 ],
+//      [ 'an understanding', 'NP', 14.932433999999999 ],
+//      [ 'arrangement', 'NP', 29.012425999999998 ],
+//      [ 'consensus', 'NP', 22.773567999999997 ],
+//      [ 'convention', 'NP', 25.112699 ],
+//      [ 'convention', 'X', 33.757616 ],
+//      [ 'deal', 'NP', 21.92968 ],
+
+function seekfeature(feature, seeds)
+{
+
+  if (feature in seeds)
+    return [[feature,1]]
+
+	var output = []
+	_.each(seeds, function(value, key, list){
+		output = output.concat(indexOflist(key, value, feature))
+	}, this)
+
+  if (output.length == 0)
+      output.push([feature,1])
+
+  return output
+}
+
+// universal search of feature in value where value can be the list of elements or another lists
+function indexOflist(key, value, feature)
+{
+	var withscore = []
+	_.each(value, function(value1, key1, list1){ 
+		if (_.isArray(value1))
+		{
+			if (value1[0] == feature)
+				withscore.push([key, value1[2]])
+		}
+		else
+		{
+			if (value1 == feature)
+				withscore.push([key, 1])
+		}
+	}, this)
+	return withscore
+}
+
+function dot(v1, v2) {
+  return _.reduce(_.zip(v1, v2), function(acc, els) {
+    return acc + els[0] * els[1];
+  }, 0); 
+};
+ 
+function mag(v) {
+  return Math.sqrt(_.reduce(v, function(acc, el) {
+    return acc + el * el; 
+  }, 0));
+};
+
+function cosine(v1, v2)
+{
+	return dot(v1, v2) / (mag(v1) * mag(v2));	
+}
+
+function buildvector(featuremap, features)
+{
+	var output = []
+	_.each(featuremap, function(feature, key, list){ 
+		if (feature in features)
+			output.push(features[feature])
+		else
+			output.push(0)
+	}, this)
+	return output
+}
+
+// var features = {'dog':1, 'cat': 1, 'shark':1, 'salomon':1}
+// var seeds = {'animals':[['dog',5], ['cat',6]], 
+				// 'fish': [['shark',7]]}
+
+
+function replacefeatures(features, seeds, idf)
+{
+
+  var replace = {}
+  _.each(Object.keys(features), function(value, key, list){
+      var list = seekfeature(value, seeds)
+
+      _.each(list, function(element, key1, list1){ 
+          list[key1][1] = list[key1][1]*idf(element[0])
+      }, this)
+
+      list = _.sortBy(list, function(num){ return num[1] })
+      replace[list[0][0]] = list[0][1]
+
+  }, this)
+
+  return replace
+}
+
+
 module.exports = {
 	distance:distance,
 	compare:compare,
@@ -834,5 +1018,10 @@ extractkeyphrases:extractkeyphrases,
 normalizer:normalizer,
 elimination:elimination,
 retrieveIntent:retrieveIntent,
-onlyIntents:onlyIntents
+onlyIntents:onlyIntents,
+seekfeature:seekfeature,
+indexOflist:indexOflist,
+cosine:cosine,
+buildvector:buildvector,
+replacefeatures:replacefeatures
 }
