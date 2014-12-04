@@ -299,6 +299,9 @@ var cleanposfromredis = function(data, withscores)
 
 		output = _.sortBy(output, function(num){ return num[0] })
 
+		console.log(output)
+		process.exit(0)
+
 		return output
 	}
 }
@@ -901,8 +904,9 @@ function seekfeature(feature, seeds)
 		output = output.concat(indexOflist(key, value, feature))
 	}, this)
 
+  // there is no replacement then this will get 0 in any case
   if (output.length == 0)
-      output.push([feature,1])
+      output.push([feature,0])
 
   return output
 }
@@ -968,7 +972,8 @@ function replacefeatures(features, seeds, idf)
       var list = seekfeature(value, seeds)
 
       _.each(list, function(element, key1, list1){ 
-          list[key1][1] = list[key1][1]*idf(element[0])
+      	// the actual score from ppdb is a fine
+          list[key1][1] = idf(element[0])/Math.sqrt(list[key1][0])
       }, this)
 
       list = _.sortBy(list, function(num){ return num[1] })
@@ -979,6 +984,22 @@ function replacefeatures(features, seeds, idf)
   return replace
 }
 
+
+function takeIntent(evalution)
+{
+	var output = []
+
+	_.each(evalution, function(value, key, list){ 
+		evalution[key] = _.sortBy(value, function(num){ return num[0] })
+		evalution[key] = evalution[key].reverse()
+		output.push([key, evalution[key][0][0]])
+	}, this)
+
+	output = _.sortBy(output, function(num){ return num[1] })
+	output = output.reverse()
+	return output[0][0]
+
+}
 
 module.exports = {
 	distance:distance,
@@ -1023,5 +1044,6 @@ seekfeature:seekfeature,
 indexOflist:indexOflist,
 cosine:cosine,
 buildvector:buildvector,
-replacefeatures:replacefeatures
+replacefeatures:replacefeatures,
+takeIntent:takeIntent
 }
