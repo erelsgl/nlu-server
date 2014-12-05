@@ -299,9 +299,6 @@ var cleanposfromredis = function(data, withscores)
 
 		output = _.sortBy(output, function(num){ return num[0] })
 
-		console.log(output)
-		process.exit(0)
-
 		return output
 	}
 }
