@@ -161,9 +161,9 @@ _.each(turns, function(turn, key, list){
      'want to': */
 _.each(turns, function(turn, key, list){ 
   if (!('separation' in turn))
-  {
+  // {/
     turn['features'] = utils.replacefeatures(turn['features'], seeds, function (a){return tfidf.idf(a)})
-  }
+  // }
 }, this)
 
 // create map of features, simple list of features
@@ -175,7 +175,8 @@ _.each(turns, function(turn, key, list){
   }, this)
 }, this)
 
-// rnu over all test examples and compare to train examples
+
+// run over all test examples and compare to train examples
 // and write results to test example
 _.each(turns, function(testturn, key, list){ 
     // only test samples
@@ -201,202 +202,25 @@ _.each(turns, function(testturn, key, list){
 }, this)
 
 
+var stats = new PrecisionRecall();
+
+//evaluations
+_.each(turns, function(testturn, key, list){ 
+    if (!('separation' in testturn))
+      {
+      var actual = utils.takeIntent(testturn['evaluation'])        
+      var expected = utils.onlyIntents(testturn['output'])
+
+      stats.addCasesHash(expected, actual)
+      }
+})
+
+
+console.log(stats.retrieveStats())
 console.log(JSON.stringify(turns, null, 4))
 process.exit(0)
 // if ((sentence.indexOf("+")==-1) && (sentence.indexOf("-")==-1))
     // {
     // console.log("verbnegation")
-  var verbs = truth.verbnegation(sentence.replace('without','no'), truth_filename)
-    // }
-  sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
-  
-  var train_turns = bars.extractturns(dataset['train'])
-
-
-
-
-
-
-_.each(seeds, function(value, key, list){ 
-  _.each(value, function(value1, key1, list){ 
-      utils.recursionredis([value1], [1], function(err,actual) {
-        fiber.run(actual)
-      })
-      var list = Fiber.yield()
-      seeds[key][key1] = {}
-      seeds[key][key1][value1] = list
-  }, this)
-}, this)
-
-var stats = new PrecisionRecall();
-var test_turns = bars.extractturns(dataset['test'])
-
-console.log(JSON.stringify(seeds, null, 4))
-/*
-_.each(test_turns, function(turn, key, list){ 
-
-    utils.retrieveIntent(turn['input'], seeds, function(err, results){
-        fiber.run(results)
-    })
-
-    var out = Fiber.yield()
-
-    var labs = _.map(out, function(num, key){ return Object.keys(num)[0] });
-
-    var output = stats.addPredicition(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
-
-    console.log("exp")
-    console.log(_.unique(utils.onlyIntents(turn['output'])))
-    console.log("act")
-    console.log(_.unique(labs))
-    console.log("out")
-    console.log(JSON.stringify(out, null, 4))
-    console.log(turn)
-
-}, this)
-
-console.log(stats.retrieveStats())
-console.log(stats.retrieveLabels())
-process.exit(0)
-*/
-
-
-_.each(seeds, function(valuelist, intent, list){ 
-  console.log("intent")
-  console.log(intent)
-
-  _.each(valuelist, function(orig, key, list){
-    console.log("origin seed with generated phrases")
-    console.log(orig) 
-    var dist = []
-    _.each(orig, function(generatedlist, or, list1){
-      _.each(generatedlist, function(generated, key3, list3){
-        _.each(utils.subst(generated), function(sub, key1, list1){
-          console.log("original seed")
-          console.log(or)
-          console.log("from ppdb")
-          console.log(generated)
-          console.log("substring")
-          console.log(sub)
-          utils.recursionredis([sub], [1], function(err,actual) {
-            fiber.run(actual)
-          })
-          var paraphr = Fiber.yield()
-
-          utils.onlycontent(sub, function (err,strcontent){
-            fiber.run(utils.elimination(strcontent))
-          })
-          var paraphrcontent = Fiber.yield()
-
-          console.log("length of paraphrases")
-          console.log(paraphr.length)
-
-          console.log("content part")
-          console.log(paraphrcontent)
-
-          var score = paraphrcontent.length==1? 1: Math.pow(paraphr.length, paraphrcontent.length)
-          console.log("score")
-          console.log(score)
-
-          dist.push(score)
-        // console.log(paraphr)
-        }, this)
-      }, this)
-    }, this)
-    dist = _.sortBy(dist, function(num){ return num });
-    console.log(dist)
-  }, this)
-}, this)
-
-process.exit(0)
-// turns = filtered
-
-// filtering the gold standard keyphrases that are equal according to the comparison scheme
-
-	var seeds = ['offer']
-	var report = {}
-  var FN = []
-
-  console.log("number of seeds "+seeds.length)
-  console.log(seeds)
-		
-  // retrieve all generated paraphases to the seeds
-  utils.recursionredis(seeds, [1,1], function(err,actual) {
-    console.log("number of PPDB paraphrases " + actual.length)
-    utils.clusteration(_.unique(actual), function(err, clusters){
-      fiber.run(clusters)
-    })
-  })
-
-  var clusters = Fiber.yield()
-     
-  console.log("number of clusters "+clusters.length)
-  console.log(clusters)
-  
-  console.log("number of turns " + turns.length)
-  _.each(turns, function(turn, key, list){
-    if (key%10 == 0) console.log(key)
-    if (turn['status'] == "active")
-    if ('intent_keyphrases_rule' in turn)
-      _.each(turn['intent_keyphrases_rule'], function(keyphrase, intent, list){ 
-          if ((keyphrase != 'DEFAULT INTENT') && (keyphrase != '') 
-            // && (keyphrase.indexOf("<VALUE>") == -1) && (keyphrase.indexOf("<ATTRIBUTE>") == -1)
-             )
-            {
-
-              keyphrase = keyphrase.replace("<VALUE>", "")
-              keyphrase = keyphrase.replace("<ATTRIBUTE>", "")
-              keyphrase = keyphrase.replace("^", "")
-              keyphrase = keyphrase.replace("$", "")
-              keyphrase = keyphrase.replace(/ +(?= )/g,'')
-              
-              var found = false
-              _.each(clusters, function(cluster, clusterkey, list){ 
-                utils.compare([cluster[0], keyphrase], function(err, result){
-                  fiber.run(result)
-                })
-                var result = Fiber.yield()
-                if (result[4] == 1)
-                  {
-                    found = true
-                    if (!('cluster'+clusterkey in report))
-                      {
-                      report['cluster'+clusterkey]={}
-                      report['cluster'+clusterkey]['TP'] = []
-                      report['cluster'+clusterkey]['FP'] = []
-                      report['cluster'+clusterkey]['keyphrases'] = clusters[clusterkey]
-                      }
-
-                    if (intent == INTENT)
-                      report['cluster'+clusterkey]['TP'].push([turn['input'], keyphrase])
-
-                    if (intent != INTENT)
-                      report['cluster'+clusterkey]['FP'].push([turn['input'], keyphrase, intent])
-                  }
-                // })
-              }, this)
-              if ((found == false) && (intent == INTENT))
-                  FN.push([turn['input'], keyphrase])
-            }
-    }, this)
-  }, this)
-
-console.log(JSON.stringify(report, null, 4))
-console.log("number of FN " + FN.length)
-console.log(FN)
-
-var TP = 0
-var FP = 0
-
-_.each(report, function(value, key, list){ 
-  TP = TP + value['TP'].length
-  FP = FP + value['FP'].length
-}, this)
-
-var Precision = TP/(TP+FP)
-var Recall = TP/(TP+FN.length)
-
-console.log("Precision " + Precision)
-console.log("Recall " + Recall)
 })
 f.run();
