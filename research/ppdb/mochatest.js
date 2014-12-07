@@ -42,6 +42,14 @@ describe('Util test', function() {
 				}
 		var output = utils.takeIntent(eval)
 		output.should.be.equal('Reject')
+
+		var eval = {'Query':[],
+				'Offer':[],
+				'Accept':[],
+				'Reject':[],
+			}
+		var output = utils.takeIntent(eval)
+		output.length.should.be.equal(0)
 	})
 
 	it('replacefeatures', function() {
