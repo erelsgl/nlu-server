@@ -35,7 +35,8 @@ function makeid(len)
 describe('Util test', function() {
 
 	it('takeIntent', function() {
-		var eval = {'Offer':[[1,'1'],[2,'1']],
+		var eval = {'Query':[],
+					'Offer':[[1,'1'],[2,'1']],
 					'Accept':[[4,'1'],[1,'1']],
 					'Reject':[[6,'1'],[3,'1']],
 				}
