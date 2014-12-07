@@ -53,7 +53,7 @@ function getfeatures(sentence)
   var features = {}
   console.log("\""+sentence+"\"")
   var words = tokenizer.tokenize(sentence);
-  var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
+  var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]')).concat(natural.NGrams.ngrams(words, 3, '[start]', '[end]'))
   _.each(feature, function(feat, key, list){
      features[feat.join(" ")] = 1
   }, this)
@@ -92,18 +92,20 @@ var dataset = partitions.partition(data, 1, Math.round(data.length*0.8))
 // console.log(dataset['test'].length)
 
 // Mark train dialogues
-var train_turns = bars.extractturns(dataset['train'])
+// var train_turns = bars.extractturns(dataset['train'])
 
-console.log(train_turns.length)
+// console.log(train_turns.length)
 
-_.each(data, function(dialogue, key, list1){ 
+_.each(dataset['train'], function(dialogue, key, list1){ 
   _.each(dialogue['turns'], function(turn, key2, list2){ 
-    _.each(train_turns, function(turn1, key3, list3){ 
-      if (turn['input'] == turn1['input'])
-        data[key]['turns'][key2]['separation'] = 'train'
-    }, this)
+    // _.each(train_turns, function(turn1, key3, list3){ 
+      // /data[key]['turns'][key2]['separation'] = 'train'
+      turn['separation'] = 'train'
+    // }, this)
   }, this)
 }, this)
+
+
 
 var turns = bars.extractturns(data)
 
@@ -196,6 +198,7 @@ _.each(turns, function(testturn, key, list){
     if (!('separation' in testturn))
       {
        turns[key]['evaluation']   = {}
+       turns[key]['evaluation_original']   = {}
        _.each(turns, function(trainturn, key1, list1){ 
           if (('separation' in trainturn) && (trainturn['input'] != false))
           {
@@ -203,12 +206,20 @@ _.each(turns, function(testturn, key, list){
             if (intents.length == 1)
               {
               if (!(intents[0] in  turns[key]['evaluation']))
-                turns[key]['evaluation'][intents[0]] = []
+                {
+                  turns[key]['evaluation'][intents[0]] = []
+                  turns[key]['evaluation_original'][intents[0]] = []
+                }
 
               var score = utils.cosine(utils.buildvector(featuremap, testturn['features']), utils.buildvector(featuremap, trainturn['features']))
+              var score_original = utils.cosine(utils.buildvector(featuremap, testturn['features_original']), utils.buildvector(featuremap, trainturn['features']))
 
               if (score > 0)
                 turns[key]['evaluation'][intents[0]].push([score,trainturn['input']])
+              
+
+              if (score_original > 0)
+                turns[key]['evaluation_original'][intents[0]].push([score_original,trainturn['input']])
               }
           }
         }, this)
@@ -217,14 +228,19 @@ _.each(turns, function(testturn, key, list){
 
 
 var stats = new PrecisionRecall();
+var stats_original = new PrecisionRecall();
 
 //evaluations
 _.each(turns, function(testturn, key, list){ 
     if (!('separation' in testturn))
       {
-      var actual = utils.takeIntent(testturn['evaluation'])        
       var expected = utils.onlyIntents(testturn['output'])
+
+      var actual = utils.takeIntent(testturn['evaluation'])        
       turns['stats'] = stats.addCasesHash(expected, actual)
+      
+      var actual_original = utils.takeIntent(testturn['evaluation_original'])        
+      turns['stats_original'] = stats_original.addCasesHash(expected, actual_original)
       }
 })
 
@@ -233,7 +249,10 @@ var test_filtered = _.filter(turns, function(num){ return (!('separation' in num
 
 console.log(JSON.stringify(test_filtered, null, 4))
 console.log(stats.retrieveStats())
-console.log("train size"+train_turns.length)
+console.log(stats_original.retrieveStats())
+
+
+// console.log("train size"+train_turns.length)
 process.exit(0)
 // if ((sentence.indexOf("+")==-1) && (sentence.indexOf("-")==-1))
     // {
