@@ -49,7 +49,7 @@ describe('Util test', function() {
 					'fish': [['shark','NN',7]]}
 
 		var output = utils.replacefeatures(features, seeds, function(a){return 1})
-		_.isEqual(output, { animals: 6, fish: 7, salomon: 1 }).should.be.true
+		_.isEqual(output, { animals: 0.4082482904638631, fish: 0.3779644730092272, salomon: 0 }).should.be.true
 	})
 
 	it('buildvector', function() {
