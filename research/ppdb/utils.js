@@ -995,7 +995,10 @@ function takeIntent(evalution)
 
 	output = _.sortBy(output, function(num){ return num[1] })
 	output = output.reverse()
-	return output[0][0]
+
+	if (output.length > 0) return output[0][0]
+		else
+			return []
 
 }
 
