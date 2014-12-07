@@ -964,7 +964,6 @@ function buildvector(featuremap, features)
 function replacefeatures(features, seeds, idf)
 {
 
-
   var replace = {}
   _.each(Object.keys(features), function(value, key, list){
       var list = seekfeature(value, seeds)
@@ -986,9 +985,12 @@ function takeIntent(evalution)
 	var output = []
 
 	_.each(evalution, function(value, key, list){ 
-		evalution[key] = _.sortBy(value, function(num){ return num[0] })
-		evalution[key] = evalution[key].reverse()
-		output.push([key, evalution[key][0][0]])
+		if (value.length > 0)
+			{
+			evalution[key] = _.sortBy(value, function(num){ return num[0] })
+			evalution[key] = evalution[key].reverse()
+			output.push([key, evalution[key][0][0]])
+			}
 	}, this)
 
 	output = _.sortBy(output, function(num){ return num[1] })
