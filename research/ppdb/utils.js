@@ -338,7 +338,7 @@ var onlyIntents = function(labels)
     output = output.concat(lablist[0])  
   }, this)
   
-  return output
+  return _.unique(output)
 }
 
 var retrieveIntent = function(input, seeds, callback)
@@ -964,18 +964,17 @@ function buildvector(featuremap, features)
 function replacefeatures(features, seeds, idf)
 {
 
+
   var replace = {}
   _.each(Object.keys(features), function(value, key, list){
       var list = seekfeature(value, seeds)
 
       _.each(list, function(element, key1, list1){ 
       	// the actual score from ppdb is a fine
-          list[key1][1] = idf(element[0])/Math.sqrt(list[key1][0])
+      	list[key1][1] = (list[key1][1] == 0 ? 0 : idf(element[0])/Math.sqrt(list[key1][1]))
       }, this)
-
       list = _.sortBy(list, function(num){ return num[1] })
       replace[list[0][0]] = list[0][1]
-
   }, this)
 
   return replace
