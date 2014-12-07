@@ -16,6 +16,7 @@ var numberofturns = []
 var numberofintents = []
 var agentstr = ""
 var humansentences = []
+var roles = []
 
 _.each(data, function(value, key, list){
 	if (value['status'].indexOf("goodconv") != -1)
@@ -52,8 +53,8 @@ _.each(data, function(value, key, list){
 			intents.push(value['id'])
 			numberofintents.push(intents)
 
-		
- 		
+			roles = roles.concat(_.pluck(_.filter(value['turns'], function(turn){ return turn['user'].match(/Agent/g) == undefined }), 'role'))
+
  		}
 }, this)
 
@@ -73,6 +74,8 @@ console.log(_.reduce(numberofturns, function(memo, num){ return memo + num[2]; }
 // total number of  active turns
 console.log(numberofintents)
 // one/several intents
-
+console.log(_.unique(roles))
+// [Candidates]
+// Candidate Employer consistence/ if all human sentences are of the same role
 
 
