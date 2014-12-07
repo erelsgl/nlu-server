@@ -71,15 +71,18 @@ var outstats = []
 // size = size - stats['Offer']["default intent"].length
 
 var datasets = [
-              'turkers_keyphrases_only_rule.json',
+              'turkers_keyphrases_only_rule.json'
               // 'students_keyphrases_only_rule.json'
             ]
 
 var data = []
   
-_.each(datasets, function(value, key, list){
+/*_.each(datasets, function(value, key, list){
     data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value)))
 }, this)
+*/
+
+data = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json"))
 
 // data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json")))
 
@@ -88,8 +91,10 @@ var dataset = partitions.partition(data, 1, Math.round(data.length*0.8))
 // console.log(dataset['train'].length)
 // console.log(dataset['test'].length)
 
+// Mark train dialogues
 var train_turns = bars.extractturns(dataset['train'])
 
+console.log(train_turns.length)
 
 _.each(data, function(dialogue, key, list1){ 
   _.each(dialogue['turns'], function(turn, key2, list2){ 
@@ -102,7 +107,9 @@ _.each(data, function(dialogue, key, list1){
 
 var turns = bars.extractturns(data)
 
+// Normalize input, extract features if input allows
 _.each(turns, function(turn, key, list){ 
+  turns[key]['input_original'] = turn['input']
   var sentence = regexpNormalizer(turn['input'].toLowerCase().trim())
   sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
   sentence = cleanup(sentence)
@@ -116,7 +123,9 @@ _.each(turns, function(turn, key, list){
   }
 }, this)
 
-// update feature value for training set
+var turns = _.filter(turns, function(num){ return ('features' in num) })
+
+// Update feature value for training set
 _.each(turns, function(turn, key, list){ 
   if ('separation' in turn)
   {
@@ -128,7 +137,7 @@ _.each(turns, function(turn, key, list){
 
 var seeds = {}
 
-// full up seeds with features from train
+// Fill up seeds with features from train
 _.each(turns, function(turn, key, list){ 
   if ('separation' in turn)
   {
@@ -159,11 +168,15 @@ _.each(turns, function(turn, key, list){
      'hi i': 1,
      'i want': 1,
      'want to': */
+console.log("START")
+
+// replace features and skip sentences that DEFAULT INTENT only
 _.each(turns, function(turn, key, list){ 
   if (!('separation' in turn))
-  // {/
+    {
+    turn['features_original'] = turn['features']
     turn['features'] = utils.replacefeatures(turn['features'], seeds, function (a){return tfidf.idf(a)})
-  // }
+    }
 }, this)
 
 // create map of features, simple list of features
@@ -194,7 +207,8 @@ _.each(turns, function(testturn, key, list){
 
               var score = utils.cosine(utils.buildvector(featuremap, testturn['features']), utils.buildvector(featuremap, trainturn['features']))
 
-              turns[key]['evaluation'][intents[0]].push([score,trainturn['input']])
+              if (score > 0)
+                turns[key]['evaluation'][intents[0]].push([score,trainturn['input']])
               }
           }
         }, this)
@@ -210,14 +224,16 @@ _.each(turns, function(testturn, key, list){
       {
       var actual = utils.takeIntent(testturn['evaluation'])        
       var expected = utils.onlyIntents(testturn['output'])
-
-      stats.addCasesHash(expected, actual)
+      turns['stats'] = stats.addCasesHash(expected, actual)
       }
 })
 
 
+var test_filtered = _.filter(turns, function(num){ return (!('separation' in num))})
+
+console.log(JSON.stringify(test_filtered, null, 4))
 console.log(stats.retrieveStats())
-console.log(JSON.stringify(turns, null, 4))
+console.log("train size"+train_turns.length)
 process.exit(0)
 // if ((sentence.indexOf("+")==-1) && (sentence.indexOf("-")==-1))
     // {
