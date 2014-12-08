@@ -941,7 +941,7 @@ function mag(v) {
 
 function cosine(v1, v2)
 {
-	return dot(v1, v2) / (mag(v1) * mag(v2));	
+	return dot(v1, v.length2) / (mag(v1) * mag(v2));	
 }
 
 function buildvector(featuremap, features)
@@ -965,17 +965,32 @@ function replacefeatures(features, seeds, idf)
 {
 
   var replace = {}
-  _.each(Object.keys(features), function(value, key, list){
-      var list = seekfeature(value, seeds)
 
-      _.each(list, function(element, key1, list1){ 
-      	// the actual score from ppdb is a fine
-      	list[key1][1] = (list[key1][1] == 0 ? 0 : idf(element[0])/Math.sqrt(list[key1][1]))
-      }, this)
-      list = _.sortBy(list, function(num){ return num[1] })
-      replace[list[0][0]] = list[0][1]
-  }, this)
+// place first priority features, features that appear in train should be placed first
+	_.each(Object.keys(features), function(value, key, list){
+  		if (value in seeds)
+	 		replace[value] = idf(value)
+	})
 
+  	_.each(Object.keys(features), function(value, key, list){
+  		if (!(value in replace))
+  		{
+	    	var list = seekfeature(value, seeds)
+
+	        _.each(list, function(element, key1, list1){ 
+		      	// the actual score from ppdb is a fine
+		   		list[key1][1] = (list[key1][1] == 0 ? 0 : idf(element[0])/Math.sqrt(list[key1][1]))
+	      	}, this)
+	    
+	      	list = _.sortBy(list, function(num){ return num[1] })
+
+	      	_.each(list, function(value, key, list){ 
+	      		if (!(value[0] in replace))
+	      			replace[value[0]] = value[1]
+	      	}, this)
+      	}
+  	}, this)
+  
   return replace
 }
 
@@ -1004,8 +1019,23 @@ function takeIntent(evalution)
 
 function comparefeatures(original, features)
 {
-	if (Object.keys(original).length != Object.keys(features).length)
+	if ((Object.keys(original)).length != (Object.keys(features)).length)
+		{
+		console.log(original)
+		console.log(features)
+		console.log((Object.keys(original)).length)
+		console.log((Object.keys(features)).length)
+
+		var listoriginal = Object.keys(original)
+		var listfeatures = Object.keys(features)
+
+		_.each(listoriginal, function(value, key, list){ 
+			if (listfeatures.indexOf(value) == -1)
+				console.log(value)
+		}, this)
+		
 		throw new Error("Not equal number of keys");
+		}
 	var dif = 0
 	_.each(original, function(value, key, list){ 
 		
