@@ -62,11 +62,16 @@ describe('Util test', function() {
 
 	it('replacefeatures', function() {
 		var features = {'dog':1, 'cat': 1, 'shark':1, 'salomon':1}
-		var seeds = {'animals':[['dog','NN',5], ['cat','NN',6]], 
-					'fish': [['shark','NN',7]]}
+		var seeds = {'animals':[['dog','NN',16], ['cat','NN',25]], 
+					'fish': [['shark','NN',100], ['mushrooms', 'NN', 81]],
+					'mushrooms':[['maslenok', 'NN', 16]]}
 
 		var output = utils.replacefeatures(features, seeds, function(a){return 1})
-		_.isEqual(output, { animals: 0.4082482904638631, fish: 0.3779644730092272, salomon: 0 }).should.be.true
+		_.isEqual(output, { animals: 0.25, fish: 0.1, salomon: 0 }).should.be.true
+
+		var features = {'dog':1, 'cat': 1, 'shark':1, 'salomon':1, 'mushrooms': 5, 'maslenok':1}
+		var output = utils.replacefeatures(features, seeds, function(a){return 1})
+		_.isEqual(output, { mushrooms: 1, animals: 0.25, fish: 0.1, salomon: 0 }).should.be.true
 	})
 
 	it('buildvector', function() {
