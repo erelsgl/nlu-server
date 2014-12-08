@@ -1002,6 +1002,20 @@ function takeIntent(evalution)
 
 }
 
+function comparefeatures(original, features)
+{
+	if (Object.keys(original).length != Object.keys(features).length)
+		throw new Error("Not equal number of keys");
+	var dif = 0
+	_.each(original, function(value, key, list){ 
+		
+		if (!(key in features))
+			dif += 1
+	}, this)
+	return dif
+}
+
+
 module.exports = {
 	distance:distance,
 	compare:compare,
@@ -1046,5 +1060,6 @@ indexOflist:indexOflist,
 cosine:cosine,
 buildvector:buildvector,
 replacefeatures:replacefeatures,
-takeIntent:takeIntent
+takeIntent:takeIntent,
+comparefeatures:comparefeatures
 }

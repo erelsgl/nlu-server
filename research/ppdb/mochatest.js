@@ -34,6 +34,14 @@ function makeid(len)
 
 describe('Util test', function() {
 
+
+	it('comparefeatures', function() {
+		var original = {'one':1, 'two':2, 'three':3}
+		var features = {'one':1, 'two':2, 'five':3}
+		var output = utils.comparefeatures(original, features)
+		output.should.equal(1)
+	})
+	
 	it('takeIntent', function() {
 		var eval = {'Query':[],
 					'Offer':[[1,'1'],[2,'1']],
