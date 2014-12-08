@@ -941,7 +941,7 @@ function mag(v) {
 
 function cosine(v1, v2)
 {
-	return dot(v1, v.length2) / (mag(v1) * mag(v2));	
+	return dot(v1, v2) / (mag(v1) * mag(v2));	
 }
 
 function buildvector(featuremap, features)
@@ -1019,26 +1019,8 @@ function takeIntent(evalution)
 
 function comparefeatures(original, features)
 {
-	if ((Object.keys(original)).length != (Object.keys(features)).length)
-		{
-		console.log(original)
-		console.log(features)
-		console.log((Object.keys(original)).length)
-		console.log((Object.keys(features)).length)
-
-		var listoriginal = Object.keys(original)
-		var listfeatures = Object.keys(features)
-
-		_.each(listoriginal, function(value, key, list){ 
-			if (listfeatures.indexOf(value) == -1)
-				console.log(value)
-		}, this)
-		
-		throw new Error("Not equal number of keys");
-		}
 	var dif = 0
 	_.each(original, function(value, key, list){ 
-		
 		if (!(key in features))
 			dif += 1
 	}, this)
