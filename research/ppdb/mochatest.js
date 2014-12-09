@@ -48,6 +48,7 @@ describe('Util test', function() {
 					'Accept':[[4,'1'],[1,'1']],
 					'Reject':[[6,'1'],[3,'1']],
 				}
+
 		var output = utils.takeIntent(eval)
 		output.should.be.equal('Reject')
 
@@ -67,11 +68,13 @@ describe('Util test', function() {
 					'mushrooms':[['maslenok', 'NN', 16]]}
 
 		var output = utils.replacefeatures(features, seeds, function(a){return 1})
-		_.isEqual(output, { animals: 0.25, fish: 0.1, salomon: 0 }).should.be.true
+		_.isEqual(output['features'], { animals: 0.25, fish: 0.1, salomon: 0 }).should.be.true
+		_.isEqual(output['details'], { dog: 'animals', cat: 'animals', shark: 'fish' }).should.be.true
 
 		var features = {'dog':1, 'cat': 1, 'shark':1, 'salomon':1, 'mushrooms': 5, 'maslenok':1}
 		var output = utils.replacefeatures(features, seeds, function(a){return 1})
-		_.isEqual(output, { mushrooms: 1, animals: 0.25, fish: 0.1, salomon: 0 }).should.be.true
+		_.isEqual(output['features'], { mushrooms: 1, animals: 0.25, fish: 0.1, salomon: 0 }).should.be.true
+		_.isEqual(output['details'],  { dog: 'animals',cat: 'animals',shark: 'fish',maslenok: 'mushrooms' }).should.be.true
 	})
 
 	it('buildvector', function() {

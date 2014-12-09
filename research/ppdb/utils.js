@@ -960,11 +960,12 @@ function buildvector(featuremap, features)
 // var seeds = {'animals':[['dog',5], ['cat',6]], 
 				// 'fish': [['shark',7]]}
 
-
+// add details what was replaced 
 function replacefeatures(features, seeds, idf)
 {
 
   var replace = {}
+  var details = {}
 
 // place first priority features, features that appear in train should be placed first
 	_.each(Object.keys(features), function(value, key, list){
@@ -983,15 +984,27 @@ function replacefeatures(features, seeds, idf)
 	      	}, this)
 	    
 	      	list = _.sortBy(list, function(num){ return num[1] })
+	      	
+	      	var atleastone = false
 
-	      	_.each(list, function(value, key, list){ 
-	      		if (!(value[0] in replace))
-	      			replace[value[0]] = value[1]
+	      	_.each(list, function(elem, key, list){ 
+	      		if (!(elem[0] in replace))
+	      			{
+	      			replace[elem[0]] = elem[1]
+	      			
+	      			if (value != elem[0])
+	      				details[value] = elem[0]
+
+	      			atleastone = true
+	      			}
 	      	}, this)
+
+	      	if ((atleastone == false) && (list.length > 0))
+	      		details[value] = list[0][0]
       	}
   	}, this)
   
-  return replace
+  return {'features': replace, 'details': details}
 }
 
 
