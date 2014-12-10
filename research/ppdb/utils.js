@@ -103,8 +103,8 @@ function lookupSynonyms(word, callback) {
   quickfetch(word, function(err,results) {
     loadResultSynonyms([word], results, function(err, res)
     	{
-    		console.log(res)
-    		process.exit(0)
+    		// console.log(res)
+    		// process.exit(0)
     	});
   });
 }
@@ -772,7 +772,7 @@ function cleanredis(string, callback)
 		string = string[0]
 
 
-	console.log(string)
+	// console.log(string)
 	client.select(DBSELECT, function() {
         // client.smembers(string, function(err, replies) {
         client.zrange(string, 0, -1, 'WITHSCORES', function(err, replies) {
