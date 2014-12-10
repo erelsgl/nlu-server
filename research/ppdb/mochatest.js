@@ -34,13 +34,47 @@ function makeid(len)
 
 describe('Util test', function() {
 
+
+	it('comparefeatures', function() {
+		var original = {'one':1, 'two':2, 'three':3}
+		var features = {'one':1, 'two':2, 'five':3}
+		var output = utils.comparefeatures(original, features)
+		output.should.equal(1)
+	})
+	
+	it('takeIntent', function() {
+		var eval = {'Query':[],
+					'Offer':[[1,'1'],[2,'1']],
+					'Accept':[[4,'1'],[1,'1']],
+					'Reject':[[6,'1'],[3,'1']],
+				}
+
+		var output = utils.takeIntent(eval)
+		output.should.be.equal('Reject')
+
+		var eval = {'Query':[],
+				'Offer':[],
+				'Accept':[],
+				'Reject':[],
+			}
+		var output = utils.takeIntent(eval)
+		output.length.should.be.equal(0)
+	})
+
 	it('replacefeatures', function() {
 		var features = {'dog':1, 'cat': 1, 'shark':1, 'salomon':1}
-		var seeds = {'animals':[['dog','NN',5], ['cat','NN',6]], 
-					'fish': [['shark','NN',7]]}
+		var seeds = {'animals':[['dog','NN',16], ['cat','NN',25]], 
+					'fish': [['shark','NN',100], ['mushrooms', 'NN', 81]],
+					'mushrooms':[['maslenok', 'NN', 16]]}
 
 		var output = utils.replacefeatures(features, seeds, function(a){return 1})
-		_.isEqual(output, { animals: 6, fish: 7, salomon: 1 }).should.be.true
+		_.isEqual(output['features'], { animals: 0.25, fish: 0.1, salomon: 0 }).should.be.true
+		_.isEqual(output['details'], { dog: 'animals', cat: 'animals', shark: 'fish' }).should.be.true
+
+		var features = {'dog':1, 'cat': 1, 'shark':1, 'salomon':1, 'mushrooms': 5, 'maslenok':1}
+		var output = utils.replacefeatures(features, seeds, function(a){return 1})
+		_.isEqual(output['features'], { mushrooms: 1, animals: 0.25, fish: 0.1, salomon: 0 }).should.be.true
+		_.isEqual(output['details'],  { dog: 'animals',cat: 'animals',shark: 'fish',maslenok: 'mushrooms' }).should.be.true
 	})
 
 	it('buildvector', function() {

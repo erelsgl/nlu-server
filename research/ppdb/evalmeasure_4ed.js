@@ -96,7 +96,6 @@ _.each(datasets, function(value, key, list){
 
 data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json")))
 
->>>>>>> 1d81f53e93598361b83e71e7103caa7b3276f792
 var turns = bars.extractturns(data)
 
 var filtered = []

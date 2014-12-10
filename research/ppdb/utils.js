@@ -103,8 +103,8 @@ function lookupSynonyms(word, callback) {
   quickfetch(word, function(err,results) {
     loadResultSynonyms([word], results, function(err, res)
     	{
-    		console.log(res)
-    		process.exit(0)
+    		// console.log(res)
+    		// process.exit(0)
     	});
   });
 }
@@ -338,7 +338,7 @@ var onlyIntents = function(labels)
     output = output.concat(lablist[0])  
   }, this)
   
-  return output
+  return _.unique(output)
 }
 
 var retrieveIntent = function(input, seeds, callback)
@@ -772,7 +772,7 @@ function cleanredis(string, callback)
 		string = string[0]
 
 
-	console.log(string)
+	// console.log(string)
 	client.select(DBSELECT, function() {
         // client.smembers(string, function(err, replies) {
         client.zrange(string, 0, -1, 'WITHSCORES', function(err, replies) {
@@ -901,8 +901,9 @@ function seekfeature(feature, seeds)
 		output = output.concat(indexOflist(key, value, feature))
 	}, this)
 
+  // there is no replacement then this will get 0 in any case
   if (output.length == 0)
-      output.push([feature,1])
+      output.push([feature,0])
 
   return output
 }
@@ -959,24 +960,84 @@ function buildvector(featuremap, features)
 // var seeds = {'animals':[['dog',5], ['cat',6]], 
 				// 'fish': [['shark',7]]}
 
-
+// add details what was replaced 
 function replacefeatures(features, seeds, idf)
 {
 
   var replace = {}
-  _.each(Object.keys(features), function(value, key, list){
-      var list = seekfeature(value, seeds)
+  var details = {}
 
-      _.each(list, function(element, key1, list1){ 
-          list[key1][1] = list[key1][1]*idf(element[0])
-      }, this)
+// place first priority features, features that appear in train should be placed first
+	_.each(Object.keys(features), function(value, key, list){
+  		if (value in seeds)
+	 		replace[value] = idf(value)
+	})
 
-      list = _.sortBy(list, function(num){ return num[1] })
-      replace[list[0][0]] = list[0][1]
+  	_.each(Object.keys(features), function(value, key, list){
+  		if (!(value in replace))
+  		{
+	    	var list = seekfeature(value, seeds)
 
-  }, this)
+	        _.each(list, function(element, key1, list1){ 
+		      	// the actual score from ppdb is a fine
+		   		list[key1][1] = (list[key1][1] == 0 ? 0 : idf(element[0])/Math.sqrt(list[key1][1]))
+	      	}, this)
+	    
+	      	list = _.sortBy(list, function(num){ return num[1] })
+	      	
+	      	var atleastone = false
 
-  return replace
+	      	_.each(list, function(elem, key, list){ 
+	      		if (!(elem[0] in replace))
+	      			{
+	      			replace[elem[0]] = elem[1]
+	      			
+	      			if (value != elem[0])
+	      				details[value] = elem[0]
+
+	      			atleastone = true
+	      			}
+	      	}, this)
+
+	      	if ((atleastone == false) && (list.length > 0))
+	      		details[value] = list[0][0]
+      	}
+  	}, this)
+  
+  return {'features': replace, 'details': details}
+}
+
+
+function takeIntent(evalution)
+{
+	var output = []
+
+	_.each(evalution, function(value, key, list){ 
+		if (value.length > 0)
+			{
+			evalution[key] = _.sortBy(value, function(num){ return num[0] })
+			evalution[key] = evalution[key].reverse()
+			output.push([key, evalution[key][0][0]])
+			}
+	}, this)
+
+	output = _.sortBy(output, function(num){ return num[1] })
+	output = output.reverse()
+
+	if (output.length > 0) return output[0][0]
+		else
+			return []
+
+}
+
+function comparefeatures(original, features)
+{
+	var dif = 0
+	_.each(original, function(value, key, list){ 
+		if (!(key in features))
+			dif += 1
+	}, this)
+	return dif
 }
 
 
@@ -1023,5 +1084,7 @@ seekfeature:seekfeature,
 indexOflist:indexOflist,
 cosine:cosine,
 buildvector:buildvector,
-replacefeatures:replacefeatures
+replacefeatures:replacefeatures,
+takeIntent:takeIntent,
+comparefeatures:comparefeatures
 }

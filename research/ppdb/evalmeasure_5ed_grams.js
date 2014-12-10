@@ -31,7 +31,6 @@ var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$+-]+/});
 
 function cleanup(sentence)
 {
-  console.log(sentence)
   sentence = sentence.replace(/<VALUE>/g, "")
   sentence = sentence.replace(/<ATTRIBUTE>/g, "")
   sentence = sentence.replace(/\^/g, "")
@@ -40,10 +39,8 @@ function cleanup(sentence)
   sentence = sentence.replace(/\$/g, "")
   sentence = sentence.replace(/ +(?= )/g,'')
   sentence = sentence.toLowerCase()
-  console.log("\""+sentence+"\"")
   if ((sentence == "") || (sentence == " "))
     sentence = false
-  console.log(sentence)
 
 return sentence
 }
@@ -51,7 +48,7 @@ return sentence
 function getfeatures(sentence)
 {
   var features = {}
-  console.log("\""+sentence+"\"")
+  // console.log("\""+sentence+"\"")
   var words = tokenizer.tokenize(sentence);
   var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
   _.each(feature, function(feat, key, list){
@@ -71,15 +68,18 @@ var outstats = []
 // size = size - stats['Offer']["default intent"].length
 
 var datasets = [
-              'turkers_keyphrases_only_rule.json',
+              'turkers_keyphrases_only_rule.json'
               // 'students_keyphrases_only_rule.json'
             ]
 
 var data = []
   
-_.each(datasets, function(value, key, list){
+/*_.each(datasets, function(value, key, list){
     data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value)))
 }, this)
+*/
+
+data = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json"))
 
 // data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json")))
 
@@ -88,21 +88,27 @@ var dataset = partitions.partition(data, 1, Math.round(data.length*0.8))
 // console.log(dataset['train'].length)
 // console.log(dataset['test'].length)
 
-var train_turns = bars.extractturns(dataset['train'])
+// Mark train dialogues
+// var train_turns = bars.extractturns(dataset['train'])
 
+// console.log(train_turns.length)
 
-_.each(data, function(dialogue, key, list1){ 
+_.each(dataset['train'], function(dialogue, key, list1){ 
   _.each(dialogue['turns'], function(turn, key2, list2){ 
-    _.each(train_turns, function(turn1, key3, list3){ 
-      if (turn['input'] == turn1['input'])
-        data[key]['turns'][key2]['separation'] = 'train'
-    }, this)
+    // _.each(train_turns, function(turn1, key3, list3){ 
+      // /data[key]['turns'][key2]['separation'] = 'train'
+      turn['separation'] = 'train'
+    // }, this)
   }, this)
 }, this)
 
+
+
 var turns = bars.extractturns(data)
 
+// Normalize input, extract features if input allows
 _.each(turns, function(turn, key, list){ 
+  turns[key]['input_original'] = turn['input']
   var sentence = regexpNormalizer(turn['input'].toLowerCase().trim())
   sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
   sentence = cleanup(sentence)
@@ -116,7 +122,13 @@ _.each(turns, function(turn, key, list){
   }
 }, this)
 
-// update feature value for training set
+var turns = _.filter(turns, function(num){ return ('features' in num) })
+
+// Update feature value for training set
+
+console.log(tfidf.idf())
+process.exit(0)
+
 _.each(turns, function(turn, key, list){ 
   if ('separation' in turn)
   {
@@ -128,7 +140,8 @@ _.each(turns, function(turn, key, list){
 
 var seeds = {}
 
-// full up seeds with features from train
+// Fill up seeds with features from train
+console.log("Generating phrases from ppdb ...")
 _.each(turns, function(turn, key, list){ 
   if ('separation' in turn)
   {
@@ -159,11 +172,22 @@ _.each(turns, function(turn, key, list){
      'hi i': 1,
      'i want': 1,
      'want to': */
+console.log("Processing...")
+var changedfeatures = 0
+var totalfeaturesnum = 0
+// replace features and skip sentences that DEFAULT INTENT only
 _.each(turns, function(turn, key, list){ 
   if (!('separation' in turn))
-  {
-    turn['features'] = utils.replacefeatures(turn['features'], seeds, function (a){return tfidf.idf(a)})
-  }
+    {
+    turn['features_original'] = turn['features']
+    var featrep = utils.replacefeatures(turn['features'], seeds, function (a){return tfidf.idf(a)})
+    
+    turn['features'] = featrep['features']
+    turn['details'] = featrep['details']
+
+    changedfeatures += utils.comparefeatures(turn['features_original'], turn['features'])
+    totalfeaturesnum += Object.keys(turn['features_original']).length
+    }
 }, this)
 
 // create map of features, simple list of features
@@ -175,13 +199,15 @@ _.each(turns, function(turn, key, list){
   }, this)
 }, this)
 
-// rnu over all test examples and compare to train examples
+
+// run over all test examples and compare to train examples
 // and write results to test example
 _.each(turns, function(testturn, key, list){ 
     // only test samples
     if (!('separation' in testturn))
       {
        turns[key]['evaluation']   = {}
+       turns[key]['evaluation_original']   = {}
        _.each(turns, function(trainturn, key1, list1){ 
           if (('separation' in trainturn) && (trainturn['input'] != false))
           {
@@ -189,11 +215,20 @@ _.each(turns, function(testturn, key, list){
             if (intents.length == 1)
               {
               if (!(intents[0] in  turns[key]['evaluation']))
-                turns[key]['evaluation'][intents[0]] = []
+                {
+                  turns[key]['evaluation'][intents[0]] = []
+                  turns[key]['evaluation_original'][intents[0]] = []
+                }
 
               var score = utils.cosine(utils.buildvector(featuremap, testturn['features']), utils.buildvector(featuremap, trainturn['features']))
+              var score_original = utils.cosine(utils.buildvector(featuremap, testturn['features_original']), utils.buildvector(featuremap, trainturn['features']))
 
-              turns[key]['evaluation'][intents[0]].push([score,trainturn['input']])
+              if (score > 0)
+                turns[key]['evaluation'][intents[0]].push([score,trainturn['input']])
+              
+
+              if (score_original > 0)
+                turns[key]['evaluation_original'][intents[0]].push([score_original,trainturn['input']])
               }
           }
         }, this)
@@ -201,202 +236,77 @@ _.each(turns, function(testturn, key, list){
 }, this)
 
 
-console.log(JSON.stringify(turns, null, 4))
-process.exit(0)
-// if ((sentence.indexOf("+")==-1) && (sentence.indexOf("-")==-1))
-    // {
-    // console.log("verbnegation")
-  var verbs = truth.verbnegation(sentence.replace('without','no'), truth_filename)
-    // }
-  sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
-  
-  var train_turns = bars.extractturns(dataset['train'])
-
-
-
-
-
-
-_.each(seeds, function(value, key, list){ 
-  _.each(value, function(value1, key1, list){ 
-      utils.recursionredis([value1], [1], function(err,actual) {
-        fiber.run(actual)
-      })
-      var list = Fiber.yield()
-      seeds[key][key1] = {}
-      seeds[key][key1][value1] = list
-  }, this)
-}, this)
-
 var stats = new PrecisionRecall();
-var test_turns = bars.extractturns(dataset['test'])
+var stats_single = new PrecisionRecall()
+var totalfeatures = new PrecisionRecall()
+var stats_notsingle = new PrecisionRecall();
 
-console.log(JSON.stringify(seeds, null, 4))
-/*
-_.each(test_turns, function(turn, key, list){ 
+var stats_original = new PrecisionRecall();
+var stats_original_single = new PrecisionRecall();
+var stats_original_notsingle = new PrecisionRecall();
 
-    utils.retrieveIntent(turn['input'], seeds, function(err, results){
-        fiber.run(results)
-    })
+//evaluations
+_.each(turns, function(testturn, key, list){ 
+    if (!('separation' in testturn))
+      {
+      var expected = utils.onlyIntents(testturn['output'])
 
-    var out = Fiber.yield()
+      var actual = utils.takeIntent(testturn['evaluation'])        
+      turns[key]['stats'] = stats.addPredicition(expected, actual)
 
-    var labs = _.map(out, function(num, key){ return Object.keys(num)[0] });
+      
+      var actual_original = utils.takeIntent(testturn['evaluation_original'])        
+      turns[key]['stats_original'] = stats_original.addPredicition(expected, actual_original)
 
-    var output = stats.addPredicition(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
+      if (expected.length == 1)
+        {
+        stats_original_single.addPredicition(expected, actual_original)
+        stats_single.addPredicition(expected, actual)
+        }
+      else
+        {
+        stats_original_notsingle.addPredicition(expected, actual_original)
+        stats_notsingle.addPredicition(expected, actual)
+        }
+      }
+})
 
-    console.log("exp")
-    console.log(_.unique(utils.onlyIntents(turn['output'])))
-    console.log("act")
-    console.log(_.unique(labs))
-    console.log("out")
-    console.log(JSON.stringify(out, null, 4))
-    console.log(turn)
 
-}, this)
+var test_filtered = _.filter(turns, function(num){ return (!('separation' in num))})
 
+console.log(JSON.stringify(test_filtered, null, 4))
+
+console.log("full stats with ppdb")
 console.log(stats.retrieveStats())
 console.log(stats.retrieveLabels())
-process.exit(0)
-*/
+console.log("ppdb single label")
+console.log(stats_single.retrieveStats())
+console.log(stats_single.retrieveLabels())
+console.log("ppdb not single label")
+console.log(stats_notsingle.retrieveStats())
 
+console.log("original full stats")
+console.log(stats_original.retrieveStats())
+console.log(stats_original.retrieveLabels())
+console.log("original single label")
+console.log(stats_original_single.retrieveStats())
+console.log(stats_original_single.retrieveLabels())
 
-_.each(seeds, function(valuelist, intent, list){ 
-  console.log("intent")
-  console.log(intent)
+console.log("original not single label")
+console.log(stats_original_notsingle.retrieveStats())
 
-  _.each(valuelist, function(orig, key, list){
-    console.log("origin seed with generated phrases")
-    console.log(orig) 
-    var dist = []
-    _.each(orig, function(generatedlist, or, list1){
-      _.each(generatedlist, function(generated, key3, list3){
-        _.each(utils.subst(generated), function(sub, key1, list1){
-          console.log("original seed")
-          console.log(or)
-          console.log("from ppdb")
-          console.log(generated)
-          console.log("substring")
-          console.log(sub)
-          utils.recursionredis([sub], [1], function(err,actual) {
-            fiber.run(actual)
-          })
-          var paraphr = Fiber.yield()
+console.log("influence")
+// console.log(changedfeatures/totalfeaturesnum)
+console.log(changedfeatures)
+console.log(totalfeaturesnum)
 
-          utils.onlycontent(sub, function (err,strcontent){
-            fiber.run(utils.elimination(strcontent))
-          })
-          var paraphrcontent = Fiber.yield()
-
-          console.log("length of paraphrases")
-          console.log(paraphr.length)
-
-          console.log("content part")
-          console.log(paraphrcontent)
-
-          var score = paraphrcontent.length==1? 1: Math.pow(paraphr.length, paraphrcontent.length)
-          console.log("score")
-          console.log(score)
-
-          dist.push(score)
-        // console.log(paraphr)
-        }, this)
-      }, this)
-    }, this)
-    dist = _.sortBy(dist, function(num){ return num });
-    console.log(dist)
-  }, this)
+var details = []
+_.each(turns, function(turn, key, list){ 
+  details.push(turn['details'])
 }, this)
 
+details = _.compact(details)
+console.log(JSON.stringify(details, null, 4))
 process.exit(0)
-// turns = filtered
-
-// filtering the gold standard keyphrases that are equal according to the comparison scheme
-
-	var seeds = ['offer']
-	var report = {}
-  var FN = []
-
-  console.log("number of seeds "+seeds.length)
-  console.log(seeds)
-		
-  // retrieve all generated paraphases to the seeds
-  utils.recursionredis(seeds, [1,1], function(err,actual) {
-    console.log("number of PPDB paraphrases " + actual.length)
-    utils.clusteration(_.unique(actual), function(err, clusters){
-      fiber.run(clusters)
-    })
-  })
-
-  var clusters = Fiber.yield()
-     
-  console.log("number of clusters "+clusters.length)
-  console.log(clusters)
-  
-  console.log("number of turns " + turns.length)
-  _.each(turns, function(turn, key, list){
-    if (key%10 == 0) console.log(key)
-    if (turn['status'] == "active")
-    if ('intent_keyphrases_rule' in turn)
-      _.each(turn['intent_keyphrases_rule'], function(keyphrase, intent, list){ 
-          if ((keyphrase != 'DEFAULT INTENT') && (keyphrase != '') 
-            // && (keyphrase.indexOf("<VALUE>") == -1) && (keyphrase.indexOf("<ATTRIBUTE>") == -1)
-             )
-            {
-
-              keyphrase = keyphrase.replace("<VALUE>", "")
-              keyphrase = keyphrase.replace("<ATTRIBUTE>", "")
-              keyphrase = keyphrase.replace("^", "")
-              keyphrase = keyphrase.replace("$", "")
-              keyphrase = keyphrase.replace(/ +(?= )/g,'')
-              
-              var found = false
-              _.each(clusters, function(cluster, clusterkey, list){ 
-                utils.compare([cluster[0], keyphrase], function(err, result){
-                  fiber.run(result)
-                })
-                var result = Fiber.yield()
-                if (result[4] == 1)
-                  {
-                    found = true
-                    if (!('cluster'+clusterkey in report))
-                      {
-                      report['cluster'+clusterkey]={}
-                      report['cluster'+clusterkey]['TP'] = []
-                      report['cluster'+clusterkey]['FP'] = []
-                      report['cluster'+clusterkey]['keyphrases'] = clusters[clusterkey]
-                      }
-
-                    if (intent == INTENT)
-                      report['cluster'+clusterkey]['TP'].push([turn['input'], keyphrase])
-
-                    if (intent != INTENT)
-                      report['cluster'+clusterkey]['FP'].push([turn['input'], keyphrase, intent])
-                  }
-                // })
-              }, this)
-              if ((found == false) && (intent == INTENT))
-                  FN.push([turn['input'], keyphrase])
-            }
-    }, this)
-  }, this)
-
-console.log(JSON.stringify(report, null, 4))
-console.log("number of FN " + FN.length)
-console.log(FN)
-
-var TP = 0
-var FP = 0
-
-_.each(report, function(value, key, list){ 
-  TP = TP + value['TP'].length
-  FP = FP + value['FP'].length
-}, this)
-
-var Precision = TP/(TP+FP)
-var Recall = TP/(TP+FN.length)
-
-console.log("Precision " + Precision)
-console.log("Recall " + Recall)
 })
 f.run();
