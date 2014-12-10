@@ -20,7 +20,7 @@ var tagger = new Tagger({
 });
 // tagger.denodeify(Q);
 
-var wordnet = new natural.WordNet();
+// var wordnet = new natural.WordNet();
 var async = require('async');
 var redis = require("redis")
 
@@ -275,10 +275,12 @@ var cleanposfromredis = function(data, withscores)
 {
 	if (withscores == false)
 	{
+		var output = []
 		_.each(data, function(value, key, list){
-			data[key] = value.split("^")[0] 
+			if (key % 2 == 0)
+				output.push(value.split("^")[0])
 		}, this)
-		return data
+		return output
 	}
 	else
 	{
