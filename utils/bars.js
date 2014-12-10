@@ -676,6 +676,7 @@ function extractturns(dataset)
 		data = []
 		_.each(dataset, function(value, key, list){ 
         if ('status' in value)
+          {
           if (value['status'].indexOf("goodconv") != -1)
             {
         			_.each(value['turns'], function(set, key, list){ 
@@ -700,6 +701,28 @@ function extractturns(dataset)
                 }
         			}, this)
             }
+          }
+          else
+          {
+            _.each(value['turns'], function(set, key, list){ 
+                  if (('output' in set) && (_.isArray(set['output'])) == true)
+                    if ('status' in set)
+                      {
+                        if (_.isArray(set['status'] == true))
+                        {
+                          if (set['status'].indexOf("active") != -1)
+                            data.push(set)
+                        }
+                        else
+                        {
+                          if (set['status'] == 'active')
+                            data.push(set)
+                        }
+                      }
+                    else
+                      data.push(set)
+              }, this)
+          }
 		}, this)
 
 		return data
