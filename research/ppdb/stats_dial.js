@@ -54,7 +54,6 @@ _.each(data, function(value, key, list){
 			numberofintents.push(intents)
 
 			roles = roles.concat(_.pluck(_.filter(value['turns'], function(turn){ return turn['user'].match(/Agent/g) == undefined }), 'role'))
-
  		}
 }, this)
 
@@ -75,7 +74,7 @@ console.log(_.reduce(numberofturns, function(memo, num){ return memo + num[2]; }
 console.log(numberofintents)
 // one/several intents
 console.log(_.unique(roles))
-// [Candidates]
+// Human is  [Candidate]
 // Candidate Employer consistence/ if all human sentences are of the same role
 
 
