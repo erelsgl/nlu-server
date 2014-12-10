@@ -31,7 +31,6 @@ var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$+-]+/});
 
 function cleanup(sentence)
 {
-  console.log(sentence)
   sentence = sentence.replace(/<VALUE>/g, "")
   sentence = sentence.replace(/<ATTRIBUTE>/g, "")
   sentence = sentence.replace(/\^/g, "")
@@ -40,10 +39,8 @@ function cleanup(sentence)
   sentence = sentence.replace(/\$/g, "")
   sentence = sentence.replace(/ +(?= )/g,'')
   sentence = sentence.toLowerCase()
-  console.log("\""+sentence+"\"")
   if ((sentence == "") || (sentence == " "))
     sentence = false
-  console.log(sentence)
 
 return sentence
 }
@@ -51,9 +48,9 @@ return sentence
 function getfeatures(sentence)
 {
   var features = {}
-  console.log("\""+sentence+"\"")
+  // console.log("\""+sentence+"\"")
   var words = tokenizer.tokenize(sentence);
-  var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]')).concat(natural.NGrams.ngrams(words, 3, '[start]', '[end]'))
+  var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
   _.each(feature, function(feat, key, list){
      features[feat.join(" ")] = 1
   }, this)
@@ -128,6 +125,10 @@ _.each(turns, function(turn, key, list){
 var turns = _.filter(turns, function(num){ return ('features' in num) })
 
 // Update feature value for training set
+
+console.log(tfidf.idf())
+process.exit(0)
+
 _.each(turns, function(turn, key, list){ 
   if ('separation' in turn)
   {
@@ -140,6 +141,7 @@ _.each(turns, function(turn, key, list){
 var seeds = {}
 
 // Fill up seeds with features from train
+console.log("Generating phrases from ppdb ...")
 _.each(turns, function(turn, key, list){ 
   if ('separation' in turn)
   {
@@ -170,14 +172,21 @@ _.each(turns, function(turn, key, list){
      'hi i': 1,
      'i want': 1,
      'want to': */
-console.log("START")
-
+console.log("Processing...")
+var changedfeatures = 0
+var totalfeaturesnum = 0
 // replace features and skip sentences that DEFAULT INTENT only
 _.each(turns, function(turn, key, list){ 
   if (!('separation' in turn))
     {
     turn['features_original'] = turn['features']
-    turn['features'] = utils.replacefeatures(turn['features'], seeds, function (a){return tfidf.idf(a)})
+    var featrep = utils.replacefeatures(turn['features'], seeds, function (a){return tfidf.idf(a)})
+    
+    turn['features'] = featrep['features']
+    turn['details'] = featrep['details']
+
+    changedfeatures += utils.comparefeatures(turn['features_original'], turn['features'])
+    totalfeaturesnum += Object.keys(turn['features_original']).length
     }
 }, this)
 
@@ -228,7 +237,13 @@ _.each(turns, function(testturn, key, list){
 
 
 var stats = new PrecisionRecall();
+var stats_single = new PrecisionRecall()
+var totalfeatures = new PrecisionRecall()
+var stats_notsingle = new PrecisionRecall();
+
 var stats_original = new PrecisionRecall();
+var stats_original_single = new PrecisionRecall();
+var stats_original_notsingle = new PrecisionRecall();
 
 //evaluations
 _.each(turns, function(testturn, key, list){ 
@@ -237,10 +252,22 @@ _.each(turns, function(testturn, key, list){
       var expected = utils.onlyIntents(testturn['output'])
 
       var actual = utils.takeIntent(testturn['evaluation'])        
-      turns['stats'] = stats.addCasesHash(expected, actual)
+      turns[key]['stats'] = stats.addPredicition(expected, actual)
+
       
       var actual_original = utils.takeIntent(testturn['evaluation_original'])        
-      turns['stats_original'] = stats_original.addCasesHash(expected, actual_original)
+      turns[key]['stats_original'] = stats_original.addPredicition(expected, actual_original)
+
+      if (expected.length == 1)
+        {
+        stats_original_single.addPredicition(expected, actual_original)
+        stats_single.addPredicition(expected, actual)
+        }
+      else
+        {
+        stats_original_notsingle.addPredicition(expected, actual_original)
+        stats_notsingle.addPredicition(expected, actual)
+        }
       }
 })
 
@@ -248,14 +275,38 @@ _.each(turns, function(testturn, key, list){
 var test_filtered = _.filter(turns, function(num){ return (!('separation' in num))})
 
 console.log(JSON.stringify(test_filtered, null, 4))
+
+console.log("full stats with ppdb")
 console.log(stats.retrieveStats())
+console.log(stats.retrieveLabels())
+console.log("ppdb single label")
+console.log(stats_single.retrieveStats())
+console.log(stats_single.retrieveLabels())
+console.log("ppdb not single label")
+console.log(stats_notsingle.retrieveStats())
+
+console.log("original full stats")
 console.log(stats_original.retrieveStats())
+console.log(stats_original.retrieveLabels())
+console.log("original single label")
+console.log(stats_original_single.retrieveStats())
+console.log(stats_original_single.retrieveLabels())
 
+console.log("original not single label")
+console.log(stats_original_notsingle.retrieveStats())
 
-// console.log("train size"+train_turns.length)
+console.log("influence")
+// console.log(changedfeatures/totalfeaturesnum)
+console.log(changedfeatures)
+console.log(totalfeaturesnum)
+
+var details = []
+_.each(turns, function(turn, key, list){ 
+  details.push(turn['details'])
+}, this)
+
+details = _.compact(details)
+console.log(JSON.stringify(details, null, 4))
 process.exit(0)
-// if ((sentence.indexOf("+")==-1) && (sentence.indexOf("-")==-1))
-    // {
-    // console.log("verbnegation")
 })
 f.run();
