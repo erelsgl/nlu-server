@@ -1,7 +1,7 @@
 /*
 
 The idea here is to load a dataaset, get several dialogues as train for generating paraphrases.
-Extract seeds from train (think about an approach). Fetch new paraphrases from PPDB and run eva
+Prove train with keyphrases. Fetch new paraphrases from PPDB and run eva
 
 */
 
@@ -18,6 +18,13 @@ var async = require('async');
 var bars = require('../../utils/bars.js');
 var partitions = require('limdu/utils/partitions');
 var PrecisionRecall = require("limdu/utils/PrecisionRecall");
+var partitions = require('limdu/utils/partitions');
+
+
+function ccc(hass)
+{
+  return hass
+}
 
 var outstats = []
 // var keyphrases = JSON.parse(fs.readFileSync("../test_aggregate_keyphases/keyphases.08.2014.json"))
@@ -37,94 +44,92 @@ _.each(datasets, function(value, key, list){
     data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value)))
 }, this)
 
-// data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json")))
+// 15 conversations
 
-var dataset = partitions.partition(data, 1, Math.round(data.length*0.8))
+data = _.shuffle(data)
+var stats = []
 
-// console.log(dataset['train'].length)
-// console.log(dataset['test'].length)
+partitions.partitions(data, data.length, function(train, test, fold) {
 
-var train_turns = bars.extractturns(dataset['train'])
+  
+  var train_turns = bars.extractturns(train)
+  var test_turns = bars.extractturns(test)
 
-// load only keyphrases from train
-var seeds = {}
-_.each(train_turns, function(turn, key, list){
-  if ('intent_keyphrases_rule' in turn)
-    _.each(turn['intent_keyphrases_rule'], function(keyphrase, intent, list){ 
-      if (!(intent in seeds))
-        seeds[intent] = []
+  console.log("fold "+fold)
+  console.log("size of train " + train.length + " in utterances " + train_turns.length)
+  console.log("size of test " + test.length + " in utterances " + test_turns.length)
 
-      if ((keyphrase != 'DEFAULT INTENT') && (keyphrase != ''))
-      {
+  stats.push([new PrecisionRecall(), new PrecisionRecall()])
 
-        keyphrase = keyphrase.replace("<VALUE>", "")
-        keyphrase = keyphrase.replace("<ATTRIBUTE>", "")
-        keyphrase = keyphrase.replace("^", "")
-        keyphrase = keyphrase.replace(".", "")
-        keyphrase = keyphrase.replace("!", "")
-        keyphrase = keyphrase.replace("$", "")
-        keyphrase = keyphrase.replace(/ +(?= )/g,'')
-        keyphrase = keyphrase.toLowerCase()
+  // load only keyphrases from train
+  var seeds = utils.loadseeds(train_turns)
 
-        seeds[intent].push(keyphrase)
-        seeds[intent] = _.unique(seeds[intent])
-      } 
+  // create original seeds for baseline comparison
+  var seeds_origial = bars.clone(seeds)
+
+  // enhance seeds original
+  _.each(seeds_origial, function(value, key, list){ 
+    _.each(value, function(value1, key1, list){ 
+      seeds_origial[key][key1] = {}
+      seeds_origial[key][key1][value1] = [value1]
     }, this)
-}, this)
-
-_.each(seeds, function(value, key, list){ 
-  _.each(value, function(value1, key1, list){ 
-      utils.recursionredis([value1], [1], function(err,actual) {
-        fiber.run(actual)
-      })
-      var list = Fiber.yield()
-      seeds[key][key1] = {}
-      seeds[key][key1][value1] = list
   }, this)
+
+  // fetch ppdb for seeds
+  _.each(seeds, function(value, key, list){ 
+    _.each(value, function(value1, key1, list){ 
+        utils.recursionredis([value1], [1], false, function(err,actual) {
+          fiber.run(actual)
+        })
+        var list = Fiber.yield()
+        seeds[key][key1] = {}
+        seeds[key][key1][value1] = list
+    }, this)
+  }, this)
+
+
+
+  _.each([seeds, seeds_origial], function(seedvalue, seedkey, seedlist){ 
+
+    console.log("Evaluation "+seedkey + " ...")
+
+    _.each(test_turns, function(turn, key, list){ 
+
+        if (key % 10 == 0)
+          console.log(key)
+
+        utils.retrieveIntent(turn['input'], seedvalue, function(err, results){
+            fiber.run(results)
+        })
+
+        var out = Fiber.yield()
+        var labs = _.unique(_.map(out, function(num, key){ return Object.keys(num)[0] }))
+        var output = stats[seedkey].addPredicition(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
+        
+        test_turns[key][seedkey] = {}
+        test_turns[key][seedkey]['stats'] = output
+        test_turns[key][seedkey]['out'] = out
+    
+    }, this)
+  }, this)
+
+// console.log("1 - ppdb 2 - original")
+// console.log(JSON.stringify(test_turns, null, 4))
+// console.log("1 - ppdb 2 - original")
+
+})
+
+
+_.each(stats, function(stat, key, list){ 
+  stats[key][0].calculateStatsNoReturn()
+  stats[key][1].calculateStatsNoReturn()
 }, this)
 
-var stats = new PrecisionRecall();
-var test_turns = bars.extractturns(dataset['test'])
+var param = ['Precision', 'Recall', 'F1']
 
-console.log(JSON.stringify(seeds, null, 4))
-// console.log(test_turns)
-// process.exit(0)
-
-_.each(test_turns, function(turn, key, list){ 
-
-    utils.retrieveIntent(turn['input'], seeds, function(err, results){
-        fiber.run(results)
-    })
-
-    var out = Fiber.yield()
-
-    var labs = _.map(out, function(num, key){ return Object.keys(num)[0] });
-
-    var output = stats.addPredicition(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
-    // var output = stats.addCasesLabels(_unique(utils.onlyIntents(turn['output'])), _.unique(labs))
-
-    // console.log("classification")
-    // console.log(utils.retrieveIntent(turn['input'], seeds))
-    // console.log(JSON.stringify(turn, null, 4))
-    // console.log(output)
-
-    console.log("exp")
-    console.log(_.unique(utils.onlyIntents(turn['output'])))
-    console.log("act")
-    console.log(_.unique(labs))
-    console.log("out")
-    console.log(JSON.stringify(out, null, 4))
-    console.log(turn)
-
+_.each(list, function(value, key, list){ 
+  
 }, this)
-
-console.log(stats.retrieveStats())
-console.log(stats.retrieveLabels())
-
-// console.log(JSON.stringify(seeds, null, 4))
-process.exit(0)
-
-
 
 /*_.each(seeds, function(valuelist, intent, list){ 
   console.log("intent")
