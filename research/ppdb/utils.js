@@ -1083,8 +1083,9 @@ _.each(params, function(param, key, list){
 	}, this)
 
 	
-	_.each(output[param]['list'], function(value, key, list){ 
-		output[param]['average'].push(_.reduce(value, function(memo, num){ return memo + num; }, 0)/value.length)
+	_.each(output[param]['list'], function(value, key, list){
+		var len =  (_.filter(value, function(num){ return num >= 0; })).length
+		output[param]['average'].push(_.reduce(value, function(memo, num){ if (num >= 0) {return memo + num} else {return memo + 0} }, 0)/len)
 	}, this)
 	
 }, this)
