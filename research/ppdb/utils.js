@@ -508,6 +508,8 @@ function cleanposoutput(resp)
 {
 	var out = []
 
+	// console.log(resp)
+	
 	var cleaned = resp.replace(/\n|\r/g, "");
 	var pairlist = cleaned.split(" ")
 	var POS = []
@@ -588,30 +590,29 @@ function retrievepos(string, callback)
 	})
 }
 
-// function fetchbuffer(string, callback)
-// {
-	// console.log("string")
-	// console.log(string)
-		// callback('er', buffer[string])
-// }
-
 function onlycontent(string, callback)
 {
-	cachepos(string,function(err, response){
-		var output = cleanposoutput(response)
-		buffer[string] = output 
-		callback(err, output)
-	})
-}
+			console.log("fethcing content " + string)
 
+			cachepos(string,function(err, response){
+				console.log("cache pos")
+				console.log(response)
+				var output = cleanposoutput(response)
+				buffer[string] = output 
+				console.log("content" + output)
+				callback(err, output)
+			})
+}
 
 function cachepos(string, callback)
 {
     clientpos.select(10, function() {
 		clientpos.get(string, function (err, pos) {
+			console.log("location " + pos)
             if ((pos == null) || (pos == "OK"))
 	        {
 		        retrievepos(string, function (err, response){
+		        	console.log("tagger " + response)
 					callback(err, response)
 		        })
 		    }
