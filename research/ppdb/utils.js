@@ -20,12 +20,15 @@ var tagger = new Tagger({
 });
 // tagger.denodeify(Q);
 
-var wordnet = new natural.WordNet();
+// var wordnet = new natural.WordNet();
 var async = require('async');
 var redis = require("redis")
 
 var client = redis.createClient(6369)
-var clientpos = redis.createClient(6369);
+// var clientpos = redis.createClient(6369);
+var clientpos = redis.createClient();
+
+var buffer = {}
 
 var DBSELECT = 0
 
@@ -275,10 +278,12 @@ var cleanposfromredis = function(data, withscores)
 {
 	if (withscores == false)
 	{
+		var output = []
 		_.each(data, function(value, key, list){
-			data[key] = value.split("^")[0] 
+			if (key % 2 == 0)
+				output.push(value.split("^")[0])
 		}, this)
-		return data
+		return output
 	}
 	else
 	{
@@ -351,17 +356,21 @@ var retrieveIntent = function(input, seeds, callback)
    				var phrases = paraphrases[originalphrase]
    				async.eachSeries(phrases, function(phrase, callback4){
 
+   					// input - test utterances
 		      		var input_list = input.split(" ")
 
 		      		onlycontent(phrase, function(err, response) {
+
+		      			// response - content of the seed
+
      		 			var content_phrase = (response.length != 0 ? response : phrase.split(" "));
 				        if (_.isEqual(content_phrase, _.intersection(input_list, content_phrase)) == true)
   					      	{
         					var elem = {}
         					elem[intent] = {}
         					elem[intent]['original seed'] = originalphrase
-        					elem[intent]['generated phrase'] = phrase
-        					elem[intent]['content'] = content_phrase
+        					elem[intent]['ppdb phrase'] = phrase
+        					elem[intent]['content of ppdb phrase'] = content_phrase
           					output.push(elem)
         					}
         				callback4()
@@ -583,38 +592,27 @@ function retrievepos(string, callback)
 
 function onlycontent(string, callback)
 {
+			console.log("fethcing content " + string)
 
-	cachepos(string,function(err, response){
-		// console.log("onlycontent")
-		// console.log(response)
-		callback(err, cleanposoutput(response))
-	})
-  //   clientpos.select(10, function() {
-		// clientpos.get(string, function (err, pos) {
-  //           if ((pos == null) || (pos == "OK"))
-	 //        {
-		//         retrievepos(string, function (err, response){
-		// 			callback(err, cleanposoutput(response))
-		//         })
-		//     }
-		//     else
-		//     {
-		//     	// console.log("redis")
-		// 		callback(err, cleanposoutput(pos))
-		//     }
-  //        })
-  //   })
+			cachepos(string,function(err, response){
+				console.log("cache pos")
+				console.log(response)
+				var output = cleanposoutput(response)
+				buffer[string] = output 
+				console.log("content" + output)
+				callback(err, output)
+			})
 }
-
 
 function cachepos(string, callback)
 {
     clientpos.select(10, function() {
 		clientpos.get(string, function (err, pos) {
+			console.log("location " + pos)
             if ((pos == null) || (pos == "OK"))
 	        {
 		        retrievepos(string, function (err, response){
-		        	// console.log(response)
+		        	console.log("tagger " + response)
 					callback(err, response)
 		        })
 		    }
@@ -1041,6 +1039,60 @@ function comparefeatures(original, features)
 }
 
 
+function loadseeds(train_turns)
+{
+	var seeds = {}
+	_.each(train_turns, function(turn, key, list){
+	  if ('intent_keyphrases_rule' in turn)
+	    _.each(turn['intent_keyphrases_rule'], function(keyphrase, intent, list){ 
+	      if (!(intent in seeds))
+	        seeds[intent] = []
+
+	      if ((keyphrase != 'DEFAULT INTENT') && (keyphrase != ''))
+	      {
+
+	        keyphrase = keyphrase.replace("<VALUE>", "")
+	        keyphrase = keyphrase.replace("<ATTRIBUTE>", "")
+	        keyphrase = keyphrase.replace("^", "")
+	        keyphrase = keyphrase.replace(".", "")
+	        keyphrase = keyphrase.replace("!", "")
+	        keyphrase = keyphrase.replace("$", "")
+	        keyphrase = keyphrase.replace(/ +(?= )/g,'')
+	        keyphrase = keyphrase.toLowerCase()
+
+	        seeds[intent].push(keyphrase)
+	        seeds[intent] = _.unique(seeds[intent])
+	      } 
+	    }, this)
+	}, this)
+	
+	return seeds
+}
+
+function calculateparam(results, params)
+{
+var output = {}
+_.each(params, function(param, key, list){ 
+
+	output[param] = {}
+	output[param]['list'] = []
+	output[param]['average'] = []
+
+	_.each(results[0], function(method, keymethod, list){ 
+		output[param]['list'].push(_.map(results, function(num){ return num[keymethod][param]; }))
+	}, this)
+
+	
+	_.each(output[param]['list'], function(value, key, list){ 
+		output[param]['average'].push(_.reduce(value, function(memo, num){ return memo + num; }, 0)/value.length)
+	}, this)
+	
+}, this)
+
+return output
+}
+
+
 module.exports = {
 	distance:distance,
 	compare:compare,
@@ -1086,5 +1138,7 @@ cosine:cosine,
 buildvector:buildvector,
 replacefeatures:replacefeatures,
 takeIntent:takeIntent,
-comparefeatures:comparefeatures
+comparefeatures:comparefeatures,
+loadseeds:loadseeds,
+calculateparam:calculateparam
 }

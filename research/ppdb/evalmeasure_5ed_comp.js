@@ -1,7 +1,7 @@
 /*
 
 The idea here is to load a dataaset, get several dialogues as train for generating paraphrases.
-Extract seeds from train (think about an approach). Fetch new paraphrases from PPDB and run eva
+Extract seeds from train, the complicated part. Fetch new paraphrases from PPDB and run evaluation.
 
 */
 
