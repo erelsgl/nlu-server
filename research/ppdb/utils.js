@@ -27,6 +27,8 @@ var redis = require("redis")
 var client = redis.createClient(6369)
 var clientpos = redis.createClient(6369);
 
+var buffer = {}
+
 var DBSELECT = 0
 
 var requestify = require('requestify'); 
@@ -589,10 +591,19 @@ function retrievepos(string, callback)
 
 function onlycontent(string, callback)
 {
+	if (string in buffer)
+		{
+		setTimeout(function() {
+			callback("", buffer[string])
+		},20)
+		}
+
 	cachepos(string,function(err, response){
 		// console.log("onlycontent")
 		// console.log(response)
-		callback(err, cleanposoutput(response))
+		var output = cleanposoutput(response)
+		buffer[string] = output 
+		callback(err, output)
 	})
   //   clientpos.select(10, function() {
 		// clientpos.get(string, function (err, pos) {
