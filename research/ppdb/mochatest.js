@@ -39,19 +39,19 @@ describe('Util test', function() {
 		// 3 folds
 		// 2 methods
 		var results = [
-			[{'F1':3, 'Precision':1 ,'Recall':5},{'F1':3, 'Precision':5 ,'Recall':5}],
-			[{'F1':3, 'Precision':2 ,'Recall':6},{'F1':7, 'Precision':3 ,'Recall':5}],
-			[{'F1':0, 'Precision':6 ,'Recall':7},{'F1':11, 'Precision':4 ,'Recall':5}]
+			[{'F1':3, 'Precision':1 ,'Recall':5, 'Label': -1},{'F1':3, 'Precision':5 ,'Recall':5, 'Label': -1}],
+			[{'F1':3, 'Precision':2 ,'Recall':6, 'Label': 2},{'F1':7, 'Precision':3 ,'Recall':5, 'Label': -1}],
+			[{'F1':0, 'Precision':6 ,'Recall':7, 'Label': 4},{'F1':11, 'Precision':4 ,'Recall':5, 'Label': -1}]
 		]
 
 		// as results: Precision - methods - folds
-		var param = ['Precision', 'Recall', 'F1']
+		var param = ['Precision', 'Recall', 'F1', 'Label']
 		var output = utils.calculateparam(results, param)
 
-		// console.log(JSON.stringify(output, null, 5))
 		_.isEqual(output['Precision']['average'], [3,4]).should.be.true
 		_.isEqual(output['Recall']['average'], [6,5]).should.be.true
 		_.isEqual(output['F1']['average'], [2,7]).should.be.true
+		_.isEqual(output['Label']['average'][0], 3).should.be.true
 	})
 		
 
