@@ -25,7 +25,8 @@ var async = require('async');
 var redis = require("redis")
 
 var client = redis.createClient(6369)
-var clientpos = redis.createClient(6369);
+// var clientpos = redis.createClient(6369);
+var clientpos = redis.createClient();
 
 var buffer = {}
 
@@ -507,8 +508,6 @@ function cleanposoutput(resp)
 {
 	var out = []
 
-	// console.log(resp)
-	
 	var cleaned = resp.replace(/\n|\r/g, "");
 	var pairlist = cleaned.split(" ")
 	var POS = []
@@ -589,37 +588,20 @@ function retrievepos(string, callback)
 	})
 }
 
+// function fetchbuffer(string, callback)
+// {
+	// console.log("string")
+	// console.log(string)
+		// callback('er', buffer[string])
+// }
+
 function onlycontent(string, callback)
 {
-	if (string in buffer)
-		{
-		setTimeout(function() {
-			callback("", buffer[string])
-		},20)
-		}
-
 	cachepos(string,function(err, response){
-		// console.log("onlycontent")
-		// console.log(response)
 		var output = cleanposoutput(response)
 		buffer[string] = output 
 		callback(err, output)
 	})
-  //   clientpos.select(10, function() {
-		// clientpos.get(string, function (err, pos) {
-  //           if ((pos == null) || (pos == "OK"))
-	 //        {
-		//         retrievepos(string, function (err, response){
-		// 			callback(err, cleanposoutput(response))
-		//         })
-		//     }
-		//     else
-		//     {
-		//     	// console.log("redis")
-		// 		callback(err, cleanposoutput(pos))
-		//     }
-  //        })
-  //   })
 }
 
 
@@ -630,7 +612,6 @@ function cachepos(string, callback)
             if ((pos == null) || (pos == "OK"))
 	        {
 		        retrievepos(string, function (err, response){
-		        	// console.log(response)
 					callback(err, response)
 		        })
 		    }
