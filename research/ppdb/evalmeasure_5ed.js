@@ -47,12 +47,10 @@ _.each(datasets, function(value, key, list){
 data = _.shuffle(data)
 var stats = []
 
- var f = Fiber(function() {
+var f = Fiber(function() {
   var fiber = Fiber.current;
 
 partitions.partitions(data, 10, function(train, test, fold) {
-
-
 
   var testset = train
   var trainset = test
@@ -89,6 +87,8 @@ partitions.partitions(data, 10, function(train, test, fold) {
   }, this)
 
   // fetch ppdb for seeds
+  console.log("ppdb seed fetching ...")
+
   var expansion = 0
   _.each(seeds, function(intentkeys, intent, list){ 
     _.each(intentkeys, function(value1, key, list){ 
