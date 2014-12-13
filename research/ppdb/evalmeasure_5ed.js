@@ -50,7 +50,7 @@ var stats = []
 var f = Fiber(function() {
   var fiber = Fiber.current;
 
-partitions.partitions(data, 10, function(train, test, fold) {
+partitions.partitions(data, data.length, function(train, test, fold) {
 
   var testset = train
   var trainset = test
@@ -118,27 +118,27 @@ partitions.partitions(data, 10, function(train, test, fold) {
         console.log("run")
         console.log(turn['input'])
         utils.retrieveIntent(turn['input'], seedvalue, function(err, results){
-          // setTimeout(function() {
           fiber.run(results)
-          // }, 10000)
         })
 
         var out = Fiber.yield()
-        console.log("out")
-        console.log(out)
         var labs = _.unique(_.map(out, function(num, key){ return Object.keys(num)[0] }))
-        var output = stats[fold][seedkey].addPredicition(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
+        
+        stats[fold][seedkey].addCasesLabels(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
+        test_turns[key][seedkey]['stats'] = stats[fold][seedkey].addCasesHash(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
         
         test_turns[key][seedkey] = {}
-        test_turns[key][seedkey]['stats'] = output
         test_turns[key][seedkey]['out'] = out
     
     }, this)
   }, this)
 
-// console.log("1 - ppdb 2 - original")
-// console.log(JSON.stringify(test_turns, null, 4))
-// console.log("1 - ppdb 2 - original")
+console.log("1 - ppdb 2 - original")
+
+_.each(list, function(value, key, list){ 
+  if (_.isEqual(value['0']['out'], value['1']['out']) == false)
+    console.log(JSON.stringify(value, null, 4))
+}, this)
 
 })
 
