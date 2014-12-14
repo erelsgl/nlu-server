@@ -46,44 +46,50 @@ var datasets = [
 
 var data = []
 
-_.each(datasets, function(value, key, list){
-    data = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value))
-}, this)
-
-_.each(data, function(dialogue, dialoguekey, list){ 
-  _.each(dialogue['turns'], function(utterance, utterancekey, list){ 
-      if (utterance['status'] == 'active')
-      {
-        var sentence = data[dialoguekey]['turns'][utterancekey]['input']
-        data[dialoguekey]['turns'][utterancekey]['input_original'] = sentence
-        
-        sentence = sentence.toLowerCase().trim()
-        sentence = regexpNormalizer(sentence)
-        data[dialoguekey]['turns'][utterancekey]['input_normalized'] = sentence
-        data[dialoguekey]['turns'][utterancekey]['polarity'] = truth.verbnegation(sentence.replace('without','no'), truth_filename)
-
-        sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
-        data[dialoguekey]['turns'][utterancekey]['input'] = sentence
 
 
-      }
+function trainandtest(train, test, mode, callback)
+{
+
+/*
+  mode = 'original'
+  mode = 'ppdb'
+*/
+  if ((mode != 'ppdb') && (mode != 'original'))
+  {
+    console.log("incorrect mode")
+    process.exit(0)
+  }
+
+  var data = []
+  data = data.concat(train).concat(test)
+
+  _.each(data, function(dialogue, dialoguekey, list){ 
+    _.each(dialogue['turns'], function(utterance, utterancekey, list){ 
+        if (utterance['status'] == 'active')
+        {
+          var sentence = data[dialoguekey]['turns'][utterancekey]['input']
+          data[dialoguekey]['turns'][utterancekey]['input_original'] = sentence
+          
+          sentence = sentence.toLowerCase().trim()
+          sentence = regexpNormalizer(sentence)
+          data[dialoguekey]['turns'][utterancekey]['input_normalized'] = sentence
+          data[dialoguekey]['turns'][utterancekey]['polarity'] = truth.verbnegation(sentence.replace('without','no'), truth_filename)
+
+          sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+          data[dialoguekey]['turns'][utterancekey]['input'] = sentence
+
+
+        }
+    }, this)
   }, this)
-}, this)
 
-// 15 conversations
-// 170 utterances
+  // 15 conversations
+  // 170 utterances
 
-
-data = _.shuffle(data)
-var stats = []
-
-var f = Fiber(function() {
-  var fiber = Fiber.current;
-
-partitions.partitions(data, data.length/3, function(train, test, fold) {
-
-  var testset = train
-  var trainset = test
+  
+  var testset = test
+  var trainset = train
 
   if (trainset.length > testset.length)
     {
@@ -100,100 +106,54 @@ partitions.partitions(data, data.length/3, function(train, test, fold) {
   console.log("size of train " + trainset.length + " in utterances " + train_turns.length)
   console.log("size of test " + testset.length + " in utterances " + test_turns.length)
 
-  stats.push([new PrecisionRecall(), new PrecisionRecall()])
-
   // load only keyphrases from train
   var seeds = utils.loadseeds(train_turns)
 
   // create original seeds for baseline comparison
-  var seeds_origial = bars.clone(seeds)
+  // var seeds_origial = bars.clone(seeds)
 
-  // enhance seeds original
-  var expansion_original = 0
-  _.each(seeds_origial, function(value, key, list){ 
-    _.each(value, function(value1, key1, list){ 
-      seeds_origial[key][key1] = {}
-      seeds_origial[key][key1][value1] = [value1]
-      expansion_original += 1
+  if (mode == 'original')
+    {
+      _.each(seeds, function(value, key, list){ 
+        _.each(value, function(value1, key1, list){ 
+          seeds[key][key1] = {}
+          seeds[key][key1][value1] = [value1]
+        }, this)
+      }, this)
+    }
+
+  if (mode == 'ppdb')
+    {
+    _.each(seeds, function(intentkeys, intent, list){ 
+      _.each(intentkeys, function(value1, key, list){ 
+          utils.recursionredis([value1], [1], false, function(err,actual) {
+            fiber.run(actual)
+          })
+          var list = Fiber.yield()
+          seeds[intent][key] = {}
+          seeds[intent][key][value1] = list
+      }, this)
     }, this)
+    }
+
+  var stats = new PrecisionRecall()
+
+  _.each(test_turns, function(turn, key, list){ 
+    if (key % 50 == 0)
+      console.log(key)
+
+      utils.retrieveIntent(turn['input'], seedvalue, function(err, results){
+        fiber.run(results)
+      })
+
+      var out = Fiber.yield()
+      var labs = _.unique(_.map(out, function(num, key){ return Object.keys(num)[0] }))
+      
+      stats.addCasesLabels(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
   }, this)
 
-  // fetch ppdb for seeds
-  console.log("ppdb seed fetching ...")
+  var output = {}
+  var output['stats'] = stats.retrieveStats()
+  return output
 
-  var expansion = 0
-  _.each(seeds, function(intentkeys, intent, list){ 
-    _.each(intentkeys, function(value1, key, list){ 
-        utils.recursionredis([value1], [1], false, function(err,actual) {
-          fiber.run(actual)
-        })
-        var list = Fiber.yield()
-        seeds[intent][key] = {}
-        seeds[intent][key][value1] = list
-
-        expansion += list.length
-    }, this)
-  }, this)
-
-  console.log("ppdb seed expansion "+ expansion)
-  console.log("ppdb seed original expansion "+ expansion_original)
-
-  _.each([seeds, seeds_origial], function(seedvalue, seedkey, seedlist){ 
-
-    console.log("Evaluation "+seedkey + " ...")
-
-    _.each(test_turns, function(turn, key, list){ 
-
-        if (key % 50 == 0)
-          console.log(key)
-
-        utils.retrieveIntent(turn['input'], seedvalue, function(err, results){
-          fiber.run(results)
-        })
-
-        var out = Fiber.yield()
-        var labs = _.unique(_.map(out, function(num, key){ return Object.keys(num)[0] }))
-        
-        stats[fold][seedkey].addCasesLabels(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
-        
-        test_turns[key][seedkey] = {}
-        test_turns[key][seedkey]['stats'] = stats[fold][seedkey].addCasesHash(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs),1)
-        test_turns[key][seedkey]['out'] = out
-    
-    }, this)
-  }, this)
-
-console.log("1 - ppdb 2 - original")
-console.log("----------------------FOLD " + fold + "--------------------")
-
-console.log("----differences between two methods----")
-
-_.each(test_turns, function(value, key, list){ 
-  if (_.isEqual(value['0']['stats'], value['1']['stats']) == false)
-    console.log(JSON.stringify(value, null, 4))
-}, this)
-
-console.log("----what are the utterances that benefit from ppdb----")
-
-_.each(test_turns, function(value, key, list){ 
-  if (value['0']['stats']['TP'].length > value['1']['stats']['TP'].length)
-    console.log(JSON.stringify(value['0']['out'], null, 4))
-}, this)
-
-})
-
-_.each(stats, function(fold, keyfold, list){ 
-  _.each(fold, function(method, keymethod, list){ 
-    stats[keyfold][keymethod].calculateStatsNoReturn()
-    stats[keyfold][keymethod].retrieveLabels()
-  }, this)
-}, this)
-
-// console.log(JSON.stringify(utils.calculateparam(stats, ['macroF1', 'macroRecall', 'macroPrecision','Precision', 'Recall', 'F1']), null, 4))
-console.log(JSON.stringify(utils.calculateparam(stats, ['Precision', 'Recall', 'F1']), null, 4))
-console.log("----------------------")
-console.log(JSON.stringify(utils.calculateparam(stats, ['Offer', 'Accept', 'Reject','Greet','Query']), null, 4))
-process.exit(0)
-
-})
-f.run();
+}
