@@ -1039,6 +1039,43 @@ function comparefeatures(original, features)
 }
 
 
+function enrichseeds(seeds, mode)
+{
+	if ((mode != 'ppdb') && (mode != 'original'))
+	{
+		console.log("error mode "+ mode)
+		process.exit(0)
+	}
+
+  
+  	if (mode == 'original')
+	    {
+	      _.each(seeds, function(value, key, list){ 
+	        _.each(value, function(value1, key1, list){ 
+	          seeds[key][key1] = {}
+	          seeds[key][key1][value1] = [value1]
+	        }, this)
+	      }, this)
+	    }
+
+	if (mode == 'ppdb')
+    {
+    _.each(seeds, function(intentkeys, intent, list){ 
+      _.each(intentkeys, function(value1, key, list){ 
+          recursionredis([value1], [1], false, function(err,actual) {
+            // fiber.run(actual)
+            seeds[intent][key] = {}
+            seeds[intent][key][value1] = list
+          })
+          // var list = Fiber.yield()
+          
+      }, this)
+    }, this)
+    }
+
+    return seeds
+}
+
 function loadseeds(train_turns)
 {
 	var seeds = {}
@@ -1141,5 +1178,6 @@ replacefeatures:replacefeatures,
 takeIntent:takeIntent,
 comparefeatures:comparefeatures,
 loadseeds:loadseeds,
-calculateparam:calculateparam
+calculateparam:calculateparam,
+enrichseeds:enrichseeds
 }
