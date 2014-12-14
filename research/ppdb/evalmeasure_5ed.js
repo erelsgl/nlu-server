@@ -18,6 +18,11 @@ var partitions = require('limdu/utils/partitions');
 var PrecisionRecall = require("limdu/utils/PrecisionRecall");
 var partitions = require('limdu/utils/partitions');
 
+var limdu = require("limdu");
+var ftrs = limdu.features;
+var regexpNormalizer = ftrs.RegexpNormalizer(
+    JSON.parse(fs.readFileSync('../../knowledgeresources/BiuNormalizations.json')));
+
 
 function ccc(hass)
 {
@@ -42,6 +47,14 @@ _.each(datasets, function(value, key, list){
     data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value)))
 }, this)
 
+_.each(data, function(dialogue, dialoguekey, list){ 
+  _.each(dialogue['turns'], function(utterance, utterancekey, list){ 
+    var sentence = data[dialoguekey]['turns'][utterancekey]['input']
+    sentence = sentence.toLowerCase().trim()
+    data[dialoguekey]['turns'][utterancekey]['input'] = regexpNormalizer(sentence)
+  }, this)
+}, this)
+
 // 15 conversations
 
 data = _.shuffle(data)
@@ -50,7 +63,7 @@ var stats = []
 var f = Fiber(function() {
   var fiber = Fiber.current;
 
-partitions.partitions(data, data.length, function(train, test, fold) {
+partitions.partitions(data, data.length/3, function(train, test, fold) {
 
   var testset = train
   var trainset = test
@@ -104,7 +117,7 @@ partitions.partitions(data, data.length, function(train, test, fold) {
   }, this)
 
   console.log("ppdb seed expansion "+ expansion)
-  console.log("ppdb seed originl expansion "+ expansion_original)
+  console.log("ppdb seed original expansion "+ expansion_original)
 
   _.each([seeds, seeds_origial], function(seedvalue, seedkey, seedlist){ 
 
@@ -112,11 +125,9 @@ partitions.partitions(data, data.length, function(train, test, fold) {
 
     _.each(test_turns, function(turn, key, list){ 
 
-        if (key % 10 == 0)
+        if (key % 50 == 0)
           console.log(key)
 
-        console.log("run")
-        console.log(turn['input'])
         utils.retrieveIntent(turn['input'], seedvalue, function(err, results){
           fiber.run(results)
         })
@@ -125,19 +136,29 @@ partitions.partitions(data, data.length, function(train, test, fold) {
         var labs = _.unique(_.map(out, function(num, key){ return Object.keys(num)[0] }))
         
         stats[fold][seedkey].addCasesLabels(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
-        test_turns[key][seedkey]['stats'] = stats[fold][seedkey].addCasesHash(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
         
         test_turns[key][seedkey] = {}
+        test_turns[key][seedkey]['stats'] = stats[fold][seedkey].addCasesHash(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs),1)
         test_turns[key][seedkey]['out'] = out
     
     }, this)
   }, this)
 
 console.log("1 - ppdb 2 - original")
+console.log("----------------------FOLD " + fold + "--------------------")
 
-_.each(list, function(value, key, list){ 
-  if (_.isEqual(value['0']['out'], value['1']['out']) == false)
+console.log("----differences between two methods----")
+
+_.each(test_turns, function(value, key, list){ 
+  if (_.isEqual(value['0']['stats'], value['1']['stats']) == false)
     console.log(JSON.stringify(value, null, 4))
+}, this)
+
+console.log("----what are the utterances that benefit from ppdb----")
+
+_.each(test_turns, function(value, key, list){ 
+  if (value['0']['stats']['TP'].length > value['1']['stats']['TP'].length)
+    console.log(JSON.stringify(value['0']['out'], null, 4))
 }, this)
 
 })
@@ -145,10 +166,14 @@ _.each(list, function(value, key, list){
 _.each(stats, function(fold, keyfold, list){ 
   _.each(fold, function(method, keymethod, list){ 
     stats[keyfold][keymethod].calculateStatsNoReturn()
+    stats[keyfold][keymethod].retrieveLabels()
   }, this)
 }, this)
 
+// console.log(JSON.stringify(utils.calculateparam(stats, ['macroF1', 'macroRecall', 'macroPrecision','Precision', 'Recall', 'F1']), null, 4))
 console.log(JSON.stringify(utils.calculateparam(stats, ['Precision', 'Recall', 'F1']), null, 4))
+console.log("----------------------")
+console.log(JSON.stringify(utils.calculateparam(stats, ['Offer', 'Accept', 'Reject','Greet','Query']), null, 4))
 process.exit(0)
 
 })
