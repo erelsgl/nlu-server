@@ -17,6 +17,9 @@ var bars = require('../../utils/bars.js');
 var partitions = require('limdu/utils/partitions');
 var PrecisionRecall = require("limdu/utils/PrecisionRecall");
 var partitions = require('limdu/utils/partitions');
+var rules = require("../rule-based/rules.js")
+var truth = require("../rule-based/truth_utils.js")
+var truth_filename =  "../../../truth_teller/sentence_to_truthteller.txt"
 
 var limdu = require("limdu");
 var ftrs = limdu.features;
@@ -44,18 +47,32 @@ var datasets = [
 var data = []
 
 _.each(datasets, function(value, key, list){
-    data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value)))
+    data = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value))
 }, this)
 
 _.each(data, function(dialogue, dialoguekey, list){ 
   _.each(dialogue['turns'], function(utterance, utterancekey, list){ 
-    var sentence = data[dialoguekey]['turns'][utterancekey]['input']
-    sentence = sentence.toLowerCase().trim()
-    data[dialoguekey]['turns'][utterancekey]['input'] = regexpNormalizer(sentence)
+      if (utterance['status'] == 'active')
+      {
+        var sentence = data[dialoguekey]['turns'][utterancekey]['input']
+        data[dialoguekey]['turns'][utterancekey]['input_original'] = sentence
+        
+        sentence = sentence.toLowerCase().trim()
+        sentence = regexpNormalizer(sentence)
+        data[dialoguekey]['turns'][utterancekey]['input_normalized'] = sentence
+        data[dialoguekey]['turns'][utterancekey]['polarity'] = truth.verbnegation(sentence.replace('without','no'), truth_filename)
+
+        sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+        data[dialoguekey]['turns'][utterancekey]['input'] = sentence
+
+
+      }
   }, this)
 }, this)
 
 // 15 conversations
+// 170 utterances
+
 
 data = _.shuffle(data)
 var stats = []
@@ -76,6 +93,8 @@ partitions.partitions(data, data.length/3, function(train, test, fold) {
 
   var train_turns = bars.extractturns(trainset)
   var test_turns = bars.extractturns(testset)
+
+// [ { form: 'be', polarity: 'P' } ]
 
   console.log("fold "+fold)
   console.log("size of train " + trainset.length + " in utterances " + train_turns.length)
