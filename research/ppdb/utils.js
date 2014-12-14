@@ -1039,41 +1039,31 @@ function comparefeatures(original, features)
 }
 
 
-function enrichseeds(seeds, mode)
+function enrichseeds_original(seeds)
 {
-	if ((mode != 'ppdb') && (mode != 'original'))
-	{
-		console.log("error mode "+ mode)
-		process.exit(0)
-	}
-
-  
-  	if (mode == 'original')
-	    {
-	      _.each(seeds, function(value, key, list){ 
-	        _.each(value, function(value1, key1, list){ 
-	          seeds[key][key1] = {}
-	          seeds[key][key1][value1] = [value1]
-	        }, this)
-	      }, this)
-	    }
-
-	if (mode == 'ppdb')
-    {
-    _.each(seeds, function(intentkeys, intent, list){ 
-      _.each(intentkeys, function(value1, key, list){ 
-          recursionredis([value1], [1], false, function(err,actual) {
-            // fiber.run(actual)
-            seeds[intent][key] = {}
-            seeds[intent][key][value1] = list
-          })
-          // var list = Fiber.yield()
-          
-      }, this)
+  _.each(seeds, function(value, key, list){ 
+    _.each(value, function(value1, key1, list){ 
+      seeds[key][key1] = {}
+      seeds[key][key1][value1] = [value1]
     }, this)
-    }
+  }, this)
+  return seeds
+}
 
-    return seeds
+function enrichseeds(seeds, callback)
+{
+	var output = {}
+
+	    async.eachSeries(Object.keys(seeds), function(intent, callback1){
+	    	output[intent] = {}
+	    	async.eachSeries(seeds[intent], function(value1, callback2){
+	    	  output[intent][value1] = []
+	          recursionredis([value1], [1], false, function(err,actual) {
+	            output[intent][value1] = actual
+	            callback2()
+		       })
+			},function(err){callback1()})
+		},function(err){callback('',output)})
 }
 
 function loadseeds(train_turns)
@@ -1179,5 +1169,6 @@ takeIntent:takeIntent,
 comparefeatures:comparefeatures,
 loadseeds:loadseeds,
 calculateparam:calculateparam,
-enrichseeds:enrichseeds
+enrichseeds:enrichseeds,
+enrichseeds_original:enrichseeds_original
 }
