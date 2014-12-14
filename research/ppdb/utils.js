@@ -592,14 +592,14 @@ function retrievepos(string, callback)
 
 function onlycontent(string, callback)
 {
-			console.log("fethcing content " + string)
+			// console.log("fethcing content " + string)
 
 			cachepos(string,function(err, response){
-				console.log("cache pos")
-				console.log(response)
+				// console.log("cache pos")
+				// console.log(response)
 				var output = cleanposoutput(response)
 				buffer[string] = output 
-				console.log("content" + output)
+				// console.log("content" + output)
 				callback(err, output)
 			})
 }
@@ -608,11 +608,11 @@ function cachepos(string, callback)
 {
     clientpos.select(10, function() {
 		clientpos.get(string, function (err, pos) {
-			console.log("location " + pos)
+			// console.log("location " + pos)
             if ((pos == null) || (pos == "OK"))
 	        {
 		        retrievepos(string, function (err, response){
-		        	console.log("tagger " + response)
+		        	// console.log("tagger " + response)
 					callback(err, response)
 		        })
 		    }
