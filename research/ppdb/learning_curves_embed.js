@@ -95,6 +95,7 @@ function checkGnuPlot()
 	    var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
 	// }, this)
 
+	// dataset = _.shuffle(dataset)
 
 	var classifiers  = {
 		'PPDB': [],
@@ -103,7 +104,7 @@ function checkGnuPlot()
 	// var classifiers  = {}
 	var parameters = ['F1','Precision','Recall', 'Accuracy']
 	var step = 1
-	var numOfFolds = 3
+	var numOfFolds = 2
 
 	// learning_curves(classifiers, data, parameters, 1, 3/*numOfFolds*/)
 
@@ -138,6 +139,7 @@ function checkGnuPlot()
 			console.log("fold"+fold)
 			index = step
 
+
 			// console.log(train.length)
 			// console.log(test.length)
 			// process.exit(0)
@@ -166,25 +168,30 @@ function checkGnuPlot()
 	  		// ----------------SEEDS-------------------
 
 			var seeds = utils.loadseeds(mytrainset)
+			var seeds_original = utils.enrichseeds_original(seeds)
 
-			
+			var stats_ppdb = []
+
 			utils.enrichseeds(seeds, function(err, seeds_ppdb){
-				console.log(JSON.stringify(seeds_ppdb, null, 4))
-				process.exit(0)
-      			ppdb.trainandtest(mytrainset, testset, seeds_ppdb, function(err, response){
-      				fiber.run(response)
+      			ppdb.trainandtest(mytrainset, testset, seeds_ppdb, function(err, response_ppdb){
+      				// fiber.run(response)
+      				stats_ppdb = response_ppdb
+					ppdb.trainandtest(mytrainset, testset, seeds_original, function(err, response){
+      					fiber.run(response)
+	    			})
 	    		})
 			})
-			
-	    	var stats_ppdb = Fiber.yield()
+
+	    	var stats_original = Fiber.yield()
 
 			// var seeds_ppdb = Fiber.yield()
 			// console.log("keep runnig")
 
-			// console.log(JSON.stringify(seeds_ppdb, null, 4))
+			// console.log(JSON.stringify(stats_ppdb, null, 4))
+			// console.log()
+			// process.exit(0)
 
 
-			var seeds_original = utils.enrichseeds_original(seeds)
 
   	    	// --------------TRAIN-TEST--------------
 
@@ -194,17 +201,15 @@ function checkGnuPlot()
 
 	    	report.push(_.pick(stats_ppdb['stats'], parameters))
 
-	    	// console.log("eEND")
-	    	// process.exit(0)
 
-	    	ppdb.trainandtest(mytrainset, testset, seeds_original, function(err, response){
-      			fiber.run(response)
-	    	})
-	    	var stats_original = Fiber.yield()
+	     	// var stats_original = Fiber.yield()
+
+
+	    	console.log(JSON.stringify(stats_ppdb['stats'], null, 4))
+
+
 	    	report.push(_.pick(stats_original['stats'], parameters))
 
-	    	// console.log("HERE")
-	    	// console.log(JSON.stringify(report, null, 4))
 
 		    	// crucial
 		    	// trainAndTest_hash(value[1], mytrainset, testset, 5)
@@ -213,9 +218,6 @@ function checkGnuPlot()
 		    	// report.push(_.pick(stats[0]['stats'], parameters))
 
 
-			// console.log(JSON.stringify(report, null, 4))
-			// console.log()
-			// process.exit(0)
 
 		    extractGlobal(parameters, cl, mytrain.length, report, stat)
 
