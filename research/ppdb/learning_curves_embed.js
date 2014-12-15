@@ -80,15 +80,40 @@ function checkGnuPlot()
 		}
 	}
 
-function learning_curves(classifiers, dataset, parameters, step, numOfFolds) {
-
-
 	var f = Fiber(function() {
   	var fiber = Fiber.current;
+
+
+	// var datasets = [
+              // 'turkers_keyphrases_only_rule.json',
+               // ]
+
+	// var data = []
+
+	// _.each(datasets, function(value, key, list){
+	    // data = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value))
+	    var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
+	// }, this)
+
+
+	var classifiers  = {
+		'PPDB': [],
+		'Original': []
+	}
+	// var classifiers  = {}
+	var parameters = ['F1','Precision','Recall', 'Accuracy']
+	var step = 1
+	var numOfFolds = 3
+
+	// learning_curves(classifiers, data, parameters, 1, 3/*numOfFolds*/)
+
+	// function learning_curves(classifiers, dataset, parameters, step, numOfFolds) {
+
 
 		var dir = "./learning_curves/"
 
 		checkGnuPlot
+
 		if (dataset.length == 0)
 			throw new Error("Dataset is empty");
 		
@@ -110,6 +135,7 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds) {
 		var mytrain = []
 
 		partitions.partitions(dataset, numOfFolds, function(train, test, fold) {
+			console.log("fold"+fold)
 			index = step
 
 			// console.log(train.length)
@@ -141,29 +167,44 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds) {
 
 			var seeds = utils.loadseeds(mytrainset)
 
-			utils.enrichseeds(seeds, 'ppdb', function(err, response){
-      			fiber.run(response)
+			
+			utils.enrichseeds(seeds, function(err, seeds_ppdb){
+      			ppdb.trainandtest(mytrainset, testset, seeds_ppdb, function(err, response){
+      				fiber.run(response)
+	    		})
 			})
-			var seeds_ppdb = Fiber.yield()
 
-			utils.enrichseeds(seeds, 'original', function(err, response){
-      			fiber.run(response)
-			})
-			var seeds_original = Fiber.yield()
+			// console.log("stop runnig")
+			// var seeds_ppdb = Fiber.yield()
+			// console.log("keep runnig")
+
+			// console.log(JSON.stringify(seeds_ppdb, null, 4))
+
+
+			var seeds_original = utils.enrichseeds_original(seeds)
 
   	    	// --------------TRAIN-TEST--------------
 
-	    	ppdb.trainandtest(mytrainset, testset, seeds_ppdb, function(err, response){
-      			fiber.run(response)
-	    	})
+	    	// ppdb.trainandtest(mytrainset, testset, seeds_ppdb, function(err, response1){
+      			// fiber.run(response1)
+	    	// })
 	    	var stats_ppdb = Fiber.yield()
-	    	report.push(_.pick(stats_ppdb[0]['stats'], parameters))
+
+	    	report.push(_.pick(stats_ppdb['stats'], parameters))
+
+	    	// console.log("eEND")
+	    	// process.exit(0)
 
 	    	ppdb.trainandtest(mytrainset, testset, seeds_original, function(err, response){
       			fiber.run(response)
 	    	})
 	    	var stats_original = Fiber.yield()
-	    	report.push(_.pick(stats_original[0]['stats'], parameters))
+	    	report.push(_.pick(stats_original['stats'], parameters))
+
+	    	console.log("HERE")
+	    	console.log(JSON.stringify(report, null, 4))
+	    	console.log()
+	    	process.exit(0)
 
 		    	// crucial
 		    	// trainAndTest_hash(value[1], mytrainset, testset, 5)
@@ -222,31 +263,30 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds) {
 
 	})
 f.run();
-}
+// }
 
-if (process.argv[1] === __filename)
-{
+// if (process.argv[1] === __filename)
+// {
 
-	var datasets = [
-              'turkers_keyphrases_only_rule.json',
-               ]
+// 	var datasets = [
+//               'turkers_keyphrases_only_rule.json',
+//                ]
 
-	var data = []
+// 	var data = []
 
-	_.each(datasets, function(value, key, list){
-	    data = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value))
-	}, this)
+// 	_.each(datasets, function(value, key, list){
+// 	    data = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value))
+// 	}, this)
 
-	var classifiers  = {
-		'PPDB': [],
-		'Original': []
-	}
-	// var classifiers  = {}
-	var parameters = ['F1','Precision','Recall', 'Accuracy']
+// 	var classifiers  = {
+// 		'PPDB': [],
+// 		'Original': []
+// 	}
+// 	// var classifiers  = {}
+// 	var parameters = ['F1','Precision','Recall', 'Accuracy']
 
 
-	learning_curves(classifiers, data, parameters, 1, 3/*numOfFolds*/)
-	process.exit(0)
-}
+	// learning_curves(classifiers, data, parameters, 1, 3/*numOfFolds*/)
+// }
 
  
