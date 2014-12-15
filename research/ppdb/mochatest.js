@@ -34,6 +34,39 @@ function makeid(len)
 
 describe('Util test', function() {
 
+
+	it('enrichseeds_original', function() {
+		var seeds = { 	
+						Offer: [ 'our counter proposal is', 'i am offering', ' is what i have' ],
+  						Accept: [ 'accepted', 'ok' ] 
+  					}
+		var output = utils.enrichseeds_original(seeds)
+
+		var gold = {
+    "Offer": {
+        "our counter proposal is": [
+            "our counter proposal is"
+        ],
+        "i am offering": [
+            "i am offering"
+        ],
+        " is what i have": [
+            " is what i have"
+        ]
+    },
+    "Accept": {
+        "accepted": [
+            "accepted"
+        ],
+        "ok": [
+            "ok"
+        ]
+    }
+	}
+
+	_.isEqual(output, gold).should.be.true
+	})
+
 	it('calculateparam', function() {
 		
 		// 3 folds
