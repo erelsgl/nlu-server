@@ -169,12 +169,15 @@ function checkGnuPlot()
 
 			
 			utils.enrichseeds(seeds, function(err, seeds_ppdb){
+				console.log(JSON.stringify(seeds_ppdb, null, 4))
+				process.exit(0)
       			ppdb.trainandtest(mytrainset, testset, seeds_ppdb, function(err, response){
       				fiber.run(response)
 	    		})
 			})
+			
+	    	var stats_ppdb = Fiber.yield()
 
-			// console.log("stop runnig")
 			// var seeds_ppdb = Fiber.yield()
 			// console.log("keep runnig")
 
@@ -188,7 +191,6 @@ function checkGnuPlot()
 	    	// ppdb.trainandtest(mytrainset, testset, seeds_ppdb, function(err, response1){
       			// fiber.run(response1)
 	    	// })
-	    	var stats_ppdb = Fiber.yield()
 
 	    	report.push(_.pick(stats_ppdb['stats'], parameters))
 
@@ -201,10 +203,8 @@ function checkGnuPlot()
 	    	var stats_original = Fiber.yield()
 	    	report.push(_.pick(stats_original['stats'], parameters))
 
-	    	console.log("HERE")
-	    	console.log(JSON.stringify(report, null, 4))
-	    	console.log()
-	    	process.exit(0)
+	    	// console.log("HERE")
+	    	// console.log(JSON.stringify(report, null, 4))
 
 		    	// crucial
 		    	// trainAndTest_hash(value[1], mytrainset, testset, 5)
@@ -213,9 +213,9 @@ function checkGnuPlot()
 		    	// report.push(_.pick(stats[0]['stats'], parameters))
 
 
-			console.log(JSON.stringify(report, null, 4))
-			console.log()
-			process.exit(0)
+			// console.log(JSON.stringify(report, null, 4))
+			// console.log()
+			// process.exit(0)
 
 		    extractGlobal(parameters, cl, mytrain.length, report, stat)
 
