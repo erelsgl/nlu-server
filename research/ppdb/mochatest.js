@@ -12,12 +12,12 @@ var sync = require('synchronize')
 var Fiber = require('fibers');
 
 var seeds = { 
-			"Offer": [{
+			"Offer": {
         		'I offer': [ 'i offer', 'i suggest', 'provide']
-        		}],
-        	"Accept":[{
+        		},
+        	"Accept":{
         		'accept':[ 'i offer']
-        		}]
+        		}
 			}
 
 
