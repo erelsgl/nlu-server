@@ -350,35 +350,37 @@ var retrieveIntent = function(input, seeds, callback)
 {
     var output = []
 
-	async.eachSeries(Object.keys(seeds), function(intent, callback1){
-   		async.eachSeries(seeds[intent], function(paraphrases, callback2){
-   			async.eachSeries(Object.keys(paraphrases), function(originalphrase, callback3){
-   				var phrases = paraphrases[originalphrase]
-   				async.eachSeries(phrases, function(phrase, callback4){
 
+    console.log("start retrieveIntent")
+    console.log(seeds)
+   	async.eachSeries(Object.keys(seeds), function(intent, callback1){
+   		async.eachSeries(Object.keys(seeds[intent]), function(keyphrases, callback2){
+   			async.eachSeries(seeds[intent][keyphrases], function(phrase, callback3){
+ 					
    					// input - test utterances
 		      		var input_list = input.split(" ")
 
+		      		console.log("before olycontent")
 		      		onlycontent(phrase, function(err, response) {
 
 		      			// response - content of the seed
-
      		 			var content_phrase = (response.length != 0 ? response : phrase.split(" "));
 				        if (_.isEqual(content_phrase, _.intersection(input_list, content_phrase)) == true)
   					      	{
         					var elem = {}
         					elem[intent] = {}
-        					elem[intent]['original seed'] = originalphrase
+        					elem[intent]['original seed'] = keyphrases
         					elem[intent]['ppdb phrase'] = phrase
         					elem[intent]['content of ppdb phrase'] = content_phrase
           					output.push(elem)
         					}
-        				callback4()
+        				callback3()
         			})
-				},function(err){callback3()})
 			},function(err){callback2()})
 		},function(err){callback1()})
-	},function(err){callback(err, output)})
+	},function(err){
+	    console.log("end retrieveIntent")
+		callback(err, output)})
   // _.each(seeds, function(value, intent, list){ 
   //   _.each(value, function(paraphrases, originalphrase, list2){ 
   //     _.each(paraphrases, function(phrases, key1, list1){ 
@@ -580,7 +582,7 @@ return keyphrases
 
 function retrievepos(string, callback)
 {
-	
+	console.log(string)	
 	tagger.tag(string, function(err, tag) {
 	   	clientpos.select(10, function(err, response) {
 			clientpos.set(string, tag, function (err, response) {
@@ -592,7 +594,7 @@ function retrievepos(string, callback)
 
 function onlycontent(string, callback)
 {
-			// console.log("fethcing content " + string)
+			console.log("fethcing content " + string)
 
 			cachepos(string,function(err, response){
 				// console.log("cache pos")
@@ -1041,13 +1043,15 @@ function comparefeatures(original, features)
 
 function enrichseeds_original(seeds)
 {
+  var output = {}
   _.each(seeds, function(value, key, list){ 
+  	output[key] = {}
     _.each(value, function(value1, key1, list){ 
-      seeds[key][key1] = {}
-      seeds[key][key1][value1] = [value1]
+      output[key][value1] = {}
+      output[key][value1] = [value1]
     }, this)
   }, this)
-  return seeds
+  return output
 }
 
 function enrichseeds(seeds, callback)
@@ -1057,13 +1061,15 @@ function enrichseeds(seeds, callback)
 	    async.eachSeries(Object.keys(seeds), function(intent, callback1){
 	    	output[intent] = {}
 	    	async.eachSeries(seeds[intent], function(value1, callback2){
-	    	  output[intent][value1] = []
 	          recursionredis([value1], [1], false, function(err,actual) {
 	            output[intent][value1] = actual
 	            callback2()
 		       })
 			},function(err){callback1()})
-		},function(err){callback('',output)})
+		},function(err){
+			console.log("ppdb seed is done")
+			callback(err,output)
+		})
 }
 
 function loadseeds(train_turns)
@@ -1121,6 +1127,17 @@ return output
 }
 
 
+function restartredis()
+{
+    clientpos.quit()
+    client.quit()
+
+	clientpos = redis.createClient();
+	client = redis.createClient(6369);
+}
+
+
+
 module.exports = {
 	distance:distance,
 	compare:compare,
@@ -1170,5 +1187,6 @@ comparefeatures:comparefeatures,
 loadseeds:loadseeds,
 calculateparam:calculateparam,
 enrichseeds:enrichseeds,
-enrichseeds_original:enrichseeds_original
+enrichseeds_original:enrichseeds_original,
+restartredis:restartredis
 }
