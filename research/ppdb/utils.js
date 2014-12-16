@@ -351,8 +351,8 @@ var retrieveIntent = function(input, seeds, callback)
     var output = []
 
 
-    console.log("start retrieveIntent")
-    console.log(seeds)
+    // console.log("start retrieveIntent")
+    // console.log(seeds)
    	async.eachSeries(Object.keys(seeds), function(intent, callback1){
    		async.eachSeries(Object.keys(seeds[intent]), function(keyphrases, callback2){
    			async.eachSeries(seeds[intent][keyphrases], function(phrase, callback3){
@@ -360,7 +360,7 @@ var retrieveIntent = function(input, seeds, callback)
    					// input - test utterances
 		      		var input_list = input.split(" ")
 
-		      		console.log("before olycontent")
+		      		// console.log("before olycontent")
 		      		onlycontent(phrase, function(err, response) {
 
 		      			// response - content of the seed
@@ -379,7 +379,7 @@ var retrieveIntent = function(input, seeds, callback)
 			},function(err){callback2()})
 		},function(err){callback1()})
 	},function(err){
-	    console.log("end retrieveIntent")
+	    // console.log("end retrieveIntent")
 		callback(err, output)})
   // _.each(seeds, function(value, intent, list){ 
   //   _.each(value, function(paraphrases, originalphrase, list2){ 
@@ -582,7 +582,7 @@ return keyphrases
 
 function retrievepos(string, callback)
 {
-	console.log(string)	
+	// console.log(string)	
 	tagger.tag(string, function(err, tag) {
 	   	clientpos.select(10, function(err, response) {
 			clientpos.set(string, tag, function (err, response) {
@@ -594,7 +594,7 @@ function retrievepos(string, callback)
 
 function onlycontent(string, callback)
 {
-			console.log("fethcing content " + string)
+			// console.log("fethcing content " + string)
 
 			cachepos(string,function(err, response){
 				// console.log("cache pos")
@@ -1061,13 +1061,13 @@ function enrichseeds(seeds, callback)
 	    async.eachSeries(Object.keys(seeds), function(intent, callback1){
 	    	output[intent] = {}
 	    	async.eachSeries(seeds[intent], function(value1, callback2){
-	          recursionredis([value1], [1], false, function(err,actual) {
+	          recursionredis([value1], [1,1], false, function(err,actual) {
 	            output[intent][value1] = actual
 	            callback2()
 		       })
 			},function(err){callback1()})
 		},function(err){
-			console.log("ppdb seed is done")
+			// console.log("ppdb seed is done")
 			callback(err,output)
 		})
 }
@@ -1126,18 +1126,6 @@ _.each(params, function(param, key, list){
 return output
 }
 
-
-function restartredis()
-{
-    clientpos.quit()
-    client.quit()
-
-	clientpos = redis.createClient();
-	client = redis.createClient(6369);
-}
-
-
-
 module.exports = {
 	distance:distance,
 	compare:compare,
@@ -1187,6 +1175,5 @@ comparefeatures:comparefeatures,
 loadseeds:loadseeds,
 calculateparam:calculateparam,
 enrichseeds:enrichseeds,
-enrichseeds_original:enrichseeds_original,
-restartredis:restartredis
+enrichseeds_original:enrichseeds_original
 }
