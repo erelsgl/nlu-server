@@ -83,19 +83,9 @@ function checkGnuPlot()
 	var f = Fiber(function() {
   	var fiber = Fiber.current;
 
+	var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
 
-	// var datasets = [
-              // 'turkers_keyphrases_only_rule.json',
-               // ]
-
-	// var data = []
-
-	// _.each(datasets, function(value, key, list){
-	    // data = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value))
-	    var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
-	// }, this)
-
-	// dataset = _.shuffle(dataset)
+	dataset = _.shuffle(dataset)
 
 	var classifiers  = {
 		'PPDB': [],
@@ -104,7 +94,7 @@ function checkGnuPlot()
 	// var classifiers  = {}
 	var parameters = ['F1','Precision','Recall', 'Accuracy']
 	var step = 1
-	var numOfFolds = 2
+	var numOfFolds = 3
 
 	// learning_curves(classifiers, data, parameters, 1, 3/*numOfFolds*/)
 
@@ -152,113 +142,81 @@ function checkGnuPlot()
 			while (index < train.length)
 	  		{
 
-		  	var report = []
-			var mytrainset = []
-		  	var mytrain = train.slice(0, index)
+			  	var report = []
+				var mytrainset = []
+			  	var mytrain = train.slice(0, index)
+			  	index += step
 
-
-
-		    // _.each(cl, function(value, classifier, list) { 
-
-	    	if (bars.isDialogue(mytrain))	
-	  			mytrainset = bars.extractturns(mytrain)
-	  		else	
-	  			mytrainset = mytrain
+		    	if (bars.isDialogue(mytrain))	
+		  			mytrainset = bars.extractturns(mytrain)
+		  		else	
+		  			mytrainset = mytrain
 
 	  		// ----------------SEEDS-------------------
 
-			var seeds = utils.loadseeds(mytrainset)
-			var seeds_original = utils.enrichseeds_original(seeds)
+				var seeds = utils.loadseeds(mytrainset)
+				var seeds_original = utils.enrichseeds_original(seeds)
 
-			var stats_ppdb = []
+				var stats_ppdb = []
 
-			utils.enrichseeds(seeds, function(err, seeds_ppdb){
-      			ppdb.trainandtest(mytrainset, testset, seeds_ppdb, function(err, response_ppdb){
-      				// fiber.run(response)
-      				stats_ppdb = response_ppdb
-					ppdb.trainandtest(mytrainset, testset, seeds_original, function(err, response){
-      					fiber.run(response)
-	    			})
-	    		})
-			})
+				utils.enrichseeds(seeds, function(err, seeds_ppdb){
+					// console.log("ppdb start")
+	      			ppdb.trainandtest(mytrainset, testset, seeds_ppdb, function(err, response_ppdb){
+	      				stats_ppdb = response_ppdb
+						// console.log("ppdb end")
+						// console.log("original start")
 
-	    	var stats_original = Fiber.yield()
+						ppdb.trainandtest(mytrainset, testset, seeds_original, function(err, response){
+							// console.log("original end")
+	      					fiber.run(response)
+		    			})
+		    		})
+				})
 
-			// var seeds_ppdb = Fiber.yield()
-			// console.log("keep runnig")
+		    	var stats_original = Fiber.yield()
 
-			// console.log(JSON.stringify(stats_ppdb, null, 4))
-			// console.log()
-			// process.exit(0)
+	  	    	// --------------TRAIN-TEST--------------
 
+		    	report.push(_.pick(stats_ppdb['stats'], parameters))
+		    	report.push(_.pick(stats_original['stats'], parameters))
 
+			    extractGlobal(parameters, cl, mytrain.length, report, stat)
 
-  	    	// --------------TRAIN-TEST--------------
-
-	    	// ppdb.trainandtest(mytrainset, testset, seeds_ppdb, function(err, response1){
-      			// fiber.run(response1)
-	    	// })
-
-	    	report.push(_.pick(stats_ppdb['stats'], parameters))
-
-
-	     	// var stats_original = Fiber.yield()
-
-
-	    	console.log(JSON.stringify(stats_ppdb['stats'], null, 4))
-
-
-	    	report.push(_.pick(stats_original['stats'], parameters))
-
-
-		    	// crucial
-		    	// trainAndTest_hash(value[1], mytrainset, testset, 5)
-				
-		    	// crucial
-		    	// report.push(_.pick(stats[0]['stats'], parameters))
-
-
-
-		    extractGlobal(parameters, cl, mytrain.length, report, stat)
-
-		    // console.log(JSON.stringify(stat, null, 4))
-		    // bars.compareresults(clas[0],res[0],clas[1],res[1])
-		    // header
-			_.each(parameters, function(value, key, list){
-				valuestring = mytrain.length +"\t"+ (_.pluck(report, value)).join("\t") +"\n" ;
-				fs.appendFileSync(dir+value+"-fold"+fold, valuestring,'utf8', function (err) {console.log("error "+err); return 0 })
-			},this)
-
-			_.each(parameters, function(value, key, list){
-				plotfor = "plot "
-				_(fold+1).times(function(n){
-				// _.each(parameters,  function(value, key, list){ 
-
-					foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+value+"-fold"+n+"\' using 1:i with linespoints linecolor i pt "+n+" ps 3"
-					com = "gnuplot -p -e \"reset; set yrange [0:1]; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+"fold"+n+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
-					result = execSync.run(com)
-
-					plotfor = plotfor + foldcom + ", "
-					// fs.writeFileSync(dir+value+"-fold"+n, header, 'utf-8', function(err) {console.log("error "+err); return 0 })
-					// },this)
+				_.each(parameters, function(value, key, list){
+					valuestring = mytrain.length +"\t"+ (_.pluck(report, value)).join("\t") +"\n" ;
+					fs.appendFileSync(dir+value+"-fold"+fold, valuestring,'utf8', function (err) {console.log("error "+err); return 0 })
 				},this)
-				plotfor = plotfor.substring(0,plotfor.length-2);
-				command = "gnuplot -p -e \"reset; set yrange [0:1]; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+".png\'; set key autotitle columnhead; "+plotfor +"\""
-				result = execSync.run(command)
-			}, this)
 
+				_.each(parameters, function(value, key, list){
+					plotfor = "plot "
+					_(fold+1).times(function(n){
+					// _.each(parameters,  function(value, key, list){ 
 
-			_.each(parameters, function(param, key, list){ 
-				fs.writeFileSync(dir+param+"average", "train\t"+Object.keys(classifiers).join("\t")+"\n", 'utf-8', function(err) {console.log("error "+err); return 0 })
-				_.each(stat[param], function(value, trainsize, list){ 
-					average = getAverage(stat, param, trainsize, cl)
-					fs.appendFileSync(dir+param+"average",trainsize +"\t"+average.join("\t")+"\n",'utf8', function (err) {console.log("error "+err); return 0 })
+						foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+value+"-fold"+n+"\' using 1:i with linespoints linecolor i pt "+n+" ps 3"
+						com = "gnuplot -p -e \"reset; set yrange [0:1]; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+"fold"+n+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+						result = execSync.run(com)
+
+						plotfor = plotfor + foldcom + ", "
+						// fs.writeFileSync(dir+value+"-fold"+n, header, 'utf-8', function(err) {console.log("error "+err); return 0 })
+						// },this)
+					},this)
+					plotfor = plotfor.substring(0,plotfor.length-2);
+					command = "gnuplot -p -e \"reset; set yrange [0:1]; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+".png\'; set key autotitle columnhead; "+plotfor +"\""
+					result = execSync.run(command)
 				}, this)
 
-				foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+param+"average"+"\' using 1:i with linespoints linecolor i"
-				com = "gnuplot -p -e \"reset; set yrange [0:1]; set xlabel \'Number of dialogues\'; set ylabel \'"+param+"\' ;set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + param+"average.png\'; set key autotitle columnhead; plot "+foldcom +"\""
-				result = execSync.run(com)
-			}, this)
+
+				_.each(parameters, function(param, key, list){ 
+					fs.writeFileSync(dir+param+"average", "train\t"+Object.keys(classifiers).join("\t")+"\n", 'utf-8', function(err) {console.log("error "+err); return 0 })
+					_.each(stat[param], function(value, trainsize, list){ 
+						average = getAverage(stat, param, trainsize, cl)
+						fs.appendFileSync(dir+param+"average",trainsize +"\t"+average.join("\t")+"\n",'utf8', function (err) {console.log("error "+err); return 0 })
+					}, this)
+
+					foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+param+"average"+"\' using 1:i with linespoints linecolor i"
+					com = "gnuplot -p -e \"reset; set yrange [0:1]; set xlabel \'Number of dialogues\'; set ylabel \'"+param+"\' ;set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + param+"average.png\'; set key autotitle columnhead; plot "+foldcom +"\""
+					result = execSync.run(com)
+				}, this)
 
 			} //while (index < train.length)
 			}); //fold
