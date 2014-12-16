@@ -80,29 +80,15 @@ function checkGnuPlot()
 		}
 	}
 
+	
+function learning_curves(classifiers, dataset, parameters, step, numOfFolds) 
+{
+
+
 	var f = Fiber(function() {
-  	var fiber = Fiber.current;
 
-	var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
-
-	dataset = _.shuffle(dataset)
-
-	var classifiers  = {
-		'PPDB': [],
-		'Original': []
-	}
-	// var classifiers  = {}
-	var parameters = ['F1','Precision','Recall', 'Accuracy']
-	var step = 1
-	var numOfFolds = 3
-
-	// learning_curves(classifiers, data, parameters, 1, 3/*numOfFolds*/)
-
-	// function learning_curves(classifiers, dataset, parameters, step, numOfFolds) {
-
-
+	  	var fiber = Fiber.current;
 		var dir = "./learning_curves/"
-
 		checkGnuPlot
 
 		if (dataset.length == 0)
@@ -129,11 +115,6 @@ function checkGnuPlot()
 			console.log("fold"+fold)
 			index = step
 
-
-			// console.log(train.length)
-			// console.log(test.length)
-			// process.exit(0)
-
 			if (bars.isDialogue(test))
 				var testset = bars.extractturns(test)
 			else
@@ -152,7 +133,7 @@ function checkGnuPlot()
 		  		else	
 		  			mytrainset = mytrain
 
-	  		// ----------------SEEDS-------------------
+	  			// ----------------SEEDS-------------------
 
 				var seeds = utils.loadseeds(mytrainset)
 				var seeds_original = utils.enrichseeds_original(seeds)
@@ -160,14 +141,10 @@ function checkGnuPlot()
 				var stats_ppdb = []
 
 				utils.enrichseeds(seeds, function(err, seeds_ppdb){
-					// console.log("ppdb start")
 	      			ppdb.trainandtest(mytrainset, testset, seeds_ppdb, function(err, response_ppdb){
 	      				stats_ppdb = response_ppdb
-						// console.log("ppdb end")
-						// console.log("original start")
 
 						ppdb.trainandtest(mytrainset, testset, seeds_original, function(err, response){
-							// console.log("original end")
 	      					fiber.run(response)
 		    			})
 		    		})
@@ -223,30 +200,20 @@ function checkGnuPlot()
 
 	})
 f.run();
-// }
+}
 
-// if (process.argv[1] === __filename)
-// {
+if (process.argv[1] === __filename)
+{
+	var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
+	dataset = _.shuffle(dataset)
 
-// 	var datasets = [
-//               'turkers_keyphrases_only_rule.json',
-//                ]
-
-// 	var data = []
-
-// 	_.each(datasets, function(value, key, list){
-// 	    data = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/"+value))
-// 	}, this)
-
-// 	var classifiers  = {
-// 		'PPDB': [],
-// 		'Original': []
-// 	}
-// 	// var classifiers  = {}
-// 	var parameters = ['F1','Precision','Recall', 'Accuracy']
-
-
-	// learning_curves(classifiers, data, parameters, 1, 3/*numOfFolds*/)
-// }
+	var classifiers  = {
+		'PPDB': [],
+		'Original': []
+	}
+	// var classifiers  = {}
+	var parameters = ['F1','Precision','Recall', 'Accuracy']
+	learning_curves(classifiers, dataset, parameters, 1/*step*/, 4/*numOfFolds*/)
+}
 
  
