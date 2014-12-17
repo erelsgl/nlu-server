@@ -334,7 +334,7 @@ describe('Util test', function() {
 		utils.stat({'TP':4,'FP':2,'FN':0})['Precision'].should.equal(0.6666666666666666)
 	});
 	
- 	it('correctly clasify actual and expected clean', function(done) {
+ 	/*it('correctly clasify actual and expected clean', function(done) {
 		// sync.fiber(function(){
 		var f = Fiber(function() {
 		    var fiber = Fiber.current;
@@ -364,7 +364,7 @@ describe('Util test', function() {
 		f.run()
 		// })
 	})
-
+*/
 	// it('check readredis', function() {
 	// 	sync.fiber(function(){
 	// 	var len = _.random(5,20)
