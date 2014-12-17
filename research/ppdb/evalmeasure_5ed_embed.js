@@ -23,13 +23,7 @@ var ftrs = limdu.features;
 var regexpNormalizer = ftrs.RegexpNormalizer(
     JSON.parse(fs.readFileSync('../../knowledgeresources/BiuNormalizations.json')));
 
-
-function ccc(hass)
-{
-  return hass
-}
-
-function trainandtest(train, test, seeds, callback)
+function trainandtest(train, test, seeds, callback9)
 {
 
   var data = []
@@ -44,45 +38,34 @@ function trainandtest(train, test, seeds, callback)
     test[key]['polarity'] = truth.verbnegation(sentence.replace('without','no'), truth_filename)
 
     sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
-    test[key]['input'] = sentence
+    test[key]['input_modified'] = sentence
   }, this)
 
-
-    // 15 conversations
+  // 15 conversations
   // 170 utterances
 
   var train_turns = train
   var test_turns = test
-
-// [ { form: 'be', polarity: 'P' } ]
-
-
-
-
-
-  // load only keyphrases from train
-  
-
   var stats = new PrecisionRecall()
 
-  async.eachSeries(test_turns, function(turn, callback1){
-  // _.each(test_turns, function(turn, key, list){ 
-    // if (key % 50 == 0)
-      // console.log(key)
+  // utils.restartredis()
+  // console.log("start eval")
 
-    utils.retrieveIntent(turn['input'], seeds, function(err, out){
+  async.eachSeries(test_turns, function(turn, callback1){
+
+    utils.retrieveIntent(turn['input_modified'], seeds, function(err, out){
 
       var labs = _.unique(_.map(out, function(num, key){ return Object.keys(num)[0] }))      
-      stats.addCasesLabels(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
+      var out = stats.addCasesHash(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
+      
       callback1()
-
     })
+  }, function(err){
+      // console.log("end eval")
+      var output = {}
+      output['stats'] = stats.retrieveStats()
+      callback9(err,output)
   })
-  
-
-  var output = {}
-  output['stats'] = stats.retrieveStats()
-  return output
 }
 
 
