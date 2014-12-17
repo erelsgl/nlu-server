@@ -185,65 +185,65 @@ function clusteration(list, callback)
 	})
 }
 
-function cleanlisteval(actual, expected)
-{ 
+// function cleanlisteval(actual, expected)
+// { 
 
-var expectedcopy = expected
-var TP = 0
-var FP = 0
-var FN = 0
+// var expectedcopy = expected
+// var TP = 0
+// var FP = 0
+// var FN = 0
 
-var TPdetails = []
-var FPdetails = []
-var FNdetails = []
-var found = false
+// var TPdetails = []
+// var FPdetails = []
+// var FNdetails = []
+// var found = false
 
-// var f = Fiber(function() {
- var fiber = Fiber.current
+// // var f = Fiber(function() {
+//  var fiber = Fiber.current
 
-	_.each(actual, function(actkey, key, list){ 
-		if ((actual.indexOf(actkey)%10 == 0) && (actual.indexOf(actkey) != 0))
-	        console.log(actual.indexOf(actkey))
+// 	_.each(actual, function(actkey, key, list){ 
+// 		if ((actual.indexOf(actkey)%10 == 0) && (actual.indexOf(actkey) != 0))
+// 	        console.log(actual.indexOf(actkey))
 		
-		found = false
-		var tempTP = []
-		_.each(expected, function(expkey, key, list){ 
-	        compare([actkey,expkey], function (err, resp){
-    			fiber.run(resp);
-			})
+// 		found = false
+// 		var tempTP = []
+// 		_.each(expected, function(expkey, key, list){ 
+// 	        compare([actkey,expkey], function (err, resp){
+//     			fiber.run(resp);
+// 			})
 
-	        var res = Fiber.yield();
+// 	        var res = Fiber.yield();
 
-	        if (res[4] == 1 )
-		        {
-	            expectedcopy = _.without(expectedcopy,expkey)
-	            tempTP.push(expkey)
-	            }
+// 	        if (res[4] == 1 )
+// 		        {
+// 	            expectedcopy = _.without(expectedcopy,expkey)
+// 	            tempTP.push(expkey)
+// 	            }
 
-	    })
+// 	    })
 	    
-	    if (tempTP.length > 0)
-		{
-	    	TPdetails.push([actkey, tempTP])
-	    	TP = TP + 1
-		}
-		else
-       	{
-	        FP = FP + 1
-	       	FPdetails.push(actkey)
-        }
-	})
+// 	    if (tempTP.length > 0)
+// 		{
+// 	    	TPdetails.push([actkey, tempTP])
+// 	    	TP = TP + 1
+// 		}
+// 		else
+//        	{
+// 	        FP = FP + 1
+// 	       	FPdetails.push(actkey)
+//         }
+// 	})
 
-	FN = expectedcopy.length
-	FNdetails = expectedcopy
+// 	FN = expectedcopy.length
+// 	FNdetails = expectedcopy
 
-	return {'stats':{'TP':TP,'FP':FP,'FN':FN},
-		    'data': {'TP': TPdetails,
-				     'FP': FPdetails,
-				     'FN': FNdetails
-				    }}
+// 	return {'stats':{'TP':TP,'FP':FP,'FN':FN},
+// 		    'data': {'TP': TPdetails,
+// 				     'FP': FPdetails,
+// 				     'FN': FNdetails
+// 				    }}
   		
-}      
+// }      
 
 function stat(data)
 {
@@ -312,19 +312,16 @@ var recursionredis = function (seeds, order, withscores, callback)
 {	
 	var fetched = seeds
 	// var fetched = []
-
 	async.timesSeries(order.length, function(n, next)
 		{
 		DBSELECT = order[n]
 
 		async.mapSeries(fetched, cleanredis, function(err, bestli) 
 			{
-			
 				bestli = cleanposfromredis(_.flatten(bestli), withscores)
 				fetched = fetched.concat(bestli)
 				// fetched = _.unique(_.flatten(fetched))
 				next()
-
 			})
 		},
 		function(err, res)
@@ -767,12 +764,9 @@ function sortedredis(string, callback)
 
 function cleanredis(string, callback)
 {
-
 	if (_.isArray(string) == true)
 		string = string[0]
 
-
-	// console.log(string)
 	client.select(DBSELECT, function() {
         // client.smembers(string, function(err, replies) {
         client.zrange(string, 0, -1, 'WITHSCORES', function(err, replies) {
@@ -1061,13 +1055,12 @@ function enrichseeds(seeds, callback)
 	    async.eachSeries(Object.keys(seeds), function(intent, callback1){
 	    	output[intent] = {}
 	    	async.eachSeries(seeds[intent], function(value1, callback2){
-	          recursionredis([value1], [1,1], false, function(err,actual) {
+	          recursionredis([value1], [1], false, function(err,actual) {
 	            output[intent][value1] = actual
 	            callback2()
 		       })
 			},function(err){callback1()})
 		},function(err){
-			// console.log("ppdb seed is done")
 			callback(err,output)
 		})
 }
@@ -1149,7 +1142,7 @@ module.exports = {
 	readpos:readpos,
 	writepos:writepos,
 	// cleancompare:cleancompare,
-	cleanlisteval:cleanlisteval,
+	// cleanlisteval:cleanlisteval,
 	cleandb:cleandb,
 	recursionredis:recursionredis,
 	crosslist:crosslist,
