@@ -120,7 +120,7 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds)
 			else
 				var testset = test
 
-			while (index < train.length)
+			while (index <= train.length)
 	  		{
 
 			  	var report = []
