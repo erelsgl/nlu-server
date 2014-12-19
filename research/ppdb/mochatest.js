@@ -200,6 +200,21 @@ describe('Util test', function() {
 		})
 	})
 
+	it('seqgold', function() {
+
+		var turn = {
+			"input":"hello I need you to work 8 hours",
+        "output": [
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+        ],
+	    "intent_keyphrases_rule": {
+    	    "Offer": "i need you"
+    	}}
+	    var seq = utils.seqgold(turn)
+   		_.isEqual(seq, [ [ 'Offer', [ 6, 16 ] ] ]).should.be.true
+      
+    })
+
 	it('retrieve intent', function(done) {
 		utils.retrieveIntent("my boss and i provide you a salary", seeds, function(err, result){
     		var keys = _.map(result, function(num, key){ return Object.keys(num)[0] });
