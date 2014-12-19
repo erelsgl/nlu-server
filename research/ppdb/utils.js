@@ -4,14 +4,14 @@
 
 var Fiber = require('fibers');
 var fs = require('fs');
-var limdu = require("limdu");
-var ftrs = limdu.features
 var _ = require('underscore')._;
 var natural = require('natural');
 var Lemmer = require('node-lemmer').Lemmer;
 var lemmerEng = new Lemmer('english');
 var Hierarchy = require('../../Hierarchy');
 var splitJson = Hierarchy.splitJson
+var bars = require('../../utils/bars')
+var rules = require('../rule-based/rules')
 
 var Tagger = require("../../node_modules/node-stanford-postagger/postagger").Tagger;
 var tagger = new Tagger({
@@ -34,14 +34,6 @@ var DBSELECT = 0
 
 var requestify = require('requestify'); 
 var querystring = require('querystring');
-
-var regexpNormalizer = ftrs.RegexpNormalizer(
-    JSON.parse(fs.readFileSync(__dirname+'/../../knowledgeresources/BiuNormalizations.json')));
-
-function biunormalizer(sentence) {
-  sentence = sentence.toLowerCase().trim();
-  return regexpNormalizer(sentence);
-}
 
 // sync(client,'select')
 // sync(client,'smembers')
@@ -346,10 +338,6 @@ var onlyIntents = function(labels)
 var retrieveIntent = function(input, seeds, callback)
 {
     var output = []
-
-
-    // console.log("start retrieveIntent")
-    // console.log(seeds)
    	async.eachSeries(Object.keys(seeds), function(intent, callback1){
    		async.eachSeries(Object.keys(seeds[intent]), function(keyphrases, callback2){
    			async.eachSeries(seeds[intent][keyphrases], function(phrase, callback3){
@@ -369,6 +357,7 @@ var retrieveIntent = function(input, seeds, callback)
         					elem[intent]['original seed'] = keyphrases
         					elem[intent]['ppdb phrase'] = phrase
         					elem[intent]['content of ppdb phrase'] = content_phrase
+        					elem[intent]['position'] = rules.compeletePhrase(input, response)
           					output.push(elem)
         					}
         				callback3()
@@ -403,6 +392,40 @@ var retrieveIntent = function(input, seeds, callback)
   //   }, this)
   // }, this)
   // return output
+}
+
+
+var retrieveIntentKeyphrase = function(turn, seeds, callback)
+{
+    var output = []
+   	async.eachSeries(Object.keys(seeds), function(intent, callback1){
+   		async.eachSeries(Object.keys(seeds[intent]), function(keyphrases, callback2){
+   			async.eachSeries(seeds[intent][keyphrases], function(phrase, callback3){
+ 				
+				// input - test utterances
+	      		var input_list = input.split(" ")
+
+	      		// console.log("before olycontent")
+	      		onlycontent(phrase, function(err, response) {
+
+	      			// response - content of the seed
+ 		 			var content_phrase = (response.length != 0 ? response : phrase.split(" "));
+			        if (_.isEqual(content_phrase, _.intersection(input_list, content_phrase)) == true)
+					      	{
+    					var elem = {}
+    					elem[intent] = {}
+    					elem[intent]['original seed'] = keyphrases
+    					elem[intent]['ppdb phrase'] = phrase
+    					elem[intent]['content of ppdb phrase'] = content_phrase
+      					output.push(elem)
+    					}
+    				callback3()
+    			})
+			},function(err){callback2()})
+		},function(err){callback1()})
+	},function(err){
+	    // console.log("end retrieveIntent")
+		callback(err, output)})
 }
 
 
@@ -548,12 +571,24 @@ function crosslist(list)
     return crossl
 }
 
+function cleanupkeyphrase(keyphrase)
+{
+	keyphrase = keyphrase.replace("<VALUE>", "")
+    keyphrase = keyphrase.replace("<ATTRIBUTE>", "")
+    keyphrase = keyphrase.replace("^", "")
+    keyphrase = keyphrase.replace(".", "")
+    keyphrase = keyphrase.replace("!", "")
+    keyphrase = keyphrase.replace("$", "")
+    keyphrase = keyphrase.replace(/ +(?= )/g,'')
+    keyphrase = keyphrase.toLowerCase()
+    return keyphrase
+}
 
 /*
 input: data - dialogues where turn consist of 'intent_keyphrases_rule'
 output: keyphrases of intent Offer and not DEFAULT INTENT
 */
-function extractkeyphrases(data)
+/*function extractkeyphrases(data)
 {
 var keyphrases = []
 	_.each(data, function(dialogue, key, list){ 
@@ -576,7 +611,7 @@ var keyphrases = []
 	}, this)
 return keyphrases
 }
-
+*/
 function retrievepos(string, callback)
 {
 	// console.log(string)	
@@ -659,7 +694,7 @@ function normalizer(str, callback)
 		str = str[0]
 		}
 	str = str.trim()
-	str = biunormalizer(str)
+	str = bars.biunormalizer(str)
 
 	
 	onlycontent(str, function (err,strcontent){
@@ -1077,14 +1112,15 @@ function loadseeds(train_turns)
 	      if ((keyphrase != 'DEFAULT INTENT') && (keyphrase != ''))
 	      {
 
-	        keyphrase = keyphrase.replace("<VALUE>", "")
-	        keyphrase = keyphrase.replace("<ATTRIBUTE>", "")
-	        keyphrase = keyphrase.replace("^", "")
-	        keyphrase = keyphrase.replace(".", "")
-	        keyphrase = keyphrase.replace("!", "")
-	        keyphrase = keyphrase.replace("$", "")
-	        keyphrase = keyphrase.replace(/ +(?= )/g,'')
-	        keyphrase = keyphrase.toLowerCase()
+	        // keyphrase = keyphrase.replace("<VALUE>", "")
+	        // keyphrase = keyphrase.replace("<ATTRIBUTE>", "")
+	        // keyphrase = keyphrase.replace("^", "")
+	        // keyphrase = keyphrase.replace(".", "")
+	        // keyphrase = keyphrase.replace("!", "")
+	        // keyphrase = keyphrase.replace("$", "")
+	        // keyphrase = keyphrase.replace(/ +(?= )/g,'')
+	        // keyphrase = keyphrase.toLowerCase()
+	        keyphrase = cleanupkeyphrase(keyphrase)
 
 	        seeds[intent].push(keyphrase)
 	        seeds[intent] = _.unique(seeds[intent])
@@ -1119,7 +1155,27 @@ _.each(params, function(param, key, list){
 return output
 }
 
+function seqgold(turn)
+{
+	var seq = []
+	var turn_norm = bars.biunormalizer(turn['input'])
+
+	var intents = onlyIntents(turn['output'])
+	_.each(intents, function(intent, key, list){ 
+		if (intent in turn['intent_keyphrases_rule'])
+		{
+			var keyphrase = turn['intent_keyphrases_rule'][intent]
+			keyphrase = cleanupkeyphrase(keyphrase)
+			keyphrase = bars.biunormalizer(keyphrase)
+			var pos = rules.compeletePhrase(turn_norm, keyphrase)
+			seq.push([intent, [pos, pos + keyphrase.length] ])
+		}
+	}, this)
+	return seq
+}
+
 module.exports = {
+	seqgold:seqgold,
 	distance:distance,
 	compare:compare,
 	onlycontent: onlycontent,
@@ -1153,7 +1209,7 @@ checkinclusion:checkinclusion,
 cachepos:cachepos,
 clusteration:clusteration,
 dep:dep,
-extractkeyphrases:extractkeyphrases,
+// extractkeyphrases:extractkeyphrases,
 normalizer:normalizer,
 elimination:elimination,
 retrieveIntent:retrieveIntent,
