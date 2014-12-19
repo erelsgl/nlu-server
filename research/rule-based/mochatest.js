@@ -50,6 +50,9 @@ describe('Util test', function() {
 
 		var data = rules.compeletePhrase('working hours 10', '10%')
 		data.should.equal(-1)
+
+		var data = rules.compeletePhrase('working hours pension hours salary', 'hours')
+		data.should.equal(8)
 	})
 	
 	it('check generation', function() {
