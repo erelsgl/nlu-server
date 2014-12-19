@@ -180,8 +180,22 @@ describe('Util test', function() {
 
 	it('retrieve intent', function(done) {	
 		utils.retrieveIntent("my boss and i offer you a salary", seeds, function(err, result){
+		/*	[ { Offer: 
+   				  { 'original seed': 'I offer',
+      				 'ppdb phrase': 'i offer',
+      				 'content of ppdb phrase': [Object],
+    				  position: 14 } 
+    		  },
+  			{ Accept: 
+     			{ 'original seed': 'accept',
+       			'ppdb phrase': 'i offer',
+      			 'content of ppdb phrase': [Object],
+      			 position: 14 } } ]*/
+
     		var keys = _.map(result, function(num, key){ return Object.keys(num)[0] });
+    		var sequence = _.map(result, function(num, key){ return [Object.keys(num)[0], num[Object.keys(num)[0]]['position']] });
 			_.isEqual(['Offer', 'Accept'], keys).should.be.true
+			_.isEqual([ [ 'Offer', 14 ], [ 'Accept', 14 ] ], sequence).should.be.true
 			done()
 		})
 	})
