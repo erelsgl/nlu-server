@@ -106,39 +106,50 @@ partitions.partitions(data, data.length/3, function(train, test, fold) {
   var seeds = utils.loadseeds(train_turns)
 
   // create original seeds for baseline comparison
-  var seeds_origial = bars.clone(seeds)
+  // var seeds_origial = bars.clone(seeds)
 
   // enhance seeds original
-  var expansion_original = 0
-  _.each(seeds_origial, function(value, key, list){ 
-    _.each(value, function(value1, key1, list){ 
-      seeds_origial[key][key1] = {}
-      seeds_origial[key][key1][value1] = [value1]
-      expansion_original += 1
-    }, this)
-  }, this)
+  // var expansion_original = 0
+  // _.each(seeds_origial, function(value, key, list){ 
+  //   _.each(value, function(value1, key1, list){ 
+  //     seeds_origial[key][key1] = {}
+  //     seeds_origial[key][key1][value1] = [value1]
+  //     expansion_original += 1
+  //   }, this)
+  // }, this)
 
   // fetch ppdb for seeds
   console.log("ppdb seed fetching ...")
 
-  var expansion = 0
-  _.each(seeds, function(intentkeys, intent, list){ 
-    _.each(intentkeys, function(value1, key, list){ 
-        utils.recursionredis([value1], [1], false, function(err,actual) {
-          fiber.run(actual)
-        })
-        var list = Fiber.yield()
-        seeds[intent][key] = {}
-        seeds[intent][key][value1] = list
+  // var expansion = 0
+  // _.each(seeds, function(intentkeys, intent, list){ 
+  //   _.each(intentkeys, function(value1, key, list){ 
+  //       utils.recursionredis([value1], [1], false, function(err,actual) {
+  //         fiber.run(actual)
+  //       })
+  //       var list = Fiber.yield()
+  //       seeds[intent][key] = {}
+  //       seeds[intent][key][value1] = list
 
-        expansion += list.length
-    }, this)
-  }, this)
+  //       expansion += list.length
+  //   }, this)
+  // }, this)
+  utils.enrichseeds(seeds,function(err, response){
+    setTimeout(function() {
+      fiber.run(response)
+    }, 1000);  
+  })
 
-  console.log("ppdb seed expansion "+ expansion)
-  console.log("ppdb seed original expansion "+ expansion_original)
+  var seeds_ppdb = Fiber.yield()
+  var seeds_origial = utils.enrichseeds_original(seeds)
 
-  _.each([seeds, seeds_origial], function(seedvalue, seedkey, seedlist){ 
+  // console.log(seeds_ppdb)
+  // console.log(seeds_origial)
+  // process.exit(0)
+  // console.log("ppdb seed expansion "+ expansion)
+  // console.log("ppdb seed original expansion "+ expansion_original)
+
+  _.each([seeds_ppdb, seeds_origial], function(seedvalue, seedkey, seedlist){ 
 
     console.log("Evaluation "+seedkey + " ...")
 
@@ -148,7 +159,10 @@ partitions.partitions(data, data.length/3, function(train, test, fold) {
           console.log(key)
 
         utils.retrieveIntent(turn['input'], seedvalue, function(err, results){
-          fiber.run(results)
+          setTimeout(function() {
+             fiber.run(results)
+          }, 100);
+
         })
 
         var out = Fiber.yield()
