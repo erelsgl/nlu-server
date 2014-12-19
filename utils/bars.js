@@ -21,6 +21,9 @@ var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
 var DefaultDict = require('defaultdict')
 var Hierarchy = require('../Hierarchy');
 
+var limdu = require("limdu");
+var ftrs = limdu.features
+
 var splitJson = Hierarchy.splitJson
 var joinJson = Hierarchy.joinJson
 
@@ -30,6 +33,8 @@ var splitPartEqually1 = Hierarchy.splitPartEqually1
 
 var joinJsonRecursive = Hierarchy.joinJsonRecursive
 
+var regexpNormalizer = ftrs.RegexpNormalizer(
+    JSON.parse(fs.readFileSync(__dirname+'/../knowledgeresources/BiuNormalizations.json')));
 
 var ValueTransition =
 {
@@ -2558,6 +2563,10 @@ function clone(item) {
     return result;
 }
 
+function biunormalizer(sentence) {
+  sentence = sentence.toLowerCase().trim();
+  return regexpNormalizer(sentence);
+}
 
 module.exports = {
 	// aggregate_sagae_improved: aggregate_sagae_improved,
@@ -2611,5 +2620,6 @@ module.exports = {
   buildlabel:buildlabel,
   labelFilter:labelFilter,
   filterzerofeatures:filterzerofeatures,
-  clone:clone
+  clone:clone,
+  biunormalizer:biunormalizer
 }
