@@ -422,6 +422,18 @@ depparsed: [
 
 
         */
+
+function uniqueArray(array)
+{
+  var output = []
+  _.each(array, function(elem, key, list){
+    var pos = _.filter(output, function(num){ return _.isEqual(num, elem) });
+    if (pos.length == 0)
+        output.push(elem)
+  }, this)
+  return output
+}
+
 function buildlabel(ruled, depparse, intents)
 {
 
@@ -2621,5 +2633,6 @@ module.exports = {
   labelFilter:labelFilter,
   filterzerofeatures:filterzerofeatures,
   clone:clone,
-  biunormalizer:biunormalizer
+  biunormalizer:biunormalizer,
+  uniqueArray:uniqueArray
 }
