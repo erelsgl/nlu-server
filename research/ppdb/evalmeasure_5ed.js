@@ -166,9 +166,18 @@ partitions.partitions(data, data.length/3, function(train, test, fold) {
         })
 
         var out = Fiber.yield()
-        var labs = _.unique(_.map(out, function(num, key){ return Object.keys(num)[0] }))
         
-        stats[fold][seedkey].addCasesLabels(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
+        var labs = _.unique(_.map(out, function(num, key){ return Object.keys(num)[0] }))
+        var sequence = _.map(out, function(num, key){ return [Object.keys(num)[0], num[Object.keys(num)[0]]['position']] });
+        sequence = bars.uniqueArray(sequence)
+
+        console.log(turn)
+        console.log(labs)
+        console.log(sequence)
+        process.exit(0)
+
+        // stats[fold][seedkey].addCasesLabels(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
+        stats[fold][seedkey].addCasesLabels(_.unique(utils.onlyIntents(turn['output'])), sequence)
         
         test_turns[key][seedkey] = {}
         test_turns[key][seedkey]['stats'] = stats[fold][seedkey].addCasesHash(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs),1)
