@@ -350,14 +350,16 @@ var retrieveIntent = function(input, seeds, callback)
 
 		      			// response - content of the seed
      		 			var content_phrase = (response.length != 0 ? response : phrase.split(" "));
-				        if (_.isEqual(content_phrase, _.intersection(input_list, content_phrase)) == true)
+				        // if (_.isEqual(content_phrase, _.intersection(input_list, content_phrase)) == true)
+				        var pos = rules.compeletePhrase(input_list.join(" "), response.join(" "))
+				        if (pos != -1)
   					      	{
         					var elem = {}
         					elem[intent] = {}
         					elem[intent]['original seed'] = keyphrases
         					elem[intent]['ppdb phrase'] = phrase
         					elem[intent]['content of ppdb phrase'] = content_phrase
-        					elem[intent]['position'] = rules.compeletePhrase(input, response)
+        					elem[intent]['position'] = [pos, pos + content_phrase.join(" ").length]
           					output.push(elem)
         					}
         				callback3()
