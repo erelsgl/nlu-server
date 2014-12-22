@@ -195,24 +195,23 @@ describe('Util test', function() {
     		var keys = _.map(result, function(num, key){ return Object.keys(num)[0] });
     		var sequence = _.map(result, function(num, key){ return [Object.keys(num)[0], num[Object.keys(num)[0]]['position']] });
 			_.isEqual(['Offer', 'Accept'], keys).should.be.true
-			_.isEqual([ [ 'Offer', 14 ], [ 'Accept', 14 ] ], sequence).should.be.true
+			_.isEqual([ [ 'Offer', [ 14, 19 ] ], [ 'Accept', [ 14, 19 ] ] ], sequence).should.be.true
 			done()
 		})
 	})
 
 	it('seqgold', function() {
-
 		var turn = {
 			"input":"hello I need you to work 8 hours",
         "output": [
-            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}"
+            "{\"Offer\":{\"Working Hours\":\"8 hours\"}}",
+            "{\"Offer\":{\"Pension Hours\":\"8 hours\"}}"
         ],
 	    "intent_keyphrases_rule": {
     	    "Offer": "i need you"
     	}}
 	    var seq = utils.seqgold(turn)
-   		_.isEqual(seq, [ [ 'Offer', [ 6, 16 ] ] ]).should.be.true
-      
+   		_.isEqual(seq, [ [ 'Offer', [ 6, 16 ] ] ]).should.be.true  
     })
 
 	it('retrieve intent', function(done) {
