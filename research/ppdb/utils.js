@@ -275,7 +275,8 @@ var cleanposfromredis = function(data, withscores)
 			if (key % 2 == 0)
 				output.push(value.split("^")[0])
 		}, this)
-		return output
+		//  if you don't need score and POS than unique on seeds
+		return _.unique(output)
 	}
 	else
 	{
@@ -1129,7 +1130,7 @@ function loadseeds(train_turns)
 	      } 
 	    }, this)
 	}, this)
-	
+
 	return seeds
 }
 
