@@ -141,10 +141,10 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds)
 				var stats_ppdb = []
 
 				utils.enrichseeds(seeds, function(err, seeds_ppdb){
-	      			ppdb.trainandtest(mytrainset, testset, seeds_ppdb, function(err, response_ppdb){
+	      			ppdb.trainandtest(mytrainset, testset, seeds_ppdb, 1, function(err, response_ppdb){
 	      				stats_ppdb = response_ppdb
 
-						ppdb.trainandtest(mytrainset, testset, seeds_original, function(err, response){
+						ppdb.trainandtest(mytrainset, testset, seeds_original, 1, function(err, response){
 	      					fiber.run(response)
 		    			})
 		    		})
