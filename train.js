@@ -40,6 +40,7 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 // var do_small_temporary_serialization_test = false
 
+var sequnce_classification = true
 var test_gaby = false
 var new_dial_stats = false
 var test_dataset = false
@@ -48,7 +49,7 @@ var prepare_dataset_for_gaby = false
 var do_keyphrase_only_rule = false
 var do_small_temporary_serialization_test = false
 var do_mlrule = false
-var do_learning_curves = true
+var do_learning_curves = false
 var do_test_sagae = false
 var do_cross_dataset_testing = false
 var do_learning_curves_dialogue = false
@@ -186,6 +187,49 @@ var datasetNames = [
 /*performs 
 turkers_keyphrases_only_rule.json
 students_keyphrases_only_rule.json*/
+
+
+
+if (sequnce_classification)
+{
+
+	var ppdb = require("./research/ppdb/evalmeasure_5ed_embed.js")
+	var ppdb_utils = require("./research/ppdb/utils.js")
+
+	var datasets = [
+              'turkers_keyphrases_only_rule.json',
+              // 'students_keyphrases_only_rule.json'
+            ]
+
+	var data = []
+
+	_.each(datasets, function(value, key, list){
+	    data = JSON.parse(fs.readFileSync("../datasets/Employer/Dialogue/"+value))
+	}, this)
+
+	data = _.shuffle(data)
+
+	var datas = partitions.partition(data, 1, Math.round(data.length*0.4))
+
+	var testset = trainutils.extractturns(datas['test'])
+	var trainset = trainutils.extractturns(datas['train'])
+
+	var seeds = ppdb_utils.loadseeds(trainset)
+	var seeds_original = ppdb_utils.enrichseeds_original(seeds)
+
+	var stats_ppdb = []
+
+	ppdb_utils.enrichseeds(seeds, function(err, seeds_ppdb){
+		ppdb.trainandtest(trainset, testset, seeds_ppdb, 1, function(err, response_ppdb){
+			fiber.run(response_ppdb)
+			})
+		})
+	
+   	var stats_ppdb = Fiber.yield()
+
+   	console.log(JSON.stringify(stats_ppdb, null, 4))
+   	process.exit(0)
+}
 
 
 if (test_dataset)
