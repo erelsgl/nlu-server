@@ -34,7 +34,6 @@ function trainandtest(train, test, seeds, mode, callback9)
   var data = []
 
   _.each(test, function(utterance, key, list){ 
-    console.log(utterance)
     var sentence = utterance['input']
     test[key]['input_original'] = sentence
     
@@ -58,6 +57,8 @@ function trainandtest(train, test, seeds, mode, callback9)
 
     utils.retrieveIntent(turn['input_modified'], seeds, function(err, out){
 
+      turn['out'] = out
+
       // regular mode
       if (mode == 0)
       {
@@ -70,6 +71,8 @@ function trainandtest(train, test, seeds, mode, callback9)
       {
         var sequence = _.map(out, function(num, key){ return [Object.keys(num)[0], num[Object.keys(num)[0]]['position']] });
         sequence = bars.uniqueArray(sequence)
+        turn['sequence_expected'] = utils.seqgold(turn)
+        turn['sequence_actual'] = sequence
         var out = stats.addCasesHashSeq(utils.seqgold(turn), sequence,1)
       }
 
@@ -78,6 +81,7 @@ function trainandtest(train, test, seeds, mode, callback9)
   }, function(err){
   
       var output = {}
+      output['data'] = test_turns
       output['stats'] = stats.retrieveStats()
       callback9(err,output)
   })
