@@ -336,8 +336,12 @@ var onlyIntents = function(labels)
   return _.unique(output)
 }
 
+// input 
+// i can offer a <VALUE>
+// not clean input
 var retrieveIntent = function(input, seeds, callback)
 {
+	
     var output = []
    	async.eachSeries(Object.keys(seeds), function(intent, callback1){
    		async.eachSeries(Object.keys(seeds[intent]), function(keyphrases, callback2){
@@ -352,7 +356,7 @@ var retrieveIntent = function(input, seeds, callback)
 		      			// response - content of the seed
      		 			var content_phrase = (response.length != 0 ? response : phrase.split(" "));
 				        // if (_.isEqual(content_phrase, _.intersection(input_list, content_phrase)) == true)
-				        var pos = rules.compeletePhrase(input_list.join(" "), response.join(" "))
+				        var pos = rules.compeletePhrase(input_list.join(" "), content_phrase.join(" "))
 				        if (pos != -1)
   					      	{
         					var elem = {}
@@ -368,7 +372,19 @@ var retrieveIntent = function(input, seeds, callback)
 			},function(err){callback2()})
 		},function(err){callback1()})
 	},function(err){
-	    // console.log("end retrieveIntent")
+	    
+	    // working on DEFAULT intent
+	    // if ((output.length == 0) && (cleanupkeyphrase(input)<10))
+	    if ((output.length == 0))
+	    	{
+	    		var elem = {}
+        		elem['Offer'] = {}
+        		elem['Offer']['original seed'] = 'default intent'
+        		elem['Offer']['content of ppdb phrase'] = 'default intent'
+        		elem['Offer']['position'] = [-1,-1]
+				output.push(elem)
+	    	}
+
 		callback(err, output)})
   // _.each(seeds, function(value, intent, list){ 
   //   _.each(value, function(paraphrases, originalphrase, list2){ 
@@ -1171,7 +1187,17 @@ function seqgold(turn)
 			keyphrase = cleanupkeyphrase(keyphrase)
 			keyphrase = bars.biunormalizer(keyphrase)
 			var pos = rules.compeletePhrase(turn_norm, keyphrase)
-			seq.push([intent, [pos, pos + keyphrase.length] ])
+			if (keyphrase == 'default intent')
+				seq.push(['Offer', [-1, -1], keyphrase ])
+			else
+				seq.push([intent, [pos, pos + keyphrase.length], keyphrase ])
+
+			if ((keyphrase != 'default intent') && (pos == -1))
+			{
+				console.log("error seqgold")
+				process.exit(0)
+			}
+
 		}
 	}, this)
 	return seq
