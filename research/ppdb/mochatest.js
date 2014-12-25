@@ -211,8 +211,17 @@ describe('Util test', function() {
     	    "Offer": "i need you"
     	}}
 	    var seq = utils.seqgold(turn)
-   		_.isEqual(seq, [ [ 'Offer', [ 6, 16 ] ] ]).should.be.true  
+   		_.isEqual(seq, [ [ 'Offer', [ 6, 16 ], "i need you" ] ]).should.be.true  
     })
+
+	it('retrieve intent DEFAULT INTENT', function(done) {
+		utils.retrieveIntent("my boss <ATTRIBUTE>", seeds, function(err, result){
+    		var keys = _.map(result, function(num, key){ return Object.keys(num)[0] });
+       		_.isEqual(keys, ['Offer']).should.be.true
+			done()
+		})
+	})
+
 
 	it('retrieve intent', function(done) {
 		utils.retrieveIntent("my boss and i provide you a salary", seeds, function(err, result){
@@ -231,9 +240,6 @@ describe('Util test', function() {
 
 	it('subst', function() {
 		var sublist = utils.subst("rub")
-		// console.log(sublist)
-		// console.log()
-		// process.exit(0)
 	})
 
 	it('tagger1', function(done) {
