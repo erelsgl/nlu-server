@@ -173,8 +173,6 @@ var Hierarchy = require('../../Hierarchy');
 var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
 var trainutils = require('../../utils/bars')
 var natural = require('natural');
-var limdu = require("limdu");
-var ftrs = limdu.features
 var bars = require('../../utils/bars')
 var splitJson = Hierarchy.splitJson
 var PrecisionRecall = require("limdu/utils/PrecisionRecall");
@@ -186,15 +184,6 @@ var truth_filename = path + "/sentence_to_truthteller.txt"
 var easyfirst_path = "./run_ef.sh"
 // var truth_path = "./run.sh -f ../../research/rule-based/sentence_to_truthteller.txt"
 var truth_path = "./run.sh -f sentence_to_truthteller.txt"
-
-var regexpNormalizer = ftrs.RegexpNormalizer(
-		JSON.parse(fs.readFileSync(__dirname+'/../../knowledgeresources/BiuNormalizations.json')));
-
-
-function normalizer(sentence) {
-	sentence = sentence.toLowerCase().trim();
-	return regexpNormalizer(sentence);
-}
 
 /*
 INPUT:{ input: 'you offer me a leased car?!',
@@ -287,6 +276,7 @@ function getFound(sentence)
 // [start, end] 
 function getWords(sentence, phrase)
 {
+
 	var index = compeletePhrase(sentence, phrase)
 	var start = sentence.slice(0,index).split(" ").length - 1
 	var end = sentence.slice(index + phrase.length).split(" ").length
@@ -305,6 +295,18 @@ function whatinSentence(sentence, list)
 
 function compeletePhrase(sentence, phrase)
 {
+
+	/*
+	TODO:
+	* every space is one space only
+	* return a list of positions if ambiguis
+	*/
+
+	if (_.isArray(phrase)) phrase = phrase.join(" ")
+
+	sentence = bars.biunormalizer(sentence)
+	phrase = bars.biunormalizer(phrase)
+
 	var separator = [' ', ',', '?', '.']
 	var output = -1
 	_(sentence.length).times(function(n){

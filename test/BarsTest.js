@@ -12,6 +12,12 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
+	it('uniqueArray', function() {
+		var array = [['accept',[0,1]], ['accept',[2,1]], ['accept',[0,1]]]
+		var output = bars.uniqueArray(array)
+		_.isEqual(output, [ [ 'accept', [ 0, 1 ] ], [ 'accept', [ 2, 1 ] ] ]).should.be.true
+	})
+
 	it('correctly filter labels with Accept and etc', function() {
 		// _.isEqual(bars.labelFilter([["Accept"],["Salary"],["20,000 NIS"]]),[ [ 'Accept' ], [ 'Salary' ], [ '20,000 NIS' ] ]).should.be.true
 		// console.log("filter")

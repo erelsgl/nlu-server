@@ -76,6 +76,7 @@ _.each(data, function(dialogue, dialoguekey, list){
 
 data = _.shuffle(data)
 var stats = []
+var stats_seq = []
 
 var f = Fiber(function() {
   var fiber = Fiber.current;
@@ -101,6 +102,7 @@ partitions.partitions(data, data.length/3, function(train, test, fold) {
   console.log("size of test " + testset.length + " in utterances " + test_turns.length)
 
   stats.push([new PrecisionRecall(), new PrecisionRecall()])
+  stats_seq.push([new PrecisionRecall(), new PrecisionRecall()])
 
   // load only keyphrases from train
   var seeds = utils.loadseeds(train_turns)
@@ -161,19 +163,30 @@ partitions.partitions(data, data.length/3, function(train, test, fold) {
         utils.retrieveIntent(turn['input'], seedvalue, function(err, results){
           setTimeout(function() {
              fiber.run(results)
-          }, 100);
+          }, 50);
 
         })
 
         var out = Fiber.yield()
-        var labs = _.unique(_.map(out, function(num, key){ return Object.keys(num)[0] }))
         
-        stats[fold][seedkey].addCasesLabels(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
+        var labs = _.unique(_.map(out, function(num, key){ return Object.keys(num)[0] }))
+        var sequence = _.map(out, function(num, key){ return [Object.keys(num)[0], num[Object.keys(num)[0]]['position']] });
+        sequence = bars.uniqueArray(sequence)
+
+        // stats[fold][seedkey].addCasesLabels(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
+        stats[fold][seedkey].addCasesLabels(_.unique(utils.onlyIntents(turn['output'])), sequence)
         
         test_turns[key][seedkey] = {}
-        test_turns[key][seedkey]['stats'] = stats[fold][seedkey].addCasesHash(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs),1)
-        test_turns[key][seedkey]['out'] = out
-    
+        test_turns[key][seedkey]['stats'] = stats[fold][seedkey].addCasesHash(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs),1)        
+        test_turns[key][seedkey]['stats_seq'] = stats_seq[fold][seedkey].addCasesHashSeq(utils.seqgold(turn), sequence,1)
+
+        test_turns[key][seedkey]['actual_int'] = _.unique(labs)
+        test_turns[key][seedkey]['actual_seq'] = sequence
+        test_turns[key]['output_seq'] = utils.seqgold(turn)
+        test_turns[key]['output_int'] = _.unique(utils.onlyIntents(turn['output']))
+
+        test_turns[key]['out'] = out
+
     }, this)
   }, this)
 
@@ -187,26 +200,30 @@ _.each(test_turns, function(value, key, list){
     console.log(JSON.stringify(value, null, 4))
 }, this)
 
-console.log("----what are the utterances that benefit from ppdb----")
+// console.log("----what are the utterances that benefit from ppdb----")
 
-_.each(test_turns, function(value, key, list){ 
-  if (value['0']['stats']['TP'].length > value['1']['stats']['TP'].length)
-    console.log(JSON.stringify(value['0']['out'], null, 4))
-}, this)
+// _.each(test_turns, function(value, key, list){ 
+//   if (value['0']['stats']['TP'].length > value['1']['stats']['TP'].length)
+//     // console.log(JSON.stringify(value['0']['out'], null, 4))
+//     console.log(JSON.stringify(value, null, 4))
+// }, this)
 
 })
 
 _.each(stats, function(fold, keyfold, list){ 
   _.each(fold, function(method, keymethod, list){ 
     stats[keyfold][keymethod].calculateStatsNoReturn()
+    stats_seq[keyfold][keymethod].calculateStatsNoReturn()
     stats[keyfold][keymethod].retrieveLabels()
+    stats_seq[keyfold][keymethod].retrieveLabels()
   }, this)
 }, this)
 
 // console.log(JSON.stringify(utils.calculateparam(stats, ['macroF1', 'macroRecall', 'macroPrecision','Precision', 'Recall', 'F1']), null, 4))
 console.log(JSON.stringify(utils.calculateparam(stats, ['Precision', 'Recall', 'F1']), null, 4))
 console.log("----------------------")
-console.log(JSON.stringify(utils.calculateparam(stats, ['Offer', 'Accept', 'Reject','Greet','Query']), null, 4))
+console.log(JSON.stringify(utils.calculateparam(stats_seq, ['Precision', 'Recall', 'F1']), null, 4))
+// console.log(JSON.stringify(utils.calculateparam(stats, ['Offer', 'Accept', 'Reject','Greet','Query']), null, 4))
 process.exit(0)
 
 })
