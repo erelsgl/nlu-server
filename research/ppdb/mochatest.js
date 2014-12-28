@@ -33,7 +33,21 @@ function makeid(len)
 }
 
 describe('Util test', function() {
-
+	
+	it('check pos', function(done) {
+		// how_WRB about_RB
+		// why_WRB not_RB
+		// good_JJ for_IN me_PRP
+		// hi_NN
+		// yes_RB
+		// no_DT
+		// i_FW can_MD not_RB agree_VB
+		// the_DT answer_NN is_VBZ
+		utils.retrievepos("the answer is", function(err, result){
+			console.log(result)
+			done()
+		})
+	})
 
 	it('enrichseeds_original', function() {
 		var seeds = { 	
@@ -176,6 +190,7 @@ describe('Util test', function() {
 
 	it('only intents', function() {
 		_.isEqual(utils.onlyIntents(["{\"Accept\":\"previous\"}"]), ['Accept']).should.be.true
+		_.isEqual(utils.onlyIntents(["{\"Query\":\"accept\"}"]), []).should.be.true
 	})
 
 	it('retrieve intent', function(done) {	
@@ -221,7 +236,6 @@ describe('Util test', function() {
 			done()
 		})
 	})
-
 
 	it('retrieve intent', function(done) {
 		utils.retrieveIntent("my boss and i provide you a salary", seeds, function(err, result){
