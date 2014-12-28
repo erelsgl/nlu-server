@@ -1119,29 +1119,28 @@ function enrichseeds(seeds, callback)
 
 function loadseeds(train_turns)
 {
+
+	var blacklist = ['Query','accept']
+
 	var seeds = {}
 	_.each(train_turns, function(turn, key, list){
 	  if ('intent_keyphrases_rule' in turn)
-	    _.each(turn['intent_keyphrases_rule'], function(keyphrase, intent, list){ 
-	      if (!(intent in seeds))
-	        seeds[intent] = []
+	    _.each(turn['intent_keyphrases_rule'], function(keyphrase, intent, list){
 
-	      if ((keyphrase != 'DEFAULT INTENT') && (keyphrase != ''))
-	      {
+	      if (blacklist.indexOf(intent) == -1) 
+      		{
+	      	if (!(intent in seeds))
+	        	seeds[intent] = []
 
-	        // keyphrase = keyphrase.replace("<VALUE>", "")
-	        // keyphrase = keyphrase.replace("<ATTRIBUTE>", "")
-	        // keyphrase = keyphrase.replace("^", "")
-	        // keyphrase = keyphrase.replace(".", "")
-	        // keyphrase = keyphrase.replace("!", "")
-	        // keyphrase = keyphrase.replace("$", "")
-	        // keyphrase = keyphrase.replace(/ +(?= )/g,'')
-	        // keyphrase = keyphrase.toLowerCase()
-	        keyphrase = cleanupkeyphrase(keyphrase)
+		      if ((keyphrase != 'DEFAULT INTENT') && (keyphrase != ''))
+		      {
 
-	        seeds[intent].push(keyphrase)
-	        seeds[intent] = _.unique(seeds[intent])
-	      } 
+		        keyphrase = cleanupkeyphrase(keyphrase)
+
+		        seeds[intent].push(keyphrase)
+		        seeds[intent] = _.unique(seeds[intent])
+		      } 
+	      }
 	    }, this)
 	}, this)
 
@@ -1193,6 +1192,7 @@ function seqgold(turn)
 			if ((keyphrase != 'default intent') && (pos == -1))
 			{
 				console.log(turn)
+				console.log(keyphrase)
 				console.log(pos)
 				console.log("error seqgold")
 				process.exit(0)
