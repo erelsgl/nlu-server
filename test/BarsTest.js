@@ -12,6 +12,12 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
+	it('biunormalizer', function() {
+		_.isEqual(bars.biunormalizer("Sounds reasonable!"), "sounds reasonable !").should.be.true
+		_.isEqual(bars.biunormalizer("Sounds reasonable?"), "sounds reasonable ?").should.be.true
+	})
+	
+
 	it('uniqueArray', function() {
 		var array = [['accept',[0,1]], ['accept',[2,1]], ['accept',[0,1]]]
 		var output = bars.uniqueArray(array)
