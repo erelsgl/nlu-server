@@ -69,7 +69,7 @@ function trainandtest(train, test, seeds, mode, callback9)
       // sequence mode
       if (mode == 1)
       {
-        var sequence = _.map(out, function(num, key){ return [Object.keys(num)[0], num[Object.keys(num)[0]]['position']] });
+        var sequence = _.map(out, function(num, key){ return [Object.keys(num)[0], num[Object.keys(num)[0]]['position'], num[Object.keys(num)[0]]['content of ppdb phrase'].join(" ")] });
         sequence = bars.uniqueArray(sequence)
         turn['sequence_expected'] = utils.seqgold(turn)
         turn['sequence_actual'] = sequence
