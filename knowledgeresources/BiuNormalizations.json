@@ -44,6 +44,7 @@
 , {"source": "eleven", "target": "11"}
 , {"source": "twelve", "target": "12"}
 , {"source": "twenty", "target": "20"}
+, {"source": "(.*)([\\!|\\?])", "target": "$1 $2"}
 , {"source": "\\b(\\d+) hundreds?\\b", "target": "$100"}
 , {"source": "\\b(\\d+) thousands?\\b", "target": "$1000"}
 
