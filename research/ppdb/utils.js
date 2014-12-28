@@ -325,12 +325,14 @@ var recursionredis = function (seeds, order, withscores, callback)
 	)
 }
 
+// don't count Query labels 
 var onlyIntents = function(labels)
 {
   var output = []
   _.each(labels, function(label, key, list){ 
     var lablist = splitJson(label)
-    output = output.concat(lablist[0])  
+    if (lablist[0]!= "Query")
+    	output = output.concat(lablist[0])  
   }, this)
   
   return _.unique(output)
@@ -380,7 +382,7 @@ var retrieveIntent = function(input, seeds, callback)
 	    		var elem = {}
         		elem['Offer'] = {}
         		elem['Offer']['original seed'] = 'default intent'
-        		elem['Offer']['content of ppdb phrase'] = 'default intent'
+        		elem['Offer']['content of ppdb phrase'] = ['default', 'intent']
         		elem['Offer']['position'] = [-1,-1]
 				output.push(elem)
 	    	}
@@ -549,8 +551,6 @@ function cleanposoutput(resp)
 {
 	var out = []
 
-	// console.log(resp)
-	
 	var cleaned = resp.replace(/\n|\r/g, "");
 	var pairlist = cleaned.split(" ")
 	var POS = []
@@ -566,9 +566,7 @@ function cleanposoutput(resp)
 			out.push(value[0])
 	}, this)
 	
-	// console.log(out)
 	return out
-
 }
 
 // tagger returns list
@@ -723,7 +721,7 @@ function normalizer(str, callback)
     
     	strcontentlemma = lemmatize(strcontent)
 
-   		strcontentlemma = elimination(strcontentlemma)
+   		// strcontentlemma = elimination(strcontentlemma)
 
     	if (strcontentlemma.length == 0) 
        		strcontentlemma = strcontent
@@ -1194,6 +1192,8 @@ function seqgold(turn)
 
 			if ((keyphrase != 'default intent') && (pos == -1))
 			{
+				console.log(turn)
+				console.log(pos)
 				console.log("error seqgold")
 				process.exit(0)
 			}
