@@ -64,16 +64,18 @@ function trainandtest(train, test, seeds, mode, callback9)
       {
         var labs = _.unique(_.map(out, function(num, key){ return Object.keys(num)[0] }))      
         var out = stats.addCasesHash(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
+        turn['eval'] = out
       }
 
       // sequence mode
       if (mode == 1)
       {
-        var sequence = _.map(out, function(num, key){ return [Object.keys(num)[0], num[Object.keys(num)[0]]['position'], num[Object.keys(num)[0]]['content of ppdb phrase'].join(" ")] });
+        var sequence = _.map(out, function(num, key){ return [Object.keys(num)[0], num[Object.keys(num)[0]]['position'], num[Object.keys(num)[0]]['content of ppdb phrase'].join(" "), num[Object.keys(num)[0]]['ppdb phrase']]  });
         sequence = bars.uniqueArray(sequence)
         turn['sequence_expected'] = utils.seqgold(turn)
         turn['sequence_actual'] = sequence
         var out = stats.addCasesHashSeq(utils.seqgold(turn), sequence,1)
+        turn['eval'] = out
       }
 
       callback1()
