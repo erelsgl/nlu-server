@@ -688,6 +688,24 @@ extract only active turns from dataset that active
 */
 // set['input'] = set['input'].replace(/[^\x00-\x7F]/g, "")
 
+function filterturn(turn)
+{
+  if ('intent_keyphrases_rule' in turn)
+  {
+    if (turn['output'].length > 0)
+    {
+     if (Object.keys(turn['intent_keyphrases_rule']).length > 0) 
+      return turn
+    }
+    else
+      return turn
+  }
+  else
+    return turn
+
+return []
+}
+
 function extractturns(dataset)
 	{
 		data = []
@@ -705,16 +723,18 @@ function extractturns(dataset)
                         if (_.isArray(set['status'] == true))
                         {
                           if (set['status'].indexOf("active") != -1)
-                            data.push(set)
+                            data.push(filterturn(set))
+                          else
+                            data.push(filterturn(set))
                         }
                         else
                         {
                           if (set['status'] == 'active')
-                            data.push(set)
+                            data.push(filterturn(set))
                         }
                       }
                     else
-                      data.push(set)
+                      data.push(filterturn(set))
                 }
         			}, this)
             }
@@ -728,21 +748,21 @@ function extractturns(dataset)
                         if (_.isArray(set['status'] == true))
                         {
                           if (set['status'].indexOf("active") != -1)
-                            data.push(set)
+                            data.push(filterturn(set))
                         }
                         else
                         {
                           if (set['status'] == 'active')
-                            data.push(set)
+                            data.push(filterturn(set))
                         }
                       }
                     else
-                      data.push(set)
+                      data.push(filterturn(set))
               }, this)
           }
 		}, this)
 
-		return data
+		return _.compact(data)
 	}
 
 // function extractkeyphrasesgold(dataset)
