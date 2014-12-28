@@ -14,7 +14,10 @@ describe('Bars utilities', function() {
 
 	it('biunormalizer', function() {
 		_.isEqual(bars.biunormalizer("Sounds reasonable!"), "sounds reasonable !").should.be.true
+		_.isEqual(bars.biunormalizer("Sounds reasonable !"), "sounds reasonable !").should.be.true
 		_.isEqual(bars.biunormalizer("Sounds reasonable?"), "sounds reasonable ?").should.be.true
+		_.isEqual(bars.biunormalizer("Sounds reasonable ?"), "sounds reasonable ?").should.be.true
+		_.isEqual(bars.biunormalizer("Ok, sound"), "okay , sound").should.be.true
 	})
 	
 
