@@ -762,7 +762,7 @@ function extractturns(dataset)
           }
 		}, this)
 
-		return _.compact(data)
+		return _.compact(_.flatten(data))
 	}
 
 // function extractkeyphrasesgold(dataset)
