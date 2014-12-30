@@ -721,7 +721,7 @@ function normalizer(str, callback)
     
     	strcontentlemma = lemmatize(strcontent)
 
-   		// strcontentlemma = elimination(strcontentlemma)
+   		strcontentlemma = elimination(strcontentlemma)
 
     	if (strcontentlemma.length == 0) 
        		strcontentlemma = strcontent
@@ -1174,7 +1174,8 @@ return output
 function seqgold(turn)
 {
 	var seq = []
-	var turn_norm = bars.biunormalizer(turn['input'])
+	// var turn_norm = bars.biunormalizer(turn['input'])
+	var turn_norm = bars.biunormalizer(turn['input_modified'])
 
 	var intents = onlyIntents(turn['output'])
 	_.each(intents, function(intent, key, list){ 
