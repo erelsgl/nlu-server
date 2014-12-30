@@ -193,6 +193,43 @@ describe('Util test', function() {
 		_.isEqual(utils.onlyIntents(["{\"Query\":\"accept\"}"]), []).should.be.true
 	})
 
+	it('equalgold', function(done) {	
+		var turn = {"input_modified": "then <ATTRIBUTE> would be <VALUE>",
+					"output": [ "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}" ],
+					"intent_keyphrases_rule": {	"Offer": "would be" }
+					}
+
+		var seeds = { 
+			"Offer": {'I offer': [ 'would be']}
+					}
+
+		var gold = utils.seqgold(turn)
+		// [ [ 'Offer', [ 17, 25 ], 'would be' ] ]
+
+		utils.retrieveIntent(turn['input_modified'], seeds, function(err, result){
+			// console.log(JSON.stringify(result, null, 4))
+			done()
+/*[
+    {
+        "Offer": {
+            "original seed": "I offer",
+            "ppdb phrase": "would be",
+            "content of ppdb phrase": [
+                "would",
+                "be"
+            ],
+            "position": [
+                17,
+                25
+            ]
+        }
+    }
+]
+*/
+			
+		})
+	})
+
 	it('retrieve intent', function(done) {	
 		utils.retrieveIntent("my boss and i offer you a salary", seeds, function(err, result){
 		/*	[ { Offer: 
