@@ -19,6 +19,7 @@ describe('Bars utilities', function() {
 		_.isEqual(bars.biunormalizer("Sounds reasonable ?"), "sounds reasonable ?").should.be.true
 		_.isEqual(bars.biunormalizer("Ok, sound"), "okay , sound").should.be.true
 		_.isEqual(bars.biunormalizer("Ok , sound"), "okay , sound").should.be.true
+		_.isEqual(bars.biunormalizer("do you agree to start with 12,000"), "do you agree to start with 12000").should.be.true
 	})
 	
 
@@ -30,11 +31,7 @@ describe('Bars utilities', function() {
 
 	it('correctly filter labels with Accept and etc', function() {
 		// _.isEqual(bars.labelFilter([["Accept"],["Salary"],["20,000 NIS"]]),[ [ 'Accept' ], [ 'Salary' ], [ '20,000 NIS' ] ]).should.be.true
-		// console.log("filter")
-		// var a = 
 		_.isEqual(bars.labelFilter(['{"Accept":"Salary"}', '{"Accept":{"Salary":"20,000 NIS"}}']), [ '{"Accept":{"Salary":"20,000 NIS"}}' ]).should.be.true
-		// console.log(a)
-		// process.exit(0)
 
 	})
 
