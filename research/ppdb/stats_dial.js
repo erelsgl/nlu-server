@@ -9,6 +9,39 @@ var data = []
 data = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json"))
 
 
+function activeturn(turn)
+{
+
+if (_.isArray(turn['status']))
+	if (turn['status'].indexOf('active') != -1)
+		return true
+	else
+		return false
+else
+	if (turn['status'] == 'active')
+		return true
+	else
+		return false
+return false
+}
+
+function humanturn(turn)
+{
+	if (turn['user'].match(/Agent/g) == undefined )
+		return true
+	else
+		return false
+}	
+
+function keysofturn(turn)
+{
+	if (!('intent_keyphrases_rule' in turn))
+		return []
+	else
+		return Object.keys(turn['intent_keyphrases_rule'])
+}	
+
+
 var gooddial = 0
 var newagentgood = 0
 var kbagentgood = 0
@@ -18,7 +51,22 @@ var agentstr = ""
 var humansentences = []
 var roles = []
 
+
+var activeactivehuman = 0
+
 _.each(data, function(value, key, list){
+
+	_.each(value['turns'], function(turn, key, list){ 
+		if ()
+
+	}, this)
+
+
+	}, this)
+	// if (value['status'].indexOf("goodconv") != -1)
+		// str.match(/NewAgent/)
+
+
 	if (value['status'].indexOf("goodconv") != -1)
 		{
 
