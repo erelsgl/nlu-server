@@ -377,7 +377,7 @@ var retrieveIntent = function(input, seeds, callback)
 	    
 	    // working on DEFAULT intent
 	    // if ((output.length == 0) && (cleanupkeyphrase(input)<10))
-	    if ((output.length == 0))
+	    /*if ((output.length == 0))
 	    	{
 	    		var elem = {}
         		elem['Offer'] = {}
@@ -386,7 +386,7 @@ var retrieveIntent = function(input, seeds, callback)
         		elem['Offer']['position'] = [-1,-1]
 				output.push(elem)
 	    	}
-
+		*/
 		callback(err, output)})
   // _.each(seeds, function(value, intent, list){ 
   //   _.each(value, function(paraphrases, originalphrase, list2){ 
