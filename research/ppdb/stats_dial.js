@@ -9,6 +9,17 @@ var data = []
 data = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json"))
 
 
+
+function activedialogue(dial)
+{
+	 if (dial['status'].indexOf("goodconv") != -1)
+	 	return true
+	 else
+	 	return false
+}
+
+
+
 function activeturn(turn)
 {
 
@@ -51,25 +62,33 @@ var agentstr = ""
 var humansentences = []
 var roles = []
 
+var activehuman = 0
+var activeturns = []
 
 var activeactivehuman = 0
+var activeactiveturns = []
 
 _.each(data, function(value, key, list){
 
 	_.each(value['turns'], function(turn, key, list){ 
-		if ()
+		
+		if ((humanturn(turn) == true) && (activeturn(turn) == true) && (keysofturn(turn).length > 0))
+			{
+				activehuman += 1
+				activeturns.push(keysofturn(turn))
+			}
+
+		if ((activedialogue(value) == true)&& (humanturn(turn) == true) && (activeturn(turn) == true) && (keysofturn(turn).length > 0))
+				{
+					activeactivehuman += 1
+					activeactiveturns.push(keysofturn(turn))
+				}
 
 	}, this)
-
-
-	}, this)
-	// if (value['status'].indexOf("goodconv") != -1)
-		// str.match(/NewAgent/)
 
 
 	if (value['status'].indexOf("goodconv") != -1)
 		{
-
 			gooddial += 1
 			var evens = _.filter(value['users'], function(str){ return str.match(/NewAgent/) != undefined });
 			if (evens != 0)	
@@ -85,7 +104,7 @@ _.each(data, function(value, key, list){
  					agentstr = 'KBAgent'
 				}
 
-			var dial = []
+			/*var dial = []
 			dial.push(_.filter(value['turns'], function(turn){ return ((turn['status'] == 'active')   && (turn['user'].match(/Agent/g) != undefined)) }).length)
 			dial.push(_.filter(value['turns'], function(turn){ return ((turn['status'] == 'inactive') && (turn['user'].match(/Agent/g) != undefined)) }).length)
 			dial.push(_.filter(value['turns'], function(turn){ return ((turn['status'] == 'active')   && (turn['user'].match(/Agent/g) == undefined)) }).length)
@@ -100,8 +119,8 @@ _.each(data, function(value, key, list){
 			intents.push(agentstr)
 			intents.push(value['id'])
 			numberofintents.push(intents)
-
-			roles = roles.concat(_.pluck(_.filter(value['turns'], function(turn){ return turn['user'].match(/Agent/g) == undefined }), 'role'))
+*/
+			// roles = roles.concat(_.pluck(_.filter(value['turns'], function(turn){ return turn['user'].match(/Agent/g) == undefined }), 'role'))
  		}
 }, this)
 
@@ -113,16 +132,35 @@ console.log("newagentgood " + newagentgood)
 // 31 dialogues
 console.log("kbagentgood " + kbagentgood)
 // 30 dialogues
-console.log(numberofturns)
-// huge variance
-console.log(_.reduce(numberofturns, function(memo, num){ return memo + num[0] + num[1]; }, 0) / numberofturns.length)
-// average number of turns
-console.log(_.reduce(numberofturns, function(memo, num){ return memo + num[2]; }, 0))
-// total number of  active turns
-console.log(numberofintents)
-// one/several intents
-console.log(_.unique(roles))
+// console.log(numberofturns)
+// // huge variance
+// console.log(_.reduce(numberofturns, function(memo, num){ return memo + num[0] + num[1]; }, 0) / numberofturns.length)
+// // average number of turns
+// console.log(_.reduce(numberofturns, function(memo, num){ return memo + num[2]; }, 0))
+// // total number of  active turns
+// console.log(numberofintents)
+// // one/several intents
+// console.log(_.unique(roles))
 // Human is  [Candidate]
 // Candidate Employer consistence/ if all human sentences are of the same role
 
+console.log("activeactivehuman " + activeactivehuman)
+console.log("activehuman" + activehuman)
 
+var counted = _.countBy(activeactiveturns, function(num) { return num });
+
+console.log(counted)
+
+/*106
+gooddial 61
+newagentgood 31
+kbagentgood 30
+activeactivehuman 353
+activehuman353
+
+{ Offer: 261,
+  Accept: 49,
+  Query: 15,
+  Reject: 13,
+  Greet: 14,
+  Insist: 1 }*/
