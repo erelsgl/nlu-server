@@ -2600,7 +2600,13 @@ function biunormalizer(sentence) {
   return regexpNormalizer(sentence);
 }
 
+function copylist(list)
+{
+  return JSON.parse(JSON.stringify(list));
+}
+
 module.exports = {
+  copylist:copylist,
 	// aggregate_sagae_improved: aggregate_sagae_improved,
 	aggregate_sagae: aggregate_sagae, 
 	convertlabeltree: convertlabeltree,
