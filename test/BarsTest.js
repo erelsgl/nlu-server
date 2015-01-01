@@ -12,6 +12,13 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
+	it('copylist', function() {	
+		var list = [{'one':[1,1,1]}, {'two':[2,2,2]}]
+		var copylist = bars.copylist(list)
+		copylist[0]['one'].push(1)
+		list[0]['one'].length.should.equal(3)
+	})
+
 	it('biunormalizer', function() {
 		_.isEqual(bars.biunormalizer("Sounds reasonable!"), "sounds reasonable !").should.be.true
 		_.isEqual(bars.biunormalizer("Sounds reasonable !"), "sounds reasonable !").should.be.true
