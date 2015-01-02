@@ -141,10 +141,10 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds)
 				var stats_ppdb = []
 
 				utils.enrichseeds(seeds, function(err, seeds_ppdb){
-	      			ppdb.trainandtest(mytrainset, testset, seeds_ppdb, 1, function(err, response_ppdb){
+	      			ppdb.trainandtest(mytrainset, bars.copylist(testset), seeds_ppdb, 1, function(err, response_ppdb){
 	      				stats_ppdb = response_ppdb
 
-						ppdb.trainandtest(mytrainset, testset, seeds_original, 1, function(err, response){
+						ppdb.trainandtest(mytrainset, bars.copylist(testset), seeds_original, 1, function(err, response){
 	      					fiber.run(response)
 		    			})
 		    		})
@@ -154,8 +154,50 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds)
 
 	  	    	// --------------TRAIN-TEST--------------
 
+	  	    	console.log("ORIGINAL")
+	  	    	console.log("START")
+	  	    	console.log(JSON.stringify(stats_original['data'].length, null, 4))
+	  	    	console.log(JSON.stringify(stats_original['stats'], null, 4))
+	  	    	console.log(JSON.stringify(stats_original['data'], null, 4))
+	  	    	console.log("ORIGINAL")
+	  	    	console.log(JSON.stringify(stats_original['stats'], null, 4))
+	  	    	
+	  	    	console.log("PPDB")
+	  	    	console.log("START")
+	  	    	console.log(JSON.stringify(stats_ppdb['data'].length, null, 4))
+	  	    	console.log(JSON.stringify(stats_ppdb['stats'], null, 4))
+	  	    	console.log(JSON.stringify(stats_ppdb['data'], null, 4))
+	  	    	console.log("PPDB")
+	  	    	console.log(JSON.stringify(stats_ppdb['stats'], null, 4))
+
 		    	report.push(_.pick(stats_ppdb['stats'], parameters))
 		    	report.push(_.pick(stats_original['stats'], parameters))
+
+		    	if (stats_original['stats']['Recall'] > stats_ppdb['stats']['Recall'])
+		    	{
+		    		console.log('FOUND')
+		    		_.each(stats_ppdb['data'], function(turn, key, list){ 
+		    			console.log(stats_ppdb['data'][key]['eval']['FN']+"   "+stats_original['data'][key]['eval']['FN'])
+		    			if (stats_ppdb['data'][key]['eval']['FN'].length > 
+		    				stats_original['data'][key]['eval']['FN'].length
+		    				)
+		    				{
+		    					console.log("FN")
+		    					console.log(JSON.stringify(stats_ppdb['data'][key], null, 4))
+		    					console.log(JSON.stringify(stats_original['data'][key], null, 4))
+		    				}
+		    			if (stats_ppdb['data'][key]['eval']['TP'].length <
+		    				stats_original['data'][key]['eval']['TP'].length
+		    				)
+		    				{
+		    					console.log("TP")
+		    					console.log(JSON.stringify(stats_ppdb['data'][key], null, 4))
+		    					console.log(JSON.stringify(stats_original['data'][key], null, 4))
+		    				}
+		    		}, this)
+		    		console.log()
+		    		process.exit(0)
+		    	}
 
 			    extractGlobal(parameters, cl, mytrain.length, report, stat)
 
@@ -204,8 +246,9 @@ f.run();
 
 if (process.argv[1] === __filename)
 {
-	var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
-	dataset = _.shuffle(dataset)
+	// var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
+	var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule_shuffled.json"))
+	// dataset = _.shuffle(dataset)
 
 	var classifiers  = {
 		'PPDB': [],
@@ -213,7 +256,11 @@ if (process.argv[1] === __filename)
 	}
 	// var classifiers  = {}
 	var parameters = ['F1','Precision','Recall', 'Accuracy']
-	learning_curves(classifiers, dataset, parameters, 1/*step*/, 4/*numOfFolds*/)
+	learning_curves(classifiers, dataset, parameters, 1/*step*/, 4/*numOfFolds*/, function(){
+		console.log()
+		process.exit(0)
+	})
+		
 }
 
  
