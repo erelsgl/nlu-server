@@ -15,8 +15,8 @@ var rules = require('../rule-based/rules')
 
 var Tagger = require("../../node_modules/node-stanford-postagger/postagger").Tagger;
 var tagger = new Tagger({
-  port: "9000",
-  host: "54.191.84.213"
+  port: "2020"
+  // host: "54.191.84.213"
 });
 // tagger.denodeify(Q);
 
@@ -1107,7 +1107,7 @@ function enrichseeds(seeds, callback)
 	    async.eachSeries(Object.keys(seeds), function(intent, callback1){
 	    	output[intent] = {}
 	    	async.eachSeries(seeds[intent], function(value1, callback2){
-	          recursionredis([value1], [1], false, function(err,actual) {
+	          recursionredis([value1], [1,1], false, function(err,actual) {
 	            output[intent][value1] = actual
 	            callback2()
 		       })
