@@ -12,7 +12,7 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
-	it('extractturnsneu', function() {	
+	it('extractturns', function() {	
 		var turns = [
 			{'status':['goodconv'], 'turns':[
 				{'status':'active', 'input':'GOOD', 'output': ['havesome'], 'user':'1.1.1.1', 'intent_keyphrases_rule':{}}
@@ -22,7 +22,7 @@ describe('Bars utilities', function() {
 											]
 			}
 			]
-		var filtered = bars.extractturnsneu(turns)
+		var filtered = bars.extractturns(turns)
 		filtered.length.should.equal(2)
 	})
 

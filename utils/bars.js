@@ -776,7 +776,7 @@ function isseqturn(turn)
   return false
 }
 
-function extractturnsneu(dataset)
+function extractturns(dataset)
 {
   var data = []
     _.each(dataset, function(dial, key, list){ 
@@ -789,7 +789,7 @@ function extractturnsneu(dataset)
   return data
 }
 
-function extractturns(dataset)
+function extractturnsold(dataset)
 	{
 		data = []
 		_.each(dataset, function(value, key, list){ 
@@ -2744,5 +2744,5 @@ module.exports = {
   clone:clone,
   biunormalizer:biunormalizer,
   uniqueArray:uniqueArray,
-  extractturnsneu:extractturnsneu
+  // extractturnsneu:extractturnsneu
 }
