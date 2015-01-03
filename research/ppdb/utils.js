@@ -15,8 +15,8 @@ var rules = require('../rule-based/rules')
 
 var Tagger = require("../../node_modules/node-stanford-postagger/postagger").Tagger;
 var tagger = new Tagger({
-  port: "9000",
-  host: "54.191.84.213"
+  port: "2020"
+  // host: "54.191.84.213"
 });
 // tagger.denodeify(Q);
 
@@ -325,19 +325,25 @@ var recursionredis = function (seeds, order, withscores, callback)
 	)
 }
 
+// don't count Query labels 
 var onlyIntents = function(labels)
 {
   var output = []
   _.each(labels, function(label, key, list){ 
     var lablist = splitJson(label)
-    output = output.concat(lablist[0])  
+    if (lablist[0]!= "Query")
+    	output = output.concat(lablist[0])  
   }, this)
   
   return _.unique(output)
 }
 
+// input 
+// i can offer a <VALUE>
+// not clean input
 var retrieveIntent = function(input, seeds, callback)
 {
+	
     var output = []
    	async.eachSeries(Object.keys(seeds), function(intent, callback1){
    		async.eachSeries(Object.keys(seeds[intent]), function(keyphrases, callback2){
@@ -352,7 +358,7 @@ var retrieveIntent = function(input, seeds, callback)
 		      			// response - content of the seed
      		 			var content_phrase = (response.length != 0 ? response : phrase.split(" "));
 				        // if (_.isEqual(content_phrase, _.intersection(input_list, content_phrase)) == true)
-				        var pos = rules.compeletePhrase(input_list.join(" "), response.join(" "))
+				        var pos = rules.compeletePhrase(input_list.join(" "), content_phrase.join(" "))
 				        if (pos != -1)
   					      	{
         					var elem = {}
@@ -368,7 +374,19 @@ var retrieveIntent = function(input, seeds, callback)
 			},function(err){callback2()})
 		},function(err){callback1()})
 	},function(err){
-	    // console.log("end retrieveIntent")
+	    
+	    // working on DEFAULT intent
+	    // if ((output.length == 0) && (cleanupkeyphrase(input)<10))
+	    /*if ((output.length == 0))
+	    	{
+	    		var elem = {}
+        		elem['Offer'] = {}
+        		elem['Offer']['original seed'] = 'default intent'
+        		elem['Offer']['content of ppdb phrase'] = ['default', 'intent']
+        		elem['Offer']['position'] = [-1,-1]
+				output.push(elem)
+	    	}
+		*/
 		callback(err, output)})
   // _.each(seeds, function(value, intent, list){ 
   //   _.each(value, function(paraphrases, originalphrase, list2){ 
@@ -533,8 +551,6 @@ function cleanposoutput(resp)
 {
 	var out = []
 
-	// console.log(resp)
-	
 	var cleaned = resp.replace(/\n|\r/g, "");
 	var pairlist = cleaned.split(" ")
 	var POS = []
@@ -550,9 +566,7 @@ function cleanposoutput(resp)
 			out.push(value[0])
 	}, this)
 	
-	// console.log(out)
 	return out
-
 }
 
 // tagger returns list
@@ -1093,7 +1107,7 @@ function enrichseeds(seeds, callback)
 	    async.eachSeries(Object.keys(seeds), function(intent, callback1){
 	    	output[intent] = {}
 	    	async.eachSeries(seeds[intent], function(value1, callback2){
-	          recursionredis([value1], [1], false, function(err,actual) {
+	          recursionredis([value1], [1,1], false, function(err,actual) {
 	            output[intent][value1] = actual
 	            callback2()
 		       })
@@ -1105,29 +1119,28 @@ function enrichseeds(seeds, callback)
 
 function loadseeds(train_turns)
 {
+
+	var blacklist = ['Query','accept']
+
 	var seeds = {}
 	_.each(train_turns, function(turn, key, list){
 	  if ('intent_keyphrases_rule' in turn)
-	    _.each(turn['intent_keyphrases_rule'], function(keyphrase, intent, list){ 
-	      if (!(intent in seeds))
-	        seeds[intent] = []
+	    _.each(turn['intent_keyphrases_rule'], function(keyphrase, intent, list){
 
-	      if ((keyphrase != 'DEFAULT INTENT') && (keyphrase != ''))
-	      {
+	      if (blacklist.indexOf(intent) == -1) 
+      		{
+	      	if (!(intent in seeds))
+	        	seeds[intent] = []
 
-	        // keyphrase = keyphrase.replace("<VALUE>", "")
-	        // keyphrase = keyphrase.replace("<ATTRIBUTE>", "")
-	        // keyphrase = keyphrase.replace("^", "")
-	        // keyphrase = keyphrase.replace(".", "")
-	        // keyphrase = keyphrase.replace("!", "")
-	        // keyphrase = keyphrase.replace("$", "")
-	        // keyphrase = keyphrase.replace(/ +(?= )/g,'')
-	        // keyphrase = keyphrase.toLowerCase()
-	        keyphrase = cleanupkeyphrase(keyphrase)
+		      if ((keyphrase != 'DEFAULT INTENT') && (keyphrase != ''))
+		      {
 
-	        seeds[intent].push(keyphrase)
-	        seeds[intent] = _.unique(seeds[intent])
-	      } 
+		        keyphrase = cleanupkeyphrase(keyphrase)
+
+		        seeds[intent].push(keyphrase)
+		        seeds[intent] = _.unique(seeds[intent])
+		      } 
+	      }
 	    }, this)
 	}, this)
 
@@ -1161,7 +1174,8 @@ return output
 function seqgold(turn)
 {
 	var seq = []
-	var turn_norm = bars.biunormalizer(turn['input'])
+	// var turn_norm = bars.biunormalizer(turn['input'])
+	var turn_norm = bars.biunormalizer(turn['input_modified'])
 
 	var intents = onlyIntents(turn['output'])
 	_.each(intents, function(intent, key, list){ 
@@ -1171,7 +1185,20 @@ function seqgold(turn)
 			keyphrase = cleanupkeyphrase(keyphrase)
 			keyphrase = bars.biunormalizer(keyphrase)
 			var pos = rules.compeletePhrase(turn_norm, keyphrase)
-			seq.push([intent, [pos, pos + keyphrase.length] ])
+			if (keyphrase == 'default intent')
+				seq.push(['Offer', [-1, -1], keyphrase ])
+			else
+				seq.push([intent, [pos, pos + keyphrase.length], keyphrase ])
+
+			if ((keyphrase != 'default intent') && (pos == -1))
+			{
+				console.log(turn)
+				console.log(keyphrase)
+				console.log(pos)
+				console.log("error seqgold")
+				process.exit(0)
+			}
+
 		}
 	}, this)
 	return seq

@@ -40,6 +40,7 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 // var do_small_temporary_serialization_test = false
 
+var shuffle = false
 var sequnce_classification = true
 var test_gaby = false
 var new_dial_stats = false
@@ -182,12 +183,21 @@ var datasetNames = [
 // 	sentence = sentence.trim()
 // 	sentence = sentence.replace(/\s+/g,' ')
 
-
-
 /*performs 
 turkers_keyphrases_only_rule.json
 students_keyphrases_only_rule.json*/
 
+
+if (shuffle)
+{
+	var data = JSON.parse(fs.readFileSync("../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
+	data = _.shuffle(data)	
+	data = _.shuffle(data)	
+	data = _.shuffle(data)	
+	console.log(JSON.stringify(data, null, 4))
+	console.log()
+	process.exit(0)
+}
 
 
 if (sequnce_classification)
@@ -197,7 +207,7 @@ if (sequnce_classification)
 	var ppdb_utils = require("./research/ppdb/utils.js")
 
 	var datasets = [
-              'turkers_keyphrases_only_rule.json',
+              'turkers_keyphrases_only_rule_shuffled.json',
               // 'students_keyphrases_only_rule.json'
             ]
 
@@ -207,38 +217,47 @@ if (sequnce_classification)
 	    data = JSON.parse(fs.readFileSync("../datasets/Employer/Dialogue/"+value))
 	}, this)
 
-	data = _.shuffle(data)
+	// data = _.shuffle(data)
 
-	var datas = partitions.partition(data, 1, Math.round(data.length*0.4))
+	var datas = partitions.partition(data, 1, Math.round(data.length*0.8))
+
+	console.log("test dialogues "+ datas['test'].length)
+	console.log("train dialogues "+ datas['train'].length)
 
 	var testset = trainutils.extractturns(datas['test'])
 	var trainset = trainutils.extractturns(datas['train'])
 
 	var seeds = ppdb_utils.loadseeds(trainset)
-	var seeds_original = ppdb_utils.enrichseeds_original(seeds)
+	// var seeds_original = ppdb_utils.enrichseeds_original(seeds)
 
 	var stats_ppdb = []
 
 	ppdb_utils.enrichseeds(seeds, function(err, seeds_ppdb){
 		ppdb.trainandtest(trainset, testset, seeds_ppdb, 1, function(err, response_ppdb){
 			fiber.run(response_ppdb)
-			})
 		})
+	})
 	
    	var stats_ppdb = Fiber.yield()
 
-   	console.log(JSON.stringify(stats_ppdb, null, 4))
+   	/*_.each(stats_ppdb['data'], function(value, key, list){ 
+   		if ((value['eval']['FP'].length != 0) || (value['eval']['FN'].length != 0))
+   		{
+   			console.log(JSON.stringify(value, null, 4))
+   		}
+   	}, this)
+	*/
+
+   	console.log(JSON.stringify(stats_ppdb['stats'], null, 4))
+
    	process.exit(0)
 }
 
 
 if (test_dataset)
 {
-	
 	var data = JSON.parse(fs.readFileSync("./test2.json"))
-	console.log()
 	process.exit(0)
-
 }
 
 if (prepare_dataset_for_gaby1)

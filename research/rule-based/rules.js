@@ -530,7 +530,7 @@ data = _.shuffle(data)
 
 var datanew = []
 _.each(data, function(record, key, list){ 
-	data[key]['input'] = normalizer(record['input'])
+	data[key]['input'] = bars.biunormalizer(record['input'])
 	if (data[key]['input'] != "")
 		datanew.push(data[key])
 }, this)

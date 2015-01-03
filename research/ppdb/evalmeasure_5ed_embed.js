@@ -23,6 +23,7 @@ var ftrs = limdu.features;
 var regexpNormalizer = ftrs.RegexpNormalizer(
     JSON.parse(fs.readFileSync(__dirname+'/../../knowledgeresources/BiuNormalizations.json')));
 
+
 function trainandtest(train, test, seeds, mode, callback9)
 {
 
@@ -33,24 +34,24 @@ function trainandtest(train, test, seeds, mode, callback9)
 */
   var data = []
 
-  _.each(test, function(utterance, key, list){ 
+  var test_turns = test
+
+  _.each(test_turns, function(utterance, key, list){ 
     var sentence = utterance['input']
-    test[key]['input_original'] = sentence
-    
+    test_turns[key]['input_original'] = sentence
     sentence = sentence.toLowerCase().trim()
     sentence = regexpNormalizer(sentence)
-    test[key]['input_normalized'] = sentence
-    test[key]['polarity'] = truth.verbnegation(sentence.replace('without','no'), truth_filename)
+    test_turns[key]['input_normalized'] = sentence
+    test_turns[key]['polarity'] = truth.verbnegation(sentence.replace('without','no'), truth_filename)
 
     sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
-    test[key]['input_modified'] = sentence
+    test_turns[key]['input_modified'] = sentence
   }, this)
 
   // 15 conversations
   // 170 utterances
 
   var train_turns = train
-  var test_turns = test
   var stats = new PrecisionRecall()
 
   async.eachSeries(test_turns, function(turn, callback1){
@@ -64,16 +65,18 @@ function trainandtest(train, test, seeds, mode, callback9)
       {
         var labs = _.unique(_.map(out, function(num, key){ return Object.keys(num)[0] }))      
         var out = stats.addCasesHash(_.unique(utils.onlyIntents(turn['output'])), _.unique(labs))
+        turn['eval'] = out
       }
 
       // sequence mode
       if (mode == 1)
       {
-        var sequence = _.map(out, function(num, key){ return [Object.keys(num)[0], num[Object.keys(num)[0]]['position']] });
+        var sequence = _.map(out, function(num, key){ return [Object.keys(num)[0], num[Object.keys(num)[0]]['position'], num[Object.keys(num)[0]]['content of ppdb phrase'].join(" "), num[Object.keys(num)[0]]['ppdb phrase']]  });
         sequence = bars.uniqueArray(sequence)
         turn['sequence_expected'] = utils.seqgold(turn)
         turn['sequence_actual'] = sequence
         var out = stats.addCasesHashSeq(utils.seqgold(turn), sequence,1)
+        turn['eval'] = out
       }
 
       callback1()
@@ -83,7 +86,7 @@ function trainandtest(train, test, seeds, mode, callback9)
       var output = {}
       output['data'] = test_turns
       output['stats'] = stats.retrieveStats()
-      callback9(err,output)
+      callback9(err, output)
   })
 }
 

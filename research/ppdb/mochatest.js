@@ -33,7 +33,21 @@ function makeid(len)
 }
 
 describe('Util test', function() {
-
+	
+	it('check pos', function(done) {
+		// how_WRB about_RB
+		// why_WRB not_RB
+		// good_JJ for_IN me_PRP
+		// hi_NN
+		// yes_RB
+		// no_DT
+		// i_FW can_MD not_RB agree_VB
+		// the_DT answer_NN is_VBZ
+		utils.retrievepos("the answer is", function(err, result){
+			console.log(result)
+			done()
+		})
+	})
 
 	it('enrichseeds_original', function() {
 		var seeds = { 	
@@ -176,6 +190,44 @@ describe('Util test', function() {
 
 	it('only intents', function() {
 		_.isEqual(utils.onlyIntents(["{\"Accept\":\"previous\"}"]), ['Accept']).should.be.true
+		_.isEqual(utils.onlyIntents(["{\"Query\":\"accept\"}"]), []).should.be.true
+	})
+
+	it('equalgold', function(done) {	
+		var turn = {"input_modified": "then <ATTRIBUTE> would be <VALUE>",
+					"output": [ "{\"Offer\":{\"Salary\":\"12,000 NIS\"}}" ],
+					"intent_keyphrases_rule": {	"Offer": "would be" }
+					}
+
+		var seeds = { 
+			"Offer": {'I offer': [ 'would be']}
+					}
+
+		var gold = utils.seqgold(turn)
+		// [ [ 'Offer', [ 17, 25 ], 'would be' ] ]
+
+		utils.retrieveIntent(turn['input_modified'], seeds, function(err, result){
+			// console.log(JSON.stringify(result, null, 4))
+			done()
+/*[
+    {
+        "Offer": {
+            "original seed": "I offer",
+            "ppdb phrase": "would be",
+            "content of ppdb phrase": [
+                "would",
+                "be"
+            ],
+            "position": [
+                17,
+                25
+            ]
+        }
+    }
+]
+*/
+			
+		})
 	})
 
 	it('retrieve intent', function(done) {	
@@ -211,8 +263,16 @@ describe('Util test', function() {
     	    "Offer": "i need you"
     	}}
 	    var seq = utils.seqgold(turn)
-   		_.isEqual(seq, [ [ 'Offer', [ 6, 16 ] ] ]).should.be.true  
+   		_.isEqual(seq, [ [ 'Offer', [ 6, 16 ], "i need you" ] ]).should.be.true  
     })
+
+	it('retrieve intent DEFAULT INTENT', function(done) {
+		utils.retrieveIntent("my boss <ATTRIBUTE>", seeds, function(err, result){
+    		var keys = _.map(result, function(num, key){ return Object.keys(num)[0] });
+       		_.isEqual(keys, ['Offer']).should.be.true
+			done()
+		})
+	})
 
 	it('retrieve intent', function(done) {
 		utils.retrieveIntent("my boss and i provide you a salary", seeds, function(err, result){
@@ -231,9 +291,6 @@ describe('Util test', function() {
 
 	it('subst', function() {
 		var sublist = utils.subst("rub")
-		// console.log(sublist)
-		// console.log()
-		// process.exit(0)
 	})
 
 	it('tagger1', function(done) {

@@ -12,6 +12,24 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
+	it('copylist', function() {	
+		var list = [{'one':[1,1,1]}, {'two':[2,2,2]}]
+		var copylist = bars.copylist(list)
+		copylist[0]['one'].push(1)
+		list[0]['one'].length.should.equal(3)
+	})
+
+	it('biunormalizer', function() {
+		_.isEqual(bars.biunormalizer("Sounds reasonable!"), "sounds reasonable !").should.be.true
+		_.isEqual(bars.biunormalizer("Sounds reasonable !"), "sounds reasonable !").should.be.true
+		_.isEqual(bars.biunormalizer("Sounds reasonable?"), "sounds reasonable ?").should.be.true
+		_.isEqual(bars.biunormalizer("Sounds reasonable ?"), "sounds reasonable ?").should.be.true
+		_.isEqual(bars.biunormalizer("Ok, sound"), "okay , sound").should.be.true
+		_.isEqual(bars.biunormalizer("Ok , sound"), "okay , sound").should.be.true
+		_.isEqual(bars.biunormalizer("do you agree to start with 12,000"), "do you agree to start with 12000").should.be.true
+	})
+	
+
 	it('uniqueArray', function() {
 		var array = [['accept',[0,1]], ['accept',[2,1]], ['accept',[0,1]]]
 		var output = bars.uniqueArray(array)
@@ -20,11 +38,7 @@ describe('Bars utilities', function() {
 
 	it('correctly filter labels with Accept and etc', function() {
 		// _.isEqual(bars.labelFilter([["Accept"],["Salary"],["20,000 NIS"]]),[ [ 'Accept' ], [ 'Salary' ], [ '20,000 NIS' ] ]).should.be.true
-		// console.log("filter")
-		// var a = 
 		_.isEqual(bars.labelFilter(['{"Accept":"Salary"}', '{"Accept":{"Salary":"20,000 NIS"}}']), [ '{"Accept":{"Salary":"20,000 NIS"}}' ]).should.be.true
-		// console.log(a)
-		// process.exit(0)
 
 	})
 
