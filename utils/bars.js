@@ -706,6 +706,89 @@ function filterturn(turn)
 return []
 }
 
+function isactivedialogue(dial)
+{
+    if ('status' in dial)
+    {
+      if (_.isArray(dial['status']))
+        {
+          if (dial['status'].indexOf('goodconv') != -1)
+            return true
+          else
+            return false
+        }
+      if (_.isString(dial['status']))
+        { 
+          if (dial['status'] == 'goodconv')
+            return true
+        }
+        return false
+    }
+  else false
+}
+
+function isactiveturn(turn)
+{
+  if ('status' in turn)
+  {
+    if (_.isArray(turn['status']))
+      if (turn['status'].indexOf('active') != -1)
+        return true
+      else
+        return false
+    else
+      if (turn['status'] == 'active')
+        return true
+      else
+        return false
+    return false
+  }
+  else
+  {
+    return false
+  }
+}
+
+function ishumanturn(turn)
+{
+  if ('user' in turn)
+  {
+    if (turn['user'].match(/Agent/g) == undefined )
+      return true
+    else
+      return false
+  }
+  else
+    return true
+} 
+
+function isseqturn(turn)
+{
+  if ('intent_keyphrases_rule' in turn)
+  {
+    if (('output' in turn) && (_.isArray(turn['output'])) == true)
+      {
+        return true
+      }
+    else
+      return false
+  }
+  return false
+}
+
+function extractturnsneu(dataset)
+{
+  var data = []
+    _.each(dataset, function(dial, key, list){ 
+      _.each(dial['turns'], function(turn, keyt, listt){
+        if (isactivedialogue(dial) && isactiveturn(turn) &&
+          ishumanturn(turn) && isseqturn(turn))
+          data.push(turn) 
+      }, this)
+    }, this)
+  return data
+}
+
 function extractturns(dataset)
 	{
 		data = []
@@ -2660,5 +2743,6 @@ module.exports = {
   filterzerofeatures:filterzerofeatures,
   clone:clone,
   biunormalizer:biunormalizer,
-  uniqueArray:uniqueArray
+  uniqueArray:uniqueArray,
+  extractturnsneu:extractturnsneu
 }
