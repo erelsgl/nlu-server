@@ -12,6 +12,20 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
+	it('extractturnsneu', function() {	
+		var turns = [
+			{'status':['goodconv'], 'turns':[
+				{'status':'active', 'input':'GOOD', 'output': ['havesome'], 'user':'1.1.1.1', 'intent_keyphrases_rule':{}}
+			   ,{'status':['active'], 'input':'GOOD', 'output': ['havesome'], 'user':'1.1.1.1', 'intent_keyphrases_rule':{}}
+			   ,{'status':'active', 'input':'GOOD', 'output': ['havesome'], 'user':'Agent', 'intent_keyphrases_rule':{}}
+			   ,{'status':'active', 'input':'GOOD', 'output': ['havesome'], 'user':'1.1.1.1'}
+											]
+			}
+			]
+		var filtered = bars.extractturnsneu(turns)
+		filtered.length.should.equal(2)
+	})
+
 	it('copylist', function() {	
 		var list = [{'one':[1,1,1]}, {'two':[2,2,2]}]
 		var copylist = bars.copylist(list)
