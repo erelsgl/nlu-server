@@ -247,7 +247,7 @@ f.run();
 if (process.argv[1] === __filename)
 {
 	// var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
-	var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule_shuffled.json"))
+	var dataset = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json"))
 	// dataset = _.shuffle(dataset)
 
 	var classifiers  = {
@@ -256,7 +256,7 @@ if (process.argv[1] === __filename)
 	}
 	// var classifiers  = {}
 	var parameters = ['F1','Precision','Recall', 'Accuracy']
-	learning_curves(classifiers, dataset, parameters, 1/*step*/, 4/*numOfFolds*/, function(){
+	learning_curves(classifiers, dataset, parameters, 5/*step*/, 10/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
