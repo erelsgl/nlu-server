@@ -18,7 +18,7 @@ var bars = require('../../utils/bars');
 var rmdir = require('rimraf');
 var path = require("path")
 var ppdb = require("./evalmeasure_5ed_embed.js")
-
+var gnuplot = '/home/ir/konovav/gnuplot-5.0.0/src/gnuplot'
 /* @params classifiers - classifier for learning curves
    @params dataset - dataset for evaluation, 20% is takes for evaluation
    @params parameters - parameters we are interested in 
@@ -73,7 +73,7 @@ function extractGlobal(parameters, classifiers, trainsize, report, stat)
 
 function checkGnuPlot()
 	{
-		var result = execSync.run("gnuplot -V");
+		var result = execSync.run(gnuplot);
 		if (result !=0 ) {
 			console.log("gnuplot is not found")
 			return 0
@@ -145,7 +145,9 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds)
 	      				stats_ppdb = response_ppdb
 
 						ppdb.trainandtest(mytrainset, bars.copylist(testset), seeds_original, 1, function(err, response){
-	      					fiber.run(response)
+        					setTimeout(function() {
+	      						fiber.run(response)
+							}, 1000)
 		    			})
 		    		})
 				})
@@ -212,7 +214,7 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds)
 					// _.each(parameters,  function(value, key, list){ 
 
 						foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+value+"-fold"+n+"\' using 1:i with linespoints linecolor i pt "+n+" ps 3"
-						com = "gnuplot -p -e \"reset; set yrange [0:1]; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+"fold"+n+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+						com = gnuplot +" -p -e \"reset; set yrange [0:1]; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+"fold"+n+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
 						result = execSync.run(com)
 
 						plotfor = plotfor + foldcom + ", "
@@ -220,7 +222,7 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds)
 						// },this)
 					},this)
 					plotfor = plotfor.substring(0,plotfor.length-2);
-					command = "gnuplot -p -e \"reset; set yrange [0:1]; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+".png\'; set key autotitle columnhead; "+plotfor +"\""
+					command = gnuplot +" -p -e \"reset; set yrange [0:1]; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+".png\'; set key autotitle columnhead; "+plotfor +"\""
 					result = execSync.run(command)
 				}, this)
 
@@ -233,7 +235,7 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds)
 					}, this)
 
 					foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+param+"average"+"\' using 1:i with linespoints linecolor i"
-					com = "gnuplot -p -e \"reset; set yrange [0:1]; set xlabel \'Number of dialogues\'; set ylabel \'"+param+"\' ;set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + param+"average.png\'; set key autotitle columnhead; plot "+foldcom +"\""
+					com = gnuplot +" -p -e \"reset; set yrange [0:1]; set xlabel \'Number of dialogues\'; set ylabel \'"+param+"\' ;set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + param+"average.png\'; set key autotitle columnhead; plot "+foldcom +"\""
 					result = execSync.run(com)
 				}, this)
 
@@ -247,7 +249,8 @@ f.run();
 if (process.argv[1] === __filename)
 {
 	// var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
-	var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule_shuffled.json"))
+//	var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule_shuffled.json"))
+	var dataset = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json"))
 	// dataset = _.shuffle(dataset)
 
 	var classifiers  = {
@@ -256,7 +259,7 @@ if (process.argv[1] === __filename)
 	}
 	// var classifiers  = {}
 	var parameters = ['F1','Precision','Recall', 'Accuracy']
-	learning_curves(classifiers, dataset, parameters, 1/*step*/, 4/*numOfFolds*/, function(){
+	learning_curves(classifiers, dataset, parameters, 5/*step*/, 10/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
