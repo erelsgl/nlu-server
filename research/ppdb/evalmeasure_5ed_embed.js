@@ -24,7 +24,7 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
     JSON.parse(fs.readFileSync(__dirname+'/../../knowledgeresources/BiuNormalizations.json')));
 
 
-function trainandtest(train, test, seeds, mode, mode1, callback9)
+function trainandtest(train, test, seeds, mode, callback9)
 {
 
 /*
