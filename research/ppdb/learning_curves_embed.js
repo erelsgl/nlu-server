@@ -113,7 +113,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 		partitions.partitions(dataset, numOfFolds, function(train, test, fold) {
 			console.log("fold"+fold)
-			index = step
+			index = step0
 
 			if (bars.isDialogue(test))
 				var testset = bars.extractturns(test)

@@ -2746,4 +2746,8 @@ module.exports = {
   biunormalizer:biunormalizer,
   uniqueArray:uniqueArray,
   // extractturnsneu:extractturnsneu
+isactivedialogue:isactivedialogue,
+isseqturn:isseqturn,
+ishumanturn:ishumanturn,
+isactiveturn:isactiveturn
 }
