@@ -40,7 +40,7 @@
 , {"source": "seven", "target": "7"}
 , {"source": "eight", "target": "8"}
 , {"source": "nine", "target": "9"}
-, {"source": "ten", "target": "10"}
+, {"source": " ten ", "target": "10"}
 , {"source": "eleven", "target": "11"}
 , {"source": "twelve", "target": "12"}
 , {"source": "twenty", "target": "20"}
