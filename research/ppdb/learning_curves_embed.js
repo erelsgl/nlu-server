@@ -81,7 +81,7 @@ function checkGnuPlot()
 	}
 
 	
-function learning_curves(classifiers, dataset, parameters, step, numOfFolds) 
+function learning_curves(classifiers, dataset, parameters, step, step0, limit, numOfFolds) 
 {
 
 
@@ -126,7 +126,11 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds)
 			  	var report = []
 				var mytrainset = []
 			  	var mytrain = train.slice(0, index)
-			  	index += step
+			  	
+			  	if (index < limit)
+			  		index += step0
+			  	else
+			  		index += step
 
 		    	if (bars.isDialogue(mytrain))	
 		  			mytrainset = bars.extractturns(mytrain)
@@ -262,7 +266,7 @@ if (process.argv[1] === __filename)
 	}
 	// var classifiers  = {}
 	var parameters = ['F1','Precision','Recall', 'Accuracy']
-	learning_curves(classifiers, dataset, parameters, 10/*step*/, 10/*numOfFolds*/, function(){
+	learning_curves(classifiers, dataset, parameters, 10/*step*/, 3, 18,  10/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
