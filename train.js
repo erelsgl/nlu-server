@@ -209,23 +209,29 @@ if (sequnce_classification)
 	var datasets = [
               'turkers_keyphrases_only_rule_shuffled.json',
               // 'students_keyphrases_only_rule.json'
+              // 'dial_usa_rule.json'
             ]
 
 	var data = []
 
 	_.each(datasets, function(value, key, list){
 	    data = JSON.parse(fs.readFileSync("../datasets/Employer/Dialogue/"+value))
+	    // data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/"+value))
 	}, this)
 
 	// data = _.shuffle(data)
 
-	var datas = partitions.partition(data, 1, Math.round(data.length*0.8))
+	var datas = partitions.partition(data, 1, Math.round(data.length*0.6))
 
 	console.log("test dialogues "+ datas['test'].length)
 	console.log("train dialogues "+ datas['train'].length)
 
 	var testset = trainutils.extractturns(datas['test'])
 	var trainset = trainutils.extractturns(datas['train'])
+
+	console.log("test turn "+ testset.length)
+	console.log("train turns "+ trainset.length)
+
 
 	var seeds = ppdb_utils.loadseeds(trainset)
 	// var seeds_original = ppdb_utils.enrichseeds_original(seeds)
@@ -234,19 +240,20 @@ if (sequnce_classification)
 
 	ppdb_utils.enrichseeds(seeds, function(err, seeds_ppdb){
 		ppdb.trainandtest(trainset, testset, seeds_ppdb, 1, function(err, response_ppdb){
-			fiber.run(response_ppdb)
+			setTimeout(function() {
+				fiber.run(response_ppdb)
+			}, 1000)
 		})
 	})
 	
    	var stats_ppdb = Fiber.yield()
 
-   	/*_.each(stats_ppdb['data'], function(value, key, list){ 
+   	_.each(stats_ppdb['data'], function(value, key, list){ 
    		if ((value['eval']['FP'].length != 0) || (value['eval']['FN'].length != 0))
    		{
    			console.log(JSON.stringify(value, null, 4))
    		}
    	}, this)
-	*/
 
    	console.log(JSON.stringify(stats_ppdb['stats'], null, 4))
 
