@@ -16,16 +16,12 @@ var rules = require('../rule-based/rules')
 var Tagger = require("../../node_modules/node-stanford-postagger/postagger").Tagger;
 var tagger = new Tagger({
   port: "2020"
-  // host: "54.191.84.213"
 });
-// tagger.denodeify(Q);
 
-// var wordnet = new natural.WordNet();
 var async = require('async');
 var redis = require("redis")
 
 var client = redis.createClient(6369)
-// var clientpos = redis.createClient(6369);
 var clientpos = redis.createClient(6369);
 
 var buffer = {}
@@ -352,12 +348,11 @@ var retrieveIntent = function(input, seeds, callback)
    					// input - test utterances
 		      		var input_list = input.split(" ")
 
-		      		// console.log("before olycontent")
 		      		onlycontent(phrase, function(err, response) {
 
-		      			// response - content of the seed
      		 			var content_phrase = (response.length != 0 ? response : phrase.split(" "));
-				        // if (_.isEqual(content_phrase, _.intersection(input_list, content_phrase)) == true)
+     		 			// var content_phrase = phrase.split(" ")
+				        
 				        var pos = rules.compeletePhrase(input_list.join(" "), content_phrase.join(" "))
 				        if (pos != -1)
   					      	{
