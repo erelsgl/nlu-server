@@ -18,7 +18,7 @@ var bars = require('../../utils/bars');
 var rmdir = require('rimraf');
 var path = require("path")
 var ppdb = require("./evalmeasure_5ed_embed.js")
-var gnuplot = 'gnuplot'
+var gnuplot = '/home/ir/konovav/gnuplot-5.0.0/src/gnuplot'
 /* @params classifiers - classifier for learning curves
    @params dataset - dataset for evaluation, 20% is takes for evaluation
    @params parameters - parameters we are interested in 
