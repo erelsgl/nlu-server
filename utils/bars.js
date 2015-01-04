@@ -724,7 +724,7 @@ function isactivedialogue(dial)
         }
         return false
     }
-  else false
+  else return true
 }
 
 function isactiveturn(turn)
@@ -773,7 +773,8 @@ function isseqturn(turn)
     else
       return false
   }
-  return false
+  else
+    return false
 }
 
 function extractturns(dataset)
