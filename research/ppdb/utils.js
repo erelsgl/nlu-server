@@ -1107,7 +1107,7 @@ function enrichseeds(seeds, callback)
 	    async.eachSeries(Object.keys(seeds), function(intent, callback1){
 	    	output[intent] = {}
 	    	async.eachSeries(seeds[intent], function(value1, callback2){
-	          recursionredis([value1], [1,1], false, function(err,actual) {
+	          recursionredis([value1], [1], false, function(err,actual) {
 	            output[intent][value1] = actual
 	            callback2()
 		       })
