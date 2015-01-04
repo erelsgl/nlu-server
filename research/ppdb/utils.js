@@ -26,7 +26,7 @@ var redis = require("redis")
 
 var client = redis.createClient(6369)
 // var clientpos = redis.createClient(6369);
-var clientpos = redis.createClient();
+var clientpos = redis.createClient(6369);
 
 var buffer = {}
 
@@ -1174,6 +1174,9 @@ return output
 function seqgold(turn)
 {
 	var seq = []
+	
+	if (!('intent_keyphrases_rule' in turn))
+		return []
 	// var turn_norm = bars.biunormalizer(turn['input'])
 	var turn_norm = bars.biunormalizer(turn['input_modified'])
 
