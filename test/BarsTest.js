@@ -37,6 +37,12 @@ describe('Bars utilities', function() {
 		var sen = 'I can accept the $90,000 as programmer with leased car, 10% pension fund, fast promotion track and eight hours work'
 		var sennor = bars.biunormalizer(sen)
 		_.isEqual(bars.biunormalizer(sennor), sennor).should.be.true
+
+
+		var sen = 'I would like to be considered for the position of Team Manager, 90,000 USD, with car, 20% pension, fast promotion, 8 hours'
+		var sennor = bars.biunormalizer(sen)
+		_.isEqual(bars.biunormalizer(sennor), sennor).should.be.true
+
 		_.isEqual(bars.biunormalizer("Sounds reasonable!"), "sounds reasonable !").should.be.true
 		_.isEqual(bars.biunormalizer("Sounds reasonable !"), "sounds reasonable !").should.be.true
 		_.isEqual(bars.biunormalizer("Sounds reasonable?"), "sounds reasonable ?").should.be.true

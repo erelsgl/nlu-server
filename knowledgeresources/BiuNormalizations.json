@@ -50,6 +50,8 @@
 , {"source": "([^\\d\\s])(\\,)(.*)", "target": "$1 $2$3"}
 , {"source": "([^\\d\\s])(\\,)(.*)", "target": "$1 $2$3"}
 , {"source": "([^\\d\\s])(\\,)(.*)", "target": "$1 $2$3"}
+, {"source": "([^\\d\\s])(\\,)(.*)", "target": "$1 $2$3"}
+, {"source": "([^\\d\\s])(\\,)(.*)", "target": "$1 $2$3"}
 
 , {"source": "\\b(\\d+) hundreds?\\b", "target": "$100"}
 , {"source": "\\b(\\d+) thousands?\\b", "target": "$1000"}
