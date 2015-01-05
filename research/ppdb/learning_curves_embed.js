@@ -83,8 +83,6 @@ function checkGnuPlot()
 	
 function learning_curves(classifiers, dataset, parameters, step, step0, limit, numOfFolds) 
 {
-
-
 	var f = Fiber(function() {
 
 	  	var fiber = Fiber.current;
@@ -111,31 +109,19 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 		var mytrain = []
 
-		partitions.partitions(dataset, numOfFolds, function(train, test, fold) {
+		partitions.partitions_consistent(dataset, numOfFolds, function(train, test, fold) {
 			console.log("fold"+fold)
 			index = step0
-
-			if (bars.isDialogue(test))
-				var testset = bars.extractturns(test)
-			else
-				var testset = test
 
 			while (index <= train.length)
 	  		{
 
 			  	var report = []
-				var mytrainset = []
-			  	var mytrain = train.slice(0, index)
+				var mytrain = train.slice(0, index)
 			  	
-			  	if (index < limit)
-			  		index += step0
-			  	else
-			  		index += step
-
-		    	if (bars.isDialogue(mytrain))	
-		  			mytrainset = bars.extractturns(mytrain)
-		  		else	
-		  			mytrainset = mytrain
+			  	var index = (index < limit ? step0 : step)
+			  	var mytrainset = (bars.isDialogue(mytrain) ? bars.extractturns(mytrain) : mytrain)
+			  	var testset = (bars.isDialogue(test) ? bars.extractturns(test) : test)
 
 	  			// ----------------SEEDS-------------------
 
@@ -158,9 +144,15 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 		    	var stats_original = Fiber.yield()
 
+		    	var content = bars.stringification([seeds_original, stats_original])
+				fs.writeFileSync("original fold-"+fold+" train-"+mytrainset.length, content, 'utf-8')
+
+				var content = bars.stringification([seeds_ppdb, stats_ppdb])
+				fs.writeFileSync("ppdb fold-"+fold+" train-"+mytrainset.length, content, 'utf-8')
+
 	  	    	// --------------TRAIN-TEST--------------
 
-	  	    	console.log("ORIGINAL")
+/*	  	    	console.log("ORIGINAL")
 	  	    	console.log("START")
 	  	    	console.log(JSON.stringify(stats_original['data'].length, null, 4))
 	  	    	console.log(JSON.stringify(stats_original['stats'], null, 4))
@@ -175,11 +167,11 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	  	    	console.log(JSON.stringify(stats_ppdb['data'], null, 4))
 	  	    	console.log("PPDB")
 	  	    	console.log(JSON.stringify(stats_ppdb['stats'], null, 4))
-
+*/
 		    	report.push(_.pick(stats_ppdb['stats'], parameters))
 		    	report.push(_.pick(stats_original['stats'], parameters))
 
-		    	if (stats_original['stats']['Recall'] > stats_ppdb['stats']['Recall'])
+/*		    	if (stats_original['stats']['Recall'] > stats_ppdb['stats']['Recall'])
 		    	{
 		    		console.log('FOUND')
 		    		_.each(stats_ppdb['data'], function(turn, key, list){ 
@@ -204,7 +196,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    		console.log()
 		    		process.exit(0)
 		    	}
-
+*/
 			    extractGlobal(parameters, cl, mytrain.length, report, stat)
 
 				_.each(parameters, function(value, key, list){
@@ -252,12 +244,12 @@ f.run();
 
 if (process.argv[1] === __filename)
 {
-	// var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
-//	var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule_shuffled.json"))
-	
-	
+	//var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
+	//var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule_shuffled.json"))
 	var dataset = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule_shuffled.json"))
 
+	var dataset = _.filter(dataset, function(dial){return bars.isactivedialogue(dial) == true})
+	
 	var classifiers  = {
 		'PPDB': [],
 		'Original': []
