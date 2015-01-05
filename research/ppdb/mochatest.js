@@ -191,6 +191,7 @@ describe('Util test', function() {
 	it('only intents', function() {
 		_.isEqual(utils.onlyIntents(["{\"Accept\":\"previous\"}"]), ['Accept']).should.be.true
 		_.isEqual(utils.onlyIntents(["{\"Query\":\"accept\"}"]), []).should.be.true
+		_.isEqual(utils.onlyIntents(["{\"Query\":\"compromise\"}"]), []).should.be.true
 	})
 
 	it('equalgold', function(done) {	
