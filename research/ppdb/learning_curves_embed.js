@@ -133,6 +133,9 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				utils.enrichseeds(seeds, function(err, seeds_ppdb){
 	      			ppdb.trainandtest(mytrainset, bars.copylist(testset), seeds_ppdb, 1, function(err, response_ppdb){
 	      				stats_ppdb = response_ppdb
+	      				
+	      				var content = bars.stringification([seeds_ppdb, stats_ppdb])
+						fs.writeFileSync("ppdb fold-"+fold+" train-"+mytrainset.length, content, 'utf-8')
 
 						ppdb.trainandtest(mytrainset, bars.copylist(testset), seeds_original, 1, function(err, response){
         					setTimeout(function() {
@@ -147,9 +150,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    	var content = bars.stringification([seeds_original, stats_original])
 				fs.writeFileSync("original fold-"+fold+" train-"+mytrainset.length, content, 'utf-8')
 
-				var content = bars.stringification([seeds_ppdb, stats_ppdb])
-				fs.writeFileSync("ppdb fold-"+fold+" train-"+mytrainset.length, content, 'utf-8')
-
+				
 	  	    	// --------------TRAIN-TEST--------------
 
 /*	  	    	console.log("ORIGINAL")
