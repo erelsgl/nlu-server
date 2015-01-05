@@ -254,11 +254,9 @@ if (process.argv[1] === __filename)
 {
 	// var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
 //	var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule_shuffled.json"))
-	var dataset = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json"))
 	
-	dataset = _.shuffle(dataset)
-	dataset = _.shuffle(dataset)
-	dataset = _.shuffle(dataset)
+	
+	var dataset = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule_shuffled.json"))
 
 	var classifiers  = {
 		'PPDB': [],
@@ -266,7 +264,7 @@ if (process.argv[1] === __filename)
 	}
 	// var classifiers  = {}
 	var parameters = ['F1','Precision','Recall', 'Accuracy']
-	learning_curves(classifiers, dataset, parameters, 10/*step*/, 3, 18,  10/*numOfFolds*/, function(){
+	learning_curves(classifiers, dataset, parameters, 10/*step*/, 2, 18,  10/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
