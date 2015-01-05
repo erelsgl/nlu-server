@@ -323,12 +323,13 @@ var recursionredis = function (seeds, order, withscores, callback)
 
 // don't count Query labels 
 var onlyIntents = function(labels)
-{
+{	
+  var elim = ['Query', 'compromise', 'accept']
   var output = []
   _.each(labels, function(label, key, list){ 
     var lablist = splitJson(label)
-    if (lablist[0]!= "Query")
-    	output = output.concat(lablist[0])  
+  		if (_.filter(elim, function (n){return n == lablist[0]}).length == 0)
+    		output = output.concat(lablist[0])  
   }, this)
   
   return _.unique(output)
