@@ -2689,9 +2689,14 @@ function copylist(list)
   return JSON.parse(JSON.stringify(list));
 }
 
-function stringification(list)
+function wrfile(file, list)
 {
-  return _.map(list, JSON.stringify, this) 
+  _.each(list, function(value, key, list){ 
+    if (key == 0)
+      fs.writeFileSync(file, JSON.stringify(value, null, 4))
+    else
+      fs.appendFileSync(file, JSON.stringify(value, null, 4))
+  }, this)
 }
 
 module.exports = {
@@ -2755,5 +2760,5 @@ isactivedialogue:isactivedialogue,
 isseqturn:isseqturn,
 ishumanturn:ishumanturn,
 isactiveturn:isactiveturn,
-stringification:stringification
+wrfile:wrfile
 }
