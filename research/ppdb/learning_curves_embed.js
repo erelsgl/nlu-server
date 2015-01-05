@@ -15,10 +15,10 @@ var execSync = require('execSync')
 var partitions = require('limdu/utils/partitions');
 var trainAndTest_hash = require('../../utils/trainAndTest').trainAndTest_hash;
 var bars = require('../../utils/bars');
-var rmdir = require('rimraf');
 var path = require("path")
 var ppdb = require("./evalmeasure_5ed_embed.js")
-var gnuplot = '/home/ir/konovav/gnuplot-5.0.0/src/gnuplot'
+// var gnuplot = '/home/ir/konovav/gnuplot-5.0.0/src/gnuplot'
+var gnuplot = 'gnuplot'
 /* @params classifiers - classifier for learning curves
    @params dataset - dataset for evaluation, 20% is takes for evaluation
    @params parameters - parameters we are interested in 
@@ -80,13 +80,13 @@ function checkGnuPlot()
 		}
 	}
 
-	
 function learning_curves(classifiers, dataset, parameters, step, step0, limit, numOfFolds) 
 {
 	var f = Fiber(function() {
 
 	  	var fiber = Fiber.current;
 		var dir = "./learning_curves/"
+		var dirr = "/learning_curves/"
 		checkGnuPlot
 
 		if (dataset.length == 0)
@@ -111,7 +111,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 		partitions.partitions_consistent(dataset, numOfFolds, function(train, test, fold) {
 			console.log("fold"+fold)
-			index = step0
+			var index = step0
 
 			while (index <= train.length)
 	  		{
@@ -119,7 +119,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	var report = []
 				var mytrain = train.slice(0, index)
 			  	
-			  	var index = (index < limit ? step0 : step)
+			  	index += (index < limit ? step0 : step)
 			  	var mytrainset = (bars.isDialogue(mytrain) ? bars.extractturns(mytrain) : mytrain)
 			  	var testset = (bars.isDialogue(test) ? bars.extractturns(test) : test)
 
@@ -134,8 +134,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	      			ppdb.trainandtest(mytrainset, bars.copylist(testset), seeds_ppdb, 1, function(err, response_ppdb){
 	      				stats_ppdb = response_ppdb
 	      				
-	      				var content = bars.stringification([seeds_ppdb, stats_ppdb])
-						fs.writeFileSync("ppdb fold-"+fold+" train-"+mytrainset.length, content, 'utf-8')
+	      				bars.wrfile(__dirname+dirr+"ppdb_fold-"+fold+"_train-"+index, [seeds_ppdb, stats_ppdb])
 
 						ppdb.trainandtest(mytrainset, bars.copylist(testset), seeds_original, 1, function(err, response){
         					setTimeout(function() {
@@ -147,9 +146,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 		    	var stats_original = Fiber.yield()
 
-		    	var content = bars.stringification([seeds_original, stats_original])
-				fs.writeFileSync("original fold-"+fold+" train-"+mytrainset.length, content, 'utf-8')
-
+		   		bars.wrfile(__dirname+dirr+"orig_fold-"+fold+"_train-"+index, [seeds_original, stats_original])
 				
 	  	    	// --------------TRAIN-TEST--------------
 
@@ -257,7 +254,7 @@ if (process.argv[1] === __filename)
 	}
 	// var classifiers  = {}
 	var parameters = ['F1','Precision','Recall', 'Accuracy']
-	learning_curves(classifiers, dataset, parameters, 10/*step*/, 2, 18,  10/*numOfFolds*/, function(){
+	learning_curves(classifiers, dataset, parameters, 10/*step*/, 2/*step0*/, 18/*limit*/,  10/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
