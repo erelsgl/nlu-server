@@ -2689,6 +2689,11 @@ function copylist(list)
   return JSON.parse(JSON.stringify(list));
 }
 
+function stringification(list)
+{
+  return _.map(list, JSON.stringify, this) 
+}
+
 module.exports = {
   copylist:copylist,
 	// aggregate_sagae_improved: aggregate_sagae_improved,
@@ -2749,5 +2754,6 @@ module.exports = {
 isactivedialogue:isactivedialogue,
 isseqturn:isseqturn,
 ishumanturn:ishumanturn,
-isactiveturn:isactiveturn
+isactiveturn:isactiveturn,
+stringification:stringification
 }
