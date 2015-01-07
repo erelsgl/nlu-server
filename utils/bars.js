@@ -727,6 +727,32 @@ function isactivedialogue(dial)
   else return true
 }
 
+
+function ispermittedturn(turn)
+{
+  var permitted = true
+  var forbid = ['Query', 'compromise', 'accept', 'Leased Car']
+  var output = []
+  _.each(turn['output'], function(label, key, list){ 
+    var lablist = splitJson(label)
+      output = output.concat(lablist)  
+  }, this)
+
+  var match = _.filter(output, function(elem){ return forbid.indexOf(elem) != -1; });
+  if (match.length != 0)
+    permitted = false
+
+  if ('intent_keyphrases_rule' in turn)
+  {
+    if ('Offer' in turn['intent_keyphrases_rule'])
+    {
+      if (turn['intent_keyphrases_rule']['Offer'] == 'DEFAULT INTENT')
+        permitted = false    
+    }
+  }
+  return permitted
+}
+
 function isactiveturn(turn)
 {
   if ('status' in turn)
@@ -2760,5 +2786,6 @@ isactivedialogue:isactivedialogue,
 isseqturn:isseqturn,
 ishumanturn:ishumanturn,
 isactiveturn:isactiveturn,
-wrfile:wrfile
+wrfile:wrfile,
+ispermittedturn:ispermittedturn
 }
