@@ -38,10 +38,12 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_unseen_word_curve = false
 // var do_checking_tag = false
 // var do_small_temporary_test = false
-// var do_small_temporary_serialization_test = false
 
+// var do_small_temporary_serialization_test = false
+var default_intent_analysis = true
+var keyphrase_transformation = false
 var shuffle = false
-var sequnce_classification = true
+var sequnce_classification = false
 var test_gaby = false
 var new_dial_stats = false
 var test_dataset = false
@@ -77,6 +79,7 @@ var trainAndTest= require('./utils/trainAndTest').trainAndTest_hash;
 var Hierarchy = require(__dirname+'/Hierarchy');
 var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
 var trainutils = require('./utils/bars')
+var bars = require('./utils/bars')
 // var Lemmer = require('node-lemmer').Lemmer;
 var rules = require("./research/rule-based/rules.js")
 
@@ -187,6 +190,49 @@ var datasetNames = [
 turkers_keyphrases_only_rule.json
 students_keyphrases_only_rule.json*/
 
+if (default_intent_analysis)
+{
+	var data = JSON.parse(fs.readFileSync("../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
+	// var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule.json"))
+	var dataset = bars.extractturns(data)
+
+	_.each(dataset, function(turn, key, list){
+		var sentence = turn['input']
+		sentence = sentence.toLowerCase().trim()
+   		sentence = regexpNormalizer(sentence)
+
+   		if ('intent_keyphrases_rule' in turn)
+   		{
+   			if ('Offer' in turn['intent_keyphrases_rule'])
+   			{
+   				if (turn['intent_keyphrases_rule']['Offer'] == 'DEFAULT INTENT')
+   				{
+   					sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+   					console.log(sentence)
+   				}
+   			}
+   		}
+
+	}, this)
+}
+
+if (keyphrase_transformation)
+{
+	var data = JSON.parse(fs.readFileSync("../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
+
+	_.each(data, function(dial, key, list){
+		_.each(dial['turns'], function(turn, keyt, listt){
+			if ('intent_keyphrases_rule' in turn)
+			{	
+				data[key]['turns'][keyt]['intent_core'] = turn['intent_keyphrases_rule'] 
+				data[key]['turns'][keyt]['intent_absolute'] = turn['intent_keyphrases_rule'] 
+				delete data[key]['turns'][keyt]['intent_keyphrases_rule'] 
+		 	}
+		 }, this) 
+	}, this)
+	console.log(JSON.stringify(data, null, 4))
+	process.exit(0)
+}
 
 if (shuffle)
 {
