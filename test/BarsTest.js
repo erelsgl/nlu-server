@@ -145,6 +145,14 @@ describe('Bars utilities', function() {
   			})
 		})
 	})
+
+	it('ispermittedturn', function(){
+  		bars.ispermittedturn({'output':['{"Accept":{"Leased Car":"With leased car"}}']}).should.be.false
+  		bars.ispermittedturn({'output':['{"Accept":{"Salary":"20,000"}}']}).should.be.true
+  		bars.ispermittedturn({'output':['{"Query":{"Salary":"20,000"}}']}).should.be.false
+  		bars.ispermittedturn({'intent_keyphrases_rule':{'Offer':'asdsad'}}).should.be.true
+  		bars.ispermittedturn({'intent_keyphrases_rule':{'Offer':'DEFAULT INTENT'}}).should.be.false
+	})
 	
 	// it('correctly depparse and labels', function(done) {
 	// 	var nopuntc = 'i can do 8 hours, but only if you work as a programmer'
