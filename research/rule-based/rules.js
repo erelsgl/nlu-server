@@ -185,6 +185,8 @@ var easyfirst_path = "./run_ef.sh"
 // var truth_path = "./run.sh -f ../../research/rule-based/sentence_to_truthteller.txt"
 var truth_path = "./run.sh -f sentence_to_truthteller.txt"
 
+
+var TRUTHTELLER = true
 /*
 INPUT:{ input: 'you offer me a leased car?!',
   output: [ '{"Query":"Leased Car"}' ],
@@ -361,8 +363,7 @@ function inSentence(sentence, keyphrase, goldLable)
 		// console.log(index)
 		if (index != -1)
 			{
-			if ((goldLable == 'Leased Car') && (alreadycared == false))
-
+			if ((goldLable == 'Leased Car') && (alreadycared == false) && (TRUTHTELLER == true))
 				{
 				alreadycared = true
 				var negation = truth_utils.negation(sentence.replace('without','no'),['agreement'], truth_filename)
@@ -458,8 +459,9 @@ function getFilter(data)
 	return datacopy
 }
 
-function findData(string)
+function findData(string, truthteller)
 {
+	TRUTHTELLER = truthteller
 	var found = getFound(string)
 	var filtered = getFilter(found)
 	return filtered
