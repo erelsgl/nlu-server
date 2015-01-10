@@ -36,6 +36,8 @@ var joinJsonRecursive = Hierarchy.joinJsonRecursive
 var regexpNormalizer = ftrs.RegexpNormalizer(
     JSON.parse(fs.readFileSync(__dirname+'/../knowledgeresources/BiuNormalizations.json')));
 
+var stopwords = loadstopwords(__dirname+"/../stopwords")
+
 var ValueTransition =
 {
 	"8 hours": "8",
@@ -808,8 +810,11 @@ function extractturns(dataset)
   var data = []
     _.each(dataset, function(dial, key, list){ 
       _.each(dial['turns'], function(turn, keyt, listt){
-        if (isactivedialogue(dial) && isactiveturn(turn) &&
-          ishumanturn(turn) && isseqturn(turn))
+        // if (isactivedialogue(dial) && isactiveturn(turn) &&
+                  // ishumanturn(turn) && isseqturn(turn) && ispermittedturn(turn))
+
+      
+          // ishumanturn(turn) && isseqturn(turn))
           data.push(turn) 
       }, this)
     }, this)
@@ -2725,6 +2730,18 @@ function wrfile(file, list)
   }, this)
 }
 
+function loadstopwords(filename)
+{
+  var output = []
+  var data = fs.readFileSync(filename)
+  _.each(data.toString().split("\n"), function(line, key, list){ 
+    if (line != "")
+      output.push(line)
+  }, this)  
+  return output
+}
+
+
 module.exports = {
   copylist:copylist,
 	// aggregate_sagae_improved: aggregate_sagae_improved,
@@ -2787,5 +2804,6 @@ isseqturn:isseqturn,
 ishumanturn:ishumanturn,
 isactiveturn:isactiveturn,
 wrfile:wrfile,
-ispermittedturn:ispermittedturn
+ispermittedturn:ispermittedturn,
+loadstopwords:loadstopwords
 }
