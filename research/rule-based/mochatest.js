@@ -17,9 +17,9 @@ describe('Util test', function() {
 
 
 	it('truthtel', function() {
-		var sentence = 'I want a salary of 90000'
-		sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
-		sentence.should.equal("I want a <ATTRIBUTE> of <VALUE>")
+		var sentence = 'I want and need a salary of 90000'
+		sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence, false)})['generated']
+		sentence.should.equal("I want and need a <ATTRIBUTE> of <VALUE>")
 	})
 		
 	it('check no agreement', function() {
