@@ -40,8 +40,10 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 
 // var do_small_temporary_serialization_test = false
-var default_intent_analysis = true
-var keyphrase_transformation = false
+var do_keyphrase_predict_annotaiton = false
+var counting = false
+var default_intent_analysis = false
+var keyphrase_transformation = true
 var shuffle = false
 var sequnce_classification = false
 var test_gaby = false
@@ -70,7 +72,6 @@ var regexnor = false
 var just_test = false
 var do_keyphrase_annotaiton = false
 var do_keyphrase_gold_annotaiton = false
-var do_keyphrase_predict_annotaiton = false
 var do_pull_all_utterance_to_file = false
 
 var _ = require('underscore')._;
@@ -151,15 +152,6 @@ function normalizer(sentence) {
 }
 
 
-// var clonedataset  = function(dataset) {
-
-// 	trainSet1 = []
-// 		_.each(dataset, function(value, key, list){
-// 			trainSet1.push(_.clone(value))
-// 			})
-// 		return trainSet1
-// };
-
 var datasetNames = [
 			"0_grammar.json",
 			"1_woz_kbagent_students.json",
@@ -190,6 +182,17 @@ var datasetNames = [
 turkers_keyphrases_only_rule.json
 students_keyphrases_only_rule.json*/
 
+if (counting)
+{
+	// 346 total
+	// 218 permitted
+	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule.json"))
+	var dataset = bars.extractturns(data)
+	console.log(dataset.length)
+	process.exit(0)
+
+}
+
 if (default_intent_analysis)
 {
 	var data = JSON.parse(fs.readFileSync("../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
@@ -218,7 +221,8 @@ if (default_intent_analysis)
 
 if (keyphrase_transformation)
 {
-	var data = JSON.parse(fs.readFileSync("../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
+	// var data = JSON.parse(fs.readFileSync("../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
+	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule.json"))
 
 	_.each(data, function(dial, key, list){
 		_.each(dial['turns'], function(turn, keyt, listt){
@@ -612,6 +616,27 @@ if (do_pull_all_utterance_to_file)
 // only salient phrase of intent to the dataset
 if (do_keyphrase_predict_annotaiton)
 	{
+
+		/*var turn = {}
+		turn['output'] = [
+                    {
+                        "Offer": {
+                            "Salary": "90,000 USD"
+                        }
+                    },
+                    {
+                        "Offer": {
+                            "Job Description": "Programmer"
+                        }
+                    },
+                    {
+                        "Offer": {
+                            "Leased Car": "Without leased car"
+                        }
+                    }]
+	
+	console.log(Hierarchy.splitPartEquallyIntent(turn['output']))
+	process.exit(0)*/
 	// var datalist = [
 			// "turkers_keyphrases_gold.json"
 				// "students_keyphrases_gold.json"
@@ -621,13 +646,13 @@ if (do_keyphrase_predict_annotaiton)
 	// _.each(datalist, function(value, key, list){ 
 		// data = data.concat(JSON.parse(fs.readFileSync("../datasets/Employer/Dialogue/"+value)))
 	// })
-	data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa.json"))
+	data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule.json"))
 
 
 	_.each(data, function(dialogue, key, list){ 
-        if (dialogue['status'].indexOf("goodconv") != -1)
+        // if (dialogue['status'].indexOf("goodconv") != -1)
 		_.each(dialogue['turns'], function(turn, key1, list1){ 
-			if (turn['status'] == "active")
+			if ((turn['status'] == "active") && (!('intent_keyphrases_rule' in turn)))
 			{
 			turn['input'] = turn['input'].replace(/[^\x00-\x7F]/g, "")
         		if ('user' in turn)
