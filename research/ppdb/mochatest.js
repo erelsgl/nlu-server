@@ -33,6 +33,12 @@ function makeid(len)
 }
 
 describe('Util test', function() {
+
+	it('generatengrams', function() {
+		var feat = utils.generatengrams("I need a car")
+		var gold = [ [ 'car' ], [ 'I', 'need' ], [ 'need', 'a' ],  [ 'a', 'car' ], [ 'I', 'need', 'a' ], [ 'need', 'a', 'car' ] ] 
+		_.isEqual(feat, gold).should.be.true
+	})
 	
 	it('check pos', function(done) {
 		// how_WRB about_RB
