@@ -33,7 +33,14 @@ function makeid(len)
 }
 
 describe('Util test', function() {
-
+	
+	it('loadseeds', function() {
+		var turn = [{'intent_core':{'Offer': 'I need a salary'}}]
+		var seeds = utils.loadseeds(turn, true)
+		var gold = { Offer: [ 'salary','i need','need a','a salary','i need a','need a salary','i need a salary' ] }
+		_.isEqual(seeds,gold).should.be.true
+	})
+	
 	it('generatengrams', function() {
 		var feat = utils.generatengrams("I need a car")
 		var gold = [ [ 'car' ], [ 'I', 'need' ], [ 'need', 'a' ],  [ 'a', 'car' ], [ 'I', 'need', 'a' ], [ 'need', 'a', 'car' ] ] 
