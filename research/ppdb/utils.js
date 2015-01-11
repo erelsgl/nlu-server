@@ -32,6 +32,9 @@ var DBSELECT = 0
 var requestify = require('requestify'); 
 var querystring = require('querystring');
 
+
+var intent_field = 'intent_core'
+
 // sync(client,'select')
 // sync(client,'smembers')
 
@@ -1123,10 +1126,10 @@ function generatengrams(sentence)
 		if (value.length == 1)
 		{
 		 if (bars.isstopword(value[0]) == false)
-			featrues.push(value)
+			featrues.push(value.join(" "))
 		}
 		else
-			featrues.push(value)
+			featrues.push(value.join(" "))
 	}, this)
 
 	return featrues
@@ -1136,8 +1139,8 @@ function loadseeds(train_turns, ngram)
 {
 	var seeds = {}
 	_.each(train_turns, function(turn, key, list){
-	  if ('intent_keyphrases_rule' in turn)
-	    _.each(turn['intent_keyphrases_rule'], function(keyphrase, intent, list){
+	  if (intent_field in turn)
+	    _.each(turn[intent_field], function(keyphrase, intent, list){
 
 	      	if (!(intent in seeds))
 	        	seeds[intent] = []
@@ -1147,9 +1150,9 @@ function loadseeds(train_turns, ngram)
 
 		        keyphrase = cleanupkeyphrase(keyphrase)
 
-		        if (ngrams == true)
+		        if (ngram == true)
 		        {
-
+					seeds[intent] = seeds[intent].concat(generatengrams(keyphrase))
 		        }
 
 		        seeds[intent].push(keyphrase)
@@ -1190,16 +1193,16 @@ function seqgold(turn)
 {
 	var seq = []
 	
-	if (!('intent_keyphrases_rule' in turn))
+	if (!(intent_field in turn))
 		return []
 	// var turn_norm = bars.biunormalizer(turn['input'])
 	var turn_norm = bars.biunormalizer(turn['input_modified'])
 
 	var intents = onlyIntents(turn['output'])
 	_.each(intents, function(intent, key, list){ 
-		if (intent in turn['intent_keyphrases_rule'])
+		if (intent in turn[intent_field])
 		{
-			var keyphrase = turn['intent_keyphrases_rule'][intent]
+			var keyphrase = turn[intent_field][intent]
 			keyphrase = cleanupkeyphrase(keyphrase)
 			keyphrase = bars.biunormalizer(keyphrase)
 			var pos = rules.compeletePhrase(turn_norm, keyphrase)
