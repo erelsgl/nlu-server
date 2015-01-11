@@ -33,11 +33,20 @@ function makeid(len)
 }
 
 describe('Util test', function() {
+
+	it("generatens", function(done){
+		utils.generatengramsasync("I need a money", function(err, response){
+			var gold = [ 'money', 'I need', 'need a', 'a money', 'I need a', 'need a money' ]
+			_.isEqual(gold, response).should.be.true
+			done()
+		})
+	})
 	
 	it('loadseeds', function() {
 		var turn = [{'intent_core':{'Offer': 'I need a salary'}}]
 		var seeds = utils.loadseeds(turn, true)
 		var gold = { Offer: [ 'salary','i need','need a','a salary','i need a','need a salary','i need a salary' ] }
+		_.isEqual(seeds,gold).should.be.true
 		var seeds = utils.loadseeds(turn, false)
 		var gold = { Offer: [ 'i need a salary' ] }
 		_.isEqual(seeds,gold).should.be.true
@@ -45,7 +54,7 @@ describe('Util test', function() {
 	
 	it('generatengrams', function() {
 		var feat = utils.generatengrams("I need a car")
-		var gold = [ [ 'car' ], [ 'I', 'need' ], [ 'need', 'a' ],  [ 'a', 'car' ], [ 'I', 'need', 'a' ], [ 'need', 'a', 'car' ] ] 
+		var gold = [ 'car', 'I need', 'need a', 'a car', 'I need a', 'need a car' ] 
 		_.isEqual(feat, gold).should.be.true
 	})
 	
@@ -498,7 +507,7 @@ describe('Util test', function() {
 
 	it('correctly get pos tags', function(done) {
 		utils.onlycontent("i home", function(err, results){
-			_.isEqual(results, [ 'home' ]).should.be.true
+			_.isEqual(results, [[ 'home' ]]).should.be.true
 			done()		
 		})
 	})
@@ -523,7 +532,7 @@ describe('Util test', function() {
 	
 	it('onlycontent should return list of strings', function(done) {
 		utils.onlycontent("offer", function(err, result){
-			_.isEqual(result, ['offer']).should.be.true
+			_.isEqual(result, [['offer']]).should.be.true
 			done()
 		})
 	})	
