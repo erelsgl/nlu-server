@@ -2741,6 +2741,16 @@ function loadstopwords(filename)
   return output
 }
 
+function isstopword(word)
+{
+  word = word.toLowerCase()
+  if (stopwords.indexOf(word) != -1)
+    return true
+  else
+    return false
+}
+
+
 
 module.exports = {
   copylist:copylist,
@@ -2805,5 +2815,6 @@ ishumanturn:ishumanturn,
 isactiveturn:isactiveturn,
 wrfile:wrfile,
 ispermittedturn:ispermittedturn,
-loadstopwords:loadstopwords
+loadstopwords:loadstopwords,
+isstopword:isstopword
 }
