@@ -38,6 +38,8 @@ describe('Util test', function() {
 		var turn = [{'intent_core':{'Offer': 'I need a salary'}}]
 		var seeds = utils.loadseeds(turn, true)
 		var gold = { Offer: [ 'salary','i need','need a','a salary','i need a','need a salary','i need a salary' ] }
+		var seeds = utils.loadseeds(turn, false)
+		var gold = { Offer: [ 'i need a salary' ] }
 		_.isEqual(seeds,gold).should.be.true
 	})
 	
