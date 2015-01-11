@@ -24,6 +24,7 @@ var redis = require("redis")
 var client = redis.createClient(6369)
 var clientpos = redis.createClient(6369);
 
+
 var buffer = {}
 
 var DBSELECT = 0
@@ -1111,18 +1112,33 @@ function enrichseeds(seeds, callback)
 		})
 }
 
-function loadseeds(train_turns)
+function generatengrams(sentence)
 {
+	var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$+-]+/});
+	var words = tokenizer.tokenize(sentence);
+	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2)).concat(natural.NGrams.ngrams(words, 3))
+	
+	var featrues = []
+	_.each(feature, function(value, key, list){ 
+		if (value.length == 1)
+		{
+		 if (bars.isstopword(value[0]) == false)
+			featrues.push(value)
+		}
+		else
+			featrues.push(value)
+	}, this)
 
-	var blacklist = ['Query','accept']
+	return featrues
+}
 
+function loadseeds(train_turns, ngram)
+{
 	var seeds = {}
 	_.each(train_turns, function(turn, key, list){
 	  if ('intent_keyphrases_rule' in turn)
 	    _.each(turn['intent_keyphrases_rule'], function(keyphrase, intent, list){
 
-	      if (blacklist.indexOf(intent) == -1) 
-      		{
 	      	if (!(intent in seeds))
 	        	seeds[intent] = []
 
@@ -1131,10 +1147,15 @@ function loadseeds(train_turns)
 
 		        keyphrase = cleanupkeyphrase(keyphrase)
 
+		        if (ngrams == true)
+		        {
+
+		        }
+
 		        seeds[intent].push(keyphrase)
 		        seeds[intent] = _.unique(seeds[intent])
 		      } 
-	      }
+	      
 	    }, this)
 	}, this)
 
@@ -1251,5 +1272,6 @@ comparefeatures:comparefeatures,
 loadseeds:loadseeds,
 calculateparam:calculateparam,
 enrichseeds:enrichseeds,
-enrichseeds_original:enrichseeds_original
+enrichseeds_original:enrichseeds_original,
+generatengrams:generatengrams
 }
