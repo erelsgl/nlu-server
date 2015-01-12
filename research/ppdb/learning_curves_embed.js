@@ -124,7 +124,8 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 	  			// ----------------SEEDS-------------------
 
-				var seeds = utils.loadseeds(mytrainset)
+	  			// ngrams
+				var seeds = utils.loadseeds(mytrainset, true)
 				var seeds_original = utils.enrichseeds_original(seeds)
 
 				var stats_ppdb = []
