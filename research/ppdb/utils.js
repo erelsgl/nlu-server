@@ -351,22 +351,25 @@ var retrieveIntent = function(input, seeds, callback)
    					// input - test utterances
 		      		var input_list = input.split(" ")
 
-		      		onlycontent(phrase, function(err, response) {
-
-     		 			var content_phrase = (response.length != 0 ? response : phrase.split(" "));
-     		 			// var content_phrase = phrase.split(" ")
-				        
-				        var pos = rules.compeletePhrase(input_list.join(" "), content_phrase.join(" "))
-				        if (pos != -1)
-  					      	{
-        					var elem = {}
-        					elem[intent] = {}
-        					elem[intent]['original seed'] = keyphrases
-        					elem[intent]['ppdb phrase'] = phrase
-        					elem[intent]['content of ppdb phrase'] = content_phrase
-        					elem[intent]['position'] = [pos, pos + content_phrase.join(" ").length]
-          					output.push(elem)
-        					}
+		      		// onlycontent(phrase, function(err, responses) {
+		      		generatengramsasync(phrase, function(err, responses) {
+		      			_.each(responses, function(response, key, list){ 
+		      				// var content_phrase = (response.length != 0 ? response : phrase.split(" "));
+	     		 			// var content_phrase = phrase.split(" ")
+					        
+					        // var pos = rules.compeletePhrase(input_list.join(" "), content_phrase.join(" "))
+					        var pos = rules.compeletePhrase(input_list.join(" "), response)
+					        if (pos != -1)
+	  					      	{
+	        					var elem = {}
+	        					elem[intent] = {}
+	        					elem[intent]['original seed'] = keyphrases
+	        					elem[intent]['ppdb phrase'] = phrase
+	        					elem[intent]['content of ppdb phrase'] = content_phrase
+	        					elem[intent]['position'] = [pos, pos + content_phrase.join(" ").length]
+	          					output.push(elem)
+	        					}
+        				}, this)
         				callback3()
         			})
 			},function(err){callback2()})
@@ -641,15 +644,10 @@ function retrievepos(string, callback)
 
 function onlycontent(string, callback)
 {
-			// console.log("fethcing content " + string)
-
 			cachepos(string,function(err, response){
-				// console.log("cache pos")
-				// console.log(response)
 				var output = cleanposoutput(response)
-				buffer[string] = output 
-				// console.log("content" + output)
-				callback(err, output)
+				buffer[string] = output 			
+				callback(err, [output])
 			})
 }
 
@@ -1115,6 +1113,11 @@ function enrichseeds(seeds, callback)
 		})
 }
 
+function generatengramsasync(sentence, callback)
+{
+	callback("",generatengrams(sentence))
+}
+
 function generatengrams(sentence)
 {
 	var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$+-]+/});
@@ -1276,5 +1279,6 @@ loadseeds:loadseeds,
 calculateparam:calculateparam,
 enrichseeds:enrichseeds,
 enrichseeds_original:enrichseeds_original,
-generatengrams:generatengrams
+generatengrams:generatengrams,
+generatengramsasync:generatengramsasync
 }
