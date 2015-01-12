@@ -37,7 +37,7 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
     JSON.parse(fs.readFileSync(__dirname+'/../knowledgeresources/BiuNormalizations.json')));
 
 var stopwords = loadstopwords(__dirname+"/../stopwords")
-
+var intent_field = 'intent_core'
 var ValueTransition =
 {
 	"8 hours": "8",
@@ -692,11 +692,11 @@ extract only active turns from dataset that active
 
 function filterturn(turn)
 {
-  if ('intent_keyphrases_rule' in turn)
+  if (intent_field in turn)
   {
     if (turn['output'].length > 0)
     {
-     if (Object.keys(turn['intent_keyphrases_rule']).length > 0) 
+     if (Object.keys(turn[intent_field]).length > 0) 
       return turn
     }
     else
@@ -744,11 +744,11 @@ function ispermittedturn(turn)
   if (match.length != 0)
     permitted = false
 
-  if ('intent_keyphrases_rule' in turn)
+  if (intent_field in turn)
   {
-    if ('Offer' in turn['intent_keyphrases_rule'])
+    if ('Offer' in turn[intent_field])
     {
-      if (turn['intent_keyphrases_rule']['Offer'] == 'DEFAULT INTENT')
+      if (turn[intent_field]['Offer'] == 'DEFAULT INTENT')
         permitted = false    
     }
   }
@@ -792,7 +792,7 @@ function ishumanturn(turn)
 
 function isseqturn(turn)
 {
-  if ('intent_keyphrases_rule' in turn)
+  if (intent_field in turn)
   {
     if (('output' in turn) && (_.isArray(turn['output'])) == true)
       {
