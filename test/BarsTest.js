@@ -34,6 +34,12 @@ describe('Bars utilities', function() {
 	})
 
 	it('biunormalizer', function() {
+
+		var sen = 'Can I work as a Team Manager? I will work ten hours'
+		var gold = "can i work as a team manager ? i will work 10 hours"
+		var sennor = bars.biunormalizer(sen)
+		sennor.should.equal(gold)
+
 		var sen = 'I can accept the $90,000 as programmer with leased car, 10% pension fund, fast promotion track and eight hours work'
 		var sennor = bars.biunormalizer(sen)
 		_.isEqual(bars.biunormalizer(sennor), sennor).should.be.true
