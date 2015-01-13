@@ -20,6 +20,14 @@ var seeds = {
         		}
 			}
 
+var seedsnew = { 
+			"Offer": {
+        		'I offer': [ {'i offer':['offer']}, {'i suggest':['suggest']}, {'provide':['provide']}]
+        		},
+        	"Accept":{
+        		'accept':[ {'i offer':['offer']}]
+        		}
+			}
 
 function makeid(len)
 {
@@ -54,7 +62,7 @@ describe('Util test', function() {
 	
 	it('generatengrams', function() {
 		var feat = utils.generatengrams("I need a car")
-		var gold = [ 'car', 'I need', 'need a', 'a car', 'I need a', 'need a car' ] 
+		var gold = [ 'need', 'car', 'I need', 'need a', 'a car', 'I need a', 'need a car'] 
 		_.isEqual(feat, gold).should.be.true
 	})
 	
@@ -305,6 +313,12 @@ describe('Util test', function() {
 			_.isEqual(keys, ['Offer']).should.be.true
 			done()
 		})
+	})
+
+	it('retrieve intent sync', function() {
+		var result = utils.retrieveIntentsync("my boss and i provide you a salary", seedsnew)
+    	var keys = _.map(result, function(num, key){ return Object.keys(num)[0] });
+		_.isEqual(keys, ['Offer']).should.be.true	
 	})
 
 	it('retrieve intent', function(done) {
