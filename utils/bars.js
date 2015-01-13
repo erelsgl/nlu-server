@@ -810,11 +810,8 @@ function extractturns(dataset)
   var data = []
     _.each(dataset, function(dial, key, list){ 
       _.each(dial['turns'], function(turn, keyt, listt){
-        // if (isactivedialogue(dial) && isactiveturn(turn) &&
-                  // ishumanturn(turn) && isseqturn(turn) && ispermittedturn(turn))
-
-      
-          // ishumanturn(turn) && isseqturn(turn))
+        if (isactivedialogue(dial) && isactiveturn(turn) &&
+                  ishumanturn(turn) && isseqturn(turn) && ispermittedturn(turn))
           data.push(turn) 
       }, this)
     }, this)
