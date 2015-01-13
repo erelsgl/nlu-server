@@ -733,7 +733,8 @@ function isactivedialogue(dial)
 function ispermittedturn(turn)
 {
   var permitted = true
-  var forbid = ['Query', 'compromise', 'accept', 'Leased Car']
+  // var forbid = ['Query', 'compromise', 'accept', 'Leased Car']
+  var forbid = ['Query', 'compromise', 'accept']
   var output = []
   _.each(turn['output'], function(label, key, list){ 
     var lablist = splitJson(label)
@@ -805,16 +806,35 @@ function isseqturn(turn)
     return false
 }
 
-function extractturns(dataset)
+function isgoodturn(turn)
+{
+  return (isactiveturn(turn) && ishumanturn(turn) && isseqturn(turn) && ispermittedturn(turn))
+}
+
+function extractdial(dialogue)
+{
+  var output = []
+  _.each(dialogue['turns'], function(turn, key, list){ 
+    if (isgoodturn(turn))
+      output.push(turn)
+  }, this)
+  return output
+}
+
+function extractturns(dataset, min)
 {
   var data = []
+  if (typeof min == 'undefined') min = 0
+
     _.each(dataset, function(dial, key, list){ 
-      _.each(dial['turns'], function(turn, keyt, listt){
-        if (isactivedialogue(dial) && isactiveturn(turn) &&
-                  ishumanturn(turn) && isseqturn(turn) && ispermittedturn(turn))
-          data.push(turn) 
-      }, this)
+      
+      var turns = extractdial(dial)
+      
+      if (isactivedialogue(dial) && turns.length > min)
+        data = data.concat(turns)
+
     }, this)
+
   return data
 }
 
