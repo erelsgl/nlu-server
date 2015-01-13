@@ -42,9 +42,9 @@ function trainandtest(train, test, seeds, mode, callback9)
     sentence = sentence.toLowerCase().trim()
     sentence = regexpNormalizer(sentence)
     test_turns[key]['input_normalized'] = sentence
-    test_turns[key]['polarity'] = truth.verbnegation(sentence.replace('without','no'), truth_filename)
+    // test_turns[key]['polarity'] = truth.verbnegation(sentence.replace('without','no'), truth_filename)
 
-    sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+    sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence, false)})['generated']
     test_turns[key]['input_modified'] = sentence
   }, this)
 
@@ -56,7 +56,8 @@ function trainandtest(train, test, seeds, mode, callback9)
 
   async.eachSeries(test_turns, function(turn, callback1){
 
-    utils.retrieveIntent(turn['input_modified'], seeds, function(err, out){
+      var out = utils.retrieveIntentsync(turn['input_modified'], seeds)
+    // utils.retrieveIntent(turn['input_modified'], seeds, function(err, out){
 
       turn['out'] = out
 
@@ -71,7 +72,8 @@ function trainandtest(train, test, seeds, mode, callback9)
       // sequence mode
       if (mode == 1)
       {
-        var sequence = _.map(out, function(num, key){ return [Object.keys(num)[0], num[Object.keys(num)[0]]['position'], num[Object.keys(num)[0]]['content of ppdb phrase'].join(" "), num[Object.keys(num)[0]]['ppdb phrase']]  });
+        
+        var sequence = _.map(out, function(num, key){ return [Object.keys(num)[0], num[Object.keys(num)[0]]['position'], num[Object.keys(num)[0]]['content of ppdb phrase'], num[Object.keys(num)[0]]['ppdb phrase']]  });
         sequence = bars.uniqueArray(sequence)
         turn['sequence_expected'] = utils.seqgold(turn)
         turn['sequence_actual'] = sequence
@@ -80,9 +82,8 @@ function trainandtest(train, test, seeds, mode, callback9)
       }
 
       callback1()
-    })
+    // })
   }, function(err){
-  
       var output = {}
       output['data'] = test_turns
       output['stats'] = stats.retrieveStats()
