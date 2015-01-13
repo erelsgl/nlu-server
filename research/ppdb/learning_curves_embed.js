@@ -127,16 +127,18 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	  			// ngrams
 				var seeds = utils.loadseeds(mytrainset, true)
 				var seeds_original = utils.enrichseeds_original(seeds)
+				var seeds_original_after = utils.afterppdb(seeds_original)
 
 				var stats_ppdb = []
 
 				utils.enrichseeds(seeds, function(err, seeds_ppdb){
-	      			ppdb.trainandtest(mytrainset, bars.copylist(testset), seeds_ppdb, 1, function(err, response_ppdb){
+					var seeds_ppdb_after = utils.afterppdb(seeds_ppdb)
+	      			ppdb.trainandtest(mytrainset, bars.copylist(testset), seeds_ppdb_after, 1, function(err, response_ppdb){
 	      				stats_ppdb = response_ppdb
 	      				
 	      				bars.wrfile(__dirname+dirr+"ppdb_fold-"+fold+"_train-"+index, [seeds_ppdb, stats_ppdb])
 
-						ppdb.trainandtest(mytrainset, bars.copylist(testset), seeds_original, 1, function(err, response){
+						ppdb.trainandtest(mytrainset, bars.copylist(testset), seeds_original_after, 1, function(err, response){
         					setTimeout(function() {
 	      						fiber.run(response)
 							}, 1000)
@@ -244,7 +246,7 @@ if (process.argv[1] === __filename)
 {
 	//var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
 	//var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule_shuffled.json"))
-	var dataset = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule_shuffled.json"))
+	var dataset = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule_core.json"))
 
 	var dataset = _.filter(dataset, function(dial){return bars.isactivedialogue(dial) == true})
 	
