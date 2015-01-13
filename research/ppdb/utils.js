@@ -428,19 +428,21 @@ var retrieveIntentsync = function(input, seeds)
    	
 	_.each(seeds, function(value, intent, list){ 
 		_.each(seeds[intent], function(value, keyphrases, list){ 
-			_.each(seeds[intent][keyphrases], function(values, phrase, list){ 
-				_.each(values, function(response, key, list){ 
-			        var pos = rules.compeletePhrase(input, response)
-			        if (pos != -1)
-					      	{
-    					var elem = {}
-    					elem[intent] = {}
-    					elem[intent]['original seed'] = keyphrases
-    					elem[intent]['ppdb phrase'] = seeds[intent][keyphrases][phrase]
-    					elem[intent]['content of ppdb phrase'] = response
-       					elem[intent]['position'] = [pos, pos + response.length]
-      					output.push(elem)
-    					}
+			_.each(seeds[intent][keyphrases], function(values, phrase, list){
+				_.each(values, function(response1, phrase, list){ 
+					_.each(values[phrase], function(response, phrase1, list){ 
+				        var pos = rules.compeletePhrase(input, response)
+				        if (pos != -1)
+						      	{
+	    					var elem = {}
+	    					elem[intent] = {}
+	    					elem[intent]['original seed'] = keyphrases
+	    					elem[intent]['ppdb phrase'] = phrase
+	    					elem[intent]['content of ppdb phrase'] = response
+	       					elem[intent]['position'] = [pos, pos + response.length]
+	      					output.push(elem)
+	    					}
+	    				}, this)
 				}, this)
     		}, this)
     	}, this)
