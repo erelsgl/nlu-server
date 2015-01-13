@@ -169,7 +169,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	  	    	console.log(JSON.stringify(stats_ppdb['stats'], null, 4))
 */
 		    	report.push(_.pick(stats_ppdb['stats'], parameters))
-		    	report.pushextractdial(_.pick(stats_original['stats'], parameters))
+		    	report.push(_.pick(stats_original['stats'], parameters))
 
 /*		    	if (stats_original['stats']['Recall'] > stats_ppdb['stats']['Recall'])
 		    	{
