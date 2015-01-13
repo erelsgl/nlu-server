@@ -342,20 +342,18 @@ var onlyIntents = function(labels)
 // not clean input
 var retrieveIntent = function(input, seeds, callback)
 {
-	
     var output = []
    	async.eachSeries(Object.keys(seeds), function(intent, callback1){
    		async.eachSeries(Object.keys(seeds[intent]), function(keyphrases, callback2){
    			async.eachSeries(seeds[intent][keyphrases], function(phrase, callback3){
- 					
    					// input - test utterances
 		      		var input_list = input.split(" ")
 
-		      		// onlycontent(phrase, function(err, responses) {
-		      		generatengramsasync(phrase, function(err, responses) {
+		      		onlycontent(phrase, function(err, responses) {
+
 		      			_.each(responses, function(response, key, list){ 
-		      				// var content_phrase = (response.length != 0 ? response : phrase.split(" "));
-	     		 			// var content_phrase = phrase.split(" ")
+		      				var content_phrase = (response.length != 0 ? response : phrase.split(" "));
+	     		 			var content_phrase = phrase.split(" ")
 					        
 					        // var pos = rules.compeletePhrase(input_list.join(" "), content_phrase.join(" "))
 					        var pos = rules.compeletePhrase(input_list.join(" "), response)
@@ -365,15 +363,19 @@ var retrieveIntent = function(input, seeds, callback)
 	        					elem[intent] = {}
 	        					elem[intent]['original seed'] = keyphrases
 	        					elem[intent]['ppdb phrase'] = phrase
-	        					elem[intent]['content of ppdb phrase'] = content_phrase
-	        					elem[intent]['position'] = [pos, pos + content_phrase.join(" ").length]
+	        					// elem[intent]['content of ppdb phrase'] = content_phrase
+	        					elem[intent]['content of ppdb phrase'] = response
+	        					// elem[intent]['position'] = [pos, pos + content_phrase.join(" ").length]
+	        					elem[intent]['position'] = [pos, pos + response.length]
 	          					output.push(elem)
 	        					}
         				}, this)
         				callback3()
-        			})
-			},function(err){callback2()})
-		},function(err){callback1()})
+        			// })
+			},function(err){
+				callback2()})
+		},function(err){
+			callback1()})
 	},function(err){
 	    
 	    // working on DEFAULT intent
@@ -415,6 +417,52 @@ var retrieveIntent = function(input, seeds, callback)
   // }, this)
   // return output
 }
+
+
+
+var retrieveIntentsync = function(input, seeds, callback)
+{
+	
+    var output = []
+   	
+	_.each(seeds, function(value, intent, list){ 
+		_.each(seeds[intent], function(value, keyphrases, list){ 
+			_.each(seeds[intent][keyphrases], function(values, phrase, list){ 
+				_.each(values, function(response, key, list){ 
+			        var pos = rules.compeletePhrase(input, response)
+			        if (pos != -1)
+					      	{
+    					var elem = {}
+    					elem[intent] = {}
+    					elem[intent]['original seed'] = keyphrases
+    					elem[intent]['ppdb phrase'] = phrase
+    					elem[intent]['content of ppdb phrase'] = response
+       					elem[intent]['position'] = [pos, pos + response.length]
+      					output.push(elem)
+    					}
+				}, this)
+    		}, this)
+    	}, this)
+    }, this)
+
+	return output
+}
+
+var afterppdb = function(seeds)
+{
+	_.each(seeds, function(keyphrases, intent, list){ 
+		_.each(keyphrases, function(subseeds, keyphrase, list){ 
+			_.each(subseeds, function(seed, keys, list){ 
+				seeds[intent][keyphrase][keys] = {}
+				seeds[intent][keyphrase][keys][seed] = generatengrams(seed)
+			}, this)
+		}, this)
+
+	}, this)	
+	return seeds
+}
+
+
 
 
 var retrieveIntentKeyphrase = function(turn, seeds, callback)
@@ -1280,5 +1328,7 @@ calculateparam:calculateparam,
 enrichseeds:enrichseeds,
 enrichseeds_original:enrichseeds_original,
 generatengrams:generatengrams,
-generatengramsasync:generatengramsasync
+generatengramsasync:generatengramsasync,
+afterppdb:afterppdb,
+retrieveIntentsync:retrieveIntentsync
 }
