@@ -436,7 +436,7 @@ var retrieveIntentsync = function(input, seeds)
     					var elem = {}
     					elem[intent] = {}
     					elem[intent]['original seed'] = keyphrases
-    					elem[intent]['ppdb phrase'] = phrase
+    					elem[intent]['ppdb phrase'] = seeds[intent][keyphrases][phrase]
     					elem[intent]['content of ppdb phrase'] = response
        					elem[intent]['position'] = [pos, pos + response.length]
       					output.push(elem)
