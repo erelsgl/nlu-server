@@ -40,10 +40,11 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 
 // var do_small_temporary_serialization_test = false
+var do_test_seed = true
 var do_keyphrase_predict_annotaiton = false
 var counting = false
 var default_intent_analysis = false
-var keyphrase_transformation = true
+var keyphrase_transformation = false
 var shuffle = false
 var sequnce_classification = false
 var test_gaby = false
@@ -83,6 +84,7 @@ var trainutils = require('./utils/bars')
 var bars = require('./utils/bars')
 // var Lemmer = require('node-lemmer').Lemmer;
 var rules = require("./research/rule-based/rules.js")
+var ppdb_utils = require("./research/ppdb/utils.js")
 
 // var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/0_grammar.json"));
 // var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students.json"));
@@ -181,6 +183,37 @@ var datasetNames = [
 /*performs 
 turkers_keyphrases_only_rule.json
 students_keyphrases_only_rule.json*/
+
+if (do_test_seed)
+
+{
+	var ppdb_utils = require("./research/ppdb/utils.js")
+	console.log("here")
+	val = 0
+	var dialogues = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))
+	_.each(dialogues, function(dialogue, key, list){
+		_.each(dialogue['turns'], function(turn, key, list){
+			if ('intent_core' in turn)
+			{
+				var sentence = turn['input'].toLowerCase().trim()
+				sentence = regexpNormalizer(sentence)
+				_.each(turn['intent_core'], function(value, key, list){ 
+					if (value != 'DEFAULT INTENT')
+					{
+						value = ppdb_utils.cleanupkeyphrase(value)
+						var pos = rules.compeletePhrase(sentence, value)
+						if (pos == -1)
+						{
+							console.log(turn['input'])
+						}
+					}
+				}, this)
+			}
+
+		 }, this) 
+	}, this)
+	console.log(val)
+}
 
 if (counting)
 {
