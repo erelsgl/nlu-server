@@ -119,7 +119,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				var mytrain = train.slice(0, index)
 			  	
 			  	index += (index < limit ? step0 : step)
-			  	var mytrainset = (bars.isDialogue(mytrain) ? bars.extractturns(mytrain) : mytrain)
+			  	var mytrainset = (bars.isDialogue(mytrain) ? bars.extractturns(mytrain, 5) : mytrain)
 			  	var testset = (bars.isDialogue(test) ? bars.extractturns(test) : test)
 
 	  			// ----------------SEEDS-------------------
@@ -169,7 +169,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	  	    	console.log(JSON.stringify(stats_ppdb['stats'], null, 4))
 */
 		    	report.push(_.pick(stats_ppdb['stats'], parameters))
-		    	report.push(_.pick(stats_original['stats'], parameters))
+		    	report.pushextractdial(_.pick(stats_original['stats'], parameters))
 
 /*		    	if (stats_original['stats']['Recall'] > stats_ppdb['stats']['Recall'])
 		    	{
