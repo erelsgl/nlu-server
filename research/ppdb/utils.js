@@ -371,7 +371,7 @@ var retrieveIntent = function(input, seeds, callback)
 	        					}
         				}, this)
         				callback3()
-        			// })
+        			})
 			},function(err){
 				callback2()})
 		},function(err){
@@ -420,7 +420,8 @@ var retrieveIntent = function(input, seeds, callback)
 
 
 
-var retrieveIntentsync = function(input, seeds, callback)
+
+var retrieveIntentsync = function(input, seeds)
 {
 	
     var output = []
@@ -1330,5 +1331,6 @@ enrichseeds_original:enrichseeds_original,
 generatengrams:generatengrams,
 generatengramsasync:generatengramsasync,
 afterppdb:afterppdb,
-retrieveIntentsync:retrieveIntentsync
+retrieveIntentsync:retrieveIntentsync,
+cleanupkeyphrase:cleanupkeyphrase
 }
