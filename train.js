@@ -40,7 +40,9 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 
 // var do_small_temporary_serialization_test = false
+
 var do_test_seed = true
+var check_dial = false
 var do_keyphrase_predict_annotaiton = false
 var counting = false
 var default_intent_analysis = false
@@ -120,8 +122,6 @@ var ftrs = limdu.features;
 
 var Fiber = require('fibers');
 
-var f = Fiber(function() {
-  		var fiber = Fiber.current;
 
 
 var classifier = require(__dirname+'/classifiers')
@@ -136,7 +136,7 @@ var stringifyClass = function (aClass) {
   	return (_(aClass).isString()? aClass: JSON.stringify(aClass));
   };
 
-var createNewClassifier = function() {
+var createNewClascheck_dialsifier = function() {
 	var defaultClassifier = require(__dirname+'/classifiers').defaultClassifier;
 	return new defaultClassifier();
 }
@@ -171,7 +171,7 @@ var datasetNames = [
 			"woz_kbagent_students_negonlp.json"
 			];
 
-
+check_dial
 // sentence = sentence.toLowerCase().trim();
 // 	sentence = regexpNormalizer(sentence)
 // 	sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
@@ -184,8 +184,28 @@ var datasetNames = [
 turkers_keyphrases_only_rule.json
 students_keyphrases_only_rule.json*/
 
-if (do_test_seed)
+if (check_dial)
+{
+	var turns = {}
+	console.log("start")
+	var dialogues = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))	
+	console.log("start")
+	_.each(dialogues, function(dialogue, key, list){ 
+		if (bars.isactivedialogue(dialogue))
+			{	
+				turns[dialogue['id']] = _.filter(dialogue['turns'], function(turn){ return (bars.isactiveturn(turn) && bars.ishumanturn(turn) && bars.isseqturn(turn) && bars.ispermittedturn(turn)) == true; }).length
+			}
+	}, this)
+	
+	console.log(JSON.stringify(turns, null, 4))
+	console.log(turns['2014-07-28T15:01:25.194Z'])
 
+	process.exit(0)
+}
+
+
+
+if (do_test_seed)
 {
 	var ppdb_utils = require("./research/ppdb/utils.js")
 	console.log("here")
@@ -193,11 +213,11 @@ if (do_test_seed)
 	var dialogues = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))
 	_.each(dialogues, function(dialogue, key, list){
 		_.each(dialogue['turns'], function(turn, key, list){
-			if ('intent_core' in turn)
+			if ('intent_absolute' in turn)
 			{
 				var sentence = turn['input'].toLowerCase().trim()
 				sentence = regexpNormalizer(sentence)
-				_.each(turn['intent_core'], function(value, key, list){ 
+				_.each(turn['intent_absolute'], function(value, key, list){ 
 					if (value != 'DEFAULT INTENT')
 					{
 						value = ppdb_utils.cleanupkeyphrase(value)
@@ -214,6 +234,10 @@ if (do_test_seed)
 	}, this)
 	console.log(val)
 }
+
+var f = Fiber(function() {
+  		var fiber = Fiber.current;
+
 
 if (counting)
 {
