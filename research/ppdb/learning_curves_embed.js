@@ -82,6 +82,8 @@ function checkGnuPlot()
 function learning_curves(classifiers, dataset, parameters, step, step0, limit, numOfFolds) 
 {
 	var Labels = ['Offer', 'Accept', 'Reject']
+	var probLabel = ['F1','Precision','Recall']
+
 	var f = Fiber(function() {
 
 	  	var fiber = Fiber.current;
@@ -250,12 +252,14 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				},this)
 
 				_.each(parameters, function(value, key, list){
+					var prob = probLabel.indexOf(value) != -1
 					plotfor = "plot "
 					_(fold+1).times(function(n){
 					// _.each(parameters,  function(value, key, list){ 
 
 						foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+value+"-fold"+n+"\' using 1:i with linespoints linecolor i pt "+n+" ps 3"
-						com = gnuplot +" -p -e \"reset; set yrange [0:1]; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+"fold"+n+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+						// com = gnuplot +" -p -e \"reset; set yrange [0:1]; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+"fold"+n+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+						com = gnuplot +" -p -e \"reset; "+(prob ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+"fold"+n+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
 						result = execSync.run(com)
 
 						plotfor = plotfor + foldcom + ", "
@@ -263,12 +267,13 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 						// },this)
 					},this)
 					plotfor = plotfor.substring(0,plotfor.length-2);
-					command = gnuplot +" -p -e \"reset; set yrange [0:1]; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+".png\'; set key autotitle columnhead; "+plotfor +"\""
+					command = gnuplot +" -p -e \"reset; "+(prob ? "set yrange [0:1];" : "")+" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+".png\'; set key autotitle columnhead; "+plotfor +"\""
 					result = execSync.run(command)
 				}, this)
 
 
 				_.each(parameters, function(param, key, list){ 
+					var prob = probLabel.indexOf(param) != -1
 					fs.writeFileSync(dir+param+"average", "train\t"+Object.keys(classifiers).join("\t")+"\n", 'utf-8', function(err) {console.log("error "+err); return 0 })
 					_.each(stat[param], function(value, trainsize, list){ 
 						average = getAverage(stat, param, trainsize, cl)
@@ -276,7 +281,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 					}, this)
 
 					foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+param+"average"+"\' using 1:i with linespoints linecolor i"
-					com = gnuplot +" -p -e \"reset; set yrange [0:1]; set xlabel \'Number of dialogues\'; set ylabel \'"+param+"\' ;set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + param+"average.png\'; set key autotitle columnhead; plot "+foldcom +"\""
+					com = gnuplot +" -p -e \"reset; "+ (prob ? "set yrange [0:1];" : "")+" set xlabel \'Number of dialogues\'; set ylabel \'"+param+"\' ;set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + param+"average.png\'; set key autotitle columnhead; plot "+foldcom +"\""
 					result = execSync.run(com)
 				}, this)
 
