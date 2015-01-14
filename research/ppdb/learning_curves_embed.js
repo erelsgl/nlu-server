@@ -81,6 +81,7 @@ function checkGnuPlot()
 
 function learning_curves(classifiers, dataset, parameters, step, step0, limit, numOfFolds) 
 {
+	var Labels = ['Offer', 'Accept', 'Reject']
 	var f = Fiber(function() {
 
 	  	var fiber = Fiber.current;
@@ -130,9 +131,10 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				var seeds_original_after = utils.afterppdb(seeds_original)
 
 				var stats_ppdb = []
+				var seeds_ppdb_after = []
 
 				utils.enrichseeds(seeds, function(err, seeds_ppdb){
-					var seeds_ppdb_after = utils.afterppdb(seeds_ppdb)
+					seeds_ppdb_after = utils.afterppdb(seeds_ppdb)
 	      			ppdb.trainandtest(mytrainset, bars.copylist(testset), seeds_ppdb_after, 1, function(err, response_ppdb){
 	      				stats_ppdb = response_ppdb
 	      				
@@ -170,6 +172,49 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 */
 		    	report.push(_.pick(stats_ppdb['stats'], parameters))
 		    	report.push(_.pick(stats_original['stats'], parameters))
+
+		   		var FNppdb = []
+
+
+		   		_.each(stats_ppdb['data'], function(turn, key, list){ 
+	    			if (stats_ppdb['data'][key]['eval']['FN'].length > 0)	
+						{
+						FNppdb.push({
+							'input':stats_ppdb['data'][key]['input'], 
+							'intent_core':stats_ppdb['data'][key]['intent_core'],
+							'eval':stats_ppdb['data'][key]['eval'],
+							// 'sequence_actual_ppdb': stats_ppdb['data'][key]['sequence_actual']
+							})	
+						}		    				
+		    	}, this)
+
+				var comparison = []
+				_.each(stats_ppdb['data'], function(turn, key, list){ 
+	    			if (stats_ppdb['data'][key]['eval']['FN'].length < stats_original['data'][key]['eval']['FN'].length)
+						{
+						comparison.push({
+							'input':stats_ppdb['data'][key]['input'], 
+							'intent_core':stats_ppdb['data'][key]['intent_core'], 
+							'eval_ppdb':stats_ppdb['data'][key]['eval'], 
+							'eval_original':stats_original['data'][key]['eval'],	
+							'sequence_actual_ppdb': stats_ppdb['data'][key]['sequence_actual']
+							})
+						}
+					else
+					{
+					if (stats_ppdb['data'][key]['eval']['FN'].length > stats_original['data'][key]['eval']['FN'].length)
+						{
+							console.log(stats_ppdb['data'][key])
+							console.log(stats_original['data'][key])
+							console.log()
+							process.exit(0)
+						}	
+					}		    				
+		    	}, this)
+
+		   		bars.wrfile(__dirname+dirr+"comparison_fold-"+fold+"_train-"+index+"_"+FNppdb.length+"_"+comparison.length, 
+		   			["FN of PPDB", FNppdb.length, "PPDB gain", comparison.length, seeds_ppdb_after, "FN of ppdb", FNppdb, "comparison", comparison])
+
 
 /*		    	if (stats_original['stats']['Recall'] > stats_ppdb['stats']['Recall'])
 		    	{
@@ -255,7 +300,7 @@ if (process.argv[1] === __filename)
 		'Original': []
 	}
 	// var classifiers  = {}
-	var parameters = ['F1','Precision','Recall', 'Accuracy']
+	var parameters = ['F1','Precision','Recall', 'FN']
 	learning_curves(classifiers, dataset, parameters, 10/*step*/, 2/*step0*/, 18/*limit*/,  10/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
