@@ -2741,9 +2741,23 @@ function wrfile(file, list)
 {
   _.each(list, function(value, key, list){ 
     if (key == 0)
-      fs.writeFileSync(file, JSON.stringify(value, null, 4))
+    {
+      if (isInt(value))
+        fs.writeFileSync(file, value)
+      else
+        fs.writeFileSync(file, JSON.stringify(value, null, 4))
+      
+      fs.appendFileSync(file, "\n")
+    }
     else
-      fs.appendFileSync(file, JSON.stringify(value, null, 4))
+    {
+      if (isInt(value))
+        fs.appendFileSync(file, value)
+      else
+        fs.appendFileSync(file, JSON.stringify(value, null, 4))
+      
+      fs.appendFileSync(file, "\n")
+    }
   }, this)
 }
 
@@ -2767,6 +2781,11 @@ function isstopword(word)
     return false
 }
 
+function isInt(value) {
+  return !isNaN(value) && 
+         parseInt(Number(value)) == value && 
+         !isNaN(parseInt(value, 10));
+}
 
 
 module.exports = {
@@ -2833,5 +2852,6 @@ isactiveturn:isactiveturn,
 wrfile:wrfile,
 ispermittedturn:ispermittedturn,
 loadstopwords:loadstopwords,
-isstopword:isstopword
+isstopword:isstopword,
+isInt:isInt
 }
