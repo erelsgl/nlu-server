@@ -10,6 +10,7 @@ var utils = require('./utils');
 var _ = require('underscore');
 var sync = require('synchronize')
 var Fiber = require('fibers');
+var curves = require('./learning_curves_embed.js');
 
 var seeds = { 
 			"Offer": {
@@ -41,6 +42,13 @@ function makeid(len)
 }
 
 describe('Util test', function() {
+
+	it('filternan', function() {
+		_.isEqual(curves.filternan([1,2,'wqd',0]), [ 1, 2, '?', 0 ]).should.be.true
+		_.isEqual(curves.filternan(5), 5).should.be.true
+		_.isEqual(curves.filternan('a'), '?').should.be.true
+	})
+	
 
 	it("generatens", function(done){
 		utils.generatengramsasync("I need a money", function(err, response){
