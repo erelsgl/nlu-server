@@ -48,6 +48,7 @@ describe('Util test', function() {
 		_.isEqual(curves.filternan(5), 5).should.be.true
 		_.isEqual(curves.filternan('a'), '?').should.be.true
 		_.isEqual(curves.filternan(-1), '?').should.be.true
+		_.isEqual(curves.filternan([1.5,8.9]), [1.5,8.9]).should.be.true
 	})
 	
 
