@@ -82,6 +82,8 @@ function checkGnuPlot()
 function learning_curves(classifiers, dataset, parameters, step, step0, limit, numOfFolds) 
 {
 	var probLabel = ['F1','Precision','Recall']
+	var Labels = {'Offer':[], 'Accept':[], 'Reject':[], 'Greet':[]}
+
 
 	var f = Fiber(function() {
 
@@ -100,10 +102,17 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		_(numOfFolds).times(function(n){
 			app = "-fold"+n+"\t"
 			header = "train\t" + _.map(cl,function(num){return num[0]}).join(app)+"-fold"+n+"\n";
-		_.each(parameters,  function(value, key, list){ 
-			plotfor = plotfor + " for [i=2:"+ (_.size(cl) + 1)+"] \'"+dir+value+"-fold"+n+"\' using 1:i with lines linecolor i, "
-			fs.writeFileSync(dir+value+"-fold"+n, header, 'utf-8', function(err) {console.log("error "+err); return 0 })
+			
+			_.each(parameters,  function(value, key, list){ 
+				plotfor = plotfor + " for [i=2:"+ (_.size(cl) + 1)+"] \'"+dir+value+"-fold"+n+"\' using 1:i with lines linecolor i, "
+				fs.writeFileSync(dir+value+"-fold"+n, header, 'utf-8')
+				
+				_.each(Labels, function(rep, lab, list){ 
+					plotfor = plotfor + " for [i=2:"+ (_.size(cl) + 1)+"] \'"+dir+lab+value+"-fold"+n+"\' using 1:i with lines linecolor i, "
+					fs.writeFileSync(dir+lab+value+"-fold"+n, header, 'utf-8')
+				}, this)
 			},this)
+		
 		},this)
 
 		plotfor = plotfor.substring(0,plotfor.length-2);
