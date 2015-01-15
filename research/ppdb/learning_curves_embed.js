@@ -17,13 +17,20 @@ var trainAndTest_hash = require('../../utils/trainAndTest').trainAndTest_hash;
 var bars = require('../../utils/bars');
 var path = require("path")
 var ppdb = require("./evalmeasure_5ed_embed.js")
+
 var gnuplot = './gnuplot'
+var dir = "./learning_curves/"
+var dirr = "/learning_curves/"
 /* @params classifiers - classifier for learning curves
    @params dataset - dataset for evaluation, 20% is takes for evaluation
    @params parameters - parameters we are interested in 
    @params step - step to increase a train set 
 
-   The example of the input is following.
+   The example of module.exports = {
+	learning_curves: learning_curves, 
+	extractGlobal: extractGlobal,
+	getAverage: getAverage
+}the input is following.
 
 classifiers  = {
 	Adaboost: limdu.classifiers.multilabel.Adaboost, 
@@ -32,13 +39,64 @@ classifiers  = {
 
 parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
 */
+/*
+{
+    "F1": {
+        "2": {module.exports = {
+	learning_curves: learning_curves, 
+	extractGlobal: extractGlobal,
+	getAverage: getAverage
+}
+            "PPDB": [ 0.6666666666666666 ],
+            "Original": [ 0.16666666666666666 ]
+        }
+    },
+    "Precision": {
+        "2": {
+            "PPDB": [ 0.7777777777777778 ],
+            "Original": [ 1 ]
+        }
+    },
+    "Recall": {
+        "2": {
+            "PPDB": [ 0.5833333333333334 ],
+            "Original": [ 0.09090909090909091 ]
+        }
+    },
+    "FN": {
+        "2": {
+            "PPDB": [ 5 ],
+            "Original": [ 10 ]
+        }
+    }
+}
+param
+F1
+trainsize
+2
+[ 0.6666666666666666, 0.16666666666666666 ]
+classifiers
+[ [ 'PPDB', [] ], [ 'Original', [] ] ]
+*/
+
+function onlyint(list)
+{
+	var output = []
+	_.each(list, function(value, key, list){ 
+		if (bars.isInt(value))
+			output.push(value)
+	}, this)
+	return output
+}
+
 function getAverage(stat, param, trainsize, classifiers)
 	{
 		var average = []
-		_.each(classifiers, function(classifier_tuple, key, list){
-			var  classifier = classifier_tuple[0]
-			average.push(_.reduce(stat[param][trainsize][classifier], function(memo, num){ return memo + num; }, 0)/stat[param][trainsize][classifier].length)
+		_.each(Object.keys(classifiers), function(classifier, key, list){
+			var list = onlyint(stat[param][trainsize][classifier])
+			average.push(_.reduce(list , function(memo, num){ return memo + num; }, 0)/list.length)
 		}, this)
+		
 		return average
 	}
 
@@ -46,14 +104,13 @@ function extractGlobal(parameters, classifiers, trainsize, report, stat)
 	{
 	var ord = 0
 
-	if (classifiers.length == 0)
+	if (_.size(classifiers) == 0)
 		throw new Error("List of classifiers is empty");
 
 	if (parameters.length == 0)
 		throw new Error("List of parameters is empty");
 
-	_.each(classifiers, function(classifier_tuple, key, list){
-		var classifier = classifier_tuple[0]
+	_.each(Object.keys(classifiers), function(classifier, key, list){
 		_.each(parameters, function(param, key, list){ 
     		if (!(param in stat)) 
     			stat[param]={}
@@ -79,6 +136,87 @@ function checkGnuPlot()
 		}
 	}
 
+function isProb(results)
+{
+	return _.filter(results, function(num){ return num > 1}).length == 0
+}
+
+function filternan(input)
+{
+	if (_.isArray(input))
+	{
+		var output = []
+		_.each(input, function(value, key, list){ 
+			if (bars.isInt(value))
+			{
+				if (value != -1)
+					output.push(value)
+				else
+					output.push("?")
+			}
+			else
+				output.push("?")
+		}, this)
+
+		return output
+	}
+	else
+	{
+		if (bars.isInt(input))
+		{
+			if (input != -1)
+				return input
+			else
+				return "?"
+		}
+		else
+			return "?"
+	}
+}
+
+
+function plot(fold, parameter, stat, classifiers)
+{
+
+	var values = []
+	var linetype = fold
+
+	var header = "train\t" + Object.keys(classifiers).join("-fold"+fold+"\t")+"-fold"+fold+"\n";
+	fs.writeFileSync(dir+parameter+"fold"+fold, header, 'utf-8')
+
+	var str = ""
+	
+	if (fold != 'average')
+	{
+		_.each(stat[parameter], function(value, trainsize, list){ 
+			str += trainsize.toString() + "(2)" + "\t"
+			_.each(value, function(results, cl, list){ 
+				values.push(results[fold])
+				str += filternan(results[fold]) + "\t"
+			}, this)
+			str += "\n"
+		}, this)
+
+	}
+	else
+	{
+		_.each(stat[parameter], function(value, trainsize, list){ 
+			var average = getAverage(stat, parameter, trainsize, classifiers)
+			str += trainsize.toString() + "(2)" + "\t"+filternan(average).join("\t")+"\n"
+			values = values.concat(average)
+		}, this)
+
+		linetype = 5
+	}
+
+	fs.appendFileSync(dir+parameter+"fold"+fold, str, 'utf-8')
+
+	var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+parameter+"fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
+	var com = gnuplot +" -p -e \"reset; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+	result = execSync.run(com)
+}
+
+
 function learning_curves(classifiers, dataset, parameters, step, step0, limit, numOfFolds) 
 {
 	var probLabel = ['F1','Precision','Recall']
@@ -88,17 +226,18 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	var f = Fiber(function() {
 
 	  	var fiber = Fiber.current;
-		var dir = "./learning_curves/"
-		var dirr = "/learning_curves/"
+		
 		checkGnuPlot
 
 		if (dataset.length == 0)
 			throw new Error("Dataset is empty");
 		
 		
-		var cl = _.pairs(classifiers)
+		// var cl = _.pairs(classifiers)
+		// console.log(classifiers)
+		// process.exit(0)
 
-		plotfor = "plot "
+		/*plotfor = "plot "
 		_(numOfFolds).times(function(n){
 			app = "-fold"+n+"\t"
 			header = "train\t" + _.map(cl,function(num){return num[0]}).join(app)+"-fold"+n+"\n";
@@ -114,12 +253,11 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			},this)
 		
 		},this)
-
-		plotfor = plotfor.substring(0,plotfor.length-2);
+*/
+		// plotfor = plotfor.substring(0,plotfor.length-2);
 
 		stat = {}
-		statl = {'Offer':{}, 'Reject':{}, 'Accept':{}}
-
+		
 		var mytrain = []
 
 		partitions.partitions_consistent(dataset, numOfFolds, function(train, test, fold) {
@@ -130,7 +268,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	  		{
 
 			  	var report = []
-				var Labels = {'Offer':[], 'Accept':[], 'Reject':[]}
+				// var Labels = {'Offer':[], 'Accept':[], 'Reject':[]}
 
 				var mytrain = train.slice(0, index)
 			  	
@@ -155,7 +293,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	      			ppdb.trainandtest(mytrainset, bars.copylist(testset), seeds_ppdb_after, 1, function(err, response_ppdb){
 	      				stats_ppdb = response_ppdb
 	      				
-	      				bars.wrfile(__dirname+dirr+"ppdb_fold-"+fold+"_train-"+index, [seeds_ppdb, stats_ppdb])
+	      				bars.wrfile(__dirname + dirr+"ppdb_fold-"+fold+"_train-"+index, [seeds_ppdb, stats_ppdb])
 
 						ppdb.trainandtest(mytrainset, bars.copylist(testset), seeds_original_after, 1, function(err, response){
         					setTimeout(function() {
@@ -165,24 +303,23 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    		})
 				})
 
-				// console.log("end")
-
 		    	var stats_original = Fiber.yield()
-
-		    	// console.log("yield")
 
 		   		bars.wrfile(__dirname+dirr+"orig_fold-"+fold+"_train-"+index, [seeds_original, stats_original])
 				
 	  	    	// --------------TRAIN-TEST--------------
-	  	    	// console.log("file")
+	  	    
+
+	  	    
+
 
 		    	report.push(_.pick(stats_ppdb['stats'], parameters))
 		    	report.push(_.pick(stats_original['stats'], parameters))
 
-		    	
+		    			    	
 		    	// console.log("before")
 
-		    	_.each(stats_ppdb['stats']['labels'], function(value, key, list){ 
+		    	/*_.each(stats_ppdb['stats']['labels'], function(value, key, list){ 
 		    		if (key in Labels)
 		    			Labels[key].push(_.pick(stats_ppdb['stats']['labels'][key], parameters))
 		    	}, this)
@@ -192,7 +329,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    		if (key in Labels)
 		    			Labels[key].push(_.pick(stats_original['stats']['labels'][key], parameters))
 		    	}, this)
-
+*/
 		    	// console.log("done")
 
 
@@ -264,13 +401,28 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    		process.exit(0)
 		    	}
 */
-                extractGlobal(parameters, cl, mytrain.length, report, stat)
+                extractGlobal(parameters, classifiers, mytrain.length, report, stat)
 
-				_.each(Labels, function(rep, lab, list){ 
+
+                _.each(parameters, function(parameter, key, list){
+					plot(fold, parameter, stat, classifiers)
+					plot('average', parameter, stat, classifiers)
+				})
+
+
+/*				 _.each(Labels, function(rep, lab, list){ 
 					extractGlobal(parameters, cl, mytrain.length, Labels[lab], statl[lab])
 				}, this)
 
-				_.each(parameters, function(value, key, list){
+				console.log(JSON.stringify(stat, null, 4))
+				process.exit(0)
+
+				// every fold file APPEND
+				/*_.each(parameters, function(parameter, key, list){
+					fold
+					stat
+
+
 					valuestring = mytrain.length +"\t"+ (_.pluck(report, value)).join("\t") +"\n" ;
 					fs.appendFileSync(dir+value+"-fold"+fold, valuestring,'utf8')
 
@@ -280,36 +432,8 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 					}, this)
 
 				},this)
-
-				_.each(parameters, function(value, key, list){
-					var prob = probLabel.indexOf(value) != -1
-					plotfor = "plot "
-					_(fold+1).times(function(n){
-					// _.each(parameters,  function(value, key, list){ 
-
-						foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+value+"-fold"+n+"\' using 1:i with linespoints linecolor i pt "+n+" ps 3"
-						// com = gnuplot +" -p -e \"reset; set yrange [0:1]; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+"fold"+n+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
-						com = gnuplot +" -p -e \"reset; "+(prob ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+"fold"+n+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
-						console.log(com)
-						result = execSync.run(com)
-
-						plotfor = plotfor + foldcom + ", "
-
-						_.each(Labels, function(rep, lab, list){ 
-							foldcoml = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+lab+value+"-fold"+n+"\' using 1:i with linespoints linecolor i pt "+n+" ps 3"
-							// com = gnuplot +" -p -e \"reset; set yrange [0:1]; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+"fold"+n+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
-							com = gnuplot +" -p -e \"reset; "+(prob ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+"fold"+n+".png\'; set key autotitle columnhead; plot "+foldcoml +"\""
-							result = execSync.run(com)
-						}, this)
-						// fs.writeFileSync(dir+value+"-fold"+n, header, 'utf-8', function(err) {console.log("error "+err); return 0 })
-						// },this)
-					},this)
-					plotfor = plotfor.substring(0,plotfor.length-2);
-					command = gnuplot +" -p -e \"reset; "+(prob ? "set yrange [0:1];" : "")+" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+".png\'; set key autotitle columnhead; "+plotfor +"\""
-					result = execSync.run(command)
-				}, this)
-
-
+*/
+/*
 				_.each(parameters, function(param, key, list){ 
 
 					var prob = probLabel.indexOf(param) != -1
@@ -343,7 +467,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 					com = gnuplot +" -p -e \"reset; "+ (prob ? "set yrange [0:1];" : "")+" set xlabel \'Number of dialogues\'; set ylabel \'"+param+"\' ;set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + param+"average.png\'; set key autotitle columnhead; plot "+foldcom +"\""
 					result = execSync.run(com)
 
-				}, this)
+				}, this)*/
 
 			} //while (index < train.length)
 			}); //fold
@@ -365,10 +489,24 @@ if (process.argv[1] === __filename)
 		'Original': []
 	}
 	// var classifiers  = {}
-	var parameters = ['F1','Precision','Recall', 'FN']
+	var parameters = [
+					  'F1','Precision','Recall', 'FN', 
+					  'OfferF1', 'OfferPrecision', 'OfferRecall', 'OfferFN',
+					  'RejectF1','RejectPrecision','RejectRecall', 'RejectFN', 
+					  'AcceptF1','AcceptPrecision','AcceptRecall', 'AcceptFN', 
+					  'GreetF1','GreetPrecision','GreetRecall', 'GreetFN'
+					]
 	learning_curves(classifiers, dataset, parameters, 10/*step*/, 2/*step0*/, 18/*limit*/,  10/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
 		
+}
+
+
+module.exports = {
+	learning_curves: learning_curves, 
+	extractGlobal: extractGlobal,
+	getAverage: getAverage,
+	filternan:filternan
 }
