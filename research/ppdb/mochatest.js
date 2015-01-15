@@ -44,9 +44,10 @@ function makeid(len)
 describe('Util test', function() {
 
 	it('filternan', function() {
-		_.isEqual(curves.filternan([1,2,'wqd',0]), [ 1, 2, '?', 0 ]).should.be.true
+		_.isEqual(curves.filternan([1,2,'wqd',0,-1]), [ 1, 2, '?', 0, '?' ]).should.be.true
 		_.isEqual(curves.filternan(5), 5).should.be.true
 		_.isEqual(curves.filternan('a'), '?').should.be.true
+		_.isEqual(curves.filternan(-1), '?').should.be.true
 	})
 	
 
