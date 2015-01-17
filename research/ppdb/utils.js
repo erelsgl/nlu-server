@@ -463,13 +463,14 @@ var  localizeinter = function(list)
 	var output = []
 
 	_.each(list, function(value, key, list){
-		console.log(key)
 		var inserted = false
 		_.each(output, function(cluster, keycl, list){
 			_.each(cluster, function(elem, key, list){
 				if (!inserted)
 					{
-					if (bars.intersection(elem['position'], value['position']))
+					if ((bars.intersection(elem['position'], value['position']))
+						&&
+						(elem['intent'] == value['intent']))
 						{ 
 						output[keycl].push(value)
 						inserted = true
