@@ -45,19 +45,25 @@ describe('Util test', function() {
 
 	it('localizeinter', function() {
 		var list = [
-			{'position':[0, 4]},
-			{'position':[0, 5]},
-			{'position':[2, 7]},
-			{'position':[8, 13]},
-			{'position':[9, 13]},
-			{'position':[20, 26]}
+			{'intent': 'Accept','position':[0, 4]},
+			{'intent': 'Accept','position':[0, 3]},
+			{'intent': 'Offer', 'position':[0, 4]},
+			{'intent': 'Offer','position':[0, 5]},
+			{'intent': 'Offer','position':[2, 7]},
+			{'intent': 'Offer','position':[8, 13]},
+			{'intent': 'Offer','position':[9, 13]},
+			{'intent': 'Offer','position':[20, 26]}
 		]
 		var output = utils.localizeinter(list)
-		output.length.should.equal(3)
+		output.length.should.equal(4)
 
 		var max = utils.maximizer(output)
+		var gold = [ { intent: 'Accept', position: [ 0, 4 ] },
+  { intent: 'Offer', position: [ 0, 5 ] },
+  { intent: 'Offer', position: [ 8, 13 ] },
+  { intent: 'Offer', position: [ 20, 26 ] } ]
 
-		_.isEqual(max, [{"position": [0,5]},{"position": [8,13]},{"position": [20,26]}]).should.be.true
+		_.isEqual(max, gold).should.be.true
 	})
 
 	it('filternan', function() {
