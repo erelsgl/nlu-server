@@ -89,34 +89,49 @@ describe('Util test', function() {
 	})
 
 	it('enrichseeds_original', function() {
-		var seeds = { 	
-						Offer: [ 'our counter proposal is', 'i am offering', ' is what i have' ],
-  						Accept: [ 'accepted', 'ok' ] 
-  					}
-		var output = utils.enrichseeds_original(seeds)
+		var seeds = { Offer: 
+   { 'i need a salary': 
+      { 'i need a salary': {},
+        need: {},
+        salary: {},
+        'i need': {},
+        'need a': {},
+        'a salary': {},
+        'i need a': {},
+        'need a salary': {} } } }
+        var gold = {
+    "Offer": {
+        "i need a salary": {
+            "i need a salary": {
+                "i need a salary": {}
+            },
+            "need": {
+                "need": {}
+            },
+            "salary": {
+                "salary": {}
+            },
+            "i need": {
+                "i need": {}
+            },
+            "need a": {
+                "need a": {}
+            },
+            "a salary": {
+                "a salary": {}
+            },
+            "i need a": {
+                "i need a": {}
+            },
+            "need a salary": {
+                "need a salary": {}
+            }
+        }
+    }
+}
 
-		var gold = {
-		    "Offer": {
-		        "our counter proposal is": [
-		            "our counter proposal is"
-		        ],
-		        "i am offering": [
-		            "i am offering"
-		        ],
-		        " is what i have": [
-		            " is what i have"
-		        ]
-		    },
-		    "Accept": {
-		        "accepted": [
-		            "accepted"
-		        ],
-		        "ok": [
-		            "ok"
-		        ]
-		    }
-			}
-	_.isEqual(output, gold).should.be.true
+		var output = utils.enrichseeds_original(seeds)
+		_.isEqual(gold, seeds).should.be.true
 	})
 
 	it('calculateparam', function() {
