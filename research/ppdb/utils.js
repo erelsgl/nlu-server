@@ -480,6 +480,25 @@ var  localizeinter = function(list)
 	return output
 }
 
+var maximizer = function(list)
+{
+	var output = []
+
+	_.each(list, function(cluster, key, list){ 
+		var max = 0
+		var elem = []
+		_.each(cluster, function(value, key, list){
+			if ((value['position'][1] - value['position'][0]) > max)
+				{
+				max = value['position'][1] - value['position'][0]
+				elem = value
+				}
+		}, this)
+		output.push(elem)
+	}, this)
+	return output
+}
+
 var afterppdb = function(seeds)
 {
 	_.each(seeds, function(values, intent, list){ 
@@ -1380,5 +1399,6 @@ generatengramsasync:generatengramsasync,
 afterppdb:afterppdb,
 retrieveIntentsync:retrieveIntentsync,
 cleanupkeyphrase:cleanupkeyphrase,
-localizeinter:localizeinter
+localizeinter:localizeinter,
+maximizer:maximizer
 }
