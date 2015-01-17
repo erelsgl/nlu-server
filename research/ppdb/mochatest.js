@@ -43,6 +43,23 @@ function makeid(len)
 
 describe('Util test', function() {
 
+
+
+	it('localizeinter', function() {
+		var list = [
+			{'position':[0, 4]},
+			{'position':[0, 5]},
+			{'position':[2, 7]},
+			{'position':[8, 12]},
+			{'position':[9, 13]},
+			{'position':[20, 26]}
+		]
+
+		var output = utils.localizeinter(list)
+
+		output.length.should.equal(3)
+	})
+
 	it('filternan', function() {
 		_.isEqual(curves.filternan([1,2,'wqd',0,-1]), [ 1, 2, '?', 0, '?' ]).should.be.true
 		_.isEqual(curves.filternan(5), 5).should.be.true
@@ -118,6 +135,14 @@ describe('Util test', function() {
         					'need a': {},'a salary': {},'i need a': {},'need a salary': {} } } }
     	utils.enrichseeds(seeds, function(err, results){
     		Object.keys(results['Offer']['i need a salary']['need']).length.should.equal(91)
+    		var seedafter = utils.afterppdb(results)
+
+    		var result = utils.retrieveIntentsync("i need a car", seedafter)
+    		var keys = _.map(result, function(num, key){ return Object.keys(num)[0] });
+    		console.log(keys)
+    		process.exit(0)
+			// _.isEqual(keys, ['Offer']).should.be.true	
+
     		done()
     	})
     })
