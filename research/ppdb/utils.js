@@ -429,7 +429,7 @@ var retrieveIntentsync = function(input, seeds)
 {
 	
     var output = []
-   	
+
 	_.each(seeds, function(value, intent, list){ 
 		_.each(seeds[intent], function(value, keyphrase, list){ 
 			_.each(seeds[intent][keyphrase], function(value, ngram, list){
@@ -463,20 +463,24 @@ var  localizeinter = function(list)
 	var output = []
 
 	_.each(list, function(value, key, list){
+		console.log(key)
 		var inserted = false
 		_.each(output, function(cluster, keycl, list){
 			_.each(cluster, function(elem, key, list){
-				if (bars.intersection(elem['position'], value['position']))
-					{ 
-					output[keycl].push(value)
-					inserted = true
+				if (!inserted)
+					{
+					if (bars.intersection(elem['position'], value['position']))
+						{ 
+						output[keycl].push(value)
+						inserted = true
+						}
 					}
 			}, this)
 		 }, this) 
 		if (!inserted)
 			output.push([value])
 	}, this)
-	
+
 	return output
 }
 
@@ -1189,7 +1193,7 @@ function comparefeatures(original, features)
 function enrichseeds_original(seeds)
 {
 
-	var seeds = bar.copyobj(seeds) 
+	var seeds = bars.copyobj(seeds) 
 
 	_.each(seeds, function(keyphrases, intent, list){ 
 		_.each(keyphrases, function(grams, keyphrase, list){ 
@@ -1204,7 +1208,7 @@ function enrichseeds_original(seeds)
 
 function enrichseeds(seeds, callback)
 {
-	var seeds = bar.copyobj(seeds) 
+	var seeds = bars.copyobj(seeds) 
 
     async.eachSeries(Object.keys(seeds), function(intent, callback1){
     	async.eachSeries(Object.keys(seeds[intent]), function(keyphrase, callback2){
