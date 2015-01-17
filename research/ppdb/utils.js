@@ -1136,15 +1136,15 @@ function comparefeatures(original, features)
 
 function enrichseeds_original(seeds)
 {
-  var output = {}
-  _.each(seeds, function(value, key, list){ 
-  	output[key] = {}
-    _.each(value, function(value1, key1, list){ 
-      output[key][value1] = {}
-      output[key][value1] = [value1]
-    }, this)
-  }, this)
-  return output
+	_.each(seeds, function(keyphrases, intent, list){ 
+		_.each(keyphrases, function(grams, keyphrase, list){ 
+			_.each(grams, function(value, gram, list){ 
+				seeds[intent][keyphrase][gram] = {}
+				seeds[intent][keyphrase][gram][gram] = {}
+			}, this)
+		}, this)
+	}, this)
+  return seeds
 }
 
 function enrichseeds(seeds, callback)
@@ -1197,29 +1197,38 @@ function loadseeds(train_turns, ngram)
 	    _.each(turn[intent_field], function(keyphrase, intent, list){
 
 	      	if (!(intent in seeds))
-	        	seeds[intent] = []
+	        	seeds[intent] = {}
 
 		      if ((keyphrase != 'DEFAULT INTENT') && (keyphrase != ''))
 		      {
 
 		        keyphrase = cleanupkeyphrase(keyphrase)
 
-		        seeds[intent].push(keyphrase)
-		        seeds[intent] = _.unique(seeds[intent])
+		        seeds[intent][keyphrase] = {}
+		        seeds[intent][keyphrase][keyphrase] = {}
+
+				if (ngram == true)
+				{
+					_.each(generatengrams(keyphrase), function(value, key, list){
+		       			 seeds[intent][keyphrase][value] = {}
+					}, this)
+				}
+
+		        // seeds[intent] = _.unique(seeds[intent])
 		      } 
 	      
 	    }, this)
 	}, this)
 
-	_.each(seeds, function(listofkeys, intent, list){ 
-		_.each(listofkeys, function(keyphrase, key, list){ 
-			seeds[intent][key] = {}
-			if (ngram == true)
-				seeds[intent][key][keyphrase] = generatengrams(keyphrase)
-			else
-				seeds[intent][key][keyphrase] = keyphrase
-		}, this)
-	}, this)
+	// _.each(seeds, function(listofkeys, intent, list){ 
+	// 	_.each(listofkeys, function(keyphrase, key, list){ 
+	// 		seeds[intent][key] = {}
+	// 		if (ngram == true)
+	// 			seeds[intent][key][keyphrase] = generatengrams(keyphrase)
+	// 		else
+	// 			seeds[intent][key][keyphrase] = keyphrase
+	// 	}, this)
+	// }, this)
 
 	return seeds
 }
