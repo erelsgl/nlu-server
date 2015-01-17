@@ -43,21 +43,21 @@ function makeid(len)
 
 describe('Util test', function() {
 
-
-
 	it('localizeinter', function() {
 		var list = [
 			{'position':[0, 4]},
 			{'position':[0, 5]},
 			{'position':[2, 7]},
-			{'position':[8, 12]},
+			{'position':[8, 13]},
 			{'position':[9, 13]},
 			{'position':[20, 26]}
 		]
-
 		var output = utils.localizeinter(list)
-
 		output.length.should.equal(3)
+
+		var max = utils.maximizer(output)
+
+		_.isEqual(max, [{"position": [0,5]},{"position": [8,13]},{"position": [20,26]}]).should.be.true
 	})
 
 	it('filternan', function() {
@@ -68,7 +68,6 @@ describe('Util test', function() {
 		_.isEqual(curves.filternan([1.5,8.9]), [1.5,8.9]).should.be.true
 	})
 	
-
 	it("generatens", function(done){
 		utils.generatengramsasync("I need a money", function(err, response){
 			var gold = [ 'money', 'I need', 'need a', 'a money', 'I need a', 'need a money' ]
