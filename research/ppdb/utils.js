@@ -1204,16 +1204,21 @@ function loadseeds(train_turns, ngram)
 
 		        keyphrase = cleanupkeyphrase(keyphrase)
 
-		        if (ngram == true)
-		        {
-					seeds[intent] = seeds[intent].concat(generatengrams(keyphrase))
-		        }
-
 		        seeds[intent].push(keyphrase)
 		        seeds[intent] = _.unique(seeds[intent])
 		      } 
 	      
 	    }, this)
+	}, this)
+
+	_.each(seeds, function(listofkeys, intent, list){ 
+		_.each(listofkeys, function(keyphrase, key, list){ 
+			seeds[intent][key] = {}
+			if (ngram == true)
+				seeds[intent][key][keyphrase] = generatengrams(keyphrase)
+			else
+				seeds[intent][key][keyphrase] = keyphrase
+		}, this)
 	}, this)
 
 	return seeds
