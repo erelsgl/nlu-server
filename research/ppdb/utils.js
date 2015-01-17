@@ -344,12 +344,14 @@ var retrieveIntent = function(input, seeds, callback)
 {
     var output = []
    	async.eachSeries(Object.keys(seeds), function(intent, callback1){
-   		async.eachSeries(Object.keys(seeds[intent]), function(keyphrases, callback2){
-   			async.eachSeries(seeds[intent][keyphrases], function(phrase, callback3){
+   		async.eachSeries(Object.keys(seeds[intent]), function(keyphrase, callback2){
+   			async.eachSeries(Object.keys(seeds[intent][keyphrase]), function(ngram, callback3){
+   				async.eachSeries(Object.keys(seeds[intent][keyphrase][ngram]), function(seed, callback4){
+   			// async.eachSeries(seeds[intent][keyphrases], function(phrase, callback3){
    					// input - test utterances
 		      		var input_list = input.split(" ")
 
-		      		onlycontent(phrase, function(err, responses) {
+		      		onlycontent(seed, function(err, responses) {
 
 		      			_.each(responses, function(response, key, list){ 
 		      				var content_phrase = (response.length != 0 ? response : phrase.split(" "));
@@ -370,8 +372,10 @@ var retrieveIntent = function(input, seeds, callback)
 	          					output.push(elem)
 	        					}
         				}, this)
-        				callback3()
+        				callback4()
         			})
+				},function(err){
+				callback3()})
 			},function(err){
 				callback2()})
 		},function(err){
@@ -427,22 +431,25 @@ var retrieveIntentsync = function(input, seeds)
     var output = []
    	
 	_.each(seeds, function(value, intent, list){ 
-		_.each(seeds[intent], function(value, keyphrases, list){ 
-			_.each(seeds[intent][keyphrases], function(values, phrase, list){
-				_.each(values, function(response1, phrase, list){ 
-					_.each(values[phrase], function(response, phrase1, list){ 
+		_.each(seeds[intent], function(value, keyphrase, list){ 
+			_.each(seeds[intent][keyphrase], function(value, ngram, list){
+				_.each(seeds[intent][keyphrase][ngram], function(value, ppdb, list){
+					_.each(seeds[intent][keyphrase][ngram][ppdb], function(value, seed, list){
+				
+						var response = seed
 				        var pos = rules.compeletePhrase(input, response)
 				        if (pos != -1)
 						      	{
 	    					var elem = {}
-	    					elem[intent] = {}
-	    					elem[intent]['original seed'] = keyphrases
-	    					elem[intent]['ppdb phrase'] = phrase
-	    					elem[intent]['content of ppdb phrase'] = response
-	       					elem[intent]['position'] = [pos, pos + response.length]
+	    					elem['intent'] = intent
+	    					elem['keyphrase'] = keyphrase
+	    					elem['ngram'] = ngram
+	    					elem['ppdb'] = ppdb
+	    					elem['seed'] = seed
+	       					elem['position'] = [pos, pos + response.length]
 	      					output.push(elem)
 	    					}
-	    				}, this)
+	    			}, this)
 				}, this)
     		}, this)
     	}, this)
@@ -451,17 +458,42 @@ var retrieveIntentsync = function(input, seeds)
 	return output
 }
 
+var  localizeinter = function(list)
+{
+	var output = []
+
+	_.each(list, function(value, key, list){
+		var inserted = false
+		_.each(output, function(cluster, keycl, list){
+			_.each(cluster, function(elem, key, list){
+				if (bars.intersection(elem['position'], value['position']))
+					{ 
+					output[keycl].push(value)
+					inserted = true
+					}
+			}, this)
+		 }, this) 
+		if (!inserted)
+			output.push([value])
+	}, this)
+	
+	return output
+}
+
 var afterppdb = function(seeds)
 {
-	_.each(seeds, function(keyphrases, intent, list){ 
-		_.each(keyphrases, function(subseeds, keyphrase, list){ 
-			_.each(subseeds, function(seed, keys, list){ 
-				seeds[intent][keyphrase][keys] = {}
-				seeds[intent][keyphrase][keys][seed] = generatengrams(seed)
+	_.each(seeds, function(values, intent, list){ 
+		_.each(seeds[intent], function(value, keyphrase, list){ 
+			_.each(seeds[intent][keyphrase], function(value, ngram, list){ 
+				_.each(seeds[intent][keyphrase][ngram], function(value, ppdb, list){
+					_.each(generatengrams(ppdb), function(phrase, key, list){ 
+						seeds[intent][keyphrase][ngram][ppdb][phrase] = {}
+					}, this)	
+				}, this)	
 			}, this)
-		}, this)
-
+		}, this)	
 	}, this)	
+
 	return seeds
 }
 
@@ -1347,5 +1379,6 @@ generatengrams:generatengrams,
 generatengramsasync:generatengramsasync,
 afterppdb:afterppdb,
 retrieveIntentsync:retrieveIntentsync,
-cleanupkeyphrase:cleanupkeyphrase
+cleanupkeyphrase:cleanupkeyphrase,
+localizeinter:localizeinter
 }
