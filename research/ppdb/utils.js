@@ -455,7 +455,7 @@ var retrieveIntentsync = function(input, seeds)
     	}, this)
     }, this)
 
-	return output
+	return maximizer(localizeinter(output))
 }
 
 var  localizeinter = function(list)
@@ -501,6 +501,7 @@ var maximizer = function(list)
 
 var afterppdb = function(seeds)
 {
+	var seeds = bars.copyobj(seeds)
 	_.each(seeds, function(values, intent, list){ 
 		_.each(seeds[intent], function(value, keyphrase, list){ 
 			_.each(seeds[intent][keyphrase], function(value, ngram, list){ 
@@ -1187,6 +1188,9 @@ function comparefeatures(original, features)
 
 function enrichseeds_original(seeds)
 {
+
+	var seeds = bar.copyobj(seeds) 
+
 	_.each(seeds, function(keyphrases, intent, list){ 
 		_.each(keyphrases, function(grams, keyphrase, list){ 
 			_.each(grams, function(value, gram, list){ 
@@ -1200,18 +1204,20 @@ function enrichseeds_original(seeds)
 
 function enrichseeds(seeds, callback)
 {
-	    async.eachSeries(Object.keys(seeds), function(intent, callback1){
-	    	async.eachSeries(Object.keys(seeds[intent]), function(keyphrase, callback2){
-	    		async.eachSeries(Object.keys(seeds[intent][keyphrase]), function(ngram, callback3){
-	         		 recursionredis([ngram], [2], false, function(err,results) {
-	          		  	_.each(results, function(result, key, list){ 
-	          		  		seeds[intent][keyphrase][ngram][result] = {}
-	          		  	}, this)
-	          		  callback3()
-		      		 })
-				},function(err){callback2()})
-			},function(err){callback1()})
-		},function(err){callback(err,seeds)})
+	var seeds = bar.copyobj(seeds) 
+
+    async.eachSeries(Object.keys(seeds), function(intent, callback1){
+    	async.eachSeries(Object.keys(seeds[intent]), function(keyphrase, callback2){
+    		async.eachSeries(Object.keys(seeds[intent][keyphrase]), function(ngram, callback3){
+         		 recursionredis([ngram], [2], false, function(err,results) {
+          		  	_.each(results, function(result, key, list){ 
+          		  		seeds[intent][keyphrase][ngram][result] = {}
+          		  	}, this)
+          		  callback3()
+	      		 })
+			},function(err){callback2()})
+		},function(err){callback1()})
+	},function(err){callback(err,seeds)})
 }
 
 function generatengramsasync(sentence, callback)
@@ -1264,21 +1270,10 @@ function loadseeds(train_turns, ngram)
 					}, this)
 				}
 
-		        // seeds[intent] = _.unique(seeds[intent])
 		      } 
 	      
 	    }, this)
 	}, this)
-
-	// _.each(seeds, function(listofkeys, intent, list){ 
-	// 	_.each(listofkeys, function(keyphrase, key, list){ 
-	// 		seeds[intent][key] = {}
-	// 		if (ngram == true)
-	// 			seeds[intent][key][keyphrase] = generatengrams(keyphrase)
-	// 		else
-	// 			seeds[intent][key][keyphrase] = keyphrase
-	// 	}, this)
-	// }, this)
 
 	return seeds
 }
