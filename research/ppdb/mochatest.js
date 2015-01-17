@@ -109,22 +109,39 @@ describe('Util test', function() {
    { 'i need a salary': 
       { 'i need a salary': {},need: {},salary: {},'i need': {},
         'need a': {},'a salary': {},'i need a': {},'need a salary': {} } } }
-        var gold = {
+        var gold = 
+        {
     "Offer": {
         "i need a salary": {
-            "i need a salary": {"i need a salary": {}},
-            "need": {"need": {}},
-            "salary": {"salary": {}},
-            "i need": {"i need": {}},
-            "need a": {"need a": {}},
-            "a salary": {"a salary": {}},
-            "i need a": {"i need a": {}},
-            "need a salary": {"need a salary": {}}
+            "i need a salary": {
+                "i need a salary": {}
+            },
+            "need": {
+                "need": {}
+            },
+            "salary": {
+                "salary": {}
+            },
+            "i need": {
+                "i need": {}
+            },
+            "need a": {
+                "need a": {}
+            },
+            "a salary": {
+                "a salary": {}
+            },
+            "i need a": {
+                "i need a": {}
+            },
+            "need a salary": {
+                "need a salary": {}
+            }
         }
     }
 }
 		var output = utils.enrichseeds_original(seeds)
-		_.isEqual(gold, seeds).should.be.true
+		_.isEqual(gold, output).should.be.true
 	})
 
 	it('enrichseeds', function(done) {
@@ -137,11 +154,10 @@ describe('Util test', function() {
     		var seedafter = utils.afterppdb(results)
 
     		var result = utils.retrieveIntentsync("i need a car", seedafter)
-    		var keys = _.map(result, function(num, key){ return Object.keys(num)[0] });
-    		console.log(keys)
-    		process.exit(0)
-			// _.isEqual(keys, ['Offer']).should.be.true	
 
+    		_.isEqual(result, [ { intent: 'Offer', keyphrase: 'i need a salary',
+    							ngram: 'i need a salary', ppdb: 'i need a salary',
+    							seed: 'i need a', position: [ 0, 8 ] } ]).should.be.true
     		done()
     	})
     })
