@@ -91,48 +91,37 @@ describe('Util test', function() {
 	it('enrichseeds_original', function() {
 		var seeds = { Offer: 
    { 'i need a salary': 
-      { 'i need a salary': {},
-        need: {},
-        salary: {},
-        'i need': {},
-        'need a': {},
-        'a salary': {},
-        'i need a': {},
-        'need a salary': {} } } }
+      { 'i need a salary': {},need: {},salary: {},'i need': {},
+        'need a': {},'a salary': {},'i need a': {},'need a salary': {} } } }
         var gold = {
     "Offer": {
         "i need a salary": {
-            "i need a salary": {
-                "i need a salary": {}
-            },
-            "need": {
-                "need": {}
-            },
-            "salary": {
-                "salary": {}
-            },
-            "i need": {
-                "i need": {}
-            },
-            "need a": {
-                "need a": {}
-            },
-            "a salary": {
-                "a salary": {}
-            },
-            "i need a": {
-                "i need a": {}
-            },
-            "need a salary": {
-                "need a salary": {}
-            }
+            "i need a salary": {"i need a salary": {}},
+            "need": {"need": {}},
+            "salary": {"salary": {}},
+            "i need": {"i need": {}},
+            "need a": {"need a": {}},
+            "a salary": {"a salary": {}},
+            "i need a": {"i need a": {}},
+            "need a salary": {"need a salary": {}}
         }
     }
 }
-
 		var output = utils.enrichseeds_original(seeds)
 		_.isEqual(gold, seeds).should.be.true
 	})
+
+	it('enrichseeds', function(done) {
+		var seeds = { Offer: 
+   						{ 'i need a salary': 
+      						{ 'i need a salary': {},need: {},salary: {},'i need': {},
+        					'need a': {},'a salary': {},'i need a': {},'need a salary': {} } } }
+    	utils.enrichseeds(seeds, function(err, results){
+    		Object.keys(results['Offer']['i need a salary']['need']).length.should.equal(91)
+    		done()
+    	})
+    })
+
 
 	it('calculateparam', function() {
 		
