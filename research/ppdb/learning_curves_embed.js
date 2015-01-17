@@ -100,9 +100,11 @@ function getAverage(stat, param, trainsize, classifiers)
 		return average
 	}
 
-function extractGlobal(parameters, classifiers, trainsize, report, stat)
+function extractGlobal(parameters, classifiers, trainset, report, stat)
 	{
 	var ord = 0
+
+	var trainsize = trainset.length
 
 	if (_.size(classifiers) == 0)
 		throw new Error("List of classifiers is empty");
@@ -116,7 +118,10 @@ function extractGlobal(parameters, classifiers, trainsize, report, stat)
     			stat[param]={}
 
     		if (!(trainsize in stat[param]))
+    		{
     		stat[param][trainsize]={}
+    		stat[param][trainsize]={_size: bars.extractturns(trainset, 5).length}
+    		}
 
     		if (!(classifier in stat[param][trainsize]))
     			stat[param][trainsize][classifier] = []
@@ -147,7 +152,7 @@ function filternan(input)
 	{
 		var output = []
 		_.each(input, function(value, key, list){ 
-			if (bars.isInt(value))
+			if (bars.isNumber(value))
 			{
 				if (value != -1)
 					output.push(value)
@@ -162,7 +167,7 @@ function filternan(input)
 	}
 	else
 	{
-		if (bars.isInt(input))
+		if (bars.isNumber(input))
 		{
 			if (input != -1)
 				return input
@@ -189,10 +194,13 @@ function plot(fold, parameter, stat, classifiers)
 	if (fold != 'average')
 	{
 		_.each(stat[parameter], function(value, trainsize, list){ 
-			str += trainsize.toString() + "(2)" + "\t"
+			str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"
 			_.each(value, function(results, cl, list){ 
-				values.push(results[fold])
-				str += filternan(results[fold]) + "\t"
+				if (cl != '_size')
+				{
+					values.push(results[fold])
+					str += filternan(results[fold]) + "\t"
+				}
 			}, this)
 			str += "\n"
 		}, this)
@@ -202,7 +210,7 @@ function plot(fold, parameter, stat, classifiers)
 	{
 		_.each(stat[parameter], function(value, trainsize, list){ 
 			var average = getAverage(stat, parameter, trainsize, classifiers)
-			str += trainsize.toString() + "(2)" + "\t"+filternan(average).join("\t")+"\n"
+			str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"+filternan(average).join("\t")+"\n"
 			values = values.concat(average)
 		}, this)
 
@@ -232,30 +240,6 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		if (dataset.length == 0)
 			throw new Error("Dataset is empty");
 		
-		
-		// var cl = _.pairs(classifiers)
-		// console.log(classifiers)
-		// process.exit(0)
-
-		/*plotfor = "plot "
-		_(numOfFolds).times(function(n){
-			app = "-fold"+n+"\t"
-			header = "train\t" + _.map(cl,function(num){return num[0]}).join(app)+"-fold"+n+"\n";
-			
-			_.each(parameters,  function(value, key, list){ 
-				plotfor = plotfor + " for [i=2:"+ (_.size(cl) + 1)+"] \'"+dir+value+"-fold"+n+"\' using 1:i with lines linecolor i, "
-				fs.writeFileSync(dir+value+"-fold"+n, header, 'utf-8')
-				
-				_.each(Labels, function(rep, lab, list){ 
-					plotfor = plotfor + " for [i=2:"+ (_.size(cl) + 1)+"] \'"+dir+lab+value+"-fold"+n+"\' using 1:i with lines linecolor i, "
-					fs.writeFileSync(dir+lab+value+"-fold"+n, header, 'utf-8')
-				}, this)
-			},this)
-		
-		},this)
-*/
-		// plotfor = plotfor.substring(0,plotfor.length-2);
-
 		stat = {}
 		
 		var mytrain = []
@@ -290,12 +274,12 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 				utils.enrichseeds(seeds, function(err, seeds_ppdb){
 					seeds_ppdb_after = utils.afterppdb(seeds_ppdb)
-	      			ppdb.trainandtest(mytrainset, bars.copylist(testset), seeds_ppdb_after, 1, function(err, response_ppdb){
+	      			ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_ppdb_after, 1, function(err, response_ppdb){
 	      				stats_ppdb = response_ppdb
 	      				
 	      				bars.wrfile(__dirname + dirr+"ppdb_fold-"+fold+"_train-"+index, [seeds_ppdb, stats_ppdb])
 
-						ppdb.trainandtest(mytrainset, bars.copylist(testset), seeds_original_after, 1, function(err, response){
+						ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_original_after, 1, function(err, response){
         					setTimeout(function() {
 	      						fiber.run(response)
 							}, 1000)
@@ -308,31 +292,10 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		   		bars.wrfile(__dirname+dirr+"orig_fold-"+fold+"_train-"+index, [seeds_original, stats_original])
 				
 	  	    	// --------------TRAIN-TEST--------------
-	  	    
-
-	  	    
-
 
 		    	report.push(_.pick(stats_ppdb['stats'], parameters))
 		    	report.push(_.pick(stats_original['stats'], parameters))
-
 		    			    	
-		    	// console.log("before")
-
-		    	/*_.each(stats_ppdb['stats']['labels'], function(value, key, list){ 
-		    		if (key in Labels)
-		    			Labels[key].push(_.pick(stats_ppdb['stats']['labels'][key], parameters))
-		    	}, this)
-
-		    	
-		    	_.each(stats_original['stats']['labels'], function(value, key, list){ 
-		    		if (key in Labels)
-		    			Labels[key].push(_.pick(stats_original['stats']['labels'][key], parameters))
-		    	}, this)
-*/
-		    	// console.log("done")
-
-
 		   		var FNppdb = []
 
 		   		_.each(stats_ppdb['data'], function(turn, key, list){ 
@@ -374,100 +337,12 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		   		bars.wrfile(__dirname+dirr+"comparison_fold-"+fold+"_train-"+index+"_"+FNppdb.length+"_"+comparison.length, 
 		   			["FN of PPDB", FNppdb.length, "PPDB gain", comparison.length, seeds_ppdb_after, "FN of ppdb", FNppdb, "comparison", comparison])
 
-
-/*		    	if (stats_original['stats']['Recall'] > stats_ppdb['stats']['Recall'])
-		    	{
-		    		console.log('FOUND')
-		    		_.each(stats_ppdb['data'], function(turn, key, list){ 
-		    			console.log(stats_ppdb['data'][key]['eval']['FN']+"   "+stats_original['data'][key]['eval']['FN'])
-		    			if (stats_ppdb['data'][key]['eval']['FN'].length > 
-		    				stats_original['data'][key]['eval']['FN'].length
-		    				)
-		    				{
-		    					console.log("FN")
-		    					console.log(JSON.stringify(stats_ppdb['data'][key], null, 4))
-		    					console.log(JSON.stringify(stats_original['data'][key], null, 4))
-		    				}
-		    			if (stats_ppdb['data'][key]['eval']['TP'].length <
-		    				stats_original['data'][key]['eval']['TP'].length
-		    				)
-		    				{
-		    					console.log("TP")
-		    					console.log(JSON.stringify(stats_ppdb['data'][key], null, 4))
-		    					console.log(JSON.stringify(stats_original['data'][key], null, 4))
-		    				}
-		    		}, this)
-		    		console.log()
-		    		process.exit(0)
-		    	}
-*/
-                extractGlobal(parameters, classifiers, mytrain.length, report, stat)
-
+                extractGlobal(parameters, classifiers, mytrain, report, stat)
 
                 _.each(parameters, function(parameter, key, list){
 					plot(fold, parameter, stat, classifiers)
 					plot('average', parameter, stat, classifiers)
 				})
-
-
-/*				 _.each(Labels, function(rep, lab, list){ 
-					extractGlobal(parameters, cl, mytrain.length, Labels[lab], statl[lab])
-				}, this)
-
-				console.log(JSON.stringify(stat, null, 4))
-				process.exit(0)
-
-				// every fold file APPEND
-				/*_.each(parameters, function(parameter, key, list){
-					fold
-					stat
-
-
-					valuestring = mytrain.length +"\t"+ (_.pluck(report, value)).join("\t") +"\n" ;
-					fs.appendFileSync(dir+value+"-fold"+fold, valuestring,'utf8')
-
-					_.each(Labels, function(rep, lab, list){ 
-						valuestring = mytrain.length +"\t"+ (_.pluck(Labels[lab], value)).join("\t") +"\n" ;
-						fs.appendFileSync(dir+lab+value+"-fold"+fold, valuestring,'utf8')	
-					}, this)
-
-				},this)
-*/
-/*
-				_.each(parameters, function(param, key, list){ 
-
-					var prob = probLabel.indexOf(param) != -1
-
-					_.each(Labels, function(rep, lab, list){ 
-						fs.writeFileSync(dir+lab+param+"average", "train\t"+Object.keys(classifiers).join("\t")+"\n", 'utf-8')
-					}, this)
-
-
-					fs.writeFileSync(dir+param+"average", "train\t"+Object.keys(classifiers).join("\t")+"\n", 'utf-8')
-
-					_.each(Labels, function(rep, lab, list){ 
-						_.each(statl[lab][param], function(value, trainsize, list){ 
-							average = getAverage(statl[lab], param, trainsize, cl)
-							fs.appendFileSync(dir+lab+param+"average",trainsize +"\t"+average.join("\t")+"\n",'utf8')
-						}, this)
-					}, this)
-
-					_.each(stat[param], function(value, trainsize, list){ 
-						average = getAverage(stat, param, trainsize, cl)
-						fs.appendFileSync(dir+param+"average",trainsize +"\t"+average.join("\t")+"\n",'utf8')
-					}, this)
-
-					_.each(Labels, function(rep, lab, list){ 
-						foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+lab+param+"average"+"\' using 1:i with linespoints linecolor i"
-						com = gnuplot +" -p -e \"reset; "+ (prob ? "set yrange [0:1];" : "")+" set xlabel \'Number of dialogues\'; set ylabel \'"+param+"\' ;set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir+lab+param+"average.png\'; set key autotitle columnhead; plot "+foldcom +"\""
-						result = execSync.run(com)
-					}, this)
-
-					foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+param+"average"+"\' using 1:i with linespoints linecolor i"
-					com = gnuplot +" -p -e \"reset; "+ (prob ? "set yrange [0:1];" : "")+" set xlabel \'Number of dialogues\'; set ylabel \'"+param+"\' ;set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + param+"average.png\'; set key autotitle columnhead; plot "+foldcom +"\""
-					result = execSync.run(com)
-
-				}, this)*/
 
 			} //while (index < train.length)
 			}); //fold
