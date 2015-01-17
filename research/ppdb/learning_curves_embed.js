@@ -326,8 +326,8 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 					{
 					if (stats_ppdb['data'][key]['eval']['FN'].length > stats_original['data'][key]['eval']['FN'].length)
 						{
-							console.log(stats_ppdb['data'][key])
-							console.log(stats_original['data'][key])
+							console.log(JSON.stringify(stats_ppdb['data'][key], null, 4))
+							console.log(JSON.stringify(stats_original['data'][key], null, 4))
 							console.log()
 							process.exit(0)
 						}	
@@ -371,7 +371,7 @@ if (process.argv[1] === __filename)
 					  'AcceptF1','AcceptPrecision','AcceptRecall', 'AcceptFN', 
 					  'GreetF1','GreetPrecision','GreetRecall', 'GreetFN'
 					]
-	learning_curves(classifiers, dataset, parameters, 10/*step*/, 2/*step0*/, 18/*limit*/,  10/*numOfFolds*/, function(){
+	learning_curves(classifiers, dataset, parameters, 10/*step*/, 2/*step0*/, 18/*limit*/,  5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
