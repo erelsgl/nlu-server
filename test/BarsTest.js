@@ -63,7 +63,14 @@ describe('Bars utilities', function() {
 		_.isEqual(bars.biunormalizer("do you agree to start with 12,000"), "do you agree to start with 12000").should.be.true
 	})
 	
-
+	it('intersection', function() {
+    	bars.intersection([5,10], [8,15]).should.be.true
+    	bars.intersection([5,10], [12,15]).should.be.false
+    	bars.intersection([5,10], [5,10]).should.be.true
+    	bars.intersection([0,10], [5,10]).should.be.true
+    	bars.intersection([0,4], [5,10]).should.be.false
+    })
+	
 	it('uniqueArray', function() {
 		var array = [['accept',[0,1]], ['accept',[2,1]], ['accept',[0,1]]]
 		var output = bars.uniqueArray(array)
