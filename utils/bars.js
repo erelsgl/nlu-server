@@ -2732,7 +2732,7 @@ function biunormalizer(sentence) {
   return regexpNormalizer(sentence);
 }
 
-function copylist(list)
+function copyobj(list)
 {
   return JSON.parse(JSON.stringify(list));
 }
@@ -2787,9 +2787,21 @@ function isInt(value) {
          !isNaN(parseInt(value, 10));
 }
 
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function intersection(begin, end)
+  {
+    if ((begin[0]<=end[0])&&(begin[1]>=end[0]))
+      return true
+    if ((begin[0]>=end[0])&&(begin[0]<=end[1]))
+      return true
+    return false
+  }
 
 module.exports = {
-  copylist:copylist,
+  copyobj:copyobj,
 	// aggregate_sagae_improved: aggregate_sagae_improved,
 	aggregate_sagae: aggregate_sagae, 
 	convertlabeltree: convertlabeltree,
@@ -2853,5 +2865,7 @@ wrfile:wrfile,
 ispermittedturn:ispermittedturn,
 loadstopwords:loadstopwords,
 isstopword:isstopword,
-isInt:isInt
+isInt:isInt,
+isNumber:isNumber,
+intersection:intersection
 }
