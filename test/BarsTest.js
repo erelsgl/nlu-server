@@ -26,11 +26,16 @@ describe('Bars utilities', function() {
 		filtered.length.should.equal(2)
 	})
 
-	it('copylist', function() {	
+	it('copyobj', function() {	
 		var list = [{'one':[1,1,1]}, {'two':[2,2,2]}]
-		var copylist = bars.copylist(list)
+		var copylist = bars.copyobj(list)
 		copylist[0]['one'].push(1)
 		list[0]['one'].length.should.equal(3)
+
+		var hash = {'one':1, 'two':2}
+		var copyhash = bars.copyobj(list)
+		copyhash['one'] = 2
+		hash['one'].should.equal(1)
 	})
 
 	it('biunormalizer', function() {
