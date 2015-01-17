@@ -1149,19 +1149,18 @@ function enrichseeds_original(seeds)
 
 function enrichseeds(seeds, callback)
 {
-	var output = {}
-
 	    async.eachSeries(Object.keys(seeds), function(intent, callback1){
-	    	output[intent] = {}
-	    	async.eachSeries(seeds[intent], function(value1, callback2){
-	          recursionredis([value1], [1], false, function(err,actual) {
-	            output[intent][value1] = actual
-	            callback2()
-		       })
+	    	async.eachSeries(Object.keys(seeds[intent]), function(keyphrase, callback2){
+	    		async.eachSeries(Object.keys(seeds[intent][keyphrase]), function(ngram, callback3){
+	         		 recursionredis([ngram], [2], false, function(err,results) {
+	          		  	_.each(results, function(result, key, list){ 
+	          		  		seeds[intent][keyphrase][ngram][result] = {}
+	          		  	}, this)
+	          		  callback3()
+		      		 })
+				},function(err){callback2()})
 			},function(err){callback1()})
-		},function(err){
-			callback(err,output)
-		})
+		},function(err){callback(err,seeds)})
 }
 
 function generatengramsasync(sentence, callback)
