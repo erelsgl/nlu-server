@@ -462,6 +462,8 @@ var  localizeinter = function(list)
 {
 	var output = []
 
+	console.log("localizeinter begin")
+
 	_.each(list, function(value, key, list){
 		var inserted = false
 		_.each(output, function(cluster, keycl, list){
@@ -481,6 +483,8 @@ var  localizeinter = function(list)
 		if (!inserted)
 			output.push([value])
 	}, this)
+
+	console.log("localizeinter end")
 
 	return output
 }
