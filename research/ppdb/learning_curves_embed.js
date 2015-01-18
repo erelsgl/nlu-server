@@ -402,5 +402,6 @@ module.exports = {
 	getAverage: getAverage,
 	filternan:filternan,
 	onlyNumbers:onlyNumbers,
-	isProb:isProb
+	isProb:isProb,
+	getAverage:getAverage
 }
