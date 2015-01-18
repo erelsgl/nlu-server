@@ -120,7 +120,7 @@ function extractGlobal(parameters, classifiers, trainset, report, stat)
     		if (!(trainsize in stat[param]))
     		{
     		stat[param][trainsize]={}
-    		stat[param][trainsize]={_size: bars.extractturns(trainset, 5).length}
+    		stat[param][trainsize]={_size: bars.extractdataset(trainset).length}
     		}
 
     		if (!(classifier in stat[param][trainsize]))
@@ -182,7 +182,6 @@ function filternan(input)
 
 function plot(fold, parameter, stat, classifiers)
 {
-
 	var values = []
 	var linetype = fold
 
@@ -204,7 +203,6 @@ function plot(fold, parameter, stat, classifiers)
 			}, this)
 			str += "\n"
 		}, this)
-
 	}
 	else
 	{
@@ -230,11 +228,8 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	var probLabel = ['F1','Precision','Recall']
 	var Labels = {'Offer':[], 'Accept':[], 'Reject':[], 'Greet':[]}
 
-
 	var f = Fiber(function() {
-
 	  	var fiber = Fiber.current;
-		
 		checkGnuPlot
 
 		if (dataset.length == 0)
@@ -250,15 +245,13 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 			while (index <= train.length)
 	  		{
-
 			  	var report = []
-				// var Labels = {'Offer':[], 'Accept':[], 'Reject':[]}
 
 				var mytrain = train.slice(0, index)
 			  	
 			  	index += (index < limit ? step0 : step)
-			  	var mytrainset = (bars.isDialogue(mytrain) ? bars.extractturns(mytrain, 5) : mytrain)
-			  	var testset = (bars.isDialogue(test) ? bars.extractturns(test) : test)
+			  	var mytrainset = (bars.isDialogue(mytrain) ? bars.extractdataset(mytrain) : mytrain)
+			  	var testset = (bars.isDialogue(test) ? bars.extractdataset(test) : test)
 
 	  			// ----------------SEEDS-------------------
 
@@ -269,8 +262,6 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 				var stats_ppdb = []
 				var seeds_ppdb_after = []
-
-				// console.log("start")
 
 				utils.enrichseeds(seeds, function(err, seeds_ppdb){
 					seeds_ppdb_after = utils.afterppdb(seeds_ppdb)
@@ -346,7 +337,6 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 			} //while (index < train.length)
 			}); //fold
-
 	})
 f.run();
 }
@@ -371,13 +361,14 @@ if (process.argv[1] === __filename)
 					  'AcceptF1','AcceptPrecision','AcceptRecall', 'AcceptFN', 
 					  'GreetF1','GreetPrecision','GreetRecall', 'GreetFN'
 					]
-	learning_curves(classifiers, dataset, parameters, 10/*step*/, 2/*step0*/, 18/*limit*/,  5/*numOfFolds*/, function(){
+	var filtered = bars.filterdataset(dataset, 5)
+
+	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 18/*limit*/,  5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
 		
 }
-
 
 module.exports = {
 	learning_curves: learning_curves, 
