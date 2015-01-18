@@ -48,6 +48,8 @@ function trainandtest(train, test, seeds, mode, callback9)
     test_turns[key]['input_modified'] = sentence
   }, this)
 
+  console.log("prepared")
+
   // 15 conversations
   // 170 utterances
 
