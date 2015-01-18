@@ -225,8 +225,6 @@ function plot(fold, parameter, stat, classifiers)
 
 function learning_curves(classifiers, dataset, parameters, step, step0, limit, numOfFolds) 
 {
-	var probLabel = ['F1','Precision','Recall']
-	var Labels = {'Offer':[], 'Accept':[], 'Reject':[], 'Greet':[]}
 
 	var f = Fiber(function() {
 	  	var fiber = Fiber.current;
@@ -361,6 +359,7 @@ if (process.argv[1] === __filename)
 					  'AcceptF1','AcceptPrecision','AcceptRecall', 'AcceptFN', 
 					  'GreetF1','GreetPrecision','GreetRecall', 'GreetFN'
 					]
+	
 	var filtered = bars.filterdataset(dataset, 5)
 
 	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 18/*limit*/,  5/*numOfFolds*/, function(){
