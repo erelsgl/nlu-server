@@ -148,9 +148,12 @@ function isProb(results)
 
 function filternan(input)
 {
+	console.log("in")
+	console.log(input)
 	if (_.isArray(input))
 	{
 		var output = []
+
 		_.each(input, function(value, key, list){ 
 			if (bars.isNumber(value))
 			{
@@ -162,21 +165,22 @@ function filternan(input)
 			else
 				output.push("?")
 		}, this)
-
-		return output
 	}
 	else
 	{
+		var output = ''
 		if (bars.isNumber(input))
 		{
 			if (input != -1)
-				return input
+				output = input
 			else
-				return "?"
+				output = "?"
 		}
 		else
-			return "?"
+			output = "?"
 	}
+	console.log(output)
+	return output
 }
 
 function thereisdata(data)
