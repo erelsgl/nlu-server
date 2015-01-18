@@ -43,6 +43,14 @@ function makeid(len)
 
 describe('Util test', function() {
 
+	
+	it('thereisdata', function() {	
+		curves.thereisdata([1,'?',3]).should.be.true
+		curves.thereisdata(['?','?']).should.be.false
+		curves.thereisdata('?').should.be.false
+		curves.thereisdata(5).should.be.true
+	})
+
 	it('getAverage', function() {
 		var stat = { "GreetRecall": 
 						{
