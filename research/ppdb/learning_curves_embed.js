@@ -79,11 +79,11 @@ classifiers
 [ [ 'PPDB', [] ], [ 'Original', [] ] ]
 */
 
-function onlyint(list)
+function onlyNumbers(list)
 {
 	var output = []
 	_.each(list, function(value, key, list){ 
-		if (bars.isInt(value))
+		if (bars.isNumber(value))
 			output.push(value)
 	}, this)
 	return output
@@ -93,7 +93,7 @@ function getAverage(stat, param, trainsize, classifiers)
 	{
 		var average = []
 		_.each(Object.keys(classifiers), function(classifier, key, list){
-			var list = onlyint(stat[param][trainsize][classifier])
+			var list = onlyNumbers(stat[param][trainsize][classifier])
 			average.push(_.reduce(list , function(memo, num){ return memo + num; }, 0)/list.length)
 		}, this)
 		
@@ -213,6 +213,7 @@ function plot(fold, parameter, stat, classifiers)
 		}, this)
 
 		linetype = 5
+
 	}
 
 	fs.appendFileSync(dir+parameter+"fold"+fold, str, 'utf-8')
