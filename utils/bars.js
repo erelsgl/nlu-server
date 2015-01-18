@@ -821,21 +821,23 @@ function extractdial(dialogue)
   return output
 }
 
-function extractturns(dataset, min)
+function extractdataset(dataset)
 {
-  var data = []
-  if (typeof min == 'undefined') min = 0
+  var output = []
+  _.each(output, function(dial, key, list){ 
+    output = output.concat(extractdial(dial))
+  }, this)
+  return output
+}
 
-    _.each(dataset, function(dial, key, list){ 
-      
-      var turns = extractdial(dial)
-      
-      if (isactivedialogue(dial) && turns.length > min)
-        data = data.concat(turns)
-
-    }, this)
-
-  return data
+function filterdataset(dataset, min)
+{
+  var output = []
+  _.each(dataset, function(dial, key, list){
+     if (extractdial(dial).length >= min)
+      output.push(dial)
+  }, this)
+  return output
 }
 
 function extractturnsold(dataset)
@@ -2867,5 +2869,7 @@ loadstopwords:loadstopwords,
 isstopword:isstopword,
 isInt:isInt,
 isNumber:isNumber,
-intersection:intersection
+intersection:intersection,
+filterdataset:filterdataset,
+extractdataset:extractdataset 
 }
