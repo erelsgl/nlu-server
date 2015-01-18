@@ -214,7 +214,7 @@ function plot(fold, parameter, stat, classifiers)
 			_.each(value, function(results, cl, list){ 
 				if (cl != '_size')
 				{
-					values.push(results[fold])
+					values.push(filternan(results[fold]))
 					str += filternan(results[fold]) + "\t"
 				}
 			}, this)
@@ -226,7 +226,7 @@ function plot(fold, parameter, stat, classifiers)
 		_.each(stat[parameter], function(value, trainsize, list){ 
 			var average = getAverage(stat, parameter, trainsize, classifiers)
 			str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"+filternan(average).join("\t")+"\n"
-			values = values.concat(average)
+			values = values.concat(filternan(average))
 		}, this)
 
 		linetype = 5
