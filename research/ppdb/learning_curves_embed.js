@@ -234,6 +234,8 @@ function plot(fold, parameter, stat, classifiers)
 	}
 
 	var plot = thereisdata(values)
+	console.log(parameter)
+	console.log(values)
 
 	fs.appendFileSync(dir+parameter+"fold"+fold, str, 'utf-8')
 
