@@ -257,18 +257,24 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				var seeds = utils.loadseeds(mytrainset, true)
 				var seeds_original = utils.enrichseeds_original(seeds)
 				var seeds_original_after = utils.afterppdb(seeds_original)
+				console.log("seeds_original_after")
 
 				var stats_ppdb = []
 				var seeds_ppdb_after = []
 
 				utils.enrichseeds(seeds, function(err, seeds_ppdb){
 					seeds_ppdb_after = utils.afterppdb(seeds_ppdb)
+					console.log("seeds_ppdb_after")
 	      			ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_ppdb_after, 1, function(err, response_ppdb){
+	      				console.log("trainandtest_ppdb")
+
 	      				stats_ppdb = response_ppdb
+
 	      				
 	      				bars.wrfile(__dirname + dirr+"ppdb_fold-"+fold+"_train-"+index, [seeds_ppdb_after, stats_ppdb])
 
 						ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_original_after, 1, function(err, response){
+        					console.log("trainandtest_original")
         					setTimeout(function() {
 	      						fiber.run(response)
 							}, 1000)
