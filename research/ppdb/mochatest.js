@@ -59,9 +59,9 @@ describe('Util test', function() {
 
 		var max = utils.maximizer(output)
 		var gold = [ { intent: 'Accept', position: [ 0, 4 ] },
-  { intent: 'Offer', position: [ 0, 5 ] },
-  { intent: 'Offer', position: [ 8, 13 ] },
-  { intent: 'Offer', position: [ 20, 26 ] } ]
+  					 { intent: 'Offer', position: [ 0, 5 ] },
+  					 { intent: 'Offer', position: [ 8, 13 ] },
+  					 { intent: 'Offer', position: [ 20, 26 ] } ]
 
 		_.isEqual(max, gold).should.be.true
 	})
@@ -167,7 +167,6 @@ describe('Util test', function() {
     		done()
     	})
     })
-
 
 	it('calculateparam', function() {
 		
