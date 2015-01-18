@@ -181,18 +181,19 @@ function filternan(input)
 
 function thereisdata(data)
 {
+	var output = false
 	if (_.isArray(data))
 		{
-			_.each(data, function(elem, key, list){ 
-				if (elem != '?')
-					return true
+			_.each(data, function(elem, key, list){
+				if (elem != '?')				
+					output = true
 			}, this)
 		}
 	else
 		if (data != '?')
-			return true
+			output = true
 
-	return false
+	return output
 }
 
 
@@ -403,5 +404,6 @@ module.exports = {
 	filternan:filternan,
 	onlyNumbers:onlyNumbers,
 	isProb:isProb,
-	getAverage:getAverage
+	getAverage:getAverage,
+	thereisdata:thereisdata
 }
