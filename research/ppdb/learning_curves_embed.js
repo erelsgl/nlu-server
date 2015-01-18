@@ -179,6 +179,22 @@ function filternan(input)
 	}
 }
 
+function thereisdata(data)
+{
+	if (_.isArray(data))
+		{
+			_.each(data, function(elem, key, list){ 
+				if (elem != '?')
+					return true
+			}, this)
+		}
+	else
+		if (data != '?')
+			return true
+
+	return false
+}
+
 
 function plot(fold, parameter, stat, classifiers)
 {
@@ -216,11 +232,16 @@ function plot(fold, parameter, stat, classifiers)
 
 	}
 
+	var plot = thereisdata(values)
+
 	fs.appendFileSync(dir+parameter+"fold"+fold, str, 'utf-8')
 
-	var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+parameter+"fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
-	var com = gnuplot +" -p -e \"reset; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
-	result = execSync.run(com)
+	if (plot)
+	{
+		var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+parameter+"fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
+		var com = gnuplot +" -p -e \"reset; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+		result = execSync.run(com)
+	}
 }
 
 
