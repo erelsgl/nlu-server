@@ -43,6 +43,23 @@ function makeid(len)
 
 describe('Util test', function() {
 
+	it('getAverage', function() {
+		var stat = { "GreetRecall": 
+						{
+		        		"2": {
+		            			"_size": 19,
+		            			"PPDB": [ 1, 2, 3, 0.5 ],
+		            			"Original": [ 0.6 ]
+		        			 }
+	    				}
+	    			}
+
+		var classifiers = { PPDB: [], Original: [] }
+
+		_.isEqual(curves.getAverage(stat, 'GreetRecall', 2, classifiers),   [ 1.625, 0.6 ]).should.be.true
+	})
+
+
 	it('onlyNumbers', function() {
 		_.isEqual(curves.onlyNumbers([1,2,0.5,-8,'5','abs','3']), [ 1, 2, 0.5, -8, '5', '3' ]).should.be.true
 	})
@@ -52,10 +69,6 @@ describe('Util test', function() {
 		curves.isProb([0.1,0.7,0.9]).should.be.true
 		curves.isProb([0.1,0.7,1.9]).should.be.false
 	})
-
-
-
-
 
 	it('localizeinter', function() {
 		var list = [
