@@ -354,9 +354,9 @@ if (process.argv[1] === __filename)
 	// var classifiers  = {}
 	var parameters = [
 					  'F1','Precision','Recall', 'FN', 
-					  'OfferF1', 'OfferPrecision', 'OfferRecall', 'OfferFN',
-					  'RejectF1','RejectPrecision','RejectRecall', 'RejectFN', 
-					  'AcceptF1','AcceptPrecision','AcceptRecall', 'AcceptFN', 
+					  'OfferF1', 'OfferPrecision', 'OfferRecall', 'OfferFN', 'OfferTP',
+					  'RejectF1','RejectPrecision','RejectRecall', 'RejectFN', 'RejectTP',
+					  'AcceptF1','AcceptPrecision','AcceptRecall', 'AcceptFN', 'AcceptTP',
 					  'GreetF1','GreetPrecision','GreetRecall', 'GreetFN'
 					]
 	
