@@ -56,8 +56,10 @@ function trainandtest(train, test, seeds, mode, callback9)
   var train_turns = train
   var stats = new PrecisionRecall()
 
-  async.eachSeries(test_turns, function(turn, callback1){
-
+  // async.eachSeries(test_turns, function(turn, callback1){
+  _.each(test_turns, function(turn, key, list){ 
+  
+  
       var out = utils.retrieveIntentsync(turn['input_modified'], seeds)
     // utils.retrieveIntent(turn['input_modified'], seeds, function(err, out){
 
@@ -84,14 +86,21 @@ function trainandtest(train, test, seeds, mode, callback9)
         turn['eval'] = out
       }
 
-      callback1()
-    // })
-  }, function(err){
-      var output = {}
-      output['data'] = test_turns
-      output['stats'] = stats.retrieveStats()
-      callback9(err, output)
-  })
+      // callback1()
+  }, this)
+
+  var output = {}
+  output['data'] = test_turns
+  output['stats'] = stats.retrieveStats()
+  return output
+
+
+  // }, function(err){
+  //     var output = {}
+  //     output['data'] = test_turns
+  //     output['stats'] = stats.retrieveStats()
+  //     callback9(err, output)
+  // })
 }
 
 
