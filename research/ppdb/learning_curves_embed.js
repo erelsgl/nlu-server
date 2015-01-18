@@ -148,8 +148,6 @@ function isProb(results)
 
 function filternan(input)
 {
-	console.log("in")
-	console.log(input)
 	if (_.isArray(input))
 	{
 		var output = []
@@ -179,7 +177,6 @@ function filternan(input)
 		else
 			output = "?"
 	}
-	console.log(output)
 	return output
 }
 
