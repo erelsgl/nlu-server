@@ -143,7 +143,7 @@ function checkGnuPlot()
 
 function isProb(results)
 {
-	return _.filter(results, function(num){ return num > 1}).length == 0
+	return _.filter(results, function(num){ return ((num > 1)  || (num<0))}).length == 0
 }
 
 function filternan(input)
@@ -400,5 +400,7 @@ module.exports = {
 	learning_curves: learning_curves, 
 	extractGlobal: extractGlobal,
 	getAverage: getAverage,
-	filternan:filternan
+	filternan:filternan,
+	onlyNumbers:onlyNumbers,
+	isProb:isProb
 }
