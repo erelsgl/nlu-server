@@ -43,6 +43,20 @@ function makeid(len)
 
 describe('Util test', function() {
 
+	it('onlyNumbers', function() {
+		_.isEqual(curves.onlyNumbers([1,2,0.5,-8,'5','abs','3']), [ 1, 2, 0.5, -8, '5', '3' ]).should.be.true
+	})
+
+	it('isProb', function() {
+		curves.isProb([1.2,0.5,-0.6]).should.be.false
+		curves.isProb([0.1,0.7,0.9]).should.be.true
+		curves.isProb([0.1,0.7,1.9]).should.be.false
+	})
+
+
+
+
+
 	it('localizeinter', function() {
 		var list = [
 			{'intent': 'Accept','position':[0, 4]},
