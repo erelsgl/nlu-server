@@ -824,7 +824,7 @@ function extractdial(dialogue)
 function extractdataset(dataset)
 {
   var output = []
-  _.each(output, function(dial, key, list){ 
+  _.each(dataset, function(dial, key, list){ 
     output = output.concat(extractdial(dial))
   }, this)
   return output
@@ -2835,7 +2835,6 @@ module.exports = {
 	comparelabels:comparelabels,
 	aggregate_rilesbased:aggregate_rilesbased,
 	extractturnssingle: extractturnssingle,
-	extractturns: extractturns,
 	isDialogue:isDialogue,
 	average:average,
 	complement_number:complement_number,
@@ -2871,5 +2870,6 @@ isInt:isInt,
 isNumber:isNumber,
 intersection:intersection,
 filterdataset:filterdataset,
-extractdataset:extractdataset 
+extractdataset:extractdataset, 
+extractdial:extractdial
 }
