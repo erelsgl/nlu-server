@@ -266,7 +266,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	      			ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_ppdb_after, 1, function(err, response_ppdb){
 	      				stats_ppdb = response_ppdb
 	      				
-	      				bars.wrfile(__dirname + dirr+"ppdb_fold-"+fold+"_train-"+index, [seeds_ppdb, stats_ppdb])
+	      				bars.wrfile(__dirname + dirr+"ppdb_fold-"+fold+"_train-"+index, [seeds_ppdb_after, stats_ppdb])
 
 						ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_original_after, 1, function(err, response){
         					setTimeout(function() {
@@ -278,7 +278,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 		    	var stats_original = Fiber.yield()
 
-		   		bars.wrfile(__dirname+dirr+"orig_fold-"+fold+"_train-"+index, [seeds_original, stats_original])
+		   		bars.wrfile(__dirname+dirr+"orig_fold-"+fold+"_train-"+index, [seeds_original_after, stats_original])
 				
 	  	    	// --------------TRAIN-TEST--------------
 
@@ -361,6 +361,7 @@ if (process.argv[1] === __filename)
 					]
 	
 	var filtered = bars.filterdataset(dataset, 5)
+	console.log(filtered.length)
 
 	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 18/*limit*/,  5/*numOfFolds*/, function(){
 		console.log()
