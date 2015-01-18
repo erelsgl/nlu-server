@@ -265,21 +265,19 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				utils.enrichseeds(seeds, function(err, seeds_ppdb){
 					seeds_ppdb_after = utils.afterppdb(seeds_ppdb)
 					console.log("seeds_ppdb_after")
-	      			ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_ppdb_after, 1, function(err, response_ppdb){
-	      				console.log("trainandtest_ppdb")
+	      			// ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_ppdb_after, 1, function(err, response_ppdb){
+	      			stats_ppdb = ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_ppdb_after, 1)
 
-	      				stats_ppdb = response_ppdb
+	      			bars.wrfile(__dirname + dirr+"ppdb_fold-"+fold+"_train-"+index, [seeds_ppdb_after, stats_ppdb])
 
-	      				
-	      				bars.wrfile(__dirname + dirr+"ppdb_fold-"+fold+"_train-"+index, [seeds_ppdb_after, stats_ppdb])
+					var stats_original = ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_original_after, 1)
+					// ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_original_after, 1, function(err, response){
 
-						ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_original_after, 1, function(err, response){
-        					console.log("trainandtest_original")
-        					setTimeout(function() {
-	      						fiber.run(response)
-							}, 1000)
-		    			})
-		    		})
+       				setTimeout(function() {
+	   					fiber.run(stats_original)
+					}, 1000)
+		    			// })
+		    		// })
 				})
 
 		    	var stats_original = Fiber.yield()
