@@ -393,7 +393,7 @@ if (process.argv[1] === __filename)
 	var filtered = bars.filterdataset(dataset, 5)
 	console.log(filtered.length)
 
-	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 18/*limit*/,  5/*numOfFolds*/, function(){
+	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
