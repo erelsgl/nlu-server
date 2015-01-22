@@ -381,7 +381,7 @@ if (process.argv[1] === __filename)
 		'PPDB': [],
 		'Original': []
 	}
-	// var classifiers  = {}
+
 	var parameters = [
 					  'F1','Precision','Recall', 'FN', 
 					  'OfferF1', 'OfferPrecision', 'OfferRecall', 'OfferFN', 'OfferTP',
