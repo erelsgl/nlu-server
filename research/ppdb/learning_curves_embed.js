@@ -243,7 +243,7 @@ function plot(fold, parameter, stat, classifiers)
 	if (plot)
 	{
 		var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+parameter+"fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
-		var com = gnuplot +" -p -e \"reset; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+		var com = gnuplot +" -p -e \"reset; set title \'"+stat['_sized']+"("+stat['_sizec']+")\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
 		result = execSync.run(com)
 	}
 }
@@ -357,6 +357,9 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		   			["FN of PPDB", FNppdb.length, "PPDB gain", comparison.length, seeds_ppdb_after, "FN of ppdb", FNppdb, "comparison", comparison])
 
                 extractGlobal(parameters, classifiers, mytrain, report, stat)
+
+                stat['_sized'] = test.length
+                stat['_sizec'] = bars.extractdataset(test).length
 
                 _.each(parameters, function(parameter, key, list){
 					plot(fold, parameter, stat, classifiers)
