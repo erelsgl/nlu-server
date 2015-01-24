@@ -16,7 +16,7 @@ var limdu = require("limdu");
 var trainutils = require('./utils/bars')
 var rules = require("./research/rule-based/rules.js")
 var natural = require('natural');
-
+var execSync = require('execSync');
 var classifiers = limdu.classifiers;
 var ftrs = limdu.features;
 var Hierarchy = require(__dirname+'/Hierarchy');
@@ -32,6 +32,13 @@ var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$+-]+/});
 
 var regexpNormalizer = ftrs.RegexpNormalizer(
 		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json')));
+
+function featureExpansion(listoffeatures)
+{
+	fs.writeFileSync(__dirname+"/utils/featureexp", listoffeatures, 'utf-8')
+	var result = execSync.run("node "+__dirname+"/utils/featureexp.js");
+}
+
 
 function instanceFilterShortString(datum)
 {
@@ -61,11 +68,11 @@ function normalizer1(sentence) {
 	// if ((sentence.indexOf("+")==-1) && (sentence.indexOf("-")==-1))
 		// {
 		// console.log("verbnegation")
-	var verbs = truth.verbnegation(sentence.replace('without','no'), truth_filename)
+	// var verbs = truth.verbnegation(sentence.replace('without','no'), truth_filename)
 		// }
-	sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+	// sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
 	
-	_.each(verbs, function(value, key, list){ 
+	/*_.each(verbs, function(value, key, list){ 
 		if (value['polarity'] == 'P')
 			{
 			if (sentence.indexOf(value['form']+" ") != -1)
@@ -80,7 +87,7 @@ function normalizer1(sentence) {
 			else
 				sentence = sentence.replace(" "+value['form'], " "+value['form']+"-")
 			}
-	}, this)
+	}, this)*/
 
 	sentence = sentence.replace(/<VALUE>/g,'')
 	sentence = sentence.replace(/<ATTRIBUTE>/g,'')
@@ -586,6 +593,7 @@ module.exports = {
 		featureExtractor: featureExtractor,
 		featureExtractorUnigram: featureExtractorUnigram,
 		instanceFilter: instanceFilterShortString,
+		featureExpansion:featureExpansion,
 
 		WinnowSegmenter: WinnowSegmenterBeginEnd,
 
