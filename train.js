@@ -191,7 +191,7 @@ if (test_ppdb)
 	var dataset = bars.extractdataset(data)
 	var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.3))
 
-	var stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, dataset['train'], dataset['test'], 5)
+	var stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallyIntent, dataset['train'], dataset['test'], 5)
 	console.log(stats)
 	process.exit(0)
 }
