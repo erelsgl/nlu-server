@@ -16,7 +16,8 @@ var natural = require('natural');
 describe('Classifiers functions', function() {
 
 	it('featureExpansion', function() {
-		classifiers.featureExpansion(["1","2","3"])
+		var out = classifiers.featureExpansion(["offer","propose","give"])
+		Object.keys(out).length.should.be.above(3)
 	})
 
 	it('correctly filters instances', function() {
