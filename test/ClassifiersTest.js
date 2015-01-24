@@ -15,6 +15,10 @@ var natural = require('natural');
 
 describe('Classifiers functions', function() {
 
+	it('featureExpansion', function() {
+		classifiers.featureExpansion(["1","2","3"])
+	})
+
 	it('correctly filters instances', function() {
 		classifiers.instanceFilter("1 2  3").should.be.equal.true
 	})
