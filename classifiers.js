@@ -35,8 +35,10 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 
 function featureExpansion(listoffeatures)
 {
-	fs.writeFileSync(__dirname+"/utils/featureexp", listoffeatures, 'utf-8')
-	var result = execSync.run("node "+__dirname+"/utils/featureexp.js");
+	var output = []
+	fs.writeFileSync(__dirname+"/utils/featureexp_input", JSON.stringify(listoffeatures, null, 4), 'utf-8')
+	var result = execSync.run("node "+__dirname+"/utils/featureexp.js '[1]'");
+	return JSON.parse(fs.readFileSync(__dirname+"/utils/featureexp_output"))
 }
 
 
@@ -451,6 +453,7 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 		normalizer: normalizer,
 
 		inputSplitter: inputSplitter,
+		featureExpansion:featureExpansion,
 		// inputSplitter: inputSplitter,
 		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
 
