@@ -41,7 +41,8 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 
 // var do_small_temporary_serialization_test = false
 
-var do_test_seed = true
+var test_ppdb = true
+var do_test_seed = false
 var check_dial = false
 var do_keyphrase_predict_annotaiton = false
 var counting = false
@@ -184,6 +185,17 @@ check_dial
 turkers_keyphrases_only_rule.json
 students_keyphrases_only_rule.json*/
 
+if (test_ppdb)
+{
+	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))
+	var dataset = bars.extractdataset(data)
+	var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.3))
+
+	var stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallySagae, dataset['train'], dataset['test'], 5)
+	console.log(stats)
+	process.exit(0)
+}
+
 if (check_dial)
 {
 	var turns = {}
@@ -202,8 +214,6 @@ if (check_dial)
 
 	process.exit(0)
 }
-
-
 
 if (do_test_seed)
 {
@@ -238,7 +248,6 @@ if (do_test_seed)
 var f = Fiber(function() {
   		var fiber = Fiber.current;
 
-
 if (counting)
 {
 	// 346 total
@@ -247,7 +256,6 @@ if (counting)
 	var dataset = bars.extractturns(data)
 	console.log(dataset.length)
 	process.exit(0)
-
 }
 
 if (default_intent_analysis)
@@ -339,7 +347,6 @@ if (sequnce_classification)
 
 	console.log("test turn "+ testset.length)
 	console.log("train turns "+ trainset.length)
-
 
 	var seeds = ppdb_utils.loadseeds(trainset)
 	// var seeds_original = ppdb_utils.enrichseeds_original(seeds)
