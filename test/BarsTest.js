@@ -6,7 +6,8 @@
 
 var should = require('should')
 var bars = require('../utils/bars')
-var _ = require('underscore')
+var _ = require('underscore')._;
+
 var rules = require("../research/rule-based/rules.js")
 var ppdb = require("../research/ppdb/utils.js")
 
@@ -45,6 +46,27 @@ describe('Bars utilities', function() {
 		bars.isunigram("year month").should.be.false
 	})
 
+	it('onlyunigrams', function() {
+		var input = {
+			' 1 2':[['1'],['2']],
+			'3':[['33'],['333']],
+			' 4 ':[[' 44 '],['444']],
+			'5':[['5 5'],['555']]
+			}
+
+		var output = bars.onlyunigrams(input)
+
+		var gold = 	{ 
+			'3': [ [ '33' ], [ '333' ] ],
+  			'5': [ [ '555' ] ],
+  			' 4 ': [ [ ' 44 ' ], [ '444' ] ] 
+  		}
+			
+
+		_.isEqual(gold, output).should.be.true
+	})
+
+	
 	it('biunormalizer', function() {
 
 		var sen = 'Can I work as a Team Manager? I will work ten hours'
