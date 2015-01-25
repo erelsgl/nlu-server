@@ -2810,6 +2810,26 @@ function isunigram(string)
       return false
   }
 
+function onlyunigrams(strhash)
+{
+  var output = {}
+    _.each(strhash, function(value, key, list){ 
+      if (isunigram(key))
+      {
+        if (!(key in output))
+          output[key] = []
+
+        _.each(strhash[key], function(value1, key1, list){
+          if (isunigram(value1[0]))
+            {
+            output[key].push(value1)
+            }
+        }, this)
+      }
+    }, this)
+  return output
+}
+
 module.exports = {
   copyobj:copyobj,
 	// aggregate_sagae_improved: aggregate_sagae_improved,
@@ -2880,5 +2900,6 @@ intersection:intersection,
 filterdataset:filterdataset,
 extractdataset:extractdataset, 
 extractdial:extractdial,
-isunigram:isunigram
+isunigram:isunigram,
+onlyunigrams:onlyunigrams
 }
