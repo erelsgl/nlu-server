@@ -189,6 +189,7 @@ if (test_ppdb)
 {
 	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))
 	var dataset = bars.extractdataset(data)
+	var dataset = dataset.splice(0,30)
 	var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.3))
 
 	var stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallyIntent, dataset['train'], dataset['test'], 5)
