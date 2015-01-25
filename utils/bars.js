@@ -2802,6 +2802,14 @@ function intersection(begin, end)
     return false
   }
 
+function isunigram(string)
+  {
+    if (string.trim().indexOf(" ") == -1)
+      return true
+    else
+      return false
+  }
+
 module.exports = {
   copyobj:copyobj,
 	// aggregate_sagae_improved: aggregate_sagae_improved,
@@ -2871,5 +2879,6 @@ isNumber:isNumber,
 intersection:intersection,
 filterdataset:filterdataset,
 extractdataset:extractdataset, 
-extractdial:extractdial
+extractdial:extractdial,
+isunigram:isunigram
 }
