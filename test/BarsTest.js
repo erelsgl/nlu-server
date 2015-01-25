@@ -38,6 +38,13 @@ describe('Bars utilities', function() {
 		hash['one'].should.equal(1)
 	})
 
+	it('isunigram', function() {
+		bars.isunigram("year").should.be.true
+		bars.isunigram(" year").should.be.true
+		bars.isunigram(" ye ar").should.be.false
+		bars.isunigram("year month").should.be.false
+	})
+
 	it('biunormalizer', function() {
 
 		var sen = 'Can I work as a Team Manager? I will work ten hours'
