@@ -51,7 +51,8 @@ describe('Bars utilities', function() {
 			' 1 2':[['1'],['2']],
 			'3':[['33'],['333']],
 			' 4 ':[[' 44 '],['444']],
-			'5':[['5 5'],['555']]
+			'5':[['5 5'],['555']],
+			'6':[['6 6']]
 			}
 
 		var output = bars.onlyunigrams(input)
@@ -60,8 +61,7 @@ describe('Bars utilities', function() {
 			'3': [ [ '33' ], [ '333' ] ],
   			'5': [ [ '555' ] ],
   			' 4 ': [ [ ' 44 ' ], [ '444' ] ] 
-  		}
-			
+  		}	
 
 		_.isEqual(gold, output).should.be.true
 	})
