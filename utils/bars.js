@@ -2812,16 +2812,16 @@ function isunigram(string)
 
 function onlyunigrams(strhash)
 {
+  // console.log(strhash)
   var output = {}
     _.each(strhash, function(value, key, list){ 
       if (isunigram(key))
       {
-        if (!(key in output))
-          output[key] = []
 
         _.each(strhash[key], function(value1, key1, list){
           if (isunigram(value1[0]))
             {
+            if (!(key in output)) output[key] = []
             output[key].push(value1)
             }
         }, this)
