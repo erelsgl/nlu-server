@@ -33,14 +33,22 @@ var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$+-]+/});
 var regexpNormalizer = ftrs.RegexpNormalizer(
 		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json')));
 
-function featureExpansion(listoffeatures)
+function featureExpansion(listoffeatures, scale, phrase)
 {
+	listoffeatures = _.unique(listoffeatures)
+	// console.log("featureExpansion scale"+scale+ " phrase "+phrase  )
 	var output = []
 	fs.writeFileSync(__dirname+"/utils/featureexp_input", JSON.stringify(listoffeatures, null, 4), 'utf-8')
-	var result = execSync.run("node "+__dirname+"/utils/featureexp.js '[1]'");
-	return JSON.parse(fs.readFileSync(__dirname+"/utils/featureexp_output"))
+	var result = execSync.run("node "+__dirname+"/utils/featureexp.js '"+scale+"' "+phrase);
+	var results = JSON.parse(fs.readFileSync(__dirname+"/utils/featureexp_output"))
+	// console.log("featureExpansion "+ Object.keys(results).length)
+	return results
 }
 
+function featureExpansionEmpty(listoffeatures)
+{
+	return {}
+}
 
 function instanceFilterShortString(datum)
 {
@@ -453,7 +461,7 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 		normalizer: normalizer,
 
 		inputSplitter: inputSplitter,
-		featureExpansion:featureExpansion,
+
 		// inputSplitter: inputSplitter,
 		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
 
@@ -483,6 +491,50 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 		TestSplitLabel: TestSplitLabel
 	});
 };
+
+
+var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel, featureExpansion, featureExpansionScale, featureExpansionPhrase) {
+// var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
+	return classifiers.EnhancedClassifier.bind(0, {
+		normalizer: normalizer,
+
+		inputSplitter: inputSplitter,
+
+		featureExpansion: featureExpansion,
+		featureExpansionScale: featureExpansionScale,
+		featureExpansionPhrase:featureExpansionPhrase,
+		// inputSplitter: inputSplitter,
+		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
+
+		featureExtractor: featureExtractor,
+
+		featureLookupTable: featureLookupTable,
+		labelLookupTable: labelLookupTable,
+		
+		featureExtractorForClassification: [
+			ftrs.Hypernyms(JSON.parse(fs.readFileSync(__dirname + '/knowledgeresources/hypernyms.json'))),
+		],
+
+		multiplyFeaturesByIDF: true,
+
+		TfIdfImpl: natural.TfIdf,
+
+		tokenizer: new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$,]+/}),
+
+		//minFeatureDocumentFrequency: 2,
+
+		pastTrainingSamples: [], // to enable retraining
+			
+		classifierType: classifierType,
+
+		InputSplitLabel: InputSplitLabel,
+		OutputSplitLabel: OutputSplitLabel,
+		TestSplitLabel: TestSplitLabel
+	});
+};
+
+
+
 // var enhanceis = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel) {
 // // var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 // 	return classifiers.EnhancedClassifier.bind(0, {
@@ -664,7 +716,10 @@ module.exports = {
 		// PartialClassificationEquallyGreedyTrick: enhance3(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_label_trick),
 
 		// separate to intent/attribute/value then retrieve just intent and test only on intent
-		PartialClassificationEquallyIntent: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorBeginEnd, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent),
+		IntentClassificationExpansion1: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorBeginEnd, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansion, '[1]', 0),
+		IntentClassificationExpansion2: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorBeginEnd, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansion, '[2]', 0),
+		IntentClassificationExpansion1Phrase: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorBeginEnd, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansion, '[1]', 1),
+		IntentClassificationNoExpansion: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorBeginEnd, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansionEmpty),
 		// PartialClassificationEquallyNoIS: enhancenois(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
 	 	// PartialClassificationEquallyIS: enhanceis(PartialClassification(SvmPerfBinaryRelevanceClassifier),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
 
