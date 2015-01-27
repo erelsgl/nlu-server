@@ -7,21 +7,30 @@
 	@author Vasily Konovalov
  */
 
+
 var _ = require('underscore')._;
 var fs = require('fs');
 var execSync = require('execSync')
+var classifier = require(__dirname+"/../classifiers.js")
 var partitions = require('limdu/utils/partitions');
-var trainAndTest_hash = require('./trainAndTest').trainAndTest_hash;
-var bars = require('./bars');
-var rmdir = require('rimraf');
+var trainAndTest_hash = require(__dirname+'/trainAndTest').trainAndTest_hash;
+var bars = require(__dirname+'/bars');
 var path = require("path")
 
+
+var gnuplot = __dirname + '/gnuplot'
+var dir = "./learning_curves/"
+var dirr = "/learning_curves/"
 /* @params classifiers - classifier for learning curves
    @params dataset - dataset for evaluation, 20% is takes for evaluation
    @params parameters - parameters we are interested in 
    @params step - step to increase a train set 
 
-   The example of the input is following.
+   The example of module.exports = {
+	learning_curves: learning_curves, 
+	extractGlobal: extractGlobal,
+	getAverage: getAverage
+}the input is following.
 
 classifiers  = {
 	Adaboost: limdu.classifiers.multilabel.Adaboost, 
@@ -30,34 +39,89 @@ classifiers  = {
 
 parameters = ['F1','TP','FP','FN','Accuracy','Precision','Recall']
 */
+/*
+{
+    "F1": {
+        "2": {module.exports = {
+	learning_curves: learning_curves, 
+	extractGlobal: extractGlobal,
+	getAverage: getAverage
+}
+            "PPDB": [ 0.6666666666666666 ],
+            "Original": [ 0.16666666666666666 ]
+        }
+    },
+    "Precision": {
+        "2": {
+            "PPDB": [ 0.7777777777777778 ],
+            "Original": [ 1 ]
+        }
+    },
+    "Recall": {
+        "2": {
+            "PPDB": [ 0.5833333333333334 ],
+            "Original": [ 0.09090909090909091 ]
+        }
+    },
+    "FN": {
+        "2": {
+            "PPDB": [ 5 ],
+            "Original": [ 10 ]
+        }
+    }
+}
+param
+F1
+trainsize
+2
+[ 0.6666666666666666, 0.16666666666666666 ]
+classifiers
+[ [ 'PPDB', [] ], [ 'Original', [] ] ]
+*/
+
+function onlyNumbers(list)
+{
+	var output = []
+	_.each(list, function(value, key, list){ 
+		if (bars.isNumber(value))
+			output.push(value)
+	}, this)
+	return output
+}
+
 function getAverage(stat, param, trainsize, classifiers)
 	{
 		var average = []
-		_.each(classifiers, function(classifier_tuple, key, list){
-			var  classifier = classifier_tuple[0]
-			average.push(_.reduce(stat[param][trainsize][classifier], function(memo, num){ return memo + num; }, 0)/stat[param][trainsize][classifier].length)
+		_.each(Object.keys(classifiers), function(classifier, key, list){
+			var list = onlyNumbers(stat[param][trainsize][classifier])
+			average.push(_.reduce(list , function(memo, num){ return memo + num; }, 0)/list.length)
 		}, this)
+		
 		return average
 	}
 
-function extractGlobal(parameters, classifiers, trainsize, report, stat)
+function extractGlobal(parameters, classifiers, trainset, report, stat)
 	{
 	var ord = 0
 
-	if (classifiers.length == 0)
+	var trainsize = trainset.length
+
+	if (_.size(classifiers) == 0)
 		throw new Error("List of classifiers is empty");
 
 	if (parameters.length == 0)
 		throw new Error("List of parameters is empty");
 
-	_.each(classifiers, function(classifier_tuple, key, list){
-		var classifier = classifier_tuple[0]
+	_.each(Object.keys(classifiers), function(classifier, key, list){
 		_.each(parameters, function(param, key, list){ 
     		if (!(param in stat)) 
     			stat[param]={}
 
     		if (!(trainsize in stat[param]))
+    		{
     		stat[param][trainsize]={}
+    		stat[param][trainsize]={_size: bars.extractdataset(trainset).length}
+    		}
 
     		if (!(classifier in stat[param][trainsize]))
     			stat[param][trainsize][classifier] = []
@@ -70,180 +134,203 @@ function extractGlobal(parameters, classifiers, trainsize, report, stat)
 
 function checkGnuPlot()
 	{
-		var result = execSync.run("gnuplot -V");
+		var result = execSync.run(gnuplot);
 		if (result !=0 ) {
 			console.log("gnuplot is not found")
 			return 0
 		}
 	}
 
-function learning_curves(classifiers, dataset, parameters, step, step2, numOfFolds, datatest) {
+function isProb(results)
+{
+	return _.filter(results, function(num){ return ((num > 1)  || (num<0))}).length == 0
+}
 
-	var dir = "./learning_curves/"
+function filternan(input)
+{
+	if (_.isArray(input))
+	{
+		var output = []
 
-	// fs.rmdirSync(dir)
-	// rmdir(dir, function(error){});
-	// console.log(path.join(__dirname, dir))
-	// console.log()
-	// process.exit(0)
-	// fs.mkdirSync(dir)
-
-	checkGnuPlot
-	if (dataset.length == 0)
-		throw new Error("Dataset is empty");
-	
-	var cl = _.pairs(classifiers)
-
-	plotfor = "plot "
-	_(numOfFolds).times(function(n){
-		app = "-fold"+n+"\t"
-		header = "train\t" + _.map(cl,function(num){return num[0]}).join(app)+"-fold"+n+"\n";
-	_.each(parameters,  function(value, key, list){ 
-		plotfor = plotfor + " for [i=2:"+ (_.size(cl) + 1)+"] \'"+dir+value+"-fold"+n+"\' using 1:i with lines linecolor i, "
-		fs.writeFileSync(dir+value+"-fold"+n, header, 'utf-8', function(err) {console.log("error "+err); return 0 })
-		},this)
-	},this)
-
-	plotfor = plotfor.substring(0,plotfor.length-2);
-	stat = {}
-
-	var testtitle = ""
-	var traintitle = ""
-
-	// var test = []
-	// var mytest = []
-
-	var mytrain = []
-	// var mytrainset = []
-
-	partitions.partitions(dataset, numOfFolds, function(train, test, fold) {
-		index = step
-
-		// index = 200
-		if (datatest)
+		_.each(input, function(value, key, list){ 
+			if (bars.isNumber(value))
 			{
-			test = datatest
-	  		testtitle = "constant test "+test.length
-	  		}
-	  		// test = _.sample(datatest,  Math.round(train.length/2))
-
-		if (bars.isDialogue(test))
-			{
-			console.log("dial")
-			// var testset = bars.dividedataset(bars.extractturns(test))['one']
-			var testset = bars.extractturns(test)
-			testtitle = testtitle + "test extracted from dialogue"
+				if (value != -1)
+					output.push(value)
+				else
+					output.push("?")
 			}
+			else
+				output.push("?")
+		}, this)
+	}
+	else
+	{
+		var output = ''
+		if (bars.isNumber(input))
+		{
+			if (input != -1)
+				output = input
+			else
+				output = "?"
+		}
 		else
-			var testset = test
+			output = "?"
+	}
+	return output
+}
 
-		while (index < train.length)
-  		{
-
-	  	mytrain = train.slice(0, index)
-
-	  	if (index < 100)
-	  		index += step
-	  	else
-	  		index += step2
-
-  		report = []
-
-	    _.each(cl, function(value, classifier, list) { 
-
-	    	if (bars.isDialogue(mytrain))	
-	  		{
-	  			traintitle = "train extracted from dialogue"
-	  			// if (value[0] == "Current_baseline")
-	  			var mytrainset = bars.extractturns(mytrain)
-	  			// else
-	  				// var mytrainset = bars.extractturnssingle(mytrain)
-	  		}
-	  		else
-	  			mytrainset = mytrain
-
-	    	var stats = trainAndTest_hash(value[1], mytrainset, testset, 5)
-
-	     	// console.log(value[0])
-	    	// console.log(JSON.stringify(stats[0]['data'], null, 4))
-	    	// console.log(JSON.stringify(stats[0]['labels'], null, 4))
-	    	// console.log(JSON.stringify(stats[0]['labels'], null, 4))
-	    	// console.log()
-	    	// process.exit(0)
-
-	    	// console.log(JSON.stringify(stats[0], null, 4))
-	    	// console.log(JSON.stringify(stats[0]['labels'], null, 4))
-
-	    	// console.log()
-	    	// process.exit(0)
-
-	    	console.log(mytrainset.length)
-
-	    	// if (stats[0]['labels']['Reject']['F1'] == -1)
-	    		// stats[0]['labels']['Reject']['F1'] = 0
-	    	// console.log(stats)
-	    	// process.exit(0)
-
-	    	report.push(_.pick(stats[0]['stats'], parameters))
-	    	// report.push(_.pick(stats[0]['labels']['Reject'], parameters))
-
-	    })
-
-		console.log(JSON.stringify(report, null, 4))
-		// console.log()
-		// process.exit(0)
-
-	    // console.log()
-	    // process.exit(0)
-
-	    extractGlobal(parameters, cl, mytrain.length, report, stat)
-
-	    // console.log(JSON.stringify(stat, null, 4))
-	    // bars.compareresults(clas[0],res[0],clas[1],res[1])
-	    // header
-		_.each(parameters, function(value, key, list){
-			valuestring = mytrain.length +"\t"+ (_.pluck(report, value)).join("\t") +"\n" ;
-			fs.appendFileSync(dir+value+"-fold"+fold, valuestring,'utf8', function (err) {console.log("error "+err); return 0 })
-		},this)
-
-		_.each(parameters, function(value, key, list){
-			plotfor = "plot "
-			_(fold+1).times(function(n){
-			// _.each(parameters,  function(value, key, list){ 
-
-				foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+value+"-fold"+n+"\' using 1:i with linespoints linecolor i pt "+n+" ps 3"
-				com = "gnuplot -p -e \"reset; set yrange [0:1]; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+"fold"+n+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
-				result = execSync.run(com)
-
-				plotfor = plotfor + foldcom + ", "
-				// fs.writeFileSync(dir+value+"-fold"+n, header, 'utf-8', function(err) {console.log("error "+err); return 0 })
-				// },this)
-			},this)
-			plotfor = plotfor.substring(0,plotfor.length-2);
-			command = "gnuplot -p -e \"reset; set yrange [0:1]; set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + value+".png\'; set key autotitle columnhead; "+plotfor +"\""
-			result = execSync.run(command)
-		}, this)
-
-
-		_.each(parameters, function(param, key, list){ 
-			fs.writeFileSync(dir+param+"average", "train\t"+Object.keys(classifiers).join("\t")+"\n", 'utf-8', function(err) {console.log("error "+err); return 0 })
-			_.each(stat[param], function(value, trainsize, list){ 
-				average = getAverage(stat, param, trainsize, cl)
-				fs.appendFileSync(dir+param+"average",trainsize +"\t"+average.join("\t")+"\n",'utf8', function (err) {console.log("error "+err); return 0 })
+function thereisdata(data)
+{
+	var output = false
+	if (_.isArray(data))
+		{
+			_.each(data, function(elem, key, list){
+				if (elem != '?')				
+					output = true
 			}, this)
+		}
+	else
+		if (data != '?')
+			output = true
 
-			foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+param+"average"+"\' using 1:i with linespoints linecolor i"
-			com = "gnuplot -p -e \"reset; set yrange [0:1]; set xlabel \'Number of dialogues\'; set ylabel \'"+param+"\' ;set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + param+"average.png\'; set key autotitle columnhead; plot "+foldcom +"\""
-			result = execSync.run(com)
+	return output
+}
+
+
+function plot(fold, parameter, stat, classifiers)
+{
+	var values = []
+	var linetype = fold
+
+	var header = "train\t" + Object.keys(classifiers).join("-fold"+fold+"\t")+"-fold"+fold+"\n";
+	fs.writeFileSync(dir+parameter+"fold"+fold, header, 'utf-8')
+
+	var str = ""
+	
+	if (fold != 'average')
+	{
+		_.each(stat[parameter], function(value, trainsize, list){ 
+			str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"
+			_.each(value, function(results, cl, list){ 
+				if (cl != '_size')
+				{
+					values.push(filternan(results[fold]))
+					str += filternan(results[fold]) + "\t"
+				}
+			}, this)
+			str += "\n"
+		}, this)
+	}
+	else
+	{
+		_.each(stat[parameter], function(value, trainsize, list){ 
+			var average = getAverage(stat, parameter, trainsize, classifiers)
+			str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"+filternan(average).join("\t")+"\n"
+			values = values.concat(filternan(average))
 		}, this)
 
-		} //while (index < train.length)
-		}); //fold
+		linetype = 5
+	}
 
+	var plot = thereisdata(values)
+	console.log(parameter)
+	console.log(values)
+
+	fs.appendFileSync(dir+parameter+"fold"+fold, str, 'utf-8')
+
+	if (plot)
+	{
+		var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+parameter+"fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
+		var com = gnuplot +" -p -e \"reset; set title \'"+stat['_sized']+"("+stat['_sizec']+")\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+		result = execSync.run(com)
+	}
+}
+
+
+function learning_curves(classifiers, dataset, parameters, step, step0, limit, numOfFolds) 
+{
+
+		checkGnuPlot
+
+		if (dataset.length == 0)
+			throw new Error("Dataset is empty");
+		
+		stat = {}
+		
+		var mytrain = []
+
+		partitions.partitions_consistent(dataset, numOfFolds, function(train, test, fold) {
+			console.log("fold"+fold)
+			var index = step0
+
+			while (index <= train.length)
+	  		{
+			  	var report = []
+
+				var mytrain = train.slice(0, index)
+			  	
+			  	index += (index < limit ? step0 : step)
+			  	var mytrainset = (bars.isDialogue(mytrain) ? bars.extractdataset(mytrain) : mytrain)
+			  	var testset = (bars.isDialogue(test) ? bars.extractdataset(test) : test)
+
+			  	_.each(classifiers, function(classifier, name, list){ 
+	    			var stats = trainAndTest_hash(classifier, mytrainset, bars.copyobj(testset), 5)
+		    		report.push(_.pick(stats[0]['stats'], parameters))
+			  	}, this)
+
+                extractGlobal(parameters, classifiers, mytrain, report, stat)
+
+                stat['_sized'] = test.length
+                stat['_sizec'] = bars.extractdataset(test).length
+
+                _.each(parameters, function(parameter, key, list){
+					plot(fold, parameter, stat, classifiers)
+					plot('average', parameter, stat, classifiers)
+				})
+
+			} //while (index < train.length)
+			}); //fold
+
+}
+
+if (process.argv[1] === __filename)
+{
+
+	var dataset = JSON.parse(fs.readFileSync(__dirname + "/../../datasets/DatasetDraft/dial_usa_rule_core.json"))
+	
+	var classifiers  = {
+				Expansion1:   classifier.IntentClassificationExpansion1,
+				Expansion2:   classifier.IntentClassificationExpansion2,
+				NoExpansion: classifier.IntentClassificationNoExpansion,
+				Expansion1Phrase: classifier.IntentClassificationExpansion1Phrase
+			}
+	
+	var parameters = [
+					  'F1','Precision','Recall', 'FN',
+					  'OfferF1', 'OfferPrecision', 'OfferRecall', 'OfferFN', 'OfferTP',
+					  'RejectF1','RejectPrecision','RejectRecall', 'RejectFN', 'RejectTP',
+					  'AcceptF1','AcceptPrecision','AcceptRecall', 'AcceptFN', 'AcceptTP',
+					  'GreetF1','GreetPrecision','GreetRecall', 'GreetFN'
+					]
+	
+	var filtered = bars.filterdataset(dataset, 5)
+	console.log(filtered.length)
+
+	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
+		console.log()
+		process.exit(0)
+	})
+		
 }
 
 module.exports = {
 	learning_curves: learning_curves, 
 	extractGlobal: extractGlobal,
-	getAverage: getAverage
+	getAverage: getAverage,
+	filternan:filternan,
+	onlyNumbers:onlyNumbers,
+	isProb:isProb,
+	getAverage:getAverage,
+	thereisdata:thereisdata
 }
