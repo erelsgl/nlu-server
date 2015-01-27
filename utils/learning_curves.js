@@ -19,7 +19,6 @@ var path = require("path")
 
 
 var gnuplot = 'gnuplot'
-var dir = "./learning_curves/"
 var dirr = "/learning_curves/"
 /* @params classifiers - classifier for learning curves
    @params dataset - dataset for evaluation, 20% is takes for evaluation
@@ -204,7 +203,7 @@ function plot(fold, parameter, stat, classifiers)
 	var linetype = fold
 
 	var header = "train\t" + Object.keys(classifiers).join("-fold"+fold+"\t")+"-fold"+fold+"\n";
-	fs.writeFileSync(dir+parameter+"fold"+fold, header, 'utf-8')
+	fs.writeFileSync(__dirname + dirr + parameter+"fold"+fold, header, 'utf-8')
 
 	var str = ""
 	
@@ -237,7 +236,7 @@ function plot(fold, parameter, stat, classifiers)
 	// console.log(parameter)
 	// console.log(values)
 
-	fs.appendFileSync(dir+parameter+"fold"+fold, str, 'utf-8')
+	fs.appendFileSync(__dirname + dirr +parameter+"fold"+fold, str, 'utf-8')
 
 	if (plot)
 	{
