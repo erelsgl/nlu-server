@@ -13,3 +13,8 @@ npm-debug.log
 /domains
 /ppdb
 /turboparser
+
+/trainedClassifiers/tempfiles/SvmPerf.learn
+/trainedClassifiers/tempfiles/SvmPerf.model
+/utils/featureexp_input
+/utils/featureexp_output
