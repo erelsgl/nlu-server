@@ -16,8 +16,15 @@ var natural = require('natural');
 describe('Classifiers functions', function() {
 
 	it('featureExpansion', function() {
-		var out = classifiers.featureExpansion(["offer","propose","give"])
-		Object.keys(out).length.should.be.above(3)
+		// phrase:
+		// 0 - everything
+		// 1 - only unigram seed generated unigram paraphrase
+
+		var out1 = classifiers.featureExpansion(["offer","propose","give"], [1], 0)
+		var out2 = classifiers.featureExpansion(["offer","propose","give"], [2], 0)
+
+		Object.keys(out2).length.should.be.above(Object.keys(out1).length)
+		
 	})
 
 	it('correctly filters instances', function() {
