@@ -5,15 +5,19 @@
 var _ = require('underscore')._; 
 var fs = require('fs');
 var natural = require('natural');
-//var utils = require('./utils');
+var utils = require('./utils');
 //var async = require('async');
 //var redis = require("redis")
 
 //var client = redis.createClient(6369)
 
 var output = {}
+utils.cleanredis("offer", function(err, results){
 
+utils.closeredis()
+console.log(results)
 
+})
 // var StanfordSimpleNLP = require('stanford-simple-nlp');
 
 
@@ -105,23 +109,23 @@ var output = {}
 // console.log(subst('offer'))
 // process.exit(0)
 
-	var question_words = ['what', 'which', 'why', 'how', 'do']
+//	var question_words = ['what', 'which', 'why', 'how', 'do']
 
 	// if (original.substring(0,2) == 'do')
 		// features["do_at_start"] = 1
 
-var original = "do we hv"
+//var original = "do we hv"
 
 //console.log(_.some(question_words, function(num){return original.indexOf(num)}))
-console.log(_.some(question_words, function(num){
+//console.log(_.some(question_words, function(num){
 
-console.log(num)
-console.log(num.length)
+//console.log(num)
+//console.log(num.length)
 
 
-console.log(original.substring(0,num.length ))
+//console.log(original.substring(0,num.length ))
 
-return (original.substring(0,num.length) == num)}))
+//return (original.substring(0,num.length) == num)}))
 //console.log(_.some(question_words, function(num){console.log(num)}))
 
 
