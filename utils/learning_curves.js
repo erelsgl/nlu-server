@@ -18,7 +18,7 @@ var bars = require(__dirname+'/bars');
 var path = require("path")
 
 
-var gnuplot = __dirname + '/gnuplot'
+var gnuplot = 'gnuplot'
 var dir = "./learning_curves/"
 var dirr = "/learning_curves/"
 /* @params classifiers - classifier for learning curves
@@ -234,8 +234,8 @@ function plot(fold, parameter, stat, classifiers)
 	}
 
 	var plot = thereisdata(values)
-	console.log(parameter)
-	console.log(values)
+	// console.log(parameter)
+	// console.log(values)
 
 	fs.appendFileSync(dir+parameter+"fold"+fold, str, 'utf-8')
 
@@ -263,6 +263,8 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		partitions.partitions_consistent(dataset, numOfFolds, function(train, test, fold) {
 			console.log("fold"+fold)
 			var index = step0
+			var oldreport = []
+			var stats
 
 			while (index <= train.length)
 	  		{
@@ -275,9 +277,46 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	var testset = (bars.isDialogue(test) ? bars.extractdataset(test) : test)
 
 			  	_.each(classifiers, function(classifier, name, list){ 
-	    			var stats = trainAndTest_hash(classifier, mytrainset, bars.copyobj(testset), 5)
+	    			stats = trainAndTest_hash(classifier, mytrainset, bars.copyobj(testset), 5)
 		    		report.push(_.pick(stats[0]['stats'], parameters))
 			  	}, this)
+
+			  	if (oldreport.length > 0)
+			  	{
+			  		console.log("ENTRANCE")
+			  		var done = false
+
+			  		_.each(oldreport[0]['data'], function(value, key, list){
+
+			  			if (stats[0]['data'][key]['input'] != value['input'])
+			  				{
+			  					console.log("error")
+			  					process.exit(0)
+			  				}
+			  			
+			  			if (stats[0]['data'][key]['explanation']['TP'].length < value['explanation']['TP'].length)
+			  			{
+			  				console.log("old")
+			  				console.log(value)
+			  				console.log("new")
+			  				console.log(stats[0]['data'][key])
+			  				done = true
+			  				
+			  			}
+
+			  			if (stats[0]['data'][key]['explanation']['FN'].length > value['explanation']['FN'].length)
+			  			{
+			  				console.log("old")
+			  				console.log(value)
+			  				console.log("new")
+			  				console.log(stats[0]['data'][key])
+			  				done = true
+			  			}
+
+			  		}, this)
+			  	}
+
+			  	oldreport = bars.copyobj(stats)
 
                 extractGlobal(parameters, classifiers, mytrain, report, stat)
 
@@ -298,7 +337,8 @@ if (process.argv[1] === __filename)
 {
 
 	var dataset = JSON.parse(fs.readFileSync(__dirname + "/../../datasets/DatasetDraft/dial_usa_rule_core.json"))
-	
+	dataset = _.shuffle(dataset)
+
 	var classifiers  = {
 				Expansion1:   classifier.IntentClassificationExpansion1,
 				Expansion2:   classifier.IntentClassificationExpansion2,
