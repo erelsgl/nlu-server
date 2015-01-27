@@ -41,7 +41,9 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 
 // var do_small_temporary_serialization_test = false
 
-var test_ppdb = true
+var test_ppdb = false
+var do_learning_curves = true
+
 var do_test_seed = false
 var check_dial = false
 var do_keyphrase_predict_annotaiton = false
@@ -58,7 +60,6 @@ var prepare_dataset_for_gaby = false
 var do_keyphrase_only_rule = false
 var do_small_temporary_serialization_test = false
 var do_mlrule = false
-var do_learning_curves = false
 var do_test_sagae = false
 var do_cross_dataset_testing = false
 var do_learning_curves_dialogue = false
@@ -121,9 +122,7 @@ var curves = require('./utils/learning_curves');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
-var Fiber = require('fibers');
-
-
+// var Fiber = require('fibers');
 
 var classifier = require(__dirname+'/classifiers')
 
@@ -172,7 +171,6 @@ var datasetNames = [
 			"woz_kbagent_students_negonlp.json"
 			];
 
-check_dial
 // sentence = sentence.toLowerCase().trim();
 // 	sentence = regexpNormalizer(sentence)
 // 	sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
@@ -193,7 +191,7 @@ if (test_ppdb)
 	var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.3))
 
 	var stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallyIntent, dataset['train'], dataset['test'], 5)
-	console.log(stats)
+	console.log(JSON.stringify(stats, null, 4))
 	process.exit(0)
 }
 
@@ -246,8 +244,8 @@ if (do_test_seed)
 	console.log(val)
 }
 
-var f = Fiber(function() {
-  		var fiber = Fiber.current;
+// var f = Fiber(function() {
+  		// var fiber = Fiber.current;
 
 if (counting)
 {
@@ -1011,121 +1009,17 @@ if (just_test)
 
 if (do_learning_curves) {
 
-	datasetNames = [
-			"turkers_separated.json",
-			"students_separated.json"
-			// "5_woz_ncagent_turkers_negonlp2ncAMT.json",
-			// "nlu_ncagent_students_negonlpnc.json",
-			// "nlu_ncagent_turkers_negonlpncAMT.json",
-			 // "3_woz_kbagent_turkers_negonlp2.json",
-			// "woz_kbagent_students_negonlp.json",
-			// "nlu_kbagent_turkers_negonlpAMT.json"
-			// "turkers.json"
-			]
-
-	dataset = []
-
-	_.each(datasetNames, function(value, key, list){ 
-		// dataset = dataset.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
-		dataset = dataset.concat(JSON.parse(fs.readFileSync("../datasets/Employer/Dialogue/"+value)))
-	});
-
-
-	dataset = _.shuffle(dataset)
-
-	// var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.4))
-
-	// data1 = []
-	// _.each(dataset, function(value, key, list){ 
-		// data1 = data1.concat(value['turns'])
-	// }, this)
-	// data1 = _.shuffle(data1)
-	// dataset = data1
-
-
-	// console.log(dataset)
-	// process.exit(0)
-	// dataset= _.sample(dataset, 120)
-
-
-	// console.log(trainutils.dividedataset(data2)['one'].length)
-
-
-
-	// datasetNames = ["students.json"]
-	// datasettest = []
-
-	// _.each(datasetNames, function(value, key, list){ 
-		// dataset = dataset.concat(JSON.parse(fs.readFileSync("datasets/Employer/"+value)))
-		// datasettest = datasettest.concat(JSON.parse(fs.readFileSync("datasets/Employer/Dialogue/"+value)))
-	// });
-
-	// data2 = []
-	// _.each(datasettest, function(value, key, list){ 
-		// data2 = data2.concat(value['turns'])
-	// }, this)
-
-	// data2 = _.shuffle(data2)
-	// var trainset = trainutils.filteraccept(JSON.parse(fs.readFileSync("datasets/Employer/trainonelabel.json")))
-	// var testset = trainutils.filteraccept(JSON.parse(fs.readFileSync("datasets/Employer/testalllabels.json")))
-
-	// var trainset = _.shuffle(JSON.parse(fs.readFileSync("datasets/Employer/trainonelabel.json")))
-	// var testsetncagent = _.shuffle(JSON.parse(fs.readFileSync("datasets/Employer/testalllabels.json")))
-	// var testsetkbagent = _.shuffle(JSON.parse(fs.readFileSync("datasets/Employer/testkbagent.json")))
-
-
-	// console.log(testsetncagent.length)
-
-	// console.log(trainutils.dividedataset(testsetncagent)['two'].length)
-
-	// console.log(trainutils.dividedataset(testsetncagent)['one'].length)
-
-
-	// testsetkbagent
-	// console.log(testsetkbagent.length)
-	// 132
-	// console.log(trainutils.dividedataset(testsetkbagent)['two'].length)
-	// 93
-	// console.log(trainutils.dividedataset(testsetkbagent)['one'].length)
-	// 39
-	// var testset = _.sample(testsetncagent, 99)
-	// var testset = testsetncagent
-
-	// console.log(testset.length)
-	// process.exit(0)
-
-	// console.log(trainutils.dividedataset(testset)['two'].length)
-	// console.log(trainutils.dividedataset(testset)['one'].length)
-	// console.log()
-	// process.exit(0)
-
-	// testset = trainutils.dividedataset(testset)['two']
-// more than 2
-// 103
-// exactly one
-// 166
-
-// mix - test set with length of global trainutils
-// 293 3 fold and test 293
-
-// one 
-// train 293 3 fold test 275
-
-// two
-// test 174
-
-
-	// console.log(trainutils.dividedataset(test)['one'].length)
-
-
-	// console.log(trainset.length)
-	// console.log(testset.length)
-	// console.log()
-	// process.exit(0)
+	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))
+	var dataset = bars.extractdataset(data)
+	// var dataset = dataset.splice(0,50)
+	// var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.3))
 
 	classifiers  = {
-
-		Baseline_0: classifier.PartialClassificationEquallyIntent
+			Expansion1:   classifier.IntentClassificationExpansion1,
+			Expansion2:   classifier.IntentClassificationExpansion2,
+			NoExpansion: classifier.IntentClassificationNoExpansion,
+			Expansion1Phrase: classifier.IntentClassificationExpansion1Phrase
+		// Baseline_0: classifier.PartialClassificationEquallyIntent
 
 		// Baseline_1: classifier.SvmPerfClassifier,
 		// Baseline_2: classifier.PartialClassificationEquallySagae,
@@ -1355,7 +1249,7 @@ if (do_serialization) {
 
 
 
-})
+// })
 
 
-f.run();
+// f.run();
