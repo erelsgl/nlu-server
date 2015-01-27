@@ -18,7 +18,7 @@ var bars = require(__dirname+'/bars');
 var path = require("path")
 
 
-var gnuplot = 'gnuplot'
+var gnuplot = './gnuplot'
 var dirr = "/learning_curves/"
 /* @params classifiers - classifier for learning curves
    @params dataset - dataset for evaluation, 20% is takes for evaluation
