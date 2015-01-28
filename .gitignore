@@ -18,3 +18,4 @@ npm-debug.log
 /trainedClassifiers/tempfiles/SvmPerf.model
 /utils/featureexp_input
 /utils/featureexp_output
+/utils/gnuplot
