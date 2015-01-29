@@ -210,7 +210,8 @@ function plot(fold, parameter, stat, classifiers)
 	if (fold != 'average')
 	{
 		_.each(stat[parameter], function(value, trainsize, list){ 
-			str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"
+			// str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"
+			str += trainsize.toString() + "\t"
 			_.each(value, function(results, cl, list){ 
 				if (cl != '_size')
 				{
@@ -225,7 +226,8 @@ function plot(fold, parameter, stat, classifiers)
 	{
 		_.each(stat[parameter], function(value, trainsize, list){ 
 			var average = getAverage(stat, parameter, trainsize, classifiers)
-			str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"+filternan(average).join("\t")+"\n"
+			// str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"+filternan(average).join("\t")+"\n"
+			str += trainsize.toString() + "\t"+filternan(average).join("\t")+"\n"
 			values = values.concat(filternan(average))
 		}, this)
 
@@ -348,11 +350,11 @@ if (process.argv[1] === __filename)
 			}
 	
 	var parameters = [
-					  'F1','Precision','Recall', 'FN',
-					  'OfferF1', 'OfferPrecision', 'OfferRecall', 'OfferFN', 'OfferTP',
-					  'RejectF1','RejectPrecision','RejectRecall', 'RejectFN', 'RejectTP',
-					  'AcceptF1','AcceptPrecision','AcceptRecall', 'AcceptFN', 'AcceptTP',
-					  'GreetF1','GreetPrecision','GreetRecall', 'GreetFN'
+					  'F1','Precision','Recall', 'FN', 'Accuracy',
+					  'OfferF1', 'OfferPrecision', 'OfferRecall', 'OfferFN', 'OfferTP', 'OfferAccuracy', 
+					  'RejectF1','RejectPrecision','RejectRecall', 'RejectFN', 'RejectTP', 'RejectAccuracy', 
+					  'AcceptF1','AcceptPrecision','AcceptRecall', 'AcceptFN', 'AcceptTP', 'AcceptAccuracy', 
+					  'GreetF1','GreetPrecision','GreetRecall', 'GreetFN', 'GreetAccuracy'
 					]
 	
 	var filtered = bars.filterdataset(dataset, 5)
