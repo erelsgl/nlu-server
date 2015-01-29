@@ -280,7 +280,9 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	var testset = (bars.isDialogue(test) ? bars.extractdataset(test) : test)
 
 			  	_.each(classifiers, function(classifier, name, list){ 
+			  		console.log("start starttrainandTest")
 	    			stats = trainAndTest_hash(classifier, mytrainset, bars.copyobj(testset), 5)
+		    		console.log("stop starttrainandTest")
 		    		report.push(_.pick(stats[0]['stats'], parameters))
 			  	}, this)
 
