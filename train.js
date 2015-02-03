@@ -41,8 +41,8 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 
 // var do_small_temporary_serialization_test = false
 
-var test_ppdb = false
-var do_learning_curves = true
+var test_ppdb = true
+var do_learning_curves = false
 
 var do_test_seed = false
 var check_dial = false
@@ -187,10 +187,10 @@ if (test_ppdb)
 {
 	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))
 	var dataset = bars.extractdataset(data)
-	var dataset = dataset.splice(0,30)
+	// var dataset = dataset.splice(0,30)
 	var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.3))
 
-	var stats = trainAndTest.trainAndTest_hash(classifier.PartialClassificationEquallyIntent, dataset['train'], dataset['test'], 5)
+	var stats = trainAndTest.trainAndTest_hash(classifier.IntentClassificationExpansion1, dataset['train'], dataset['test'], 5)
 	console.log(JSON.stringify(stats, null, 4))
 	process.exit(0)
 }
