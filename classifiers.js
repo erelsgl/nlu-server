@@ -141,17 +141,25 @@ function inputSplitter(text) {
 }
 
 
-function featureExtractor(sentence, features) {
+function featureExtractorUB(sentence, features) {
 	var words = tokenizer.tokenize(sentence);
-
-	var feature = natural.NGrams.ngrams(words, 2)
-	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
 	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
-	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
+	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
+	_.each(feature, function(feat, key, list){ features[feat.join(" ")] = 1 }, this)
+	return features;
+}
 
-	_.each(feature, function(feat, key, list){
-		 features[feat.join(" ")] = 1
-	}, this)
+function featureExtractorB(sentence, features) {
+	var words = tokenizer.tokenize(sentence);
+	var feature = natural.NGrams.ngrams(words, 2)
+	_.each(feature, function(feat, key, list){ features[feat.join(" ")] = 1 }, this)
+	return features;
+}
+
+function featureExtractorU(sentence, features) {
+	var words = tokenizer.tokenize(sentence);
+	var feature = natural.NGrams.ngrams(words, 1)
+	_.each(feature, function(feat, key, list){ features[feat.join(" ")] = 1 }, this)
 	return features;
 }
 
@@ -363,7 +371,7 @@ var LanguageModelClassifier = classifiers.multilabel.CrossLanguageModel.bind(thi
  * CONSTRUCTORS:
  */
 
-var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel, featureExpansion, featureExpansionScale, featureExpansionPhrase, featureFine) {
+var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel, multiplyFeaturesByIDF, featureExpansion, featureExpansionScale, featureExpansionPhrase, featureFine) {
 // var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
@@ -386,7 +394,7 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 			ftrs.Hypernyms(JSON.parse(fs.readFileSync(__dirname + '/knowledgeresources/hypernyms.json'))),
 		],
 
-		multiplyFeaturesByIDF: true,
+		multiplyFeaturesByIDF: multiplyFeaturesByIDF,
 
 		TfIdfImpl: natural.TfIdf,
 
@@ -406,14 +414,14 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 
 var WinnowSegmenterTruth = 
 			classifiers.multilabel.BinarySegmentation.bind(0, {
-			binaryClassifierType: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractor, undefined,  new ftrs.FeatureLookupTable()),
+			binaryClassifierType: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined,  new ftrs.FeatureLookupTable()),
 			segmentSplitStrategy: 'cheapestSegment',
 			// strandard: true,
 });
 
 var WinnowSegmenter1 = 
 			classifiers.multilabel.BinarySegmentation.bind(0, {
-			binaryClassifierType: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractor, undefined, new ftrs.FeatureLookupTable()),
+			binaryClassifierType: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable()),
 			segmentSplitStrategy: 'cheapestSegment',
 			// strandard: true,
 });
@@ -421,7 +429,7 @@ var WinnowSegmenter1 =
 // var WinnowSegmenter2 = 
 var WinnowSegmenterBeginEnd = 
 			classifiers.multilabel.BinarySegmentation.bind(0, {
-			binaryClassifierType: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractor, undefined, new ftrs.FeatureLookupTable()),
+			binaryClassifierType: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable()),
 			segmentSplitStrategy: 'cheapestSegment',
 			// strandard: false,
 });
@@ -436,7 +444,7 @@ var BayesSegmenter = classifiers.EnhancedClassifier.bind(0, {
 				calculateRelativeProbabilities: true,
 			}),
 			// multiclassClassifierType: enhance(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
-			featureExtractor: featureExtractor,
+			featureExtractor: featureExtractorUB,
 		}),
 });
 
@@ -485,24 +493,29 @@ module.exports = {
 		/* the set of routines for tests*/
 		tokenizer: tokenizer,
 		normalizer: normalizer,
-		featureExtractor: featureExtractor,
+		featureExtractorUB: featureExtractorUB,
+		featureExtractorB: featureExtractorB,
+		featureExtractorU: featureExtractorU,
 		// featureExtractorUnigram: featureExtractorUnigram,
 		instanceFilter: instanceFilterShortString,
 		featureExpansion:featureExpansion,
 
 		WinnowSegmenter: WinnowSegmenterBeginEnd,
 		WinnowSegmenterSagae: enhance5(WinnowSegmenterBeginEnd,new ftrs.FeatureLookupTable(),undefined,undefined,trainutils.deal,undefined),
-		SvmPerfClassifierIS: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractor, inputSplitter, new ftrs.FeatureLookupTable()),
-		SvmPerfClassifier: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractor, undefined/*inputSplitter*/, new ftrs.FeatureLookupTable()),
-		HomerWinnow: enhance(homer(WinnowBinaryRelevanceClassifier), featureExtractor. true),
+		SvmPerfClassifierIS: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, inputSplitter, new ftrs.FeatureLookupTable()),
+		SvmPerfClassifier: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined/*inputSplitter*/, new ftrs.FeatureLookupTable()),
+		HomerWinnow: enhance(homer(WinnowBinaryRelevanceClassifier), featureExtractorUB, true),
 
-		IntentClassificationExpansion1: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractor, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansion, '[1]', 0, false),
-		IntentClassificationExpansion2: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractor, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansion, '[2]', 0, false),
-		IntentClassificationExpansion1Phrase: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractor, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansion, '[1]', 1, false),
-		IntentClassificationNoExpansion: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractor, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansionEmpty),
-		IntentClassificationExpansion1Fine: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractor, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansion, '[1]', 0, true),
+		IntentClassificationIDF: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansionEmpty),
+		IntentClassificationBin: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, false, featureExpansionEmpty),
 
-		PartialClassificationEqually_Component: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractor, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
+		IntentClassificationExpansion1: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[1,1]', 0, false),
+		IntentClassificationExpansion2: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
+		IntentClassificationExpansion1Phrase: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[1,1]', 1, false),
+		IntentClassificationNoExpansion: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansionEmpty),
+		IntentClassificationExpansion1Fine: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[1,1]', 0, true),
+
+		PartialClassificationEqually_Component: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
 		PartialClassificationEquallySagae: enhance5(PartialClassification(WinnowSegmenter1),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_rilesbased, undefined),
 
 };
