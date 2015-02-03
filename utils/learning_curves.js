@@ -346,6 +346,7 @@ if (process.argv[1] === __filename)
 
 	var classifiers  = {
 				Expansion1:   classifier.IntentClassificationExpansion1,
+				Expansion1Fine: IntentClassificationExpansion1Fine,
 				// Expansion2:   classifier.IntentClassificationExpansion2,
 				NoExpansion: classifier.IntentClassificationNoExpansion,
 				Expansion1Unigrams: classifier.IntentClassificationExpansion1Phrase
