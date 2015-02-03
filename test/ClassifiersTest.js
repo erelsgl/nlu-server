@@ -20,11 +20,10 @@ describe('Classifiers functions', function() {
 		// 0 - everything
 		// 1 - only unigram seed generated unigram paraphrase
 
-		var out1 = classifiers.featureExpansion(["offer","propose","give"], [1], 0)
-		var out2 = classifiers.featureExpansion(["offer","propose","give"], [2], 0)
+		var out1 = classifiers.featureExpansion(["offer","propose","give"], '[1]', 0)
+		var out2 = classifiers.featureExpansion(["offer","propose","give"], '[2]', 0)
 
 		Object.keys(out2).length.should.be.above(Object.keys(out1).length)
-		
 	})
 
 	it('correctly filters instances', function() {
@@ -39,7 +38,7 @@ describe('Classifiers functions', function() {
 
 	it('correctly create bigram', function() {
 		var features = {}
-		classifiers.featureExtractor("pension,", features)
+		classifiers.featureExtractorUB("pension,", features)
 		// _.isEqual(features,{ pension: 1, '[start] pension': 1, 'pension [end]': 1 }).should.equal(true)
 		_.isEqual(features,{ pension: 1 }).should.equal(true)
 	});
@@ -81,7 +80,7 @@ describe('Classifiers functions', function() {
 			classifierType: SvmPerfBinaryRelevanceClassifier, 
 			featureLookupTable: new ftrs.FeatureLookupTable(),
 			normalizer: classifiers.normalizer,
-			featureExtractor: classifiers.featureExtractorUnigram,
+			featureExtractor: classifiers.featureExtractorUB,
 			multiplyFeaturesByIDF: true,
 			TfIdfImpl: natural.TfIdf
 		});
@@ -105,6 +104,9 @@ describe('Classifiers functions', function() {
 		if (cl.tfidf) cl.tfidf.addDocument(cl.sampleToFeatures(cl.normalizedSample("I offer 10,000NIS or 20.000NIS"), cl.featureExtractors));
 
 		cl.editFeatureValues(features, /*remove_unknown_features=*/false);
+
+		console.log(features)
+		process.exit(0)
 
 		_.isEqual(features, { '10000': 0, '20000': 0, i: 0, offer: 0, nis: 0, or: 0, and: 0.6931471805599453, '15%': 0.6931471805599453, pension: 0.6931471805599453, 'i offer': 0, 'offer 10000': 0, '10000 nis': 0, 'nis or': 0, 'or 20000': 0, '20000 nis': 0, 'nis and': 0.6931471805599453, 'and 15%': 0.6931471805599453, '15% pension': 0.6931471805599453 }).should.equal(true)
 
