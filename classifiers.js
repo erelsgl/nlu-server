@@ -141,22 +141,12 @@ function inputSplitter(text) {
 }
 
 
-function featureExtractorUnigram(sentence, features) {
-	var words = tokenizer.tokenize(sentence);
-
-	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
-
-	_.each(feature, function(feat, key, list){
-		 features[feat.join(" ")] = 1
-	}, this)
-
-	return features;
-}
-
 function featureExtractorBeginEnd(sentence, features) {
 	var words = tokenizer.tokenize(sentence);
 
-	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
+	var feature = natural.NGrams.ngrams(words, 2)
+	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
+	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
 	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
 
 	_.each(feature, function(feat, key, list){
@@ -166,7 +156,7 @@ function featureExtractorBeginEnd(sentence, features) {
 }
 
 
-function featureExtractorBeginEndTruthTeller(sentence, features) {
+/*function featureExtractorBeginEndTruthTeller(sentence, features) {
 	
 	var sentence = trainutils.truth_sentence(sentence)
 
@@ -180,26 +170,9 @@ function featureExtractorBeginEndTruthTeller(sentence, features) {
 	}, this)
 	return features;
 }
+*/
 
-
-function featureExtractorTruth(sentence, features) {
-	var sentence = trainutils.truth_sentence(sentence)
-
-	var words = tokenizer.tokenize(sentence);
-
-	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
-	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
-
-	_.each(feature, function(feat, key, list){
-		 features[feat.join(" ")] = 1
-	}, this)
-
-	delete features['\'start\'']
-	delete features['\'end\'']
-	return features
-}
-
-function featureExtractor(sentence, features) {
+/*function featureExtractor(sentence, features) {
 
 	var original = sentence
 
@@ -287,7 +260,7 @@ function featureExtractor(sentence, features) {
 	return features;
 }
 
-
+*/
 function featureExtractorLemma(sentence, features) {
 	var words = trainutils.sentenceStem(sentence)
 	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
