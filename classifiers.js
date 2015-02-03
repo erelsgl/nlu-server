@@ -390,7 +390,7 @@ var LanguageModelClassifier = classifiers.multilabel.CrossLanguageModel.bind(thi
  * CONSTRUCTORS:
  */
 
-var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel, featureExpansion, featureExpansionScale, featureExpansionPhrase) {
+var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel, featureExpansion, featureExpansionScale, featureExpansionPhrase, featureFine) {
 // var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
@@ -400,6 +400,7 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 		featureExpansion: featureExpansion,
 		featureExpansionScale: featureExpansionScale,
 		featureExpansionPhrase: featureExpansionPhrase,
+		featureFine: featureFine,
 		// inputSplitter: inputSplitter,
 		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
 
@@ -522,10 +523,11 @@ module.exports = {
 		SvmPerfClassifier: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorBeginEnd, undefined/*inputSplitter*/, new ftrs.FeatureLookupTable()),
 		HomerWinnow: enhance(homer(WinnowBinaryRelevanceClassifier), featureExtractorBeginEnd. true),
 
-		IntentClassificationExpansion1: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorBeginEnd, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansion, '[1]', 0),
-		IntentClassificationExpansion2: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorBeginEnd, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansion, '[2]', 0),
-		IntentClassificationExpansion1Phrase: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorBeginEnd, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansion, '[1]', 1),
+		IntentClassificationExpansion1: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorBeginEnd, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansion, '[1]', 0, false),
+		IntentClassificationExpansion2: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorBeginEnd, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansion, '[2]', 0, false),
+		IntentClassificationExpansion1Phrase: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorBeginEnd, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansion, '[1]', 1, false),
 		IntentClassificationNoExpansion: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorBeginEnd, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansionEmpty),
+		IntentClassificationExpansion1Fine: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorBeginEnd, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, featureExpansion, '[1]', 0, true),
 
 		PartialClassificationEqually_Component: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorBeginEnd, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
 		PartialClassificationEquallySagae: enhance5(PartialClassification(WinnowSegmenter1),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_rilesbased, undefined),
