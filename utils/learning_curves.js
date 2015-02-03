@@ -280,9 +280,9 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	var testset = (bars.isDialogue(test) ? bars.extractdataset(test) : test)
 
 			  	_.each(classifiers, function(classifier, name, list){ 
-			  		console.log("start starttrainandTest")
+			  		console.log("start trainandTest")
 	    			stats = trainAndTest_hash(classifier, mytrainset, bars.copyobj(testset), 5)
-		    		console.log("stop starttrainandTest")
+		    		console.log("stop trainandTest")
 		    		report.push(_.pick(stats[0]['stats'], parameters))
 			  	}, this)
 
@@ -346,9 +346,9 @@ if (process.argv[1] === __filename)
 
 	var classifiers  = {
 				Expansion1:   classifier.IntentClassificationExpansion1,
-				Expansion2:   classifier.IntentClassificationExpansion2,
+				// Expansion2:   classifier.IntentClassificationExpansion2,
 				NoExpansion: classifier.IntentClassificationNoExpansion,
-				Expansion1Phrase: classifier.IntentClassificationExpansion1Phrase
+				Expansion1Unigrams: classifier.IntentClassificationExpansion1Phrase
 			}
 	
 	var parameters = [
