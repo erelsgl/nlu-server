@@ -13,20 +13,6 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
-	it('extractturns', function() {	
-		var turns = [
-			{'status':['goodconv'], 'turns':[
-				{'status':'active', 'input':'GOOD', 'output': ['havesome'], 'user':'1.1.1.1', 'intent_keyphrases_rule':{}}
-			   ,{'status':['active'], 'input':'GOOD', 'output': ['havesome'], 'user':'1.1.1.1', 'intent_keyphrases_rule':{}}
-			   ,{'status':'active', 'input':'GOOD', 'output': ['havesome'], 'user':'Agent', 'intent_keyphrases_rule':{}}
-			   ,{'status':'active', 'input':'GOOD', 'output': ['havesome'], 'user':'1.1.1.1'}
-											]
-			}
-			]
-		var filtered = bars.extractturns(turns)
-		filtered.length.should.equal(2)
-	})
-
 	it('copyobj', function() {	
 		var list = [{'one':[1,1,1]}, {'two':[2,2,2]}]
 		var copylist = bars.copyobj(list)
@@ -194,7 +180,7 @@ describe('Bars utilities', function() {
 	})
 
 	it('ispermittedturn', function(){
-  		bars.ispermittedturn({'output':['{"Accept":{"Leased Car":"With leased car"}}']}).should.be.false
+  		bars.ispermittedturn({'output':['{"Accept":{"Leased Car":"With leased car"}}']}).should.be.true
   		bars.ispermittedturn({'output':['{"Accept":{"Salary":"20,000"}}']}).should.be.true
   		bars.ispermittedturn({'output':['{"Query":{"Salary":"20,000"}}']}).should.be.false
   		bars.ispermittedturn({'intent_core':{'Offer':'asdsad'}}).should.be.true
