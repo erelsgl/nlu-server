@@ -348,8 +348,8 @@ if (process.argv[1] === __filename)
 				Expansion1:   classifier.IntentClassificationExpansion1,
 				Expansion1Fine: classifier.IntentClassificationExpansion1Fine,
 				// Expansion2:   classifier.IntentClassificationExpansion2,
-				NoExpansion: classifier.IntentClassificationNoExpansion,
-				Expansion1Unigrams: classifier.IntentClassificationExpansion1Phrase
+				NoExpansion: classifier.IntentClassificationNoExpansion
+				// Expansion1Unigrams: classifier.IntentClassificationExpansion1Phrase
 			}
 	
 	var parameters = [
