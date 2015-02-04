@@ -112,7 +112,7 @@ describe('Classifiers functions', function() {
 
 	})
 
-	it('correctly classify', function() {
+	it('correctly classify IDF and Binary', function() {
 
 		var classifiertype =  classifiers.enhance(classifiers.PartialClassification
 			(classifiers.SvmPerfBinaryRelevanceClassifier), classifiers.featureExtractorU, 
@@ -140,6 +140,20 @@ describe('Classifiers functions', function() {
 
 		classifier.editFeatureValues(features, /*remove_unknown_features=*/false);
 		_.isEqual(features, { i: 1, classify: 1, aaa: 1, and: 1, ddd: 1 }).should.be.true
+
+		var classifiertype1 =  classifiers.enhance(classifiers.PartialClassification
+			(classifiers.SvmPerfBinaryRelevanceClassifier), classifiers.featureExtractorU, 
+			undefined, new ftrs.FeatureLookupTable(),undefined, Hierarchy.splitPartEqually, 
+			Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, classifiers.featureExpansionEmpty)
+
+		
+		var classifier1 = new classifiertype1();
+		classifier1.trainBatch(dataset)
+		input = classifier1.normalizedSample(input);
+		var features = classifier1.sampleToFeatures(input, classifier1.featureExtractors);
+		classifier1.editFeatureValues(features, /*remove_unknown_features=*/false);
+
+		_.isEqual(features, { i: 2.386294361119891,classify: 2.386294361119891,aaa: 1.2876820724517808,and: 2.386294361119891,ddd: 2.386294361119891 }).should.be.true
 
 	})
 
