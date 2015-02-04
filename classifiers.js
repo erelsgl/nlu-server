@@ -491,6 +491,7 @@ var thresholdclassifier = function(multiclassClassifierType) {
 module.exports = {
 
 		/* the set of routines for tests*/
+		enhance: enhance,
 		tokenizer: tokenizer,
 		normalizer: normalizer,
 		featureExtractorUB: featureExtractorUB,
@@ -499,6 +500,9 @@ module.exports = {
 		// featureExtractorUnigram: featureExtractorUnigram,
 		instanceFilter: instanceFilterShortString,
 		featureExpansion:featureExpansion,
+		PartialClassification:PartialClassification,
+		SvmPerfBinaryRelevanceClassifier:SvmPerfBinaryRelevanceClassifier,
+		featureExpansionEmpty:featureExpansionEmpty,
 
 		WinnowSegmenter: WinnowSegmenterBeginEnd,
 		WinnowSegmenterSagae: enhance5(WinnowSegmenterBeginEnd,new ftrs.FeatureLookupTable(),undefined,undefined,trainutils.deal,undefined),
