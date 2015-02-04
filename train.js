@@ -190,7 +190,7 @@ if (test_ppdb)
 	// var dataset = dataset.splice(0,30)
 	var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.3))
 
-	var stats = trainAndTest.trainAndTest_hash(classifier.IntentClassificationExpansion1, dataset['train'], dataset['test'], 5)
+	var stats = trainAndTest.trainAndTest_hash(classifier.IntentClassificationNoExpansion, dataset['train'], dataset['test'], 5)
 	console.log(JSON.stringify(stats, null, 4))
 	process.exit(0)
 }
