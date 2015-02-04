@@ -286,6 +286,12 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    		report.push(_.pick(stats[0]['stats'], parameters))
 			  	}, this)
 
+			  	console.log(report)
+			  	_.each(report, function(value, key, list){ 
+			  		if (value['F1'] < 0)
+			  			process.exit(0)
+			  	}, this)
+
 			  	if (oldreport.length > 0)
 			  	{
 			  		console.log("ENTRANCE")
