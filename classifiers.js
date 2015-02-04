@@ -110,7 +110,14 @@ function normalizer1(sentence) {
 
 function normalizer(sentence) {
 	sentence = sentence.toLowerCase().trim();
-	return regexpNormalizer(sentence)
+	sentence = regexpNormalizer(sentence)
+	sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+	
+	sentence = sentence.replace(/<VALUE>/g,'')
+	sentence = sentence.replace(/<ATTRIBUTE>/g,'')
+	sentence = regexpNormalizer(sentence)
+	
+	return sentence
 }
 
 var regexpString = "([.,;?!]|and)";  // to capture the delimiters
@@ -510,13 +517,13 @@ module.exports = {
 		SvmPerfClassifier: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined/*inputSplitter*/, new ftrs.FeatureLookupTable()),
 		HomerWinnow: enhance(homer(WinnowBinaryRelevanceClassifier), featureExtractorUB, true),
 
-		IntentClassificationIDF: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansionEmpty),
-		IntentClassificationBin: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, false, featureExpansionEmpty),
+		IntentClassificationIDF: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansionEmpty),
+		IntentClassificationBin: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, false, featureExpansionEmpty),
 
 		IntentClassificationExpansion1: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[1,1]', 0, false),
 		IntentClassificationExpansion2: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
 		IntentClassificationExpansion1Phrase: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[1,1]', 1, false),
-		IntentClassificationNoExpansion: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansionEmpty),
+		IntentClassificationNoExpansion: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansionEmpty),
 		IntentClassificationExpansion1Fine: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[1,1]', 0, true),
 
 		PartialClassificationEqually_Component: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
