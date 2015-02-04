@@ -10,8 +10,16 @@ var _ = require('underscore');
 var limdu_classifiers = require('limdu/classifiers');
 var ftrs = require('limdu/features');
 var natural = require('natural');
+var Hierarchy = require(__dirname+'/../Hierarchy');
 
-// curves.learning_curves(classifiers, data, parameters, 3, 5)
+var SvmPerfBinaryClassifier = limdu_classifiers.SvmPerf.bind(0, {
+	learn_args: "-c 100 --i 1",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
+	model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf"
+});
+
+var SvmPerfBinaryRelevanceClassifier = limdu_classifiers.multilabel.BinaryRelevance.bind(0, {
+	binaryClassifierType: SvmPerfBinaryClassifier
+});
 
 describe('Classifiers functions', function() {
 
@@ -67,15 +75,6 @@ describe('Classifiers functions', function() {
 
 	it('correctly normalize', function() {
 
-		var SvmPerfBinaryClassifier = limdu_classifiers.SvmPerf.bind(0, {
-			learn_args: "-c 100 --i 1",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
-			model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf",
-		});
-
-		var SvmPerfBinaryRelevanceClassifier = limdu_classifiers.multilabel.BinaryRelevance.bind(0, {
-			binaryClassifierType: SvmPerfBinaryClassifier,
-		});
-
 		var SvmClassifierStringFeatures = limdu_classifiers.EnhancedClassifier.bind(0, 	{
 			classifierType: SvmPerfBinaryRelevanceClassifier, 
 			featureLookupTable: new ftrs.FeatureLookupTable(),
@@ -95,8 +94,6 @@ describe('Classifiers functions', function() {
 
 		_.isEqual(features, { '10000': 1, '20000': 1, i: 1, offer: 1, nis: 1, or: 1, and: 1, '15%': 1, pension: 1, 'i offer': 1, 'offer 10000': 1, '10000 nis': 1, 'nis or': 1, 'or 20000': 1, '20000 nis': 1, 'nis and': 1, 'and 15%': 1, '15% pension': 1 }).should.equal(true)
 		
-		// features['@checkfeature'] = 1
-
 		if (cl.tfidf) cl.tfidf.addDocument(features);
 
 		cl.normalizedSample("I offer 10,000NIS or 20.000NIS");
@@ -105,12 +102,45 @@ describe('Classifiers functions', function() {
 
 		cl.editFeatureValues(features, /*remove_unknown_features=*/false);
 
-		console.log(features)
-		process.exit(0)
+		var gold = { '10000': 0.5945348918918356,'20000': 0.5945348918918356,i: 0.5945348918918356,offer: 0.5945348918918356,
+	  				nis: 0.5945348918918356, or: 0.5945348918918356, and: 1, '15%': 1,
+  					pension: 1, 'i offer': 0.5945348918918356, 'offer 10000': 0.5945348918918356,
+  					'10000 nis': 0.5945348918918356, 'nis or': 0.5945348918918356, 'or 20000': 0.5945348918918356, '20000 nis': 0.5945348918918356, 'nis and': 1, 'and 15%': 1, '15% pension': 1 }
 
-		_.isEqual(features, { '10000': 0, '20000': 0, i: 0, offer: 0, nis: 0, or: 0, and: 0.6931471805599453, '15%': 0.6931471805599453, pension: 0.6931471805599453, 'i offer': 0, 'offer 10000': 0, '10000 nis': 0, 'nis or': 0, 'or 20000': 0, '20000 nis': 0, 'nis and': 0.6931471805599453, 'and 15%': 0.6931471805599453, '15% pension': 0.6931471805599453 }).should.equal(true)
+		// _.isEqual(features, { '10000': 0, '20000': 0, i: 0, offer: 0, nis: 0, or: 0, and: 0.6931471805599453, '15%': 0.6931471805599453, pension: 0.6931471805599453, 'i offer': 0, 'offer 10000': 0, '10000 nis': 0, 'nis or': 0, 'or 20000': 0, '20000 nis': 0, 'nis and': 0.6931471805599453, 'and 15%': 0.6931471805599453, '15% pension': 0.6931471805599453 }).should.equal(true)
+		_.isEqual(features, gold).should.be.true
 
 	})
 
+	it('correctly classify', function() {
+
+		var classifiertype =  classifiers.enhance(classifiers.PartialClassification
+			(classifiers.SvmPerfBinaryRelevanceClassifier), classifiers.featureExtractorU, 
+			undefined, new ftrs.FeatureLookupTable(),undefined, Hierarchy.splitPartEqually, 
+			Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, false, classifiers.featureExpansionEmpty)
+		
+		var classifier = new classifiertype();
+
+		var dataset = [
+			{input:"aaa bbb ccc", output:[{Insist: true}]},
+			{input:"aaa bbb", output:[{Insist: true}]},
+			{input:"ccc", output:[{Insist: true}]},
+			{input:"bbb ccc", output:[{Insist: true}]}
+			]
+
+		classifier.trainBatch(dataset)
+
+		_.isEqual(classifier.featureLookupTable["featureNameToFeatureIndex"], {
+        	"undefined": 0,"aaa": 1,"bbb": 2,"ccc": 3}).should.be.true
+
+		var input = "I classify aaa and ddd aaa"
+		input = classifier.normalizedSample(input);
+		var features = classifier.sampleToFeatures(input, classifier.featureExtractors);
+		_.isEqual(features, { i: 1, classify: 1, aaa: 1, and: 1, ddd: 1 }).should.be.true
+
+		classifier.editFeatureValues(features, /*remove_unknown_features=*/false);
+		_.isEqual(features, { i: 1, classify: 1, aaa: 1, and: 1, ddd: 1 }).should.be.true
+
+	})
 
 })
