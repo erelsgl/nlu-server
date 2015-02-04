@@ -19,19 +19,25 @@ describe('Curves test', function() {
 	})
 
 	it('getAverage', function() {
+		var classifiers = { PPDB: [], Original: [] }
+
 		var stat = { "GreetRecall": 
-						{
-		        		"2": {
+						{ "2": {
 		            			"_size": 19,
 		            			"PPDB": [ 1, 2, 3, 0.5 ],
 		            			"Original": [ 0.6 ]
-		        			 }
-	    				}
-	    			}
+		        			 }}}
 
-		var classifiers = { PPDB: [], Original: [] }
+		var stat1 = { "GreetRecall": 
+						{ "2": {
+		            			"_size": 19,
+		            			"PPDB": [ 1, 2, - 3  ],
+		            			"Original": [ 0.6 ]
+		        			 }}}
 
 		_.isEqual(curves.getAverage(stat, 'GreetRecall', 2, classifiers),   [ 1.625, 0.6 ]).should.be.true
+		_.isEqual(curves.getAverage(stat1, 'GreetRecall', 2, classifiers),   [ 1.5, 0.6 ]).should.be.true
+		
 	})
 
 
