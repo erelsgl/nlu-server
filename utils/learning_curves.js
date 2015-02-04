@@ -93,7 +93,8 @@ function getAverage(stat, param, trainsize, classifiers)
 		var average = []
 		_.each(Object.keys(classifiers), function(classifier, key, list){
 			var list = onlyNumbers(stat[param][trainsize][classifier])
-			average.push(_.reduce(list , function(memo, num){ return memo + num; }, 0)/list.length)
+			average.push(_.reduce(list , function(memo, num){ if (num >=0) {return (memo + num)} else {return memo} }, 0)/_.filter(list, function(num){ return num >= 0 }).length
+)
 		}, this)
 		
 		return average
