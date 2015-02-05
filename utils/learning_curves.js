@@ -352,14 +352,14 @@ if (process.argv[1] === __filename)
 	dataset = _.shuffle(dataset)
 
 	var classifiers  = {
-				// Expansion1:   classifier.IntentClassificationExpansion1,
+				Expansion1:   classifier.IntentClassificationExpansion1,
 				// Expansion1Fine: classifier.IntentClassificationExpansion1Fine,
 				// Expansion2:   classifier.IntentClassificationExpansion2,
-				// NoExpansion: classifier.IntentClassificationNoExpansion
+				NoExpansion: classifier.IntentClassificationNoExpansion
 				// Expansion1Unigrams: classifier.IntentClassificationExpansion1Phrase
 
-				IDF: classifier.IntentClassificationIDF,
-				Bin: classifier.IntentClassificationBin
+				// IDF: classifier.IntentClassificationIDF,
+				// Bin: classifier.IntentClassificationBin
 			}
 	
 	var parameters = [
