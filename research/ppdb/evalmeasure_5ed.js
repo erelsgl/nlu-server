@@ -1,6 +1,6 @@
 /*
 
-The idea here is to load a dataaset, get several dialogues as train for generating paraphrases.
+The idea here is to load a dataset, get several dialogues as train for generating paraphrases.
 Prove train with keyphrases. Fetch new paraphrases from PPDB and run eva
 
 */
