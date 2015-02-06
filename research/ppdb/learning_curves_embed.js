@@ -262,16 +262,22 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		stat = {}
 		
 		var mytrain = []
+		var global_stats = {}
 
 		partitions.partitions_consistent(dataset, numOfFolds, function(train, test, fold) {
 			console.log("fold"+fold)
 			var index = step0
 
+			global_stats[fold] = {}
+
 			while (index <= train.length)
 	  		{
+			  	
 			  	var report = []
 
 				var mytrain = train.slice(0, index)
+
+				global_stats[fold][mytrain.length] = []
 			  	
 			  	index += (index < limit ? step0 : step)
 			  	var mytrainset = (bars.isDialogue(mytrain) ? bars.extractdataset(mytrain) : mytrain)
@@ -333,13 +339,18 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				_.each(stats_ppdb['data'], function(turn, key, list){ 
 	    			if (stats_ppdb['data'][key]['eval']['FN'].length < stats_original['data'][key]['eval']['FN'].length)
 						{
-						comparison.push({
-							'input':stats_ppdb['data'][key]['input'], 
-							'intent_core':stats_ppdb['data'][key]['intent_core'], 
-							'eval_ppdb':stats_ppdb['data'][key]['eval'], 
-							'eval_original':stats_original['data'][key]['eval'],	
-							'sequence_actual_ppdb': stats_ppdb['data'][key]['sequence_actual']
-							})
+							var rec = {
+								'input':stats_ppdb['data'][key]['input'], 
+								'intent_core':stats_ppdb['data'][key]['intent_core'], 
+								'eval_ppdb':stats_ppdb['data'][key]['eval'], 
+								'eval_original':stats_original['data'][key]['eval'],	
+							    'sequence_actual_ppdb': stats_ppdb['data'][key]['sequence_actual'],
+								'match': stats_ppdb['data'][key]['match']
+							}
+
+							global_stats[fold][mytrain.length].push(rec)
+							comparison.push(rec)
+
 						}
 					else
 					{
@@ -368,6 +379,9 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 			} //while (index < train.length)
 			}); //fold
+
+			// console.log(JSON.stringify(global_stats, null, 4))
+			bars.writecvs(global_stats)
 	})
 f.run();
 }
@@ -379,6 +393,8 @@ if (process.argv[1] === __filename)
 	var dataset = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule_core.json"))
 
 	var dataset = _.filter(dataset, function(dial){return bars.isactivedialogue(dial) == true})
+
+	// dataset = dataset.slice(0, 20)
 	
 	var classifiers  = {
 		'PPDB': [],
@@ -397,6 +413,7 @@ if (process.argv[1] === __filename)
 	console.log(filtered.length)
 
 	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
+
 		console.log()
 		process.exit(0)
 	})
