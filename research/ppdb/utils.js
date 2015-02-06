@@ -427,7 +427,6 @@ var retrieveIntent = function(input, seeds, callback)
 
 var retrieveIntentsync = function(input, seeds)
 {
-	
     var output = []
 
 	_.each(seeds, function(value, intent, list){ 
@@ -439,7 +438,7 @@ var retrieveIntentsync = function(input, seeds)
 						var response = seed
 				        var pos = rules.compeletePhrase(input, response)
 				        if (pos != -1)
-						      	{
+						{
 	    					var elem = {}
 	    					elem['intent'] = intent
 	    					elem['keyphrase'] = keyphrase
@@ -448,7 +447,7 @@ var retrieveIntentsync = function(input, seeds)
 	    					elem['seed'] = seed
 	       					elem['position'] = [pos, pos + response.length]
 	      					output.push(elem)
-	    					}
+	    				}
 	    			}, this)
 				}, this)
     		}, this)
