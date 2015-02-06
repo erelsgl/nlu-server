@@ -83,7 +83,8 @@ function trainandtest(train, test, seeds, mode, callback9)
         turn['sequence_expected'] = utils.seqgold(turn)
         turn['sequence_actual'] = sequence
         var out = stats.addCasesHashSeq(utils.seqgold(turn), sequence,1)
-        turn['eval'] = out
+        turn['match'] = out['match']
+        turn['eval'] = out['explanations']
       }
 
       // callback1()
