@@ -373,6 +373,38 @@ labeltree = { Offer:
   Append: { previous: {} },
   Quit: { true: {} } }
 
+
+function writecvs(global_stats)
+{
+  _.each(global_stats, function(value, fold, list){
+        fs.writeFileSync("/tmp/" + fold + ".csv", Object.keys(value).join("\t") + "\n", 'utf-8')
+        maxlen = _.min(Object.keys(global_stats[0]))
+        _(maxlen).times(function(n){
+          var row = []
+          _.each(value, function(value1, size, list){
+
+
+            if (value1.length -1 >= n)
+            {
+            var match = []
+            _.each(value1[n]['match'], function(value, key, list){
+              match.push([value[0], value[2], value[3], value[4], value[5]]) 
+            }, this)
+
+              row.push('\\'+value1[n]['input'] + "\n" +
+                      JSON.stringify(value1[n]['intent_core']) + " \n " +
+                      JSON.stringify(match)+'\\'
+                      )
+            }
+            else
+              row.push()
+
+          }, this)
+          fs.appendFileSync("/tmp/" + fold + ".csv", row.join("\t") + " \n", 'utf-8')
+        }) 
+      }, this)
+}
+
 function returnValues()
 {
 
@@ -2901,5 +2933,6 @@ filterdataset:filterdataset,
 extractdataset:extractdataset, 
 extractdial:extractdial,
 isunigram:isunigram,
-onlyunigrams:onlyunigrams
+onlyunigrams:onlyunigrams,
+writecvs:writecvs
 }
