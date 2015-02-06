@@ -13,6 +13,98 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
+	it('create list', function() {	
+		var data = {"0": {
+        				"2": [
+            				{
+                			"input": "Can I have a higher pension?",
+                			"intent_core": { "Reject": "can i have a higher" },
+                			"match": [
+                    			[
+                        		"Reject",
+                        		[4,10],
+                        		"no",
+                        		"no",
+                        		"no , i have n't",
+                        		"i have"
+                    			]
+                			]
+            				},
+            				{
+                			"input": "Fine, but can I get a leased car?",
+                			"intent_core": { "Accept": "^fine", "Offer": "can i get" },
+                			"match": [
+                    			[
+                        		"Offer",
+                        		[11,20],
+                        		"would you give",
+                       			"would you give",
+                        		"can i get",
+                        		"can i get"
+                    			],
+                    			[
+                       			"Accept",
+                        		[0,4],
+                       			"agree",
+                        		"agree",
+                        		"okay , fine",
+                        		"fine"
+                   				]
+                			]}],
+            			"4":[{
+                			"input": "We're losing time, leased car please?",
+                			"intent_core": { "Offer": "please" },
+                			"match": [
+                    			[
+                        		"Offer",
+                       		 	[33,39],
+                        		"i would be willing to go",
+                        		"would",
+                        		"please do",
+                        		"please"
+                    			]
+                			]
+            				}]	
+            				},
+            		"1":{
+            			"2":[{
+            				"input": "Can I have a higher pension?",
+			                "match": [
+            			        [
+                        		"Reject",
+                        		[4,10],
+                        		"no",
+                        		"no",
+                        		"no , i have n't",
+                        		"i have"
+                    			]
+                			]}],
+            			"4":[{
+							"input": "Fine, but can I get a leased car?",
+                			"match": [
+                    			[
+                        		"Offer",
+                        		[11,20],
+                        		"would you give",
+                      			"would you give",
+                        		"can i get",
+                        		"can i get"
+                    			],
+                    			[
+                        		"Accept",
+                        		[0,4],
+                        		"agree",
+                        		"agree",
+                        		"okay , fine",
+                        		"fine"
+                    			]
+                			]
+            			}]}}
+    
+          bars.writecvs(data)
+    })
+
+       
 	it('copyobj', function() {	
 		var list = [{'one':[1,1,1]}, {'two':[2,2,2]}]
 		var copylist = bars.copyobj(list)
