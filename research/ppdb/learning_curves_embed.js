@@ -289,10 +289,12 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				var seeds = utils.loadseeds(mytrainset, true)
 				var seeds_original = utils.enrichseeds_original(seeds)
 				var seeds_original_after = utils.afterppdb(seeds_original)
-				console.log("seeds_original_after")
+				// console.log("seeds_original_after")
 
 				var stats_ppdb = []
 				var seeds_ppdb_after = []
+
+				// console.log("enrichseeds")
 
 				utils.enrichseeds(seeds, function(err, seeds_ppdb){
 					seeds_ppdb_after = utils.afterppdb(seeds_ppdb)
@@ -313,6 +315,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				})
 
 		    	var stats_original = Fiber.yield()
+		    	// console.log("yield")
 
 		   		bars.wrfile(__dirname+dirr+"orig_fold-"+fold+"_train-"+index, [seeds_original_after, stats_original])
 				
@@ -322,6 +325,11 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    	report.push(_.pick(stats_original['stats'], parameters))
 		    			    	
 		   		var FNppdb = []
+
+		   		// console.log("here")
+				// console.log(JSON.stringify(stats_ppdb, null, 4))
+		   		// process.exit(0)
+		   		// console.log("HERE")
 
 		   		_.each(stats_ppdb['data'], function(turn, key, list){ 
 	    			if (stats_ppdb['data'][key]['eval']['FN'].length > 0)	
