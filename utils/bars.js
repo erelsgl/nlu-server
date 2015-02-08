@@ -746,14 +746,14 @@ function isactivedialogue(dial)
     {
       if (_.isArray(dial['status']))
         {
-          if (dial['status'].indexOf('goodconv') != -1)
+          if ((dial['status'].indexOf('goodconv') != -1) || (dial['status'].indexOf('paraconv') != -1))
             return true
           else
             return false
         }
       if (_.isString(dial['status']))
         { 
-          if (dial['status'] == 'goodconv')
+          if ((dial['status'] == 'goodconv') || (dial['status'] == 'paraconv'))
             return true
         }
         return false
