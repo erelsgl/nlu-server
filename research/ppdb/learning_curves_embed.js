@@ -18,7 +18,7 @@ var bars = require('../../utils/bars');
 var path = require("path")
 var ppdb = require("./evalmeasure_5ed_embed.js")
 
-var gnuplot = 'gnuplot'
+var gnuplot = __dirname + '/gnuplot'
 var dir = "./learning_curves/"
 var dirr = "/learning_curves/"
 /* @params classifiers - classifier for learning curves
