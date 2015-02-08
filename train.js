@@ -6,6 +6,7 @@
  */
 
 
+var async = require('async');
 var Hierarchy = require(__dirname+'/Hierarchy');
 
 // var intent_stat = false
@@ -41,7 +42,8 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 
 // var do_small_temporary_serialization_test = false
 
-var test_ppdb = true
+var trans = true
+var test_ppdb = false
 var do_learning_curves = false
 
 var do_test_seed = false
@@ -182,6 +184,88 @@ var datasetNames = [
 /*performs 
 turkers_keyphrases_only_rule.json
 students_keyphrases_only_rule.json*/
+
+if (trans)
+{	
+	
+
+	var MsTranslator = require('mstranslator');
+	var client = new MsTranslator({
+      client_id: "kbNsIlbmg"
+      , client_secret: "kbNsIlbmg4mPZUW9bvhUBCRWmihEOHYWpRziHzRCW14="
+    }, true);
+
+	var lag = 'he'
+	var dialogues = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core_tr.json"))	
+	var dial = []
+
+	_.each(dialogues, function(dialogue, key, list){ 
+		if (bars.isactivedialogue(dialogue))
+			{	
+				var turns = _.filter(dialogue['turns'], function(turn){ return (bars.isactiveturn(turn) && bars.ishumanturn(turn) && bars.isseqturn(turn) && bars.ispermittedturn(turn)) == true; })
+				if (turns.length>=10)
+					dial.push(key)
+			}
+	}, this)
+
+	// dial = [15]
+
+	async.eachSeries(dial, function(index, callback1){ 
+
+		dialogues[index]['status'] = 'paraconv'
+		var key = -1
+
+		async.eachSeries(dialogues[index]['turns'], function(turn, callback2){ 
+
+			key += 1
+
+			if (bars.isactiveturn(turn) && bars.ishumanturn(turn) && bars.isseqturn(turn) && bars.ispermittedturn(turn))
+			{
+				if (!('paraphrases' in turn))
+					dialogues[index]['turns'][key]['paraphrases'] = {}
+
+				if (lag in dialogues[index]['turns'][key]['paraphrases'])
+					callback2()
+
+				var input = normalizer(turn['input'])
+				var params = { text: input, from: 'en', to: lag}
+			
+				client.translate(params, function(err, translated) {
+          			
+          			var params = { text: translated, from: lag, to: 'en'}
+          			console.log(translated)
+
+					client.translate(params, function(err, translatedback) {
+
+						console.log("translatedback")
+						console.log(translatedback)
+
+						var sentence = []
+						sentence.push(turn['input'])
+						sentence.push(input)
+						sentence.push(translated)
+						sentence.push(translatedback)
+						sentence.push(normalizer(translatedback))
+
+						dialogues[index]['turns'][key]['paraphrases'][lag] = sentence
+
+						callback2()
+					})
+    			});
+			}
+			else callback2()
+
+		}, function(err){
+			callback1()
+		})
+	}, function(err){
+
+		console.log(JSON.stringify(dialogues, null, 4))
+		process.exit(0)
+			
+		},this)
+
+}
 
 if (test_ppdb)
 {
