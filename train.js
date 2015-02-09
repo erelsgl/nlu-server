@@ -187,15 +187,14 @@ students_keyphrases_only_rule.json*/
 
 if (trans)
 {	
-	
-
 	var MsTranslator = require('mstranslator');
+
 	var client = new MsTranslator({
       client_id: "kbNsIlbmg"
       , client_secret: "kbNsIlbmg4mPZUW9bvhUBCRWmihEOHYWpRziHzRCW14="
     }, true);
 
-	var lag = 'he'
+	var lag = 'ru'
 	var dialogues = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core_tr.json"))	
 	var dial = []
 
@@ -208,8 +207,6 @@ if (trans)
 			}
 	}, this)
 
-	// dial = [15]
-
 	async.eachSeries(dial, function(index, callback1){ 
 
 		dialogues[index]['status'] = 'paraconv'
@@ -221,40 +218,43 @@ if (trans)
 
 			if (bars.isactiveturn(turn) && bars.ishumanturn(turn) && bars.isseqturn(turn) && bars.ispermittedturn(turn))
 			{
+				
 				if (!('paraphrases' in turn))
 					dialogues[index]['turns'][key]['paraphrases'] = {}
 
-				if (lag in dialogues[index]['turns'][key]['paraphrases'])
-					callback2()
+				if (!(lag in dialogues[index]['turns'][key]['paraphrases']))
+				{
 
-				var input = normalizer(turn['input'])
-				var params = { text: input, from: 'en', to: lag}
+					var input = normalizer(turn['input'])
+					var params = { text: input, from: 'en', to: lag}
+				
+					client.translate(params, function(err, translated) {
+	          			
+	          			var params = { text: translated, from: lag, to: 'en'}
+	          			
+	          			console.log(translated)
+
+						client.translate(params, function(err, translatedback) {
+
+							console.log(translatedback)
+
+							var sentence = []
+							sentence.push(turn['input'])
+							sentence.push(input)
+							sentence.push(translated)
+							sentence.push(translatedback)
+							sentence.push(normalizer(translatedback))
+
+							dialogues[index]['turns'][key]['paraphrases'][lag] = sentence
+
+							callback2()
+						})
+	    			})
+				}
+				else callback2()
+    		}
+    		else callback2()
 			
-				client.translate(params, function(err, translated) {
-          			
-          			var params = { text: translated, from: lag, to: 'en'}
-          			console.log(translated)
-
-					client.translate(params, function(err, translatedback) {
-
-						console.log("translatedback")
-						console.log(translatedback)
-
-						var sentence = []
-						sentence.push(turn['input'])
-						sentence.push(input)
-						sentence.push(translated)
-						sentence.push(translatedback)
-						sentence.push(normalizer(translatedback))
-
-						dialogues[index]['turns'][key]['paraphrases'][lag] = sentence
-
-						callback2()
-					})
-    			});
-			}
-			else callback2()
-
 		}, function(err){
 			callback1()
 		})
@@ -263,8 +263,7 @@ if (trans)
 		console.log(JSON.stringify(dialogues, null, 4))
 		process.exit(0)
 			
-		},this)
-
+	},this)
 }
 
 if (test_ppdb)
