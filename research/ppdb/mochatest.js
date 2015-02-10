@@ -43,6 +43,13 @@ function makeid(len)
 
 describe('Util test', function() {
 
+	it('wordnetsynonyms', function(done) {	
+		utils.wordnetsynonyms(['offer'], function(err, results){
+			console.log(results)
+			process.exit(0)
+			done()
+		})
+	})
 	
 	it('thereisdata', function() {	
 		curves.thereisdata([1,'?',3]).should.be.true
@@ -80,7 +87,7 @@ describe('Util test', function() {
 
 	it('localizeinter', function() {
 		var list = [
-			{'intent': 'Accept','position':[0, 4]},
+			{'intent': 'Accept','podonesition':[0, 4]},
 			{'intent': 'Accept','position':[0, 3]},
 			{'intent': 'Offer', 'position':[0, 4]},
 			{'intent': 'Offer','position':[0, 5]},
