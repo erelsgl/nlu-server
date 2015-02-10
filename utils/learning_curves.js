@@ -348,6 +348,9 @@ if (process.argv[1] === __filename)
 {
 
 	var dataset = JSON.parse(fs.readFileSync(__dirname + "/../../datasets/DatasetDraft/dial_usa_rule_core.json"))
+	
+	dataset = _.shuffle(dataset)
+	dataset = _.shuffle(dataset)
 	dataset = _.shuffle(dataset)
 
 	var classifiers  = {
@@ -374,6 +377,10 @@ if (process.argv[1] === __filename)
 	
 	var filtered = bars.filterdataset(dataset, 5)
 	console.log(filtered.length)
+
+	filtered = _.shuffle(filtered)
+	filtered = _.shuffle(filtered)
+	filtered = _.shuffle(filtered)
 
 	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
 		console.log()
