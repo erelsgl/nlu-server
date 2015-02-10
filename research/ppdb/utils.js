@@ -12,6 +12,7 @@ var Hierarchy = require('../../Hierarchy');
 var splitJson = Hierarchy.splitJson
 var bars = require('../../utils/bars')
 var rules = require('../rule-based/rules')
+var wordnet = new natural.WordNet();
 
 var Tagger = require("../../node_modules/node-stanford-postagger/postagger").Tagger;
 var tagger = new Tagger({
@@ -115,8 +116,11 @@ function wordnetquickfetch(seed, callback)
 	// 	callback(null, _.unique(output))
 	// })
 
+console.log(seed)
+
 	var output = []
-	wordnet.onlySynonyms(seed, function(results) {
+	wordnet.lookupSynonyms(seed, function(results) {
+		console.log(results)
 		_.each(results, function(value, key, list){ 
 			var list = _.map(value['synonyms'], function(num){ return num.split("_").join(" ") })
 			output = output.concat(list)
@@ -141,6 +145,7 @@ function wordnetquickfetch(seed, callback)
 
 function wordnetsynonyms(seeds, callback)
 {
+	console.log(seeds)
 	async.mapSeries(seeds, wordnetquickfetch, function(err, result) {
 		callback(null, _.unique(_.flatten(result)))
 	})
