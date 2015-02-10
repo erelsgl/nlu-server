@@ -295,7 +295,6 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 			  	if (oldreport.length > 0)
 			  	{
-			  		console.log("ENTRANCE")
 			  		var done = false
 
 			  		_.each(oldreport[0]['data'], function(value, key, list){
