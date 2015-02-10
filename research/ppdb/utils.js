@@ -454,7 +454,8 @@ var retrieveIntentsync = function(input, seeds)
     	}, this)
     }, this)
 
-	return maximizer(localizeinter(output))
+	// return maximizer(localizeinter(output))
+	return output
 }
 
 var  localizeinter = function(list)
