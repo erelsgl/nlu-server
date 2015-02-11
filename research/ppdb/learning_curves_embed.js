@@ -302,10 +302,12 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	      			// ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_ppdb_after, 1, function(err, response_ppdb){
 	      			stats_ppdb = ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_ppdb_after, 1)
 
-	      			bars.wrfile(__dirname + dirr+"ppdb_fold-"+fold+"_train-"+index, [seeds_ppdb_after, stats_ppdb])
+	      			// bars.wrfile(__dirname + dirr+"ppdb_fold-"+fold+"_train-"+index, [seeds_ppdb_after, stats_ppdb])
 
+	      			console.log("traintest original")
 					var stats_original = ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_original_after, 1)
 					// ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_original_after, 1, function(err, response){
+	      			console.log("traintest original finished")
 
        				setTimeout(function() {
 	   					fiber.run(stats_original)
@@ -315,14 +317,16 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				})
 
 		    	var stats_original = Fiber.yield()
-		    	// console.log("yield")
+		    	console.log("yield")
 
-		   		bars.wrfile(__dirname+dirr+"orig_fold-"+fold+"_train-"+index, [seeds_original_after, stats_original])
+		   		// bars.wrfile(__dirname+dirr+"orig_fold-"+fold+"_train-"+index, [seeds_original_after, stats_original])
 				
 	  	    	// --------------TRAIN-TEST--------------
 
 		    	report.push(_.pick(stats_ppdb['stats'], parameters))
 		    	report.push(_.pick(stats_original['stats'], parameters))
+
+		    	console.log("report is pushed")
 		    			    	
 		   		var FNppdb = []
 
@@ -331,17 +335,19 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		   		// process.exit(0)
 		   		// console.log("HERE")
 
-		   		_.each(stats_ppdb['data'], function(turn, key, list){ 
-	    			if (stats_ppdb['data'][key]['eval']['FN'].length > 0)	
-						{
-						FNppdb.push({
-							'input':stats_ppdb['data'][key]['input'], 
-							'intent_core':stats_ppdb['data'][key]['intent_core'],
-							'eval':stats_ppdb['data'][key]['eval'],
-							// 'sequence_actual_ppdb': stats_ppdb['data'][key]['sequence_actual']
-							})	
-						}		    				
-		    	}, this)
+		   	// 	_.each(stats_ppdb['data'], function(turn, key, list){ 
+	    	// 		if (stats_ppdb['data'][key]['eval']['FN'].length > 0)	
+						// {
+						// FNppdb.push({
+						// 	'input':stats_ppdb['data'][key]['input'], 
+						// 	'intent_core':stats_ppdb['data'][key]['intent_core'],
+						// 	'eval':stats_ppdb['data'][key]['eval'],
+						// 	// 'sequence_actual_ppdb': stats_ppdb['data'][key]['sequence_actual']
+						// 	})	
+						// }		    				
+		    // 	}, this)
+
+		    	console.log("FNppdb is wrote")
 
 				var comparison = []
 				_.each(stats_ppdb['data'], function(turn, key, list){ 
@@ -372,18 +378,24 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 					}		    				
 		    	}, this)
 
-		   		bars.wrfile(__dirname+dirr+"comparison_fold-"+fold+"_train-"+index+"_"+FNppdb.length+"_"+comparison.length, 
-		   			["FN of PPDB", FNppdb.length, "PPDB gain", comparison.length, seeds_ppdb_after, "FN of ppdb", FNppdb, "comparison", comparison])
+				console.log("stats is wrote")
 
-                extractGlobal(parameters, classifiers, mytrain, report, stat)
+		   		// bars.wrfile(__dirname+dirr+"comparison_fold-"+fold+"_train-"+index+"_"+FNppdb.length+"_"+comparison.length, 
+		   			// ["FN of PPDB", FNppdb.length, "PPDB gain", comparison.length, seeds_ppdb_after, "FN of ppdb", FNppdb, "comparison", comparison])
 
-                stat['_sized'] = test.length
-                stat['_sizec'] = bars.extractdataset(test).length
+		   		// console.log("wrfile finish")
 
-                _.each(parameters, function(parameter, key, list){
-					plot(fold, parameter, stat, classifiers)
-					plot('average', parameter, stat, classifiers)
-				})
+                // extractGlobal(parameters, classifiers, mytrain, report, stat)
+
+                // stat['_sized'] = test.length
+                // stat['_sizec'] = bars.extractdataset(test).length
+
+                // _.each(parameters, function(parameter, key, list){
+					// plot(fold, parameter, stat, classifiers)
+					// plot('average', parameter, stat, classifiers)
+				// })
+
+				// console.log("plot")
 
 			} //while (index < train.length)
 			}); //fold
