@@ -17,7 +17,6 @@ var trainAndTest_hash = require(__dirname+'/trainAndTest').trainAndTest_hash;
 var bars = require(__dirname+'/bars');
 var path = require("path")
 
-
 var gnuplot = __dirname + '/gnuplot'
 var dirr = "/learning_curves/"
 /* @params classifiers - classifier for learning curves
@@ -247,7 +246,7 @@ function plot(fold, parameter, stat, classifiers)
 		var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i with linespoints linecolor i pt "+linetype+" ps 3"
 		// var com = gnuplot +" -p -e \"reset; set title \'"+stat['_sized']+"("+stat['_sizec']+")\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
 		var com = gnuplot +" -p -e \"reset; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
-		console.log(com)
+		// console.log(com)
 		result = execSync.run(com)
 	}
 }
@@ -285,7 +284,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 			  	_.each(classifiers, function(classifier, name, list){ 
 			  		console.log("start trainandTest")
-	    			stats = trainAndTest_hash(classifier, mytrainset, bars.copyobj(testset), 5)
+	    			stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
 		    		console.log("stop trainandTest")
 		    		report.push(_.pick(stats[0]['stats'], parameters))
 			  	}, this)
@@ -296,39 +295,39 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  			process.exit(0)
 			  	}, this)
 
-			  	if (oldreport.length > 0)
-			  	{
-			  		var done = false
+			  	// if (oldreport.length > 0)
+			  	// {
+			  	// 	var done = false
 
-			  		_.each(oldreport[0]['data'], function(value, key, list){
+			  	// 	_.each(oldreport[0]['data'], function(value, key, list){
 
-			  			if (stats[0]['data'][key]['input'] != value['input'])
-			  				{
-			  					console.log("error")
-			  					process.exit(0)
-			  				}
+			  	// 		if (stats[0]['data'][key]['input'] != value['input'])
+			  	// 			{
+			  	// 				console.log("error")
+			  	// 				process.exit(0)
+			  	// 			}
 			  			
-			  			if (stats[0]['data'][key]['explanation']['TP'].length < value['explanation']['TP'].length)
-			  			{
-			  				console.log("old")
-			  				console.log(value)
-			  				console.log("new")
-			  				console.log(stats[0]['data'][key])
-			  				done = true
+			  	// 		if (stats[0]['data'][key]['explanation']['TP'].length < value['explanation']['TP'].length)
+			  	// 		{
+			  	// 			console.log("old")
+			  	// 			console.log(value)
+			  	// 			console.log("new")
+			  	// 			console.log(stats[0]['data'][key])
+			  	// 			done = true
 			  				
-			  			}
+			  	// 		}
 
-			  			if (stats[0]['data'][key]['explanation']['FN'].length > value['explanation']['FN'].length)
-			  			{
-			  				console.log("old")
-			  				console.log(value)
-			  				console.log("new")
-			  				console.log(stats[0]['data'][key])
-			  				done = true
-			  			}
+			  	// 		if (stats[0]['data'][key]['explanation']['FN'].length > value['explanation']['FN'].length)
+			  	// 		{
+			  	// 			console.log("old")
+			  	// 			console.log(value)
+			  	// 			console.log("new")
+			  	// 			console.log(stats[0]['data'][key])
+			  	// 			done = true
+			  	// 		}
 
-			  		}, this)
-			  	}
+			  	// 	}, this)
+			  	// }
 
 			  	oldreport = bars.copyobj(stats)
 
@@ -382,12 +381,10 @@ if (process.argv[1] === __filename)
 	console.log(filtered.length)
 
 	filtered = _.shuffle(filtered)
-	filtered = _.shuffle(filtered)
-	filtered = _.shuffle(filtered)
 
-	filtered = filtered.slice(0, 10)
+	// filtered = filtered.slice(0, 10)
 
-	learning_curves(classifiers, filtered, parameters, 10/*step*/, 1/*step0*/, 30/*limit*/,  3/*numOfFolds*/, function(){
+	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
