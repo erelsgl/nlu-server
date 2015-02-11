@@ -366,7 +366,10 @@ if (process.argv[1] === __filename)
 				// Binary: classifier.IntentClassificationBin
 
 				NoExpansion: classifier.IntentClassificationNoExpansion,
-				Expansion2: classifier.IntentClassificationExpansion2
+				Expansion2: classifier.IntentClassificationExpansion2,
+				Expansion11: classifier.IntentClassificationExpansion11,
+				Expansion1Fine: classifier.IntentClassificationExpansion1Fine,
+
 			}
 	
 	var parameters = [
