@@ -61,6 +61,7 @@ function trainandtest(train, test, seeds, mode, callback9)
   
   
       var out = utils.retrieveIntentsync(turn['input_modified'], seeds)
+      console.log("retrieveIntentsync")
     // utils.retrieveIntent(turn['input_modified'], seeds, function(err, out){
 
       turn['out'] = out
@@ -79,10 +80,12 @@ function trainandtest(train, test, seeds, mode, callback9)
         
         // var sequence = _.map(out, function(num, key){ return [Object.keys(num)[0], num[Object.keys(num)[0]]['position'],num[Object.keys(num)[0]]['original seed'], num[Object.keys(num)[0]]['ppdb phrase'], num[Object.keys(num)[0]]['content of ppdb phrase']]  });
         var sequence = _.map(out, function(num, key){ return [num['intent'], num['position'], num['keyphrase'], num['ngram'], num['ppdb'], num['seed']] });
+        console.log("map a seq")
         // sequence = bars.uniqueArray(sequence)
         turn['sequence_expected'] = utils.seqgold(turn)
         turn['sequence_actual'] = sequence
         var stat = stats.addCasesHashSeq(utils.seqgold(turn), sequence,1)
+        console.log("get a stat")
         turn['match'] = stat['match']
         turn['eval'] = stat['explanations']
       }
@@ -90,9 +93,12 @@ function trainandtest(train, test, seeds, mode, callback9)
       // callback1()
   }, this)
 
+  console.log("calc retrieveStats")
   var output = {}
   output['data'] = test_turns
   output['stats'] = stats.retrieveStats()
+  console.log("end calc retrieveStats")
+
   return output
 
 
