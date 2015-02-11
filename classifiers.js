@@ -35,12 +35,17 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 
 function featureExpansion(listoffeatures, scale, phrase)
 {
-	listoffeatures = _.unique(listoffeatures)
+	var listoffeatures = _.unique(listoffeatures)
 	// console.log("featureExpansion scale"+scale+ " phrase "+phrase  )
-	var output = []
 	fs.writeFileSync(__dirname+"/utils/featureexp_input", JSON.stringify(listoffeatures, null, 4), 'utf-8')
 	var result = execSync.run("node "+__dirname+"/utils/featureexp.js '"+scale+"' "+phrase);
 	var results = JSON.parse(fs.readFileSync(__dirname+"/utils/featureexp_output"))
+	
+	fs.unlinkSync(__dirname+"/utils/featureexp_input")
+	fs.unlinkSync(__dirname+"/utils/featureexp_output")
+
+	console.log("featureExpansion finished")
+
 	// console.log("featureExpansion "+ Object.keys(results).length)
 	return results
 }
