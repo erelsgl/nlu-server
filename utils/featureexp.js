@@ -21,6 +21,7 @@ if (process.argv[1] === __filename)
 	// 1 - only unigram seed generated unigram paraphrase
 
 	var seeds = JSON.parse(fs.readFileSync(__dirname+"/featureexp_input"))
+	console.log("featureexp read " + seeds.length + " seeds")
 
 	seeds = seeds.splice(1,seeds.length-1)
 
@@ -46,6 +47,7 @@ if (process.argv[1] === __filename)
 		}, this)
 
 		console.log("output "+Object.keys(output).length)
+		console.log("featureexp finished")
 		fs.writeFileSync(__dirname+"/featureexp_output", JSON.stringify(output, null, 4), 'utf-8')
 		ppdb.closeredis()
 	})
