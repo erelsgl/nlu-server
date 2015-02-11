@@ -247,6 +247,7 @@ function plot(fold, parameter, stat, classifiers)
 		var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i with linespoints linecolor i pt "+linetype+" ps 3"
 		// var com = gnuplot +" -p -e \"reset; set title \'"+stat['_sized']+"("+stat['_sizec']+")\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
 		var com = gnuplot +" -p -e \"reset; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+		console.log(com)
 		result = execSync.run(com)
 	}
 }
@@ -269,6 +270,8 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			var index = step0
 			var oldreport = []
 			var stats
+
+			fs.writeFileSync(__dirname + dirr + "fold" + fold, "TEST \n"+JSON.stringify(test, null, 4)+"\n TRAIN \n"+JSON.stringify(train, null, 4), 'utf-8')
 
 			while (index <= train.length)
 	  		{
@@ -364,7 +367,7 @@ if (process.argv[1] === __filename)
 				// Binary: classifier.IntentClassificationBin
 
 				NoExpansion: classifier.IntentClassificationNoExpansion,
-				Expansion11: classifier.IntentClassificationExpansion11
+				Expansion2: classifier.IntentClassificationExpansion2
 			}
 	
 	var parameters = [
@@ -382,7 +385,9 @@ if (process.argv[1] === __filename)
 	filtered = _.shuffle(filtered)
 	filtered = _.shuffle(filtered)
 
-	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
+	filtered = filtered.slice(0, 10)
+
+	learning_curves(classifiers, filtered, parameters, 10/*step*/, 1/*step0*/, 30/*limit*/,  3/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
