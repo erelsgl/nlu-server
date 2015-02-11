@@ -79,12 +79,12 @@ function trainandtest(train, test, seeds, mode, callback9)
         
         // var sequence = _.map(out, function(num, key){ return [Object.keys(num)[0], num[Object.keys(num)[0]]['position'],num[Object.keys(num)[0]]['original seed'], num[Object.keys(num)[0]]['ppdb phrase'], num[Object.keys(num)[0]]['content of ppdb phrase']]  });
         var sequence = _.map(out, function(num, key){ return [num['intent'], num['position'], num['keyphrase'], num['ngram'], num['ppdb'], num['seed']] });
-        sequence = bars.uniqueArray(sequence)
+        // sequence = bars.uniqueArray(sequence)
         turn['sequence_expected'] = utils.seqgold(turn)
         turn['sequence_actual'] = sequence
-        var out = stats.addCasesHashSeq(utils.seqgold(turn), sequence,1)
-        turn['match'] = out['match']
-        turn['eval'] = out['explanations']
+        var stat = stats.addCasesHashSeq(utils.seqgold(turn), sequence,1)
+        turn['match'] = stat['match']
+        turn['eval'] = stat['explanations']
       }
 
       // callback1()
