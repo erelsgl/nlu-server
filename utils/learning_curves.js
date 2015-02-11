@@ -265,7 +265,6 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		var mytrain = []
 
 		partitions.partitions_consistent(dataset, numOfFolds, function(train, test, fold) {
-			console.log("fold"+fold)
 			var index = step0
 			var oldreport = []
 			var stats
@@ -277,6 +276,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	var report = []
 
 				var mytrain = train.slice(0, index)
+				console.log("fold"+fold)
 			  	
 			  	index += (index < limit ? step0 : step)
 			  	var mytrainset = (bars.isDialogue(mytrain) ? bars.extractdataset(mytrain) : mytrain)
