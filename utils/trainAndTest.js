@@ -132,9 +132,7 @@ module.exports.testLite1 = function(classifier, testSet, explain) {
  * @return the currentStats.
  * @author Vasily Konovalov
  */
-module.exports.test_hash = function(
-	classifier, testSet1, 
-	verbosity, microAverage, macroSum) {
+module.exports.test_hash = function( classifier, testSet1, verbosity, microAverage, macroSum, sequence) {
 	var stat_hash = {}
 	var sentence_hash = {}
 	var data_stats = []
@@ -146,13 +144,10 @@ module.exports.test_hash = function(
 
 	testSetOriginal = utils.clonedataset(testSet1)
 
-	if ((typeof classifier.TestSplitLabel === 'function')) {
+	if ((typeof classifier.TestSplitLabel === 'function')) 
 		testSet = classifier.outputToFormat(testSet1)
-    }
     else
-    {
     	testSet = testSet1
-    }
 
 	for (var i=0; i<testSet.length; ++i) 
 	{
