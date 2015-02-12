@@ -309,9 +309,9 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 					// ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_original_after, 1, function(err, response){
 	      			console.log("traintest original finished")
 
-       				setTimeout(function() {
+       				// setTimeout(function() {
 	   					fiber.run(stats_original)
-					}, 1000)
+					// }, 1000)
 		    			// })
 		    		// })
 				})
