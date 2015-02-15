@@ -435,6 +435,14 @@ function skipgrams(sequence, ngr, k, start, end)
   return output 
 }
 
+function barint(ar1, ar2)
+{
+  ar1 =_.map(ar1, function(value){ return value.join(','); });
+  ar2 =_.map(ar2, function(value){ return value.join(','); });
+  
+  return _.intersection(ar1, ar2)
+}
+
 function returnValues()
 {
 
@@ -2965,5 +2973,6 @@ extractdial:extractdial,
 isunigram:isunigram,
 onlyunigrams:onlyunigrams,
 writecvs:writecvs,
-skipgrams:skipgrams
+skipgrams:skipgrams,
+barint:barint
 }
