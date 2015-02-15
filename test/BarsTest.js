@@ -13,6 +13,12 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
+	it('intersections', function() {	
+		var inter = bars.barint([[1],[2],[3]],[[2],[3],[4]])
+		_.isEqual(inter,['2','3']).should.be.true
+	})
+
+
 	it('skipgrams', function() {	
 
 		var str = bars.skipgrams("1 2 3 4",2/*n ngrams*/,1/*k skip*/, 'start', 'end')
