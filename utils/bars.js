@@ -374,7 +374,7 @@ labeltree = { Offer:
   Quit: { true: {} } }
 
 
-function writecvs(global_stats)
+function writecvs(global_stats, mode)
 {
   _.each(global_stats, function(value, fold, list){
         fs.writeFileSync("/tmp/" + fold + ".csv", Object.keys(value).join("\t") + "\n", 'utf-8')
@@ -382,7 +382,8 @@ function writecvs(global_stats)
         _(maxlen).times(function(n){
           var row = []
           _.each(value, function(value1, size, list){
-
+            
+            value1 = value1[mode]
 
             if (value1.length -1 >= n)
             {
@@ -403,6 +404,35 @@ function writecvs(global_stats)
           fs.appendFileSync("/tmp/" + fold + ".csv", row.join("\t") + " \n", 'utf-8')
         }) 
       }, this)
+}
+
+
+function skipgrams(sequence, ngr, k, start, end)
+{
+  Tokenizer = require('natural').WordTokenizer,
+  tokenizer = new Tokenizer();
+
+  if (!_(sequence).isArray()) {
+        sequence = tokenizer.tokenize(sequence);
+    }
+    
+  var output = []
+
+  _(k).times(function(n){
+    _.each(sequence, function(value, key, list){ 
+      var some = sequence.slice()
+      some.splice(key, n+1)
+      output = output.concat(natural.NGrams.ngrams(some, ngr, start, end))
+    }, this)
+  })
+
+  output = output.concat(natural.NGrams.ngrams(sequence, ngr, start, end))
+
+  output = _.map(output, function(num){ return num.join(",") });
+  output = _.uniq(output)
+  output = _.map(output, function(num){ return num.split(",") });
+
+  return output 
 }
 
 function returnValues()
@@ -2934,5 +2964,6 @@ extractdataset:extractdataset,
 extractdial:extractdial,
 isunigram:isunigram,
 onlyunigrams:onlyunigrams,
-writecvs:writecvs
+writecvs:writecvs,
+skipgrams:skipgrams
 }
