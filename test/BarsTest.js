@@ -13,9 +13,16 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
+	it('skipgrams', function() {	
+
+		var str = bars.skipgrams("1 2 3 4",2/*n ngrams*/,1/*k skip*/, 'start', 'end')
+		_.isEqual(str, [ [ 'start', '2' ],[ '2', '3' ],[ '3', '4' ],[ '4', 'end' ],
+			[ 'start', '1' ],[ '1', '3' ],[ '1', '2' ],[ '2', '4' ],[ '3', 'end' ] ]).should.be.true
+	})
+
 	it('create list', function() {	
 		var data = {"0": {
-        				"2": [
+        				"2": {'TP':[
             				{
                 			"input": "Can I have a higher pension?",
                 			"intent_core": { "Reject": "can i have a higher" },
@@ -50,8 +57,8 @@ describe('Bars utilities', function() {
                         		"okay , fine",
                         		"fine"
                    				]
-                			]}],
-            			"4":[{
+                			]}]},
+            			"4": {'TP':[{
                 			"input": "We're losing time, leased car please?",
                 			"intent_core": { "Offer": "please" },
                 			"match": [
@@ -65,9 +72,9 @@ describe('Bars utilities', function() {
                     			]
                 			]
             				}]	
-            				},
+            				}},
             		"1":{
-            			"2":[{
+            			"2":{ 'TP': [{
             				"input": "Can I have a higher pension?",
 			                "match": [
             			        [
@@ -78,8 +85,8 @@ describe('Bars utilities', function() {
                         		"no , i have n't",
                         		"i have"
                     			]
-                			]}],
-            			"4":[{
+                			]}]},
+            			"4":{ 'TP': [{
 							"input": "Fine, but can I get a leased car?",
                 			"match": [
                     			[
@@ -99,9 +106,9 @@ describe('Bars utilities', function() {
                         		"fine"
                     			]
                 			]
-            			}]}}
+            			}]}}}
     
-          bars.writecvs(data)
+          bars.writecvs(data, 'TP')
     })
 
        
