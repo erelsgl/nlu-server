@@ -86,7 +86,7 @@ function trainandtest(train, test, seeds, mode, callback9)
         turn['sequence_actual'] = sequence
         var stat = stats.addCasesHashSeq(utils.seqgold(turn), sequence,1)
         console.log("get a stat")
-        turn['match'] = stat['match']
+        turn['match'] = sequence
         turn['eval'] = stat['explanations']
       }
 
