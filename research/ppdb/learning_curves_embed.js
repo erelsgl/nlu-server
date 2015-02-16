@@ -265,7 +265,6 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		var global_stats = {}
 
 		partitions.partitions_consistent(dataset, numOfFolds, function(train, test, fold) {
-			console.log("fold"+fold)
 			var index = step0
 
 			global_stats[fold] = {}
@@ -273,11 +272,15 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			while (index <= train.length)
 	  		{
 			  	
+				console.log("fold"+fold)
+			  	
 			  	var report = []
 
 				var mytrain = train.slice(0, index)
 
-				global_stats[fold][mytrain.length] = []
+				global_stats[fold][mytrain.length] = {}
+				global_stats[fold][mytrain.length]['TP'] = []
+				global_stats[fold][mytrain.length]['FP'] = []
 			  	
 			  	index += (index < limit ? step0 : step)
 			  	var mytrainset = (bars.isDialogue(mytrain) ? bars.extractdataset(mytrain) : mytrain)
@@ -351,9 +354,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 				var comparison = []
 				_.each(stats_ppdb['data'], function(turn, key, list){ 
-	    			if (stats_ppdb['data'][key]['eval']['FN'].length < stats_original['data'][key]['eval']['FN'].length)
-						{
-							var rec = {
+					var rec = {
 								'input':stats_ppdb['data'][key]['input'], 
 								'intent_core':stats_ppdb['data'][key]['intent_core'], 
 								'eval_ppdb':stats_ppdb['data'][key]['eval'], 
@@ -362,12 +363,19 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 								'match': stats_ppdb['data'][key]['match']
 							}
 
-							global_stats[fold][mytrain.length].push(rec)
+	    			if (stats_ppdb['data'][key]['eval']['FN'].length < stats_original['data'][key]['eval']['FN'].length)
+						{
+							global_stats[fold][mytrain.length]['TP'].push(rec)
 							comparison.push(rec)
-
 						}
 					else
 					{
+					if ((stats_ppdb['data'][key]['eval']['FN'].length == stats_original['data'][key]['eval']['FN'].length) &&
+						(stats_ppdb['data'][key]['eval']['FP'].length > stats_original['data'][key]['eval']['FP'].length ))
+						{
+							global_stats[fold][mytrain.length]['FP'].push(rec)
+						}
+
 					if (stats_ppdb['data'][key]['eval']['FN'].length > stats_original['data'][key]['eval']['FN'].length)
 						{
 							console.log(JSON.stringify(stats_ppdb['data'][key], null, 4))
@@ -401,7 +409,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			}); //fold
 
 			// console.log(JSON.stringify(global_stats, null, 4))
-			bars.writecvs(global_stats)
+			bars.writecvs(global_stats, 'TP')
 	})
 f.run();
 }
@@ -432,7 +440,9 @@ if (process.argv[1] === __filename)
 	var filtered = bars.filterdataset(dataset, 5)
 	console.log(filtered.length)
 
-	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
+	filtered = filtered.slice(0, 10)
+
+	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  2/*numOfFolds*/, function(){
 
 		console.log()
 		process.exit(0)
