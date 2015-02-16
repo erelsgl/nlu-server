@@ -1240,20 +1240,29 @@ function generatengrams(sentence)
 {
 	var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$+-]+/});
 	var words = tokenizer.tokenize(sentence);
-	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2)).concat(natural.NGrams.ngrams(words, 3))
 	
-	var featrues = []
+	var feature = []
+
+	_(3).times(function(n){
+		feature = feature.concat(bars.skipgrams(words, n, 3))
+	})
+
+	var features = []
 	_.each(feature, function(value, key, list){ 
 		if (value.length == 1)
 		{
 		 if (bars.isstopword(value[0]) == false)
-			featrues.push(value.join(" "))
+			features.push(value.join(" "))
 		}
 		else
-			featrues.push(value.join(" "))
+			features.push(value.join(" "))
 	}, this)
 
-	return featrues
+	features = _.unique(features)
+	features = _.sortBy(features, function(num){ return num.length })
+	features = _.compact(features)
+
+	return features
 }
 
 function loadseeds(train_turns, ngram)
