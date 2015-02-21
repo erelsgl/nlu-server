@@ -395,27 +395,35 @@ function joinfolds(global_stats)
 
 function aggregateintents(global_stats)
 {
-var output = []
+var output = {}
 _.each(global_stats, function(value, trainsize, list){ 
   _.each(value, function(value1, param, list){ 
     _.each(value1, function(value2, key, list){ 
       _.each(value2['intent_core'], function(value3, intent, list){ 
+        var lime = []
+        var phrase = ''
+
         _.each(value2['match'], function(value4, key, list){ 
           if (value4[0]==intent)
           {
-            var phrase = value4[2] + "-" + value3
-            if (!(trainsize in output))
-              output[trainsize] = {}
-            if (!(param in output[trainsize]))
-              output[trainsize][param] = {}
-            if (!(intent in output[trainsize][param]))
-              output[trainsize][param][intent] = {}
-            if (!(phrase in output[trainsize][param][intent]))
-              output[trainsize][param][intent][phrase] = []
-            
-            output[trainsize][param][intent][phrase].push(value4s)
+            lime.push(value4)
+            phrase = value4[2] + "-" + value3
           }
         }, this)
+
+        if (lime.length > 0)
+          {
+          if (!(trainsize in output))
+            output[trainsize] = {}
+          if (!(param in output[trainsize]))
+            output[trainsize][param] = {}
+          if (!(intent in output[trainsize][param]))
+            output[trainsize][param][intent] = {}
+          if (!(phrase in output[trainsize][param][intent]))
+            output[trainsize][param][intent][phrase] = []
+              
+          output[trainsize][param][intent][phrase].push({'input': value2['input'], 'match':lime})
+          }
       }, this)
     }, this)
   }, this)
@@ -427,50 +435,56 @@ function writehtml(global_stats, mode)
 {
 
   global_stats = joinfolds(global_stats)
-
   global_stats = aggregateintents(global_stats)
 
-  console.log(JSON.stringify(global_stats, null, 4))
-  console.log()
-  process.exit(0)
+  filename = "stats.html"
 
   var header = "<html><head><style>ul li ul { display: none; }</style><script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script></head><body><script>$(document).ready(function() { $('.list > li a').click(function() {$(this).parent().find('ul').toggle();});});</script>"
-  var filename = "stats"
+  fs.writeFileSync(filename, header + "\n", 'utf-8')
+  
 
-  // fs.appendFileSync(filename, "<table border=\"1\" style=\"white-space: pre-wrap;\">", 'utf-8')
+  fs.appendFileSync(filename, "<table border=\"1\" style=\"white-space: pre-wrap;\"><tr>", 'utf-8')
+  _.each(global_stats, function(value, trainsize, list){ 
+    fs.appendFileSync(filename, "<th>"+trainsize+"</th>", 'utf-8')
+  }, this)
+  fs.appendFileSync(filename, "</tr><tr>", 'utf-8')
 
-  _.each(global_stats, function(value, fold, list){
-        fs.writeFileSync(filename + fold + ".html", header + "\n", 'utf-8')
-        maxlen = _.min(Object.keys(global_stats[0]))
+    _.each(global_stats, function(value, trainsize, list){ 
+      fs.appendFileSync(filename, "<td>", 'utf-8') 
+      fs.appendFileSync(filename, "<table><tr><td>", 'utf-8') 
+        _.each(value, function(value1, param, list){ 
+          fs.appendFileSync(filename, "<ul class='list'><li><a>"+param+"</a><ul><il>",'utf-8')
+            _.each(value1, function(value2, intent, list){
+              fs.appendFileSync(filename, "<ul class='list'><li><a>"+intent+"</a><ul><il>",'utf-8')
+                _.each(value2, function(value3, phrase, list){ 
+                  fs.appendFileSync(filename, "<ul class='list'><li><a>"+value3.length+"---"+phrase+"</a><ul><il>",'utf-8')
+                    var data = []
+                    fs.appendFileSync(filename,"<table border=\"1\" style=\"white-space: pre-wrap;\">", 'utf-8')
+                    _.each(value3, function(value4, key, list){
+                      fs.appendFileSync(filename,"<tr><td>", 'utf-8')
+                      fs.appendFileSync(filename,value4['input']+"<br>", 'utf-8')
+                      fs.appendFileSync(filename,value4['match'].join("<br>"), 'utf-8')
+                      fs.appendFileSync(filename,"</td></tr>", 'utf-8')
 
+                    }, this)
+                    fs.appendFileSync(filename,"</table>", 'utf-8')
+                  fs.appendFileSync(filename,"</il></ul></il></ul>", 'utf-8')
 
-        _(maxlen).times(function(n){
-          var row = []
-          _.each(value, function(value1, size, list){
-            
-            value1 = value1[mode]
-
-            if (value1.length -1 >= n)
-            {
-            var match = []
-            _.each(value1[n]['match'], function(value, key, list){
-              match.push([value[0], value[2], value[3], value[4], value[5]]) 
+                }, this)
+              fs.appendFileSync(filename,"</il></ul></il></ul>", 'utf-8')
             }, this)
+          fs.appendFileSync(filename,"</il></ul></il></ul>", 'utf-8')
+        }, this)
+      fs.appendFileSync(filename, "</td></tr></table>", 'utf-8') 
 
-              row.push('\\'+value1[n]['input'] + "\n" +
-                      JSON.stringify(value1[n]['intent_core']) + " \n " +
-                      JSON.stringify(match)+'\\'
-                      )
-            }
-            else
-              row.push()
+      fs.appendFileSync(filename, "</td>", 'utf-8')
+    }, this)
 
-          }, this)
-          fs.appendFileSync("/tmp/" + fold + ".csv", row.join("\t") + " \n", 'utf-8')
-        }) 
-      }, this)
+  fs.appendFileSync(filename, "</tr></table>", 'utf-8')
+  fs.appendFileSync(filename, "</body></html>", 'utf-8')
+  console.log()
+  process.exit(0)
 }
-
 
 /*function writecvs(global_stats, mode)
 {
