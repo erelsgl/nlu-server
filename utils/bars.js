@@ -393,11 +393,46 @@ function joinfolds(global_stats)
   return output
 }
 
+function aggregateintents(global_stats)
+{
+var output = []
+_.each(global_stats, function(value, trainsize, list){ 
+  _.each(value, function(value1, param, list){ 
+    _.each(value1, function(value2, key, list){ 
+      _.each(value2['intent_core'], function(value3, intent, list){ 
+        _.each(value2['match'], function(value4, key, list){ 
+          if (value4[0]==intent)
+          {
+            var phrase = value4[2] + "-" + value3
+            if (!(trainsize in output))
+              output[trainsize] = {}
+            if (!(param in output[trainsize]))
+              output[trainsize][param] = {}
+            if (!(intent in output[trainsize][param]))
+              output[trainsize][param][intent] = {}
+            if (!(phrase in output[trainsize][param][intent]))
+              output[trainsize][param][intent][phrase] = []
+            
+            output[trainsize][param][intent][phrase].push(value4s)
+          }
+        }, this)
+      }, this)
+    }, this)
+  }, this)
+}, this)
+return output
+}
 
 function writehtml(global_stats, mode)
 {
 
   global_stats = joinfolds(global_stats)
+
+  global_stats = aggregateintents(global_stats)
+
+  console.log(JSON.stringify(global_stats, null, 4))
+  console.log()
+  process.exit(0)
 
   var header = "<html><head><style>ul li ul { display: none; }</style><script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script></head><body><script>$(document).ready(function() { $('.list > li a').click(function() {$(this).parent().find('ul').toggle();});});</script>"
   var filename = "stats"
