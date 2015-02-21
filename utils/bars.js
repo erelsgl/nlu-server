@@ -374,7 +374,70 @@ labeltree = { Offer:
   Quit: { true: {} } }
 
 
-function writecvs(global_stats, mode)
+function joinfolds(global_stats)
+{
+  var output = {}
+  _.each(global_stats, function(value, fold, list){
+    _.each(value, function(data, trainsize, list){ 
+        _.each(data, function(out, param, list){
+          if (!(trainsize in output))
+            output[trainsize] = {}
+          if (!(param in output[trainsize]))
+            output[trainsize][param]=[]
+          
+            output[trainsize][param]=output[trainsize][param].concat(out)
+
+        }, this)
+     }, this) 
+  }, this)
+  return output
+}
+
+
+function writehtml(global_stats, mode)
+{
+
+  global_stats = joinfolds(global_stats)
+
+  var header = "<html><head><style>ul li ul { display: none; }</style><script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script></head><body><script>$(document).ready(function() { $('.list > li a').click(function() {$(this).parent().find('ul').toggle();});});</script>"
+  var filename = "stats"
+
+  // fs.appendFileSync(filename, "<table border=\"1\" style=\"white-space: pre-wrap;\">", 'utf-8')
+
+  _.each(global_stats, function(value, fold, list){
+        fs.writeFileSync(filename + fold + ".html", header + "\n", 'utf-8')
+        maxlen = _.min(Object.keys(global_stats[0]))
+
+
+        _(maxlen).times(function(n){
+          var row = []
+          _.each(value, function(value1, size, list){
+            
+            value1 = value1[mode]
+
+            if (value1.length -1 >= n)
+            {
+            var match = []
+            _.each(value1[n]['match'], function(value, key, list){
+              match.push([value[0], value[2], value[3], value[4], value[5]]) 
+            }, this)
+
+              row.push('\\'+value1[n]['input'] + "\n" +
+                      JSON.stringify(value1[n]['intent_core']) + " \n " +
+                      JSON.stringify(match)+'\\'
+                      )
+            }
+            else
+              row.push()
+
+          }, this)
+          fs.appendFileSync("/tmp/" + fold + ".csv", row.join("\t") + " \n", 'utf-8')
+        }) 
+      }, this)
+}
+
+
+/*function writecvs(global_stats, mode)
 {
   _.each(global_stats, function(value, fold, list){
         fs.writeFileSync("/tmp/" + fold + ".csv", Object.keys(value).join("\t") + "\n", 'utf-8')
@@ -405,7 +468,7 @@ function writecvs(global_stats, mode)
         }) 
       }, this)
 }
-
+*/
 
 function skipgrams(sequence, ngr, k, start, end)
 {
@@ -2972,7 +3035,8 @@ extractdataset:extractdataset,
 extractdial:extractdial,
 isunigram:isunigram,
 onlyunigrams:onlyunigrams,
-writecvs:writecvs,
+// writecvs:writecvs,
+writehtml:writehtml,
 skipgrams:skipgrams,
 barint:barint
 }
