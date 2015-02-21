@@ -33,84 +33,39 @@ describe('Bars utilities', function() {
                 			"input": "Can I have a higher pension?",
                 			"intent_core": { "Reject": "can i have a higher" },
                 			"match": [
-                    			[
-                        		"Reject",
-                        		[4,10],
-                        		"no",
-                        		"no",
-                        		"no , i have n't",
-                        		"i have"
-                    			]
+                    			["Reject",[4,10],"no","no","no , i have n't","i have"]
                 			]
             				},
             				{
                 			"input": "Fine, but can I get a leased car?",
                 			"intent_core": { "Accept": "^fine", "Offer": "can i get" },
                 			"match": [
-                    			[
-                        		"Offer",
-                        		[11,20],
-                        		"would you give",
-                       			"would you give",
-                        		"can i get",
-                        		"can i get"
-                    			],
-                    			[
-                       			"Accept",
-                        		[0,4],
-                       			"agree",
-                        		"agree",
-                        		"okay , fine",
-                        		"fine"
-                   				]
+                    			["Offer",[11,20],"would you give","would you give","can i get","can i get"],
+                    			["Accept",[0,4],"agree","agree","okay , fine","fine"]
                 			]}]},
             			"4": {'TP':[{
                 			"input": "We're losing time, leased car please?",
                 			"intent_core": { "Offer": "please" },
                 			"match": [
-                    			[
-                        		"Offer",
-                       		 	[33,39],
-                        		"i would be willing to go",
-                        		"would",
-                        		"please do",
-                        		"please"
-                    			]
+                    			["Offer",[33,39],"i would be willing to go","would","please do","please"]
                 			]
             				}]	
             				}},
             		"1":{
             			"2":{ 'TP': [{
-            				"input": "Can I have a higher pension?",
+            				"input": "Yes but can I have a higher pension?",
+                			"intent_core": { "Reject": "can i have a higher" },
 			                "match": [
-            			        [
-                        		"Reject",
-                        		[4,10],
-                        		"no",
-                        		"no",
-                        		"no , i have n't",
-                        		"i have"
-                    			]
+            			        ["Reject",[4,10],"no","no","no , i have n't","i have"],
+            			        ["Reject",[4,10],"no","nope","nope , i have n't","i have"]
                 			]}]},
             			"4":{ 'TP': [{
-							"input": "Fine, but can I get a leased car?",
+							"input": "Fine, but please a leased car?",
+                			"intent_core": { "Accept": "fine", "Offer": "please"},
                 			"match": [
-                    			[
-                        		"Offer",
-                        		[11,20],
-                        		"would you give",
-                      			"would you give",
-                        		"can i get",
-                        		"can i get"
-                    			],
-                    			[
-                        		"Accept",
-                        		[0,4],
-                        		"agree",
-                        		"agree",
-                        		"okay , fine",
-                        		"fine"
-                    			]
+                    			["Offer",[11,20],"i would be willing to go","would you give","please","please"],
+                    			["Offer",[11,20],"i would be willing to go","would","please","please"],
+                    			["Accept",[0,4],"agree","agree","okay , fine","fine"]
                 			]
             			}]}}}
     
