@@ -114,7 +114,7 @@ describe('Bars utilities', function() {
                 			]
             			}]}}}
     
-          bars.writecvs(data, 'TP')
+          bars.writehtml(data, 'TP')
     })
 
        
