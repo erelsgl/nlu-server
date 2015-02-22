@@ -703,19 +703,6 @@ function crosslist(list)
     return crossl
 }
 
-function cleanupkeyphrase(keyphrase)
-{
-	keyphrase = keyphrase.replace("<VALUE>", "")
-    keyphrase = keyphrase.replace("<ATTRIBUTE>", "")
-    keyphrase = keyphrase.replace("^", "")
-    keyphrase = keyphrase.replace(".", "")
-    keyphrase = keyphrase.replace("!", "")
-    keyphrase = keyphrase.replace("$", "")
-    keyphrase = keyphrase.replace(/ +(?= )/g,'')
-    keyphrase = keyphrase.toLowerCase()
-    return keyphrase
-}
-
 /*
 input: data - dialogues where turn consist of 'intent_keyphrases_rule'
 output: keyphrases of intent Offer and not DEFAULT INTENT
@@ -1278,7 +1265,7 @@ function loadseeds(train_turns, ngram)
 		      if ((keyphrase != 'DEFAULT INTENT') && (keyphrase != ''))
 		      {
 
-		        keyphrase = cleanupkeyphrase(keyphrase)
+		        keyphrase = bars.cleanupkeyphrase(keyphrase)
 
 		        seeds[intent][keyphrase] = {}
 		        seeds[intent][keyphrase][keyphrase] = {}
@@ -1336,7 +1323,7 @@ function seqgold(turn)
 		if (intent in turn[intent_field])
 		{
 			var keyphrase = turn[intent_field][intent]
-			keyphrase = cleanupkeyphrase(keyphrase)
+			keyphrase = bars.cleanupkeyphrase(keyphrase)
 			keyphrase = bars.biunormalizer(keyphrase)
 			var pos = rules.compeletePhrase(turn_norm, keyphrase)
 			if (keyphrase == 'default intent')
@@ -1413,7 +1400,6 @@ generatengrams:generatengrams,
 generatengramsasync:generatengramsasync,
 afterppdb:afterppdb,
 retrieveIntentsync:retrieveIntentsync,
-cleanupkeyphrase:cleanupkeyphrase,
 localizeinter:localizeinter,
 maximizer:maximizer
 }
