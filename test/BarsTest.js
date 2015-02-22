@@ -29,6 +29,13 @@ describe('Bars utilities', function() {
 	it('create list', function() {	
 		var data = {"0": {
         				"2": {'TP':[
+        					{
+                			"input": "I don't accept pension?",
+                			"intent_core": { "Reject": "don't accept" },
+                			"match": [
+                    			["Reject",[4,10],"reject","reject","don't accept","don't accept"]
+                			]
+            				},
             				{
                 			"input": "Can I have a higher pension?",
                 			"intent_core": { "Reject": "can i have a higher" },
