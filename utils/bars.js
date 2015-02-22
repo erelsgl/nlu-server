@@ -406,8 +406,8 @@ _.each(global_stats, function(value, trainsize, list){
         _.each(value2['match'], function(value4, key, list){ 
           if (value4[0]==intent)
           {
-            lime.push(value4)
-            phrase = value4[2] + "-" + value3
+            lime.push(value4[2]+"|"+value4[3]+"|"+value4[4]+"|"+value4[5])
+            phrase = cleanupkeyphrase(value4[2]) + "-" + cleanupkeyphrase(value3)
           }
         }, this)
 
@@ -429,6 +429,45 @@ _.each(global_stats, function(value, trainsize, list){
   }, this)
 }, this)
 return output
+}
+
+function cleanupkeyphrase(keyphrase)
+{
+  keyphrase = keyphrase.replace("<VALUE>", "")
+    keyphrase = keyphrase.replace("<ATTRIBUTE>", "")
+    keyphrase = keyphrase.replace("^", "")
+    keyphrase = keyphrase.replace(".", "")
+    keyphrase = keyphrase.replace("!", "")
+    keyphrase = keyphrase.replace("$", "")
+    keyphrase = keyphrase.replace(/ +(?= )/g,'')
+    keyphrase = keyphrase.toLowerCase()
+    return keyphrase
+}
+
+function sorthash(ha)
+{
+  var li = _.pairs(ha) 
+  ha = _.sortBy(li, function(num){ return num[1].length; });
+  ha = ha.reverse()
+
+  var output = {}
+  _.each(ha, function(value, key, list){ 
+    output[value[0]] = value[1]
+  }, this)
+  return output
+}
+
+function sortintent(ha)
+{
+  var li = _.pairs(ha) 
+  ha = _.sortBy(li, function(num){ return Object.keys(num[1]).length; });
+  ha = ha.reverse()
+  
+  var output = {}
+  _.each(ha, function(value, key, list){ 
+    output[value[0]] = value[1]
+  }, this)
+  return output
 }
 
 function writehtml(global_stats, mode)
@@ -454,15 +493,17 @@ function writehtml(global_stats, mode)
       fs.appendFileSync(filename, "<table><tr><td>", 'utf-8') 
         _.each(value, function(value1, param, list){ 
           fs.appendFileSync(filename, "<ul class='list'><li><a>"+param+"</a><ul><il>",'utf-8')
+            value1 = sortintent(value1)
             _.each(value1, function(value2, intent, list){
               fs.appendFileSync(filename, "<ul class='list'><li><a>"+intent+"</a><ul><il>",'utf-8')
+                  value2 = sorthash(value2)
                 _.each(value2, function(value3, phrase, list){ 
-                  fs.appendFileSync(filename, "<ul class='list'><li><a>"+value3.length+"---"+phrase+"</a><ul><il>",'utf-8')
+                  fs.appendFileSync(filename, "<ul class='list'><li><a><b>"+value3.length+"</b>-"+phrase+"</a><ul><il>",'utf-8')
                     var data = []
                     fs.appendFileSync(filename,"<table border=\"1\" style=\"white-space: pre-wrap;\">", 'utf-8')
                     _.each(value3, function(value4, key, list){
                       fs.appendFileSync(filename,"<tr><td>", 'utf-8')
-                      fs.appendFileSync(filename,value4['input']+"<br>", 'utf-8')
+                      fs.appendFileSync(filename,"<i>"+value4['input']+"</i>"+"<br>", 'utf-8')
                       fs.appendFileSync(filename,value4['match'].join("<br>"), 'utf-8')
                       fs.appendFileSync(filename,"</td></tr>", 'utf-8')
 
