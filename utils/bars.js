@@ -3128,5 +3128,6 @@ onlyunigrams:onlyunigrams,
 // writecvs:writecvs,
 writehtml:writehtml,
 skipgrams:skipgrams,
-barint:barint
+barint:barint,
+cleanupkeyphrase:cleanupkeyphrase
 }
