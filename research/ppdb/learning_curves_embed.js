@@ -319,8 +319,14 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    		// })
 				})
 
+
+			
 		    	var stats_original = Fiber.yield()
 		    	console.log("yield")
+
+
+
+		    	console.log(JSON.stringify(stats_ppdb['stats']['interdep'], null, 4))
 
 		   		// bars.wrfile(__dirname+dirr+"orig_fold-"+fold+"_train-"+index, [seeds_original_after, stats_original])
 				
@@ -409,7 +415,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			}); //fold
 
 			// console.log(JSON.stringify(global_stats, null, 4))
-			bars.writecvs(global_stats, 'TP')
+			bars.writehtml(global_stats, 'TP')
 	})
 f.run();
 }
