@@ -326,7 +326,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 
 
-		    	console.log(JSON.stringify(stats_ppdb['stats']['interdep'], null, 4))
+		    	// console.log(JSON.stringify(stats_ppdb['stats']['interdep'], null, 4))
 
 		   		// bars.wrfile(__dirname+dirr+"orig_fold-"+fold+"_train-"+index, [seeds_original_after, stats_original])
 				
@@ -366,11 +366,11 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 								'eval_ppdb':stats_ppdb['data'][key]['eval'], 
 								'eval_original':stats_original['data'][key]['eval'],	
 							    'sequence_actual_ppdb': stats_ppdb['data'][key]['sequence_actual'],
-								'match': stats_ppdb['data'][key]['match'],
-								'actual': stats_ppdb['data'][key]['actual']
+								'sequence_actual': stats_ppdb['data'][key]['sequence_actual'],
+								'actual_filtered': stats_ppdb['data'][key]['actual_filtered']
 							}
 
-	    			if (stats_ppdb['data'][key]['eval']['FN'].length < stats_original['data'][key]['eval']['FN'].length)
+	    			if (stats_ppdb['data'][key]['eval']['TP'].length > stats_original['data'][key]['eval']['TP'].length)
 						{
 							rec['diff'] = bars.listdiff(stats_ppdb['data'][key]['eval_detail']['TP'], stats_original['data'][key]['eval_detail']['TP'])		
 							global_stats[fold][mytrain.length]['TP'].push(rec)
@@ -404,6 +404,8 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    	}, this)
 
 				console.log("stats is wrote")
+				console.log(JSON.stringify(global_stats, null, 4))
+				console.log("==================================")
 				bars.writehtml(global_stats, 'TP')
 
 
