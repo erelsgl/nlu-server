@@ -393,6 +393,16 @@ function joinfolds(global_stats)
   return output
 }
 
+function listdiff(list1, list2)
+{
+  list1 = _.map(list1, function(value){ return JSON.stringify(value); });
+  list2 = _.map(list2, function(value){ return JSON.stringify(value); });
+
+  var diff = _.difference(list1,list2)
+  diff = _.map(diff, function(value){ return JSON.parse(value); });
+  return diff
+}
+
 function aggregateintents(global_stats)
 {
 var output = {}
@@ -400,14 +410,26 @@ _.each(global_stats, function(value, trainsize, list){
   _.each(value, function(value1, param, list){ 
     _.each(value1, function(value2, key, list){ 
       _.each(value2['intent_core'], function(value3, intent, list){ 
+        
         var lime = []
-        var phrase = ''
+        var phrase = ""
+        var valbuf = ""
 
-        _.each(value2['match'], function(value4, key, list){ 
-          if (value4[0]==intent)
+        _.each(value2['diff'], function(value5, key, list){ 
+          if (value5[0] == intent)
           {
-            lime.push(value4[2]+"|"+value4[3]+"|"+value4[4]+"|"+value4[5])
-            phrase = cleanupkeyphrase(value4[2]) + "-" + cleanupkeyphrase(value3)
+            phrase = cleanupkeyphrase(value5[2]) + "-" + cleanupkeyphrase(value3)
+            valbuf = value5
+          }
+        }, this)
+
+        _.each(value2['sequence_actual'], function(value4, key, list){ 
+          if (value4[0] == intent)
+          {
+            if (_.isEqual(value4, valbuf))
+              lime.push("<b>"+value4[2]+"|"+value4[3]+"|"+value4[4]+"|"+value4[5]+"</b>")
+            else
+              lime.push(value4[2]+"|"+value4[3]+"|"+value4[4]+"|"+value4[5])
           }
         }, this)
 
@@ -523,8 +545,6 @@ function writehtml(global_stats, mode)
 
   fs.appendFileSync(filename, "</tr></table>", 'utf-8')
   fs.appendFileSync(filename, "</body></html>", 'utf-8')
-  console.log()
-  process.exit(0)
 }
 
 /*function writecvs(global_stats, mode)
@@ -3053,7 +3073,54 @@ function onlyunigrams(strhash)
   return output
 }
 
+// In sequence mode, aggregate the same intents in the same list
+// ['Offer','Offer'],['Accept']
+  function uniqueaggregate(actualClasses)
+  {
+    var ac = []
+    _.each(actualClasses, function(actual, key, list){ 
+      var found = []
+      var ff = false
+      _(ac.length).times(function(n){
+        found = _.filter(ac[n], function(num){ return ((num[0] == actual[0]) && (intersection(num[1], actual[1]) == true)) }, this);
+        if (found.length != 0)
+          {
+          ff = true
+              ac[n].push(actual)
+              }
+      }, this)
+      if (!ff)
+        {
+            ac.push([actual])
+          }
+      }, this)
+      return ac
+  }
+
+  // among all same canidadate pick the longest one
+  function uniquecandidate(actualClasses)
+  {
+    var ac = []
+    _.each(actualClasses, function(actual, key, list){ 
+      actualClasses[key] = _.sortBy(actual, function(num){ return num[1][1]-num[1][0]; }).reverse()
+      ac.push(actualClasses[key][0])
+    }, this)
+    return ac
+  }
+
+  // simple intersection
+  function intersection(begin, end)
+  {
+    if ((begin[0]<=end[0])&&(begin[1]>=end[0]))
+      return true
+    if ((begin[0]>=end[0])&&(begin[0]<=end[1]))
+      return true
+    return false
+  }
+
 module.exports = {
+  uniqueaggregate:uniqueaggregate,
+  uniquecandidate:uniquecandidate,
   copyobj:copyobj,
 	// aggregate_sagae_improved: aggregate_sagae_improved,
 	aggregate_sagae: aggregate_sagae, 
@@ -3129,5 +3196,6 @@ onlyunigrams:onlyunigrams,
 writehtml:writehtml,
 skipgrams:skipgrams,
 barint:barint,
-cleanupkeyphrase:cleanupkeyphrase
+cleanupkeyphrase:cleanupkeyphrase,
+listdiff:listdiff
 }
