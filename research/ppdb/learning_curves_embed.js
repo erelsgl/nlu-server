@@ -366,33 +366,46 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 								'eval_ppdb':stats_ppdb['data'][key]['eval'], 
 								'eval_original':stats_original['data'][key]['eval'],	
 							    'sequence_actual_ppdb': stats_ppdb['data'][key]['sequence_actual'],
-								'match': stats_ppdb['data'][key]['match']
+								'match': stats_ppdb['data'][key]['match'],
+								'actual': stats_ppdb['data'][key]['actual']
 							}
 
 	    			if (stats_ppdb['data'][key]['eval']['FN'].length < stats_original['data'][key]['eval']['FN'].length)
 						{
+							rec['diff'] = bars.listdiff(stats_ppdb['data'][key]['eval_detail']['TP'], stats_original['data'][key]['eval_detail']['TP'])		
 							global_stats[fold][mytrain.length]['TP'].push(rec)
-							comparison.push(rec)
+							// comparison.push(rec)
+
+							// console.log(JSON.stringify(stats_ppdb['data'][key]['eval_detail']['TP'], null, 4))
+							// console.log(JSON.stringify(stats_original['data'][key]['eval_detail']['TP'], null, 4))
+							// console.log(JSON.stringify(rec['diff'], null, 4))
+							// console.log(JSON.stringify(stats_ppdb['data'][key], null, 4))
+							// console.log()
+							// process.exit(0)
 						}
 					else
 					{
-					if ((stats_ppdb['data'][key]['eval']['FN'].length == stats_original['data'][key]['eval']['FN'].length) &&
-						(stats_ppdb['data'][key]['eval']['FP'].length > stats_original['data'][key]['eval']['FP'].length ))
+					// if ((stats_ppdb['data'][key]['eval']['FN'].length == stats_original['data'][key]['eval']['FN'].length) &&
+						// (stats_ppdb['data'][key]['eval']['FP'].length > stats_original['data'][key]['eval']['FP'].length ))
+						if ((stats_ppdb['data'][key]['eval']['FP'].length > stats_original['data'][key]['eval']['FP'].length ))
 						{
+							rec['diff'] = bars.listdiff(stats_ppdb['data'][key]['eval_detail']['FP'], stats_original['data'][key]['eval_detail']['FP'])		
 							global_stats[fold][mytrain.length]['FP'].push(rec)
 						}
 
-					if (stats_ppdb['data'][key]['eval']['FN'].length > stats_original['data'][key]['eval']['FN'].length)
+					/*if (stats_ppdb['data'][key]['eval']['FN'].length > stats_original['data'][key]['eval']['FN'].length)
 						{
 							console.log(JSON.stringify(stats_ppdb['data'][key], null, 4))
 							console.log(JSON.stringify(stats_original['data'][key], null, 4))
 							console.log()
 							process.exit(0)
-						}	
+						}	*/
 					}		    				
 		    	}, this)
 
 				console.log("stats is wrote")
+				bars.writehtml(global_stats, 'TP')
+
 
 		   		// bars.wrfile(__dirname+dirr+"comparison_fold-"+fold+"_train-"+index+"_"+FNppdb.length+"_"+comparison.length, 
 		   			// ["FN of PPDB", FNppdb.length, "PPDB gain", comparison.length, seeds_ppdb_after, "FN of ppdb", FNppdb, "comparison", comparison])
@@ -415,7 +428,6 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			}); //fold
 
 			// console.log(JSON.stringify(global_stats, null, 4))
-			bars.writehtml(global_stats, 'TP')
 	})
 f.run();
 }
@@ -445,8 +457,6 @@ if (process.argv[1] === __filename)
 	
 	var filtered = bars.filterdataset(dataset, 5)
 	console.log(filtered.length)
-
-	filtered = filtered.slice(0, 10)
 
 	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  2/*numOfFolds*/, function(){
 
