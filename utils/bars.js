@@ -3079,20 +3079,19 @@ function onlyunigrams(strhash)
   {
     var ac = []
     _.each(actualClasses, function(actual, key, list){ 
-      var found = []
       var ff = false
       _(ac.length).times(function(n){
-        found = _.filter(ac[n], function(num){ return ((num[0] == actual[0]) && (intersection(num[1], actual[1]) == true)) }, this);
+        var found = _.filter(ac[n], function(num){ return ((num[0] == actual[0]) && (intersection(num[1], actual[1]) == true)) }, this);
         if (found.length != 0)
           {
-          ff = true
-              ac[n].push(actual)
-              }
+            ff = true
+            ac[n].push(actual)
+          }
       }, this)
       if (!ff)
         {
-            ac.push([actual])
-          }
+          ac.push([actual])
+        }
       }, this)
       return ac
   }
@@ -3116,6 +3115,20 @@ function onlyunigrams(strhash)
     if ((begin[0]>=end[0])&&(begin[0]<=end[1]))
       return true
     return false
+  }
+
+  function uniquecoord(actual)
+  {
+    var output = []
+    var cont = {}
+    _.each(actual, function(value, key, list){
+      if (!(value[0]+value[1] in cont))
+        {
+          cont[value[0]+value[1]]=''
+          output.push(value)
+        } 
+    }, this)
+    return output
   }
 
 module.exports = {
@@ -3197,5 +3210,7 @@ writehtml:writehtml,
 skipgrams:skipgrams,
 barint:barint,
 cleanupkeyphrase:cleanupkeyphrase,
-listdiff:listdiff
+listdiff:listdiff,
+intersection:intersection,
+uniquecoord:uniquecoord
 }
