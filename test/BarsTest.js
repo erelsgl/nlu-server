@@ -14,6 +14,21 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
+ 	it('uniquecoord', function() {
+ 		var actual = [['Offer',[1,5]],['Accept',[1,5]],['Offer',[4,5]],['Accept',[1,5]]]
+ 		bars.uniquecoord(actual).length.should.equal(3)
+	})
+
+ 	it('intersection', function() {
+    	bars.intersection([5,10],[8,15]).should.be.true
+		bars.intersection([5,10],[12,15]).should.be.false
+		bars.intersection([5,10],[6,9]).should.be.true
+		bars.intersection([6,9],[5,10]).should.be.true
+		bars.intersection([6,9],[6,9]).should.be.true
+		bars.intersection([6,9],[6,10]).should.be.true
+		bars.intersection([6,9],[10,11]).should.be.false
+		bars.intersection([1,1],[1,1]).should.be.true
+    })
 
   it('difference', function() {
   		var out = bars.listdiff([[2],[1],[3]],[[1]])
@@ -21,9 +36,9 @@ describe('Bars utilities', function() {
   })
 
   it('uniqueaggregate', function() {
-		var ac = [['Greet',[1,5]], ['Offer',[0,5]], ['Greet',[0,6]], ['Offer',[9,15]], ['Greet',[0,9]]]
+		var ac = [['Greet',[1,5]], ['Offer',[0,5]], ['Offer', [0,5]],  ['Greet',[0,6]],['Offer', [0,5]], ['Offer',[9,15]], ['Greet',[0,9]],['Offer', [0,5]], ['Accept',[4,6]]]
 		var output = bars.uniqueaggregate(ac)
-		output.length.should.equal(3)
+		output.length.should.equal(4)
 
 		var actual = bars.uniquecandidate(output)
 		_.isEqual(actual[0], ['Greet',[0,9]]).should.be.true
