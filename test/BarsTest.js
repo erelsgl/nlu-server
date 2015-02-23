@@ -7,17 +7,32 @@
 var should = require('should')
 var bars = require('../utils/bars')
 var _ = require('underscore')._;
+var __ = require('lodash');
 
 var rules = require("../research/rule-based/rules.js")
 var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
+
+  it('difference', function() {
+  		var out = bars.listdiff([[2],[1],[3]],[[1]])
+  		_.isEqual(out, [ [ 2 ], [ 3 ] ]).should.be.true
+  })
+
+  it('uniqueaggregate', function() {
+		var ac = [['Greet',[1,5]], ['Offer',[0,5]], ['Greet',[0,6]], ['Offer',[9,15]], ['Greet',[0,9]]]
+		var output = bars.uniqueaggregate(ac)
+		output.length.should.equal(3)
+
+		var actual = bars.uniquecandidate(output)
+		_.isEqual(actual[0], ['Greet',[0,9]]).should.be.true
+	})	
+
 	it('intersections', function() {	
 		var inter = bars.barint([[1],[2],[3]],[[2],[3],[4]])
 		_.isEqual(inter,['2','3']).should.be.true
 	})
-
 
 	it('skipgrams', function() {	
 
@@ -32,6 +47,9 @@ describe('Bars utilities', function() {
         					{
                 			"input": "I don't accept pension?",
                 			"intent_core": { "Reject": "don't accept" },
+                			"best_match":[
+                				["Reject",[4,10],"reject","reject","don't accept","don't accept"]
+                			],
                 			"match": [
                     			["Reject",[4,10],"reject","reject","don't accept","don't accept"]
                 			]
@@ -39,6 +57,9 @@ describe('Bars utilities', function() {
             				{
                 			"input": "Can I have a higher pension?",
                 			"intent_core": { "Reject": "can i have a higher" },
+                			"best_match":[
+                				["Reject",[4,10],"no","no","no , i have n't","i have"]
+                			],
                 			"match": [
                     			["Reject",[4,10],"no","no","no , i have n't","i have"]
                 			]
@@ -46,13 +67,21 @@ describe('Bars utilities', function() {
             				{
                 			"input": "Fine, but can I get a leased car?",
                 			"intent_core": { "Accept": "^fine", "Offer": "can i get" },
+                			"best_match":[
+                				["Offer",[15,25],"would you give","would you give","can i get","can i get"],
+                				["Accept",[0,4],"agree","agree","okay , fine","fine"]
+                			],
                 			"match": [
-                    			["Offer",[11,20],"would you give","would you give","can i get","can i get"],
+                    			["Offer",[15,25],"would you give","would you give","can i get","can i get"],
+                    			["Offer",[11,20],"can i give","can i give","can i get","can i"],
                     			["Accept",[0,4],"agree","agree","okay , fine","fine"]
                 			]}]},
             			"4": {'TP':[{
                 			"input": "We're losing time, leased car please?",
                 			"intent_core": { "Offer": "please" },
+                			"best_match":[
+                				["Offer",[33,39],"i would be willing to go","would","please do","please"]
+                			],
                 			"match": [
                     			["Offer",[33,39],"i would be willing to go","would","please do","please"]
                 			]
@@ -62,13 +91,20 @@ describe('Bars utilities', function() {
             			"2":{ 'TP': [{
             				"input": "Yes but can I have a higher pension?",
                 			"intent_core": { "Reject": "can i have a higher" },
+                			"best_match":[
+                				["Reject",[4,10],"no","nope","nope , i have n't a","i have a"]
+                				],
 			                "match": [
             			        ["Reject",[4,10],"no","no","no , i have n't","i have"],
-            			        ["Reject",[4,10],"no","nope","nope , i have n't","i have"]
+            			        ["Reject",[4,10],"no","nope","nope , i have n't a","i have a"]
                 			]}]},
             			"4":{ 'TP': [{
 							"input": "Fine, but please a leased car?",
                 			"intent_core": { "Accept": "fine", "Offer": "please"},
+                			"best_match":[
+                    			["Offer",[11,20],"i would be willing to go","would you give","please","please"],
+                    			["Accept",[0,4],"agree","agree","okay , fine","fine"]
+                			],
                 			"match": [
                     			["Offer",[11,20],"i would be willing to go","would you give","please","please"],
                     			["Offer",[11,20],"i would be willing to go","would","please","please"],
