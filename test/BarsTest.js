@@ -14,6 +14,21 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
+	
+	it('onecoverstwo', function() {
+		bars.onecoverstwo([1,4],[1,4]).should.be.true
+		bars.onecoverstwo([1,4],[2,3]).should.be.true
+		bars.onecoverstwo([1,4],[2,4]).should.be.true
+		bars.onecoverstwo([1,4],[1,3]).should.be.true
+		bars.onecoverstwo([1,4],[2,5]).should.be.false
+		bars.onecoverstwo([1,4],[0,2]).should.be.false
+	})
+
+	it('lisunique', function() {
+  		var out = bars.lisunique([[2],[1],[3],[1]])
+  		_.isEqual(out, [ [2],[1],[3] ]).should.be.true
+  	})
+
 	it('listint', function() {
   		var out = bars.listint([[2],[1],[3]],[[1]])
   		_.isEqual(out, [ [ 1 ] ]).should.be.true
@@ -78,11 +93,14 @@ describe('Bars utilities', function() {
                 			"input": "Can I have a higher pension?",
                 			"intent_core": { "Reject": "can i have a higher" },
                 			"diff_TP":[
-                				["Reject",[4,10],"no","no","no , i have n't","i have"]
+                				["Reject",[4,10],"no","no","no , i have n't","i have"],
+                    			["Reject",[4,10],"nono","no","no , i have n't","i have no"]
                 			],
                 			"sequence_actual_ppdb": [
                     			["Reject",[4,10],"no","no","no , i have n't","i have"],
-                    			["Reject",[4,10],"nono","no","no , i have n't","i have no"]
+                    			["Reject",[4,10],"nono","no","no , i have n't","i have no"],
+                    			["Reject",[4,10],"nonono","no","no , i have n't","i have nono"],
+                    			["Reject",[4,10],"nononono","no","no , i have n't","i have nonono"]
                 			]
             				},
             				{
