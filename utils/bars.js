@@ -403,6 +403,17 @@ function listdiff(list1, list2)
   return diff
 }
 
+function listint(list1, list2)
+{
+  list1 = _.map(list1, function(value){ return JSON.stringify(value); });
+  list2 = _.map(list2, function(value){ return JSON.stringify(value); });
+
+  var diff = _.intersection(list1,list2)
+  diff = _.map(diff, function(value){ return JSON.parse(value); });
+  return diff
+}
+
+
 function aggregateintents(global_stats)
 {
 var output = {}
@@ -3211,6 +3222,7 @@ skipgrams:skipgrams,
 barint:barint,
 cleanupkeyphrase:cleanupkeyphrase,
 listdiff:listdiff,
+listint:listint,
 intersection:intersection,
 uniquecoord:uniquecoord
 }
