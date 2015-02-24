@@ -413,6 +413,14 @@ function listint(list1, list2)
   return diff
 }
 
+function lisunique(list1)
+{
+  list1 = _.map(list1, function(value){ return JSON.stringify(value); });
+  
+  var diff = _.unique(list1)
+  diff = _.map(diff, function(value){ return JSON.parse(value); });
+  return diff
+}
 
 function aggregateintents(global_stats)
 {
@@ -426,37 +434,33 @@ _.each(global_stats, function(value, trainsize, list){
         var phrase = ""
         var valbuf = ""
 
-        _.each(value2['diff'], function(value5, key, list){ 
+        _.each(value2['sequence_actual_ppdb'], function(value4, key, list){ 
+          if (value4[0] == intent)
+          { 
+            if (listint([value4], value2['diff_'+param]).length > 0)
+              lime.push("<b>"+value4[0]+":"+value4[2]+"|"+value4[3]+"|"+value4[4]+"|"+value4[5]+"</b>")
+            else
+              lime.push(value4[0]+":"+value4[2]+"|"+value4[3]+"|"+value4[4]+"|"+value4[5])
+          }
+        }, this)
+
+        _.each(value2['diff_'+param], function(value5, key, list){ 
           if (value5[0] == intent)
           {
             phrase = cleanupkeyphrase(value5[2]) + "-" + cleanupkeyphrase(value3)
-            valbuf = value5
+
+            if (!(trainsize in output))
+              output[trainsize] = {}
+            if (!(param in output[trainsize]))
+              output[trainsize][param] = {}
+            if (!(intent in output[trainsize][param]))
+              output[trainsize][param][intent] = {}
+            if (!(phrase in output[trainsize][param][intent]))
+              output[trainsize][param][intent][phrase] = []
+                
+            output[trainsize][param][intent][phrase].push({'input': value2['input'], 'output':value2['intent_core'], 'match':lime})
           }
         }, this)
-
-        _.each(value2['sequence_actual'], function(value4, key, list){ 
-          if (value4[0] == intent)
-          {
-            if (_.isEqual(value4, valbuf))
-              lime.push("<b>"+value4[2]+"|"+value4[3]+"|"+value4[4]+"|"+value4[5]+"</b>")
-            else
-              lime.push(value4[2]+"|"+value4[3]+"|"+value4[4]+"|"+value4[5])
-          }
-        }, this)
-
-        if (lime.length > 0)
-          {
-          if (!(trainsize in output))
-            output[trainsize] = {}
-          if (!(param in output[trainsize]))
-            output[trainsize][param] = {}
-          if (!(intent in output[trainsize][param]))
-            output[trainsize][param][intent] = {}
-          if (!(phrase in output[trainsize][param][intent]))
-            output[trainsize][param][intent][phrase] = []
-              
-          output[trainsize][param][intent][phrase].push({'input': value2['input'], 'match':lime})
-          }
       }, this)
     }, this)
   }, this)
@@ -503,7 +507,7 @@ function sortintent(ha)
   return output
 }
 
-function writehtml(global_stats, mode)
+function writehtml(global_stats)
 {
 
   global_stats = joinfolds(global_stats)
@@ -537,6 +541,7 @@ function writehtml(global_stats, mode)
                     _.each(value3, function(value4, key, list){
                       fs.appendFileSync(filename,"<tr><td>", 'utf-8')
                       fs.appendFileSync(filename,"<i>"+value4['input']+"</i>"+"<br>", 'utf-8')
+                      fs.appendFileSync(filename,"<i>"+JSON.stringify(value4['output'])+"</i>"+"<br>", 'utf-8')
                       fs.appendFileSync(filename,value4['match'].join("<br>"), 'utf-8')
                       fs.appendFileSync(filename,"</td></tr>", 'utf-8')
 
@@ -3128,6 +3133,27 @@ function onlyunigrams(strhash)
     return false
   }
 
+  
+
+  function onecoverstwo(one,two)
+  {
+    if ((one[0]<=two[0])&&(one[1]>=two[1]))
+      return true
+    else
+      return false
+  }
+
+  // remove actual that is completely covered
+  function fullycovered(actual)
+  {
+    var output = []
+    actual = uniquecoord(actual)
+
+    
+    return output
+  }
+
+  // leave only unique coordinates
   function uniquecoord(actual)
   {
     var output = []
@@ -3223,6 +3249,8 @@ barint:barint,
 cleanupkeyphrase:cleanupkeyphrase,
 listdiff:listdiff,
 listint:listint,
+lisunique:lisunique,
 intersection:intersection,
-uniquecoord:uniquecoord
+uniquecoord:uniquecoord,
+onecoverstwo:onecoverstwo
 }
