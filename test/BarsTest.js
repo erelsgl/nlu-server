@@ -14,6 +14,11 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
+	it('listint', function() {
+  		var out = bars.listint([[2],[1],[3]],[[1]])
+  		_.isEqual(out, [ [ 1 ] ]).should.be.true
+  	})
+
  	it('uniquecoord', function() {
  		var actual = [['Offer',[1,5]],['Accept',[1,5]],['Offer',[4,5]],['Accept',[1,5]]]
  		bars.uniquecoord(actual).length.should.equal(3)
@@ -62,31 +67,32 @@ describe('Bars utilities', function() {
         					{
                 			"input": "I don't accept pension?",
                 			"intent_core": { "Reject": "don't accept" },
-                			"best_match":[
+                			"diff_TP":[
                 				["Reject",[4,10],"reject","reject","don't accept","don't accept"]
                 			],
-                			"match": [
+                			"sequence_actual_ppdb": [
                     			["Reject",[4,10],"reject","reject","don't accept","don't accept"]
                 			]
             				},
             				{
                 			"input": "Can I have a higher pension?",
                 			"intent_core": { "Reject": "can i have a higher" },
-                			"best_match":[
+                			"diff_TP":[
                 				["Reject",[4,10],"no","no","no , i have n't","i have"]
                 			],
-                			"match": [
-                    			["Reject",[4,10],"no","no","no , i have n't","i have"]
+                			"sequence_actual_ppdb": [
+                    			["Reject",[4,10],"no","no","no , i have n't","i have"],
+                    			["Reject",[4,10],"nono","no","no , i have n't","i have no"]
                 			]
             				},
             				{
                 			"input": "Fine, but can I get a leased car?",
                 			"intent_core": { "Accept": "^fine", "Offer": "can i get" },
-                			"best_match":[
+                			"diff_TP":[
                 				["Offer",[15,25],"would you give","would you give","can i get","can i get"],
                 				["Accept",[0,4],"agree","agree","okay , fine","fine"]
                 			],
-                			"match": [
+                			"sequence_actual_ppdb": [
                     			["Offer",[15,25],"would you give","would you give","can i get","can i get"],
                     			["Offer",[11,20],"can i give","can i give","can i get","can i"],
                     			["Accept",[0,4],"agree","agree","okay , fine","fine"]
@@ -94,10 +100,10 @@ describe('Bars utilities', function() {
             			"4": {'TP':[{
                 			"input": "We're losing time, leased car please?",
                 			"intent_core": { "Offer": "please" },
-                			"best_match":[
+                			"diff_TP":[
                 				["Offer",[33,39],"i would be willing to go","would","please do","please"]
                 			],
-                			"match": [
+                			"sequence_actual_ppdb": [
                     			["Offer",[33,39],"i would be willing to go","would","please do","please"]
                 			]
             				}]	
@@ -106,28 +112,28 @@ describe('Bars utilities', function() {
             			"2":{ 'TP': [{
             				"input": "Yes but can I have a higher pension?",
                 			"intent_core": { "Reject": "can i have a higher" },
-                			"best_match":[
+                			"diff_TP":[
                 				["Reject",[4,10],"no","nope","nope , i have n't a","i have a"]
                 				],
-			                "match": [
+			                "sequence_actual_ppdb": [
             			        ["Reject",[4,10],"no","no","no , i have n't","i have"],
             			        ["Reject",[4,10],"no","nope","nope , i have n't a","i have a"]
                 			]}]},
             			"4":{ 'TP': [{
 							"input": "Fine, but please a leased car?",
                 			"intent_core": { "Accept": "fine", "Offer": "please"},
-                			"best_match":[
+                			"diff_TP":[
                     			["Offer",[11,20],"i would be willing to go","would you give","please","please"],
                     			["Accept",[0,4],"agree","agree","okay , fine","fine"]
                 			],
-                			"match": [
+                			"sequence_actual_ppdb": [
                     			["Offer",[11,20],"i would be willing to go","would you give","please","please"],
                     			["Offer",[11,20],"i would be willing to go","would","please","please"],
                     			["Accept",[0,4],"agree","agree","okay , fine","fine"]
                 			]
             			}]}}}
     
-          bars.writehtml(data, 'TP')
+          bars.writehtml(data)
     })
 
        
