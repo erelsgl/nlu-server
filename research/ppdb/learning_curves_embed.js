@@ -364,15 +364,26 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 								'input':stats_ppdb['data'][key]['input'], 
 								'intent_core':stats_ppdb['data'][key]['intent_core'], 
 								'eval_ppdb':stats_ppdb['data'][key]['eval'], 
+								'eval_ppdb_detail':stats_ppdb['data'][key]['eval_detail'], 
 								'eval_original':stats_original['data'][key]['eval'],	
-							    'sequence_actual_ppdb': stats_ppdb['data'][key]['sequence_actual'],
-								'sequence_actual': stats_ppdb['data'][key]['sequence_actual'],
+								'eval_original_detail':stats_original['data'][key]['eval_detail'],	
+								'diff_TP': [],
+								'diff_FP': [],
+							    'sequence_actual_ppdb': bars.lisunique(stats_ppdb['data'][key]['sequence_actual']),
+								// 'sequence_actual': stats_ppdb['data'][key]['sequence_actual'],
 								'actual_filtered': stats_ppdb['data'][key]['actual_filtered']
 							}
 
-	    			if (stats_ppdb['data'][key]['eval']['TP'].length > stats_original['data'][key]['eval']['TP'].length)
+
+					// console.log(JSON.stringify(stats_ppdb['data'][key]['input'], null, 4))
+					// console.log(JSON.stringify(stats_ppdb['data'][key]['output'], null, 4))
+					// console.log(JSON.stringify(stats_ppdb['data'][key]['eval_detail'], null, 4))
+					// console.log(JSON.stringify(stats_original['data'][key]['eval_detail'], null, 4))
+					// console.log("-------------------------------------")
+
+	    			if (stats_ppdb['data'][key]['eval']['FN'].length < stats_original['data'][key]['eval']['FN'].length)
 						{
-							rec['diff'] = bars.listdiff(stats_ppdb['data'][key]['eval_detail']['TP'], stats_original['data'][key]['eval_detail']['TP'])		
+							rec['diff_TP'] = bars.listdiff(stats_ppdb['data'][key]['eval_detail']['TP'], stats_original['data'][key]['eval_detail']['TP'])		
 							global_stats[fold][mytrain.length]['TP'].push(rec)
 							// comparison.push(rec)
 
@@ -383,13 +394,13 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 							// console.log()
 							// process.exit(0)
 						}
-					else
-					{
+					
+					
 					// if ((stats_ppdb['data'][key]['eval']['FN'].length == stats_original['data'][key]['eval']['FN'].length) &&
 						// (stats_ppdb['data'][key]['eval']['FP'].length > stats_original['data'][key]['eval']['FP'].length ))
-						if ((stats_ppdb['data'][key]['eval']['FP'].length > stats_original['data'][key]['eval']['FP'].length ))
+					if ((stats_ppdb['data'][key]['eval']['FP'].length > stats_original['data'][key]['eval']['FP'].length ))
 						{
-							rec['diff'] = bars.listdiff(stats_ppdb['data'][key]['eval_detail']['FP'], stats_original['data'][key]['eval_detail']['FP'])		
+							rec['diff_FP'] = bars.listdiff(stats_ppdb['data'][key]['eval_detail']['FP'], stats_original['data'][key]['eval_detail']['FP'])		
 							global_stats[fold][mytrain.length]['FP'].push(rec)
 						}
 
@@ -400,7 +411,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 							console.log()
 							process.exit(0)
 						}	*/
-					}		    				
+							    				
 		    	}, this)
 
 				console.log("stats is wrote")
