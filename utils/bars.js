@@ -515,7 +515,7 @@ function writehtml(global_stats)
 
   filename = "stats.html"
 
-  var header = "<html><head><style>ul li ul li ul li ul{ display: none; }</style><script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script></head><body><script>$(document).ready(function() { $('.list > li a').click(function() {$(this).parent().find('ul').toggle();});});</script>"
+  var header = "<html><head><style>ul li ul li ul li ul{ display: none; } table {width: 4000px;table-layout: fixed;} </style><script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script></head><body><script>$(document).ready(function() { $('.list > li a').click(function() {$(this).parent().find('ul').toggle();});});</script>"
   fs.writeFileSync(filename, header + "\n", 'utf-8')
   
 
@@ -537,7 +537,7 @@ function writehtml(global_stats)
                 _.each(value2, function(value3, phrase, list){ 
                   fs.appendFileSync(filename, "<ul class='list'><li><a><b>"+value3.length+"</b>-"+phrase+"</a><ul><il>",'utf-8')
                     var data = []
-                    fs.appendFileSync(filename,"<table border=\"1\" style=\"white-space: pre-wrap;\">", 'utf-8')
+                    fs.appendFileSync(filename,"<table border=\"1\" style=\"white-space: pre-wrap; width: 500px\">", 'utf-8')
                     _.each(value3, function(value4, key, list){
                       fs.appendFileSync(filename,"<tr><td>", 'utf-8')
                       fs.appendFileSync(filename,"<i>"+value4['input']+"</i>"+"<br>", 'utf-8')
