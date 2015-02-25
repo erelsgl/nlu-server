@@ -515,7 +515,7 @@ function writehtml(global_stats)
 
   filename = "stats.html"
 
-  var header = "<html><head><style>ul li ul { display: none; }</style><script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script></head><body><script>$(document).ready(function() { $('.list > li a').click(function() {$(this).parent().find('ul').toggle();});});</script>"
+  var header = "<html><head><style>ul li ul li ul li ul{ display: none; }</style><script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script></head><body><script>$(document).ready(function() { $('.list > li a').click(function() {$(this).parent().find('ul').toggle();});});</script>"
   fs.writeFileSync(filename, header + "\n", 'utf-8')
   
 
