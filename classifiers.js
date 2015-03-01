@@ -341,6 +341,26 @@ var AdaboostClassifier = classifiers.multilabel.Adaboost.bind(0, {
 	iterations: 2000
 });
 
+
+
+var kNNClassifier = classifiers.multilabel.kNN.bind(0, {
+	k: 2,
+	distanceFunction: 'EuclideanDistance',
+	/*EuclideanDistance
+	EditDistance
+	ChebyshevDistance
+	ManhattanDistance*/
+
+	distanceWeightening: '1/d'
+	/*1/d - Weight by 1/d distance
+	1-d - Weight by 1-d distance
+	No - no distance weightening*/
+});
+
+var kNNBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
+	binaryClassifierType: kNNClassifier,
+});
+
 var WinnowBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
 	binaryClassifierType: WinnowBinaryClassifier,
 });
@@ -533,6 +553,8 @@ module.exports = {
 
 		PartialClassificationEqually_Component: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
 		PartialClassificationEquallySagae: enhance5(PartialClassification(WinnowSegmenter1),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_rilesbased, undefined),
+
+		kNNPartialClassifier: enhance(PartialClassification(kNNBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
 
 };
 
