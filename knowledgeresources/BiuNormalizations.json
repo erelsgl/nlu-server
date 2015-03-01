@@ -8,6 +8,7 @@
 , {"source": "didn't", "target": "did not"}
 , {"source": "didnt", "target": "did not"}
 , {"source": "wouldn't", "target": "would not"}
+, {"source": "i'd", "target": "i would"}
 , {"source": "shouldn't", "target": "should not"}
 , {"source": "can't", "target": "can not"}
 , {"source": "cant", "target": "can not"}
