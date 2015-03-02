@@ -42,8 +42,10 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 
 // var do_small_temporary_serialization_test = false
 
-var trans = true
+var trans = false
 var test_ppdb = false
+var test_knn = true
+
 var do_learning_curves = false
 
 var do_test_seed = false
@@ -264,6 +266,19 @@ if (trans)
 		process.exit(0)
 			
 	},this)
+}
+
+if (test_knn)
+{
+	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))
+	var dataset = bars.extractdataset(data)
+	// var dataset = dataset.splice(0,20)
+	var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.3))
+
+	var stats = trainAndTest.trainAndTest_hash(classifier.kNNPartialClassifierExpansion11, dataset['train'], dataset['test'], 5)
+	// var stats = trainAndTest.trainAndTest_hash(classifier.IntentClassificationNoExpansion, dataset['train'], dataset['test'], 5)
+	console.log(JSON.stringify(stats, null, 4))
+	process.exit(0)
 }
 
 if (test_ppdb)
