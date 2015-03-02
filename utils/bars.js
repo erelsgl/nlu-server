@@ -3133,8 +3133,6 @@ function onlyunigrams(strhash)
     return false
   }
 
-  
-
   function onecoverstwo(one,two)
   {
     if ((one[0]<=two[0])&&(one[1]>=two[1]))
@@ -3149,7 +3147,22 @@ function onlyunigrams(strhash)
     var output = []
     actual = uniquecoord(actual)
 
-    
+    _.each(actual, function(ext, key1, list1){ 
+        var add = true
+      _.each(output, function(inter, key2, list2){
+        if (ext[0] == inter[0])
+        {
+          if (onecoverstwo(ext[1], inter[1]))
+            output.splice(key2, 1)
+          
+          if (onecoverstwo(inter[1], ext[1]))
+            add = false
+        }
+      }, this)
+      if (add)
+        output.push(ext)
+    }, this)
+
     return output
   }
 
@@ -3252,5 +3265,6 @@ listint:listint,
 lisunique:lisunique,
 intersection:intersection,
 uniquecoord:uniquecoord,
-onecoverstwo:onecoverstwo
+onecoverstwo:onecoverstwo,
+fullycovered:fullycovered
 }
