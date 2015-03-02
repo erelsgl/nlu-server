@@ -83,7 +83,7 @@ function trainandtest(train, test, seeds, mode, callback9)
         turn['sequence_expected'] = utils.seqgold(turn)
         turn['sequence_actual'] = sequence
         // turn['actual_filtered'] = bars.uniquecandidate(bars.uniqueaggregate(sequence))
-        turn['actual_filtered'] = bars.uniquecoord(sequence)
+        turn['actual_filtered'] = bars.fullycovered(sequence)
     
         var stat = stats.addCasesHashSeq(utils.seqgold(turn), turn['actual_filtered'], 1)
         turn['eval'] = stat['explanations']
