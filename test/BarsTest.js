@@ -34,6 +34,15 @@ describe('Bars utilities', function() {
   		_.isEqual(out, [ [ 1 ] ]).should.be.true
   	})
 
+
+ 	it('fullycovered', function() {
+ 		var actual = [['Offer',[1,5]],['Accept',[1,5]],['Offer',[4,5]],['Accept',[1,5]]]
+ 		_.isEqual(bars.fullycovered(actual), [ [ 'Offer', [ 1, 5 ] ], [ 'Accept', [ 1, 5 ] ] ]).should.be.true
+		
+		var actual = [['Offer',[2,3]], ['Offer',[1,5]],['Accept',[1,5]],['Offer',[4,5]],['Accept',[2,7]]]
+ 		_.isEqual(bars.fullycovered(actual), [ [ 'Offer', [ 1, 5 ] ],[ 'Accept', [ 1, 5 ] ],[ 'Accept', [ 2, 7 ] ] ]).should.be.true
+ 	})
+
  	it('uniquecoord', function() {
  		var actual = [['Offer',[1,5]],['Accept',[1,5]],['Offer',[4,5]],['Accept',[1,5]]]
  		bars.uniquecoord(actual).length.should.equal(3)
