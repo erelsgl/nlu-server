@@ -176,6 +176,37 @@ function featureExtractorU(sentence, features) {
 }
 
 
+function featureword2vec(sentence, features) {
+	var words = tokenizer.tokenize(sentence);
+	var vector = []
+
+	_.each(words, function(word, key, list){ 
+		var result = execSync.exec("node "+__dirname+"/utils/getred.js '" + word + "'");
+	
+		var output = result['stdout'].replace(/(\r\n|\n|\r)/gm,"");
+		output = output.split(",")
+		output = _.map(output, function(value){ return parseFloat(value); });
+		vector.push(output)
+	}, this)
+	
+	// AVERAGING
+	var vectorAveraged = []
+	_(vector[0].length).times(function(n){
+		var avg = 0
+		_.each(vector, function(value, key, list){ 
+			avg += value[n]
+		}, this)
+		vectorAveraged.push(avg/vector.length)
+	})
+
+	// FULLFILL THE VECTOR
+	_.each(vectorAveraged, function(value, key, list){ 
+		features['w2v'+key] = value
+	}, this)
+
+	return features
+}
+
 /*function featureExtractorBeginEndTruthTeller(sentence, features) {
 	
 	var sentence = trainutils.truth_sentence(sentence)
@@ -341,11 +372,9 @@ var AdaboostClassifier = classifiers.multilabel.Adaboost.bind(0, {
 	iterations: 2000
 });
 
-
-
-var kNNClassifier = classifiers.multilabel.kNN.bind(0, {
-	k: 2,
-	distanceFunction: 'EuclideanDistance',
+var kNNClassifier = classifiers.kNN.bind(0, {
+	k: 5,
+	distanceFunction: 'ManhattanDistance',
 	/*EuclideanDistance
 	EditDistance
 	ChebyshevDistance
@@ -529,6 +558,7 @@ module.exports = {
 		featureExtractorUB: featureExtractorUB,
 		featureExtractorB: featureExtractorB,
 		featureExtractorU: featureExtractorU,
+		featureword2vec:featureword2vec,
 		// featureExtractorUnigram: featureExtractorUnigram,
 		instanceFilter: instanceFilterShortString,
 		featureExpansion:featureExpansion,
@@ -554,7 +584,11 @@ module.exports = {
 		PartialClassificationEqually_Component: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
 		PartialClassificationEquallySagae: enhance5(PartialClassification(WinnowSegmenter1),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_rilesbased, undefined),
 
-		kNNPartialClassifier: enhance(PartialClassification(kNNBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
+		kNNPartialClassifier: enhance(kNNBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
+		kNNPartialClassifierExpansion11: enhance(kNNBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
+
+		IntentNoExpansionWord2Vec: enhance(SvmPerfBinaryRelevanceClassifier, featureword2vec, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
+
 
 };
 
