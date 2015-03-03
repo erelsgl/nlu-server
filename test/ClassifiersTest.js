@@ -23,6 +23,13 @@ var SvmPerfBinaryRelevanceClassifier = limdu_classifiers.multilabel.BinaryReleva
 
 describe('Classifiers functions', function() {
 
+	it('word2vec', function() {
+		var features = []
+		var output = classifiers.featureword2vec('the of', features)
+		Object.keys(features).length.should.equal(300)
+		features['w2v299'].should.equal((-0.0599376048847 + 0.0405294302343)/2)
+	})
+
 	it('featureExpansion', function() {
 		// phrase:
 		// 0 - everything
