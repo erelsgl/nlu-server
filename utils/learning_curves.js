@@ -365,11 +365,9 @@ if (process.argv[1] === __filename)
 				// IDF: classifier.IntentClassificationIDF,
 				// Binary: classifier.IntentClassificationBin
 
-				NoExpansion: classifier.IntentClassificationNoExpansion,
-				Expansion2: classifier.IntentClassificationExpansion2,
-				Expansion11: classifier.IntentClassificationExpansion11,
-				Expansion1Fine: classifier.IntentClassificationExpansion1Fine,
-
+				IntentNoExpansion_Word2VecUnigram : classifier.IntentNoExpansion_Word2VecUnigram,
+				IntentNoExpansion_unigram : classifier.IntentNoExpansion_unigram,
+				IntentNoExpansion_word2vec : classifier.IntentNoExpansion_word2vec
 			}
 	
 	var parameters = [
