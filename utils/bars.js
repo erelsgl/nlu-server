@@ -3060,6 +3060,22 @@ function isNumber(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
+function equallist(list)
+{
+  list = _.map(list, function(value){ return JSON.stringify(value) });
+
+  var mark = true
+
+  _.each(list, function(value1, key, list){ 
+    _.each(list, function(value, key, list){ 
+    if (_.isEqual(value, value1) == false)
+      mark = false
+    }, this)
+  }, this)
+
+  return mark
+}
+
 function intersection(begin, end)
   {
     if ((begin[0]<=end[0])&&(begin[1]>=end[0]))
@@ -3274,5 +3290,6 @@ lisunique:lisunique,
 intersection:intersection,
 uniquecoord:uniquecoord,
 onecoverstwo:onecoverstwo,
-fullycovered:fullycovered
+fullycovered:fullycovered,
+equallist:equallist
 }
