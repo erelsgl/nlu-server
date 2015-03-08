@@ -14,7 +14,12 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
-	
+	it('equallist', function() {
+		bars.equallist([{'one':123, 'two':234}, {'one':123, 'two':234}, {'one':123, 'two':234}]).should.be.true
+		bars.equallist([{'one':123, 'two':234}, {'one':123, 'two':2134}, {'one':123, 'two':234}]).should.be.false
+		bars.equallist([{'one':123, 'two':234}, {'one':123, 'two':234}, {'one':123, 'thw':234}]).should.be.false
+	})
+
 	it('onecoverstwo', function() {
 		bars.onecoverstwo([1,4],[1,4]).should.be.true
 		bars.onecoverstwo([1,4],[2,3]).should.be.true
