@@ -312,6 +312,11 @@ function featureword2vec(sentence, features) {
 }
 
 */
+
+function weightInstance1(instance) {
+	return 1
+}
+
 function featureExtractorLemma(sentence, features) {
 	var words = trainutils.sentenceStem(sentence)
 	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
@@ -373,16 +378,16 @@ var AdaboostClassifier = classifiers.multilabel.Adaboost.bind(0, {
 });
 
 var kNNClassifier = classifiers.kNN.bind(0, {
-	k: 5,
-	distanceFunction: 'ManhattanDistance',
+	k: 1,
+	distanceFunction: 'EuclideanDistance',
 	/*EuclideanDistance
-	EditDistance
 	ChebyshevDistance
-	ManhattanDistance*/
+	ManhattanDistance
+	DotDistance
+	*/
 
-	distanceWeightening: '1/d'
+	distanceWeightening: weightInstance1
 	/*1/d - Weight by 1/d distance
-	1-d - Weight by 1-d distance
 	No - no distance weightening*/
 });
 
@@ -584,8 +589,8 @@ module.exports = {
 		PartialClassificationEqually_Component: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
 		PartialClassificationEquallySagae: enhance5(PartialClassification(WinnowSegmenter1),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_rilesbased, undefined),
 
-		kNNPartialClassifier: enhance(kNNBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
-		kNNPartialClassifierExpansion11: enhance(kNNBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
+		kNNClassifier: enhance(kNNBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
+		kNNClassifierExpansion2: enhance(kNNBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
 
 		IntentNoExpansion_Word2VecUnigram: enhance(SvmPerfBinaryRelevanceClassifier, [featureword2vec, featureExtractorU], undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
 		IntentNoExpansion_unigram: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
