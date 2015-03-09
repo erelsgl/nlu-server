@@ -272,10 +272,10 @@ if (test_knn)
 {
 	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))
 	var dataset = bars.extractdataset(data)
-	// var dataset = dataset.splice(0,20)
-	var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.3))
+	var dataset = dataset.splice(0,4)
+	var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.5))
 
-	var stats = trainAndTest.trainAndTest_hash(classifier.kNNPartialClassifierExpansion11, dataset['train'], dataset['test'], 5)
+	var stats = trainAndTest.trainAndTest_hash(classifier.kNNPartialClassifier, dataset['train'], dataset['test'], 5)
 	// var stats = trainAndTest.trainAndTest_hash(classifier.IntentClassificationNoExpansion, dataset['train'], dataset['test'], 5)
 	console.log(JSON.stringify(stats, null, 4))
 	process.exit(0)
