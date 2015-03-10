@@ -180,6 +180,8 @@ function featureword2vec(sentence, features) {
 	var words = tokenizer.tokenize(sentence);
 	var vector = []
 
+	console.log("featureword2vec start "+words.length)
+
 	_.each(words, function(word, key, list){ 
 		var result = execSync.exec("node "+__dirname+"/utils/getred.js '" + word + "'");
 	
@@ -188,6 +190,8 @@ function featureword2vec(sentence, features) {
 		output = _.map(output, function(value){ return parseFloat(value); });
 		vector.push(output)
 	}, this)
+
+	console.log("featureword2vec stop")
 	
 	// AVERAGING
 	var vectorAveraged = []
@@ -313,10 +317,21 @@ function featureword2vec(sentence, features) {
 
 */
 
+function FilterIntents(input)
+{
+	if ((input.length > 1) && (input.indexOf("Offer") != -1))
+		return ['Offer']
+	else
+		return input
+}
+
 function weightInstance1(instance) {
 	return 1
 }
 
+function weightInstance2(instance) {
+	return 1/instance
+}
 function featureExtractorLemma(sentence, features) {
 	var words = trainutils.sentenceStem(sentence)
 	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
@@ -378,7 +393,7 @@ var AdaboostClassifier = classifiers.multilabel.Adaboost.bind(0, {
 });
 
 var kNNClassifier = classifiers.kNN.bind(0, {
-	k: 1,
+	k: 3,
 	distanceFunction: 'EuclideanDistance',
 	/*EuclideanDistance
 	ChebyshevDistance
@@ -386,13 +401,23 @@ var kNNClassifier = classifiers.kNN.bind(0, {
 	DotDistance
 	*/
 
-	distanceWeightening: weightInstance1
+	distanceWeightening: weightInstance2
 	/*1/d - Weight by 1/d distance
 	No - no distance weightening*/
 });
 
+var kNNClassifier1 = classifiers.kNN.bind(0, {
+	k: 3,
+	distanceFunction: 'EuclideanDistance',
+	distanceWeightening: weightInstance1
+});
+
 var kNNBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
 	binaryClassifierType: kNNClassifier,
+});
+
+var kNNBinaryRelevanceClassifier1 = classifiers.multilabel.BinaryRelevance.bind(0, {
+	binaryClassifierType: kNNClassifier1,
 });
 
 var WinnowBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
@@ -589,12 +614,18 @@ module.exports = {
 		PartialClassificationEqually_Component: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
 		PartialClassificationEquallySagae: enhance5(PartialClassification(WinnowSegmenter1),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_rilesbased, undefined),
 
-		kNNClassifier: enhance(kNNBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
+		kNNClassifier: enhance(kNNBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, FilterIntents,  Hierarchy.splitPartEquallyIntent, true),
+		kNNClassifier1: enhance(kNNBinaryRelevanceClassifier1, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, FilterIntents,  Hierarchy.splitPartEquallyIntent, true),
 		kNNClassifierExpansion2: enhance(kNNBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
+		kNNClassifier_word2vec: enhance(kNNBinaryRelevanceClassifier, featureword2vec, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
 
-		IntentNoExpansion_Word2VecUnigram: enhance(SvmPerfBinaryRelevanceClassifier, [featureword2vec, featureExtractorU], undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
+
+		IntentNoExpansion_Word2Vec: enhance(SvmPerfBinaryRelevanceClassifier, featureword2vec, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
 		IntentNoExpansion_unigram: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
 		IntentNoExpansion_word2vec: enhance(SvmPerfBinaryRelevanceClassifier, featureword2vec, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
+
+		IntentExpansion2: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
+
 };
 
 module.exports.defaultClassifier = module.exports.SvmPerfClassifier
