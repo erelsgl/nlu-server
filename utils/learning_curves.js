@@ -197,6 +197,37 @@ function thereisdata(data)
 }
 
 
+function compare(gldata)
+{
+	var names = Object.keys(gldata)
+	var maxlen = gldata[names[0]].length
+	var diff = []
+
+	console.log(maxlen)
+
+	_(maxlen).times(function(n){
+		var glodata = {}
+		var locdata = {}
+		_.each(gldata, function(value, name, list){ 
+			locdata[name] = gldata[name][n]['explanation']
+			glodata[name] = gldata[name][n]
+		}, this)
+
+		if (!bars.equallist(_.values(locdata)))
+			diff.push(glodata)
+
+		if ('kNNClassifier' in locdata)
+			if ((locdata['kNNClassifier']['FP'].length != 0) || (locdata['kNNClassifier']['FN'].length != 0))
+				diff.push(glodata)
+	})
+
+	console.log(diff.length)
+	console.log(JSON.stringify(diff, null, 4))
+
+
+}
+
+
 function plot(fold, parameter, stat, classifiers)
 {
 	var values = []
@@ -276,24 +307,33 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	var report = []
 
 				var mytrain = train.slice(0, index)
-				console.log("fold"+fold)
 			  	
 			  	index += (index < limit ? step0 : step)
 			  	var mytrainset = (bars.isDialogue(mytrain) ? bars.extractdataset(mytrain) : mytrain)
 			  	var testset = (bars.isDialogue(test) ? bars.extractdataset(test) : test)
+
+				console.log("fold"+fold)
+				console.log("train"+mytrainset.length)
+
+			  	var gldata = {}
 
 			  	_.each(classifiers, function(classifier, name, list){ 
 			  		console.log("start trainandTest")
 	    			stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
 		    		console.log("stop trainandTest")
 		    		report.push(_.pick(stats[0]['stats'], parameters))
+
+		    		gldata[name] = stats[0]['data']
+
 			  	}, this)
 
-			  	console.log(report)
+			  	// console.log(report)
 			  	_.each(report, function(value, key, list){ 
 			  		if (value['F1'] < 0)
 			  			process.exit(0)
 			  	}, this)
+
+			  	compare(gldata)
 
 			  	// if (oldreport.length > 0)
 			  	// {
@@ -314,7 +354,6 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	// 			console.log("new")
 			  	// 			console.log(stats[0]['data'][key])
 			  	// 			done = true
-			  				
 			  	// 		}
 
 			  	// 		if (stats[0]['data'][key]['explanation']['FN'].length > value['explanation']['FN'].length)
@@ -332,7 +371,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	oldreport = bars.copyobj(stats)
 
                 extractGlobal(parameters, classifiers, mytrain, report, stat)
-
+                
                 stat['_sized'] = test.length
                 stat['_sizec'] = bars.extractdataset(test).length
 
@@ -351,9 +390,9 @@ if (process.argv[1] === __filename)
 
 	var dataset = JSON.parse(fs.readFileSync(__dirname + "/../../datasets/DatasetDraft/dial_usa_rule_core.json"))
 	
-	dataset = _.shuffle(dataset)
-	dataset = _.shuffle(dataset)
-	dataset = _.shuffle(dataset)
+	// dataset = _.shuffle(dataset)
+	// dataset = _.shuffle(dataset)
+	// dataset = _.shuffle(dataset)
 
 	var classifiers  = {
 				// Expansion1:   classifier.IntentClassificationExpansion1,
@@ -365,9 +404,18 @@ if (process.argv[1] === __filename)
 				// IDF: classifier.IntentClassificationIDF,
 				// Binary: classifier.IntentClassificationBin
 
-				IntentNoExpansion_Word2VecUnigram : classifier.IntentNoExpansion_Word2VecUnigram,
+/*				IntentNoExpansion_Word2VecUnigram : classifier.IntentNoExpansion_Word2VecUnigram,
 				IntentNoExpansion_unigram : classifier.IntentNoExpansion_unigram,
-				IntentNoExpansion_word2vec : classifier.IntentNoExpansion_word2vec
+				IntentNoExpansion_word2vec  classifier.IntentNoExpansion_word2vec
+*/
+				// kNNClassifier1: classifier.kNNClassifier1,
+				// kNNClassifierExpansion2: classifier.kNNClassifierExpansion2
+				// kNNClassifier: classifier.kNNClassifier
+
+				kNNClassifier_word2vec: classifier.kNNClassifier_word2vec,
+				IntentNoExpansion_Word2Vec: classifier.IntentNoExpansion_Word2Vec
+
+
 			}
 	
 	var parameters = [
@@ -383,7 +431,7 @@ if (process.argv[1] === __filename)
 
 	filtered = _.shuffle(filtered)
 
-	// filtered = filtered.slice(0, 10)
+	filtered = filtered.slice(0, 5)
 
 	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
 		console.log()
