@@ -152,11 +152,15 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 	for (var i=0; i<testSet.length; ++i) 
 	{
 		expectedClasses = list.listembed(testSet[i].output)
+
+		// console.log(JSON.stringify(testSet[i], null, 4))
 		// classified = classifier.classify(testSet[i].input, 50, testSet[i].input)
 		// classesWithExplanation = classifier.classify(testSet[i].input, explain, true, testSet[i].output, classifier_compare)
 		classesWithExplanation = classifier.classify(testSet[i].input, explain, true, testSet[i].output)
-// console.log(classesWithExplanation)
-// process.exit(0)
+		
+
+		// console.log(JSON.stringify(classesWithExplanation, null, 4))
+		// console.log("-----------------------")
 
 		if (explain > 0)
 			classes = classesWithExplanation.classes
@@ -177,8 +181,13 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 			sentence_hash['input'] = testSet[i].input;
 			sentence_hash['expected'] = expectedClasses[n];
 			sentence_hash['classified'] = actualClasses[n];
+			sentence_hash['expansioned'] = classesWithExplanation.expansioned
+			sentence_hash['features'] = classesWithExplanation.features
 			sentence_hash['explanation'] = expl;
 			sentence_hash['original'] = testSet1[i].output;
+			sentence_hash['explanation_source'] = classesWithExplanation.explanation['positive']
+
+			
 			// sentence_hash['expected original'] = testSetOriginal[i]['output']
 			// sentence_hash['classified original'] = classified
 			})	
@@ -329,7 +338,7 @@ module.exports.compare = function(classifier1, classifier2, dataset, explain) {
 		// classifierstats['data'] = data_stats[n]
 		// classifierstats['stats'] = currentStats[n].retrieveStats()
 		// testResult.push(classifierstats)
-		// }, this)
+		// }, this)testSetOriginal
 
 	// return testResult
 };
@@ -459,6 +468,7 @@ module.exports.trainAndTest_hash = function(
 
  		// classifier_compare.trainBatch(utils.clonedataset(trainSet1))
 
+ 		// console.log(trainSet1)
 		classifier.trainBatch(trainSet1);
 
 
