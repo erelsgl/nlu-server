@@ -44,7 +44,8 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 
 var trans = false
 var test_ppdb = false
-var test_knn = true
+var test_knn = false
+var test_label = true
 
 var do_learning_curves = false
 
@@ -266,6 +267,33 @@ if (trans)
 		process.exit(0)
 			
 	},this)
+
+}
+
+// 91%
+if (test_label)
+{
+	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))
+	var filtered = bars.filterdataset(data, 5)
+	var ext = bars.extractdataset(filtered)
+
+	var doubles = []
+	
+	var all = ext.length
+	var single = 0
+
+	_.each(ext, function(value, key, list){ 
+		if (Hierarchy.splitPartEquallyIntent(value['output']).length == 1)
+			single += 1
+		else
+			doubles.push(Hierarchy.splitPartEquallyIntent(value['output']))
+	}, this)
+
+	console.log(all)
+	console.log(single)
+	console.log(single/all)
+	console.log(doubles)
+	process.exit(0)
 }
 
 if (test_knn)
@@ -275,7 +303,7 @@ if (test_knn)
 	var dataset = dataset.splice(0,4)
 	var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.5))
 
-	var stats = trainAndTest.trainAndTest_hash(classifier.kNNPartialClassifier, dataset['train'], dataset['test'], 5)
+	var stats = trainAndTest.trainAndTest_hash(classifier.kNNClassifier, dataset['train'], dataset['test'], 5)
 	// var stats = trainAndTest.trainAndTest_hash(classifier.IntentClassificationNoExpansion, dataset['train'], dataset['test'], 5)
 	console.log(JSON.stringify(stats, null, 4))
 	process.exit(0)
