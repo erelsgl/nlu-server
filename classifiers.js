@@ -187,8 +187,13 @@ function featureword2vec(sentence, features) {
 	
 		var output = result['stdout'].replace(/(\r\n|\n|\r)/gm,"");
 		output = output.split(",")
-		output = _.map(output, function(value){ return parseFloat(value); });
-		vector.push(output)
+
+		if (output.indexOf("null") == -1)
+		{
+			output = _.map(output, function(value){ return parseFloat(value); });
+			vector.push(output)
+		}
+
 	}, this)
 
 	console.log("featureword2vec stop")
