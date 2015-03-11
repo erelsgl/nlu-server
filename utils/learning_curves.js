@@ -411,11 +411,10 @@ if (process.argv[1] === __filename)
 				// kNNClassifier1: classifier.kNNClassifier1,
 				// kNNClassifierExpansion2: classifier.kNNClassifierExpansion2
 				// kNNClassifier: classifier.kNNClassifier
-
-				kNNClassifier_word2vec: classifier.kNNClassifier_word2vec,
-				IntentNoExpansion_Word2Vec: classifier.IntentNoExpansion_Word2Vec
-
-
+				
+				SVM_unigram : classifier.SVM_unigram,
+				SVM_word2vec : classifier.SVM_word2vec,
+				SVM_word2vec_unigram : classifier.SVM_word2vec_unigram,
 			}
 	
 	var parameters = [
@@ -431,7 +430,7 @@ if (process.argv[1] === __filename)
 
 	filtered = _.shuffle(filtered)
 
-	filtered = filtered.slice(0, 5)
+	// filtered = filtered.slice(0, 5)
 
 	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
 		console.log()
