@@ -518,7 +518,7 @@ var afterppdb = function(seeds)
 			_.each(seeds[intent][keyphrase], function(value, ngram, list){ 
 				_.each(seeds[intent][keyphrase][ngram], function(value, ppdb, list){
 					_.each(generatengrams(ppdb), function(phrase, key, list){ 
-						seeds[intent][keyphrase][ngram][ppdb][phrase] = {}
+						seeds[intent][keyphrase][ngram][ppdb][bars.biunormalizer(phrase)] = {}
 					}, this)	
 				}, this)	
 			}, this)
@@ -1236,12 +1236,7 @@ function generatengrams(sentence)
 
 	var features = []
 	_.each(feature, function(value, key, list){ 
-		if (value.length == 1)
-		{
-		 if (bars.isstopword(value[0]) == false)
-			features.push(value.join(" "))
-		}
-		else
+		if (!bars.isstopword(value))
 			features.push(value.join(" "))
 	}, this)
 
