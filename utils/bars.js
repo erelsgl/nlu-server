@@ -3048,7 +3048,7 @@ function isstopword(word)
 {
   if (!_(word).isArray()) 
     word = tokenizer.tokenize(word)
-  
+
   var stopwc = 0
   _.each(word, function(w, key, list){
     if (stopwords.indexOf(w.toLowerCase()) != -1)
@@ -3201,6 +3201,22 @@ function onlyunigrams(strhash)
     return output
   }
 
+  function vectorsum(a, b)
+  {
+    if (a.length != b.length)
+    {
+      console.error("The length is different")
+      process.exit(0)
+    }
+
+    var c = []
+
+    _(a.length).times(function(n){
+      c.push(a[n]+b[n])
+    })
+    return c
+  }
+
   // leave only unique coordinates
   function uniquecoord(actual)
   {
@@ -3302,5 +3318,6 @@ intersection:intersection,
 uniquecoord:uniquecoord,
 onecoverstwo:onecoverstwo,
 fullycovered:fullycovered,
-equallist:equallist
+equallist:equallist,
+vectorsum:vectorsum
 }
