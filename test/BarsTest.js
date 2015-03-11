@@ -14,6 +14,14 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
+	it('isstopword', function() {
+		bars.isstopword('could').should.be.true
+		bars.isstopword(['could', 'i']).should.be.true
+		bars.isstopword('could i').should.be.true
+		bars.isstopword('reveice i').should.be.false
+	})
+	
+
 	it('equallist', function() {
 		bars.equallist([{'one':123, 'two':234}, {'one':123, 'two':234}, {'one':123, 'two':234}]).should.be.true
 		bars.equallist([{'one':123, 'two':234}, {'one':123, 'two':2134}, {'one':123, 'two':234}]).should.be.false
