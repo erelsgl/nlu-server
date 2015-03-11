@@ -20,7 +20,6 @@ describe('Bars utilities', function() {
 		bars.isstopword('could i').should.be.true
 		bars.isstopword('reveice i').should.be.false
 	})
-	
 
 	it('equallist', function() {
 		bars.equallist([{'one':123, 'two':234}, {'one':123, 'two':234}, {'one':123, 'two':234}]).should.be.true
