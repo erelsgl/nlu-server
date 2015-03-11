@@ -13,6 +13,16 @@ var rules = require("../research/rule-based/rules.js")
 var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
+	
+	it('vectorsum', function() {
+		_.isEqual(bars.vectorsum([1,2,3,4],[4,3,2,1]),[5,5,5,5]).should.be.true
+		_.isEqual(bars.vectorsum([1,2,3,4],[1,1,1,1]),[2,3,4,5]).should.be.true
+	})
+
+	it('filter', function() {
+		var out = _.filter([[1], [2], [], [4]], function(num){ return num.length != 0 });
+	})
+	
 
 	it('isstopword', function() {
 		bars.isstopword('could').should.be.true
