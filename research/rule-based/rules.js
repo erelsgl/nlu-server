@@ -213,6 +213,8 @@ function generatesentence(record)
 		}, this)
 	})
 	
+	string = string.replace("usd",'')
+	string = string.replace("USD",'')
 	string = string.replace("nis",'')
 	string = string.replace("NIS",'')
 	string = string.replace("track",'')
