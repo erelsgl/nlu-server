@@ -20,6 +20,7 @@ var execSync = require('execSync');
 var classifiers = limdu.classifiers;
 var ftrs = limdu.features;
 var Hierarchy = require(__dirname+'/Hierarchy');
+var bars = require('./utils/bars')
 
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
@@ -182,34 +183,29 @@ function featureword2vec(sentence, features) {
 
 	console.log("featureword2vec start "+words.length)
 
-	_.each(words, function(word, key, list){ 
-		var result = execSync.exec("node "+__dirname+"/utils/getred.js '" + word + "'");
+	var params = words.join(" ")
+	var result = execSync.exec("node "+__dirname+"/utils/getred.js " + params)
+
+	result = JSON.parse(result['stdout'])
+
 	
-		var output = result['stdout'].replace(/(\r\n|\n|\r)/gm,"");
-		output = output.split(",")
-
-		if (output.indexOf("null") == -1)
-		{
-			output = _.map(output, function(value){ return parseFloat(value); });
-			vector.push(output)
-		}
-
-	}, this)
 
 	console.log("featureword2vec stop")
 	
-	// AVERAGING
-	var vectorAveraged = []
-	_(vector[0].length).times(function(n){
-		var avg = 0
-		_.each(vector, function(value, key, list){ 
-			avg += value[n]
-		}, this)
-		vectorAveraged.push(avg/vector.length)
-	})
+	var result = _.filter(result, function(num){ return num.length != 0 });
+
+	var sumvec = []
+
+	_(result[0].length).times(function(n){sumvec.push(0)})
+
+	_.each(result, function(value, key, list){ 
+		sumvec = bars.vectorsum(sumvec, value)
+	}, this)
+
+	var sumvec = _.map(sumvec, function(value){ return value/result.length })
 
 	// FULLFILL THE VECTOR
-	_.each(vectorAveraged, function(value, key, list){ 
+	_.each(sumvec, function(value, key, list){ 
 		features['w2v'+key] = value
 	}, this)
 
@@ -398,7 +394,7 @@ var AdaboostClassifier = classifiers.multilabel.Adaboost.bind(0, {
 });
 
 var kNNClassifier = classifiers.kNN.bind(0, {
-	k: 3,
+	k: 1,
 	distanceFunction: 'EuclideanDistance',
 	/*EuclideanDistance
 	ChebyshevDistance
@@ -406,13 +402,13 @@ var kNNClassifier = classifiers.kNN.bind(0, {
 	DotDistance
 	*/
 
-	distanceWeightening: weightInstance2
+	distanceWeightening: weightInstance1
 	/*1/d - Weight by 1/d distance
 	No - no distance weightening*/
 });
 
 var kNNClassifier1 = classifiers.kNN.bind(0, {
-	k: 3,
+	k: 1,
 	distanceFunction: 'EuclideanDistance',
 	distanceWeightening: weightInstance1
 });
@@ -619,9 +615,9 @@ module.exports = {
 		PartialClassificationEqually_Component: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
 		PartialClassificationEquallySagae: enhance5(PartialClassification(WinnowSegmenter1),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_rilesbased, undefined),
 
-		kNNClassifier: enhance(kNNBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, FilterIntents,  Hierarchy.splitPartEquallyIntent, true),
-		kNNClassifier1: enhance(kNNBinaryRelevanceClassifier1, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, FilterIntents,  Hierarchy.splitPartEquallyIntent, true),
-		kNNClassifierExpansion2: enhance(kNNBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
+		kNN: enhance(kNNBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
+		kNN_Expansion: enhance(kNNBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
+		
 		kNNClassifier_word2vec: enhance(kNNBinaryRelevanceClassifier, featureword2vec, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
 
 		
@@ -629,7 +625,8 @@ module.exports = {
 		SVM_word2vec: enhance(SvmPerfBinaryRelevanceClassifier, featureword2vec, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
 		SVM_word2vec_unigram: enhance(SvmPerfBinaryRelevanceClassifier, [featureword2vec, featureExtractorU], undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
 
-		IntentExpansion2: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
+		SVM: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
+		SVM_Expansion: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
 
 };
 
