@@ -36,6 +36,9 @@ var joinJsonRecursive = Hierarchy.joinJsonRecursive
 var regexpNormalizer = ftrs.RegexpNormalizer(
     JSON.parse(fs.readFileSync(__dirname+'/../knowledgeresources/BiuNormalizations.json')));
 
+Tokenizer = require('natural').WordTokenizer,
+  tokenizer = new Tokenizer();
+
 var stopwords = loadstopwords(__dirname+"/../stopwords")
 var intent_field = 'intent_core'
 var ValueTransition =
@@ -3043,8 +3046,16 @@ function loadstopwords(filename)
 
 function isstopword(word)
 {
-  word = word.toLowerCase()
-  if (stopwords.indexOf(word) != -1)
+  if (!_(word).isArray()) 
+    word = tokenizer.tokenize(word)
+  
+  var stopwc = 0
+  _.each(word, function(w, key, list){
+    if (stopwords.indexOf(w.toLowerCase()) != -1)
+      stopwc += 1
+  }, this)
+
+  if (stopwc == word.length)
     return true
   else
     return false
