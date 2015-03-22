@@ -404,7 +404,6 @@ if (process.argv[1] === __filename)
 				// IDF: classifier.IntentClassificationIDF,
 				// Binary: classifier.IntentClassificationBin
 
-
 /*				IntentNoExpansion_Word2VecUnigram : classifier.IntentNoExpansion_Word2VecUnigram,
 				IntentNoExpansion_unigram : classifier.IntentNoExpansion_unigram,
 				IntentNoExpansion_word2vec  classifier.IntentNoExpansion_word2vec
@@ -412,13 +411,19 @@ if (process.argv[1] === __filename)
 				// SVM: classifier.SVM,
 				// SVM_Expansion: classifier.SVM_Expansion
 				
-				
 			/*	SVM_unigram : classifier.SVM_unigram,
 				SVM_word2vec : classifier.SVM_word2vec,
 				SVM_word2vec_unigram : classifier.SVM_word2vec_unigram,*/
 
-				SVM_Expansion: classifier.SVM_Expansion,
-				kNN_Expansion: classifier.kNN_Expansion,
+				// SVM_Expansion: classifier.SVM_Expansion,
+				// kNN_Expansion: classifier.kNN_Expansion,
+
+				kNN_And: classifier.kNN_And,
+				kNN_And_1: classifier.kNN_And_1,
+				kNN_And_2: classifier.kNN_And_2,
+				kNN_And_3: classifier.kNN_And_3,
+				
+
 			}
 	
 	var parameters = [
