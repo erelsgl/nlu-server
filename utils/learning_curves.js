@@ -419,9 +419,10 @@ if (process.argv[1] === __filename)
 				// kNN_Expansion: classifier.kNN_Expansion,
 
 				kNN_And: classifier.kNN_And,
+				kNN_And_0: classifier.kNN_And_0,
 				kNN_And_1: classifier.kNN_And_1,
 				kNN_And_2: classifier.kNN_And_2,
-				kNN_And_3: classifier.kNN_And_3,
+				// kNN_And_3: classifier.kNN_And_3,
 				
 
 			}
