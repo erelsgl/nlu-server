@@ -45,8 +45,8 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 var trans = false
 var test_ppdb = false
 var test_knn = false
-var test_label = true
-
+var test_label = false
+var test_clust = true
 var do_learning_curves = false
 
 var do_test_seed = false
@@ -158,6 +158,19 @@ function normalizer(sentence) {
 	return regexpNormalizer(sentence);
 }
 
+function smart_normalizer(sentence) {
+	sentence = sentence.toLowerCase().trim();
+	sentence = regexpNormalizer(sentence)
+	sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+	
+	sentence = sentence.replace(/<VALUE>/g,'')
+	sentence = sentence.replace(/<ATTRIBUTE>/g,'')
+	sentence = regexpNormalizer(sentence)
+	
+	return sentence
+}
+
+
 
 var datasetNames = [
 			"0_grammar.json",
@@ -176,17 +189,45 @@ var datasetNames = [
 			"woz_kbagent_students_negonlp.json"
 			];
 
-// sentence = sentence.toLowerCase().trim();
-// 	sentence = regexpNormalizer(sentence)
-// 	sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
-// 	// sentence = sentence.replace(/<VALUE>/g,'')
-// 	// sentence = sentence.replace(/<ATTRIBUTE>/g,'')
-// 	sentence = sentence.trim()
-// 	sentence = sentence.replace(/\s+/g,' ')
+if (test_clust)
+{
 
-/*performs 
-turkers_keyphrases_only_rule.json
-students_keyphrases_only_rule.json*/
+
+	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core_tr.json"))	
+	var filtered = bars.filterdataset(data, 5)
+	var ext = bars.extractdataset(filtered)
+
+	var lab = {}
+	
+	_.each(ext, function(value, key, list){ 
+
+		var senlab = Hierarchy.splitPartEquallyIntent(value['output'])
+
+		if (senlab.length == 1)
+			{
+				if (!(senlab[0] in lab))
+					lab[senlab[0]] = []
+
+				lab[senlab[0]].push(smart_normalizer(value['input']))
+			}
+
+	}, this)
+
+
+console.log("@RELATION kNN")
+console.log("@ATTRIBUTE\tDATA\tSTRING")
+console.log("@ATTRIBUTE\tclass\t{"+Object.keys(lab).join(",")+"}")
+console.log("@DATA")
+
+_.each(lab, function(value, key, list){ 
+	_.each(value, function(value1, key1, list1){
+		console.log("'"+value1+"',"+key) 
+	}, this)
+}, this)
+
+}	
+		
+
 
 if (trans)
 {	
