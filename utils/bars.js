@@ -1067,7 +1067,8 @@ function isseqturn(turn)
   {
     if (('output' in turn) && (_.isArray(turn['output'])) == true)
       {
-        return true
+        if (turn['output'].length == 1)
+          return true
       }
     else
       return false
