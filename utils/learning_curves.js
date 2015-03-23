@@ -419,25 +419,14 @@ if (process.argv[1] === __filename)
 	// dataset = _.shuffle(dataset)
 
 	var classifiers  = {
-				// Expansion1:   classifier.IntentClassificationExpansion1,
-				// Expansion1Fine: classifier.IntentClassificationExpansion1Fine,
-				// Expansion2:   classifier.IntentClassificationExpansion2,
-				// NoExpansion: classifier.IntentClassificationNoExpansion
-				// Expansion1Unigrams: classifier.IntentClassificationExpansion1Phrase
-
+				
 				// IDF: classifier.IntentClassificationIDF,
 				// Binary: classifier.IntentClassificationBin
-
-/*				IntentNoExpansion_Word2VecUnigram : classifier.IntentNoExpansion_Word2VecUnigram,
-				IntentNoExpansion_unigram : classifier.IntentNoExpansion_unigram,
-				IntentNoExpansion_word2vec  classifier.IntentNoExpansion_word2vec
-*/
-				// SVM: classifier.SVM,
-				// SVM_Expansion: classifier.SVM_Expansion
-				
-			/*	SVM_unigram : classifier.SVM_unigram,
-				SVM_word2vec : classifier.SVM_word2vec,
-				SVM_word2vec_unigram : classifier.SVM_word2vec_unigram,*/
+			
+				SVM_unigram 			: classifier.SVM_unigram,
+				SVM_word2vec 			: classifier.SVM_word2vec,
+				SVM_word2vec_unigram 	: classifier.SVM_word2vec_unigram,
+				kNN_word2vec 			: classifier.kNN_word2vec
 
 				// SVM_Expansion: classifier.SVM_Expansion,
 				// kNN_Expansion: classifier.kNN_Expansion,
@@ -446,12 +435,11 @@ if (process.argv[1] === __filename)
 				// kNN_And: classifier.kNN_And,
 				// kNN_Euc: classifier.kNN_Euc,
 
-				kNN_And_0: classifier.kNN_And_0,
+				/*kNN_And_0: classifier.kNN_And_0,
 				kNN_And_1: classifier.kNN_And_1,
 				kNN_And_2: classifier.kNN_And_2,
 				kNN_And_3: classifier.kNN_And_3,
-				
-
+				*/
 			}
 	
 	var parameters = [
