@@ -171,11 +171,14 @@ function featureExtractorB(sentence, features) {
 
 function featureExtractorU(sentence, features) {
 	var words = tokenizer.tokenize(sentence);
+
 	var feature = natural.NGrams.ngrams(words, 1)
-	_.each(feature, function(feat, key, list){ features[feat.join(" ")] = 1 }, this)
+	_.each(feature, function(feat, key, list){ 
+		if (!bars.isstopword(feat.join(" ")))
+			features[feat.join(" ")] = 1 } 
+		,this)
 	return features;
 }
-
 
 function featureword2vec(sentence, features) {
 	var words = tokenizer.tokenize(sentence);
@@ -630,10 +633,10 @@ module.exports = {
 		kNN_Euc: enhance(kNNBREuc, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
 		kNN_Cos: enhance(kNNBRCos, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
 		
-		kNN_And_0: enhance(kNNBRAnd, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[0]', 0, false),
-		kNN_And_1: enhance(kNNBRAnd, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[1]', 0, false),
-		kNN_And_2: enhance(kNNBRAnd, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
-		kNN_And_3: enhance(kNNBRAnd, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[3]', 0, false),
+		kNN_Cos_0: enhance(kNNBRCos, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[0]', 0, false),
+		kNN_Cos_1: enhance(kNNBRCos, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[1]', 0, false),
+		kNN_Cos_2: enhance(kNNBRCos, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
+		kNN_Cos_3: enhance(kNNBRCos, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[3]', 0, false),
 		
 		kNN_word2vec: enhance(kNNBRCos, featureword2vec, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
 		SVM_unigram: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
