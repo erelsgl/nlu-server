@@ -199,11 +199,12 @@ function thereisdata(data)
 
 function compare(gldata)
 {
+
 	var names = Object.keys(gldata)
 	var maxlen = gldata[names[0]].length
 	var diff = []
 
-	console.log(maxlen)
+	console.log('Length of output '+maxlen)
 
 	_(maxlen).times(function(n){
 		var glodata = {}
@@ -216,12 +217,26 @@ function compare(gldata)
 		if (!bars.equallist(_.values(locdata)))
 			diff.push(glodata)
 
-		if ('kNNClassifier' in locdata)
-			if ((locdata['kNNClassifier']['FP'].length != 0) || (locdata['kNNClassifier']['FN'].length != 0))
-				diff.push(glodata)
+		// kNN_And
+		// kNN_And_1
+
+		// if ('kNNClassifier' in locdata)
+			// if ((locdata['kNNClassifier']['FP'].length != 0) || (locdata['kNNClassifier']['FN'].length != 0))
+				// diff.push(glodata)
+		
+		// if ((locdata['kNN_And_1']['TP'].length < locdata['kNN_And']['TP'].length) ||
+			// (locdata['kNN_And_1']['FN'].length > locdata['kNN_And']['FN'].length))
+				// diff.push(glodata)
+
+		// if ((locdata['kNN_Cos']['TP'].length < locdata['kNN_And']['TP'].length) ||
+			// (locdata['new']['FN'].length > locdata['old']['FN'].length))
+				// diff.push(glodata)
+
+
+
 	})
 
-	console.log(diff.length)
+	console.log('Length of diff '+diff.length)
 	console.log(JSON.stringify(diff, null, 4))
 
 
@@ -297,7 +312,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 		partitions.partitions_consistent(dataset, numOfFolds, function(train, test, fold) {
 			var index = step0
-			var oldreport = []
+			var oldstats = []
 			var stats
 
 			fs.writeFileSync(__dirname + dirr + "fold" + fold, "TEST \n"+JSON.stringify(test, null, 4)+"\n TRAIN \n"+JSON.stringify(train, null, 4), 'utf-8')
@@ -327,13 +342,22 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 			  	}, this)
 
-			  	// console.log(report)
+			  	// console.log(JSON.stringify(stats, null, 4))
+
 			  	_.each(report, function(value, key, list){ 
 			  		if (value['F1'] < 0)
 			  			process.exit(0)
 			  	}, this)
 
-			  	compare(gldata)
+			  	// if (oldstats.length > 0)
+			  		// {
+			  			// var gldata = {}
+			  			// gldata['old'] = oldstats[0]['data']
+			  			// gldata['new'] = stats[0]['data']
+					  	compare(gldata)
+			  		// }
+
+
 
 			  	// if (oldreport.length > 0)
 			  	// {
@@ -368,7 +392,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	// 	}, this)
 			  	// }
 
-			  	oldreport = bars.copyobj(stats)
+			  	oldstats = bars.copyobj(stats)
 
                 extractGlobal(parameters, classifiers, mytrain, report, stat)
                 
@@ -418,11 +442,14 @@ if (process.argv[1] === __filename)
 				// SVM_Expansion: classifier.SVM_Expansion,
 				// kNN_Expansion: classifier.kNN_Expansion,
 
-				kNN_And: classifier.kNN_And,
-				kNN_And_0: classifier.kNN_And_0,
-				kNN_And_1: classifier.kNN_And_1,
-				kNN_And_2: classifier.kNN_And_2,
-				// kNN_And_3: classifier.kNN_And_3,
+				// kNN_Cos: classifier.kNN_Cos,
+				// kNN_And: classifier.kNN_And,
+				// kNN_Euc: classifier.kNN_Euc,
+
+				kNN_Cos_0: classifier.kNN_Cos_0,
+				kNN_Cos_1: classifier.kNN_Cos_1,
+				kNN_Cos_2: classifier.kNN_Cos_2,
+				kNN_Cos_3: classifier.kNN_Cos_3,
 				
 
 			}
