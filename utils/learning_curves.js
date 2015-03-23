@@ -446,10 +446,10 @@ if (process.argv[1] === __filename)
 				// kNN_And: classifier.kNN_And,
 				// kNN_Euc: classifier.kNN_Euc,
 
-				kNN_Cos_0: classifier.kNN_Cos_0,
-				kNN_Cos_1: classifier.kNN_Cos_1,
-				kNN_Cos_2: classifier.kNN_Cos_2,
-				kNN_Cos_3: classifier.kNN_Cos_3,
+				kNN_And_0: classifier.kNN_And_0,
+				kNN_And_1: classifier.kNN_And_1,
+				kNN_And_2: classifier.kNN_And_2,
+				kNN_And_3: classifier.kNN_And_3,
 				
 
 			}
