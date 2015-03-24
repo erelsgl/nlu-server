@@ -101,7 +101,6 @@ function getAverage(stat, param, trainsize, classifiers)
 
 function extractGlobal(parameters, classifiers, trainset, report, stat)
 	{
-	var ord = 0
 
 	var trainsize = trainset.length
 
@@ -111,24 +110,32 @@ function extractGlobal(parameters, classifiers, trainset, report, stat)
 	if (parameters.length == 0)
 		throw new Error("List of parameters is empty");
 
-	_.each(Object.keys(classifiers), function(classifier, key, list){
-		_.each(parameters, function(param, key, list){ 
-    		if (!(param in stat)) 
-    			stat[param]={}
+	_.each(parameters, function(param, key, list){ 
 
-    		if (!(trainsize in stat[param]))
-    		{
-    		stat[param][trainsize]={}
-    		stat[param][trainsize]={_size: bars.extractdataset(trainset).length}
-    		}
+		if (!(param in stat)) stat[param]={}
+    	if (!(trainsize in stat[param])) stat[param][trainsize]={}
+    	if (!('_size' in stat[param][trainsize])) stat[param][trainsize]['_size'] = []
+		if (!('__size' in stat[param][trainsize])) stat[param][trainsize]['__size'] = []
+    	
+    	if (param.indexOf("_") != -1)
+    	{
+    		stat[param][trainsize]['__size'].push(bars.extractintent(trainset, param.substring(0,param.indexOf("_"))).length)
+    	}
+    	else
+    	stat[param][trainsize]['__size'].push(bars.extractdataset(trainset).length)
 
+    	stat[param][trainsize]['_size'].push(bars.extractdataset(trainset).length)
+
+		_.each(Object.keys(classifiers), function(classifier, key, list){
+    		
     		if (!(classifier in stat[param][trainsize]))
     			stat[param][trainsize][classifier] = []
 
-    		stat[param][trainsize][classifier].push(report[ord][param])
+    		stat[param][trainsize][classifier].push(report[key][param])
+    
     	}, this)
-    	ord = ord + 1
 	}, this)
+
 	}
 
 function checkGnuPlot()
@@ -245,8 +252,11 @@ function compare(gldata)
 
 function plot(fold, parameter, stat, classifiers)
 {
+
 	var values = []
 	var linetype = fold
+
+	console.log(JSON.stringify(stat, null, 4))
 
 	var header = "train\t" + Object.keys(classifiers).join("-fold"+fold+"\t")+"-fold"+fold+"\n";
 	fs.writeFileSync(__dirname + dirr + parameter+"fold"+fold, header, 'utf-8')
@@ -257,9 +267,9 @@ function plot(fold, parameter, stat, classifiers)
 	{
 		_.each(stat[parameter], function(value, trainsize, list){ 
 			// str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"
-			str += trainsize.toString() + "\t"
+			str += trainsize.toString() + "(" + value['__size'][fold]+ ")\t"
 			_.each(value, function(results, cl, list){ 
-				if (cl != '_size')
+				if ((cl != '_size') && (cl != '__size'))
 				{
 					values.push(filternan(results[fold]))
 					str += filternan(results[fold]) + "\t"
@@ -271,9 +281,14 @@ function plot(fold, parameter, stat, classifiers)
 	else
 	{
 		_.each(stat[parameter], function(value, trainsize, list){ 
+			
+			if (parameter.indexOf("_"))
+				var intent = parameter.substring(0,parameter.indexOf("_")).length
+
 			var average = getAverage(stat, parameter, trainsize, classifiers)
+			var intsize = _.reduce(stat[parameter][trainsize]['__size'], function(memo, num){ return (memo + num) }, 0)/stat[parameter][trainsize]['__size'].length
 			// str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"+filternan(average).join("\t")+"\n"
-			str += trainsize.toString() + "\t"+filternan(average).join("\t")+"\n"
+			str += trainsize.toString() + "(" + intsize + ")\t"+filternan(average).join("\t")+"\n"
 			values = values.concat(filternan(average))
 		}, this)
 
@@ -289,7 +304,7 @@ function plot(fold, parameter, stat, classifiers)
 	if (plot)
 	{
 		// var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
-		var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i with linespoints linecolor i pt "+linetype+" ps 3"
+		var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
 		// var com = gnuplot +" -p -e \"reset; set title \'"+stat['_sized']+"("+stat['_sizec']+")\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
 		var com = gnuplot +" -p -e \"reset; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
 		// console.log(com)
@@ -342,8 +357,6 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 			  	}, this)
 
-			  	// console.log(JSON.stringify(stats, null, 4))
-
 			  	_.each(report, function(value, key, list){ 
 			  		if (value['F1'] < 0)
 			  			process.exit(0)
@@ -387,7 +400,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	// 			console.log("new")
 			  	// 			console.log(stats[0]['data'][key])
 			  	// 			done = true
-			  	// 		}
+			  	// 		}_
 
 			  	// 	}, this)
 			  	// }
@@ -413,17 +426,13 @@ if (process.argv[1] === __filename)
 {
 
 	var dataset = JSON.parse(fs.readFileSync(__dirname + "/../../datasets/DatasetDraft/dial_usa_rule_core.json"))
-	
-	// dataset = _.shuffle(dataset)
-	// dataset = _.shuffle(dataset)
-	// dataset = _.shuffle(dataset)
 
 	var classifiers  = {
 				
 				// IDF: classifier.IntentClassificationIDF,
 				// Binary: classifier.IntentClassificationBin
 			
-			/*	SVM_unigram 			: classifier.SVM_unigram,
+/*				SVM_unigram 			: classifier.SVM_unigram,
 				SVM_word2vec 			: classifier.SVM_word2vec,
 				SVM_word2vec_unigram 	: classifier.SVM_word2vec_unigram,
 				kNN_word2vec 			: classifier.kNN_word2vec
@@ -437,18 +446,18 @@ if (process.argv[1] === __filename)
 
 				kNN_Cos: classifier.kNN_Cos,
 				kNN_Cos_0: classifier.kNN_Cos_0,
-				kNN_Cos_1: classifier.kNN_Cos_1,
+/*				kNN_Cos_1: classifier.kNN_Cos_1,
 				kNN_Cos_2: classifier.kNN_Cos_2,
 				kNN_Cos_3: classifier.kNN_Cos_3,
-				
+*/				
 			}
 	
 	var parameters = [
 					  'F1','Precision','Recall', 'FN', 'Accuracy',
-					  'OfferF1', 'OfferPrecision', 'OfferRecall', 'OfferFN', 'OfferTP', 'OfferAccuracy', 
-					  'RejectF1','RejectPrecision','RejectRecall', 'RejectFN', 'RejectTP', 'RejectAccuracy', 
-					  'AcceptF1','AcceptPrecision','AcceptRecall', 'AcceptFN', 'AcceptTP', 'AcceptAccuracy', 
-					  'GreetF1','GreetPrecision','GreetRecall', 'GreetFN', 'GreetAccuracy'
+					  'Offer_F1', 'Offer_Precision', 'Offer_Recall', 'Offer_FN', 'Offer_TP', 'Offer_Accuracy', 
+					  'Reject_F1','Reject_Precision','Reject_Recall', 'Reject_FN', 'Reject_TP', 'Reject_Accuracy', 
+					  'Accept_F1','Accept_Precision','Accept_Recall', 'Accept_FN', 'Accept_TP', 'Accept_Accuracy', 
+					  'Greet_F1','Greet_Precision','Greet_Recall', 'Greet_FN', 'Greet_Accuracy'
 					]
 	
 	var filtered = bars.filterdataset(dataset, 5)
@@ -472,6 +481,5 @@ module.exports = {
 	filternan:filternan,
 	onlyNumbers:onlyNumbers,
 	isProb:isProb,
-	getAverage:getAverage,
 	thereisdata:thereisdata
 }
