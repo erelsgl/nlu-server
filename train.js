@@ -44,9 +44,9 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 
 var trans = false
 var test_ppdb = false
-var test_knn = false
+var test_knn = true
 var test_label = false
-var test_clust = true
+var test_clust = false
 var do_learning_curves = false
 
 var do_test_seed = false
@@ -341,10 +341,10 @@ if (test_knn)
 {
 	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))
 	var dataset = bars.extractdataset(data)
-	var dataset = dataset.splice(0,4)
+	// var dataset = dataset.splice(0,4)
 	var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.5))
 
-	var stats = trainAndTest.trainAndTest_hash(classifier.kNNClassifier, dataset['train'], dataset['test'], 5)
+	var stats = trainAndTest.trainAndTest_hash(classifier.kNNnoBR, dataset['train'], dataset['test'], 5)
 	// var stats = trainAndTest.trainAndTest_hash(classifier.IntentClassificationNoExpansion, dataset['train'], dataset['test'], 5)
 	console.log(JSON.stringify(stats, null, 4))
 	process.exit(0)
