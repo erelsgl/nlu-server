@@ -14,6 +14,7 @@ var extend = require('util')._extend;
 var fs = require('fs');
 var limdu = require("limdu");
 var trainutils = require('./utils/bars')
+var distance = require('./utils/distance')
 var rules = require("./research/rule-based/rules.js")
 var natural = require('natural');
 var execSync = require('execSync');
@@ -174,7 +175,7 @@ function featureExtractorU(sentence, features) {
 
 	var feature = natural.NGrams.ngrams(words, 1)
 	_.each(feature, function(feat, key, list){ 
-		if (!bars.isstopword(feat.join(" ")))
+		// if (!bars.isstopword(feat.join(" ")))
 			features[feat.join(" ")] = 1 } 
 		,this)
 	return features;
@@ -187,11 +188,12 @@ function featureword2vec(sentence, features) {
 	console.log("featureword2vec start "+words.length)
 
 	var params = words.join(" ")
+	
+	console.log(params)
+
 	var result = execSync.exec("node "+__dirname+"/utils/getred.js " + params)
 
 	result = JSON.parse(result['stdout'])
-
-	
 
 	console.log("featureword2vec stop")
 	
@@ -406,19 +408,29 @@ function weightInstance2(instance) {
 
 var kNNClassifierAnd = classifiers.kNN.bind(0, {
 	k: 1,
-	distanceFunction: 'AndDistance',
+	mode: 'binary',
+	distanceFunctionList: [distance.and_distance],
 	distanceWeightening: weightInstance1
 });
 
 var kNNClassifierEuc = classifiers.kNN.bind(0, {
 	k: 1,
-	distanceFunction: 'EuclideanDistance',
+	mode: 'binary',
+	distanceFunctionList: [distance.euclidean_distance],
 	distanceWeightening: weightInstance1
 });
 
-var kNNClassifierCos = classifiers.kNN.bind(0, {
+var kNNClassifierCosMulti = classifiers.kNN.bind(0, {
 	k: 1,
-	distanceFunction: 'CosDistance',
+	mode: 'multi',
+	distanceFunctionList: [distance.cosine_distance],
+	distanceWeightening: weightInstance1
+});
+
+var kNNClassifierCosBinary = classifiers.kNN.bind(0, {
+	k: 1,
+	mode: 'binary',
+	distanceFunctionList: [distance.cosine_distance],
 	distanceWeightening: weightInstance1
 });
 
@@ -431,7 +443,7 @@ var kNNBREuc = classifiers.multilabel.BinaryRelevance.bind(0, {
 });
 
 var kNNBRCos = classifiers.multilabel.BinaryRelevance.bind(0, {
-	binaryClassifierType: kNNClassifierCos,
+	binaryClassifierType: kNNClassifierCosBinary,
 });
 
 var WinnowBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
@@ -637,6 +649,8 @@ module.exports = {
 		kNN_Cos_1: enhance(kNNBRCos, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[1]', 0, false),
 		kNN_Cos_2: enhance(kNNBRCos, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
 		kNN_Cos_3: enhance(kNNBRCos, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[3]', 0, false),
+		
+		kNNnoBR: enhance(kNNClassifierCosMulti, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
 		
 		kNN_word2vec: enhance(kNNBRCos, featureword2vec, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
 		SVM_unigram: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
