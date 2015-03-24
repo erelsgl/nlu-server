@@ -1101,6 +1101,18 @@ function extractdataset(dataset)
   return output
 }
 
+function extractintent(dataset, intent)
+{
+  dataset = extractdataset(dataset)
+  var output = []
+
+  _.each(dataset, function(dial, key, list){ 
+    if (Hierarchy.splitPartEquallyIntent(dial['output']).indexOf(intent) != -1)
+      output.push(dial)
+  }, this)
+  return output
+}
+
 function filterdataset(dataset, min)
 {
   var output = []
@@ -3320,5 +3332,6 @@ uniquecoord:uniquecoord,
 onecoverstwo:onecoverstwo,
 fullycovered:fullycovered,
 equallist:equallist,
-vectorsum:vectorsum
+vectorsum:vectorsum,
+extractintent:extractintent
 }
