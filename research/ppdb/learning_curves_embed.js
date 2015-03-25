@@ -442,10 +442,10 @@ if (process.argv[1] === __filename)
 	
 	var parameters = [
 					  'F1','Precision','Recall', 'FN', 'Accuracy',
-					  'Offer_F1', 'Offer_Precision', 'Offer_Recall', 'Offer_FN', 'Offer_TP', 'Offer_Accuracy', 
-					  'Reject_F1','Reject_Precision','Reject_Recall', 'Reject_FN', 'Reject_TP', 'Reject_Accuracy', 
-					  'Accept_F1','Accept_Precision','Accept_Recall', 'Accept_FN', 'Accept_TP', 'Accept_Accuracy', 
-					  'Greet_F1','Greet_Precision','Greet_Recall', 'Greet_FN', 'Greet_Accuracy'
+					  'Offer_F1', 'Offer_Precision', 'Offer_Recall', 'Offer_FN', 'Offer_TP','Offer_FP', 'Offer_Accuracy', 
+					  'Reject_F1','Reject_Precision','Reject_Recall', 'Reject_FN', 'Reject_TP','Reject_FP', 'Reject_Accuracy', 
+					  'Accept_F1','Accept_Precision','Accept_Recall', 'Accept_FN', 'Accept_TP','Accept_FP', 'Accept_Accuracy', 
+					  'Greet_F1','Greet_Precision','Greet_Recall', 'Greet_FN', 'Greet_TP','Greet_FP', 'Greet_Accuracy'
 					]
 	
 	var filtered = bars.filterdataset(dataset, 5)
