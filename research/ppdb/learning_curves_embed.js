@@ -7,19 +7,20 @@
 	@author Vasily Konovalov
  */
 
-var Fiber = require('fibers');
+
 var _ = require('underscore')._;
 var fs = require('fs');
-var utils = require('./utils');
 var execSync = require('execSync')
+// var classifier = require(__dirname+"/../classifiers.js")
 var partitions = require('limdu/utils/partitions');
-var trainAndTest_hash = require('../../utils/trainAndTest').trainAndTest_hash;
+// var trainAndTest_hash = require(__dirname+'/trainAndTest').trainAndTest_hash;
 var bars = require('../../utils/bars');
 var path = require("path")
-var ppdb = require("./evalmeasure_5ed_embed.js")
+
+var modes = require("./modes")
+var framework = require("./evalmeasure_framework")
 
 var gnuplot = __dirname + '/gnuplot'
-var dir = "./learning_curves/"
 var dirr = "/learning_curves/"
 /* @params classifiers - classifier for learning curves
    @params dataset - dataset for evaluation, 20% is takes for evaluation
@@ -94,7 +95,8 @@ function getAverage(stat, param, trainsize, classifiers)
 		var average = []
 		_.each(Object.keys(classifiers), function(classifier, key, list){
 			var list = onlyNumbers(stat[param][trainsize][classifier])
-			average.push(_.reduce(list , function(memo, num){ return memo + num; }, 0)/list.length)
+			average.push(_.reduce(list , function(memo, num){ if (num >=0) {return (memo + num)} else {return memo} }, 0)/_.filter(list, function(num){ return num >= 0 }).length
+)
 		}, this)
 		
 		return average
@@ -102,7 +104,6 @@ function getAverage(stat, param, trainsize, classifiers)
 
 function extractGlobal(parameters, classifiers, trainset, report, stat)
 	{
-	var ord = 0
 
 	var trainsize = trainset.length
 
@@ -112,24 +113,32 @@ function extractGlobal(parameters, classifiers, trainset, report, stat)
 	if (parameters.length == 0)
 		throw new Error("List of parameters is empty");
 
-	_.each(Object.keys(classifiers), function(classifier, key, list){
-		_.each(parameters, function(param, key, list){ 
-    		if (!(param in stat)) 
-    			stat[param]={}
+	_.each(parameters, function(param, key, list){ 
 
-    		if (!(trainsize in stat[param]))
-    		{
-    		stat[param][trainsize]={}
-    		stat[param][trainsize]={_size: bars.extractdataset(trainset).length}
-    		}
+		if (!(param in stat)) stat[param]={}
+    	if (!(trainsize in stat[param])) stat[param][trainsize]={}
+    	if (!('_size' in stat[param][trainsize])) stat[param][trainsize]['_size'] = []
+		if (!('__size' in stat[param][trainsize])) stat[param][trainsize]['__size'] = []
+    	
+    	if (param.indexOf("_") != -1)
+    	{
+    		stat[param][trainsize]['__size'].push(bars.extractintent(trainset, param.substring(0,param.indexOf("_"))).length)
+    	}
+    	else
+    	stat[param][trainsize]['__size'].push(bars.extractdataset(trainset).length)
 
+    	stat[param][trainsize]['_size'].push(bars.extractdataset(trainset).length)
+
+		_.each(Object.keys(classifiers), function(classifier, key, list){
+    		
     		if (!(classifier in stat[param][trainsize]))
     			stat[param][trainsize][classifier] = []
 
-    		stat[param][trainsize][classifier].push(report[ord][param])
+    		stat[param][trainsize][classifier].push(report[key][param])
+    
     	}, this)
-    	ord = ord + 1
 	}, this)
+
 	}
 
 function checkGnuPlot()
@@ -198,22 +207,72 @@ function thereisdata(data)
 }
 
 
+function compare(gldata)
+{
+
+	var names = Object.keys(gldata)
+	var maxlen = gldata[names[0]].length
+	var diff = []
+
+	console.log('Length of output '+maxlen)
+
+	_(maxlen).times(function(n){
+		var glodata = {}
+		var locdata = {}
+		_.each(gldata, function(value, name, list){ 
+			locdata[name] = gldata[name][n]['explanation']
+			glodata[name] = gldata[name][n]
+		}, this)
+
+		if (!bars.equallist(_.values(locdata)))
+			diff.push(glodata)
+
+		// kNN_And
+		// kNN_And_1
+
+		// if ('kNNClassifier' in locdata)
+			// if ((locdata['kNNClassifier']['FP'].length != 0) || (locdata['kNNClassifier']['FN'].length != 0))
+				// diff.push(glodata)
+		
+		// if ((locdata['kNN_And_1']['TP'].length < locdata['kNN_And']['TP'].length) ||
+			// (locdata['kNN_And_1']['FN'].length > locdata['kNN_And']['FN'].length))
+				// diff.push(glodata)
+
+		// if ((locdata['kNN_Cos']['TP'].length < locdata['kNN_And']['TP'].length) ||
+			// (locdata['new']['FN'].length > locdata['old']['FN'].length))
+				// diff.push(glodata)
+
+
+
+	})
+
+	console.log('Length of diff '+diff.length)
+	console.log(JSON.stringify(diff, null, 4))
+
+
+}
+
+
 function plot(fold, parameter, stat, classifiers)
 {
+
 	var values = []
 	var linetype = fold
 
+	// console.log(JSON.stringify(stat, null, 4))
+
 	var header = "train\t" + Object.keys(classifiers).join("-fold"+fold+"\t")+"-fold"+fold+"\n";
-	fs.writeFileSync(dir+parameter+"fold"+fold, header, 'utf-8')
+	fs.writeFileSync(__dirname + dirr + parameter+"fold"+fold, header, 'utf-8')
 
 	var str = ""
 	
 	if (fold != 'average')
 	{
 		_.each(stat[parameter], function(value, trainsize, list){ 
-			str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"
+			// str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"
+			str += trainsize.toString() + "(" + value['__size'][fold]+ ")\t"
 			_.each(value, function(results, cl, list){ 
-				if (cl != '_size')
+				if ((cl != '_size') && (cl != '__size'))
 				{
 					values.push(filternan(results[fold]))
 					str += filternan(results[fold]) + "\t"
@@ -225,25 +284,33 @@ function plot(fold, parameter, stat, classifiers)
 	else
 	{
 		_.each(stat[parameter], function(value, trainsize, list){ 
+			
+			if (parameter.indexOf("_"))
+				var intent = parameter.substring(0,parameter.indexOf("_")).length
+
 			var average = getAverage(stat, parameter, trainsize, classifiers)
-			str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"+filternan(average).join("\t")+"\n"
+			var intsize = _.reduce(stat[parameter][trainsize]['__size'], function(memo, num){ return (memo + num) }, 0)/stat[parameter][trainsize]['__size'].length
+			// str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"+filternan(average).join("\t")+"\n"
+			str += trainsize.toString() + "(" + intsize + ")\t"+filternan(average).join("\t")+"\n"
 			values = values.concat(filternan(average))
 		}, this)
 
 		linetype = 5
-
 	}
 
 	var plot = thereisdata(values)
-	console.log(parameter)
-	console.log(values)
+	// console.log(parameter)
+	// console.log(values)
 
-	fs.appendFileSync(dir+parameter+"fold"+fold, str, 'utf-8')
+	fs.appendFileSync(__dirname + dirr +parameter+"fold"+fold, str, 'utf-8')
 
 	if (plot)
 	{
-		var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'"+dir+parameter+"fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
-		var com = gnuplot +" -p -e \"reset; set title \'"+stat['_sized']+"("+stat['_sizec']+")\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+dir + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+		// var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
+		var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
+		// var com = gnuplot +" -p -e \"reset; set title \'"+stat['_sized']+"("+stat['_sizec']+")\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+		var com = gnuplot +" -p -e \"reset; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+		// console.log(com)
 		result = execSync.run(com)
 	}
 }
@@ -252,8 +319,6 @@ function plot(fold, parameter, stat, classifiers)
 function learning_curves(classifiers, dataset, parameters, step, step0, limit, numOfFolds) 
 {
 
-	var f = Fiber(function() {
-	  	var fiber = Fiber.current;
 		checkGnuPlot
 
 		if (dataset.length == 0)
@@ -262,217 +327,135 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		stat = {}
 		
 		var mytrain = []
-		var global_stats = {}
 
 		partitions.partitions_consistent(dataset, numOfFolds, function(train, test, fold) {
 			var index = step0
+			var oldstats = []
+			var stats
 
-			global_stats[fold] = {}
+			fs.writeFileSync(__dirname + dirr + "fold" + fold, "TEST \n"+JSON.stringify(test, null, 4)+"\n TRAIN \n"+JSON.stringify(train, null, 4), 'utf-8')
 
 			while (index <= train.length)
 	  		{
-			  	
-				console.log("fold"+fold)
-			  	
 			  	var report = []
 
 				var mytrain = train.slice(0, index)
-
-				global_stats[fold][mytrain.length] = {}
-				global_stats[fold][mytrain.length]['TP'] = []
-				global_stats[fold][mytrain.length]['FP'] = []
 			  	
 			  	index += (index < limit ? step0 : step)
 			  	var mytrainset = (bars.isDialogue(mytrain) ? bars.extractdataset(mytrain) : mytrain)
 			  	var testset = (bars.isDialogue(test) ? bars.extractdataset(test) : test)
 
-	  			// ----------------SEEDS-------------------
+				console.log("fold"+fold)
+				console.log("train"+mytrainset.length)
 
-	  			// ngrams
-				var seeds = utils.loadseeds(mytrainset, true)
-				var seeds_original = utils.enrichseeds_original(seeds)
-				var seeds_original_after = utils.afterppdb(seeds_original)
-				// console.log("seeds_original_after")
+			  	var gldata = {}
 
-				var stats_ppdb = []
-				var seeds_ppdb_after = []
+			  	_.each(classifiers, function(classifier, name, list){ 
+			  		console.log("start trainandTest")
+	    			stats = framework.trainandtest(bars.copyobj(mytrainset), bars.copyobj(testset), classifier)
+		    		
+					fs.writeFileSync(__dirname + dirr + "fold" + fold + "_" + mytrainset.length + "_" + name, JSON.stringify(stats, null, 4), 'utf-8')
 
-				// console.log("enrichseeds")
+	    			// console.log(JSON.stringify(stats, null, 4))
 
-				utils.enrichseeds(seeds, function(err, seeds_ppdb){
-					seeds_ppdb_after = utils.afterppdb(seeds_ppdb)
-					console.log("seeds_ppdb_after")
-	      			// ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_ppdb_after, 1, function(err, response_ppdb){
-	      			stats_ppdb = ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_ppdb_after, 1)
+		    		console.log("stop trainandTest")
+		    		report.push(_.pick(stats[0]['stats'], parameters))
 
-	      			// bars.wrfile(__dirname + dirr+"ppdb_fold-"+fold+"_train-"+index, [seeds_ppdb_after, stats_ppdb])
+		    		gldata[name] = stats[0]['data']
 
-	      			console.log("traintest original")
-					var stats_original = ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_original_after, 1)
-					// ppdb.trainandtest(mytrainset, bars.copyobj(testset), seeds_original_after, 1, function(err, response){
-	      			console.log("traintest original finished")
+			  	}, this)
 
-       				// setTimeout(function() {
-	   					fiber.run(stats_original)
-					// }, 1000)
-		    			// })
-		    		// })
+			  	_.each(report, function(value, key, list){ 
+			  		if (value['F1'] < 0)
+			  			process.exit(0)
+			  	}, this)
+
+			  	// if (oldstats.length > 0)
+			  		// {
+			  			// var gldata = {}
+			  			// gldata['old'] = oldstats[0]['data']
+			  			// gldata['new'] = stats[0]['data']
+					  	// compare(gldata)
+			  		// }
+
+
+
+			  	// if (oldreport.length > 0)
+			  	// {
+			  	// 	var done = false
+
+			  	// 	_.each(oldreport[0]['data'], function(value, key, list){
+
+			  	// 		if (stats[0]['data'][key]['input'] != value['input'])
+			  	// 			{
+			  	// 				console.log("error")
+			  	// 				process.exit(0)
+			  	// 			}
+			  			
+			  	// 		if (stats[0]['data'][key]['explanation']['TP'].length < value['explanation']['TP'].length)
+			  	// 		{
+			  	// 			console.log("old")
+			  	// 			console.log(value)
+			  	// 			console.log("new")
+			  	// 			console.log(stats[0]['data'][key])
+			  	// 			done = true
+			  	// 		}
+
+			  	// 		if (stats[0]['data'][key]['explanation']['FN'].length > value['explanation']['FN'].length)
+			  	// 		{
+			  	// 			console.log("old")
+			  	// 			console.log(value)
+			  	// 			console.log("new")
+			  	// 			console.log(stats[0]['data'][key])
+			  	// 			done = true
+			  	// 		}_
+
+			  	// 	}, this)
+			  	// }
+
+			  	oldstats = bars.copyobj(stats)
+
+                extractGlobal(parameters, classifiers, mytrain, report, stat)
+                
+                stat['_sized'] = test.length
+                stat['_sizec'] = bars.extractdataset(test).length
+
+                _.each(parameters, function(parameter, key, list){
+					plot(fold, parameter, stat, classifiers)
+					plot('average', parameter, stat, classifiers)
 				})
-
-
-			
-		    	var stats_original = Fiber.yield()
-		    	console.log("yield")
-
-
-
-		    	// console.log(JSON.stringify(stats_ppdb['stats']['interdep'], null, 4))
-
-		   		// bars.wrfile(__dirname+dirr+"orig_fold-"+fold+"_train-"+index, [seeds_original_after, stats_original])
-				
-	  	    	// --------------TRAIN-TEST--------------
-
-		    	report.push(_.pick(stats_ppdb['stats'], parameters))
-		    	report.push(_.pick(stats_original['stats'], parameters))
-
-		    	console.log("report is pushed")
-		    			    	
-		   		var FNppdb = []
-
-		   		// console.log("here")
-				// console.log(JSON.stringify(stats_ppdb, null, 4))
-		   		// process.exit(0)
-		   		// console.log("HERE")
-
-		   	// 	_.each(stats_ppdb['data'], function(turn, key, list){ 
-	    	// 		if (stats_ppdb['data'][key]['eval']['FN'].length > 0)	
-						// {
-						// FNppdb.push({
-						// 	'input':stats_ppdb['data'][key]['input'], 
-						// 	'intent_core':stats_ppdb['data'][key]['intent_core'],
-						// 	'eval':stats_ppdb['data'][key]['eval'],
-						// 	// 'sequence_actual_ppdb': stats_ppdb['data'][key]['sequence_actual']
-						// 	})	
-						// }		    				
-		    // 	}, this)
-
-		    	console.log("FNppdb is wrote")
-
-				var comparison = []
-				_.each(stats_ppdb['data'], function(turn, key, list){ 
-					var rec = {
-								'input':stats_ppdb['data'][key]['input'], 
-								'intent_core':stats_ppdb['data'][key]['intent_core'], 
-								'eval_ppdb':stats_ppdb['data'][key]['eval'], 
-								'eval_ppdb_detail':stats_ppdb['data'][key]['eval_detail'], 
-								'eval_original':stats_original['data'][key]['eval'],	
-								'eval_original_detail':stats_original['data'][key]['eval_detail'],	
-								'diff_TP': [],
-								'diff_FP': [],
-							    'sequence_actual_ppdb': bars.lisunique(stats_ppdb['data'][key]['sequence_actual']),
-								// 'sequence_actual': stats_ppdb['data'][key]['sequence_actual'],
-								'actual_filtered': stats_ppdb['data'][key]['actual_filtered']
-							}
-
-
-					// console.log(JSON.stringify(stats_ppdb['data'][key]['input'], null, 4))
-					// console.log(JSON.stringify(stats_ppdb['data'][key]['output'], null, 4))
-					// console.log(JSON.stringify(stats_ppdb['data'][key]['eval_detail'], null, 4))
-					// console.log(JSON.stringify(stats_original['data'][key]['eval_detail'], null, 4))
-					// console.log("-------------------------------------")
-
-	    			if (stats_ppdb['data'][key]['eval']['FN'].length < stats_original['data'][key]['eval']['FN'].length)
-						{
-							rec['diff_TP'] = bars.listdiff(stats_ppdb['data'][key]['eval_detail']['TP'], stats_original['data'][key]['eval_detail']['TP'])		
-							global_stats[fold][mytrain.length]['TP'].push(rec)
-							// comparison.push(rec)
-
-							// console.log(JSON.stringify(stats_ppdb['data'][key]['eval_detail']['TP'], null, 4))
-							// console.log(JSON.stringify(stats_original['data'][key]['eval_detail']['TP'], null, 4))
-							// console.log(JSON.stringify(rec['diff'], null, 4))
-							// console.log(JSON.stringify(stats_ppdb['data'][key], null, 4))
-							// console.log()
-							// process.exit(0)
-						}
-					
-					
-					// if ((stats_ppdb['data'][key]['eval']['FN'].length == stats_original['data'][key]['eval']['FN'].length) &&
-						// (stats_ppdb['data'][key]['eval']['FP'].length > stats_original['data'][key]['eval']['FP'].length ))
-					if ((stats_ppdb['data'][key]['eval']['FP'].length > stats_original['data'][key]['eval']['FP'].length ))
-						{
-							rec['diff_FP'] = bars.listdiff(stats_ppdb['data'][key]['eval_detail']['FP'], stats_original['data'][key]['eval_detail']['FP'])		
-							global_stats[fold][mytrain.length]['FP'].push(rec)
-						}
-
-					/*if (stats_ppdb['data'][key]['eval']['FN'].length > stats_original['data'][key]['eval']['FN'].length)
-						{
-							console.log(JSON.stringify(stats_ppdb['data'][key], null, 4))
-							console.log(JSON.stringify(stats_original['data'][key], null, 4))
-							console.log()
-							process.exit(0)
-						}	*/
-							    				
-		    	}, this)
-
-				console.log("stats is wrote")
-				console.log(JSON.stringify(global_stats, null, 4))
-				console.log("==================================")
-				bars.writehtml(global_stats, 'TP')
-
-
-		   		// bars.wrfile(__dirname+dirr+"comparison_fold-"+fold+"_train-"+index+"_"+FNppdb.length+"_"+comparison.length, 
-		   			// ["FN of PPDB", FNppdb.length, "PPDB gain", comparison.length, seeds_ppdb_after, "FN of ppdb", FNppdb, "comparison", comparison])
-
-		   		// console.log("wrfile finish")
-
-                // extractGlobal(parameters, classifiers, mytrain, report, stat)
-
-                // stat['_sized'] = test.length
-                // stat['_sizec'] = bars.extractdataset(test).length
-
-                // _.each(parameters, function(parameter, key, list){
-					// plot(fold, parameter, stat, classifiers)
-					// plot('average', parameter, stat, classifiers)
-				// })
-
-				// console.log("plot")
 
 			} //while (index < train.length)
 			}); //fold
 
-			// console.log(JSON.stringify(global_stats, null, 4))
-	})
-f.run();
 }
 
 if (process.argv[1] === __filename)
 {
-	//var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
-	//var dataset = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule_shuffled.json"))
-	var dataset = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule_core.json"))
 
-	var dataset = _.filter(dataset, function(dial){return bars.isactivedialogue(dial) == true})
+	var dataset = JSON.parse(fs.readFileSync(__dirname + "/../../../datasets/DatasetDraft/dial_usa_rule_core.json"))
 
-	// dataset = dataset.slice(0, 20)
-	
 	var classifiers  = {
-		'PPDB': [],
-		'Original': []
-	}
 
+				strict: [modes.strict_keyphrase],
+			}
+	
 	var parameters = [
-					  'F1','Precision','Recall', 'FN', 
-					  'OfferF1', 'OfferPrecision', 'OfferRecall', 'OfferFN', 'OfferTP',
-					  'RejectF1','RejectPrecision','RejectRecall', 'RejectFN', 'RejectTP',
-					  'AcceptF1','AcceptPrecision','AcceptRecall', 'AcceptFN', 'AcceptTP',
-					  'GreetF1','GreetPrecision','GreetRecall', 'GreetFN'
+					  'F1','Precision','Recall', 'FN', 'Accuracy',
+					  'Offer_F1', 'Offer_Precision', 'Offer_Recall', 'Offer_FN', 'Offer_TP', 'Offer_Accuracy', 
+					  'Reject_F1','Reject_Precision','Reject_Recall', 'Reject_FN', 'Reject_TP', 'Reject_Accuracy', 
+					  'Accept_F1','Accept_Precision','Accept_Recall', 'Accept_FN', 'Accept_TP', 'Accept_Accuracy', 
+					  'Greet_F1','Greet_Precision','Greet_Recall', 'Greet_FN', 'Greet_Accuracy'
 					]
 	
 	var filtered = bars.filterdataset(dataset, 5)
 	console.log(filtered.length)
 
-	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  2/*numOfFolds*/, function(){
+	// filtered = _.shuffle(filtered)
 
+	// filtered = filtered.slice(0, 5)
+
+	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
@@ -486,6 +469,5 @@ module.exports = {
 	filternan:filternan,
 	onlyNumbers:onlyNumbers,
 	isProb:isProb,
-	getAverage:getAverage,
 	thereisdata:thereisdata
 }
