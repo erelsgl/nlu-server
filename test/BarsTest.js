@@ -14,6 +14,25 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 	
+
+	
+	it('isnotokaccept', function() {
+		var turn = {'input': 'OK', 'output': [{'Accept':'previous'}]}
+		bars.isnotokaccept(turn).should.be.false
+		var turn = {'input': 'OK', 'output': [{'Accept':'previous'}, {'Reject':'previous'}]}
+		bars.isnotokaccept(turn).should.be.true
+		var turn = {'input': 'chpok', 'output': [{'Accept':'previous'}]}
+		bars.isnotokaccept(turn).should.be.true
+		var turn = {'input': 'okay', 'output': [{'Accept':'previous'}]}
+		bars.isnotokaccept(turn).should.be.false
+		var turn = {'input': 'No', 'output': [{'Reject':'previous'}]}
+		bars.isnotokaccept(turn).should.be.false
+		var turn = {'input': 'paraNo', 'output': [{'Reject':'previous'}]}
+		bars.isnotokaccept(turn).should.be.true
+
+
+	})
+
 	it('vectorsum', function() {
 		_.isEqual(bars.vectorsum([1,2,3,4],[4,3,2,1]),[5,5,5,5]).should.be.true
 		_.isEqual(bars.vectorsum([1,2,3,4],[1,1,1,1]),[2,3,4,5]).should.be.true
