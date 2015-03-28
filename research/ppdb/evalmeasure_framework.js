@@ -8,12 +8,11 @@ Prove train with keyphrases. Fetch new paraphrases from PPDB and run eva
 var fs = require('fs');
 var _ = require('underscore')._; 
 var natural = require('natural');
-var utils = require('./utils');
 var PrecisionRecall = require("limdu/utils/PrecisionRecall");
 var rules = require("../rule-based/rules.js")
 var truth = require("../rule-based/truth_utils.js")
 var truth_filename =  __dirname+ "/../../../truth_teller/sentence_to_truthteller.txt"
-var modes = require("./modes.js")
+var modess = require("./modes.js")
 var Hierarchy = require('../../Hierarchy');
 
 var limdu = require("limdu");
@@ -56,26 +55,43 @@ function trainandtest(train, test, modes)
     
     var classes = []
     var explanation = []
+    var test1 = {
+                 'original': test['input_original'],
+                 'filtered':test['input_normalized'],
+                    }
     
     _.each(modes, function(mode, key, list){ 
       _.each(train_turns, function(train, key, list){ 
         _.each(train['intent_absolute'], function(keyphrase, intent, list){ 
 
-          if (mode(test['input_normalized'], keyphrase))
-            {
-              classes.push(intent)
-              explanation.push({  'train': train,
-                                  'class': intent,
-                                  'mode': mode.name})
-            }
+          var train1 = {
+                      'original': train['input_original'],
+                     'filtered':train['input_normalized'],
+                     'keyphrase':[keyphrase],
+                     'intent': intent
+                    }
+
+          var results = mode(test1, train1)
+          
+          classes = classes.concat(results['classes'])
+          explanation.push(results['explanation'])
 
           }, this)
-
        }, this) 
     }, this)
-  
+
+    if (classes.length == 0)
+      if (modess.isOK(test1))
+        classes.push('Accept')
+
+    if (classes.length == 0)
+      if (modess.isNO(test1))
+        classes.push('Reject')
+
     test_turns[key]['classified'] = _.unique(classes)
     test_turns[key]['results'] = stats.addCasesHash(test['output'], _.unique(classes), true)    
+    stats.addCasesLabels(test['output'], _.unique(classes), true)    
+    
     test_turns[key]['explanation'] = explanation
 
   }, this)
