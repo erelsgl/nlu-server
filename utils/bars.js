@@ -1026,6 +1026,35 @@ function ispermittedturn(turn)
   return permitted
 }
 
+function isnotokaccept(turn)
+{
+  // if (!isactiveturn(turn)) return false
+  // if (!ishumanturn(turn)) return false
+  // if (!isseqturn(turn)) return false
+  // if (!ispermittedturn(turn)) return false
+
+  var ok = ['Ok','OK','okay','ok', 'Ok.','Okay']
+  var no = ['NO','No','no']
+  var intents = Hierarchy.splitPartEquallyIntent(turn['output'])
+  var unig = _.flatten(natural.NGrams.ngrams(turn['input'], 1))
+
+  if (_.filter(unig, function(num){ return ok.indexOf(num) != -1 }).length > 0)
+  {
+
+    if (_.isEqual(intents, ['Accept']))
+      return false
+  }
+
+  if (_.filter(unig, function(num){ return no.indexOf(num) != -1 }).length > 0)
+  {
+
+    if (_.isEqual(intents, ['Reject']))
+      return false
+  }
+  
+  return true
+}
+
 function isactiveturn(turn)
 {
   if ('status' in turn)
@@ -1079,7 +1108,24 @@ function isseqturn(turn)
 
 function isgoodturn(turn)
 {
-  return (isactiveturn(turn) && ishumanturn(turn) && isseqturn(turn) && ispermittedturn(turn))
+  if (isactiveturn(turn) && ishumanturn(turn) && isseqturn(turn) && ispermittedturn(turn))
+    return isnotokaccept(turn)
+  return false
+}
+
+
+function isoutput(turn)
+{
+  if (_.isArray(turn['output']))
+    if (turn['output'].length > 0)
+      return true
+  return false
+}
+
+
+function isgoodturn_test(turn)
+{
+  return (isactiveturn(turn) && ishumanturn(turn) && isoutput(turn))
 }
 
 function extractdial(dialogue)
@@ -1087,6 +1133,19 @@ function extractdial(dialogue)
   var output = []
   _.each(dialogue['turns'], function(turn, key, list){ 
     if (isgoodturn(turn))
+      output.push(turn)
+  }, this)
+  return output
+}
+
+function extractdial_test(dialogue)
+{
+  if (dialogue['status'].indexOf("badconv") == -1)
+    return []
+
+  var output = []
+  _.each(dialogue['turns'], function(turn, key, list){ 
+    if (isgoodturn_test(turn))
       output.push(turn)
   }, this)
   return output
@@ -3333,5 +3392,7 @@ onecoverstwo:onecoverstwo,
 fullycovered:fullycovered,
 equallist:equallist,
 vectorsum:vectorsum,
-extractintent:extractintent
+extractintent:extractintent,
+isnotokaccept:isnotokaccept,
+extractdial_test:extractdial_test
 }
