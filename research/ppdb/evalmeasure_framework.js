@@ -47,6 +47,16 @@ function trainandtest(train, test, modes)
 
   var test_turns = normaliz(test)
   var train_turns = normaliz(train)
+
+  var keyphrases = {}
+  _.each(train_turns, function(turn, key, list){ 
+    _.each(turn['intent_absolute'], function(value, key, list){ 
+      if (!(key in keyphrases))
+        keyphrases[key] = []
+
+      keyphrases[key].push(value)
+    }, this)
+  }, this)
   
   var stats = new PrecisionRecall()
 
@@ -58,6 +68,7 @@ function trainandtest(train, test, modes)
     var test1 = {
                  'original': test['input_original'],
                  'filtered':test['input_normalized'],
+                 'filtered':test['input_modified'],
                     }
     
     _.each(modes, function(mode, key, list){ 
@@ -67,14 +78,26 @@ function trainandtest(train, test, modes)
           var train1 = {
                       'original': train['input_original'],
                      'filtered':train['input_normalized'],
+                     'modified':train['input_modified'],
                      'keyphrase':[keyphrase],
                      'intent': intent
                     }
 
           var results = mode(test1, train1)
+
+          if (modess.permit(results, test))
+          {
           
-          classes = classes.concat(results['classes'])
-          explanation.push(results['explanation'])
+            classes = classes.concat(results['classes'])
+
+            if (results['classes'].length > 0)
+            {
+              results['explanation']['reason'] = results['reason']
+              results['explanation']['turn'] = train
+              results['explanation']['classes'] = results['classes']
+              explanation.push(results['explanation'])
+            }
+          }
 
           }, this)
        }, this) 
@@ -88,6 +111,10 @@ function trainandtest(train, test, modes)
       if (modess.isNO(test1))
         classes.push('Reject')
 
+    if (classes.length == 0)
+      if (modess.onlyOffer(test))
+        classes.push('Offer')
+
     test_turns[key]['classified'] = _.unique(classes)
     test_turns[key]['results'] = stats.addCasesHash(test['output'], _.unique(classes), true)    
     stats.addCasesLabels(test['output'], _.unique(classes), true)    
@@ -96,17 +123,17 @@ function trainandtest(train, test, modes)
 
   }, this)
   
-  
-
   // console.log("calc retrieveStats")
   var output = []
   output.push({
     'data': test_turns,
     'stats': stats.retrieveStats()
   })
-  // console.log("end calc retrieveStats")
+  
+  console.log(JSON.stringify(keyphrases, null, 4))
 
   return output
+
 
 
   // }, function(err){
