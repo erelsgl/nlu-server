@@ -11,20 +11,26 @@ var _ = require('underscore');
 var modes = require('./modes.js')
 
 describe('Util test', function() {
+	
+	it('mutation', function() {	
+		modes.mutation("I will accept your salary", "I accept", ['will']).should.be.true
+		modes.mutation("I accept your salary", "I accept", ['will']).should.be.false
+		modes.mutation("I accept your salary but i will reject", "I accept", ['will']).should.be.false
+	})
 
-	it('intersection', function() {	
+	it('intent_dep', function() {	
 
-		var train = 'I go to school'
-		var test = 'usually I go to school by foot'
-		modes.strict_keyphrase(test, train).should.be.true
+		var train = {'keyphrase':['I go to school'], 'intent': 'Offer'}
+		var test = {'filtered':'usually I go to school by foot'}
+		modes.intent_dep(test, train)['reason'].should.be.equal("clean equality")
 
-		var train = 'I will go to school'
-		var test = 'usually I go to school by foot'
-		modes.strict_keyphrase(test, train).should.be.false
+		var train = {'keyphrase':['I accept'], 'intent': 'Accept'}
+		var test = {'filtered':'I will accept this offer'}
+		modes.intent_dep(test, train)['reason'].should.be.equal("modality of accept")
 
-		var train = 'I will go to school'
-		var test = 'I might go to school by foot'
-		modes.strict_keyphrase(test, train).should.be.true
+		var train = {'keyphrase':['I will accept'], 'intent':'Accept'}
+		var test = {'filtered':'I might accept this offer'}
+		modes.intent_dep(test, train)['classes'][0].should.be.equal("Accept")
 	})
 
 	it('predicate', function() {	
