@@ -40,9 +40,27 @@ describe('Util test', function() {
 		var train = {'keyphrase':['I not accept'], 'intent':'Reject'}
 		var test = {'filtered':'I accept'}
 		modes.intent_dep(test, train)['classes'].length.should.equal(0)
+
+
+		var train = {'keyphrase':['I can not accept'], 'intent':'Reject'}
+		var test = {'filtered':'I accept'}
+		modes.intent_dep(test, train)['classes'].length.should.equal(0)
+
+		var train = {'keyphrase':['I will accept'], 'intent':'Offer'}
+		var test = {'filtered':'I accept'}
+		// console.log(modes.intent_dep(test, train))
+
+		var train = {'keyphrase':['i agree'], 'intent':'Offer'}
+		var test = {'filtered':'i can agree to no agreement on'}
+		console.log(modes.intent_dep(test, train))
+
+
 	
 	})
 
+	it('onlyOffer', function() {
+		modes.onlyOffer({'input_normalized': "<ATTRIBUTE> <VALUE>"}).should.be.true	
+	})
 	// it('predicate', function() {	
 		// var train = 'I go to school'
 		// var test = 'usually I go to school by foot'
