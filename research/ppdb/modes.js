@@ -19,6 +19,7 @@ var neg = ['not', 'no', 'never']
 
 // if keyphrase is mutated by list in string
 // mutation should somewhere close to keyphrase
+
 function mutation(string, keyphrase, list)
 {
 	var string = _.flatten(natural.NGrams.ngrams(string, 1))
@@ -38,8 +39,6 @@ function mutation(string, keyphrase, list)
 
 	if (listpos.length == 0) return false
 
-
-
 	pos = _.sortBy(pos,  function(num){ return num; });
 	listpos = _.sortBy(listpos,  function(num){ return num; });
 
@@ -56,10 +55,23 @@ function mutation(string, keyphrase, list)
 	return res
 }
 
+function permit(result, test)
+{
+	var offer = true
+	if (test['input_modified'].indexOf("VALUE") == -1)
+		offer = false
+
+	if (result['classes'].indexOf('Offer') != -1 && !offer)
+		return false
+
+	return true
+}
+
 function intent_dep(test, train)
 {
 	var intent = train['intent']
-
+	var offer = true
+	
 	var test_source = test
 	var train_source = train
 
@@ -82,11 +94,6 @@ function intent_dep(test, train)
 		var trainm = _.intersection(keyphrase_or, mod).length > 0
 
 		// it looks like the modality of test doesn't influence
-		if (trainm && !testm )
-			return {'classes':[intent],
-					'explanation':{'keyphrases': train_source['keyphrase']},
-					'reason': 'modality of test and keyphrase is ok'
-					}
 
 		if (!trainm && testm && intent == 'Offer')
 			return {'classes':['Offer'],
@@ -119,6 +126,15 @@ function intent_dep(test, train)
 			return {'classes':['Reject'],
 					'explanation':{'keyphrases': train_source['keyphrase']},
 					'reason': 'negation of offer'
+					}
+
+		if (trainm && !testm)
+			return {
+					'classes':[],
+					'explanation':"",
+					// 'classes':[intent],
+					// 'explanation':{'keyphrases': train_source['keyphrase']},
+					// 'reason': 'modality of keyphrase and test is ok'
 					}
 
 		if ((testn && trainn) || (!testm && !trainm))
@@ -196,10 +212,30 @@ function isNO(test)
   return false
 }
 
+function onlyOffer(test)
+{
+	    // "input_modified": "<VALUE> as previously discussed",
+	var norm = test['input_modified']
+ 
+  	var unig = _.flatten(natural.NGrams.ngrams(norm, 1))
+  	unig = _.without(unig, "<VALUE>")
+  	unig = _.without(unig, "VALUE")
+  	unig = _.without(unig, "<ATTRIBUTE>")
+  	unig = _.without(unig, "ATTRIBUTE")
+  	if (unig.length < 3)
+  	{
+  		return true
+  	}
+  	else
+  		return false
+}
+
 module.exports = {
   intent_dep: intent_dep,
   predicate:predicate,
   isOK:isOK,
   isNO:isNO,
-  mutation:mutation
+  mutation:mutation,
+  permit:permit,
+  onlyOffer:onlyOffer
 }
