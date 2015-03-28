@@ -72,23 +72,14 @@ function intent_dep(test, train)
 	var test_or = test
 	var keyphrase_or = keyphrase
 
-	_.every(neg, function(el){test = _.without(test, el)}, this)
-	_.every(mod, function(el){test = _.without(test, el)}, this)
-
-	_.every(neg, function(el){keyphrase = _.without(keyphrase, el)}, this)
-	_.every(mod, function(el){keyphrase = _.without(keyphrase, el)}, this)
+	keyphrase = _.difference(keyphrase, neg.concat(mod))
+	test = _.difference(test, neg.concat(mod))
 
 	if (_.isEqual(_.intersection(test,keyphrase), keyphrase) == true)
 		{
 
 		var testm = mutation(test_source['filtered'], _.last(train_source['keyphrase']), mod)
 		var trainm = _.intersection(keyphrase_or, mod).length > 0
-
-		if ((testm && trainm) || (!testm && !trainm))
-			return {'classes':[intent],
-					'explanation':{'keyphrases': train_source['keyphrase']},
-					'reason': 'clean equality'
-					}
 
 		// it looks like the modality of test doesn't influence
 		if (trainm && !testm )
@@ -119,12 +110,6 @@ function intent_dep(test, train)
 		var testn = mutation(test_source['filtered'], _.last(train_source['keyphrase']), neg)
 		var trainn = _.intersection(keyphrase_or, neg).length > 0
 
-		if ((testn && trainn) || (!testm && !trainm))
-			return {'classes':[intent],
-					'explanation':{'keyphrases': train_source['keyphrase']},
-					'reason': 'clean equality'
-					}
-
 		if (trainn && !testn)
 			return {'classes':[],
 					'explanation':"",
@@ -134,6 +119,17 @@ function intent_dep(test, train)
 			return {'classes':['Reject'],
 					'explanation':{'keyphrases': train_source['keyphrase']},
 					'reason': 'negation of offer'
+					}
+
+		if ((testn && trainn) || (!testm && !trainm))
+			return {'classes':[intent],
+					'explanation':{'keyphrases': train_source['keyphrase']},
+					'reason': 'clean equality'
+					}
+		if ((testm && trainm) || (!testm && !trainm))
+			return {'classes':[intent],
+					'explanation':{'keyphrases': train_source['keyphrase']},
+					'reason': 'clean equality'
 					}
 
 		}
