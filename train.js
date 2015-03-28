@@ -42,13 +42,15 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 
 // var do_small_temporary_serialization_test = false
 
+var test_proportion = false
 var trans = false
 var test_ppdb = false
-var test_knn = true
+var test_knn = false
 var test_label = false
 var test_clust = false
 var do_learning_curves = false
 
+var test_approaches = true
 var do_test_seed = false
 var check_dial = false
 var do_keyphrase_predict_annotaiton = false
@@ -93,7 +95,7 @@ var trainutils = require('./utils/bars')
 var bars = require('./utils/bars')
 // var Lemmer = require('node-lemmer').Lemmer;
 var rules = require("./research/rule-based/rules.js")
-var ppdb_utils = require("./research/ppdb/utils.js")
+// var ppdb_utils = require("./research/ppdb/utils.js")
 
 // var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/0_grammar.json"));
 // var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students.json"));
@@ -188,6 +190,70 @@ var datasetNames = [
 			"nlu_ncagent_turkers_negonlpncAMT.json",
 			"woz_kbagent_students_negonlp.json"
 			];
+
+
+if (test_approaches)
+{
+	var framework = require("./research/ppdb/evalmeasure_framework")
+	var modes = require("./research/ppdb/modes")
+
+
+	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))	
+	var train= bars.extractdataset(bars.filterdataset(data, 5))
+
+	var test = []
+	_.each(data, function(value, key, list){test = test.concat(bars.extractdial_test(value))}, this)
+
+	var stats = framework.trainandtest(bars.copyobj(train), bars.copyobj(test), [modes.intent_dep])
+	// console.log(JSON.stringify(stats[0], null, 4))
+
+	console.log(JSON.stringify(stats[0]['stats'], null, 4))
+
+	_.each(stats[0]['data'], function(value, key, list){ 
+		if (_.isEqual(value['results']['FN'],["Offer"]))
+			console.log(JSON.stringify(value, null, 4))
+	}, this)
+
+}
+
+if (test_proportion)
+{
+
+
+	var output = []
+	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))	
+
+	// console.log(data.length)
+	
+	var  data= bars.filterdataset(data, 5)
+
+	// _.each(data, function(dial, key, list){ 
+	// 	console.log(dial['users'][0])
+	// }, this)
+
+	process.exit(0)
+
+	var ext = bars.extractdataset(data)	
+
+	_.each(ext, function(value, key, list){ 
+		output = output.concat(Hierarchy.splitPartEquallyIntent(value['output']))
+	}, this)
+
+	var gr = _.countBy(output, function(num){ return num });
+
+	var sum = 0
+	_.each(gr, function(value, key, list){ 
+		sum += value
+	}, this)
+
+	_.each(gr, function(value, key, list){ 
+		gr[key] = gr[key]/sum
+	}, this)
+
+	console.log(JSON.stringify(gr, null, 4))
+
+	process.exit(0)
+}
 
 if (test_clust)
 {
