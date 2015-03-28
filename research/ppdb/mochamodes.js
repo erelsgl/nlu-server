@@ -31,13 +31,23 @@ describe('Util test', function() {
 		var train = {'keyphrase':['I will accept'], 'intent':'Accept'}
 		var test = {'filtered':'I might accept this offer'}
 		modes.intent_dep(test, train)['classes'][0].should.be.equal("Accept")
+
+		var train = {'keyphrase':['I offer'], 'intent':'Offer'}
+		var test = {'filtered':'I no offer you'}
+		modes.intent_dep(test, train)['classes'][0].should.be.equal("Reject")
+
+		// can be either Offer or Accept 'I not accpept' or 'I not offer'
+		var train = {'keyphrase':['I not accept'], 'intent':'Reject'}
+		var test = {'filtered':'I accept'}
+		modes.intent_dep(test, train)['classes'].length.should.equal(0)
+	
 	})
 
-	it('predicate', function() {	
-		var train = 'I go to school'
-		var test = 'usually I go to school by foot'
-		modes.predicate(test, train, train)
-	})
+	// it('predicate', function() {	
+		// var train = 'I go to school'
+		// var test = 'usually I go to school by foot'
+		// modes.predicate(test, train, train)
+	// })
 
 
 
