@@ -72,6 +72,19 @@ describe('Util test', function() {
 		var train = {'keyphrase': 'i offer', 'filtered': 'i offer', 'intent': 'Offer'}
 		var test = {'filtered': 'i demand by foot'}
 		_.isEqual(modes.predicate(test, train)['explanation']['keyphrases'], [ 'i offer', 'offer', 'the submission', 'demand', 'demand' ]).should.be.true
+
+		var train = {'keyphrase': 'i offer', 'filtered': 'i offer', 'intent': 'Offer'}
+		var test = {'filtered': 'i require by foot'}
+		// _.isEqual(modes.predicate(test, train)['explanation']['keyphrases'], [ 'i offer','i offer','i give','i ask','i require','i require' ]).should.be.true
+     	// score: 3 
+	
+		var train = {'keyphrase': 'hello', 'filtered': 'hello', 'intent': 'Greet'}
+		var test = {'filtered': 'hi'}
+
+		// console.log(modes.predicate(test, train))
+		// _.isEqual(modes.predicate(test, train)['explanation']['keyphrases'], [ 'i offer', 'offer', 'the submission', 'demand', 'demand' ]).should.be.true
+		
+
 	})
 
 	it('ppdbexpansion', function() {	
