@@ -65,6 +65,7 @@ function trainandtest(train, test, modes)
   // async.eachSeries(test_turns, function(turn, callback1){
   _.each(test_turns, function(test, key, list){
 
+    console.log(test)
     console.log("Test number "+ key)
     
     var classes = []
@@ -90,20 +91,20 @@ function trainandtest(train, test, modes)
                     }
 
           var results = mode(test1, train1)
-
-          if (modess.permit(results, test))
-          {
-          
-            classes = classes.concat(results['classes'])
-
-            if (results['classes'].length > 0)
+          if (results['classes'].length > 0)
+            if (modess.permit(results, test))
             {
+          
+              classes = classes.concat(results['classes'])
+
+              if (results['classes'].length > 0)
+              {
               results['explanation']['reason'] = results['reason']
               results['explanation']['turn'] = train
               results['explanation']['classes'] = results['classes']
               explanation.push(results['explanation'])
+              }
             }
-          }
 
           }, this)
        }, this) 
