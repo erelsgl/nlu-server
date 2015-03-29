@@ -203,7 +203,7 @@ if (test_approaches)
 	var test = []
 	_.each(data, function(value, key, list){test = test.concat(bars.extractdial_test(value))}, this)
 
-	var stats = framework.trainandtest(bars.copyobj(train), bars.copyobj(test), [modes.predicate])
+	var stats = framework.trainandtest(bars.copyobj(train), bars.copyobj(test), [modes.intent_dep, modes.predicate])
 	// console.log(JSON.stringify(stats[0], null, 4))
 
 	console.log(JSON.stringify(stats[0]['stats'], null, 4))
