@@ -61,8 +61,8 @@ if (process.argv[1] === __filename)
 		*/
 
 		console.log("output "+Object.keys(output1).length)
-		console.log("featureexp finished")
 		fs.writeFileSync(__dirname+"/featureexp_output", JSON.stringify(output1, null, 4), 'utf-8')
+		console.log("featureexp finished")
 		ppdb.closeredis()
 	})
 }
