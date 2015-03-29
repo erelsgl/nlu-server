@@ -270,7 +270,23 @@ function plot(fold, parameter, stat, classifiers)
 	{
 		_.each(stat[parameter], function(value, trainsize, list){ 
 			// str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"
-			str += trainsize.toString() + "(" + value['__size'][fold]+ ")\t"
+			
+			 if(value['__size'][fold] == null){
+
+			 	console.log(JSON.stringify(stat, null, 4))
+			 	console.log(JSON.stringify(parameter, null, 4))
+			 	console.log(JSON.stringify(fold, null, 4))
+			 	console.log(JSON.stringify(trainsize, null, 4))
+
+			 	console.log(JSON.stringify(classifiers, null, 4))
+			 	console.log(JSON.stringify(value['__size'][fold], null, 4))
+			 	
+			 	process.exit(0)
+
+			 }
+
+
+			str += trainsize.toString() + "(" + value['__size'][fold].toFixed(1)+ ")\t"
 			_.each(value, function(results, cl, list){ 
 				if ((cl != '_size') && (cl != '__size'))
 				{
@@ -291,7 +307,7 @@ function plot(fold, parameter, stat, classifiers)
 			var average = getAverage(stat, parameter, trainsize, classifiers)
 			var intsize = _.reduce(stat[parameter][trainsize]['__size'], function(memo, num){ return (memo + num) }, 0)/stat[parameter][trainsize]['__size'].length
 			// str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"+filternan(average).join("\t")+"\n"
-			str += trainsize.toString() + "(" + intsize + ")\t"+filternan(average).join("\t")+"\n"
+			str += trainsize.toString() + "(" + intsize.toFixed(1) + ")\t"+filternan(average).join("\t")+"\n"
 			values = values.concat(filternan(average))
 		}, this)
 
@@ -420,12 +436,14 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
                 stat['_sized'] = test.length
                 stat['_sizec'] = bars.extractdataset(test).length
 
-                _.each(parameters, function(parameter, key, list){
-					plot(fold, parameter, stat, classifiers)
-					plot('average', parameter, stat, classifiers)
-				})
-
+                
 			} //while (index < train.length)
+
+			_.each(parameters, function(parameter, key, list){
+				plot(fold, parameter, stat, classifiers)
+				plot('average', parameter, stat, classifiers)
+			})
+
 			}); //fold
 
 }
@@ -438,20 +456,24 @@ if (process.argv[1] === __filename)
 	var classifiers  = {
 
 				strict: [modes.strict_keyphrase],
+				// strict: [modes.predicate],
 			}
 	
 	var parameters = [
 					  'F1','Precision','Recall', 'FN', 'Accuracy',
-					  'Offer_F1', 'Offer_Precision', 'Offer_Recall', 'Offer_FN', 'Offer_TP','Offer_FP', 'Offer_Accuracy', 
-					  'Reject_F1','Reject_Precision','Reject_Recall', 'Reject_FN', 'Reject_TP','Reject_FP', 'Reject_Accuracy', 
-					  'Accept_F1','Accept_Precision','Accept_Recall', 'Accept_FN', 'Accept_TP','Accept_FP', 'Accept_Accuracy', 
-					  'Greet_F1','Greet_Precision','Greet_Recall', 'Greet_FN', 'Greet_TP','Greet_FP', 'Greet_Accuracy'
+					  'Offer_F1','Reject_F1', 'Accept_F1','Greet_F1',
+					  'Offer_Precision', 'Reject_Precision', 'Accept_Precision', 'Greet_Precision',
+					  'Offer_Recall', 'Reject_Recall', 'Accept_Recall','Greet_Recall'
+					  // 'Offer_FN','Reject_FN','Accept_FN','Greet_FN',
+					  // 'Offer_TP','Reject_TP','Accept_TP','Greet_TP',
+					  // 'Offer_FP', 'Reject_FP','Accept_FP', 'Greet_FP',
+					  // 'Offer_Accuracy', 'Reject_Accuracy', 'Accept_Accuracy', 'Greet_Accuracy'
 					]
 	
 	var filtered = bars.filterdataset(dataset, 5)
 	console.log(filtered.length)
 
-	// filtered = _.shuffle(filtered)
+	filtered = _.shuffle(filtered)
 
 	// filtered = filtered.slice(0, 5)
 
