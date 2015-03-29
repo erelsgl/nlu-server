@@ -91,6 +91,7 @@ function trainandtest(train, test, modes)
                     }
 
           var results = mode(test1, train1)
+          console.log(JSON.stringify(results, null, 4))
           if (results['classes'].length > 0)
             if (modess.permit(results, test))
             {
