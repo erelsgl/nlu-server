@@ -61,6 +61,7 @@ function trainandtest(train, test, modes)
   var stats = new PrecisionRecall()
 
   console.log("Test length "+ test_turns.length)
+  console.log("Train length "+ train_turns.length)
   // async.eachSeries(test_turns, function(turn, callback1){
   _.each(test_turns, function(test, key, list){
 
@@ -76,6 +77,7 @@ function trainandtest(train, test, modes)
     
     _.each(modes, function(mode, key, list){ 
       _.each(train_turns, function(train, key, list){ 
+        console.log("Train number "+ key)
         _.each(train['intent_absolute'], function(keyphrase, intent, list){ 
 
           var train1 = {
