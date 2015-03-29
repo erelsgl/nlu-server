@@ -233,6 +233,8 @@ function simpledistance(one, two)
 
 function skipexpansion(keyphrase)
 {
+	if (_.isArray(keyphrase))
+		keyphrase = keyphrase[0]
 
 	var skipgrams = []
 	skipgrams = skipgrams.concat(bars.skipgrams(keyphrase, 2, 4)).
@@ -257,7 +259,7 @@ function ppdbexpansion(string)
 		return ppdbbuffer[string]
 
 	if (!_.isArray(string)) string = [string, string]
-	fs.writeFileSync("../../utils/featureexp_input", JSON.stringify(string, null, 4), 'utf-8')
+	fs.writeFileSync(__dirname + "/../../utils/featureexp_input", JSON.stringify(string, null, 4), 'utf-8')
 	
 	var scale = '[2]'
 	var result = execSync.run("node "+__dirname+"/../../utils/featureexp.js '"+scale+"' "+0);
@@ -273,10 +275,13 @@ function ppdbexpansion(string)
 
 function predicate(test, train)
 {
+	if (_.isArray(train['keyphrase']))
+		train['keyphrase'] = train['keyphrase'][0]
+
 	var intent = train['intent']
 	var skipgrams = []
 	var C = 5
-	var paths = [{'path':[train['keyphrase']], 'score': 0}]
+	var paths = [{'path':[].concat(train['keyphrase']), 'score': 0}]
 
 	var result = intent_dep(test, train)
 	if (result['classes'].length != 0)
@@ -289,6 +294,8 @@ function predicate(test, train)
 	_.each(skipexpansion(train['keyphrase']), function(value, key, list){ 
 		paths.push({'path':paths[0]['path'].concat(value), score:paths[bestpath]['score']+simpledistance(train['keyphrase'], value)})
 	}, this)
+
+	console.log(paths)
 
 	paths = _.sortBy(paths,  function(num){ return num['score']; })
 
@@ -305,6 +312,7 @@ function predicate(test, train)
 	}
 
 	// as result all skipgrams with empty results
+	// console.log(JSON.stringify(paths, null, 4))
 
 	while (true) {
 
@@ -353,5 +361,6 @@ module.exports = {
   permit:permit,
   onlyOffer:onlyOffer,
   simpledistance:simpledistance,
-  ppdbexpansion:ppdbexpansion
+  ppdbexpansion:ppdbexpansion,
+  skipexpansion:skipexpansion
 }
