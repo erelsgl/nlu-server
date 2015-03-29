@@ -280,7 +280,7 @@ function predicate(test, train)
 
 	var intent = train['intent']
 	var skipgrams = []
-	var C = 3.7
+	var C = 3.2
 	var paths = [{'path':[].concat(train['keyphrase']), 'score': 0}]
 
 	var result = intent_dep(test, train)
@@ -317,6 +317,8 @@ function predicate(test, train)
 
 	while (true) {
 
+		var used = []
+
 		if (paths[0]['score'] > C)
 			return {'classes': [],
 	  				'explanation': ""}
@@ -324,21 +326,27 @@ function predicate(test, train)
 	  	var champion = {}
 
 	  	_.each(ppdbexpansion(_.last(paths[0]['path'])), function(value, key, list){ 
-	  		_.each(skipexpansion(value), function(skip, key1, list1){ 
-				var result = intent_dep(test, {'keyphrase': skip, 'intent': intent})
-				if (result['classes'].length > 0)
-				{
-					paths.push({'path':paths[0]['path'].concat(value).concat(skip), 'score': 'complete'})
-					if (Object.keys(champion) == 0)
-						{
-						champion = result
-						champion['explanation']['keyphrases'] = paths[0]['path'].concat(value).concat(skip)
-						champion['explanation']['score'] = paths[0]['score'] + simpledistance(value, skip) + 1
-						}
-				}
-	  		}, this)
-	  		if (Object.keys(champion) == 0)
-				paths.push({'path':paths[0]['path'].concat(value), 'score': paths[0]['score']+1})
+	  		if (used.indexOf(value) == -1)
+	  		{
+		  		_.each(skipexpansion(value), function(skip, key1, list1){ 
+					var result = intent_dep(test, {'keyphrase': skip, 'intent': intent})
+					if (result['classes'].length > 0)
+					{
+						paths.push({'path':paths[0]['path'].concat(value).concat(skip), 'score': 'complete'})
+						if (Object.keys(champion) == 0)
+							{
+							champion = result
+							champion['explanation']['keyphrases'] = paths[0]['path'].concat(value).concat(skip)
+							champion['explanation']['score'] = paths[0]['score'] + simpledistance(value, skip) + 1
+							}
+					}
+		  		}, this)
+		  		if (Object.keys(champion) == 0)
+		  		{
+		  			used.push(value)
+					paths.push({'path':paths[0]['path'].concat(value), 'score': paths[0]['score']+1})
+		  		}
+	  		}
 	  	}, this)
 
 	  	if (Object.keys(champion) != 0)
