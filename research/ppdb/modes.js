@@ -7,6 +7,8 @@ var natural = require('natural');
 
 var mod = ['will','might','can']
 var neg = ['not', 'no', 'never']
+var ppdbbuffer = {}
+
 
 // test
 // 'original'
@@ -76,7 +78,11 @@ function intent_dep(test, train)
 	var train_source = train
 
 	test = test['filtered']
-	keyphrase = _.last(train['keyphrase'])
+
+	if (_.isArray(train['keyphrase']))
+		keyphrase = _.last(train['keyphrase'])
+	else
+		keyphrase = train['keyphrase']
 
 	var test = _.flatten(natural.NGrams.ngrams(test, 1))
 	var keyphrase = _.flatten(natural.NGrams.ngrams(keyphrase, 1))
@@ -158,36 +164,6 @@ function intent_dep(test, train)
 
 }
 
-function predicate(test, train)
-{
-	// var result = execSync.exec("node "+__dirname+"/../../utils/getpos.js '"+ train_sentence+"'")
-	// result = JSON.parse(result['stdout'].replace(/\'/g, '"'))
-	// console.log(result)
-	// process.exit(0)
-
-	var skipgrams = []
-	skipgrams = skipgrams.concat(bars.skipgrams(train, 2, 4)).concat(bars.skipgrams(train, 3, 4)).concat(natural.NGrams.ngrams(train, 1))
-	skipgrams = _.unique(skipgrams)
-
-	skipgrams = _.map(skipgrams, function(value){ return value.join(" ") });
-
-	console.log(train)
-	console.log(skipgrams)
-
-	fs.writeFileSync("../../utils/featureexp_input", JSON.stringify(skipgrams, null, 4), 'utf-8')
-	
-	var scale = '[2]'
-	var result = execSync.run("node "+__dirname+"/../../utils/featureexp.js '"+scale+"' "+0);
-	var results = JSON.parse(fs.readFileSync(__dirname+"/../../utils/featureexp_output"))
-	
-	fs.unlinkSync(__dirname+"/../../utils/featureexp_input")
-	fs.unlinkSync(__dirname+"/../../utils/featureexp_output")
-
-	console.log(results)
-	console.log("------------------------------")
-
-}
-
 function isOK(test)
 {
   var ok = ['Ok','OK','okay','ok']
@@ -230,6 +206,144 @@ function onlyOffer(test)
   		return false
 }
 
+function simpledistance(one, two)
+{
+	var distance = 0
+	// 0.4 - for not correct order
+	// 0.6 - for missing stopword
+	// 1 - for missing content
+  var one = _.flatten(natural.NGrams.ngrams(one, 1))
+  var two = _.flatten(natural.NGrams.ngrams(two, 1))
+
+  _.each(two, function(value, key, list){ 
+  	if (one[key] != value)
+  		distance += 0.3
+  }, this)
+
+  var diff = _.difference(one,two)
+  _.each(diff, function(value, key, list){ 
+  	if (bars.isstopword(value))
+  		distance += 0.5
+  	else
+  		distance += 1
+  }, this)
+  return distance
+}
+
+
+function skipexpansion(keyphrase)
+{
+
+	var skipgrams = []
+	skipgrams = skipgrams.concat(bars.skipgrams(keyphrase, 2, 4)).
+						  concat(bars.skipgrams(keyphrase, 3, 4)).
+						  concat(natural.NGrams.ngrams(keyphrase, 1))
+
+	skipgrams = _.unique(skipgrams)
+	skipgrams = _.map(skipgrams, function(value){ return value.join(" ") });
+	skipgrams = _.reject(skipgrams, function(num){ return bars.isstopword(num); });
+
+	if (!_.isArray(skipgrams)) skipgrams = [skipgrams]
+
+	skipgrams = _.sortBy(skipgrams, function(num){ return simpledistance(keyphrase, num) });
+
+	return skipgrams
+}
+
+
+function ppdbexpansion(string)
+{
+	if (string in ppdbbuffer)
+		return ppdbbuffer[string]
+
+	if (!_.isArray(string)) string = [string, string]
+	fs.writeFileSync("../../utils/featureexp_input", JSON.stringify(string, null, 4), 'utf-8')
+	
+	var scale = '[2]'
+	var result = execSync.run("node "+__dirname+"/../../utils/featureexp.js '"+scale+"' "+0);
+	var results = JSON.parse(fs.readFileSync(__dirname+"/../../utils/featureexp_output"))
+	
+	fs.unlinkSync(__dirname+"/../../utils/featureexp_input")
+	fs.unlinkSync(__dirname+"/../../utils/featureexp_output")
+
+	ppdbbuffer[string] = Object.keys(results)
+
+	return Object.keys(results)
+}
+
+function predicate(test, train)
+{
+	var intent = train['intent']
+	var skipgrams = []
+	var C = 5
+	var paths = [{'path':[train['keyphrase']], 'score': 0}]
+
+	var result = intent_dep(test, train)
+	if (result['classes'].length != 0)
+		return result
+
+	paths[0]['result'] = result
+	var bestpath = 0
+
+	// full up the paths with skipgrams
+	_.each(skipexpansion(train['keyphrase']), function(value, key, list){ 
+		paths.push({'path':paths[0]['path'].concat(value), score:paths[bestpath]['score']+simpledistance(train['keyphrase'], value)})
+	}, this)
+
+	paths = _.sortBy(paths,  function(num){ return num['score']; })
+
+	// check result for every skip
+	_.each(paths, function(value, key, list){ 
+			paths[key]['result'] = intent_dep(test, {'keyphrase': _.last(value['path']), 'intent': intent})
+	}, this)
+
+	paths = paths.splice(1,paths.length-1)
+
+	var result = _.find(paths, function(path){ return path['result']['classes'].length > 0 });
+	if (typeof result != "undefined") {
+		return result
+	}
+
+	// as result all skipgrams with empty results
+
+	while (true) {
+
+		if (paths[0]['score'] > C)
+			return {'classes': [],
+	  				'explanation': ""}
+
+	  	var champion = {}
+
+	  	_.each(ppdbexpansion(_.last(paths[0]['path'])), function(value, key, list){ 
+	  		_.each(skipexpansion(value), function(skip, key1, list1){ 
+				var result = intent_dep(test, {'keyphrase': skip, 'intent': intent})
+				if (result['classes'].length > 0)
+				{
+					paths.push({'path':paths[0]['path'].concat(value).concat(skip), 'score': 'complete'})
+					if (Object.keys(champion) == 0)
+						{
+						champion = result
+						champion['explanation']['keyphrases'] = paths[0]['path'].concat(value).concat(skip)
+						champion['explanation']['score'] = paths[0]['score'] + simpledistance(value, skip) + 1
+						}
+				}
+	  		}, this)
+	  		if (Object.keys(champion) == 0)
+				paths.push({'path':paths[0]['path'].concat(value), 'score': paths[0]['score']+1})
+	  	}, this)
+
+	  	if (Object.keys(champion) != 0)
+	  		return champion
+	  	
+		paths = paths.splice(1,paths.length-1)
+
+		paths = _.sortBy(paths,  function(num){ return num['score']; })
+
+		console.log(paths)
+	}
+}
+
+
 module.exports = {
   intent_dep: intent_dep,
   predicate:predicate,
@@ -237,5 +351,7 @@ module.exports = {
   isNO:isNO,
   mutation:mutation,
   permit:permit,
-  onlyOffer:onlyOffer
+  onlyOffer:onlyOffer,
+  simpledistance:simpledistance,
+  ppdbexpansion:ppdbexpansion
 }
