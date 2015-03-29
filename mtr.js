@@ -1,4 +1,4 @@
- var MsTranslator = require('mstranslator');
+/* var MsTranslator = require('mstranslator');
     
     
     var client = new MsTranslator({
@@ -19,3 +19,10 @@
           console.log(data);
    	  console.log(err);
     });
+*/
+
+
+var natural = require('natural');
+console.log(natural.DiceCoefficient("i want","want"))
+// console.log(natural.JaroWinklerDistance('not', 'same'));
+// console.log(natural.DiceCoefficient('thing', 'thing'));
