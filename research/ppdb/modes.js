@@ -300,16 +300,17 @@ function predicate(test, train)
 	paths = _.sortBy(paths,  function(num){ return num['score']; })
 
 	// check result for every skip
+	 var global_result = {}
 	_.each(paths, function(value, key, list){ 
-			paths[key]['result'] = intent_dep(test, {'keyphrase': _.last(value['path']), 'intent': intent})
+		result = intent_dep(test, {'keyphrase': _.last(value['path']), 'intent': intent})
+		if (result['classes'].length > 0)
+			global_result = result
 	}, this)
 
 	paths = paths.splice(1,paths.length-1)
 
-	var result = _.find(paths, function(path){ return path['result']['classes'].length > 0 });
-	if (typeof result != "undefined") {
-		return result
-	}
+	if ('classes' in global_result)
+		return global_result
 
 	// as result all skipgrams with empty results
 	// console.log(JSON.stringify(paths, null, 4))
