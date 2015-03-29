@@ -76,6 +76,7 @@ function trainandtest(train, test, modes)
                     }
     
     _.each(modes, function(mode, key, list){ 
+      if (classes.length == 0)
       _.each(train_turns, function(train, key, list){ 
         console.log("Train number "+ key)
         _.each(train['intent_absolute'], function(keyphrase, intent, list){ 
