@@ -12,9 +12,9 @@ var modes = require('./modes.js')
 
 describe('Util test', function() {
 
-	
 	it('simpledistance', function() {	
 		modes.simpledistance("i want", "want").should.equal(0.8)
+		modes.simpledistance("i propose a", "i propose a").should.equal(0)
 	})
 	
 	it('mutation', function() {	
@@ -58,9 +58,6 @@ describe('Util test', function() {
 		var train = {'keyphrase':['i agree'], 'intent':'Offer'}
 		var test = {'filtered':'i can agree to no agreement on'}
 		console.log(modes.intent_dep(test, train))
-
-
-	
 	})
 
 	it('onlyOffer', function() {
@@ -70,18 +67,20 @@ describe('Util test', function() {
 	it('predicate', function() {	
 		var train = {'keyphrase': 'i offer', 'filtered': 'i offer', 'intent': 'Offer'}
 		var test = {'filtered': 'extend by foot'}
-		// _.isEqual(modes.predicate(test, train)['explanation']['keyphrases'], [ 'i offer', 'i offer', 'i extend', 'extend' ]).should.be.true
+		_.isEqual(modes.predicate(test, train)['explanation']['keyphrases'], [ 'i offer', 'i offer', 'i extend', 'extend' ]).should.be.true
 
 		var train = {'keyphrase': 'i offer', 'filtered': 'i offer', 'intent': 'Offer'}
 		var test = {'filtered': 'i demand by foot'}
-		console.log(modes.predicate(test, train))
-		// _.isEqual(modes.predicate(test, train)['explanation']['keyphrases'], [ 'i offer', 'i offer', 'i extend', 'extend' ]).should.be.true
+		_.isEqual(modes.predicate(test, train)['explanation']['keyphrases'], [ 'i offer', 'offer', 'the submission', 'demand', 'demand' ]).should.be.true
 	})
 
 	it('ppdbexpansion', function() {	
 		console.log(modes.ppdbexpansion('school'))
 	})
 
+	it('skipexpansion', function() {	
+		_.isEqual(modes.skipexpansion("i propose a"),[ 'i propose a', 'i propose', 'propose a', 'propose' ]).should.be.true
+	})
 
 
 })
