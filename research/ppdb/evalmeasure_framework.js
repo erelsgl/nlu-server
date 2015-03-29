@@ -60,8 +60,11 @@ function trainandtest(train, test, modes)
   
   var stats = new PrecisionRecall()
 
+  console.log("Test length "+ test_turns.length)
   // async.eachSeries(test_turns, function(turn, callback1){
   _.each(test_turns, function(test, key, list){
+
+    console.log("Test number "+ key)
     
     var classes = []
     var explanation = []
