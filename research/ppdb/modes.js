@@ -280,7 +280,7 @@ function predicate(test, train)
 
 	var intent = train['intent']
 	var skipgrams = []
-	var C = 5
+	var C = 3.7
 	var paths = [{'path':[].concat(train['keyphrase']), 'score': 0}]
 
 	var result = intent_dep(test, train)
