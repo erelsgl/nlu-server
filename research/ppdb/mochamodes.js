@@ -11,6 +11,11 @@ var _ = require('underscore');
 var modes = require('./modes.js')
 
 describe('Util test', function() {
+
+	
+	it('simpledistance', function() {	
+		modes.simpledistance("i want", "want").should.equal(0.8)
+	})
 	
 	it('mutation', function() {	
 		modes.mutation("I will accept your salary", "I accept", ['will']).should.be.true
@@ -61,12 +66,21 @@ describe('Util test', function() {
 	it('onlyOffer', function() {
 		modes.onlyOffer({'input_normalized': "<ATTRIBUTE> <VALUE>"}).should.be.true	
 	})
-	// it('predicate', function() {	
-		// var train = 'I go to school'
-		// var test = 'usually I go to school by foot'
-		// modes.predicate(test, train, train)
-	// })
+	
+	it('predicate', function() {	
+		var train = {'keyphrase': 'i offer', 'filtered': 'i offer', 'intent': 'Offer'}
+		var test = {'filtered': 'extend by foot'}
+		// _.isEqual(modes.predicate(test, train)['explanation']['keyphrases'], [ 'i offer', 'i offer', 'i extend', 'extend' ]).should.be.true
 
+		var train = {'keyphrase': 'i offer', 'filtered': 'i offer', 'intent': 'Offer'}
+		var test = {'filtered': 'i demand by foot'}
+		console.log(modes.predicate(test, train))
+		// _.isEqual(modes.predicate(test, train)['explanation']['keyphrases'], [ 'i offer', 'i offer', 'i extend', 'extend' ]).should.be.true
+	})
+
+	it('ppdbexpansion', function() {	
+		console.log(modes.ppdbexpansion('school'))
+	})
 
 
 
