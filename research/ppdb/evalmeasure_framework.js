@@ -77,36 +77,42 @@ function trainandtest(train, test, modes)
                     }
     
     _.each(modes, function(mode, key, list){ 
+      var train_keyphrase_buffer = []
+
       if (classes.length == 0)
       _.each(train_turns, function(train, key, list){ 
         console.log("Train number "+ key)
         _.each(train['intent_absolute'], function(keyphrase, intent, list){ 
 
-          var train1 = {
-                      'original': train['input_original'],
-                     'filtered':train['input_normalized'],
-                     'modified':train['input_modified'],
-                     'keyphrase':[keyphrase],
-                     'intent': intent
-                    }
+          if (train_keyphrase_buffer.indexOf(keyphrase) == -1)
+          {
+            train_keyphrase_buffer.push(keyphrase)
 
-          var results = mode(test1, train1)
-          console.log(JSON.stringify(results, null, 4))
-          if (results['classes'].length > 0)
-            if (modess.permit(results, test))
-            {
-          
-              classes = classes.concat(results['classes'])
+            var train1 = {
+                        'original': train['input_original'],
+                       'filtered':train['input_normalized'],
+                       'modified':train['input_modified'],
+                       'keyphrase':[keyphrase],
+                       'intent': intent
+                      }
 
-              if (results['classes'].length > 0)
+            var results = mode(test1, train1)
+            console.log(JSON.stringify(results, null, 4))
+            if (results['classes'].length > 0)
+              if (modess.permit(results, test))
               {
-              results['explanation']['reason'] = results['reason']
-              results['explanation']['turn'] = train
-              results['explanation']['classes'] = results['classes']
-              explanation.push(results['explanation'])
-              }
-            }
+            
+                classes = classes.concat(results['classes'])
 
+                if (results['classes'].length > 0)
+                {
+                results['explanation']['reason'] = results['reason']
+                results['explanation']['turn'] = train
+                results['explanation']['classes'] = results['classes']
+                explanation.push(results['explanation'])
+                }
+              }
+          }
           }, this)
        }, this) 
     }, this)
