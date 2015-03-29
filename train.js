@@ -197,14 +197,13 @@ if (test_approaches)
 	var framework = require("./research/ppdb/evalmeasure_framework")
 	var modes = require("./research/ppdb/modes")
 
-
 	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))	
 	var train= bars.extractdataset(bars.filterdataset(data, 5))
 
 	var test = []
 	_.each(data, function(value, key, list){test = test.concat(bars.extractdial_test(value))}, this)
 
-	var stats = framework.trainandtest(bars.copyobj(train), bars.copyobj(test), [modes.intent_dep])
+	var stats = framework.trainandtest(bars.copyobj(train), bars.copyobj(test), [modes.predicate])
 	// console.log(JSON.stringify(stats[0], null, 4))
 
 	console.log(JSON.stringify(stats[0]['stats'], null, 4))
