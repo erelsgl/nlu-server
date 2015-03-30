@@ -49,8 +49,9 @@ var test_knn = false
 var test_label = false
 var test_clust = false
 var do_learning_curves = false
+var test_pp = true
 
-var test_approaches = true
+var test_approaches = false
 var do_test_seed = false
 var check_dial = false
 var do_keyphrase_predict_annotaiton = false
@@ -191,6 +192,70 @@ var datasetNames = [
 			"woz_kbagent_students_negonlp.json"
 			];
 
+
+
+if (test_pp)
+{
+	var ppdb = require("./research/ppdb/utils.js")
+	var framework = require("./research/ppdb/evalmeasure_framework")
+	var modes = require("./research/ppdb/modes")
+	var output = {}
+
+
+	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))	
+	var train= bars.extractdataset(bars.filterdataset(data, 5))
+
+    async.eachSeries(train, function(value, callback1){
+    	async.eachSeries(Object.keys(value['intent_absolute']), function(intent, callback2){
+    		var keyphrase = value['intent_absolute'][intent]
+			console.log("level 0")
+			console.log(keyphrase)
+			console.log("-----------------")
+			
+			fs.writeFileSync(__dirname + "/buffer_ppdb", JSON.stringify(output, null, 4), 'utf-8')
+
+    		async.eachSeries(modes.skipexpansion(keyphrase), function(skip, callback3){
+    			if (!(skip in output))
+    			{
+		         	ppdb.recursionredis([skip], [2], false, function(err,results) {
+						results = results.splice(1,results.length-1)
+						output[skip] = results
+
+    					async.eachSeries(results, function(value1, callback4){
+    						if (!(value1 in output))
+    						{
+								// console.log("level 1")
+								// console.log(value1)
+
+		         				ppdb.recursionredis([value1], [2], false, function(err,results1) {
+									results1 = results1.splice(1,results1.length-1)
+									output[value1] = results1
+
+    								async.eachSeries(results1, function(value2, callback5){
+    									if (!(value2 in output))
+    									{
+											// console.log("level 2")
+											// console.log(value2)
+
+		         							ppdb.recursionredis([value2], [2], false, function(err,results2) {
+												results2 = results2.splice(1,results2.length-1)
+												output[value2] = results2
+												callback5()
+    												
+    										})
+
+    									}else callback5()
+    								},function(err){callback4()})
+		         				})
+    						}else callback4()
+						}, function(err){callback3()})
+		         	})
+	         	}else callback3()
+		}, function(err){callback2()})
+	}, function(err){callback1()})
+	}, function(err){console.log("end")})
+
+}
 
 if (test_approaches)
 {
