@@ -256,7 +256,7 @@ function skipexpansion(keyphrase)
 function ppdbexpansion(string)
 {
 	if (Object.keys(ppdbbuffer) == 0)
-		ppdbbuffer = JSON.parse(fs.readFileSync(__dirname + "/ppdb_buffer"))
+		ppdbbuffer = JSON.parse(fs.readFileSync(__dirname + "/buffer_ppdb"))
 
 	if (string in ppdbbuffer)
 		return ppdbbuffer[string]
@@ -264,7 +264,7 @@ function ppdbexpansion(string)
 	counter += 1
 
 	if (counter%10 == 0)
-		fs.writeFileSync(__dirname + "/ppdb_buffer", JSON.stringify(ppdbbuffer, null, 4), 'utf-8')
+		fs.writeFileSync(__dirname + "/buffer_ppdb", JSON.stringify(ppdbbuffer, null, 4), 'utf-8')
 
 	if (!_.isArray(string)) var doub = [string, string]
 	fs.writeFileSync(__dirname + "/../../utils/featureexp_input", JSON.stringify(doub, null, 4), 'utf-8')
