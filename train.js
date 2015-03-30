@@ -49,9 +49,9 @@ var test_knn = false
 var test_label = false
 var test_clust = false
 var do_learning_curves = false
-var test_pp = true
+var test_pp = false
 
-var test_approaches = false
+var test_approaches = true
 var do_test_seed = false
 var check_dial = false
 var do_keyphrase_predict_annotaiton = false
