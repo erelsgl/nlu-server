@@ -166,7 +166,7 @@ function intent_dep(test, train)
 
 function isOK(test)
 {
-  var ok = ['Ok','OK','okay','ok']
+  var ok = ['Ok','OK','okay','ok','yes', 'yes.','YES']
 
   var unig = _.flatten(natural.NGrams.ngrams(test['filtered'], 1))
 
@@ -355,11 +355,15 @@ function predicate(test, train)
 		if (!(cur_keyphrase in used_keyphrases))
 		{
 			used_keyphrases[cur_keyphrase] = ""
+			console.log(cur_keyphrase)
 		  	_.each(ppdbexpansion(cur_keyphrase), function(value, key, list){ 
+		  		console.log(values.length)
 			  		_.each(skipexpansion(value), function(skip, key1, list1){ 
+			  			console.log("tested "+skip)
 						var result = intent_dep(test, {'keyphrase': skip, 'intent': intent})
 						if (result['classes'].length > 0)
 						{
+							console.log("worked")
 							paths.push({'path':paths[0]['path'].concat(value).concat(skip), 'score': 'complete'})
 							if (Object.keys(champion) == 0)
 								{
