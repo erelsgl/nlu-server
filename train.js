@@ -212,7 +212,6 @@ if (test_pp)
 			console.log(keyphrase)
 			console.log("-----------------")
 
-			fs.writeFileSync(__dirname + "/buffer_ppdb", JSON.stringify(output, null, 4), 'utf-8')
 
     		async.eachSeries(modes.skipexpansion(keyphrase).concat(keyphrase), function(skip, callback3){
     			if (!(skip in output))
@@ -253,7 +252,9 @@ if (test_pp)
 	         	}else callback3()
 		}, function(err){callback2()})
 	}, function(err){callback1()})
-	}, function(err){console.log("end")})
+	}, function(err){
+			fs.writeFileSync(__dirname + "/buffer_ppdb", JSON.stringify(output, null, 4), 'utf-8')
+			console.log("end")})
 
 }
 
