@@ -255,16 +255,16 @@ function skipexpansion(keyphrase)
 
 function ppdbexpansion(string)
 {
-	counter += 1
-
-	if (counter%100 == 0)
-		fs.writeFileSync(__dirname + "/ppdb_buffer", JSON.stringify(ppdbbuffer, null, 4), 'utf-8')
-
 	if (Object.keys(ppdbbuffer) == 0)
 		ppdbbuffer = JSON.parse(fs.readFileSync(__dirname + "/ppdb_buffer"))
 
 	if (string in ppdbbuffer)
 		return ppdbbuffer[string]
+
+	counter += 1
+
+	if (counter%10 == 0)
+		fs.writeFileSync(__dirname + "/ppdb_buffer", JSON.stringify(ppdbbuffer, null, 4), 'utf-8')
 
 	if (!_.isArray(string)) string = [string, string]
 	fs.writeFileSync(__dirname + "/../../utils/featureexp_input", JSON.stringify(string, null, 4), 'utf-8')
@@ -288,7 +288,7 @@ function predicate(test, train)
 
 	var intent = train['intent']
 	var skipgrams = []
-	var C = 3.2
+	var C = {'Offer': 3.2, 'Greet': 2, 'Accept': 2.5, 'Reject': 2.5}
 	var paths = [{'path':[].concat(train['keyphrase']), 'score': 0}]
 
 	var result = intent_dep(test, train)
@@ -331,7 +331,7 @@ function predicate(test, train)
 			return {'classes': [],
 	  				'explanation': ""}
 
-		if (paths[0]['score'] > C)
+		if (paths[0]['score'] > C[intent])
 			return {'classes': [],
 	  				'explanation': ""}
 
