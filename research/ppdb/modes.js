@@ -355,9 +355,10 @@ function predicate(test, train)
 		if (!(cur_keyphrase in used_keyphrases))
 		{
 			used_keyphrases[cur_keyphrase] = ""
-			console.log(cur_keyphrase)
-		  	_.each(ppdbexpansion(cur_keyphrase), function(value, key, list){ 
-		  		console.log(value.length)
+			console.log("keyphrase "+cur_keyphrase)
+		  	_.each(ppdbexpansion(cur_keyphrase), function(values, key, list){ 
+		  		console.log(values.length)
+		  		_.each(values, function(value, key2, list2){ 
 			  		_.each(skipexpansion(value), function(skip, key1, list1){ 
 			  			console.log("tested "+skip)
 						var result = intent_dep(test, {'keyphrase': skip, 'intent': intent})
@@ -373,11 +374,12 @@ function predicate(test, train)
 								}
 						}
 			  		}, this)
-			  		if (Object.keys(champion) == 0)
-			  		{
-			  			used.push(value)
-						paths.push({'path':paths[0]['path'].concat(value), 'score': paths[0]['score']+1})
-			  		}
+		  		}, this)
+		  		if (Object.keys(champion) == 0)
+		  		{
+		  			used.push(value)
+					paths.push({'path':paths[0]['path'].concat(value), 'score': paths[0]['score']+1})
+		  		}
 		  	}, this)
 	  	}
 
