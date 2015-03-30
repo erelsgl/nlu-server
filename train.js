@@ -214,15 +214,15 @@ if (test_pp)
 
 
     		async.eachSeries(modes.skipexpansion(keyphrase).concat(keyphrase), function(skip, callback3){
-    			if (!(skip in output))
-    			{
+    			// if (!(skip in output))
+    			// {
 		         	ppdb.recursionredis([skip], [2], false, function(err,results) {
 						results = results.splice(1,results.length-1)
 						output[skip] = results
 
     					async.eachSeries(results, function(value1, callback4){
-    						if (!(value1 in output))
-    						{
+    						// if (!(value1 in output))
+    						// {
 								// console.log("level 1")
 								// console.log(value1)
 
@@ -231,8 +231,8 @@ if (test_pp)
 									output[value1] = results1
 
     								async.eachSeries(results1, function(value2, callback5){
-    									if (!(value2 in output))
-    									{
+    									// if (!(value2 in output))
+    									// {
 											// console.log("level 2")
 											// console.log(value2)
 
@@ -243,13 +243,13 @@ if (test_pp)
     												
     										})
 
-    									}else callback5()
+    									// }else callback5()
     								},function(err){callback4()})
 		         				})
-    						}else callback4()
+    						// }else callback4()
 						}, function(err){callback3()})
 		         	})
-	         	}else callback3()
+	         	// }else callback3()
 		}, function(err){callback2()})
 	}, function(err){callback1()})
 	}, function(err){
