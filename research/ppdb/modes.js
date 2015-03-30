@@ -8,7 +8,7 @@ var natural = require('natural');
 var mod = ['will','might','can']
 var neg = ['not', 'no', 'never']
 var ppdbbuffer = {}
-
+var counter = 0
 
 // test
 // 'original'
@@ -255,6 +255,11 @@ function skipexpansion(keyphrase)
 
 function ppdbexpansion(string)
 {
+	counter += 1
+
+	if (counter%10 == 0)
+		fs.writeFileSync(__dirname + "/ppdb_buffer", JSON.stringify(ppdbbuffer, null, 4), 'utf-8')
+
 	if (string in ppdbbuffer)
 		return ppdbbuffer[string]
 
