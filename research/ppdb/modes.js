@@ -257,8 +257,11 @@ function ppdbexpansion(string)
 {
 	counter += 1
 
-	if (counter%10 == 0)
+	if (counter%100 == 0)
 		fs.writeFileSync(__dirname + "/ppdb_buffer", JSON.stringify(ppdbbuffer, null, 4), 'utf-8')
+
+	if (Object.keys(ppdbbuffer) == 0)
+		ppdbbuffer = JSON.parse(fs.readFileSync(__dirname + "/ppdb_buffer"))
 
 	if (string in ppdbbuffer)
 		return ppdbbuffer[string]
