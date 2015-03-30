@@ -290,6 +290,7 @@ function predicate(test, train)
 	var skipgrams = []
 	var C = {'Offer': 3.2, 'Greet': 2, 'Accept': 2.5, 'Reject': 2.5}
 	var paths = [{'path':[].concat(train['keyphrase']), 'score': 0}]
+	var used_keyphrases = {}
 
 	var result = intent_dep(test, train)
 	if (result['classes'].length != 0)
@@ -348,29 +349,33 @@ function predicate(test, train)
 	  	var champion = {}
 
 	  	// _.each(ppdbexpansion(_.last(paths[0]['path'])).splice(1,10), function(value, key, list){ 
-	  	_.each(ppdbexpansion(_.last(paths[0]['path'])), function(value, key, list){ 
-	  		if (used.indexOf(value) == -1)
-	  		{
-		  		_.each(skipexpansion(value), function(skip, key1, list1){ 
-					var result = intent_dep(test, {'keyphrase': skip, 'intent': intent})
-					if (result['classes'].length > 0)
-					{
-						paths.push({'path':paths[0]['path'].concat(value).concat(skip), 'score': 'complete'})
-						if (Object.keys(champion) == 0)
-							{
-							champion = result
-							champion['explanation']['keyphrases'] = paths[0]['path'].concat(value).concat(skip)
-							champion['explanation']['score'] = paths[0]['score'] + simpledistance(value, skip) + 1
-							}
-					}
-		  		}, this)
-		  		if (Object.keys(champion) == 0)
-		  		{
-		  			used.push(value)
-					paths.push({'path':paths[0]['path'].concat(value), 'score': paths[0]['score']+1})
-		  		}
-	  		}
-	  	}, this)
+	  	
+	  	var cur_keyphrase = _.last(paths[0]['path'])
+
+		if (!(cur_keyphrase in used_keyphrases))
+		{
+			used_keyphrases[cur_keyphrase] = ""
+		  	_.each(ppdbexpansion(cur_keyphrase), function(value, key, list){ 
+			  		_.each(skipexpansion(value), function(skip, key1, list1){ 
+						var result = intent_dep(test, {'keyphrase': skip, 'intent': intent})
+						if (result['classes'].length > 0)
+						{
+							paths.push({'path':paths[0]['path'].concat(value).concat(skip), 'score': 'complete'})
+							if (Object.keys(champion) == 0)
+								{
+								champion = result
+								champion['explanation']['keyphrases'] = paths[0]['path'].concat(value).concat(skip)
+								champion['explanation']['score'] = paths[0]['score'] + simpledistance(value, skip) + 1
+								}
+						}
+			  		}, this)
+			  		if (Object.keys(champion) == 0)
+			  		{
+			  			used.push(value)
+						paths.push({'path':paths[0]['path'].concat(value), 'score': paths[0]['score']+1})
+			  		}
+		  	}, this)
+	  	}
 
 	  	if (Object.keys(champion) != 0)
 	  		return champion
@@ -379,7 +384,7 @@ function predicate(test, train)
 
 		paths = _.sortBy(paths,  function(num){ return num['score']; })
 
-		console.log(paths)
+		console.log(paths[0])
 	}
 }
 
