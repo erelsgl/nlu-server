@@ -329,7 +329,7 @@ function predicate(test, train)
 
 	  	var champion = {}
 
-	  	_.each(ppdbexpansion(_.last(paths[0]['path'])), function(value, key, list){ 
+	  	_.each(ppdbexpansion(_.last(paths[0]['path'])).splice(1,10), function(value, key, list){ 
 	  		if (used.indexOf(value) == -1)
 	  		{
 		  		_.each(skipexpansion(value), function(skip, key1, list1){ 
