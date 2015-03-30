@@ -49,9 +49,9 @@ var test_knn = false
 var test_label = false
 var test_clust = false
 var do_learning_curves = false
-var test_pp = false
+var test_pp = true
 
-var test_approaches = true
+var test_approaches = false
 var do_test_seed = false
 var check_dial = false
 var do_keyphrase_predict_annotaiton = false
@@ -214,7 +214,7 @@ if (test_pp)
 
 			fs.writeFileSync(__dirname + "/buffer_ppdb", JSON.stringify(output, null, 4), 'utf-8')
 
-    		async.eachSeries(modes.skipexpansion(keyphrase), function(skip, callback3){
+    		async.eachSeries(modes.skipexpansion(keyphrase).concat(keyphrase), function(skip, callback3){
     			if (!(skip in output))
     			{
 		         	ppdb.recursionredis([skip], [2], false, function(err,results) {
