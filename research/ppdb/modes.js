@@ -374,10 +374,13 @@ function predicate(test, train)
 								}
 						}
 			  		}, this)
+			  		
+			  		if (Object.keys(champion) == 0)
+						paths.push({'path':paths[0]['path'].concat(value), 'score': paths[0]['score']+1})
+		  		
 		  		}, this)
-		  		if (Object.keys(champion) == 0)
-					paths.push({'path':paths[0]['path'].concat(value), 'score': paths[0]['score']+1})
-				
+		  		
+
 		  	}, this)
 	  	}
 
