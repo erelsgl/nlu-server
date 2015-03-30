@@ -266,8 +266,8 @@ function ppdbexpansion(string)
 	if (counter%10 == 0)
 		fs.writeFileSync(__dirname + "/ppdb_buffer", JSON.stringify(ppdbbuffer, null, 4), 'utf-8')
 
-	if (!_.isArray(string)) string = [string, string]
-	fs.writeFileSync(__dirname + "/../../utils/featureexp_input", JSON.stringify(string, null, 4), 'utf-8')
+	if (!_.isArray(string)) var doub = [string, string]
+	fs.writeFileSync(__dirname + "/../../utils/featureexp_input", JSON.stringify(doub, null, 4), 'utf-8')
 	
 	var scale = '[2]'
 	var result = execSync.run("node "+__dirname+"/../../utils/featureexp.js '"+scale+"' "+0);
@@ -318,7 +318,11 @@ function predicate(test, train)
 	paths = paths.splice(1,paths.length-1)
 
 	if ('classes' in global_result)
+	{
+		console.log("Found result from original skipgram ")
+		console.log(global_result)
 		return global_result
+	}
 
 	// as result all skipgrams with empty results
 	// console.log(JSON.stringify(paths, null, 4))
@@ -328,16 +332,23 @@ function predicate(test, train)
 		var used = []
 
 		if (paths.length == 0)
+			{
+			console.log("Paths is empty")
 			return {'classes': [],
 	  				'explanation': ""}
+			}
 
 		if (paths[0]['score'] > C[intent])
+			{
+			console.log("Far space expansion")
 			return {'classes': [],
 	  				'explanation': ""}
+	  		}
 
 	  	var champion = {}
 
-	  	_.each(ppdbexpansion(_.last(paths[0]['path'])).splice(1,10), function(value, key, list){ 
+	  	// _.each(ppdbexpansion(_.last(paths[0]['path'])).splice(1,10), function(value, key, list){ 
+	  	_.each(ppdbexpansion(_.last(paths[0]['path'])), function(value, key, list){ 
 	  		if (used.indexOf(value) == -1)
 	  		{
 		  		_.each(skipexpansion(value), function(skip, key1, list1){ 
