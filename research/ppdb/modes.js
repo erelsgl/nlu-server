@@ -376,10 +376,8 @@ function predicate(test, train)
 			  		}, this)
 		  		}, this)
 		  		if (Object.keys(champion) == 0)
-		  		{
-		  			used.push(value)
 					paths.push({'path':paths[0]['path'].concat(value), 'score': paths[0]['score']+1})
-		  		}
+				
 		  	}, this)
 	  	}
 
