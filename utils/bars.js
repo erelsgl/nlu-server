@@ -1033,7 +1033,7 @@ function isnotokaccept(turn)
   // if (!isseqturn(turn)) return false
   // if (!ispermittedturn(turn)) return false
 
-  var ok = ['Ok','OK','okay','ok', 'Ok.','Okay']
+  var ok = ['Ok','OK','okay','ok', 'Ok.','Okay', 'yes', 'yes.','YES']
   var no = ['NO','No','no']
   var intents = Hierarchy.splitPartEquallyIntent(turn['output'])
   var unig = _.flatten(natural.NGrams.ngrams(turn['input'], 1))
