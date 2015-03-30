@@ -261,6 +261,9 @@ function ppdbexpansion(string)
 	if (string in ppdbbuffer)
 		return ppdbbuffer[string]
 
+	console.log()
+	process.exit(0)
+
 	counter += 1
 
 	if (counter%10 == 0)
@@ -345,6 +348,14 @@ function predicate(test, train)
 			return {'classes': [],
 	  				'explanation': ""}
 	  		}
+
+		if (paths[0]['path'].length == 5)
+			{
+			console.log("too long path")
+			return {'classes': [],
+	  				'explanation': ""}
+	  		}
+
 
 	  	var champion = {}
 
