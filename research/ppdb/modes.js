@@ -319,6 +319,10 @@ function predicate(test, train)
 
 		var used = []
 
+		if (paths.length == 0)
+			return {'classes': [],
+	  				'explanation': ""}
+
 		if (paths[0]['score'] > C)
 			return {'classes': [],
 	  				'explanation': ""}
