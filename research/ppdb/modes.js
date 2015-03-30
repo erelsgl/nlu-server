@@ -357,7 +357,7 @@ function predicate(test, train)
 			used_keyphrases[cur_keyphrase] = ""
 			console.log(cur_keyphrase)
 		  	_.each(ppdbexpansion(cur_keyphrase), function(value, key, list){ 
-		  		console.log(values.length)
+		  		console.log(value.length)
 			  		_.each(skipexpansion(value), function(skip, key1, list1){ 
 			  			console.log("tested "+skip)
 						var result = intent_dep(test, {'keyphrase': skip, 'intent': intent})
