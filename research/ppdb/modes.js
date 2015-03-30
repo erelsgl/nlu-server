@@ -356,31 +356,28 @@ function predicate(test, train)
 		{
 			used_keyphrases[cur_keyphrase] = ""
 			console.log("keyphrase "+cur_keyphrase)
-		  	_.each(ppdbexpansion(cur_keyphrase), function(values, key, list){ 
-		  		console.log(values.length)
-		  		_.each(values, function(value, key2, list2){ 
-			  		_.each(skipexpansion(value), function(skip, key1, list1){ 
-			  			console.log("tested "+skip)
-						var result = intent_dep(test, {'keyphrase': skip, 'intent': intent})
-						if (result['classes'].length > 0)
-						{
-							console.log("worked")
-							paths.push({'path':paths[0]['path'].concat(value).concat(skip), 'score': 'complete'})
-							if (Object.keys(champion) == 0)
-								{
-								champion = result
-								champion['explanation']['keyphrases'] = paths[0]['path'].concat(value).concat(skip)
-								champion['explanation']['score'] = paths[0]['score'] + simpledistance(value, skip) + 1
-								}
-						}
-			  		}, this)
+		  	var expansioned = ppdbexpansion(cur_keyphrase)
+		  	console.log(expansioned.length)
+		  	_.each(expansioned, function(value, key, list){ 
+		  		_.each(skipexpansion(value), function(skip, key1, list1){ 
+			  		console.log("tested "+skip)
+					var result = intent_dep(test, {'keyphrase': skip, 'intent': intent})
+					if (result['classes'].length > 0)
+					{
+						console.log("worked")
+						paths.push({'path':paths[0]['path'].concat(value).concat(skip), 'score': 'complete'})
+						if (Object.keys(champion) == 0)
+							{
+							champion = result
+							champion['explanation']['keyphrases'] = paths[0]['path'].concat(value).concat(skip)
+							champion['explanation']['score'] = paths[0]['score'] + simpledistance(value, skip) + 1
+							}
+					}
+			  	}, this)
 			  		
-			  		if (Object.keys(champion) == 0)
-						paths.push({'path':paths[0]['path'].concat(value), 'score': paths[0]['score']+1})
+			  	if (Object.keys(champion) == 0)
+				paths.push({'path':paths[0]['path'].concat(value), 'score': paths[0]['score']+1})
 		  		
-		  		}, this)
-		  		
-
 		  	}, this)
 	  	}
 
