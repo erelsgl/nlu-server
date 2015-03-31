@@ -318,7 +318,7 @@ function predicate(test, train)
 		paths.push({'path':paths[0]['path'].concat(value), score:paths[bestpath]['score']+simpledistance(train['keyphrase'], value)})
 	}, this)
 
-	console.log(paths)
+	// console.log(paths)
 
 	paths = _.sortBy(paths,  function(num){ return num['score']; })
 
