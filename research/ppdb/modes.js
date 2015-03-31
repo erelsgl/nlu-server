@@ -386,7 +386,9 @@ function predicate(test, train)
 					var result = intent_dep(test, {'keyphrase': skip, 'intent': intent})
 					if (result['classes'].length > 0)
 					{
-						console.log("worked")
+						
+						
+						console.log("worked keyphrase "+cur_keyphrase+ " ppdb ex "+value+ " skip "+skip)
 						paths.push({'path':paths[0]['path'].concat(value).concat(skip), 'score': 'complete'})
 						if (Object.keys(champion) == 0)
 							{
