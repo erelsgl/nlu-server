@@ -280,7 +280,6 @@ if (test_approaches)
 
 	console.log("ppdb data")
 	console.log(JSON.stringify(stats_ppdb[0]['data'], null, 4))
-	// console.log("------------offers---------------------")
 
 	// _.each(stats[0]['data'], function(value, key, list){ 
 		// if (_.isEqual(value['results']['FN'],["Offer"]))
@@ -290,25 +289,31 @@ if (test_approaches)
 	console.log("contribution of PPDB")
 	_.each(stats_ppdb[0]['data'], function(turn, key, list){ 
 
-		if (turn['results']['FN'].length < stats_or[key]['results']['FN'].length)
-			{	
-				console.log("contribution of PPDB")
-				console.log("PPDB")
-				console.log(turn)
-				console.log("original")
-				console.log(stats_or[key])
-				console.log("---------------------------------")
-			}
+		if (('FN' in turn['results']) && ('FN' in stats_or[key]['results']))
+		{
+			if (turn['results']['FN'].length < stats_or[key]['results']['FN'].length)
+				{	
+					console.log("contribution of PPDB")
+					console.log("PPDB")
+					console.log(turn)
+					console.log("original")
+					console.log(stats_or[key])
+					console.log("---------------------------------")
+				}
+		}
 
-		if (turn['results']['FP'].length > stats_or[key]['results']['FP'].length)
-			{	
-				console.log("FP of PPDB")
-				console.log("PPDB")
-				console.log(turn)
-				console.log("original")
-				console.log(stats_or[key])
-				console.log("---------------------------------")
-			}			
+		if (('FP' in turn['results']) && ('FP' in stats_or[key]['results']))
+		{
+			if (turn['results']['FP'].length > stats_or[key]['results']['FP'].length)
+				{	
+					console.log("FP of PPDB")
+					console.log("PPDB")
+					console.log(turn)
+					console.log("original")
+					console.log(stats_or[key])
+					console.log("---------------------------------")
+				}			
+		}
 
 	}, this)
 }

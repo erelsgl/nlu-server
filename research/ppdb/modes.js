@@ -74,18 +74,20 @@ function intent_dep(test, train)
 	var intent = train['intent']
 	var offer = true
 	
+	
+	var keyphrase_string = ""
+	if (_.isArray(train['keyphrase']))
+		keyphrase_string = _.last(train['keyphrase'])
+	else
+		keyphrase_string = train['keyphrase']
+
 	var test_source = test
 	var train_source = train
 
 	test = test['filtered']
 
-	if (_.isArray(train['keyphrase']))
-		keyphrase = _.last(train['keyphrase'])
-	else
-		keyphrase = train['keyphrase']
-
 	var test = _.flatten(natural.NGrams.ngrams(test, 1))
-	var keyphrase = _.flatten(natural.NGrams.ngrams(keyphrase, 1))
+	var keyphrase = _.flatten(natural.NGrams.ngrams(keyphrase_string, 1))
 
 	var test_or = test
 	var keyphrase_or = keyphrase
@@ -96,7 +98,7 @@ function intent_dep(test, train)
 	if (_.isEqual(_.intersection(test,keyphrase), keyphrase) == true)
 		{
 
-		var testm = mutation(test_source['filtered'], _.last(train_source['keyphrase']), mod)
+		var testm = mutation(test_source['filtered'], keyphrase_string, mod)
 		var trainm = _.intersection(keyphrase_or, mod).length > 0
 
 		// it looks like the modality of test doesn't influence
@@ -120,7 +122,7 @@ function intent_dep(test, train)
 					}
 
 
-		var testn = mutation(test_source['filtered'], _.last(train_source['keyphrase']), neg)
+		var testn = mutation(test_source['filtered'], keyphrase_string, neg)
 		var trainn = _.intersection(keyphrase_or, neg).length > 0
 
 		if (trainn && !testn)

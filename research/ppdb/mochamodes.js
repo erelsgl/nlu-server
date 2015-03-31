@@ -57,7 +57,7 @@ describe('Util test', function() {
 
 		var train = {'keyphrase':['i agree'], 'intent':'Offer'}
 		var test = {'filtered':'i can agree to no agreement on'}
-		// console.log(modes.intent_dep(test, train))
+		console.log(modes.intent_dep(test, train))
 
 		var train = {'keyphrase':['can i be'], 'intent':'Offer'}
 		var test = {'filtered':'hi. i feel the <ATTRIBUTE> is a bit low for this . i feel the salary should be   <VALUE> . i am okay  no <ATTRIBUTE>. i agree to that provision. i would prefer a <VALUE> <ATTRIBUTE>'}
