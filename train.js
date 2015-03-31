@@ -286,12 +286,24 @@ if (test_approaches)
 
 		if (turn['results']['FN'].length < stats_or[key]['results']['FN'].length)
 			{	
+				console.log("contribution of PPDB")
 				console.log("PPDB")
 				console.log(turn)
 				console.log("original")
 				console.log(stats_or[key])
 				console.log("---------------------------------")
 			}
+
+		if (turn['results']['FP'].length > stats_or[key]['results']['FP'].length)
+			{	
+				console.log("FP of PPDB")
+				console.log("PPDB")
+				console.log(turn)
+				console.log("original")
+				console.log(stats_or[key])
+				console.log("---------------------------------")
+			}			
+
 	}, this)
 }
 
