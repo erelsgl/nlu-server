@@ -349,7 +349,7 @@ function predicate(test, train)
 	  				'explanation': ""}
 	  		}
 
-		if (paths[0]['path'].length == 5)
+		if (paths[0]['path'].length == 4)
 			{
 			console.log("too long path")
 			return {'classes': [],
