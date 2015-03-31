@@ -378,7 +378,7 @@ function predicate(test, train)
 			used_keyphrases[cur_keyphrase] = ""
 			// console.log("keyphrase "+cur_keyphrase)
 		  	var expansioned = ppdbexpansion(cur_keyphrase)
-		  	console.log(expansioned.length)
+		  	// console.log(expansioned.length)
 		  	// _.each(expansioned, function(value, key, list){ 
 	  		_.each(expansioned.splice(1,10), function(value, key, list){ 
 		  		_.each(skipexpansion(value), function(skip, key1, list1){ 
