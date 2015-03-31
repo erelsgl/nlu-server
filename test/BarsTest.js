@@ -40,6 +40,7 @@ describe('Bars utilities', function() {
 	
 
 	it('isstopword', function() {
+		bars.isstopword('can').should.be.true
 		bars.isstopword('could').should.be.true
 		bars.isstopword(['could', 'i']).should.be.true
 		bars.isstopword('could i').should.be.true
