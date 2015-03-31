@@ -273,6 +273,8 @@ if (test_approaches)
 	// console.log(JSON.stringify(stats[0], null, 4))
 
 	console.log(JSON.stringify(stats[0]['stats'], null, 4))
+	console.log(JSON.stringify(stats[0]['data'], null, 4))
+	console.log("------------offers---------------------")
 
 	_.each(stats[0]['data'], function(value, key, list){ 
 		if (_.isEqual(value['results']['FN'],["Offer"]))
