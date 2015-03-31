@@ -272,8 +272,14 @@ if (test_approaches)
 	var stats_or = framework.trainandtest(bars.copyobj(train), bars.copyobj(test), [modes.intent_dep])
 	var stats_ppdb = framework.trainandtest(bars.copyobj(train), bars.copyobj(test), [modes.predicate])
 
-	// console.log(JSON.stringify(stats[0]['stats'], null, 4))
-	// console.log(JSON.stringify(stats[0]['data'], null, 4))
+	console.log("original stats")
+	console.log(JSON.stringify(stats_or[0]['stats'], null, 4))
+	
+	console.log("ppdb stats")
+	console.log(JSON.stringify(stats_ppdb[0]['stats'], null, 4))
+
+	console.log("ppdb data")
+	console.log(JSON.stringify(stats_ppdb[0]['data'], null, 4))
 	// console.log("------------offers---------------------")
 
 	// _.each(stats[0]['data'], function(value, key, list){ 
