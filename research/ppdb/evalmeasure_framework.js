@@ -117,6 +117,8 @@ function trainandtest(train, test, modes)
        }, this) 
     }, this)
 
+    // after the run of all modes
+
     if (classes.length == 0)
       if (modess.isOK(test1))
         classes.push('Accept')
