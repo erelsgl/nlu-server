@@ -236,6 +236,10 @@ function skipexpansion(keyphrase)
 	if (_.isArray(keyphrase))
 		keyphrase = keyphrase[0]
 
+	var ngr = natural.NGrams.ngrams(keyphrase, 1)
+	if ((ngr.length == 1) && (bars.isstopword(keyphrase)))
+		return []
+
 	var skipgrams = []
 	skipgrams = skipgrams.concat(bars.skipgrams(keyphrase, 2, 4)).
 						  concat(bars.skipgrams(keyphrase, 3, 4)).
