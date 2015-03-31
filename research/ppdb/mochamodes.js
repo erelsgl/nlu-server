@@ -94,6 +94,8 @@ describe('Util test', function() {
 	it('skipexpansion', function() {	
 		_.isEqual(modes.skipexpansion("i propose a"),[ 'i propose a', 'i propose', 'propose a', 'propose' ]).should.be.true
 		_.isEqual(modes.skipexpansion("would"),[]).should.be.true
+		_.isEqual(modes.skipexpansion("i can not get"),['i can not get']).should.be.true
+		_.isEqual(modes.skipexpansion("i do not want"),['i do not want']).should.be.true
 	})
 
 
