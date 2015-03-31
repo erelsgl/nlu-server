@@ -42,7 +42,7 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 
 // var do_small_temporary_serialization_test = false
 
-var test_proportion = false
+var test_proportion = true
 var trans = false
 var test_ppdb = false
 var test_knn = false
@@ -51,7 +51,7 @@ var test_clust = false
 var do_learning_curves = false
 var test_pp = false
 
-var test_approaches = true
+var test_approaches = false
 var do_test_seed = false
 var check_dial = false
 var do_keyphrase_predict_annotaiton = false
@@ -269,18 +269,30 @@ if (test_approaches)
 	var test = []
 	_.each(data, function(value, key, list){test = test.concat(bars.extractdial_test(value))}, this)
 
-	var stats = framework.trainandtest(bars.copyobj(train), bars.copyobj(test), [modes.intent_dep, modes.predicate])
-	// console.log(JSON.stringify(stats[0], null, 4))
+	var stats_or = framework.trainandtest(bars.copyobj(train), bars.copyobj(test), [modes.intent_dep])
+	var stats_ppdb = framework.trainandtest(bars.copyobj(train), bars.copyobj(test), [modes.predicate])
 
-	console.log(JSON.stringify(stats[0]['stats'], null, 4))
-	console.log(JSON.stringify(stats[0]['data'], null, 4))
-	console.log("------------offers---------------------")
+	// console.log(JSON.stringify(stats[0]['stats'], null, 4))
+	// console.log(JSON.stringify(stats[0]['data'], null, 4))
+	// console.log("------------offers---------------------")
 
-	_.each(stats[0]['data'], function(value, key, list){ 
-		if (_.isEqual(value['results']['FN'],["Offer"]))
-			console.log(JSON.stringify(value, null, 4))
+	// _.each(stats[0]['data'], function(value, key, list){ 
+		// if (_.isEqual(value['results']['FN'],["Offer"]))
+			// console.log(JSON.stringify(value, null, 4))
+	// }, this)
+
+	console.log("contribution of PPDB")
+	_.each(stats_ppdb[0]['data'], function(turn, key, list){ 
+
+		if (turn['results']['FN'].length < stats_or[key]['results']['FN'].length)
+			{	
+				console.log("PPDB")
+				console.log(turn)
+				console.log("original")
+				console.log(stats_or[key])
+				console.log("---------------------------------")
+			}
 	}, this)
-
 }
 
 if (test_proportion)
@@ -288,19 +300,21 @@ if (test_proportion)
 
 
 	var output = []
+	var test = []
 	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))	
+	_.each(data, function(value, key, list){test = test.concat(bars.extractdial_test(value))}, this)
 
-	// console.log(data.length)
+	console.log(test.length)
 	
-	var  data= bars.filterdataset(data, 5)
+	// var  data= bars.filterdataset(data, 5)
 
 	// _.each(data, function(dial, key, list){ 
 	// 	console.log(dial['users'][0])
 	// }, this)
 
-	process.exit(0)
-
-	var ext = bars.extractdataset(data)	
+	// var ext = bars.extractdataset(data)	
+	ext = test
+	console.log(ext.length)
 
 	_.each(ext, function(value, key, list){ 
 		output = output.concat(Hierarchy.splitPartEquallyIntent(value['output']))
