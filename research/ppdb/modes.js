@@ -332,7 +332,7 @@ function predicate(test, train)
 
 	paths = paths.splice(1,paths.length-1)
 
-	if (Object.key(global_result).length > 0)
+	if (Object.keys(global_result).length > 0)
 	{
 		console.log("Found result from original skipgram ")
 		console.log(global_result)
