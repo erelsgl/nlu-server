@@ -42,6 +42,7 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 
 // var do_small_temporary_serialization_test = false
 
+var reuters = true
 var test_proportion = false
 var trans = false
 var test_ppdb = false
@@ -51,7 +52,7 @@ var test_clust = false
 var do_learning_curves = false
 var test_pp = false
 
-var test_approaches = true
+var test_approaches = false
 var do_test_seed = false
 var check_dial = false
 var do_keyphrase_predict_annotaiton = false
@@ -109,6 +110,7 @@ var rules = require("./research/rule-based/rules.js")
 var verbosity = 0;
 var explain = 0;
 
+var extractor = require('unfluff');
 var cheapest_paths = require('limdu/node_modules/graph-paths').cheapest_paths;
 var natural = require('natural');
 var execSync = require('execSync').exec
@@ -192,6 +194,20 @@ var datasetNames = [
 			"woz_kbagent_students_negonlp.json"
 			];
 
+if (reuters)
+{
+	
+	var path = __dirname + "/../reuters2json/R8/"
+	
+	var train = JSON.parse(fs.readFileSync(path + "R8.train.json"))
+	var test = JSON.parse(fs.readFileSync(path + "R8.test.json"))
+
+	var train_data = _.map(train, function(value){ return {'input': value['TEXT']['TITLE'], 'output': value['TOPICS'][0]} });
+	var test_data = _.map(test, function(value){ return {'input': value['TEXT']['TITLE'], 'output': value['TOPICS'][0]} });
+
+	var stats = trainAndTest.trainAndTest_hash(classifier., train_data, test_data, 5)
+
+}
 
 
 if (test_pp)
@@ -221,7 +237,7 @@ if (test_pp)
 						output[skip] = results
 
     					async.eachSeries(results, function(value1, callback4){
-    						// if (!(value1 in output))
+    						// if !t((value1 in output))
     						// {
 								// console.log("level 1")
 								// console.log(value1)
