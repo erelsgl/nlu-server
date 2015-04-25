@@ -194,21 +194,87 @@ var datasetNames = [
 			"woz_kbagent_students_negonlp.json"
 			];
 
+function parse_filter(parse)
+{
+        _.each(parse['sentences'], function(value, key, list){
+                delete parse['sentences'][key]['basic-dependencies']
+                delete parse['sentences'][key]['collapsed-dependencies']
+                delete parse['sentences'][key]['tokens']
+        }, this)
+
+        return parse
+}
+
+
 if (reuters)
 {
+
+	var field = "TITLE"
 	
 	var path = __dirname + "/../reuters2json/R8/"
 	
 	var train = JSON.parse(fs.readFileSync(path + "R8.train.json"))
-	var test = JSON.parse(fs.readFileSync(path + "R8.test.json"))
+	// var test = JSON.parse(fs.readFileSync(path + "R8.test.json"))
+	var test_parsed = JSON.parse(fs.readFileSync(path + "R8.test.parsed.json"))
+	console.log("loaded")
 
-	var train_data = _.map(train, function(value){ return {'input': value['TEXT']['TITLE'], 'output': value['TOPICS'][0]} });
-	var test_data = _.map(test, function(value){ return {'input': value['TEXT']['TITLE'], 'output': value['TOPICS'][0]} });
+	// there is a number of more that one sentence
 
-	var stats = trainAndTest.trainAndTest_hash(classifier., train_data, test_data, 5)
+	// _.each(test_parsed, function(value, key, list){ 
+	// 	if (value['parse_title']['sentences'].length > 1)
+	// 	{
+	// 		console.log(value['$']['NEWID'])
+	// 		console.log(value['TEXT']['TITLE'])
+	// 		console.log(JSON.stringify(value['parse_title'], null, 4))
 
+	// 		// process.exit(0)
+	// 	}
+	// }, this)
+	
+	
+	var train_data = _.compact(_.map(train, function(value){ if ('BODY' in value['TEXT']) 
+																{
+																value['input'] = value['TEXT']['BODY']
+																value['output'] = value['TOPICS'][0]
+																return value
+																} 
+															}))
+
+	// var test_data = _.compact(_.map(test, function(value){ if (field in value['TEXT']) return value }))
+	var test_data = _.compact(_.map(test_parsed, function(value){ if (field in value['TEXT']) 
+																{
+																value['input'] = value['TEXT'][field]
+																value['output'] = value['TOPICS'][0]
+																return value
+																}
+															}))
+
+
+	// console.log("reading parse") 
+	// _.each(test, function(value, key, list){ 
+	// 	var id = value['$']['NEWID']
+	// 	test[key]['parse_title'] = parse_filter(JSON.parse(fs.readFileSync('../reuters2json/full/full.json.parsed/'+id+".title.json")))
+	// 	test[key]['parse_body'] = parse_filter(JSON.parse(fs.readFileSync('../reuters2json/full/full.json.parsed/'+id+".body.json")))
+	// }, this)
+	// console.log("finish reading parse")
+
+ 	// fs.writeFileSync("../reuters2json/R8/R8.test.parsed.json", JSON.stringify(test, null, 4))
+	
+	// console.log()
+	// process.exit(0)
+
+	// console.log(train_data.length)
+	// console.log(test_data.length)
+
+	// var stats = trainAndTest.trainAndTest_batch(classifier.Reuter, train_data, test_data, 5)
+	
+	var train_data = train_data.splice(0,4)
+
+	var stats = trainAndTest.trainAndTest_hash(classifier.ReuterBin, train_data, test_data, 5)
+
+	console.log(JSON.stringify(stats[0]['stats'], null, 4))
+	process.exit(0)
 }
-
 
 if (test_pp)
 {
