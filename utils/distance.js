@@ -83,6 +83,26 @@ function and_distance(a, b) {
     return 1/sum
 }
 
+// Oren Add function
+function Add_emb(target, substitute, context) {
+  
+  var sum = 0
+ 
+  context = _.filter(context, function(num){ return num.length>0 });
+
+  if (context.length > 0)
+  {
+    var context_local = []
+    _.each(context, function(context_vector, key, list){ 
+      context_local.push(cosine_distance(substitute, context_vector))
+    }, this)
+
+    sum = _.reduce(context_local, function(memo, num){ return memo + num; }, 0);
+  }
+  
+  return (cosine_distance(substitute, target) + sum)/(context.length + 1)
+}
+
 function cosine_distance(a, b) {
   if (!isVectorNumber(a) || !isVectorNumber(b))
     throw new Error("Vectors should be consist of numbers " + JSON.stringify(a) + " " +JSON.stringify(b))
@@ -117,5 +137,6 @@ module.exports = {
   chebyshev_distance:chebyshev_distance,
   manhattan_distance:manhattan_distance,
   dot_distance:dot_distance,
-  euclidean_distance:euclidean_distance
+  euclidean_distance:euclidean_distance,
+  Add_emb:Add_emb
 }
