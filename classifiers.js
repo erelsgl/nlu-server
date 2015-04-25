@@ -117,12 +117,12 @@ function normalizer1(sentence) {
 
 function normalizer(sentence) {
 	sentence = sentence.toLowerCase().trim();
-	sentence = regexpNormalizer(sentence)
-	sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+	// sentence = regexpNormalizer(sentence)
+	// sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
 	
-	sentence = sentence.replace(/<VALUE>/g,'')
-	sentence = sentence.replace(/<ATTRIBUTE>/g,'')
-	sentence = regexpNormalizer(sentence)
+	// sentence = sentence.replace(/<VALUE>/g,'')
+	// sentence = sentence.replace(/<ATTRIBUTE>/g,'')
+	// sentence = regexpNormalizer(sentence)
 	
 	return sentence
 }
@@ -368,11 +368,17 @@ var SvmPerfBinaryClassifier = classifiers.SvmPerf.bind(0, {
 });
 
 
+var SvmPerfMultiClassifier = classifiers.SvmPerf_multi.bind(0, {
+	// learn_args: "-c 100 --i 1",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
+	// F1 optimization
+	learn_args: "-c 100 -w 3",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
+	model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf_multi",
+});
+
 var SvmLinearBinaryClassifier = classifiers.SvmLinear.bind(0, {
 	learn_args: "-c 100", 
 	model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearBinary",
 });
-
 
 var SvmLinearMulticlassifier = classifiers.SvmLinear.bind(0, {
 	learn_args: "-c 100", 
@@ -660,6 +666,8 @@ module.exports = {
 		SVM: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
 		SVM_Expansion: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
 
+		Reuter: enhance(SvmPerfMultiClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false),
+		ReuterBin: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false),
 };
 
 module.exports.defaultClassifier = module.exports.SvmPerfClassifier
