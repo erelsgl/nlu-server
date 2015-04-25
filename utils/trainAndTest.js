@@ -156,7 +156,7 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 		// console.log(JSON.stringify(testSet[i], null, 4))
 		// classified = classifier.classify(testSet[i].input, 50, testSet[i].input)
 		// classesWithExplanation = classifier.classify(testSet[i].input, explain, true, testSet[i].output, classifier_compare)
-		classesWithExplanation = classifier.classify(testSet[i].input, explain, true, testSet[i].output)
+		classesWithExplanation = classifier.classify(testSet[i].input, explain, true, testSet[i])
 		
 
 		// console.log(JSON.stringify(classesWithExplanation, null, 4))
@@ -492,6 +492,48 @@ module.exports.trainAndTest_hash = function(
 
 		return stat_hash;
 };
+
+/*
+trainAndTest_batch is created solely for short text classification
+*/
+module.exports.trainAndTest_batch = function(
+		classifierType, 
+		trainSet, testSet, 
+		verbosity, microAverage, macroSum) {
+
+		var startTime = new Date();
+		var classifier = new classifierType();
+
+		testSet1 = utils.clonedataset(testSet)
+		trainSet1 = utils.clonedataset(trainSet)
+
+		classifier.trainBatch(trainSet1);
+
+		var output = classifier.classifyBatch(testSet1);
+
+		if (output.length != testSet1.length)
+			throw new Error('Lengths are not equal');
+
+		var currentStats = new PrecisionRecall();
+		
+		var data_stats = []
+		_.each(testSet1, function(value, key, list){ 
+			var sentence_hash = {}
+			sentence_hash['input'] = value.input;
+			sentence_hash['expected'] = value.output
+			sentence_hash['classified'] = [output[key]]
+			sentence_hash['explanation'] = currentStats.addCasesHash(value.output, [output[key]], (verbosity>2));
+			data_stats.push(sentence_hash)
+		}, this)
+
+		classifierstats = {}
+		classifierstats['labels'] = currentStats.retrieveLabels()
+		classifierstats['data'] = data_stats
+		classifierstats['stats'] = currentStats.retrieveStats()
+
+		return classifierstats
+};
+
 
 /**
  * Test the given classifier-type on the given train-set and test-set.
