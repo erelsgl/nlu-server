@@ -110,7 +110,7 @@ var rules = require("./research/rule-based/rules.js")
 var verbosity = 0;
 var explain = 0;
 
-var extractor = require('unfluff');
+// var extractor = require('unfluff');
 var cheapest_paths = require('limdu/node_modules/graph-paths').cheapest_paths;
 var natural = require('natural');
 var execSync = require('execSync').exec
