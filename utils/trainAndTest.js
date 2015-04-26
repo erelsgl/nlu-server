@@ -152,7 +152,7 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 	for (var i=0; i<testSet.length; ++i) 
 	{
 
-		if (i % 100)
+		if (i % 10)
 			console.log(i)
 
 		expectedClasses = list.listembed(testSet[i].output)
@@ -474,6 +474,8 @@ module.exports.trainAndTest_hash = function(
 
  		// console.log(trainSet1)
 		classifier.trainBatch(trainSet1);
+
+		console.log("classifier is trained")
 
 
 		// stat_hash = module.exports.test_hash(classifier, testSet1, verbosity, microAverage, macroSum, classifier_compare);
