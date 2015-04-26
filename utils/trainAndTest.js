@@ -151,6 +151,10 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 
 	for (var i=0; i<testSet.length; ++i) 
 	{
+
+		if (i % 100)
+			console.log(i)
+
 		expectedClasses = list.listembed(testSet[i].output)
 
 		// console.log(JSON.stringify(testSet[i], null, 4))

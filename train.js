@@ -260,15 +260,9 @@ if (reuters)
 
  	// fs.writeFileSync("../reuters2json/R8/R8.test.parsed.json", JSON.stringify(test, null, 4))
 	
-	// console.log()
-	// process.exit(0)
-
-	// console.log(train_data.length)
-	// console.log(test_data.length)
-
 	// var stats = trainAndTest.trainAndTest_batch(classifier.Reuter, train_data, test_data, 5)
 	
-	var train_data = train_data.splice(0,4)
+	// var train_data = train_data.splice(0,4)
 
 	var stats = trainAndTest.trainAndTest_hash(classifier.ReuterBin, train_data, test_data, 5)
 
