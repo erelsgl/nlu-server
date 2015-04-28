@@ -230,11 +230,23 @@ if (reuters)
 	// 		// process.exit(0)
 	// 	}
 	// }, this)
+
+	// _.each(test_parsed, function(value, key, list){ 
+	// 	if ((!('TITLE' in value['TEXT']))) //|| (!('BODY' in value['TEXT'])))
+	// 	{
+	// 		console.log(value['$']['NEWID'])
+	// 		console.log(value['TOPICS'])
+	// 	}
+	// }, this)
+
+
+	// console.log()
+	// process.exit(0)
 	
 	
-	var train_data = _.compact(_.map(train, function(value){ if ('BODY' in value['TEXT']) 
+	var train_data = _.compact(_.map(train, function(value){ if (('BODY' in value['TEXT']) && ('TITLE' in value['TEXT'])) 
 																{
-																value['input'] = value['TEXT']['BODY']
+																value['input'] = value['TEXT']['TITLE'] + ". " +value['TEXT']['BODY'] 
 																value['output'] = value['TOPICS'][0]
 																return value
 																} 
@@ -250,6 +262,20 @@ if (reuters)
 															}))
 
 
+	console.log("train is ready")
+
+	console.log(train_data.length)
+	console.log(test_data.length)
+
+	// _.each(train_data, function(value, key, list){ 
+
+		// if ("TITLE" in value['TEXT'] )
+			// console.log(value['TEXT']['TITLE'])
+// 
+	// }, this)
+	// console.log()
+	// process.exit(0)
+
 	// console.log("reading parse") 
 	// _.each(test, function(value, key, list){ 
 	// 	var id = value['$']['NEWID']
@@ -263,10 +289,12 @@ if (reuters)
 	// var stats = trainAndTest.trainAndTest_batch(classifier.Reuter, train_data, test_data, 5)
 	
 	// var train_data = train_data.splice(0,4)
+	// var test_data = test_data.splice(0,4)
 
 	var stats = trainAndTest.trainAndTest_hash(classifier.ReuterBin, train_data, test_data, 5)
 
-	console.log(JSON.stringify(stats[0]['stats'], null, 4))
+	// console.log(JSON.stringify(stats[0]['stats'], null, 4))
+	console.log(JSON.stringify(stats, null, 4))
 	process.exit(0)
 }
 
