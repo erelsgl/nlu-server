@@ -12,7 +12,7 @@ var params = process.argv.slice();
 params.splice(0,2)
 
 var db = params.splice(-1)[0]
-var output = []
+var output = {}
 
 if (process.argv[1] === __filename)
 {	
@@ -22,7 +22,7 @@ if (process.argv[1] === __filename)
 
 				if (response == null)
 				{
-					output.push([])
+					output[word] = []
 					callback(err, [])
 				}
 				else
@@ -31,16 +31,16 @@ if (process.argv[1] === __filename)
 
 					vec = _.map(vec, function(value){ return parseFloat(value); });
 
-					output.push(vec)
+					output[word] = vec
 					callback(err, vec)
 				}
 			})
 		})	
 	}, function(err, result) {
-    	if (params.length != output.length)
+
+    	if (params.length != Object.keys(output).length)
     		throw new Error("Vectors should be of the same size")
-		// console.log(output.length)
-		console.log(output)
+		console.log(JSON.stringify(output, null, 4))
 		process.exit(0)
 	})	
 }
