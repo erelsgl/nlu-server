@@ -116,11 +116,22 @@ function normalizer1(sentence) {
 }
 
 function normalizer(sentence) {
+	
+// in short text classification, text somethins is several sentences
+
+// KELSEY-HAYES CANADA LTD <KEL.TO> NINE MTHS NET
+// kelsey hayes canada ltd lt kel to nine mths net
+
+// CONVERGENT SOLUTIONS INC <CSOL.O> 2ND QTR NET
+// convergent solutions inc lt csol o 2nd qtr net
+
+
 	sentence = sentence.toLowerCase().trim();
+
 	// sentence = regexpNormalizer(sentence)
 	// sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
 	
-	// sentence = sentence.replace(/<VALUE>/g,'')
+	sentence = sentence.replace(/[\<,\>]/g,' ')
 	// sentence = sentence.replace(/<ATTRIBUTE>/g,'')
 	// sentence = regexpNormalizer(sentence)
 	
