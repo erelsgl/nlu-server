@@ -224,6 +224,7 @@ if (reuters)
 	var train_data = []
 
 	_.each(train_files, function(file, key, list){ 
+		console.log("load"+key)
 		train_data = train_data.concat(JSON.parse(fs.readFileSync(path+"train/"+file)))
 	}, this)
 
