@@ -224,13 +224,13 @@ if (reuters)
 	var train_data = []
 
 	_.each(train_files, function(file, key, list){ 
-		train_data = train_data.concat(JSON.parse(path+"train/"+fs.readFileSync(file)))
+		train_data = train_data.concat(JSON.parse(fs.readFileSync(path+"train/"+file)))
 	}, this)
 
 	var test_data = []
 
 	_.each(test_files, function(file, key, list){ 
-		test_data = test_data.concat(JSON.parse(path+"test/"+fs.readFileSync(file)))
+		test_data = test_data.concat(JSON.parse(fs.readFileSync(path+"test/"+file)))
 	}, this)
 
 	console.log(loaded)
