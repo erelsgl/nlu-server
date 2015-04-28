@@ -273,11 +273,7 @@ if (reuters)
 	}, this)
 
 	top = _.unique(top)
-
 	console.log(top)
-	console.log()
-	process.exit(0)
-
 
 	// _.each(train_data, function(value, key, list){ 
 
