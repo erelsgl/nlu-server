@@ -88,7 +88,8 @@ function Add_emb(target, substitute, context) {
   
   var sum = 0
  
-  context = _.filter(context, function(num){ return num.length>0 });
+  if (context.length > 0)
+    context = _.filter(context, function(num){ return num.length>0 });
 
   if (context.length > 0)
   {
