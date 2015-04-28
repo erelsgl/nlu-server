@@ -1,0 +1,6 @@
+[
+  {"source": " u.s. ", "target": " USA "}
+, {"source": " US ", "target": " USA "}
+, {"source": " U.S. ", "target": " USA "}
+, {"source": " us ", "target": " USA "}
+]
