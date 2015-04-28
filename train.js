@@ -211,7 +211,7 @@ if (reuters)
 
 	var field = "TITLE"
 	
-	var path = __dirname + "/../reuters2json/"
+	var path = __dirname + "/../reuters2json/R8/"
 	
 	// var train = JSON.parse(fs.readFileSync(path + "R8/R8.train.json"))
 	// var test = JSON.parse(fs.readFileSync(path + "R8.test.json"))
