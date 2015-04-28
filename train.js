@@ -216,33 +216,33 @@ if (reuters)
 	// var train = JSON.parse(fs.readFileSync(path + "R8/R8.train.json"))
 	// var test = JSON.parse(fs.readFileSync(path + "R8.test.json"))
 	// var test_parsed = JSON.parse(fs.readFileSync(path + "R8/R8.test.json"))
-	// console.log("loaded")
 
 	var train_files = fs.readdirSync(path + "train")
 	var test_files = fs.readdirSync(path + "test")
 
+	train_files = train_files.splice(0,1)
+	test_files = test_files.splice(0,1)
+
 	var train_data = []
 
 	_.each(train_files, function(file, key, list){ 
-		console.log("load"+key)
+		console.log("load train"+key)
 		train_data = train_data.concat(JSON.parse(fs.readFileSync(path+"train/"+file)))
 	}, this)
 
 	var test_data = []
 
 	_.each(test_files, function(file, key, list){ 
+		console.log("load test"+key)
 		test_data = test_data.concat(JSON.parse(fs.readFileSync(path+"test/"+file)))
 	}, this)
 
-	console.log(loaded)
-	process.exit(0)
-
 	// there is a number of more that one sentence	
 	
-	var train_data = _.compact(_.map(train, function(value){ var elem = {}
+	var train_data = _.compact(_.map(train_data, function(value){ var elem = {}
 															if ('BODY' in value['TEXT']) 
 																{
-																elem['input'] =  JSON.parse(fs.readFileSync(path + "full/full.json.parse/" + value['$']['NEWID'] + ".BODY.json" ))
+																elem['input'] =  value
 																elem['output'] = value['TOPICS'][0]
 																return elem
 																} 
@@ -251,22 +251,23 @@ if (reuters)
 	console.log("train is loaded")
 
 	// var test_data = _.compact(_.map(test, function(value){ if (field in value['TEXT']) return value }))
-	var test_data = _.compact(_.map(test_parsed, function(value){ var elem = {}
+	var test_data = _.compact(_.map(test_data, function(value){ var elem = {}
 															if (field in value['TEXT']) 
 																{
-																elem['input'] = JSON.parse(fs.readFileSync(path + "full/full.json.parse/" + value['$']['NEWID'] + ".TITLE.json" ))
+																elem['input'] = value
 																elem['output'] = value['TOPICS'][0]
 																return elem
 																}
 															}))
 
 
-	console.log("train is ready")
-	console.log()
-	process.exit(0)
+	console.log("test is ready")
 
 	console.log(train_data.length)
 	console.log(test_data.length)
+
+	console.log()
+	process.exit(0)
 
 	var top = []
 	_.each(train_data, function(value, key, list){ 
