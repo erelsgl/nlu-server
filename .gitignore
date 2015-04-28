@@ -20,3 +20,6 @@ npm-debug.log
 /utils/featureexp_output
 /utils/gnuplot
 /research/ppdb/gnuplot
+
+buffer.json
+buffer_wordnet.json
