@@ -25,7 +25,7 @@ var bars = require('./utils/bars')
 
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
-var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$+-]+/});
+var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-]+/});
 // var tokenizer = new natural.WordTokenizer({'pattern':(/(\W+|\%)/)}); // WordTokenizer, TreebankWordTokenizer, WordPunctTokenizer
 // var ngrams = new natural.NGrams.ngrams()
 /*
@@ -34,6 +34,9 @@ var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$+-]+/});
 
 var regexpNormalizer = ftrs.RegexpNormalizer(
 		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json')));
+
+var regexpNormalizer_simple = ftrs.RegexpNormalizer(
+		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/SimpleNormalizations.json')));
 
 function featureExpansion(listoffeatures, scale, phrase)
 {
@@ -117,6 +120,7 @@ function normalizer1(sentence) {
 
 function normalizer(sentence) {
 	
+
 // in short text classification, text somethins is several sentences
 
 // KELSEY-HAYES CANADA LTD <KEL.TO> NINE MTHS NET
@@ -125,15 +129,17 @@ function normalizer(sentence) {
 // CONVERGENT SOLUTIONS INC <CSOL.O> 2ND QTR NET
 // convergent solutions inc lt csol o 2nd qtr net
 
-
+	
 	sentence = sentence.toLowerCase().trim();
 
 	// sentence = regexpNormalizer(sentence)
 	// sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
 	
-	sentence = sentence.replace(/[\<,\>]/g,' ')
+	// sentence = sentence.replace(/[\<,\>]/g,' ')
+	sentence = sentence.replace(/\n/g,' ')
+	
 	// sentence = sentence.replace(/<ATTRIBUTE>/g,'')
-	// sentence = regexpNormalizer(sentence)
+	sentence = regexpNormalizer_simple(sentence)
 	
 	return sentence
 }
@@ -182,6 +188,14 @@ function featureExtractorB(sentence, features) {
 }
 
 function featureExtractorU(sentence, features) {
+
+	sentence = "KELSEY-HAYES CANADA LTD <KEL.TO> NINE MTHS NET"
+
+	console.log(sentence)
+
+	var corp = sentence.match(/\<\w*\.*\w*\>/g)
+	var sentence = sentence.replace(/\<\w*\.*\w*\>/g," ")
+
 	var words = tokenizer.tokenize(sentence);
 
 	var feature = natural.NGrams.ngrams(words, 1)
@@ -189,6 +203,11 @@ function featureExtractorU(sentence, features) {
 		// if (!bars.isstopword(feat.join(" ")))
 			features[feat.join(" ")] = 1 } 
 		,this)
+
+	_.each(corp, function(co, key, list){ 
+		features[co] = 1
+	}, this)
+
 	return features;
 }
 
