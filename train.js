@@ -242,6 +242,8 @@ if (reuters)
 	var train_data = _.compact(_.map(train_data, function(value){ var elem = {}
 															if ('BODY' in value['TEXT']) 
 																{
+																value['CORENLP'] = value['BODY_CORENLP']
+																delete value['TITLE_CORENLP']
 																elem['input'] =  value
 																elem['output'] = value['TOPICS'][0]
 																return elem
@@ -254,6 +256,8 @@ if (reuters)
 	var test_data = _.compact(_.map(test_data, function(value){ var elem = {}
 															if (field in value['TEXT']) 
 																{
+																value['CORENLP'] = value['TITLE_CORENLP']
+																delete value['BODY_CORENLP']
 																elem['input'] = value
 																elem['output'] = value['TOPICS'][0]
 																return elem
@@ -265,41 +269,6 @@ if (reuters)
 
 	console.log(train_data.length)
 	console.log(test_data.length)
-
-	console.log()
-	process.exit(0)
-
-	var top = []
-	_.each(train_data, function(value, key, list){ 
-		top.push(value['output'])
-	}, this)
-
-	top = _.unique(top)
-	console.log(top)
-
-	// _.each(train_data, function(value, key, list){ 
-
-		// if ("TITLE" in value['TEXT'] )
-			// console.log(value['TEXT']['TITLE'])
-// 
-	// }, this)
-	// console.log()
-	// process.exit(0)
-
-	// console.log("reading parse") 
-	// _.each(test, function(value, key, list){ 
-	// 	var id = value['$']['NEWID']
-	// 	test[key]['parse_title'] = parse_filter(JSON.parse(fs.readFileSync('../reuters2json/full/full.json.parsed/'+id+".title.json")))
-	// 	test[key]['parse_body'] = parse_filter(JSON.parse(fs.readFileSync('../reuters2json/full/full.json.parsed/'+id+".body.json")))
-	// }, this)
-	// console.log("finish reading parse")
-
- 	// fs.writeFileSync("../reuters2json/R8/R8.test.parsed.json", JSON.stringify(test, null, 4))
-	
-	// var stats = trainAndTest.trainAndTest_batch(classifier.Reuter, train_data, test_data, 5)
-	
-	// var train_data = train_data.splice(0,4)
-	// var test_data = test_data.splice(0,4)
 
 	var stats = trainAndTest.trainAndTest_hash(classifier.ReuterBin, train_data, test_data, 5)
 

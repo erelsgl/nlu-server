@@ -130,16 +130,16 @@ function normalizer(sentence) {
 // convergent solutions inc lt csol o 2nd qtr net
 
 	
-	sentence = sentence.toLowerCase().trim();
+	// sentence = sentence.toLowerCase().trim();
 
 	// sentence = regexpNormalizer(sentence)
 	// sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
 	
 	// sentence = sentence.replace(/[\<,\>]/g,' ')
-	sentence = sentence.replace(/\n/g,' ')
+	// sentence = sentence.replace(/\n/g,' ')
 	
 	// sentence = sentence.replace(/<ATTRIBUTE>/g,'')
-	sentence = regexpNormalizer_simple(sentence)
+	// sentence = regexpNormalizer_simple(sentence)
 	
 	return sentence
 }
@@ -206,6 +206,21 @@ function featureExtractorU(sentence, features) {
 
 	return features;
 }
+
+function featureExtractorUCoreNLP(sentence, features) {
+
+	_.each(sentence['sentences'], function(sen, key, list){ 
+		_.each(sen['tokens'], function(value, key, list){
+			feature[value['word'].toLowerCase()] = 1 
+		}, this)
+	}, this)
+
+	console.log(features)
+	process.exit(0)
+
+	return features;
+}
+
 
 function featureword2vec(sentence, features) {
 	var words = tokenizer.tokenize(sentence);
