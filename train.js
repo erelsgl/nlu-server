@@ -211,58 +211,58 @@ if (reuters)
 
 	var field = "TITLE"
 	
-	var path = __dirname + "/../reuters2json/R8/"
+	var path = __dirname + "/../reuters2json/"
 	
-	var train = JSON.parse(fs.readFileSync(path + "R8.train.json"))
+	// var train = JSON.parse(fs.readFileSync(path + "R8/R8.train.json"))
 	// var test = JSON.parse(fs.readFileSync(path + "R8.test.json"))
-	var test_parsed = JSON.parse(fs.readFileSync(path + "R8.test.parsed.json"))
-	console.log("loaded")
+	// var test_parsed = JSON.parse(fs.readFileSync(path + "R8/R8.test.json"))
+	// console.log("loaded")
 
-	// there is a number of more that one sentence
+	var train_files = fs.readdirSync(path + "train")
+	var test_files = fs.readdirSync(path + "test")
 
-	// _.each(test_parsed, function(value, key, list){ 
-	// 	if (value['parse_title']['sentences'].length > 1)
-	// 	{
-	// 		console.log(value['$']['NEWID'])
-	// 		console.log(value['TEXT']['TITLE'])
-	// 		console.log(JSON.stringify(value['parse_title'], null, 4))
+	var train_data = []
 
-	// 		// process.exit(0)
-	// 	}
-	// }, this)
+	_.each(train_files, function(file, key, list){ 
+		train_data = train_data.concat(JSON.parse(fs.readFileSync(file)))
+	}, this)
 
-	// _.each(test_parsed, function(value, key, list){ 
-	// 	if ((!('TITLE' in value['TEXT']))) //|| (!('BODY' in value['TEXT'])))
-	// 	{
-	// 		console.log(value['$']['NEWID'])
-	// 		console.log(value['TOPICS'])
-	// 	}
-	// }, this)
+	var test_data = []
 
+	_.each(test_files, function(file, key, list){ 
+		test_data = test_data.concat(JSON.parse(fs.readFileSync(file)))
+	}, this)
 
-	// console.log()
-	// process.exit(0)
+	console.log(loaded)
+	process.exit(0)
+
+	// there is a number of more that one sentence	
 	
-	
-	var train_data = _.compact(_.map(train, function(value){ if (('BODY' in value['TEXT']) && ('TITLE' in value['TEXT'])) 
+	var train_data = _.compact(_.map(train, function(value){ var elem = {}
+															if ('BODY' in value['TEXT']) 
 																{
-																value['input'] = value['TEXT']['TITLE'] + ". " +value['TEXT']['BODY'] 
-																value['output'] = value['TOPICS'][0]
-																return value
+																elem['input'] =  JSON.parse(fs.readFileSync(path + "full/full.json.parse/" + value['$']['NEWID'] + ".BODY.json" ))
+																elem['output'] = value['TOPICS'][0]
+																return elem
 																} 
 															}))
 
+	console.log("train is loaded")
+
 	// var test_data = _.compact(_.map(test, function(value){ if (field in value['TEXT']) return value }))
-	var test_data = _.compact(_.map(test_parsed, function(value){ if (field in value['TEXT']) 
+	var test_data = _.compact(_.map(test_parsed, function(value){ var elem = {}
+															if (field in value['TEXT']) 
 																{
-																value['input'] = value['TEXT'][field]
-																value['output'] = value['TOPICS'][0]
-																return value
+																elem['input'] = JSON.parse(fs.readFileSync(path + "full/full.json.parse/" + value['$']['NEWID'] + ".TITLE.json" ))
+																elem['output'] = value['TOPICS'][0]
+																return elem
 																}
 															}))
 
 
 	console.log("train is ready")
+	console.log()
+	process.exit(0)
 
 	console.log(train_data.length)
 	console.log(test_data.length)
