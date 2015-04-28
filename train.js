@@ -267,6 +267,18 @@ if (reuters)
 	console.log(train_data.length)
 	console.log(test_data.length)
 
+	var top = []
+	_.each(train_data, function(value, key, list){ 
+		top.push(value['output'])
+	}, this)
+
+	top = _.unique(top)
+
+	console.log(top)
+	console.log()
+	process.exit(0)
+
+
 	// _.each(train_data, function(value, key, list){ 
 
 		// if ("TITLE" in value['TEXT'] )
