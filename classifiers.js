@@ -209,7 +209,7 @@ function featureExtractorU(sentence, features) {
 
 function featureExtractorUCoreNLP(sentence, features) {
 
-	_.each(sentence['sentences'], function(sen, key, list){ 
+	_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
 		_.each(sen['tokens'], function(value, key, list){
 			feature[value['word'].toLowerCase()] = 1 
 		}, this)
