@@ -189,10 +189,6 @@ function featureExtractorB(sentence, features) {
 
 function featureExtractorU(sentence, features) {
 
-	sentence = "KELSEY-HAYES CANADA LTD <KEL.TO> NINE MTHS NET"
-
-	console.log(sentence)
-
 	var corp = sentence.match(/\<\w*\.*\w*\>/g)
 	var sentence = sentence.replace(/\<\w*\.*\w*\>/g," ")
 
