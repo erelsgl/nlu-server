@@ -83,27 +83,6 @@ function and_distance(a, b) {
     return 1/sum
 }
 
-// Oren Add function
-function Add_emb(target, substitute, context) {
-  
-  var sum = 0
- 
-  if (context.length > 0)
-    context = _.filter(context, function(num){ return num.length>0 });
-
-  if (context.length > 0)
-  {
-    var context_local = []
-    _.each(context, function(context_vector, key, list){ 
-      context_local.push(cosine_distance(substitute, context_vector))
-    }, this)
-
-    sum = _.reduce(context_local, function(memo, num){ return memo + num; }, 0);
-  }
-  
-  return (cosine_distance(substitute, target) + sum)/(context.length + 1)
-}
-
 function cosine_distance(a, b) {
   if (!isVectorNumber(a) || !isVectorNumber(b))
     throw new Error("Vectors should be consist of numbers " + JSON.stringify(a) + " " +JSON.stringify(b))
@@ -122,6 +101,10 @@ function cosine_distance(a, b) {
     return 1/(dot_distance(a,b)/(Math.sqrt(norm1)*Math.sqrt(norm2)))
 }
 
+function pcosine_distance(a, b) {
+  return (cosine_distance(a,b)+1)/2
+}
+
 function isVectorNumber(a) {
   var n;
   for (n=0; n < a.length; n++) {
@@ -129,6 +112,46 @@ function isVectorNumber(a) {
     return false
   }
   return true
+}
+
+function Add(target, substitute, context) {
+ 
+  if (context.length > 0)
+    context = _.filter(context, function(num){ return num.length>0 });
+  
+  var sum = _.reduce(context, function(memo, num){ return memo + cosine_distance(substitute, num) }, 0);
+  
+  return (cosine_distance(substitute, target) + sum)/(context.length + 1)
+}
+
+function BalAdd(target, substitute, context) {
+ 
+  if (context.length > 0)
+    context = _.filter(context, function(num){ return num.length>0 });
+  
+  var sum = _.reduce(context, function(memo, num){ return memo + cosine_distance(substitute, num) }, 0);
+   
+  return (cosine_distance(substitute, target) * context.length + sum)/(2*context.length )
+}
+
+function Mult(target, substitute, context) {
+  
+  if (context.length > 0)
+    context = _.filter(context, function(num){ return num.length>0 });
+ 
+  var prod = _.reduce(context, function(memo, num){ return memo * pcosine_distance(substitute, num) }, 1);
+
+  return Math.pow(prod * pcosine_distance(substitute, target), 1/(context.length+1))
+}
+
+function BalMult(target, substitute, context) {
+  
+  if (context.length > 0)
+    context = _.filter(context, function(num){ return num.length>0 });
+ 
+  var prod = _.reduce(context, function(memo, num){ return memo * pcosine_distance(substitute, num) }, 1);
+
+  return Math.pow(prod * Math.pow(pcosine_distance(substitute, target), context.length), 2 * context.length)
 }
 
 module.exports = {
@@ -139,5 +162,8 @@ module.exports = {
   manhattan_distance:manhattan_distance,
   dot_distance:dot_distance,
   euclidean_distance:euclidean_distance,
-  Add_emb:Add_emb
+  Add:Add,
+  BalAdd:BalAdd,
+  Mult:Mult,
+  BalMult:BalMult
 }
