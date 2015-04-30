@@ -81,7 +81,6 @@ function redis_exec(data, db, redis_buffer)
 
 		if (data_reduced.length > 0)
 		{
-			console.log(data_reduced_cmd)
 			var cmd = "node " + redis_path + " " + JSON.stringify(data_reduced_cmd).replace(/[\[\]]/g, ' ').replace(/\"\,\"/g,'" "') + " " + db
 			console.log(cmd)
 			// result is hash
@@ -116,7 +115,6 @@ function redis_exec(data, db, redis_buffer)
 
 function wordnet_exec(word, pos, relation, wordnet_buffer)
 {
-
 	var wordnet_path = './utils/getwordnet.js'
 	var buffer_path = './wordnet_buffer.json'
 
