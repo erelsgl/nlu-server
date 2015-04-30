@@ -267,7 +267,8 @@ if (reuters)
 	var stats = trainAndTest.trainAndTest_hash(classifier.ReuterBinExp, train_data, test_data, 5)
 
 	// console.log(JSON.stringify(stats[0]['stats'], null, 4))
-	console.log(JSON.stringify(stats, null, 4))
+	console.log(JSON.stringify(stats[0]['data'], null, 4))
+	console.log(JSON.stringify(stats[0]['stats'], null, 4))
 	process.exit(0)
 }
 
