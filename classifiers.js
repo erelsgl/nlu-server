@@ -137,13 +137,14 @@ function wordnet_exec(word, pos, relation, wordnet_buffer)
 		console.log(cmd)
 		var candidates = JSON.parse(execSync.exec(cmd)['stdout'])
 		wordnet_buffer[relation][word][pos] = candidates	
-		}
+		
 
-	if (_.random(0, 7) == 5)
+		if (_.random(0, 7) == 5)
 		{
 		console.log("wordnet writing buffer ...")
 	    fs.writeFileSync(buffer_path, JSON.stringify(wordnet_buffer, null, 4))
-    	}	
+    	}
+    }
 
     return 	wordnet_buffer[relation][word][pos]
 }
