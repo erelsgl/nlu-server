@@ -183,14 +183,19 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 			expl = currentStats[n].addCasesHash(expectedClasses[n], actualClasses[n], (verbosity>2));
 			currentStats[n].addCasesLabels(expectedClasses[n], actualClasses[n]);
 			sentence_hash['input'] = testSet[i].input['input'];
-			sentence_hash['expected'] = expectedClasses[n];
-			sentence_hash['classified'] = actualClasses[n];
+			// sentence_hash['expected'] = expectedClasses[n];
+			// sentence_hash['classified'] = actualClasses[n];
 			sentence_hash['expansioned'] = classesWithExplanation.expansioned
 			sentence_hash['features'] = classesWithExplanation.features
 			sentence_hash['explanation'] = expl;
 			// sentence_hash['original'] = testSet1[i].output;
-			sentence_hash['explanation_source'] = _.filter(classesWithExplanation.explanation['positive'], function(num){ return num[1] != 0 })
-			
+					
+			sentence_hash['explanation_source'] = {}
+
+			_.each(_.unique(_.flatten(_.toArray(expl))), function(lab, key, list){ 
+				sentence_hash['explanation_source'][lab] = _.filter(classesWithExplanation.explanation['all'][lab], function(num){ return num[1] != 0 })
+			}, this)
+				
 			// sentence_hash['expected original'] = testSetOriginal[i]['output']
 			// sentence_hash['classified original'] = classified
 			})	
@@ -212,6 +217,12 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 	return testResult
 };
 
+
+
+module.exports.filter_exp = function(explan, details) {
+
+
+}
 
 
 /**
