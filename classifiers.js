@@ -22,6 +22,7 @@ var classifiers = limdu.classifiers;
 var ftrs = limdu.features;
 var Hierarchy = require(__dirname+'/Hierarchy');
 var bars = require('./utils/bars')
+var distance = require('./utils/distance.js')
 
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
@@ -37,6 +38,118 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 
 var regexpNormalizer_simple = ftrs.RegexpNormalizer(
 		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/SimpleNormalizations.json')));
+
+
+var expansionParam1 = 
+{
+	'wordnetRelation': 'synonyms',
+	'redisId_words':14,
+	'redisId_context':13,
+	'comparison': distance.Add,
+	'redis_exec': redis_exec,
+	'wordnet_exec': wordnet_exec
+}
+
+
+function redis_exec(data, db, redis_buffer)
+	{
+		if (data.length == 0)
+			return []
+
+		var redis_path = './utils/getred.js'
+		var buffer_path = './redis_buffer.json'
+		
+		if (Object.keys(redis_buffer) == 0)
+		{
+			var redis_buffer_sub = JSON.parse(fs.readFileSync(buffer_path,'UTF-8'))
+			_.each(redis_buffer_sub, function(value, key, list){ 
+				redis_buffer[key] = value
+			}, this)
+		}
+
+		if (!(db in redis_buffer))
+			redis_buffer[db] = {}
+
+		var data_reduced = []
+		_.each(data, function(value, key, list){ 
+			if (!(value in redis_buffer[db]))
+				data_reduced.push(value)
+		}, this)
+
+		var data_reduced_cmd = _.map(data_reduced, function(value){ return value.replace(/\`/g,'\\`') })
+		console.log(data_reduced)
+
+		if (data_reduced.length > 0)
+		{
+			console.log(data_reduced_cmd)
+			var cmd = "node " + redis_path + " " + JSON.stringify(data_reduced_cmd).replace(/[\[\]]/g, ' ').replace(/\"\,\"/g,'" "') + " " + db
+			console.log(cmd)
+			// result is hash
+			var result = JSON.parse(execSync.exec(cmd)['stdout'])
+
+			_.each(result, function(value, key, list){ 
+				// this.redis_buffer[db][key] = {'data': value, 'count':0}
+				redis_buffer[db][key] = value
+			}, this)
+
+			if (_.random(0,7) == 5)
+			{
+				console.log("redis writing buffer ...")
+            	fs.writeFileSync(buffer_path, JSON.stringify(redis_buffer, null, 4))
+        	}
+		}
+
+		var data_result = []
+		_.each(data, function(value, key, list){ 
+
+			if (!(value in redis_buffer[db]))
+			{
+			console.log(value+' was not found in buffer')
+			process.exit(0)
+			}
+			data_result.push(redis_buffer[db][value])
+		}, this)
+
+		return data_result
+
+}
+
+function wordnet_exec(word, pos, relation, wordnet_buffer)
+{
+
+	var wordnet_path = './utils/getwordnet.js'
+	var buffer_path = './wordnet_buffer.json'
+
+	if (Object.keys(wordnet_buffer) == 0)
+	{
+		var wordnet_buffer_sub = JSON.parse(fs.readFileSync(buffer_path,'UTF-8'))
+		_.each(wordnet_buffer_sub, function(value, key, list){ 
+			wordnet_buffer[key] = value
+		}, this)
+	}
+
+	if (!(relation in wordnet_buffer))
+		wordnet_buffer[relation] = {}
+
+	if (!(word in wordnet_buffer[relation]))
+		wordnet_buffer[relation][word] = {}
+
+	if (!(pos in wordnet_buffer[relation][word]))
+		{
+		var cmd =  "node " + wordnet_path + " \"" + word + "\" " + pos + " " + relation
+		console.log(cmd)
+		var candidates = JSON.parse(execSync.exec(cmd)['stdout'])
+		wordnet_buffer[relation][word][pos] = candidates	
+		}
+
+	if (_.random(0, 7) == 5)
+		{
+		console.log("wordnet writing buffer ...")
+	    fs.writeFileSync(buffer_path, JSON.stringify(wordnet_buffer, null, 4))
+    	}	
+
+    return 	wordnet_buffer[relation][word][pos]
+}
 
 function featureExpansion(listoffeatures, scale, phrase)
 {
@@ -209,18 +322,20 @@ function featureExtractorU(sentence, features) {
 
 function featureExtractorUCoreNLP(sentence, features) {
 
+
 	_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
 		_.each(sen['tokens'], function(value, key, list){
-			feature[value['word'].toLowerCase()] = 1 
+			
+			if ('lemma' in value)
+				features[value['lemma'].toLowerCase()] = 1 
+			else
+				throw new Error("where is lemma '"+value);
+
 		}, this)
 	}, this)
 
-	console.log(features)
-	process.exit(0)
-
 	return features;
 }
-
 
 function featureword2vec(sentence, features) {
 	var words = tokenizer.tokenize(sentence);
@@ -535,7 +650,7 @@ var LanguageModelClassifier = classifiers.multilabel.CrossLanguageModel.bind(thi
  * CONSTRUCTORS:
  */
 
-var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel, multiplyFeaturesByIDF, featureExpansion, featureExpansionScale, featureExpansionPhrase, featureFine) {
+var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel, multiplyFeaturesByIDF, featureExpansion, featureExpansionScale, featureExpansionPhrase, featureFine, expansionParam) {
 // var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
@@ -546,6 +661,7 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 		featureExpansionScale: featureExpansionScale,
 		featureExpansionPhrase: featureExpansionPhrase,
 		featureFine: featureFine,
+		expansionParam: expansionParam,
 		// inputSplitter: inputSplitter,
 		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
 
@@ -708,8 +824,10 @@ module.exports = {
 		SVM_Expansion: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
 
 		Reuter: enhance(SvmPerfMultiClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false),
-		ReuterBin: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false),
+		ReuterBinExp: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, expansionParam1),
+		ReuterBin: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 };
+
 
 module.exports.defaultClassifier = module.exports.SvmPerfClassifier
 
