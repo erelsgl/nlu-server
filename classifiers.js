@@ -45,7 +45,7 @@ var expansionParam1 =
 	'wordnetRelation': 'synonyms',
 	'redisId_words':14,
 	'redisId_context':13,
-	'comparison': distance.Add,
+	'comparison': distance.BalAdd,
 	'redis_exec': redis_exec,
 	'wordnet_exec': wordnet_exec
 }
@@ -77,7 +77,6 @@ function redis_exec(data, db, redis_buffer)
 		}, this)
 
 		var data_reduced_cmd = _.map(data_reduced, function(value){ return value.replace(/\`/g,'\\`') })
-		console.log(data_reduced)
 
 		if (data_reduced.length > 0)
 		{
