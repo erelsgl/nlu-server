@@ -209,19 +209,12 @@ function parse_filter(parse)
 if (reuters)
 {
 
-	var field = "TITLE"
+	var field = "BODY"
 	
 	var path = __dirname + "/../reuters2json/R8/"
-	
-	// var train = JSON.parse(fs.readFileSync(path + "R8/R8.train.json"))
-	// var test = JSON.parse(fs.readFileSync(path + "R8.test.json"))
-	// var test_parsed = JSON.parse(fs.readFileSync(path + "R8/R8.test.json"))
 
 	var train_files = fs.readdirSync(path + "train")
 	var test_files = fs.readdirSync(path + "test")
-
-	train_files = train_files.splice(0,1)
-	test_files = test_files.splice(0,1)
 
 	var train_data = []
 
@@ -256,9 +249,10 @@ if (reuters)
 	var test_data = _.compact(_.map(test_data, function(value){ var elem = {}
 															if (field in value['TEXT']) 
 																{
-																value['CORENLP'] = value['TITLE_CORENLP']
-																delete value['BODY_CORENLP']
+																value['CORENLP'] = value['BODY_CORENLP']
+																delete value['TITLE_CORENLP']
 																elem['input'] = value
+																elem['input']['input'] = value['TEXT']['BODY']
 																elem['output'] = value['TOPICS'][0]
 																return elem
 																}
@@ -270,7 +264,7 @@ if (reuters)
 	console.log(train_data.length)
 	console.log(test_data.length)
 
-	var stats = trainAndTest.trainAndTest_hash(classifier.ReuterBin, train_data, test_data, 5)
+	var stats = trainAndTest.trainAndTest_hash(classifier.ReuterBinExp, train_data, test_data, 5)
 
 	// console.log(JSON.stringify(stats[0]['stats'], null, 4))
 	console.log(JSON.stringify(stats, null, 4))
