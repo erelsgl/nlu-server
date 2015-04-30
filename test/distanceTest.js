@@ -44,5 +44,14 @@ describe('kNN common test', function() {
 		distance.cosine_distance([0,0,1,0,0,1,0,1,1],[0,0,0,0,1,1,0,1,1]).should.equal(1/0.75)
 		distance.cosine_distance([1,1,0],[1,0,1]).should.equal(1/0.4999999999999999)
 	})
+
+	it('Add distance', function(){
+		var target = [1,1,1]
+		var substitute = [2,2,2]
+		var context = [[3,3,3],[4,4,4]]
+		distance.Add(target, substitute, context).should.equal(0.9999999999999999)
+	})
 })
+
+
 
