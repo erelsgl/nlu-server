@@ -152,8 +152,8 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 	for (var i=0; i<testSet.length; ++i) 
 	{
 
-		if (i % 10)
-			console.log(i)
+		if (i % 100)
+			console.log("Test index is " +  i)
 
 		expectedClasses = list.listembed(testSet[i].output)
 
