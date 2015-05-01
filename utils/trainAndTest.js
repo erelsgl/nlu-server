@@ -153,7 +153,7 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 	{
 
 		if (i % 100)
-			console.log("Test index is " +  i)
+			console.log("Test index is " +  i + " from " + testSet.length)
 
 		expectedClasses = list.listembed(testSet[i].output)
 
@@ -185,17 +185,42 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 			sentence_hash['input'] = testSet[i].input['input'];
 			// sentence_hash['expected'] = expectedClasses[n];
 			// sentence_hash['classified'] = actualClasses[n];
+			if ("NEWID" in testSet[i]['input']['$'])
+				sentence_hash['id'] = testSet[i]['input']['$']['NEWID']
+
 			sentence_hash['expansioned'] = classesWithExplanation.expansioned
 			sentence_hash['features'] = classesWithExplanation.features
 			sentence_hash['explanation'] = expl;
-			// sentence_hash['original'] = testSet1[i].output;
-					
+
 			sentence_hash['explanation_source'] = {}
 
 			_.each(_.unique(_.flatten(_.toArray(expl))), function(lab, key, list){ 
 				sentence_hash['explanation_source'][lab] = _.filter(classesWithExplanation.explanation['all'][lab], function(num){ return num[1] != 0 })
 			}, this)
+			
+			if ('expansioned' in classesWithExplanation)
+			{
+				var label = actualClasses[n]
+				var explan = _.object(sentence_hash['explanation_source'][label])
+
+				_.each(sentence_hash['expansioned'], function(value, key, list){ 
+					var exp = []
+					_.each(value['expansion'], function(valuep, key, list){
+						if (valuep in explan)
+							exp.push([valuep, explan[valuep]])
+						else
+							exp.push([valuep, 0])
+
+					}, this)
+					
+					if (exp.length > 0)
+						sentence_hash['expansioned'][key]['expansion_result'] = exp 
 				
+				}, this)
+
+
+
+			}
 			// sentence_hash['expected original'] = testSetOriginal[i]['output']
 			// sentence_hash['classified original'] = classified
 			})	
