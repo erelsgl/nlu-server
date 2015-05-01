@@ -1,10 +1,25 @@
 {
     "syn": {
+        "297": {
+            "CD": []
+        },
+        "325": {
+            "CD": []
+        },
         "443": {
+            "CD": []
+        },
+        "542": {
+            "CD": []
+        },
+        "785": {
             "CD": []
         },
         "916": {
             "CD": []
+        },
+        "1960": {
+            "NNS": []
         },
         "asian": {
             "NNP": [
@@ -473,7 +488,8 @@
             "NNP": []
         },
         "eventual": {
-            "NNP": []
+            "NNP": [],
+            "JJ": []
         },
         "science": {
             "NNP": [
@@ -793,6 +809,12 @@
                 "layer",
                 "seam",
                 "bottom"
+            ],
+            "NN": [
+                "bed",
+                "layer",
+                "seam",
+                "bottom"
             ]
         },
         "boiler": {
@@ -870,6 +892,10 @@
         },
         "oak": {
             "NNS": [
+                "oak",
+                "oak_tree"
+            ],
+            "NNP": [
                 "oak",
                 "oak_tree"
             ]
@@ -957,6 +983,11 @@
                 "room",
                 "way",
                 "elbow_room"
+            ],
+            "NN": [
+                "room",
+                "way",
+                "elbow_room"
             ]
         },
         "suave": {
@@ -1040,6 +1071,9 @@
         },
         "reinsurance": {
             "NNP": [
+                "reinsurance"
+            ],
+            "NN": [
                 "reinsurance"
             ]
         },
@@ -1793,6 +1827,11 @@
                 "capitalize",
                 "capitalise",
                 "take_advantage"
+            ],
+            "VBN": [
+                "capitalize",
+                "capitalise",
+                "take_advantage"
             ]
         },
         "gaming": {
@@ -1882,6 +1921,12 @@
                 "character",
                 "eccentric",
                 "case"
+            ],
+            "NNS": [
+                "type",
+                "character",
+                "eccentric",
+                "case"
             ]
         },
         "precursor": {
@@ -1904,6 +1949,11 @@
         },
         "dl": {
             "NNS": [
+                "deciliter",
+                "decilitre",
+                "dl"
+            ],
+            "NN": [
                 "deciliter",
                 "decilitre",
                 "dl"
@@ -2025,6 +2075,15 @@
         },
         "inject": {
             "VBD": [
+                "interject",
+                "come_in",
+                "interpose",
+                "put_in",
+                "throw_in",
+                "inject",
+                "shoot"
+            ],
+            "VBG": [
                 "interject",
                 "come_in",
                 "interpose",
@@ -2393,6 +2452,18 @@
                 "study",
                 "examine",
                 "canvass"
+            ],
+            "VB": [
+                "analyze",
+                "analyse",
+                "psychoanalyze",
+                "psychoanalyse",
+                "break_down",
+                "dissect",
+                "take_apart",
+                "study",
+                "examine",
+                "canvass"
             ]
         },
         "remedial": {
@@ -2428,7 +2499,31 @@
             ]
         },
         "c": {
-            "VBZ": []
+            "VBZ": [],
+            "NN": [
+                "coke",
+                "blow",
+                "nose_candy",
+                "snow",
+                "C",
+                "c",
+                "coulomb",
+                "ampere-second",
+                "hundred",
+                "100",
+                "century",
+                "one_C",
+                "carbon",
+                "atomic_number_6",
+                "cytosine",
+                "deoxycytidine_monophosphate",
+                "vitamin_C",
+                "ascorbic_acid",
+                "speed_of_light",
+                "light_speed",
+                "degree_centigrade",
+                "degree_Celsius"
+            ]
         },
         "turnaround": {
             "NN": [
@@ -2449,7 +2544,8 @@
             ]
         },
         "sama": {
-            "NNP": []
+            "NNP": [],
+            "NN": []
         },
         "saturday": {
             "NNP": [
@@ -2748,6 +2844,58 @@
                 "assay",
                 "bank_check",
                 "cheque"
+            ],
+            "VB": [
+                "crack",
+                "check",
+                "break",
+                "chink",
+                "determine",
+                "find_out",
+                "see",
+                "ascertain",
+                "watch",
+                "learn",
+                "turn_back",
+                "arrest",
+                "stop",
+                "contain",
+                "hold_back",
+                "checker",
+                "chequer",
+                "discipline",
+                "train",
+                "condition",
+                "match",
+                "fit",
+                "correspond",
+                "jibe",
+                "gibe",
+                "tally",
+                "agree",
+                "check_out",
+                "retard",
+                "delay",
+                "check_off",
+                "mark",
+                "mark_off",
+                "tick_off",
+                "tick",
+                "control",
+                "hold_in",
+                "hold",
+                "curb",
+                "moderate",
+                "insure",
+                "see_to_it",
+                "ensure",
+                "assure",
+                "check_up_on",
+                "look_into",
+                "suss_out",
+                "check_over",
+                "go_over",
+                "check_into"
             ]
         },
         "token": {
@@ -3094,6 +3242,11 @@
                 "struggle",
                 "conflict",
                 "battle"
+            ],
+            "NNS": [
+                "struggle",
+                "conflict",
+                "battle"
             ]
         },
         "onset": {
@@ -3143,6 +3296,13 @@
         },
         "redeem": {
             "VB": [
+                "redeem",
+                "pay_off",
+                "ransom",
+                "deliver",
+                "save"
+            ],
+            "VBN": [
                 "redeem",
                 "pay_off",
                 "ransom",
@@ -10671,6 +10831,1733 @@
             "CD": []
         },
         "admin": {
+            "NNP": []
+        },
+        "against": {
+            "IN": []
+        },
+        "while": {
+            "IN": []
+        },
+        "we": {
+            "PRP": [],
+            "PRP$": []
+        },
+        "those": {
+            "DT": []
+        },
+        "where": {
+            "WRB": []
+        },
+        "further": {
+            "JJ": [],
+            "RBR": [
+                "farther",
+                "further"
+            ]
+        },
+        "very": {
+            "RB": [
+                "very",
+                "really",
+                "real",
+                "rattling"
+            ]
+        },
+        "over": {
+            "IN": [],
+            "RP": []
+        },
+        "-": {
+            ":": []
+        },
+        "after": {
+            "IN": []
+        },
+        "when": {
+            "WRB": []
+        },
+        "under": {
+            "IN": []
+        },
+        ":": {
+            ":": []
+        },
+        "...": {
+            ":": []
+        },
+        "too": {
+            "RB": [
+                "besides",
+                "too",
+                "also",
+                "likewise",
+                "as_well",
+                "excessively",
+                "overly",
+                "to_a_fault"
+            ]
+        },
+        "you": {
+            "PRP": []
+        },
+        "through": {
+            "IN": []
+        },
+        "can": {
+            "MD": []
+        },
+        "or": {
+            "CC": []
+        },
+        "what": {
+            "WP": []
+        },
+        "here": {
+            "RB": [
+                "here",
+                "hither"
+            ]
+        },
+        "off": {
+            "RP": [],
+            "IN": [],
+            "RB": [
+                "off",
+                "away",
+                "forth"
+            ]
+        },
+        "down": {
+            "RB": [
+                "down",
+                "downwards",
+                "downward",
+                "downwardly"
+            ],
+            "IN": []
+        },
+        "own": {
+            "VB": [
+                "own",
+                "have",
+                "possess"
+            ],
+            "JJ": [],
+            "VBN": [
+                "own",
+                "have",
+                "possess"
+            ]
+        },
+        "so": {
+            "IN": [],
+            "RB": [
+                "indeed",
+                "so",
+                "therefore",
+                "hence",
+                "thence",
+                "thus",
+                "then",
+                "and_so",
+                "thusly"
+            ]
+        },
+        "should": {
+            "MD": []
+        },
+        "during": {
+            "IN": []
+        },
+        "itself": {
+            "PRP": []
+        },
+        "same": {
+            "JJ": [
+                "like",
+                "same"
+            ]
+        },
+        "because": {
+            "IN": []
+        },
+        "only": {
+            "RB": [
+                "only",
+                "only_if",
+                "only_when",
+                "entirely",
+                "exclusively",
+                "solely",
+                "alone",
+                "merely",
+                "simply",
+                "just",
+                "but"
+            ]
+        },
+        "both": {
+            "DT": [],
+            "CC": []
+        },
+        ";": {
+            ":": []
+        },
+        "each": {
+            "DT": []
+        },
+        "again": {
+            "RB": [
+                "again",
+                "once_again",
+                "once_more",
+                "over_again"
+            ]
+        },
+        "who": {
+            "WP": []
+        },
+        "these": {
+            "DT": []
+        },
+        "then": {
+            "RB": [
+                "then",
+                "so",
+                "and_so"
+            ]
+        },
+        "acrylic": {
+            "JJ": []
+        },
+        "yarn": {
+            "NN": [
+                "thread",
+                "yarn",
+                "narration",
+                "recital"
+            ]
+        },
+        "sunnyvale": {
+            "NNP": []
+        },
+        "accomplish": {
+            "VBN": [
+                "achieve",
+                "accomplish",
+                "attain",
+                "reach",
+                "carry_through",
+                "execute",
+                "carry_out",
+                "action",
+                "fulfill",
+                "fulfil"
+            ]
+        },
+        "warfare": {
+            "NN": [
+                "war",
+                "warfare"
+            ]
+        },
+        "ex-partner": {
+            "NNS": []
+        },
+        "rearrange": {
+            "VBN": [
+                "rearrange"
+            ]
+        },
+        "peters": {
+            "NNP": []
+        },
+        "safe": {
+            "JJ": [
+                "safe(p)",
+                "safe"
+            ]
+        },
+        "saul": {
+            "NNP": [
+                "Paul",
+                "Saint_Paul",
+                "St._Paul",
+                "Apostle_Paul",
+                "Paul_the_Apostle",
+                "Apostle_of_the_Gentiles",
+                "Saul",
+                "Saul_of_Tarsus"
+            ]
+        },
+        "iit": {
+            "NN": []
+        },
+        "ii": {
+            "NNP": [
+                "two",
+                "2",
+                "II",
+                "deuce"
+            ]
+        },
+        "formation": {
+            "NN": [
+                "formation",
+                "geological_formation",
+                "constitution",
+                "establishment",
+                "organization",
+                "organisation",
+                "shaping"
+            ]
+        },
+        "title": {
+            "NN": [
+                "claim",
+                "title",
+                "title_of_respect",
+                "form_of_address",
+                "deed",
+                "deed_of_conveyance",
+                "championship",
+                "statute_title",
+                "rubric"
+            ]
+        },
+        "chester": {
+            "NNP": [
+                "Chester"
+            ]
+        },
+        "designer": {
+            "NN": [
+                "couturier",
+                "fashion_designer",
+                "clothes_designer",
+                "designer",
+                "intriguer",
+                "graphic_designer",
+                "architect",
+                "interior_designer"
+            ]
+        },
+        "solution": {
+            "NNS": [
+                "solution",
+                "root",
+                "answer",
+                "result",
+                "resolution",
+                "solvent"
+            ]
+        },
+        "collect": {
+            "VBZ": [
+                "collect",
+                "pick_up",
+                "gather_up",
+                "call_for",
+                "pull_in",
+                "gather",
+                "garner",
+                "pull_together",
+                "take_in",
+                "roll_up",
+                "accumulate",
+                "pile_up",
+                "amass",
+                "compile",
+                "hoard"
+            ]
+        },
+        "oils": {
+            "NNS": []
+        },
+        "garage": {
+            "NNS": [
+                "garage",
+                "service_department"
+            ]
+        },
+        "leadership": {
+            "NN": [
+                "leadership",
+                "leaders",
+                "leading"
+            ]
+        },
+        "f": {
+            "LS": []
+        },
+        "vitamin": {
+            "NNS": [
+                "vitamin"
+            ]
+        },
+        "dresser": {
+            "NNP": [
+                "dresser",
+                "dressing_table",
+                "vanity",
+                "toilet_table",
+                "actor's_assistant",
+                "chest_of_drawers",
+                "chest",
+                "bureau"
+            ]
+        },
+        "complementary": {
+            "JJ": []
+        },
+        "rogers": {
+            "NNP": [
+                "Rogers",
+                "Carl_Rogers",
+                "Ginger_Rogers",
+                "Virginia_McMath",
+                "Virginia_Katherine_McMath",
+                "Will_Rogers",
+                "William_Penn_Adair_Rogers"
+            ]
+        },
+        "discover": {
+            "VBN": [
+                "identify",
+                "discover",
+                "key",
+                "key_out",
+                "distinguish",
+                "describe",
+                "name",
+                "unwrap",
+                "disclose",
+                "let_on",
+                "bring_out",
+                "reveal",
+                "expose",
+                "divulge",
+                "break",
+                "give_away",
+                "let_out",
+                "uncover",
+                "fall_upon",
+                "strike",
+                "come_upon",
+                "light_upon",
+                "chance_upon",
+                "come_across",
+                "chance_on",
+                "happen_upon",
+                "attain",
+                "find",
+                "learn",
+                "hear",
+                "get_word",
+                "get_wind",
+                "pick_up",
+                "find_out",
+                "get_a_line",
+                "see",
+                "detect",
+                "observe",
+                "notice"
+            ]
+        },
+        "50.1": {
+            "CD": []
+        },
+        "28-day": {
+            "JJ": []
+        },
+        "kohl": {
+            "NNP": [
+                "kohl"
+            ]
+        },
+        "christian": {
+            "NNP": [
+                "Christian"
+            ],
+            "NNS": [
+                "Christian"
+            ]
+        },
+        "apart": {
+            "RB": [
+                "apart",
+                "asunder",
+                "aside"
+            ]
+        },
+        "willy": {
+            "NNP": []
+        },
+        "schmidt": {
+            "NNP": [
+                "Schmidt",
+                "Helmut_Schmidt",
+                "Helmut_Heinrich_Waldemar_Schmidt"
+            ]
+        },
+        "catch": {
+            "VBG": [
+                "catch",
+                "get",
+                "capture",
+                "enamour",
+                "trance",
+                "becharm",
+                "enamor",
+                "captivate",
+                "beguile",
+                "charm",
+                "fascinate",
+                "bewitch",
+                "entrance",
+                "enchant",
+                "trip_up",
+                "watch",
+                "view",
+                "see",
+                "take_in",
+                "overhear",
+                "overtake",
+                "catch_up_with",
+                "arrest",
+                "hitch",
+                "grab",
+                "take_hold_of",
+                "pick_up"
+            ]
+        },
+        "older": {
+            "JJR": []
+        },
+        "bout": {
+            "NNS": [
+                "bust",
+                "tear",
+                "binge",
+                "bout",
+                "turn",
+                "round"
+            ]
+        },
+        "negligible": {
+            "JJ": []
+        },
+        "bloated": {
+            "JJ": []
+        },
+        "endanger": {
+            "VB": [
+                "queer",
+                "expose",
+                "scupper",
+                "endanger",
+                "peril",
+                "jeopardize",
+                "jeopardise",
+                "menace",
+                "threaten",
+                "imperil"
+            ]
+        },
+        "greet": {
+            "VBN": [
+                "greet",
+                "recognize",
+                "recognise"
+            ]
+        },
+        "crack": {
+            "VBG": [
+                "crack",
+                "crack_up",
+                "crock_up",
+                "break_up",
+                "collapse",
+                "snap",
+                "break_through",
+                "check",
+                "break"
+            ]
+        },
+        "glass": {
+            "NN": [
+                "glass",
+                "looking_glass",
+                "methamphetamine",
+                "methamphetamine_hydrochloride",
+                "Methedrine",
+                "meth",
+                "deoxyephedrine",
+                "chalk",
+                "chicken_feed",
+                "crank",
+                "ice",
+                "shabu",
+                "trash",
+                "field_glass",
+                "spyglass",
+                "glassful",
+                "drinking_glass"
+            ]
+        },
+        "beer": {
+            "NN": [
+                "beer"
+            ]
+        },
+        "hardly": {
+            "RB": [
+                "hard",
+                "hardly",
+                "scarcely",
+                "barely",
+                "scarce",
+                "just"
+            ]
+        },
+        "golf": {
+            "NN": [
+                "golf",
+                "golf_game"
+            ]
+        },
+        "finger": {
+            "NNS": [
+                "finger",
+                "fingerbreadth",
+                "finger's_breadth",
+                "digit"
+            ]
+        },
+        "automatic": {
+            "NNP": [
+                "automatic_pistol",
+                "automatic",
+                "automatic_rifle",
+                "machine_rifle"
+            ]
+        },
+        "mo.": {
+            "NNP": [
+                "Missouri",
+                "Show_Me_State",
+                "MO",
+                "Mo."
+            ]
+        },
+        "acme": {
+            "NNP": [
+                "vertex",
+                "peak",
+                "apex",
+                "acme",
+                "height",
+                "elevation",
+                "pinnacle",
+                "summit",
+                "superlative",
+                "meridian",
+                "tiptop",
+                "top"
+            ]
+        },
+        "eugene": {
+            "NNP": [
+                "Eugene",
+                "Prince_Eugene_of_Savoy"
+            ]
+        },
+        "gordon": {
+            "NNP": []
+        },
+        "listen": {
+            "VBG": [
+                "heed",
+                "mind",
+                "listen",
+                "hear",
+                "take_heed"
+            ]
+        },
+        "1-1/2": {
+            "CD": []
+        },
+        "dominion": {
+            "NNP": [
+                "Dominion",
+                "district",
+                "territory",
+                "territorial_dominion",
+                "dominion",
+                "rule"
+            ]
+        },
+        "insider": {
+            "NN": [
+                "insider"
+            ]
+        },
+        "packer": {
+            "NN": [
+                "backpacker",
+                "packer",
+                "meat_packer",
+                "bagger",
+                "boxer"
+            ]
+        },
+        "confront": {
+            "VBN": [
+                "confront",
+                "face",
+                "present",
+                "face_up"
+            ]
+        },
+        "stimulus": {
+            "NN": [
+                "stimulation",
+                "stimulus",
+                "stimulant",
+                "input"
+            ]
+        },
+        "colour": {
+            "NN": [
+                "color",
+                "colour",
+                "semblance",
+                "gloss",
+                "coloring",
+                "colouring",
+                "coloration",
+                "colouration",
+                "vividness",
+                "coloring_material",
+                "colouring_material"
+            ]
+        },
+        "reasonably": {
+            "RB": [
+                "sanely",
+                "sensibly",
+                "reasonably",
+                "moderately",
+                "pretty",
+                "jolly",
+                "somewhat",
+                "fairly",
+                "middling",
+                "passably"
+            ]
+        },
+        "function": {
+            "VBG": [
+                "officiate",
+                "function",
+                "serve",
+                "work",
+                "operate",
+                "go",
+                "run"
+            ]
+        },
+        "stevens": {
+            "NNP": [
+                "Stevens",
+                "George_Stevens",
+                "Wallace_Stevens",
+                "Smitty_Stevens",
+                "S._Smith_Stevens",
+                "Stanley_Smith_Stevens"
+            ]
+        },
+        "red": {
+            "NNP": [
+                "loss",
+                "red_ink",
+                "red",
+                "Bolshevik",
+                "Marxist",
+                "bolshie",
+                "bolshy",
+                "Red",
+                "Red_River",
+                "redness"
+            ]
+        },
+        "225,000": {
+            "CD": []
+        },
+        "precede": {
+            "VBG": [
+                "precede",
+                "preface",
+                "premise",
+                "introduce",
+                "lead",
+                "come_before",
+                "predate",
+                "forego",
+                "forgo",
+                "antecede",
+                "antedate"
+            ]
+        },
+        "falls": {
+            "NNP": [
+                "waterfall",
+                "falls"
+            ]
+        },
+        "indies": {
+            "NNP": []
+        },
+        "last-minute": {
+            "JJ": []
+        },
+        "liberal": {
+            "JJ": [
+                "liberal"
+            ]
+        },
+        "17th": {
+            "JJ": []
+        },
+        "missile": {
+            "NN": [
+                "projectile",
+                "missile"
+            ]
+        },
+        "stark": {
+            "NNP": []
+        },
+        "caspar": {
+            "NNP": [
+                "Caspar",
+                "Gaspar"
+            ]
+        },
+        "weinberger": {
+            "NNP": []
+        },
+        "warship": {
+            "NNS": [
+                "warship",
+                "war_vessel",
+                "combat_ship"
+            ]
+        },
+        "persian": {
+            "NNP": [
+                "Persian",
+                "Farsi",
+                "Irani",
+                "Iranian"
+            ]
+        },
+        "thus": {
+            "RB": [
+                "thus",
+                "thusly",
+                "so",
+                "therefore",
+                "hence",
+                "thence"
+            ]
+        },
+        "supporter": {
+            "NNS": [
+                "athletic_supporter",
+                "supporter",
+                "suspensor",
+                "jockstrap",
+                "jock",
+                "garter",
+                "assistant",
+                "helper",
+                "help",
+                "patron",
+                "sponsor",
+                "protagonist",
+                "champion",
+                "admirer",
+                "booster",
+                "friend"
+            ]
+        },
+        "excise": {
+            "NN": [
+                "excise",
+                "excise_tax"
+            ]
+        },
+        "strait": {
+            "NNP": [
+                "pass",
+                "strait",
+                "straits",
+                "sound"
+            ]
+        },
+        "publication": {
+            "NN": [
+                "publication",
+                "publishing",
+                "issue"
+            ]
+        },
+        "voluntary": {
+            "JJ": [
+                "voluntary"
+            ]
+        },
+        "europeans": {
+            "NNPS": []
+        },
+        "finalise": {
+            "VBN": [
+                "finalize",
+                "finalise",
+                "settle",
+                "nail_down"
+            ]
+        },
+        "character": {
+            "NN": [
+                "character",
+                "graph",
+                "grapheme",
+                "graphic_symbol",
+                "reference",
+                "character_reference",
+                "eccentric",
+                "type",
+                "case",
+                "role",
+                "theatrical_role",
+                "part",
+                "persona",
+                "fiber",
+                "fibre",
+                "quality",
+                "lineament",
+                "fictional_character",
+                "fictitious_character"
+            ]
+        },
+        "applicable": {
+            "JJ": []
+        },
+        "accrual": {
+            "NNS": [
+                "accumulation",
+                "accrual",
+                "accruement"
+            ]
+        },
+        "reconvene": {
+            "VBN": [
+                "reconvene"
+            ]
+        },
+        "convene": {
+            "VBN": [
+                "convoke",
+                "convene"
+            ]
+        },
+        "deductible": {
+            "JJ": [
+                "deductible"
+            ]
+        },
+        "budgeting": {
+            "NN": []
+        },
+        "posting": {
+            "NNS": [
+                "mailing",
+                "posting",
+                "poster",
+                "placard",
+                "notice",
+                "bill",
+                "card"
+            ]
+        },
+        "newly-formed": {
+            "JJ": []
+        },
+        "california-based": {
+            "JJ": []
+        },
+        "lsi": {
+            "NNP": []
+        },
+        "graphic": {
+            "JJ": [
+                "graphic",
+                "graphical"
+            ]
+        },
+        "disrupt": {
+            "VBD": [
+                "interrupt",
+                "disrupt",
+                "break_up",
+                "cut_off"
+            ]
+        },
+        "antwerp": {
+            "NNP": [
+                "Antwerpen",
+                "Antwerp",
+                "Anvers"
+            ]
+        },
+        "train": {
+            "NNS": [
+                "gearing",
+                "gear",
+                "geartrain",
+                "power_train",
+                "train",
+                "caravan",
+                "wagon_train",
+                "string",
+                "railroad_train"
+            ]
+        },
+        "alternate": {
+            "JJ": [
+                "alternate"
+            ]
+        },
+        "texas-based": {
+            "JJ": []
+        },
+        "nyse": {
+            "NNP": [
+                "New_York_Stock_Exchange",
+                "N._Y._Stock_Exchange",
+                "NYSE",
+                "big_board"
+            ]
+        },
+        "burning": {
+            "NN": [
+                "burning",
+                "burning_at_the_stake",
+                "electrocution",
+                "combustion",
+                "burn"
+            ]
+        },
+        "parachute": {
+            "NNP": [
+                "parachute",
+                "chute"
+            ]
+        },
+        "creek": {
+            "NNP": [
+                "Creek",
+                "brook",
+                "creek"
+            ]
+        },
+        "shale": {
+            "NN": [
+                "shale"
+            ]
+        },
+        "eligible": {
+            "JJ": [
+                "eligible"
+            ]
+        },
+        "electricity": {
+            "NN": [
+                "electricity",
+                "electrical_energy",
+                "power"
+            ]
+        },
+        "uneconomical": {
+            "JJ": []
+        },
+        "rebuff": {
+            "VBD": [
+                "repel",
+                "repulse",
+                "fight_off",
+                "rebuff",
+                "drive_back",
+                "snub"
+            ]
+        },
+        "topic": {
+            "NN": [
+                "topic",
+                "subject",
+                "issue",
+                "matter",
+                "theme"
+            ]
+        },
+        "klaus": {
+            "NNP": []
+        },
+        "munich": {
+            "NNP": [
+                "Munich",
+                "Muenchen"
+            ]
+        },
+        "christopher": {
+            "NNP": [
+                "Christopher",
+                "Saint_Christopher",
+                "St._Christopher"
+            ]
+        },
+        "assemble": {
+            "VBD": [
+                "assemble",
+                "gather",
+                "get_together",
+                "meet",
+                "forgather",
+                "foregather",
+                "piece",
+                "put_together",
+                "set_up",
+                "tack",
+                "tack_together"
+            ]
+        },
+        "faction": {
+            "NNS": [
+                "faction",
+                "sect",
+                "cabal",
+                "junto",
+                "camarilla"
+            ]
+        },
+        "minneapolis": {
+            "NNP": [
+                "Minneapolis"
+            ]
+        },
+        "virus": {
+            "NNS": [
+                "virus",
+                "computer_virus"
+            ]
+        },
+        "deter": {
+            "VB": [
+                "dissuade",
+                "deter",
+                "discourage"
+            ]
+        },
+        "acquirer": {
+            "NN": [
+                "merchant_bank",
+                "acquirer"
+            ]
+        },
+        "n/a": {
+            "NN": []
+        },
+        "assets": {
+            "NNPS": [
+                "assets"
+            ]
+        },
+        "bind": {
+            "VBN": [
+                "constipate",
+                "bind",
+                "tie",
+                "oblige",
+                "hold",
+                "obligate",
+                "tie_down",
+                "tie_up",
+                "truss",
+                "bandage",
+                "attach",
+                "bond",
+                "adhere",
+                "hold_fast",
+                "stick",
+                "stick_to"
+            ]
+        },
+        "1.04": {
+            "CD": []
+        },
+        "northwestern": {
+            "JJ": []
+        },
+        "issuer": {
+            "NN": [
+                "issuer"
+            ]
+        },
+        "language": {
+            "NN": [
+                "terminology",
+                "nomenclature",
+                "language",
+                "speech",
+                "linguistic_process",
+                "lyric",
+                "words",
+                "speech_communication",
+                "spoken_communication",
+                "spoken_language",
+                "voice_communication",
+                "oral_communication",
+                "linguistic_communication"
+            ]
+        },
+        "micro": {
+            "JJ": []
+        },
+        "minus": {
+            "NNS": [
+                "subtraction",
+                "minus"
+            ]
+        },
+        "melbourne": {
+            "NNP": [
+                "Melbourne"
+            ]
+        },
+        "rolling": {
+            "NNP": [
+                "wheeling",
+                "rolling",
+                "peal",
+                "pealing",
+                "roll"
+            ]
+        },
+        "atlanta": {
+            "NNP": [
+                "Atlanta",
+                "battle_of_Atlanta",
+                "capital_of_Georgia"
+            ]
+        },
+        "meter": {
+            "NNS": [
+                "meter",
+                "metre",
+                "time",
+                "measure",
+                "beat",
+                "cadence",
+                "m"
+            ]
+        },
+        "underwritten": {
+            "JJ": []
+        },
+        "33p": {
+            "NN": []
+        },
+        "prosperity": {
+            "NN": [
+                "prosperity",
+                "successfulness"
+            ]
+        },
+        "absolutely": {
+            "RB": [
+                "absolutely",
+                "perfectly",
+                "utterly",
+                "dead"
+            ]
+        },
+        "tehran": {
+            "NNP": [
+                "Teheran",
+                "Tehran",
+                "capital_of_Iran",
+                "Iranian_capital"
+            ]
+        },
+        "2.86": {
+            "CD": []
+        },
+        "reposition": {
+            "VBG": [
+                "reposition",
+                "shift",
+                "dislodge"
+            ]
+        },
+        "concerted": {
+            "JJ": []
+        },
+        "surrender": {
+            "NN": [
+                "capitulation",
+                "fall",
+                "surrender",
+                "giving_up",
+                "yielding",
+                "resignation"
+            ]
+        },
+        "sedgwick": {
+            "NNP": []
+        },
+        "deduct": {
+            "VBG": [
+                "deduce",
+                "infer",
+                "deduct",
+                "derive",
+                "withhold",
+                "recoup",
+                "subtract",
+                "take_off"
+            ]
+        },
+        "2.18": {
+            "CD": []
+        },
+        "sanchez": {
+            "NNP": [
+                "Sanchez",
+                "Ilich_Sanchez",
+                "Ilich_Ramirez_Sanchez",
+                "Carlos",
+                "Carlos_the_Jackal",
+                "Salim",
+                "Andres_Martinez",
+                "Taurus",
+                "Glen_Gebhard",
+                "Hector_Hevodidbon",
+                "Michael_Assat"
+            ]
+        },
+        "carlos": {
+            "NNP": [
+                "Sanchez",
+                "Ilich_Sanchez",
+                "Ilich_Ramirez_Sanchez",
+                "Carlos",
+                "Carlos_the_Jackal",
+                "Salim",
+                "Andres_Martinez",
+                "Taurus",
+                "Glen_Gebhard",
+                "Hector_Hevodidbon",
+                "Michael_Assat"
+            ]
+        },
+        "71.3": {
+            "CD": []
+        },
+        "shatter": {
+            "VBD": [
+                "shatter"
+            ]
+        },
+        "commence": {
+            "VBD": [
+                "start",
+                "start_up",
+                "embark_on",
+                "commence",
+                "begin",
+                "lead_off",
+                "get_down",
+                "get",
+                "start_out",
+                "set_about",
+                "set_out"
+            ]
+        },
+        "asher": {
+            "NNP": []
+        },
+        "abusive": {
+            "JJ": []
+        },
+        "wife": {
+            "NN": [
+                "wife",
+                "married_woman"
+            ]
+        },
+        "bethesda": {
+            "NNP": []
+        },
+        "naval": {
+            "NNP": [],
+            "JJ": [
+                "naval"
+            ]
+        },
+        "pleased": {
+            "JJ": [
+                "pleased"
+            ]
+        },
+        "unresolved": {
+            "JJ": [
+                "unsolved",
+                "unresolved"
+            ]
+        },
+        "giovanni": {
+            "NNP": []
+        },
+        "consequence": {
+            "NNS": [
+                "consequence",
+                "import",
+                "moment",
+                "aftermath",
+                "effect",
+                "outcome",
+                "result",
+                "event",
+                "issue",
+                "upshot"
+            ]
+        },
+        "richfield": {
+            "NNP": []
+        },
+        "magnetic": {
+            "JJ": [
+                "magnetic",
+                "magnetized",
+                "magnetised"
+            ]
+        },
+        "rosenberg": {
+            "NNP": []
+        },
+        "stavanger": {
+            "NNP": [
+                "Stavanger"
+            ]
+        },
+        "vision": {
+            "NNP": [
+                "vision",
+                "imagination",
+                "imaginativeness",
+                "visual_sensation",
+                "sight",
+                "visual_sense",
+                "visual_modality"
+            ]
+        },
+        "wellhead": {
+            "NN": [
+                "wellhead",
+                "wellspring"
+            ]
+        },
+        "langley": {
+            "NNP": [
+                "Langley",
+                "Samuel_Pierpoint_Langley",
+                "langley"
+            ]
+        },
+        "juan": {
+            "NNP": []
+        },
+        "clean": {
+            "VBZ": [
+                "clean",
+                "scavenge",
+                "strip",
+                "cleanse",
+                "houseclean",
+                "clean_house",
+                "pick",
+                "make_clean"
+            ]
+        },
+        "francois": {
+            "NNP": []
+        },
+        "seperate": {
+            "JJ": []
+        },
+        "liquor": {
+            "NNS": [
+                "liquor",
+                "pot_liquor",
+                "pot_likker",
+                "spirits",
+                "booze",
+                "hard_drink",
+                "hard_liquor",
+                "John_Barleycorn",
+                "strong_drink"
+            ]
+        },
+        "cooler": {
+            "JJR": [],
+            "NNS": [
+                "cooler",
+                "tank",
+                "ice_chest"
+            ]
+        },
+        "succesfull": {
+            "JJ": []
+        },
+        "alive": {
+            "JJ": [
+                "animated",
+                "alive",
+                "alive(p)",
+                "live"
+            ]
+        },
+        "sunday": {
+            "NNP": [
+                "Sunday",
+                "Billy_Sunday",
+                "William_Ashley_Sunday",
+                "Lord's_Day",
+                "Dominicus",
+                "Sun"
+            ]
+        },
+        "re-examine": {
+            "VB": [
+                "re-examine"
+            ]
+        },
+        "hammer": {
+            "VB": [
+                "forge",
+                "hammer"
+            ]
+        },
+        "bet": {
+            "NNS": [
+                "bet",
+                "wager",
+                "stake",
+                "stakes"
+            ]
+        },
+        "anyone": {
+            "NN": []
+        },
+        "regret": {
+            "VB": [
+                "regret",
+                "repent",
+                "rue"
+            ]
+        },
+        "adherence": {
+            "NN": [
+                "adhesiveness",
+                "adhesion",
+                "adherence",
+                "bond",
+                "attachment"
+            ]
+        },
+        "wilhelm": {
+            "NNP": []
+        },
+        "interpret": {
+            "VBD": [
+                "understand",
+                "read",
+                "interpret",
+                "translate",
+                "render",
+                "represent",
+                "rede",
+                "construe",
+                "see"
+            ]
+        },
+        "gesture": {
+            "NN": [
+                "gesture",
+                "motion"
+            ]
+        },
+        "insurer": {
+            "NN": [
+                "insurance_company",
+                "insurance_firm",
+                "insurer",
+                "insurance_underwriter",
+                "underwriter"
+            ]
+        },
+        "82.3": {
+            "CD": []
+        },
+        "portland": {
+            "NNP": [
+                "Portland"
+            ]
+        },
+        "kaiser": {
+            "NNP": [
+                "Kaiser"
+            ]
+        },
+        "denounce": {
+            "VBD": [
+                "denounce",
+                "tell_on",
+                "betray",
+                "give_away",
+                "rat",
+                "grass",
+                "shit",
+                "shop",
+                "snitch",
+                "stag",
+                "stigmatize",
+                "stigmatise",
+                "brand",
+                "mark"
+            ]
+        },
+        "mikhail": {
+            "NNP": []
+        },
+        "deflect": {
+            "VB": [
+                "parry",
+                "block",
+                "deflect",
+                "distract",
+                "bend",
+                "turn_away",
+                "debar",
+                "forefend",
+                "forfend",
+                "obviate",
+                "avert",
+                "head_off",
+                "stave_off",
+                "fend_off",
+                "avoid",
+                "ward_off"
+            ]
+        },
+        "rebel": {
+            "NNS": [
+                "maverick",
+                "rebel",
+                "insurgent",
+                "insurrectionist",
+                "freedom_fighter",
+                "Rebel",
+                "Reb",
+                "Johnny_Reb",
+                "Johnny",
+                "greyback"
+            ]
+        },
+        "confrontation": {
+            "NN": [
+                "confrontation",
+                "opposition",
+                "encounter",
+                "showdown",
+                "face-off"
+            ]
+        },
+        "adventure": {
+            "NN": [
+                "adventure",
+                "escapade",
+                "risky_venture",
+                "dangerous_undertaking"
+            ]
+        },
+        "gorbachev": {
+            "NNP": [
+                "Gorbachev",
+                "Mikhail_Gorbachev",
+                "Mikhail_Sergeyevich_Gorbachev"
+            ]
+        },
+        "parliamentary": {
+            "JJ": [
+                "parliamentary"
+            ]
+        },
+        "urgent": {
+            "JJ": []
+        },
+        "broader": {
+            "JJR": []
+        },
+        "armed": {
+            "JJ": [
+                "armed"
+            ]
+        },
+        "secondary": {
+            "JJ": [
+                "secondary"
+            ]
+        },
+        "retroactively": {
+            "RB": [
+                "retroactively"
+            ]
+        },
+        "modify": {
+            "VB": [
+                "change",
+                "alter",
+                "modify",
+                "qualify"
+            ]
+        },
+        "unprecedented": {
+            "JJ": [
+                "unprecedented"
+            ]
+        },
+        "silkworm": {
+            "NNP": [
+                "silkworm",
+                "giant_silkworm",
+                "wild_wilkworm"
+            ]
+        },
+        "cents": {
             "NNP": []
         }
     }
