@@ -45,11 +45,11 @@ var expansionParam1 =
 	'wordnetRelation': 'synonyms',
 	'redisId_words':14,
 	'redisId_context':13,
-	'comparison': distance.BalAdd,
+	'comparison': distance.Add,
 	'redis_exec': redis_exec,
-	'wordnet_exec': wordnet_exec
+	'wordnet_exec': wordnet_exec,
+	'context': true
 }
-
 
 function redis_exec(data, db, redis_buffer)
 	{
@@ -76,14 +76,15 @@ function redis_exec(data, db, redis_buffer)
 				data_reduced.push(value)
 		}, this)
 
-		var data_reduced_cmd = _.map(data_reduced, function(value){ return value.replace(/\`/g,'\\`') })
+		// var data_reduced_cmd = _.map(data_reduced, function(value){ return value.replace(/\`/g,'\\`') })
 
 		if (data_reduced.length > 0)
 		{
-			var cmd = "node " + redis_path + " " + JSON.stringify(data_reduced_cmd).replace(/[\[\]]/g, ' ').replace(/\"\,\"/g,'" "') + " " + db
+			var cmd = "node " + redis_path + " " + JSON.stringify(data_reduced).replace(/[\[\]]/g, ' ').replace(/\"\,\"/g,'" "') + " " + db
 			console.log(cmd)
 			// result is hash
 			var result = JSON.parse(execSync.exec(cmd)['stdout'])
+			console.log("get res")
 
 			_.each(result, function(value, key, list){ 
 				// this.redis_buffer[db][key] = {'data': value, 'count':0}
@@ -101,11 +102,12 @@ function redis_exec(data, db, redis_buffer)
 		_.each(data, function(value, key, list){ 
 
 			if (!(value in redis_buffer[db]))
-			{
-			console.log(value+' was not found in buffer')
-			process.exit(0)
-			}
-			data_result.push(redis_buffer[db][value])
+				{
+				console.log(value+' was not found in redis buffer')	
+				data_result.push([])
+				}
+			else
+				data_result.push(redis_buffer[db][value])
 		}, this)
 
 		return data_result
@@ -320,12 +322,11 @@ function featureExtractorU(sentence, features) {
 
 function featureExtractorUCoreNLP(sentence, features) {
 
-
 	_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
 		_.each(sen['tokens'], function(value, key, list){
-			
 			if ('lemma' in value)
-				features[value['lemma'].toLowerCase()] = 1 
+				// if (['ORGANIZATION', 'DATE', 'NUMBER'].indexOf(value['ner']) == -1)
+					features[value['lemma'].toLowerCase()] = 1 
 			else
 				throw new Error("where is lemma '"+value);
 
@@ -660,6 +661,8 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 		featureExpansionPhrase: featureExpansionPhrase,
 		featureFine: featureFine,
 		expansionParam: expansionParam,
+		stopwords: JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')),
+		
 		// inputSplitter: inputSplitter,
 		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
 
