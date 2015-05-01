@@ -269,6 +269,42 @@ if (reuters)
 	// console.log(JSON.stringify(stats[0]['stats'], null, 4))
 	console.log(JSON.stringify(stats[0]['data'], null, 4))
 	console.log(JSON.stringify(stats[0]['stats'], null, 4))
+
+	var features_all = 0
+	var features_with_emb = 0
+	var features_with_candidates = 0
+	var features_expaned = 0
+	var features_has_poison = 0
+	_.each(stats[0]['data'], function(record, key, list){ 
+		features_all += Object.keys(record['expansioned']).length
+
+		_.each(record['expansioned'], function(value, key, list){ 
+			
+			if ('embedding_true' in value)
+				if (value['embedding_true'] == 1)
+					features_with_emb += 1
+		
+			if ('candidates' in value)
+				if (value['candidates'].length > 0)
+					features_with_candidates += 1
+		
+			if ('expansion' in value)
+				if (value['expansion'].length > 0)
+					features_expaned += 1
+
+			if ('expansion_result' in value)
+				if (value['expansion_result'][0][1] < 0)
+					features_has_poison += 1
+		
+		}, this)
+	}, this)
+
+	console.log("features_all "+features_all)
+	console.log("features_with_emb "+features_with_emb)
+	console.log("features_with_candidates "+features_with_candidates)
+	console.log("features_expaned "+features_expaned)
+	console.log("features_has_poison "+features_has_poison)
+
 	process.exit(0)
 }
 
