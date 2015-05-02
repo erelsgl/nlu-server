@@ -42,13 +42,34 @@ var regexpNormalizer_simple = ftrs.RegexpNormalizer(
 
 var expansionParam1 = 
 {
-	'wordnetRelation': 'synonyms',
 	'redisId_words':14,
 	'redisId_context':13,
 	'comparison': distance.Add,
 	'redis_exec': redis_exec,
 	'wordnet_exec': wordnet_exec,
 	'context': true,
+	'wordnet_relation':'syn'
+}
+
+var expansionParam2 = 
+{
+	'redisId_words':14,
+	'redisId_context':13,
+	'comparison': distance.Add,
+	'redis_exec': redis_exec,
+	'wordnet_exec': wordnet_exec,
+	'context': true,
+	'wordnet_relation':'all'
+}
+
+var expansionParamnoCo = 
+{
+	'redisId_words':14,
+	'redisId_context':13,
+	'comparison': distance.cosine_distance,
+	'redis_exec': redis_exec,
+	'wordnet_exec': wordnet_exec,
+	'context': false,
 	'wordnet_relation':'all'
 }
 
@@ -825,8 +846,11 @@ module.exports = {
 		SVM_Expansion: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
 
 		Reuter: enhance(SvmPerfMultiClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false),
-		ReuterBinExp: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, expansionParam1),
+		ReuterBinExpSyn: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, expansionParam1),
+		ReuterBinExpSynHyperHypo: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, expansionParam2),
+		ReuterBinExpSynHyperHypoNoContext: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, expansionParamnoCo),
 		ReuterBin: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
+
 };
 
 
