@@ -426,7 +426,7 @@ if (process.argv[1] === __filename)
 	console.log("train is loaded")
 
 	var test_data = _.compact(_.map(test_data, function(value){ var elem = {}
-															if (field in value['TEXT']) 
+															if ((field in value['TEXT']) && (value['$']['NEWID'] != '20959')) 
 																{
 																value['CORENLP'] = value[field+'_CORENLP']
 																// delete value['TITLE_CORENLP']
