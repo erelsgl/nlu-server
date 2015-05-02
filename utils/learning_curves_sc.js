@@ -443,7 +443,9 @@ if (process.argv[1] === __filename)
 
 	var classifiers  = {
 				
-				ReuterBinExp: classifier.ReuterBinExp,
+				ReuterBinExpSyn: classifier.ReuterBinExpSyn,
+				ReuterBinExpSynHyperHypo: classifier.ReuterBinExpSynHyperHypo,
+				ReuterBinExpSynHyperHypoNoContext: classifier.ReuterBinExpSynHyperHypoNoContext,
 				ReuterBin: classifier.ReuterBin,
 
 			}
