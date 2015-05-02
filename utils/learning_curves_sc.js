@@ -456,6 +456,11 @@ if (process.argv[1] === __filename)
 		}, this)
 	}, this)
 	
+
+	test_data = _.shuffle(test_data)
+	test_data = test_data.splice(0,400)
+	console.log(test_data.length)
+
 	learning_curves(classifiers, test_data, st, 10/*step*/, 5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
