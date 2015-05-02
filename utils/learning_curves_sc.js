@@ -253,6 +253,8 @@ function compare(gldata)
 function plot(fold, parameter, stat, classifiers)
 {
 
+	
+	
 	var values = []
 	var linetype = fold
 
@@ -323,7 +325,7 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds)
 		
 		stat = {}
 		
-		var mytrain = []
+//		var mytrain = []
 
 		partitions.partitions_consistent(dataset, numOfFolds, function(train, test, fold) {
 			var index = step
@@ -366,7 +368,7 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds)
 
 			  	oldstats = bars.copyobj(stats)
 
-                extractGlobal(parameters, classifiers, mytrain, report, stat)
+                extractGlobal(parameters, classifiers, mytrainset, report, stat)
                 
                 stat['_sized'] = test.length
                 // stat['_sizec'] = bars.extractdataset(test).length
@@ -386,7 +388,7 @@ if (process.argv[1] === __filename)
 {
 
 
-	var field = "BODY"
+	var field = "TITLE"
 	
 	var path = __dirname + "/../../reuters2json/R8/"
 
@@ -459,7 +461,7 @@ if (process.argv[1] === __filename)
 	
 
 	test_data = _.shuffle(test_data)
-	test_data = test_data.splice(0,400)
+	test_data = test_data.splice(0,500)
 	console.log(test_data.length)
 
 	learning_curves(classifiers, test_data, st, 10/*step*/, 5/*numOfFolds*/, function(){
