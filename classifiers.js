@@ -94,9 +94,15 @@ function redis_exec(data, db, redis_buffer)
 		
 		if (Object.keys(redis_buffer) == 0)
 		{
-			var redis_buffer_sub = JSON.parse(fs.readFileSync(buffer_path,'UTF-8'))
-			_.each(redis_buffer_sub, function(value, key, list){ 
-				redis_buffer[key] = value
+			var files = fs.readdirSync("./")
+			var files = _.filter(files, function(num){ return !_.isNull(num.match(/redis_buffer/g)) });
+
+			_.each(files, function(file, key, list){ 
+				var redis_buffer_sub = JSON.parse(fs.readFileSync("./"+file,'UTF-8'))
+
+				_.each(redis_buffer_sub, function(value, key1, list){ 
+					redis_buffer[key1] = value
+				}, this)
 			}, this)
 		}
 
@@ -123,10 +129,24 @@ function redis_exec(data, db, redis_buffer)
 				redis_buffer[db][key] = value
 			}, this)
 
-			if (_.random(0,35) == 5)
+			if (_.random(0,50) == 5)
 			{
 				console.log("redis writing buffer ...")
-            	fs.writeFileSync(buffer_path, JSON.stringify(redis_buffer, null, 4))
+				
+            	// fs.writeFileSync(buffer_path, JSON.stringify(redis_buffer, null, 4))
+
+            	var buffer_splited = _.groupBy(Object.keys(redis_buffer), function(element, index){
+        			return index%3;
+			 	})
+
+				_.each(_.toArray(buffer_splited), function(data, key, list){
+					var buffer_to_write = {}
+					_.each(data, function(value, key1, list){ 
+						buffer_to_write[value] = redis_buffer[value]
+					}, this)
+				    console.log("writing "+key)
+				    fs.writeFileSync('./redis_buffer.'+key+".json", JSON.stringify(buffer_to_write, null, 4))
+				}, this)
         	}
 		}
 
