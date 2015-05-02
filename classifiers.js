@@ -48,7 +48,8 @@ var expansionParam1 =
 	'comparison': distance.Add,
 	'redis_exec': redis_exec,
 	'wordnet_exec': wordnet_exec,
-	'context': true
+	'context': true,
+	'wordnet_relation':'all'
 }
 
 function redis_exec(data, db, redis_buffer)
@@ -84,7 +85,6 @@ function redis_exec(data, db, redis_buffer)
 			console.log(cmd)
 			// result is hash
 			var result = JSON.parse(execSync.exec(cmd)['stdout'])
-			console.log("get res")
 
 			_.each(result, function(value, key, list){ 
 				// this.redis_buffer[db][key] = {'data': value, 'count':0}
