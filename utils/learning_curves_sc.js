@@ -244,7 +244,7 @@ function compare(gldata)
 	})
 
 	console.log('Length of diff '+diff.length)
-	console.log(JSON.stringify(diff, null, 4))
+//	console.log(JSON.stringify(diff, null, 4))
 
 
 }
@@ -258,7 +258,7 @@ function plot(fold, parameter, stat, classifiers)
 	var values = []
 	var linetype = fold
 
-	console.log(JSON.stringify(stat, null, 4))
+	//console.log(JSON.stringify(stat, null, 4))
 
 	var header = "train\t" + Object.keys(classifiers).join("-fold"+fold+"\t")+"-fold"+fold+"\n";
 	fs.writeFileSync(__dirname + dirr + parameter+"fold"+fold, header, 'utf-8')
@@ -315,7 +315,7 @@ function plot(fold, parameter, stat, classifiers)
 }
 
 
-function learning_curves(classifiers, dataset, parameters, step, numOfFolds) 
+function learning_curves(classifiers, dataset, parameters, step, step0, limit, numOfFolds) 
 {
 
 		checkGnuPlot
@@ -328,7 +328,7 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds)
 //		var mytrain = []
 
 		partitions.partitions_consistent(dataset, numOfFolds, function(train, test, fold) {
-			var index = step
+			var index = step0
 			var oldstats = []
 			var stats
 
@@ -340,8 +340,8 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds)
 
 				var mytrainset = train.slice(0, index)
 			  	
-			  	// index += (index < limit ? step0 : step)
-			  	index += step
+			  	index += (index < limit ? step0 : step)
+			  	//index += step
 			  	var testset = test
 
 				console.log("fold"+fold)
@@ -466,7 +466,7 @@ if (process.argv[1] === __filename)
 	test_data = test_data.splice(0,500)
 	console.log(test_data.length)
 
-	learning_curves(classifiers, test_data, st, 10/*step*/, 5/*numOfFolds*/, function(){
+	learning_curves(classifiers, test_data, st, 50/*step*/,10,50, 5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
