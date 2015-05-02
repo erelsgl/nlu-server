@@ -339,6 +339,9 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	var report = []
 
 				var mytrainset = train.slice(0, index)
+
+				if (mytrainset.length > 100)
+					break
 			  	
 			  	index += (index < limit ? step0 : step)
 			  	//index += step
@@ -388,7 +391,7 @@ if (process.argv[1] === __filename)
 {
 
 
-	var field = "TITLE"
+	var field = "BODY"
 	
 	var path = __dirname + "/../../reuters2json/R8/"
 
@@ -446,6 +449,7 @@ if (process.argv[1] === __filename)
 				ReuterBinExpSyn: classifier.ReuterBinExpSyn,
 				ReuterBinExpSynHyperHypo: classifier.ReuterBinExpSynHyperHypo,
 				ReuterBinExpSynHyperHypoNoContext: classifier.ReuterBinExpSynHyperHypoNoContext,
+				ReuterBinExpSynHyperHypoBal: classifier.ReuterBinExpSynHyperHypoBal,
 				ReuterBin: classifier.ReuterBin,
 
 			}
@@ -463,10 +467,11 @@ if (process.argv[1] === __filename)
 	
 
 	test_data = _.shuffle(test_data)
-	test_data = test_data.splice(0,500)
+	test_data = _.shuffle(test_data)
+	test_data = test_data.splice(0,1000)
 	console.log(test_data.length)
 
-	learning_curves(classifiers, test_data, st, 50/*step*/,10,50, 5/*numOfFolds*/, function(){
+	learning_curves(classifiers, test_data, st, 10/*step*/,5,50, 5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})

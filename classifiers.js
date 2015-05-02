@@ -62,6 +62,17 @@ var expansionParam2 =
 	'wordnet_relation':'all'
 }
 
+var expansionParam3 = 
+{
+	'redisId_words':14,
+	'redisId_context':13,
+	'comparison': distance.BalAdd,
+	'redis_exec': redis_exec,
+	'wordnet_exec': wordnet_exec,
+	'context': true,
+	'wordnet_relation':'all'
+}
+
 var expansionParamnoCo = 
 {
 	'redisId_words':14,
@@ -848,6 +859,7 @@ module.exports = {
 		// Reuter: enhance(SvmPerfMultiClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false),
 		ReuterBinExpSyn: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, expansionParam1),
 		ReuterBinExpSynHyperHypo: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, expansionParam2),
+		ReuterBinExpSynHyperHypoBal: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, expansionParam3),
 		ReuterBinExpSynHyperHypoNoContext: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, expansionParamnoCo),
 		ReuterBin: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 
