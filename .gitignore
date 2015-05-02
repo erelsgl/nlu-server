@@ -4,6 +4,7 @@
 *.bk
 
 redis_buffer.json
+./redis_buffer.json
 npm-debug.log
 /retrainedClassifiers
 /.project
