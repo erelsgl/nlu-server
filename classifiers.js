@@ -91,7 +91,7 @@ function redis_exec(data, db, redis_buffer)
 				redis_buffer[db][key] = value
 			}, this)
 
-			if (_.random(0,15) == 5)
+			if (_.random(0,25) == 5)
 			{
 				console.log("redis writing buffer ...")
             	fs.writeFileSync(buffer_path, JSON.stringify(redis_buffer, null, 4))

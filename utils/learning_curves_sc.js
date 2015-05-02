@@ -122,9 +122,9 @@ function extractGlobal(parameters, classifiers, trainset, report, stat)
     		stat[param][trainsize]['__size'].push(bars.extractintent(trainset, param.substring(0,param.indexOf("_"))).length)
     	}
     	else
-    	stat[param][trainsize]['__size'].push(bars.extractdataset(trainset).length)
+    	stat[param][trainsize]['__size'].push(trainset.length)
 
-    	stat[param][trainsize]['_size'].push(bars.extractdataset(trainset).length)
+    	stat[param][trainsize]['_size'].push(trainset.length)
 
 		_.each(Object.keys(classifiers), function(classifier, key, list){
     		
