@@ -369,7 +369,8 @@ function learning_curves(classifiers, dataset, parameters, step, numOfFolds)
                 extractGlobal(parameters, classifiers, mytrain, report, stat)
                 
                 stat['_sized'] = test.length
-                stat['_sizec'] = bars.extractdataset(test).length
+                // stat['_sizec'] = bars.extractdataset(test).length
+                stat['_sizec'] = test.length
 
                 _.each(parameters, function(parameter, key, list){
 					plot(fold, parameter, stat, classifiers)
