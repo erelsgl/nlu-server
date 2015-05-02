@@ -75,16 +75,14 @@ async.waterfall([
 
     	var output = []
 
+    	_.each(results, function(value, key, list){
+
+			output = output.concat(value['synonyms']) 
+
+		}, this)
+
     	if (relation == "syn")
-		{
-			_.each(results, function(value, key, list){
-
-					output = output.concat(value['synonyms']) 
-
-			}, this)
-
 			callback(null, output)
-		}
 
 		if (relation == "all")
 		{
