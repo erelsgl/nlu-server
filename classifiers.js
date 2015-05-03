@@ -89,6 +89,9 @@ function redis_exec(data, db, redis_buffer)
 		if (data.length == 0)
 			return []
 
+		if ((data.length == 1) && (data[0] == "punct_``"))
+			return []
+
 		var redis_path = './utils/getred.js'
 		var buffer_path = './redis_buffer.json'
 		
