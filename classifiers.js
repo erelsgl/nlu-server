@@ -100,8 +100,15 @@ function redis_exec(data, db, redis_buffer)
 			_.each(files, function(file, key, list){ 
 				var redis_buffer_sub = JSON.parse(fs.readFileSync("./"+file,'UTF-8'))
 
-				_.each(redis_buffer_sub, function(value, key1, list){ 
-					redis_buffer[key1] = value
+				_.each(redis_buffer_sub, function(value, db, list){
+					_.each(value, function(emb, feat, list){ 
+						
+						if (!(db in redis_buffer))
+							redis_buffer[db] = {}
+
+						redis_buffer[db][feat] = emb
+
+					 }, this) 
 				}, this)
 			}, this)
 		}
@@ -129,20 +136,35 @@ function redis_exec(data, db, redis_buffer)
 				redis_buffer[db][key] = value
 			}, this)
 
-			if (_.random(0,50) == 5)
+			if ((_.random(0,50) == 5) && (_.isNull(data_reduced[0].match(/punct/g))))
 			{
 				console.log("redis writing buffer ...")
 				
             	// fs.writeFileSync(buffer_path, JSON.stringify(redis_buffer, null, 4))
 
-            	var buffer_splited = _.groupBy(Object.keys(redis_buffer), function(element, index){
-        			return index%3;
+            	var keys = []
+
+            	_.each(redis_buffer, function(value, key, list){ 
+            		keys = keys.concat(Object.keys(value))
+            	}, this)
+
+            	var buffer_splited = _.groupBy(_.unique(keys), function(element, index){
+        			return index%5;
 			 	})
 
 				_.each(_.toArray(buffer_splited), function(data, key, list){
 					var buffer_to_write = {}
-					_.each(data, function(value, key1, list){ 
-						buffer_to_write[value] = redis_buffer[value]
+					_.each(data, function(feat, key1, list){ 
+						_.each(redis_buffer, function(value, key2, list){ 
+							if (feat in value)
+								{
+									if (!(key2 in buffer_to_write))
+										buffer_to_write[key2] = {}
+
+									buffer_to_write[key2][feat] = redis_buffer[key2][feat]
+
+								}
+						}, this)
 					}, this)
 				    console.log("writing "+key)
 				    fs.writeFileSync('./redis_buffer.'+key+".json", JSON.stringify(buffer_to_write, null, 4))
