@@ -139,7 +139,7 @@ function redis_exec(data, db, redis_buffer)
 				redis_buffer[db][key] = value
 			}, this)
 
-			if ((_.random(0,50) == 5) && (_.isNull(data_reduced[0].match(/punct/g))))
+			if ((_.random(0,100) == 5) && (_.isNull(data_reduced[0].match(/punct/g))))
 			{
 				console.log("redis writing buffer ...")
 				
