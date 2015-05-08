@@ -209,7 +209,7 @@ function parse_filter(parse)
 if (reuters)
 {
 
-	var field = "BODY"
+	var field = "TITLE"
 	
 	var path = __dirname + "/../reuters2json/R8/"
 
@@ -230,80 +230,175 @@ if (reuters)
 		test_data = test_data.concat(JSON.parse(fs.readFileSync(path+"test/"+file)))
 	}, this)
 
+	// filter EARN
+
+	test_data = _.compact(_.filter(test_data, function(num){ if (num['TOPICS'].indexOf('earn')==-1) return num }))
+	train_data = _.compact(_.filter(train_data, function(num){ if (num['TOPICS'].indexOf('earn')==-1) return num }))
+
 	// there is a number of more that one sentence	
 	
+	// var train_data = _.compact(_.map(train_data, function(value){ var elem = {}
+	// 														if (('BODY' in value['TEXT']) && ('TITLE' in value['TEXT']) )
+	// 															{
+	// 																if (value['TITLE_CORENLP']['sentences'].length > 0)
+	// 																{
+	// 																	value['CORENLP'] = value['BODY_CORENLP']
+																		
+	// 																	value['CORENLP']['sentences'][0]['token'] = value['BODY_CORENLP']['sentences'][0]['tokens'].concat(value['TITLE_CORENLP']['sentences'][0]['tokens'])
+
+	// 																	delete value['TITLE_CORENLP']
+	// 																	elem['input'] =  value
+	// 																	elem['output'] = value['TOPICS'][0]
+	// 																	return elem
+	// 																}
+	// 															} 
+	// 														}))
+
+	// 	// var test_data = _.compact(_.map(test, function(value){ if (field in value['TEXT']) return value }))
+	// var test_data = _.compact(_.map(test_data, function(value){ var elem = {}
+	// 														if ((field in value['TEXT']) && (value['$']['NEWID'] != '20959')) 
+	// 															{
+	// 															value['CORENLP'] = value[field + '_CORENLP']
+	// 															// delete value['TITLE_CORENLP']
+	// 															elem['input'] = value
+	// 															elem['input']['input'] = value['TEXT'][field]
+	// 															elem['output'] = value['TOPICS'][0]
+	// 															return elem
+	// 															}
+	// 														}))
+
+
+
 	var train_data = _.compact(_.map(train_data, function(value){ var elem = {}
 															if ('BODY' in value['TEXT']) 
 																{
+																	
+																value['BODY_CORENLP']['sentences'] = [ value['BODY_CORENLP']['sentences'][0] ]
 																value['CORENLP'] = value['BODY_CORENLP']
+																	
 																delete value['TITLE_CORENLP']
 																elem['input'] =  value
 																elem['output'] = value['TOPICS'][0]
 																return elem
+																	
 																} 
 															}))
 
-	console.log("train is loaded")
-
-	// var test_data = _.compact(_.map(test, function(value){ if (field in value['TEXT']) return value }))
 	var test_data = _.compact(_.map(test_data, function(value){ var elem = {}
-															if (field in value['TEXT']) 
+															if ('BODY' in value['TEXT'])
 																{
+																
+																value['BODY_CORENLP']['sentences'] = [ value['BODY_CORENLP']['sentences'][0] ]
 																value['CORENLP'] = value['BODY_CORENLP']
 																delete value['TITLE_CORENLP']
+
 																elem['input'] = value
-																elem['input']['input'] = value['TEXT']['BODY']
+																elem['input']['input'] = _.pluck(value['BODY_CORENLP']['sentences'][0]['tokens'], 'word').join(" ")
 																elem['output'] = value['TOPICS'][0]
 																return elem
 																}
 															}))
-
-
 	console.log("test is ready")
 
 	console.log(train_data.length)
 	console.log(test_data.length)
 
-	var stats = trainAndTest.trainAndTest_hash(classifier.ReuterBinExp, train_data, test_data, 5)
+	train_data = _.shuffle(train_data)
+	test_data = _.shuffle(test_data)
 
+	train_data = train_data.splice(0,100)
+	test_data = test_data.splice(0,200)
+
+	console.log(train_data.length)
+	console.log(test_data.length)
+
+	// var stats = trainAndTest.trainAndTest_hash(classifier.ReuterBin, train_data, test_data, 5)
 	// console.log(JSON.stringify(stats[0]['stats'], null, 4))
-	console.log(JSON.stringify(stats[0]['data'], null, 4))
-	console.log(JSON.stringify(stats[0]['stats'], null, 4))
 
-	var features_all = 0
-	var features_with_emb = 0
-	var features_with_candidates = 0
-	var features_expaned = 0
-	var features_has_poison = 0
-	_.each(stats[0]['data'], function(record, key, list){ 
-		features_all += Object.keys(record['expansioned']).length
 
-		_.each(record['expansioned'], function(value, key, list){ 
+	// var stats = trainAndTest.trainAndTest_hash(classifier.ReuterBinPPDB, train_data, test_data, 5)
+
+	// console.log(JSON.stringify(stats[0]['data'], null, 4))
+	// console.log(JSON.stringify(stats[0]['stats'], null, 4))
+
+	// var features_all = 0
+	// var features_different_with_lemma = 0
+	// var features_with_emb = 0
+	// var wordnet_candidates = 0
+	// var candidates_in_train = 0
+	// var features_expaned_with_context = 0
+	// var expansion_useful_with_context = 0
+	// var expansion_useful_without_context = 0
+	// var candidates_with_emb = 0
+	// var expansion_with_context = 0 
+	// var expansion_without_context = 0
+
+	// _.each(stats[0]['data'], function(record, key, list){ 
+	// 	features_all += Object.keys(record['expansioned']).length
+
+	// 	_.each(record['expansioned'], function(value, key, list){ 
+
+	// 		if (value['lemma'] != value['word'])
+	// 			features_different_with_lemma += 1
 			
-			if ('embedding_true' in value)
-				if (value['embedding_true'] == 1)
-					features_with_emb += 1
+	// 		if ('embedding_true' in value)
+	// 			if (value['embedding_true'] == 1)
+	// 				features_with_emb += 1
 		
-			if ('candidates' in value)
-				if (value['candidates'].length > 0)
-					features_with_candidates += 1
-		
-			if ('expansion' in value)
-				if (value['expansion'].length > 0)
-					features_expaned += 1
+	// 		if ('wordnet_candidates' in value)
+	// 			if (value['wordnet_candidates'].length > 0)
+	// 				wordnet_candidates += 1
 
-			if ('expansion_result' in value)
-				if (value['expansion_result'][0][1] < 0)
-					features_has_poison += 1
-		
-		}, this)
-	}, this)
+	// 		if ('candidates_in_train' in value)
+	// 			if (value['candidates_in_train'].length > 0)
+	// 				candidates_in_train += 1
 
-	console.log("features_all "+features_all)
-	console.log("features_with_emb "+features_with_emb)
-	console.log("features_with_candidates "+features_with_candidates)
-	console.log("features_expaned "+features_expaned)
-	console.log("features_has_poison "+features_has_poison)
+	// 		if ('candidates_with_emb' in value)
+	// 			if (value['candidates_with_emb'].length > 0)
+	// 				candidates_with_emb += 1
+		
+	// 		if ('expansion_with_context' in value)
+	// 			if (value['expansion_with_context'].length > 0)
+	// 				expansion_with_context += 1
+
+	// 		if ('expansion_without_context' in value)
+	// 			if (value['expansion_without_context'].length > 0)
+	// 				expansion_without_context += 1
+
+	// 		if ('expansion_with_context' in value)
+	// 			if (value['expansion_with_context_result'][0][1] > 0)
+	// 				expansion_useful_with_context += 1
+
+	// 		if ('expansion_without_context' in value)
+	// 			if (value['expansion_without_context_result'][0][1] > 0)
+	// 				expansion_useful_without_context += 1
+		
+	// 	}, this)
+	// }, this)
+
+	// console.log("features_all "+features_all)
+	// console.log("features_different_lemma "+features_different_with_lemma)
+	// console.log("features_with_emb "+features_with_emb)
+	// console.log("wordnet_candidates "+wordnet_candidates)
+	// console.log("candidates_in_train "+candidates_in_train)
+	// console.log("candidates_with_emb "+candidates_with_emb)
+
+	// // console.log("expansion_with_context "+expansion_with_context)
+	// // console.log("expansion_without_context "+expansion_without_context)
+
+	// console.log("expansion "+expansion_without_context)
+	// console.log("expansion_useful_with_context "+expansion_useful_with_context)
+	// console.log("expansion_useful_without_context "+expansion_useful_without_context)
+
+
+	// var stats1 = trainAndTest.trainAndTest_hash(classifier.ReuterBinPPDBNoContext, train_data, test_data, 5)
+	// console.log(JSON.stringify(stats1[0]['stats'], null, 4))
+
+	var stats1 = trainAndTest.trainAndTest_hash(classifier.ReuterBinExpSynHyperHypo, train_data, test_data, 5)
+	console.log(JSON.stringify(stats1[0]['stats'], null, 4))
+
+	var stats1 = trainAndTest.trainAndTest_hash(classifier.ReuterBinExpSynHyperHypoNoContext, train_data, test_data, 5)
+	console.log(JSON.stringify(stats1[0]['stats'], null, 4))
 
 	process.exit(0)
 }
