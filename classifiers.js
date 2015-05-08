@@ -39,8 +39,7 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 var regexpNormalizer_simple = ftrs.RegexpNormalizer(
 		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/SimpleNormalizations.json')));
 
-
-var expansionParam1 = 
+var TCSyn = 
 {
 	'redisId_words':14,
 	'redisId_context':13,
@@ -48,10 +47,10 @@ var expansionParam1 =
 	'redis_exec': redis_exec,
 	'wordnet_exec': wordnet_exec,
 	'context': true,
-	'wordnet_relation':'syn'
+	'wordnet_relation':['synonym']
 }
 
-var expansionParam2 = 
+var TCSynHypHypo = 
 {
 	'redisId_words':14,
 	'redisId_context':13,
@@ -59,21 +58,49 @@ var expansionParam2 =
 	'redis_exec': redis_exec,
 	'wordnet_exec': wordnet_exec,
 	'context': true,
-	'wordnet_relation':'all'
+	'wordnet_relation': ['synonym','hypernym','hyponym']
 }
 
-var expansionParam3 = 
+var TCDemo = 
 {
 	'redisId_words':14,
 	'redisId_context':13,
-	'comparison': distance.BalAdd,
+	'comparison': distance.Add,
 	'redis_exec': redis_exec,
 	'wordnet_exec': wordnet_exec,
 	'context': true,
-	'wordnet_relation':'all'
+	'wordnet_relation':'all',
+	'detail': true,
+	'detail_distance': distance.cosine_distance
 }
 
-var expansionParamnoCo = 
+var TCPPDBNoCon = 
+{
+	'redisId_words':14,
+	'redisId_context':13,
+	'comparison': distance.cosine_distance,
+	'redis_exec': redis_exec,
+	'wordnet_exec': ppdb_exec,
+	'context': false,
+	'wordnet_relation':'all',
+	'detail': false,
+	// 'detail_distance': distance.cosine_distance
+}
+
+var TCPPDB = 
+{
+	'redisId_words':14,
+	'redisId_context':13,
+	'comparison': distance.Add,
+	'redis_exec': redis_exec,
+	'wordnet_exec': ppdb_exec,
+	'context': true,
+	'wordnet_relation':'all',
+	'detail': false,
+	// 'detail_distance': distance.cosine_distance
+}
+
+var TCSynHypHypoNoCon = 
 {
 	'redisId_words':14,
 	'redisId_context':13,
@@ -81,7 +108,63 @@ var expansionParamnoCo =
 	'redis_exec': redis_exec,
 	'wordnet_exec': wordnet_exec,
 	'context': false,
-	'wordnet_relation':'all'
+	'wordnet_relation':['synonym','hypernym','hyponym']
+}
+
+
+function wordnet_exec(word, pos, relations, wordnet_buffer)
+{
+	var path = './utils/getwordnet.js'
+	var buffer_path = './wordnet_buffer.json'
+
+	return candidate_retrieve(word, pos, relations, wordnet_buffer, path, buffer_path)
+}
+
+function ppdb_exec(word, pos, relations, wordnet_buffer)
+{
+	var path = './utils/getppdb.js'
+	var buffer_path = './ppdb_buffer.json'
+
+	return candidate_retrieve(word, pos, relations, wordnet_buffer, path, buffer_path)
+}
+
+function candidate_retrieve(word, pos, relations, wordnet_buffer, path, buffer_path)
+{
+	if (Object.keys(wordnet_buffer) == 0)
+	{
+		var wordnet_buffer_sub = JSON.parse(fs.readFileSync(buffer_path,'UTF-8'))
+		_.each(wordnet_buffer_sub, function(value, key, list){ 
+			wordnet_buffer[key] = value
+		}, this)
+	}
+
+	var output = []
+
+	_.each(relations, function(relation, key, list){ 
+		if (!(relation in wordnet_buffer))
+			wordnet_buffer[relation] = {}
+
+		if (!(word in wordnet_buffer[relation]))
+			wordnet_buffer[relation][word] = {}
+
+		if (!(pos in wordnet_buffer[relation][word]))
+		{
+			var cmd =  "node " + path + " \"" + word + "\" " + pos + " " + relation
+			console.log(cmd)
+			var candidates = JSON.parse(execSync.exec(cmd)['stdout'])
+			wordnet_buffer[relation][word][pos] = candidates
+
+			if (_.random(0, 20) == 5)
+			{
+			console.log("wordnet writing buffer ...")
+		    fs.writeFileSync(buffer_path, JSON.stringify(wordnet_buffer, null, 4))
+	    	}
+	    }
+
+	    output = output.concat(wordnet_buffer[relation][word][pos])
+	}, this)
+
+    return output
 }
 
 function redis_exec(data, db, redis_buffer)
@@ -189,43 +272,6 @@ function redis_exec(data, db, redis_buffer)
 
 		return data_result
 
-}
-
-function wordnet_exec(word, pos, relation, wordnet_buffer)
-{
-	var wordnet_path = './utils/getwordnet.js'
-	var buffer_path = './wordnet_buffer.json'
-
-	if (Object.keys(wordnet_buffer) == 0)
-	{
-		var wordnet_buffer_sub = JSON.parse(fs.readFileSync(buffer_path,'UTF-8'))
-		_.each(wordnet_buffer_sub, function(value, key, list){ 
-			wordnet_buffer[key] = value
-		}, this)
-	}
-
-	if (!(relation in wordnet_buffer))
-		wordnet_buffer[relation] = {}
-
-	if (!(word in wordnet_buffer[relation]))
-		wordnet_buffer[relation][word] = {}
-
-	if (!(pos in wordnet_buffer[relation][word]))
-		{
-		var cmd =  "node " + wordnet_path + " \"" + word + "\" " + pos + " " + relation
-		console.log(cmd)
-		var candidates = JSON.parse(execSync.exec(cmd)['stdout'])
-		wordnet_buffer[relation][word][pos] = candidates	
-		
-
-		if (_.random(0, 7) == 5)
-		{
-		console.log("wordnet writing buffer ...")
-	    fs.writeFileSync(buffer_path, JSON.stringify(wordnet_buffer, null, 4))
-    	}
-    }
-
-    return 	wordnet_buffer[relation][word][pos]
 }
 
 function featureExpansion(listoffeatures, scale, phrase)
@@ -401,9 +447,9 @@ function featureExtractorUCoreNLP(sentence, features) {
 
 	_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
 		_.each(sen['tokens'], function(value, key, list){
-			if ('lemma' in value)
+			if ('word' in value)
 				// if (['ORGANIZATION', 'DATE', 'NUMBER'].indexOf(value['ner']) == -1)
-					features[value['lemma'].toLowerCase()] = 1 
+					features[value['word'].toLowerCase()] = 1 
 			else
 				throw new Error("where is lemma '"+value);
 
@@ -902,12 +948,13 @@ module.exports = {
 		SVM_Expansion: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
 
 		// Reuter: enhance(SvmPerfMultiClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false),
-		ReuterBinExpSyn: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, expansionParam1),
-		ReuterBinExpSynHyperHypo: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, expansionParam2),
-		ReuterBinExpSynHyperHypoBal: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, expansionParam3),
-		ReuterBinExpSynHyperHypoNoContext: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, expansionParamnoCo),
-		ReuterBin: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
-
+		TCSyn: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSyn),
+		TCSynHypHypo: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHypHypo),
+		TCSynHypHypoNoCon: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHypHypoNoCon),
+		TC: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
+		TCDemo: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCDemo),
+		TCPPDB: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCPPDB),
+		TCPPDBNoCon: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCPPDBNoCon),
 };
 
 
