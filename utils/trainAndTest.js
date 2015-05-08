@@ -205,7 +205,8 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 
 				_.each(sentence_hash['expansioned'], function(value, key, list){ 
 					var exp = []
-					_.each(value['expansion'], function(valuep, key, list){
+					
+					_.each(value['expansion_with_context'], function(valuep, key, list){
 						if (valuep in explan)
 							exp.push([valuep, explan[valuep]])
 						else
@@ -214,7 +215,21 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 					}, this)
 					
 					if (exp.length > 0)
-						sentence_hash['expansioned'][key]['expansion_result'] = exp 
+						sentence_hash['expansioned'][key]['expansion_with_context_result'] = exp 
+				
+					var exp = []
+
+					_.each(value['expansion_without_context'], function(valuep, key, list){
+						if (valuep in explan)
+							exp.push([valuep, explan[valuep]])
+						else
+							exp.push([valuep, 0])
+
+					}, this)
+					
+					if (exp.length > 0)
+						sentence_hash['expansioned'][key]['expansion_without_context_result'] = exp 
+				
 				
 				}, this)
 
