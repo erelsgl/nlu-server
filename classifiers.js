@@ -82,7 +82,7 @@ var TCPPDBNoCon =
 	'redis_exec': redis_exec,
 	'wordnet_exec': ppdb_exec,
 	'context': false,
-	'wordnet_relation':'all',
+	'wordnet_relation':['ppdb'],
 	'detail': false,
 	// 'detail_distance': distance.cosine_distance
 }
@@ -95,7 +95,7 @@ var TCPPDB =
 	'redis_exec': redis_exec,
 	'wordnet_exec': ppdb_exec,
 	'context': true,
-	'wordnet_relation':'all',
+	'wordnet_relation':['ppdb'],
 	'detail': false,
 	// 'detail_distance': distance.cosine_distance
 }
@@ -111,6 +111,28 @@ var TCSynHypHypoNoCon =
 	'wordnet_relation':['synonym','hypernym','hyponym']
 }
 
+var TCSynHyp2 = 
+{
+	'redisId_words':14,
+	'redisId_context':13,
+	'comparison': distance.Add,
+	'redis_exec': redis_exec,
+	'wordnet_exec': wordnet_exec,
+	'context': true,
+	'wordnet_relation':['synonym','hypernym_2']
+}
+
+
+var TCSynHypHypoCohypo = 
+{
+	'redisId_words':14,
+	'redisId_context':13,
+	'comparison': distance.Add,
+	'redis_exec': redis_exec,
+	'wordnet_exec': wordnet_exec,
+	'context': true,
+	'wordnet_relation':['synonym','hypernym','hyponym','cohyponym']
+}
 
 function wordnet_exec(word, pos, relations, wordnet_buffer)
 {
@@ -152,6 +174,7 @@ function candidate_retrieve(word, pos, relations, wordnet_buffer, path, buffer_p
 			var cmd =  "node " + path + " \"" + word + "\" " + pos + " " + relation
 			console.log(cmd)
 			var candidates = JSON.parse(execSync.exec(cmd)['stdout'])
+			console.log(candidates.length)
 			wordnet_buffer[relation][word][pos] = candidates
 
 			if (_.random(0, 20) == 5)
@@ -222,7 +245,7 @@ function redis_exec(data, db, redis_buffer)
 				redis_buffer[db][key] = value
 			}, this)
 
-			if ((_.random(0,100) == 5) && (_.isNull(data_reduced[0].match(/punct/g))))
+			if ((_.random(0,100) == 15) && (_.isNull(data_reduced[0].match(/punct/g))))
 			{
 				console.log("redis writing buffer ...")
 				
@@ -418,7 +441,7 @@ function featureExtractorUB(sentence, features) {
 
 function featureExtractorB(sentence, features) {
 	var words = tokenizer.tokenize(sentence);
-	var feature = natural.NGrams.ngrams(words, 2)
+	var feature = natural.NGrams.ngrams(words, 2)	
 	_.each(feature, function(feat, key, list){ features[feat.join(" ")] = 1 }, this)
 	return features;
 }
@@ -443,13 +466,54 @@ function featureExtractorU(sentence, features) {
 	return features;
 }
 
-function featureExtractorUCoreNLP(sentence, features) {
+function featureExtractorUCoreNLP(sentence, features, wordnet_buffer) {
 
 	_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
 		_.each(sen['tokens'], function(value, key, list){
-			if ('word' in value)
+			if ('lemma' in value)
 				// if (['ORGANIZATION', 'DATE', 'NUMBER'].indexOf(value['ner']) == -1)
-					features[value['word'].toLowerCase()] = 1 
+					features[value['lemma'].toLowerCase()] = 1 
+			else
+				throw new Error("where is lemma '"+value);
+
+		}, this)
+	}, this)
+
+	return features;
+}
+
+
+function featureExtractorUCoreNLPConcept(sentence, features, wordnet_buffer, stopwords) {
+
+	var candidates = bars.createcandidates(sentence)
+
+	console.log('input')
+	console.log(sentence['input'])
+
+	console.log("Candidate before stopwords "+ candidates.length)
+	candidates = _.filter(candidates, function(num){ return stopwords.indexOf(num['string']) == -1 });
+	console.log("Candidate after stopwords "+ candidates.length)
+	console.log("Candidates")
+	console.log(candidates)
+
+	var expansions = []
+
+	_.each(candidates, function(candidate, key, list){ 
+		expansions = expansions.concat(wordnet_exec(candidate['string'], candidate['pos'], ['hypernym_1'], wordnet_buffer))
+	}, this)
+
+	console.log("Expansion")
+	console.log(expansions)
+
+	_.each(expansions, function(expansion, key, list){ 
+		features["C_"+expansion.toLowerCase()] = 1 
+	}, this)
+
+	_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
+		_.each(sen['tokens'], function(value, key, list){
+			if ('lemma' in value)
+				// if (['ORGANIZATION', 'DATE', 'NUMBER'].indexOf(value['ner']) == -1)
+					features[value['lemma'].toLowerCase()] = 1 
 			else
 				throw new Error("where is lemma '"+value);
 
@@ -784,7 +848,7 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 		featureExpansionPhrase: featureExpansionPhrase,
 		featureFine: featureFine,
 		expansionParam: expansionParam,
-		stopwords: JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')),
+		stopwords: JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8'))),
 		
 		// inputSplitter: inputSplitter,
 		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
@@ -955,6 +1019,9 @@ module.exports = {
 		TCDemo: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCDemo),
 		TCPPDB: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCPPDB),
 		TCPPDBNoCon: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCPPDBNoCon),
+		TCSynHypHypoCohypo: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHypHypoCohypo),
+		TCSynHyp2: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHyp2),
+		TCBOC: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLPConcept, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 };
 
 
