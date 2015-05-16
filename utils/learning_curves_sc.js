@@ -99,16 +99,15 @@ function getAverage(stat, param, trainsize, classifiers)
 		return average
 	}
 
-function extractGlobal(parameters, classifiers, trainset, report, stat)
+// report per classifier
+
+function extractGlobal(classifiers, trainset, report, stat)
 	{
 
 	var trainsize = trainset.length
 
 	if (_.size(classifiers) == 0)
 		throw new Error("List of classifiers is empty");
-
-	if (parameters.length == 0)
-		throw new Error("List of parameters is empty");
 
 	_.each(parameters, function(param, key, list){ 
 
@@ -315,7 +314,7 @@ function plot(fold, parameter, stat, classifiers)
 }
 
 
-function learning_curves(classifiers, dataset, parameters, step, step0, limit, numOfFolds) 
+function learning_curves(classifiers, dataset, step, step0, limit, numOfFolds) 
 {
 
 		checkGnuPlot
@@ -356,9 +355,10 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  		console.log("start trainandTest")
 	    			stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
 		    		console.log("stop trainandTest")
-		    		report.push(_.pick(stats[0]['stats'], parameters))
+		    		report.push(stats[0]['stats'])
+		    		// report.push(_.pick(stats[0]['stats'], parameters))
 
-		    		gldata[name] = stats[0]['data']
+		    		// gldata[name] = stats[0]['data']
 
 			  	}, this)
 
@@ -367,12 +367,15 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  			process.exit(0)
 			  	}, this)
 
-					  	// compare(gldata)
+				// compare(gldata)
+			  	// oldstats = bars.copyobj(stats)
 
-			  	oldstats = bars.copyobj(stats)
-
-                extractGlobal(parameters, classifiers, mytrainset, report, stat)
+                // extractGlobal(parameters, classifiers, mytrainset, report, stat)
+                extractGlobal(classifiers, mytrainset, report, stat)
                 
+                console.log(JSON.stringify(stat, null, 4))
+                process.exit(0)
+
                 stat['_sized'] = test.length
                 // stat['_sizec'] = bars.extractdataset(test).length
                 stat['_sizec'] = test.length
@@ -446,18 +449,18 @@ if (process.argv[1] === __filename)
 
 	var classifiers  = {
 				
-				ReuterBinExpSyn: classifier.ReuterBinExpSyn,
-				ReuterBinExpSynHyperHypo: classifier.ReuterBinExpSynHyperHypo,
-				ReuterBinExpSynHyperHypoNoContext: classifier.ReuterBinExpSynHyperHypoNoContext,
-				ReuterBinExpSynHyperHypoBal: classifier.ReuterBinExpSynHyperHypoBal,
-				ReuterBin: classifier.ReuterBin,
+				// TCPPDB: TCPPDB.ReuterBinExpSyn,
+				// ReuterBinExpSynHyperHypo: classifier.ReuterBinExpSynHyperHypo,
+				// ReuterBinExpSynHyperHypoNoContext: classifier.ReuterBinExpSynHyperHypoNoContext,
+				// ReuterBinExpSynHyperHypoBal: classifier.ReuterBinExpSynHyperHypoBal,
+				TC: classifier.TC,
 
 			}
 
-	var labels = ['earn','trade','ship','grain','crude','acq','money-fx','interest']
+	// var labels = ['earn','trade','ship','grain','crude','acq','money-fx','interest']
 	
-	var parameters = [ 'F1','Precision','Recall', 'FN', 'Accuracy' ]
-
+	// var parameters = [ 'F1','Precision','Recall', 'FN', 'Accuracy' ]
+/*
 	var st = []
 	_.each(parameters, function(parameter, key, list){ 
 		_.each(labels, function(label, key, list){ 
@@ -465,13 +468,14 @@ if (process.argv[1] === __filename)
 		}, this)
 	}, this)
 	
-
+*/
 	test_data = _.shuffle(test_data)
 	test_data = _.shuffle(test_data)
 	test_data = test_data.splice(0,1000)
 	console.log(test_data.length)
 
-	learning_curves(classifiers, test_data, st, 10/*step*/,5,50, 5/*numOfFolds*/, function(){
+	learning_curves(classifiers, test_data, 10/*step*/,5,50, 5/*numOfFolds*/, function(){
+	// learning_curves(classifiers, test_data, st, 10/*step*/,5,50, 5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
