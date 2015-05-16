@@ -8,11 +8,56 @@ var should = require('should')
 var bars = require('../utils/bars')
 var _ = require('underscore')._;
 var __ = require('lodash');
+var fs = require('fs');
 
 var rules = require("../research/rule-based/rules.js")
 var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
+
+	it('ngraminindex', function() {
+	  // function ngraminindex(ngram, index, type)
+  		var index = JSON.parse(fs.readFileSync("./wordnet_index.json", 'UTF-8'))
+
+  		var input = [{'word':'offer','pos':'VB','lemma':'offer'}]
+  		var output = bars.ngraminindex(input, index, 'word')
+  		_.isEqual(output, 'offer').should.be.true
+
+		var input = [{'word':'offeras','pos':'VB','lemma':'offer'}]
+  		var output = bars.ngraminindex(input, index, 'word')
+  		_.isEqual(output, 'offer').should.be.true  		
+
+  		var input = [
+  					 {'word':'beyond','pos':'VB','lemma':'beyond'},
+  					 {'word':'a','pos':'VB','lemma':'a'},
+  					 {'word':'doubt','pos':'VB','lemma':'doubt'}
+  					 ]
+  		var output = bars.ngraminindex(input, index, 'word')
+  		_.isEqual(output, 'beyond a doubt').should.be.true  		
+
+  		var input = [
+  					 {'word':'beyond','pos':'VB','lemma':'beyond'},
+  					 {'word':'a','pos':'VB','lemma':'a'},
+  					 {'word':'doubtdd','pos':'VB','lemma':'doubt'}
+  					 ]
+  		var output = bars.ngraminindex(input, index, 'word')
+  		_.isEqual(output, 'beyond a doubt').should.be.true  		
+	})
+
+	it('createcandidates', function() {
+		var input = {
+			'CORENLP':{'sentences':[{'tokens':[
+				{'word':'pine','pos':'NN','lemma':'offer'},
+				{'word':'gold','pos':'NN','lemma':'offer'},
+				{'word':'all','pos':'NN','lemma':'offer'},
+				{'word':'too','pos':'NN','lemma':'offer'},
+			]}]}
+		}
+
+		var output = bars.createcandidates(input)
+		console.log("-------------")
+		console.log(output)
+	})
 	
 	it('isnotokaccept', function() {
 		var turn = {'input': 'OK', 'output': [{'Accept':'previous'}]}
