@@ -211,7 +211,7 @@ if (wikipedia)
 {
 	var files = ["./part1.json", "./part2.json", "./part3.json"]
 	var data = []
-	var folder = __dirname+"/../wikipedia/"
+	var folder = __dirname+"/../wikipedia/prepared/"
 
 	_.each(files, function(file, key, list){ 
 		data = data.concat(JSON.parse(fs.readFileSync(file)))
@@ -242,7 +242,7 @@ if (wikipedia)
 
 	var cat = categories[5876]['child']
 	console.log(cat)
-	var dataset = []
+	var dataset = {}
 
 	_.each(data, function(value, key, list){ 
 		if (value["_category"] == 0)
@@ -258,13 +258,14 @@ if (wikipedia)
 	}, this)
 
 	console.log(Object.keys(dataset).length)
-	process.exit(0)
 
 	_.each(dataset, function(value, key, list){ 
 		fs.writeFileSync(folder + "/" + key, value, 'utf-8')
 	}, this)
 
-	console.log()
+	var list = _.map(Object.keys(dataset), function(value){ return "/home/ir/konovav/wikipedia/prepared/"+value })
+	fs.writeFileSync(folder + "/list", list.join("\n"), 'utf-8')
+
 	process.exit(0)
 }
 
