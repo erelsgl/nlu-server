@@ -217,6 +217,8 @@ if (wikipedia)
 		data = data.concat(JSON.parse(fs.readFileSync(file)))
 	}, this)
 
+	console.log(data.length)
+
 	var categories = {}
 	_.each(data, function(value, key, list){ 
 		if (value['_category']==1)
@@ -239,6 +241,7 @@ if (wikipedia)
 	}, this)
 
 	var cat = categories[5876]['child']
+	console.log(cat)
 	var dataset = []
 
 	_.each(data, function(value, key, list){ 
@@ -253,6 +256,9 @@ if (wikipedia)
 			}
 		}
 	}, this)
+
+	console.log(Object.keys(dataset).length)
+	process.exit(0)
 
 	_.each(dataset, function(value, key, list){ 
 		fs.writeFileSync(folder + "/" + key, value, 'utf-8')
