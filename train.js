@@ -42,7 +42,8 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 
 // var do_small_temporary_serialization_test = false
 
-var reuters = true
+var index_wordnet = false
+var reuters = false
 var test_proportion = false
 var trans = false
 var test_ppdb = false
@@ -52,6 +53,7 @@ var test_clust = false
 var do_learning_curves = false
 var test_pp = false
 
+var wikipedia = true
 var test_approaches = false
 var do_test_seed = false
 var check_dial = false
@@ -205,11 +207,91 @@ function parse_filter(parse)
         return parse
 }
 
+if (wikipedia)
+{
+	var files = ["./part1.json", "./part2.json", "./part3.json"]
+	var data = []
+	var folder = __dirname+"/../wikipedia/"
+
+	_.each(files, function(file, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync(file)))
+	}, this)
+
+	var categories = {}
+	_.each(data, function(value, key, list){ 
+		if (value['_category']==1)
+			categories[value["_id"]] = {'id':value["_id"], 'title':value["title"].split(":")[1], 'count_articles':0, 'parent_count':0, 'child_count':0 ,'parent': [], 'child':[]}
+	}, this)
+
+	_.each(data, function(value, key, list){ 
+		if (value['_category']==0)
+			_.each(value['categories'], function(cat, key, list){
+				categories[cat]['count_articles'] += 1 
+			}, this)
+
+		if (value['_category']==1)
+			{
+			categories[value['_id']]['parent'] = categories[value['_id']]['parent'].concat(value['categories'])
+			_.each(value['categories'], function(cat, key, list){
+				categories[cat]['child'].push(value["_id"])
+			}, this)
+			}
+	}, this)
+
+	var cat = categories[5876]['child']
+	var dataset = []
+
+	_.each(data, function(value, key, list){ 
+		if (value["_category"] == 0)
+		{
+			if (_.intersection(value["categories"],cat).length > 0)
+			{
+				var text = value['text']
+				text = text.replace(/\n/g," ")
+				text = text.replace(/\s{2,}/g, ' ')
+				dataset[value["_id"]] = text
+			}
+		}
+	}, this)
+
+	_.each(dataset, function(value, key, list){ 
+		fs.writeFileSync(folder + "/" + key, value, 'utf-8')
+	}, this)
+
+	console.log()
+	process.exit(0)
+}
+
+if (index_wordnet)
+{
+	var path = '/home/com/Shared/natural/node_modules/WNdb/dict/'
+	var files = ['index.adv', 'index.noun', 'index.verb', 'index.adj']
+	var index = {}
+
+	_.each(files, function(file, key, list){
+		index[file] = {}
+		var data =fs.readFileSync(path+file, 'UTF-8')
+		var lines = data.split("\n")
+		_.each(lines, function(line, key, list){ 
+			if (line[0] == "")
+				return
+
+			var elem = line.split(" ")
+			index[file][elem[0].split("_").join(" ")] = ""
+		}, this)
+	}, this)
+
+
+
+	console.log()
+	console.log(JSON.stringify(index, null, 4))
+	process.exit(0)
+}
 
 if (reuters)
 {
 
-	var field = "TITLE"
+	var field = "BODY"
 	
 	var path = __dirname + "/../reuters2json/R8/"
 
@@ -237,67 +319,68 @@ if (reuters)
 
 	// there is a number of more that one sentence	
 	
-	// var train_data = _.compact(_.map(train_data, function(value){ var elem = {}
-	// 														if (('BODY' in value['TEXT']) && ('TITLE' in value['TEXT']) )
-	// 															{
-	// 																if (value['TITLE_CORENLP']['sentences'].length > 0)
-	// 																{
-	// 																	value['CORENLP'] = value['BODY_CORENLP']
-																		
-	// 																	value['CORENLP']['sentences'][0]['token'] = value['BODY_CORENLP']['sentences'][0]['tokens'].concat(value['TITLE_CORENLP']['sentences'][0]['tokens'])
-
-	// 																	delete value['TITLE_CORENLP']
-	// 																	elem['input'] =  value
-	// 																	elem['output'] = value['TOPICS'][0]
-	// 																	return elem
-	// 																}
-	// 															} 
-	// 														}))
-
-	// 	// var test_data = _.compact(_.map(test, function(value){ if (field in value['TEXT']) return value }))
-	// var test_data = _.compact(_.map(test_data, function(value){ var elem = {}
-	// 														if ((field in value['TEXT']) && (value['$']['NEWID'] != '20959')) 
-	// 															{
-	// 															value['CORENLP'] = value[field + '_CORENLP']
-	// 															// delete value['TITLE_CORENLP']
-	// 															elem['input'] = value
-	// 															elem['input']['input'] = value['TEXT'][field]
-	// 															elem['output'] = value['TOPICS'][0]
-	// 															return elem
-	// 															}
-	// 														}))
-
-
-
 	var train_data = _.compact(_.map(train_data, function(value){ var elem = {}
-															if ('BODY' in value['TEXT']) 
+															// if (('BODY' in value['TEXT']) && ('TITLE' in value['TEXT']) )
+															if (('BODY' in value['TEXT']))
 																{
-																	
-																value['BODY_CORENLP']['sentences'] = [ value['BODY_CORENLP']['sentences'][0] ]
-																value['CORENLP'] = value['BODY_CORENLP']
-																	
-																delete value['TITLE_CORENLP']
-																elem['input'] =  value
-																elem['output'] = value['TOPICS'][0]
-																return elem
-																	
+																	// if (value['TITLE_CORENLP']['sentences'].length > 0)
+																	{
+																		value['CORENLP'] = value['BODY_CORENLP']
+																		
+																		// value['CORENLP']['sentences'][0]['token'] = value['BODY_CORENLP']['sentences'][0]['tokens'].concat(value['TITLE_CORENLP']['sentences'][0]['tokens'])
+
+																		delete value['TITLE_CORENLP']
+																		elem['input'] =  value
+																		elem['output'] = value['TOPICS'][0]
+																		return elem
+																	}
 																} 
 															}))
 
+	// 	// var test_data = _.compact(_.map(test, function(value){ if (field in value['TEXT']) return value }))
 	var test_data = _.compact(_.map(test_data, function(value){ var elem = {}
-															if ('BODY' in value['TEXT'])
+															if ((field in value['TEXT']) && (value['$']['NEWID'] != '20959')) 
 																{
-																
-																value['BODY_CORENLP']['sentences'] = [ value['BODY_CORENLP']['sentences'][0] ]
-																value['CORENLP'] = value['BODY_CORENLP']
-																delete value['TITLE_CORENLP']
-
+																value['CORENLP'] = value[field + '_CORENLP']
+																// delete value['TITLE_CORENLP']
 																elem['input'] = value
-																elem['input']['input'] = _.pluck(value['BODY_CORENLP']['sentences'][0]['tokens'], 'word').join(" ")
+																elem['input']['input'] = value['TEXT'][field]
 																elem['output'] = value['TOPICS'][0]
 																return elem
 																}
 															}))
+
+
+
+	// var train_data = _.compact(_.map(train_data, function(value){ var elem = {}
+	// 														if ('BODY' in value['TEXT']) 
+	// 															{
+																	
+	// 															value['BODY_CORENLP']['sentences'] = [ value['BODY_CORENLP']['sentences'][0] ]
+	// 															value['CORENLP'] = value['BODY_CORENLP']
+																	
+	// 															delete value['TITLE_CORENLP']
+	// 															elem['input'] =  value
+	// 															elem['output'] = value['TOPICS'][0]
+	// 															return elem
+																	
+	// 															} 
+	// 														}))
+
+	// var test_data = _.compact(_.map(test_data, function(value){ var elem = {}
+	// 														if ('BODY' in value['TEXT'])
+	// 															{
+																
+	// 															value['BODY_CORENLP']['sentences'] = [ value['BODY_CORENLP']['sentences'][0] ]
+	// 															value['CORENLP'] = value['BODY_CORENLP']
+	// 															delete value['TITLE_CORENLP']
+
+	// 															elem['input'] = value
+	// 															elem['input']['input'] = _.pluck(value['BODY_CORENLP']['sentences'][0]['tokens'], 'word').join(" ")
+	// 															elem['output'] = value['TOPICS'][0]
+	// 															return elem
+	// 															}
+	// 														}))
 	console.log("test is ready")
 
 	console.log(train_data.length)
@@ -306,15 +389,68 @@ if (reuters)
 	train_data = _.shuffle(train_data)
 	test_data = _.shuffle(test_data)
 
-	train_data = train_data.splice(0,100)
-	test_data = test_data.splice(0,200)
+	// train_data = train_data.splice(0,100)
+	// test_data = test_data.splice(0,200)
 
-	console.log(train_data.length)
-	console.log(test_data.length)
+	// console.log(train_data.length)
+	// console.log(test_data.length)
+
+	var dataset = train_data.concat(test_data)
+	dataset = _.shuffle(dataset)
+	dataset = dataset.splice(0,200)
+
+	var F1 = []
+	var stats = []
+	partitions.partitions_reverese(dataset, 10, function(train, test, index) {
+		stats = trainAndTest.trainAndTest_hash(classifier.TC, train, test, 5)
+		F1.push(stats[0]['stats']['F1'])
+	});
+	console.log("F1")
+	console.log(F1)
+	console.log(_.reduce(F1, function(memo, num){ return memo + num; }, 0)/F1.length)
 
 	// var stats = trainAndTest.trainAndTest_hash(classifier.ReuterBin, train_data, test_data, 5)
-	// console.log(JSON.stringify(stats[0]['stats'], null, 4))
+	console.log(JSON.stringify(stats[0]['data'], null, 4))
 
+
+	var F1 = []
+	partitions.partitions_reverese(dataset, 10, function(train, test, index) {
+		F1.push(trainAndTest.trainAndTest_hash(classifier.TCPPDB, train, test, 5)[0]['stats']['F1'])
+	});
+	console.log("F1")
+	console.log(F1)
+	console.log(_.reduce(F1, function(memo, num){ return memo + num; }, 0)/F1.length)
+
+
+	var stats = []
+	var F1 = []
+	partitions.partitions_reverese(dataset, 10, function(train, test, index) {
+		stats = trainAndTest.trainAndTest_hash(classifier.TCBOC, train, test, 5)
+		F1.push(stats[0]['stats']['F1'])
+	});
+	console.log("F1")
+	console.log(F1)
+	console.log(_.reduce(F1, function(memo, num){ return memo + num; }, 0)/F1.length)
+	console.log(JSON.stringify(stats[0]['data'], null, 4))
+
+	console.log()
+	process.exit(0)
+
+	var F1 = []
+	partitions.partitions_reverese(dataset, 10, function(train, test, index) {
+		F1.push(trainAndTest.trainAndTest_hash(classifier.TCSynHypHypoCohypo, train, test, 5)[0]['stats']['F1'])
+	});
+	console.log("F1")
+	console.log(F1)
+	console.log(_.reduce(F1, function(memo, num){ return memo + num; }, 0)/F1.length)
+
+	var F1 = []
+	partitions.partitions_reverese(dataset, 10, function(train, test, index) {
+		F1.push(trainAndTest.trainAndTest_hash(classifier.TCSynHyp2, train, test, 5)[0]['stats']['F1'])
+	});
+	console.log("F1")
+	console.log(F1)
+	console.log(_.reduce(F1, function(memo, num){ return memo + num; }, 0)/F1.length)
 
 	// var stats = trainAndTest.trainAndTest_hash(classifier.ReuterBinPPDB, train_data, test_data, 5)
 
@@ -394,11 +530,11 @@ if (reuters)
 	// var stats1 = trainAndTest.trainAndTest_hash(classifier.ReuterBinPPDBNoContext, train_data, test_data, 5)
 	// console.log(JSON.stringify(stats1[0]['stats'], null, 4))
 
-	var stats1 = trainAndTest.trainAndTest_hash(classifier.ReuterBinExpSynHyperHypo, train_data, test_data, 5)
-	console.log(JSON.stringify(stats1[0]['stats'], null, 4))
+	// var stats1 = trainAndTest.trainAndTest_hash(classifier.ReuterBinExpSynHyperHypo, train_data, test_data, 5)
+	// console.log(JSON.stringify(stats1[0]['stats'], null, 4))
 
-	var stats1 = trainAndTest.trainAndTest_hash(classifier.ReuterBinExpSynHyperHypoNoContext, train_data, test_data, 5)
-	console.log(JSON.stringify(stats1[0]['stats'], null, 4))
+	// var stats1 = trainAndTest.trainAndTest_hash(classifier.ReuterBinExpSynHyperHypoNoContext, train_data, test_data, 5)
+	// console.log(JSON.stringify(stats1[0]['stats'], null, 4))
 
 	process.exit(0)
 }
