@@ -3304,6 +3304,151 @@ function onlyunigrams(strhash)
     return output
   }
 
+  function ngraminindex(ngram, index, type)
+  {
+
+    var POS = {
+    'index.noun': ['NN', 'NNS', 'NNP', 'NNPS'],
+    'index.adj': ['JJ', 'JJR', 'JJS'],
+    'index.adj': ['JJ', 'JJR', 'JJS'],
+    'index.adv': ['RB', 'RBR', 'RBS','WRB'],
+    'index.verb': ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']
+    }
+  // lemma word
+    var string = _.pluck(ngram, type).join(" ")
+
+    var found = false
+    var Pos
+
+    _.each(index, function(values, pos, list){
+      if ((string in values) && (ngram.length > 1))
+      {
+        found = true
+        Pos = pos.split(".")[1]
+      }
+
+      if ((string in values) && (ngram.length == 1) && (POS[pos].indexOf(ngram[0]['pos'])!=-1))
+      {
+        found = true
+        Pos = pos.split(".")[1]
+      }
+
+    }, this) 
+
+    if ((found == false) && (type=='word')) 
+      return ngraminindex(ngram, index, 'lemma')
+
+    if (found == false)
+      return undefined
+
+    return {'string': string, 'pos': Pos}
+  }
+
+  function createcandidates(input)
+  {
+    var candidates = []
+    var index = JSON.parse(fs.readFileSync(__dirname + "/../wordnet_index.json", 'UTF-8'))
+    _.each(input['CORENLP']['sentences'], function(sentence, key, list){ 
+    
+      var features = []
+  
+      _.each(sentence['tokens'], function(value, key, list){ 
+        features.push({'lemma':value['lemma'], 'word': value['word'], 'pos': value['pos']})
+      }, this)
+
+      console.log(features)
+
+      var k = 4
+      var i = 0 
+      while (i<=features.length) {
+        for (j = Math.min(k, features.length-i+1); j >= 1; j--) { 
+          var s = features.slice(i, i+j)
+          var string = ngraminindex(s, index, 'word')
+          if (!_.isUndefined(string))
+          {
+            candidates.push(string)
+            i = i + j
+            break
+          }
+          else
+            if (j==1)
+              i = i + j
+        }
+      }
+    }, this)
+
+    // candidates = _.filter(candidates, function(num){ return ['verb','noun'].indexOf(num['pos']) != -1; });
+    candidates = _.filter(candidates, function(num){ return ['noun'].indexOf(num['pos']) != -1; });
+    return candidates
+  }
+
+  // function createcandidates(input)
+  // {
+  
+  // var candidates = []
+  // var index = JSON.parse(fs.readFileSync(__dirname + "/../wordnet_index.json", 'UTF-8'))
+
+  // _.each(input['CORENLP']['sentences'], function(sentence, key, list){ 
+  //   var features = []
+  
+  //   _.each(sentence['tokens'], function(value, key, list){ 
+  //     features.push({'lemma':value['lemma'], 'word': value['word'], 'pos': value['pos']})
+  //   }, this)
+
+  //   var fgrams = natural.NGrams.ngrams(features, 4)
+  //   if (fgrams.length == 0)
+  //     {
+  //     console.log("4GRAMS IS EMPTY")
+  //     process.exit(0)
+  //     }
+
+  //     _.each(fgrams, function(fgram, key, list){
+  //       var string = ngraminindex(fgram, index, 'word') 
+  //       console.log(JSON.stringify(fgram, null, 4))
+  //       console.log(string)
+  //       if (string.length > 0)
+  //         candidates.push(string)
+  //       else
+  //       {
+  //         var tgrams = natural.NGrams.ngrams(fgram, 3)
+  //         _.each(tgrams, function(tgram, key, list){ 
+  //           var string = ngraminindex(tgram, index, 'word') 
+  //           console.log(JSON.stringify(tgram, null, 4))
+  //           console.log(string)
+  //           if (string.length > 0)
+  //             candidates.push(string)
+  //           else 
+  //           {
+  //             var bgrams = natural.NGrams.ngrams(tgram, 2)
+  //             _.each(bgrams, function(bgram, key, list){ 
+  //               var string = ngraminindex(bgram, index, 'word') 
+  //               console.log(JSON.stringify(bgram, null, 4))
+  //               console.log(string)
+  //               if (string.length > 0)
+  //                 candidates.push(string)
+  //               else
+  //               {
+  //                 var ugrams = natural.NGrams.ngrams(bgram, 1)
+  //                 _.each(ugrams, function(ugram, key, list){ 
+  //                   var string = ngraminindex(ugram, index, 'word') 
+  //                   console.log(JSON.stringify(ugram, null, 4))
+  //                   console.log(string)
+  //                   if (string.length > 0)
+  //                     candidates.push(string)
+  //                 }, this)
+  //               }
+  //             }, this)
+  //           }
+  //         }, this)
+  //       }
+  //     }, this)
+  //   }, this)
+
+  
+  // return candidates
+  // }
+
+
 module.exports = {
   uniqueaggregate:uniqueaggregate,
   uniquecandidate:uniquecandidate,
@@ -3394,5 +3539,7 @@ equallist:equallist,
 vectorsum:vectorsum,
 extractintent:extractintent,
 isnotokaccept:isnotokaccept,
-extractdial_test:extractdial_test
+extractdial_test:extractdial_test,
+createcandidates:createcandidates,
+ngraminindex:ngraminindex
 }
