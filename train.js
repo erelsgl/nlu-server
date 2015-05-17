@@ -213,7 +213,7 @@ function parse_filter(parse)
 
 if (wikipedia_test)
 {
-	var omit = [190074, 176859]
+	// var omit = [190074, 176859]
 
 	var path = "../wikipedia"
 	var files = fs.readdirSync(path)
@@ -225,7 +225,10 @@ if (wikipedia_test)
 	}, this)
 
 	console.log(data.length)
-	data = _.filter(data, function(num){ return _.intersection(num["categories"], omit) == 0 })
+
+	data = _.compact(_.map(data, function(value){ return _.without(value["categories"],190074) }))
+	data = _.compact(_.map(data, function(value){ return _.without(value["categories"],176859) }))
+
 	console.log(data.length)
 	
 	console.log("loaded")
@@ -250,7 +253,7 @@ if (wikipedia_test)
 			results[key].push(stats[0]['stats']['F1'])
 		}, this)
 		
-		console.log("results")
+		console.log("PERF")
 		console.log(JSON.stringify(results, null, 4))
 
 		var aggr = {}
