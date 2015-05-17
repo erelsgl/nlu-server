@@ -57,7 +57,6 @@ var test_clust = false
 var do_learning_curves = false
 var test_pp = false
 
-var wikipedia_test = false
 var test_approaches = false
 var do_test_seed = false
 var check_dial = false
@@ -241,36 +240,28 @@ if (wikipedia_test)
 
 	data = _.shuffle(data)
 
-	var F1 = []
+	var compare = {'TCBOC':classifier.TCBOC, 'TCSynHyp1': classifier.TCSynHyp1, 'TC':classifier.TC}
+	var results = {}
+
 	partitions.partitions_reverese(data, 5, function(train, test, index) {
-		var stats = trainAndTest.trainAndTest_hash(classifier.TCBOC, train, test, 5)
-		F1.push(stats[0]['stats']['F1'])
+		_.each(compare, function(classifier, key, list){ 
+			if (!(key in results)) results[key] = []
+			var stats = trainAndTest.trainAndTest_hash(classifier, train, test, 5)
+			results[key].push(stats[0]['stats']['F1'])
+		}, this)
+		
+		console.log("results")
+		console.log(JSON.stringify(results, null, 4))
+
+		var aggr = {}
+		_.each(results, function(value, clas, list){ 
+			aggr[clas] = _.reduce(value, function(memo, num){ return memo + num; }, 0)/value.length
+		}, this)
+
+		console.log(JSON.stringify(aggr, null, 4))
+
 	});
-
-	console.log("F1")
-	console.log(F1)
-	console.log(_.reduce(F1, function(memo, num){ return memo + num; }, 0)/F1.length)
-
-	var F1 = []
-	partitions.partitions_reverese(data, 5, function(train, test, index) {
-		var stats = trainAndTest.trainAndTest_hash(classifier.TCSynHyp1, train, test, 5)
-		F1.push(stats[0]['stats']['F1'])
-	});
-
-	console.log("F1")
-	console.log(F1)
-	console.log(_.reduce(F1, function(memo, num){ return memo + num; }, 0)/F1.length)
- 
-	var F1 = []
-        partitions.partitions_reverese(data, 5, function(train, test, index) {
-		var stats = trainAndTest.trainAndTest_hash(classifier.TC, train, test, 5)
-                F1.push(stats[0]['stats']['F1'])
-        });
-
-	console.log("F1")
-	console.log(F1)
-	console.log(_.reduce(F1, function(memo, num){ return memo + num; }, 0)/F1.length)
-
+	
 	process.exit(0)
 }
 
