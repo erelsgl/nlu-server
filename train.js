@@ -213,7 +213,8 @@ function parse_filter(parse)
 
 if (wikipedia_test)
 {
-	// var omit = [190074, 176859]
+	var cat = [ 140002, 6582, 11221, 221702, 380549, 176859, 25644, 59198, 379420, 176796, 380539, 88393, 190074, 26711,
+  209587, 264364, 379948, 380552, 29677, 63275, 29357, 306221, 306219, 15311 ]
 
 	var path = "../wikipedia"
 	var files = fs.readdirSync(path)
@@ -226,10 +227,16 @@ if (wikipedia_test)
 
 	console.log(data.length)
 
-	data = _.compact(_.map(data, function(value){  value["categories"] = _.without(value["categories"],190074); return value; }))
-	data = _.compact(_.map(data, function(value){  value["categories"] = _.without(value["categories"],176859); return value; }))
+	_.each(data, function(value, key, list){ 
+		var cati = []
+		_.each(value["categories"], function(categ, key1, list){ 
+			if (cat.indexOf(categ)!= -1)
+				cati.push(categ)
+		}, this)
+		data[key]["categories"] = cati
+	}, this)
 
-	data = _.compact(_.filter(data, function(num){ return data["categories"].length>0 }))
+	data = _.filter(data, function(num){ return num["categories"].length>0 });
 
 	console.log(data.length)
 	
