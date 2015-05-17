@@ -111,7 +111,7 @@ var TCSynHypHypoNoCon =
 	'wordnet_relation':['synonym','hypernym','hyponym']
 }
 
-var TCSynHyp2 = 
+var TCSynHyp1 = 
 {
 	'redisId_words':14,
 	'redisId_context':13,
@@ -119,7 +119,7 @@ var TCSynHyp2 =
 	'redis_exec': redis_exec,
 	'wordnet_exec': wordnet_exec,
 	'context': true,
-	'wordnet_relation':['synonym','hypernym_2']
+	'wordnet_relation':['synonym','hypernym_1']
 }
 
 
@@ -495,14 +495,14 @@ function featureExtractorUCoreNLPConcept(sentence, features, wordnet_buffer, sto
 
 	var candidates = bars.createcandidates(sentence)
 
-	console.log('input')
-	console.log(sentence['input'])
+	// console.log('input')
+	// console.log(sentence['input'])
 
 	console.log("Candidate before stopwords "+ candidates.length)
 	candidates = _.filter(candidates, function(num){ return stopwords.indexOf(num['string']) == -1 });
 	console.log("Candidate after stopwords "+ candidates.length)
-	console.log("Candidates")
-	console.log(candidates)
+	// console.log("Candidates")
+	// console.log(candidates)
 
 	var expansions = []
 
@@ -510,11 +510,11 @@ function featureExtractorUCoreNLPConcept(sentence, features, wordnet_buffer, sto
 		expansions = expansions.concat(wordnet_exec(candidate['string'], candidate['pos'], ['hypernym_1'], wordnet_buffer))
 	}, this)
 
-	console.log("Expansion")
-	console.log(expansions)
+	// console.log("Expansion")
+	// console.log(expansions)
 
 	_.each(expansions, function(expansion, key, list){ 
-		features["C_"+expansion.toLowerCase()] = 1 
+		features[expansion.toLowerCase()] = 1 
 	}, this)
 
 	_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
@@ -1028,7 +1028,7 @@ module.exports = {
 		TCPPDB: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCPPDB),
 		TCPPDBNoCon: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCPPDBNoCon),
 		TCSynHypHypoCohypo: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHypHypoCohypo),
-		TCSynHyp2: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHyp2),
+		TCSynHyp1: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHyp1),
 		TCBOC: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLPConcept, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 };
 

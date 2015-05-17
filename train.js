@@ -41,7 +41,11 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 
 // var do_small_temporary_serialization_test = false
-
+var wikipedia_test = true
+var wikipedia_categories = false
+var wikipedia_prepared = false
+var wikipedia_parsed = false
+var wikipedia_stats = false
 var index_wordnet = false
 var reuters = false
 var test_proportion = false
@@ -53,7 +57,7 @@ var test_clust = false
 var do_learning_curves = false
 var test_pp = false
 
-var wikipedia_test = true
+var wikipedia_test = false
 var test_approaches = false
 var do_test_seed = false
 var check_dial = false
@@ -210,6 +214,8 @@ function parse_filter(parse)
 
 if (wikipedia_test)
 {
+	var omit = [190074, 176859]
+
 	var path = "../wikipedia"
 	var files = fs.readdirSync(path)
 	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
@@ -219,6 +225,10 @@ if (wikipedia_test)
 		data = data.concat(JSON.parse(fs.readFileSync("../wikipedia/" + file)))
 	}, this)
 
+	console.log(data.length)
+	data = _.filter(data, function(num){ return _.intersection(num["categories"], omit) == 0 })
+	console.log(data.length)
+	
 	console.log("loaded")
 
 	var data = _.map(data, function(value){ var elem = {}
@@ -237,15 +247,29 @@ if (wikipedia_test)
 		F1.push(stats[0]['stats']['F1'])
 	});
 
+	console.log("F1")
 	console.log(F1)
+	console.log(_.reduce(F1, function(memo, num){ return memo + num; }, 0)/F1.length)
 
+	var F1 = []
+	partitions.partitions_reverese(data, 5, function(train, test, index) {
+		var stats = trainAndTest.trainAndTest_hash(classifier.TCSynHyp1, train, test, 5)
+		F1.push(stats[0]['stats']['F1'])
+	});
+
+	console.log("F1")
+	console.log(F1)
+	console.log(_.reduce(F1, function(memo, num){ return memo + num; }, 0)/F1.length)
+ 
 	var F1 = []
         partitions.partitions_reverese(data, 5, function(train, test, index) {
 		var stats = trainAndTest.trainAndTest_hash(classifier.TC, train, test, 5)
                 F1.push(stats[0]['stats']['F1'])
         });
 
-        console.log(F1)
+	console.log("F1")
+	console.log(F1)
+	console.log(_.reduce(F1, function(memo, num){ return memo + num; }, 0)/F1.length)
 
 	process.exit(0)
 }
@@ -287,7 +311,7 @@ if (wikipedia_parsed)
 	process.exit(0)
 }
 
-if (wikipedia_prepared)
+if (wikipedia_categories)
 {
 	var files = ["./part1.json", "./part2.json", "./part3.json"]
 	var data = []
@@ -302,7 +326,7 @@ if (wikipedia_prepared)
 	var categories = {}
 	_.each(data, function(value, key, list){ 
 		if (value['_category']==1)
-			categories[value["_id"]] = {'id':value["_id"], 'title':value["title"].split(":")[1], 'count_articles':0, 'parent_count':0, 'child_count':0 ,'parent': [], 'child':[]}
+			categories[value["_id"]] = {'id':value["_id"], 'title':value["title"].split(":")[1], 'count_articles':0,'parent': [], 'child':[]}
 	}, this)
 
 	_.each(data, function(value, key, list){ 
@@ -320,8 +344,71 @@ if (wikipedia_prepared)
 			}
 	}, this)
 
+	_.each(categories, function(value, key, list){ 
+		var cate = []
+		_.each(value["parent"], function(cat, key, list){ 
+			cate.push([categories[cat]['title'], categories[cat]['count_articles']])
+		}, this)
+		categories[key]['parent'] = cate
+
+		var cate = []
+		_.each(value["child"], function(cat, key, list){ 
+			cate.push([categories[cat]['title'], categories[cat]['count_articles']])
+		}, this)
+		categories[key]['child'] = cate
+	}, this)
+
+	var catar = _.toArray(categories)
+	catar = _.sortBy(catar, function(num){ return num["count_articles"] }).reverse()
+	console.log(JSON.stringify(catar, null, 4))
+
 	var cat = categories[5876]['child']
 	console.log(cat)
+
+}
+
+if (wikipedia_prepared)
+{
+	var files = ["./part1.json", "./part2.json", "./part3.json"]
+	var data = []
+	var folder = __dirname+"/../wikipedia/prepared/"
+
+	_.each(files, function(file, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync(file)))
+	}, this)
+
+	console.log(data.length)
+
+	var categories = {}
+	_.each(data, function(value, key, list){ 
+		if (value['_category']==1)
+			categories[value["_id"]] = {'id':value["_id"], 'title':value["title"].split(":")[1], 'count_articles':0,'parent': [], 'child':[]}
+	}, this)
+
+	_.each(data, function(value, key, list){ 
+		if (value['_category']==0)
+			_.each(value['categories'], function(cat, key, list){
+				categories[cat]['count_articles'] += 1 
+			}, this)
+
+		if (value['_category']==1)
+			{
+			categories[value['_id']]['parent'] = categories[value['_id']]['parent'].concat(value['categories'])
+			_.each(value['categories'], function(cat, key, list){
+				categories[cat]['child'].push(value["_id"])
+			}, this)
+			}
+	}, this)
+
+	
+	console.log(JSON.stringify(categories, null, 4))
+
+	var cat = categories[5876]['child']
+	console.log(cat)
+
+	console.log()
+	process.exit(0)
+
 	var dataset = {}
 
 	_.each(data, function(value, key, list){ 
@@ -370,6 +457,103 @@ if (index_wordnet)
 
 	console.log()
 	console.log(JSON.stringify(index, null, 4))
+	process.exit(0)
+}
+
+if (wikipedia_stats)
+{
+	// Art - 5876
+	// +190074 Category:Art movements
+	// +176859 Category:Arts
+
+	var cat = [ 140002, 6582, 11221, 221702, 380549,  25644, 59198, 379420, 176796, 380539, 88393,  26711,
+  209587, 264364, 379948, 380552, 29677, 63275, 29357, 306221, 306219, 15311 ]
+	var files = ["./part1.json", "./part2.json", "./part3.json"]
+	var data = []
+	var parsed = __dirname+"/../wikipedia/prepared/"
+
+	_.each(files, function(file, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync(file)))
+	}, this)
+
+	console.log("loaded")
+
+	var dataset = []
+	var categ = {}
+	var multi = []
+	_.each(data, function(value, key, list){ 
+		if (value["_category"]==1)
+			categ[value["_id"]] = value["title"]
+
+		if (value["_category"]==0)
+			if (_.intersection(value['categories'], cat).length>0)
+			{
+				dataset.push(value)
+				if (_.intersection(value['categories'], cat).length>1)
+					multi.push(value)
+			}
+	}, this)
+
+	console.log("preprocessed")
+	var count = 0
+	var count1 = 0
+	var single = []
+
+	_.each(dataset, function(value, key, list){ 
+		if (value["categories"].length > 1)
+		{
+			count += 1
+			console.log(value["_id"])
+			console.log(value["title"])
+			_.each(value["categories"], function(val, key, list){ 
+				{
+					if (cat.indexOf(val)!=-1)
+						console.log("+"+val +" "+ categ[val])
+					else
+						console.log(val +" "+ categ[val])
+				}
+
+			}, this)
+			console.log("___________________")
+		}
+		else
+		{
+		count1 += 1
+		single.push(value)
+		}
+
+	}, this)
+
+	console.log("SINGLE")
+
+	_.each(single, function(value, key, list){ 
+		console.log(value["_id"])
+		console.log(value["title"])
+		console.log(categ[value["categories"][0]])		
+		console.log("___________________")
+	}, this)
+
+	console.log("MULTI")
+
+	_.each(multi, function(value, key, list){ 
+		console.log(value["_id"])
+		console.log(value["title"])
+		_.each(value["categories"], function(val, key, list){ 
+		{
+			if (cat.indexOf(val)!=-1)
+				console.log("+"+val +" "+ categ[val])
+			else
+				console.log(val +" "+ categ[val])
+			}
+		})
+
+		console.log("++++++++++++++++++++++++++")
+	}, this)
+
+	console.log("many "+count)
+	console.log("single "+count1)
+	console.log("multi "+multi.length)
+	
 	process.exit(0)
 }
 
