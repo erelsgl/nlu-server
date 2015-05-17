@@ -514,7 +514,7 @@ function featureExtractorUCoreNLPConcept(sentence, features, wordnet_buffer, sto
 	// console.log(expansions)
 
 	_.each(expansions, function(expansion, key, list){ 
-		features[expansion.toLowerCase()] = 1 
+		features["C_"+expansion.toLowerCase()] = 1 
 	}, this)
 
 	_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
