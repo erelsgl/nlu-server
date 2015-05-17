@@ -231,6 +231,8 @@ function redis_exec(data, db, redis_buffer)
 				data_reduced.push(value)
 		}, this)
 
+		data_reduced = _.without(data_reduced, "punct_``", "punct_`") 
+
 		// var data_reduced_cmd = _.map(data_reduced, function(value){ return value.replace(/\`/g,'\\`') })
 
 		if (data_reduced.length > 0)
@@ -240,10 +242,15 @@ function redis_exec(data, db, redis_buffer)
 			// result is hash
 			var result = JSON.parse(execSync.exec(cmd)['stdout'])
 
-			_.each(result, function(value, key, list){ 
+			var ret = 0
+			_.each(result, function(value, key, list){
+				if (value.length > 0)
+					ret += 1 
 				// this.redis_buffer[db][key] = {'data': value, 'count':0}
 				redis_buffer[db][key] = value
 			}, this)
+
+			console.log(ret)
 
 			if ((_.random(0,100) == 15) && (_.isNull(data_reduced[0].match(/punct/g))))
 			{
