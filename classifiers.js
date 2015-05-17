@@ -252,9 +252,10 @@ function redis_exec(data, db, redis_buffer)
 
 			console.log(ret)
 
-			if ((_.random(0,100) == 15) && (_.isNull(data_reduced[0].match(/punct/g))))
+			if ((Object.keys(redis_buffer[db]).length % 300 == 0) && (_.isNull(data_reduced[0].match(/punct/g))))
 			{
 				console.log("redis writing buffer ...")
+				console.log(Object.keys(redis_buffer[db]).length)
 				
             	// fs.writeFileSync(buffer_path, JSON.stringify(redis_buffer, null, 4))
 
