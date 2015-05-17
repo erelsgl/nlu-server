@@ -53,7 +53,7 @@ var test_clust = false
 var do_learning_curves = false
 var test_pp = false
 
-var wikipedia = true
+var wikipedia_test = true
 var test_approaches = false
 var do_test_seed = false
 var check_dial = false
@@ -207,7 +207,79 @@ function parse_filter(parse)
         return parse
 }
 
-if (wikipedia)
+
+if (wikipedia_test)
+{
+	var path = "../wikipedia"
+	var files = fs.readdirSync(path)
+	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
+	var data = []
+
+	_.each(files, function(file, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("../wikipedia/" + file)))
+	}, this)
+
+	console.log("loaded")
+
+	var data = _.map(data, function(value){ var elem = {}
+											elem['input'] = value
+											elem['input']['input'] = value["text"]
+											elem['output'] = value['categories']
+											return elem
+										})
+	console.log("ready")				
+
+	data = _.shuffle(data)
+
+	var F1 = []
+	partitions.partitions_reverese(data, 5, function(train, test, index) {
+		stats = trainAndTest.trainAndTest_hash(classifier.TCPPDB, train, test, 5)
+		F1.push(stats[0]['stats']['F1'])
+	});
+
+	console.log(F1)
+
+	process.exit(0)
+}
+
+
+if (wikipedia_parsed)
+{
+	var cat = [ 140002, 6582, 11221, 221702, 380549, 176859, 25644, 59198, 379420, 176796, 380539, 88393, 190074, 26711,
+  209587, 264364, 379948, 380552, 29677, 63275, 29357, 306221, 306219, 15311 ]
+	var files = ["./part1.json", "./part2.json", "./part3.json"]
+	var data = []
+	var parsed = __dirname+"/../wikipedia/prepared/"
+
+	_.each(files, function(file, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync(file)))
+	}, this)
+
+	var dataset = []
+	_.each(data, function(value, key, list){ 
+		if (value["_category"]==0)
+			if (_.intersection(value['categories'], cat).length>0)
+			{
+				value['categories'] = _.intersection(value['categories'], cat)
+				var corenlp = JSON.parse(fs.readFileSync("../wikipedia/parsed/"+value["_id"]+".json"))
+				value['CORENLP'] = corenlp
+				dataset.push(value)
+			}
+	}, this)
+
+	var data_splited = _.groupBy(dataset, function(element, index){
+        return index%5;
+ 	})
+
+ 	_.each(_.toArray(data_splited), function(data, key, list){
+        console.log("writing "+key)
+        fs.writeFileSync('../wikipedia/wiki.'+key+'.corenlp.json', JSON.stringify(data, null, 4))
+ 	}, this)
+
+	process.exit(0)
+}
+
+if (wikipedia_prepared)
 {
 	var files = ["./part1.json", "./part2.json", "./part3.json"]
 	var data = []
@@ -287,8 +359,6 @@ if (index_wordnet)
 			index[file][elem[0].split("_").join(" ")] = ""
 		}, this)
 	}, this)
-
-
 
 	console.log()
 	console.log(JSON.stringify(index, null, 4))
