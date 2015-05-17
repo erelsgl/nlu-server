@@ -151,9 +151,17 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 
 	for (var i=0; i<testSet.length; ++i) 
 	{
+		var id = 0
+		if ("$" in testSet[i]['input'])
+				if ("NEWID" in testSet[i]['input']['$'])
+					id = testSet[i]['input']['$']['NEWID']	
+
+			if ("_id" in testSet[i]['input'])
+				id = testSet[i]['input']['_id']	
+
 
 		if (i % 100)
-			console.log("Test index is " +  i + " from " + testSet.length + " ID " + testSet[i]['input']['$']['NEWID'])
+			console.log("Test index is " +  i + " from " + testSet.length + " ID " + id)
 
 		expectedClasses = list.listembed(testSet[i].output)
 
@@ -185,9 +193,7 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 			sentence_hash['input'] = testSet[i].input['input'];
 			// sentence_hash['expected'] = expectedClasses[n];
 			// sentence_hash['classified'] = actualClasses[n];
-			if ("NEWID" in testSet[i]['input']['$'])
-				sentence_hash['id'] = testSet[i]['input']['$']['NEWID']
-
+			sentence_hash['id'] = id
 			sentence_hash['expansioned'] = classesWithExplanation.expansioned
 			sentence_hash['features'] = classesWithExplanation.features
 			sentence_hash['explanation'] = expl;
