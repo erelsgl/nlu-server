@@ -226,8 +226,8 @@ if (wikipedia_test)
 
 	console.log(data.length)
 
-	data = _.compact(_.map(data, function(value){ return _.without(value["categories"],190074) }))
-	data = _.compact(_.map(data, function(value){ return _.without(value["categories"],176859) }))
+	data = _.compact(_.map(data, function(value){  value["categories"] = _.without(value["categories"],190074); return value; }))
+	data = _.compact(_.map(data, function(value){  value["categories"] = _.without(value["categories"],176859); return value; }))
 
 	console.log(data.length)
 	
