@@ -233,11 +233,19 @@ if (wikipedia_test)
 
 	var F1 = []
 	partitions.partitions_reverese(data, 5, function(train, test, index) {
-		stats = trainAndTest.trainAndTest_hash(classifier.TCPPDB, train, test, 5)
+		var stats = trainAndTest.trainAndTest_hash(classifier.TCBOC, train, test, 5)
 		F1.push(stats[0]['stats']['F1'])
 	});
 
 	console.log(F1)
+
+	var F1 = []
+        partitions.partitions_reverese(data, 5, function(train, test, index) {
+		var stats = trainAndTest.trainAndTest_hash(classifier.TC, train, test, 5)
+                F1.push(stats[0]['stats']['F1'])
+        });
+
+        console.log(F1)
 
 	process.exit(0)
 }
