@@ -279,23 +279,29 @@ if (wikipedia_test)
 	data = _.shuffle(data)
 
 	var compare = {
-		// 'TCBOC':classifier.TCBOC, 
-		// 'TCSynHyp1': classifier.TCSynHyp1, 
+		'TCBOC':classifier.TCBOC, 
+		'TCSynHyp1': classifier.TCSynHyp1, 
 		'TC':classifier.TC
 		}
 	var results = {}
+	var resultsm = {}
 	var labels = {}
 
 	partitions.partitions_reverese(data, 5, function(train, test, index) {
 		_.each(compare, function(classifier, key, list){ 
 			if (!(key in results)) results[key] = []
+			if (!(key in resultsm)) resultsm[key] = []
 			if (!(key in labels)) labels[key] = []
 			var stats = trainAndTest.trainAndTest_hash(classifier, train, test, 5)
 			results[key].push(stats['stats']['F1'])
+			resultsm[key].push(stats['stats']['macroF1'])
 			labels[key].push(stats['labels'])
+
 		}, this)
 		
-		console.log("PERF")
+		console.log("PERFMACROF1")
+		console.log(JSON.stringify(resultsm, null, 4))
+		console.log("PERFF1")
 		console.log(JSON.stringify(results, null, 4))
 		console.log(JSON.stringify(labels, null, 4))
 
