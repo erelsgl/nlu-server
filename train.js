@@ -216,8 +216,9 @@ if (wikipedia_test)
 	// +190074 Category:Art movements
 	// +176859 Category:Arts
 {
-	var cat = [ 140002, 11221, 221702, 380549, 25644, 59198, 379420, 176796, 380539, 88393, 26711,
-  209587, 264364, 379948, 380552, 29677, 63275, 29357, 306221, 306219, 15311 ]
+
+	var cat = [ 140002, 6582, 11221, 221702, 380549, 176859, 25644, 59198, 379420, 176796, 380539, 88393, 190074, 26711,
+  		209587, 264364, 379948, 380552, 29677, 63275, 29357, 306221, 306219, 15311 ]
 
 	var path = "../wikipedia"
 	var files = fs.readdirSync(path)
@@ -256,7 +257,7 @@ if (wikipedia_test)
 
 	var data = []
 	_.each(aggr, function(value, key, list){ 
-		if (value.length > 10)
+		if (value.length > 0)
 			data = data.concat(value)
 	}, this)
 
@@ -282,19 +283,19 @@ if (wikipedia_test)
 		// 'TCSynHyp1': classifier.TCSynHyp1, 
 		'TC':classifier.TC}
 	var results = {}
+	var labels = {}
 
 	partitions.partitions_reverese(data, 5, function(train, test, index) {
 		_.each(compare, function(classifier, key, list){ 
 			if (!(key in results)) results[key] = []
 			var stats = trainAndTest.trainAndTest_hash(classifier, train, test, 5)
 			results[key].push(stats['stats']['F1'])
-
-			console.log(key)
-			console.log(JSON.stringify(stats['stats']['confusion'], null, 4))
+			labels[key].push(stats['labels'])
 		}, this)
 		
 		console.log("PERF")
 		console.log(JSON.stringify(results, null, 4))
+		console.log(JSON.stringify(labels, null, 4))
 
 		var aggr = {}
 		_.each(results, function(value, clas, list){ 
@@ -435,37 +436,51 @@ if (wikipedia_prepared)
 	}, this)
 
 	
-	console.log(JSON.stringify(categories, null, 4))
+	// console.log(JSON.stringify(categories, null, 4))
 
-	var cat = categories[5876]['child']
+	var cat = categories[152992]['child']
 	console.log(cat)
-
-	console.log()
-	process.exit(0)
 
 	var dataset = {}
 
 	_.each(data, function(value, key, list){ 
 		if (value["_category"] == 0)
 		{
-			if (_.intersection(value["categories"],cat).length > 0)
+			var cc =  _.intersection(value["categories"],cat)
+			if (cc.length == 1)
 			{
 				var text = value['text']
 				text = text.replace(/\n/g," ")
+				text = text.replace(/\*/g," ")
 				text = text.replace(/\s{2,}/g, ' ')
-				dataset[value["_id"]] = text
+				value['text'] = text
+				value['categories'] = [cc]
+
+				if (!(cc in dataset))
+					dataset[cc] = []
+
+				dataset[cc].push(value)
 			}
 		}
 	}, this)
 
-	console.log(Object.keys(dataset).length)
-
 	_.each(dataset, function(value, key, list){ 
-		fs.writeFileSync(folder + "/" + key, value, 'utf-8')
+		dataset[key] = _.sortBy(value, function(num){ return num.length }).reverse()
+		dataset[key] = dataset[key].slice(0, 100)
 	}, this)
 
-	var list = _.map(Object.keys(dataset), function(value){ return "/home/ir/konovav/wikipedia/prepared/"+value })
-	fs.writeFileSync(folder + "/list", list.join("\n"), 'utf-8')
+	// console.log(Object.keys(dataset).length)
+
+	var listo = []
+	_.each(dataset, function(value, key, list){ 
+		_.each(value, function(value1, key1, list){ 
+			fs.writeFileSync(folder + "/" + value1["_id"], value1["text"], 'utf-8')
+			listo.push("/home/ir/konovav/wikipedia/prepared/"+value1["_id"])
+		}, this)
+	}, this)
+
+
+	fs.writeFileSync(folder + "/list", listo.join("\n"), 'utf-8')
 
 	process.exit(0)
 }
