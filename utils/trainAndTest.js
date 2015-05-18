@@ -142,12 +142,14 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 	var startTime = new Date();
 	var explain = 50;
 
-	testSetOriginal = utils.clonedataset(testSet1)
+	// testSetOriginal = utils.clonedataset(testSet1)
 
-	if ((typeof classifier.TestSplitLabel === 'function')) 
-		testSet = classifier.outputToFormat(testSet1)
-    else
-    	testSet = testSet1
+	// if ((typeof classifier.TestSplitLabel === 'function')) 
+		// testSet = classifier.outputToFormat(testSet1)
+    // else
+    testSet = JSON.parse(JSON.stringify(testSet1, null, 4))
+
+	currentStats = new PrecisionRecall()
 
 	for (var i=0; i<testSet.length; ++i) 
 	{
@@ -163,7 +165,8 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 		if (i % 100)
 			console.log("Test index is " +  i + " from " + testSet.length + " ID " + id)
 
-		expectedClasses = list.listembed(testSet[i].output)
+		// expectedClasses = list.listembed(testSet[i].output)
+		expectedClasses = testSet[i].output
 
 		// console.log(JSON.stringify(testSet[i], null, 4))
 		// classified = classifier.classify(testSet[i].input, 50, testSet[i].input)
@@ -174,22 +177,26 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 		// console.log(JSON.stringify(classesWithExplanation, null, 4))
 		// console.log("-----------------------")
 
-		if (explain > 0)
-			classes = classesWithExplanation.classes
-		else
-			classes = classesWithExplanation
-		actualClasses = list.listembed(classes)
-		_(expectedClasses.length).times(function(n){
-			if (currentStats.length<n+1) 
-				{	
-				currentStats.push(new PrecisionRecall())
-				data_stats.push([])
-				}
+		// if (explain > 0)
+			// classes = classesWithExplanation.classes
+		// else
+			// classes = classesWithExplanation
+		// actualClasses = list.listembed(classes)
+	
+		actualClasses = classesWithExplanation.classes
+	
+		// _(expectedClasses.length).times(function(n){
+			// if (currentStats.length<n+1) 
+				// {	
+				// currentStats.push(new PrecisionRecall())
+				// data_stats.push([])
+				// }
+
 
 			var sentence_hash = {}
-			data_stats[n].push(sentence_hash);
-			expl = currentStats[n].addCasesHash(expectedClasses[n], actualClasses[n], (verbosity>2));
-			currentStats[n].addCasesLabels(expectedClasses[n], actualClasses[n]);
+			data_stats.push(sentence_hash);
+			expl = currentStats.addCasesHash(expectedClasses, actualClasses, (verbosity>2));
+			currentStats.addCasesLabels(expectedClasses, actualClasses);
 			sentence_hash['input'] = testSet[i].input['input'];
 			// sentence_hash['expected'] = expectedClasses[n];
 			// sentence_hash['classified'] = actualClasses[n];
@@ -206,7 +213,7 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 			
 			if ('expansioned' in classesWithExplanation)
 			{
-				var label = actualClasses[n]
+				var label = actualClasses[0]
 				var explan = _.object(sentence_hash['explanation_source'][label])
 
 				_.each(sentence_hash['expansioned'], function(value, key, list){ 
@@ -242,25 +249,28 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 
 
 			}
+
+			data_stats.push(sentence_hash);
+
 			// sentence_hash['expected original'] = testSetOriginal[i]['output']
 			// sentence_hash['classified original'] = classified
-			})	
+			
 		
 		// if (microAverage) microAverage.addCases(expectedClasses, actualClasses);
 
 	}
 	
-	testResult = []
+	// testResult = []
 
-		_(expectedClasses.length).times(function(n){
+		// _(expectedClasses.length).times(function(n){
 		classifierstats = {}
-		classifierstats['labels'] = currentStats[n].retrieveLabels()
-		classifierstats['data'] = data_stats[n]
-		classifierstats['stats'] = currentStats[n].retrieveStats()
-		testResult.push(classifierstats)
-		}, this)
+		classifierstats['labels'] = currentStats.retrieveLabels()
+		classifierstats['data'] = data_stats
+		classifierstats['stats'] = currentStats.retrieveStats()
+		// testResult.push(classifierstats)
+		// }, this)
 
-	return testResult
+	return classifierstats
 };
 
 
