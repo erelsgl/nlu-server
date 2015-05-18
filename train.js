@@ -281,7 +281,8 @@ if (wikipedia_test)
 	var compare = {
 		'TCBOC':classifier.TCBOC, 
 		'TCSynHyp1': classifier.TCSynHyp1, 
-		'TC':classifier.TC}
+		'TC':classifier.TC
+		}
 	var results = {}
 	var labels = {}
 
