@@ -279,8 +279,8 @@ if (wikipedia_test)
 	data = _.shuffle(data)
 
 	var compare = {
-		// 'TCBOC':classifier.TCBOC, 
-		// 'TCSynHyp1': classifier.TCSynHyp1, 
+		'TCBOC':classifier.TCBOC, 
+		'TCSynHyp1': classifier.TCSynHyp1, 
 		'TC':classifier.TC}
 	var results = {}
 	var labels = {}
