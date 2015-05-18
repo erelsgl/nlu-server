@@ -212,8 +212,11 @@ function parse_filter(parse)
 
 
 if (wikipedia_test)
+
+	// +190074 Category:Art movements
+	// +176859 Category:Arts
 {
-	var cat = [ 140002, 6582, 11221, 221702, 380549, 176859, 25644, 59198, 379420, 176796, 380539, 88393, 190074, 26711,
+	var cat = [ 140002, 6582, 11221, 221702, 380549, 25644, 59198, 379420, 176796, 380539, 88393, 26711,
   209587, 264364, 379948, 380552, 29677, 63275, 29357, 306221, 306219, 15311 ]
 
 	var path = "../wikipedia"
@@ -226,6 +229,8 @@ if (wikipedia_test)
 	}, this)
 
 	console.log(data.length)
+	var count = _.reduce(data, function(memo, num){ return memo + num["categories"].length }, 0)
+	console.log(count)
 
 	_.each(data, function(value, key, list){ 
 		var cati = []
@@ -233,21 +238,30 @@ if (wikipedia_test)
 			if (cat.indexOf(categ)!= -1)
 				cati.push(categ)
 		}, this)
-		data[key]["categories"] = cati
+		data[key]["categories"] = JSON.parse(JSON.stringify(cati, null, 4))
 	}, this)
 
-	data = _.filter(data, function(num){ return num["categories"].length>0 });
+	data = _.filter(data, function(num){ return num["categories"].length == 1 });
+	var count = _.reduce(data, function(memo, num){ return memo + num["categories"].length }, 0)
 
 	console.log(data.length)
+	console.log(count)
 	
 	console.log("loaded")
 
 	var data = _.map(data, function(value){ var elem = {}
+											value["CORENLP"]["sentences"].splice(3, value["CORENLP"]["sentences"].length)
 											elem['input'] = value
-											elem['input']['input'] = value["text"]
+											// elem['input']['input'] = value["text"]
 											elem['output'] = value['categories']
 											return elem
 										})
+
+	
+	// 	value['BODY_CORENLP']['sentences'] = [ value['BODY_CORENLP']['sentences'][0] ]
+																	
+	// 															elem['input'] =  value
+
 	console.log("ready")				
 
 	data = _.shuffle(data)
