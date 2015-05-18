@@ -246,6 +246,21 @@ if (wikipedia_test)
 
 	console.log(data.length)
 	console.log(count)
+
+	var aggr = {}
+	_.each(data, function(value, key, list){
+		if (!(value["categories"][0] in aggr))
+			aggr[value["categories"][0]] = []
+		aggr[value["categories"][0]].push(value)
+	}, this)
+
+	var data = []
+	_.each(aggr, function(value, key, list){ 
+		if (value.length > 10)
+			data = data.concat(value)
+	}, this)
+
+	console.log(data.length)
 	
 	console.log("loaded")
 
@@ -258,25 +273,24 @@ if (wikipedia_test)
 										})
 
 	
-	// 	value['BODY_CORENLP']['sentences'] = [ value['BODY_CORENLP']['sentences'][0] ]
-																	
-	// 															elem['input'] =  value
-
 	console.log("ready")				
 
 	data = _.shuffle(data)
 
-	var compare = {'TCBOC':classifier.TCBOC, 'TCSynHyp1': classifier.TCSynHyp1, 'TC':classifier.TC}
+	var compare = {
+		// 'TCBOC':classifier.TCBOC, 
+		// 'TCSynHyp1': classifier.TCSynHyp1, 
+		'TC':classifier.TC}
 	var results = {}
 
 	partitions.partitions_reverese(data, 5, function(train, test, index) {
 		_.each(compare, function(classifier, key, list){ 
 			if (!(key in results)) results[key] = []
 			var stats = trainAndTest.trainAndTest_hash(classifier, train, test, 5)
-			results[key].push(stats[0]['stats']['F1'])
+			results[key].push(stats['stats']['F1'])
 
 			console.log(key)
-			console.log(JSON.stringify(stats[0]['stats']['confusion'], null, 4))
+			console.log(JSON.stringify(stats['stats']['confusion'], null, 4))
 		}, this)
 		
 		console.log("PERF")
@@ -488,9 +502,14 @@ if (wikipedia_stats)
 
 	var cat = [ 140002, 6582, 11221, 221702, 380549,  25644, 59198, 379420, 176796, 380539, 88393,  26711,
   209587, 264364, 379948, 380552, 29677, 63275, 29357, 306221, 306219, 15311 ]
-	var files = ["./part1.json", "./part2.json", "./part3.json"]
+	// var files = ["./part1.json", "./part2.json", "./part3.json"]
+	// var data = []
+	// var parsed = __dirname+"/../wikipedia/prepared/"
+
+	var path = "../wikipedia"
+	var files = fs.readdirSync(path)
+	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 	var data = []
-	var parsed = __dirname+"/../wikipedia/prepared/"
 
 	_.each(files, function(file, key, list){ 
 		data = data.concat(JSON.parse(fs.readFileSync(file)))
