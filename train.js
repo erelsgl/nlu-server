@@ -274,6 +274,9 @@ if (wikipedia_test)
 			if (!(key in results)) results[key] = []
 			var stats = trainAndTest.trainAndTest_hash(classifier, train, test, 5)
 			results[key].push(stats[0]['stats']['F1'])
+
+			console.log(key)
+			console.log(JSON.stringify(stats[0]['stats']['confusion'], null, 4))
 		}, this)
 		
 		console.log("PERF")
