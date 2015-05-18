@@ -526,8 +526,9 @@ module.exports.trainAndTest_hash = function(
 		var classifier = new classifierType();
 		TrainCountEmbed = true
 
-		testSet1 = utils.clonedataset(testSet)
-		trainSet1 = utils.clonedataset(trainSet)
+		testSet1 = JSON.parse(JSON.stringify(testSet))
+		
+		trainSet1 = JSON.parse(JSON.stringify(trainSet))
 
 		// if ((typeof classifier.InputSplitLabel === 'function')) {
  	// 		agghash = label_enrichment(trainSet1, classifier.InputSplitLabel)
