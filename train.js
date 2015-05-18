@@ -266,7 +266,7 @@ if (wikipedia_test)
 	console.log("loaded")
 
 	var data = _.map(data, function(value){ var elem = {}
-											value["CORENLP"]["sentences"].splice(3, value["CORENLP"]["sentences"].length)
+											// value["CORENLP"]["sentences"].splice(3, value["CORENLP"]["sentences"].length)
 											elem['input'] = value
 											// elem['input']['input'] = value["text"]
 											elem['output'] = value['categories']

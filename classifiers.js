@@ -177,7 +177,7 @@ function candidate_retrieve(word, pos, relations, wordnet_buffer, path, buffer_p
 			console.log(candidates.length)
 			wordnet_buffer[relation][word][pos] = candidates
 
-			if (_.random(0, 20) == 5)
+			if (Object.keys(wordnet_buffer[relation]).length % 50 == 0)
 			{
 			console.log("wordnet writing buffer ...")
 		    fs.writeFileSync(buffer_path, JSON.stringify(wordnet_buffer, null, 4))
