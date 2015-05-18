@@ -41,9 +41,9 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 
 // var do_small_temporary_serialization_test = false
-var wikipedia_test = true
+var wikipedia_test = false
 var wikipedia_categories = false
-var wikipedia_prepared = false
+var wikipedia_prepared = true
 var wikipedia_parsed = false
 var wikipedia_stats = false
 var index_wordnet = false
@@ -267,6 +267,7 @@ if (wikipedia_test)
 
 	var data = _.map(data, function(value){ var elem = {}
 											// value["CORENLP"]["sentences"].splice(3, value["CORENLP"]["sentences"].length)
+											value["CORENLP"]["sentences"].splice(0, 5)
 											elem['input'] = value
 											// elem['input']['input'] = value["text"]
 											elem['output'] = value['categories']
@@ -283,6 +284,7 @@ if (wikipedia_test)
 		'TCSynHyp1': classifier.TCSynHyp1, 
 		'TC':classifier.TC
 		}
+
 	var results = {}
 	var resultsm = {}
 	var labels = {}
@@ -320,29 +322,39 @@ if (wikipedia_test)
 
 if (wikipedia_parsed)
 {
-	var cat = [ 140002, 6582, 11221, 221702, 380549, 176859, 25644, 59198, 379420, 176796, 380539, 88393, 190074, 26711,
-  209587, 264364, 379948, 380552, 29677, 63275, 29357, 306221, 306219, 15311 ]
+// Science
+	// var cat = [ 328021, 233185, 155620, 240282, 328930, 328520 ]
+// Art
+// var cat = [ 140002, 6582, 11221, 221702, 380549, 176859, 25644, 59198, 379420, 176796, 380539, 88393, 190074, 26711,
+  // 209587, 264364, 379948, 380552, 29677, 63275, 29357, 306221, 306219, 15311 ]
+
+
 	var files = ["./part1.json", "./part2.json", "./part3.json"]
 	var data = []
+	// var prepared = __dirname+"/../wikipedia/prepared/"
 	var parsed = __dirname+"/../wikipedia/prepared/"
 
 	_.each(files, function(file, key, list){ 
 		data = data.concat(JSON.parse(fs.readFileSync(file)))
 	}, this)
 
-	var dataset = []
+	var datahash = {}
 	_.each(data, function(value, key, list){ 
-		if (value["_category"]==0)
-			if (_.intersection(value['categories'], cat).length>0)
-			{
-				value['categories'] = _.intersection(value['categories'], cat)
-				var corenlp = JSON.parse(fs.readFileSync("../wikipedia/parsed/"+value["_id"]+".json"))
-				value['CORENLP'] = corenlp
-				dataset.push(value)
-			}
+		datahash[value["_id"]] = value
 	}, this)
 
-	var data_splited = _.groupBy(dataset, function(element, index){
+	var files = fs.readdirSync(parsed)
+	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
+	
+	var parsed = []
+	_.each(files, function(file, key, list){ 
+		var corenlp = JSON.parse(fs.readFileSync(parsed+file))
+		var orig = datahash[file.split(".")[0]]
+		orig["CORENLP"] = corenlp
+		parsed.push(orig)
+	}, this)
+
+	var data_splited = _.groupBy(parsed, function(element, index){
         return index%5;
  	})
 
@@ -473,7 +485,7 @@ if (wikipedia_prepared)
 	}, this)
 
 	_.each(dataset, function(value, key, list){ 
-		dataset[key] = _.sortBy(value, function(num){ return num.length }).reverse()
+		dataset[key] = _.sortBy(value, function(num){ return num["categories"].length })
 		dataset[key] = dataset[key].slice(0, 100)
 	}, this)
 
