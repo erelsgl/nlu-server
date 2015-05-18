@@ -849,12 +849,12 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
 
-		inputSplitter: inputSplitter,
+		// inputSplitter: inputSplitter,
 
-		featureExpansion: featureExpansion,
-		featureExpansionScale: featureExpansionScale,
-		featureExpansionPhrase: featureExpansionPhrase,
-		featureFine: featureFine,
+		// featureExpansion: featureExpansion,
+		// featureExpansionScale: featureExpansionScale,
+		// featureExpansionPhrase: featureExpansionPhrase,
+		// featureFine: featureFine,
 		expansionParam: expansionParam,
 		stopwords: JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8'))),
 		
@@ -882,9 +882,9 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 			
 		classifierType: classifierType,
 
-		InputSplitLabel: InputSplitLabel,
-		OutputSplitLabel: OutputSplitLabel,
-		TestSplitLabel: TestSplitLabel
+		// InputSplitLabel: InputSplitLabel,
+		// OutputSplitLabel: OutputSplitLabel,
+		// TestSplitLabel: TestSplitLabel
 	});
 };
 
