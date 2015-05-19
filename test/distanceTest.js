@@ -11,6 +11,14 @@ var _ = require("underscore")._;
 
 describe('kNN common test', function() {
 
+	it('average', function(){
+		distance.average([2, 5, 5]).should.equal(4)
+	})
+
+	it('vec minus', function(){
+		_.isEqual(distance.vec_minus([2, 5, 5], [1,2,3]), [-1,-3,-2]).should.be.true
+	})
+
 	it('dot distance', function(){
 		distance.dot_distance([2,2],[1,1]).should.equal(4)
 	})
