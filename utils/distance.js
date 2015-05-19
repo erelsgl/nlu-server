@@ -19,6 +19,31 @@ function euclidean_distance(a, b) {
   	return Math.sqrt(sum);
 }
 
+function vec_minus(a, b) {
+  if (!isVectorNumber(a) || !isVectorNumber(b))
+    throw new Error("Vectors should be consist of numbers " + JSON.stringify(a) + " " +JSON.stringify(b))
+
+  if (a.length != b.length)
+    throw new Error("Vectors should be of the same size " + JSON.stringify(a.length) + " " +JSON.stringify(b.length))
+
+  var output = []
+    for (n=0; n < a.length; n++) {
+      output.push(b[n] - a[n])
+    }
+    return output
+}
+
+function average(a) {
+  if (!isVectorNumber(a))
+    throw new Error("Vectors should be consist of numbers " + JSON.stringify(a))
+
+  var output = 0
+    for (n=0; n < a.length; n++) {
+      output += a[n]
+    }
+    return output/a.length
+}
+
 function dot_distance(a, b) {
   if (!isVectorNumber(a) || !isVectorNumber(b))
     throw new Error("Vectors should be consist of numbers " + JSON.stringify(a) + " " +JSON.stringify(b))
@@ -165,5 +190,7 @@ module.exports = {
   Add:Add,
   BalAdd:BalAdd,
   Mult:Mult,
-  BalMult:BalMult
+  BalMult:BalMult,
+  average:average,
+  vec_minus: vec_minus
 }
