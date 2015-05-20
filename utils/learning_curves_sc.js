@@ -245,13 +245,13 @@ function learning_curves(classifiers, dataset, numOfFolds)
 if (process.argv[1] === __filename)
 {
 
-	var path = "../wikipedia"
+	var path = "../wikipedia/simple/science/"
 	var files = fs.readdirSync(path)
 	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 	var data = []
 
 	_.each(files, function(file, key, list){ 
-		data = data.concat(JSON.parse(fs.readFileSync("../wikipedia/" + file)))
+		data = data.concat(JSON.parse(fs.readFileSync(path + file)))
 	}, this)
 
 
