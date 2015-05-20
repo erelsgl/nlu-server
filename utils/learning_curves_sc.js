@@ -18,8 +18,8 @@ var bars = require(__dirname+'/bars');
 var distance = require(__dirname+'/distance');
 var path = require("path")
 
-var gnuplot = __dirname + '/gnuplot5'
-// var gnuplot = 'gnuplot'
+// var gnuplot = __dirname + '/gnuplot5'
+var gnuplot = 'gnuplot'
 var dirr = "/learning_curves/"
 
 function onlyNumbers(list)
@@ -240,60 +240,81 @@ function learning_curves(classifiers, dataset, numOfFolds)
 if (process.argv[1] === __filename)
 {
 
+	var path = "../wikipedia"
+	var files = fs.readdirSync(path)
+	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
+	var data = []
 
-	var field = "BODY"
+	_.each(files, function(file, key, list){ 
+		data = data.concat(JSON.parse(fs.readFileSync("../wikipedia/" + file)))
+	}, this)
+
+
+	// var field = "BODY"
 	
-	var path = __dirname + "/../../reuters2json/R8/"
+	// var path = __dirname + "/../../reuters2json/R8/"
 
-	var train_files = fs.readdirSync(path + "train")
-	var test_files = fs.readdirSync(path + "test")
+	// var train_files = fs.readdirSync(path + "train")
+	// var test_files = fs.readdirSync(path + "test")
 
-	var train_data = []
+	// var train_data = []
 
-	_.each(train_files, function(file, key, list){ 
-		console.log("load train"+key)
-		train_data = train_data.concat(JSON.parse(fs.readFileSync(path+"train/"+file)))
-	}, this)
+	// _.each(train_files, function(file, key, list){ 
+	// 	console.log("load train"+key)
+	// 	train_data = train_data.concat(JSON.parse(fs.readFileSync(path+"train/"+file)))
+	// }, this)
 
-	var test_data = []
+	// var test_data = []
 
-	_.each(test_files, function(file, key, list){ 
-		console.log("load test"+key)
-		test_data = test_data.concat(JSON.parse(fs.readFileSync(path+"test/"+file)))
-	}, this)
+	// _.each(test_files, function(file, key, list){ 
+	// 	console.log("load test"+key)
+	// 	test_data = test_data.concat(JSON.parse(fs.readFileSync(path+"test/"+file)))
+	// }, this)
 
-	var train_data = _.compact(_.map(train_data, function(value){ var elem = {}
-															if ('BODY' in value['TEXT']) 
-																{
-																value['CORENLP'] = value['BODY_CORENLP']
-																delete value['TITLE_CORENLP']
-																elem['input'] =  value
-																elem['output'] = value['TOPICS'][0]
-																return elem
-																} 
-															}))
+	// var train_data = _.compact(_.map(train_data, function(value){ var elem = {}
+	// 														if ('BODY' in value['TEXT']) 
+	// 															{
+	// 															value['CORENLP'] = value['BODY_CORENLP']
+	// 															delete value['TITLE_CORENLP']
+	// 															elem['input'] =  value
+	// 															elem['output'] = value['TOPICS'][0]
+	// 															return elem
+	// 															} 
+	// 														}))
 
-	console.log("train is loaded")
+	// console.log("train is loaded")
 
-	var test_data = _.compact(_.map(test_data, function(value){ var elem = {}
-															if ((field in value['TEXT']) && (value['$']['NEWID'] != '20959')) 
-																{
-																value['CORENLP'] = value[field+'_CORENLP']
-																// delete value['TITLE_CORENLP']
-																elem['input'] = value
-																elem['input']['input'] = value['TEXT'][field]
-																elem['output'] = value['TOPICS'][0]
-																return elem
-																}
-															}))
+	// var test_data = _.compact(_.map(test_data, function(value){ var elem = {}
+	// 														if ((field in value['TEXT']) && (value['$']['NEWID'] != '20959')) 
+	// 															{
+	// 															value['CORENLP'] = value[field+'_CORENLP']
+	// 															// delete value['TITLE_CORENLP']
+	// 															elem['input'] = value
+	// 															elem['input']['input'] = value['TEXT'][field]
+	// 															elem['output'] = value['TOPICS'][0]
+	// 															return elem
+	// 															}
+	// 														}))
 
 
-	console.log("test is ready")
+	// console.log("test is ready")
 
-	console.log(train_data.length)
-	console.log(test_data.length)
+	// console.log(train_data.length)
+	// console.log(test_data.length)
 
-	test_data = _.shuffle(test_data)
+	// test_data = _.shuffle(test_data)
+
+	var data = _.map(data, function(value){ var elem = {}
+											// value["CORENLP"]["sentences"].splice(3, value["CORENLP"]["sentences"].length)
+											// value["CORENLP"]["sentences"].splice(0, 5)
+											elem['input'] = value
+											elem['input']['input'] = value["text"]
+											elem['output'] = value['categories']
+											return elem
+										})
+
+
+	data = _.shuffle(data)
 
 	var classifiers  = {
 				
@@ -302,10 +323,7 @@ if (process.argv[1] === __filename)
 
 			}
 
-	
-	test_data = test_data.splice(0,100)
-
-	learning_curves(classifiers, test_data, 5/*numOfFolds*/, function(){
+	learning_curves(classifiers, data, 5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
