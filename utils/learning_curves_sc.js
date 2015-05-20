@@ -151,7 +151,9 @@ function plot(fold, parameter, stat, classifiers)
 
     fs.writeFileSync(mapfile, string)
 
-    execSync.run(gnuplot +" -e \"set output 'utils/learning_curves/"+parameter+"_"+fold+".png'\" "+__dirname+"/com " + "-e plot \'"+mapfile+"\' using 2:1:3 with image")
+    var command = gnuplot +" -e \"set output 'utils/learning_curves/"+parameter+"_"+fold+".png'\" "+__dirname+"/com " + "-e plot \'"+mapfile+"\' using 2:1:3 with image"
+    console.log(command)
+    execSync.run(command)
 }
 
 function extractGlobal(classifiers, train, length, report, stat)
