@@ -18,8 +18,8 @@ var bars = require(__dirname+'/bars');
 var distance = require(__dirname+'/distance');
 var path = require("path")
 
-// var gnuplot = __dirname + '/gnuplot'
-var gnuplot = 'gnuplot'
+var gnuplot = __dirname + '/gnuplot5'
+// var gnuplot = 'gnuplot'
 var dirr = "/learning_curves/"
 
 function onlyNumbers(list)
