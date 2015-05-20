@@ -147,9 +147,11 @@ function plot(fold, parameter, stat, classifiers)
 		string += "\n"
 	}, this)
 
-    fs.writeFileSync(__dirname+"/map", string)
+	var mapfile = __dirname+"/map_"+fold+parameter
 
-    execSync.run(gnuplot +" -e \"set output 'utils/"+parameter+"_"+fold+".png'\" "+__dirname+"/com")
+    fs.writeFileSync(mapfile, string)
+
+    execSync.run(gnuplot +" -e \"set output 'utils/"+parameter+"_"+fold+".png'\" "+__dirname+"/com " + "-e plot \'"+mapfile+"\' using 2:1:3 with image")
 }
 
 function extractGlobal(classifiers, train, length, report, stat)
@@ -179,8 +181,7 @@ function filtrain(train, index)
 {
 	var output = []
 	_.each(train, function(value, key, list){ 
-		value["input"]["CORENLP"]["sentences"].splice(0,index)
-		output.push(value)
+		output.push(value["input"]["CORENLP"]["sentences"].slice(0,index))
 	}, this)
 	return output
 }

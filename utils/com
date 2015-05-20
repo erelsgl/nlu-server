@@ -1,5 +1,5 @@
 set terminal png nocrop enhanced size 900,640 font "arial,8" 
-set output 'utils/heatmaps.2.png'
+#set output 'utils/heatmaps.2.png'
 unset key
 set view map scale 0
 set style data lines
@@ -31,4 +31,4 @@ set cbrange [ -5 : 5 ] noreverse nowriteback
 set palette defined (0 "blue", 1 "red")
 x = 1
 ## Last datafile plotted: "$map2"
-plot 'utils/map' using 2:1:3 with image
+#plot 'utils/map' using 2:1:3 with image
