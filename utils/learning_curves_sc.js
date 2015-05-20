@@ -181,7 +181,9 @@ function filtrain(train, index)
 {
 	var output = []
 	_.each(train, function(value, key, list){ 
-		output.push(value["input"]["CORENLP"]["sentences"].slice(0,index))
+		var value1 = JSON.parse(JSON.stringify(value))
+		value1["input"]["CORENLP"]["sentences"].splice(0,index)
+		output.push(value1)
 	}, this)
 	return output
 }
