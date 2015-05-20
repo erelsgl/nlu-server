@@ -13,6 +13,7 @@ var fs = require('fs');
 var rules = require("../research/rule-based/rules.js")
 var ppdb = require("../research/ppdb/utils.js")
 
+
 describe('Bars utilities', function() {
 
 	it('ngraminindex', function() {
