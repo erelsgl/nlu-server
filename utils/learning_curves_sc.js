@@ -158,7 +158,7 @@ function plot(fold, parameter, stat, classifiers)
 
 function extractGlobal(classifiers, train, length, report, stat)
 {
-	var attributes = ["F1", "macroF1"]
+	var attributes = ["F1", "macroF1", "Accuracy"]
 
 	if (_.size(classifiers) == 0)
 		throw new Error("List of classifiers is empty");
@@ -184,7 +184,7 @@ function filtrain(train, index)
 	var output = []
 	_.each(train, function(value, key, list){ 
 		var value1 = JSON.parse(JSON.stringify(value))
-		value1["input"]["CORENLP"]["sentences"].splice(0,index)
+		value1["input"]["CORENLP"]["sentences"].splice(index, value1["input"]["CORENLP"]["sentences"].length)
 		output.push(value1)
 	}, this)
 	return output
@@ -241,12 +241,8 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 function groupbylabel(dataset, minsize, sizetrain)
 {
 
-	console.log(dataset.length)
-
 	dataset = _.compact(_.map(dataset, function(value){ if (value['input']['CORENLP']['sentences'].length >= minsize) return value }))
 	
-	console.log(dataset.length)
-
 	var gro = _.groupBy(dataset, function(num){ return num["output"][0] })
 
 	_.each(gro, function(value, key, list){ 
@@ -353,5 +349,6 @@ module.exports = {
 	filternan:filternan,
 	onlyNumbers:onlyNumbers,
 	isProb:isProb,
-	thereisdata:thereisdata
+	thereisdata:thereisdata,
+	filtrain:filtrain
 }
