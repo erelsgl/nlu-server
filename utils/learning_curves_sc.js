@@ -350,5 +350,6 @@ module.exports = {
 	onlyNumbers:onlyNumbers,
 	isProb:isProb,
 	thereisdata:thereisdata,
-	filtrain:filtrain
+	filtrain:filtrain,
+	groupbylabel:groupbylabel
 }
