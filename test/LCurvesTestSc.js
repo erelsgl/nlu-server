@@ -33,12 +33,10 @@ describe('Learning curves utilities', function() {
 			{"input":{"CORENLP":{"sentences":[7]}}, "output":[2]},
 			{"input":{"CORENLP":{"sentences":[7,6,7,8,9]}}, "output":[2]},
 			{"input":{"CORENLP":{"sentences":[1,2]}}, "output":[2]},
-
 		]
 		
 		var data = curves.groupbylabel(dataset, 2, 3)
 		data[2].length.should.equal(3)
-
 	})
 
 
