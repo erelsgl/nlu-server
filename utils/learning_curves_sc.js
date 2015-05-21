@@ -211,9 +211,6 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 				index += 1
 				var mytrainset = _.flatten(train.slice(0, index))
 				
-				if (mytrainset.length > 100)
-					break
-			  	
 			  	_(len).times(function(n){
 
 			  		n += 1
