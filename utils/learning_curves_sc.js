@@ -18,7 +18,6 @@ var bars = require(__dirname+'/bars');
 var distance = require(__dirname+'/distance');
 var path = require("path")
 
-// var gnuplot = __dirname + '/gnuplot5'
 var gnuplot = 'gnuplot'
 var dirr = "/learning_curves/"
 
@@ -210,16 +209,25 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 				
 				index += 1
 				var mytrainset = _.flatten(train.slice(0, index))
+
+				if (!_.isObject(mytrainset[0]))
+					throw new Error("flatten is not correct")
 				
+				if (_.isArray(mytrainset[0]))
+					throw new Error("flatten is not correct")
+				
+				if (!("input" in mytrainset[0]))
+					throw new Error("flatten is not correct")
+
 			  	_(len).times(function(n){
 
 			  		n += 1
 
-					mytrainset = filtrain(mytrainset, n)
+					mytrain = filtrain(mytrainset, n)
 			  				  	
 				  	_.each(classifiers, function(classifier, name, list){ 
 				  		console.log("start trainandTest")
-		    			stats = trainAndTest_hash(classifier, mytrainset, test, 5)
+		    			stats = trainAndTest_hash(classifier, mytrain, test, 5)
 			    		console.log("stop trainandTest")
 			    		
 			    		report.push(stats['stats'])
