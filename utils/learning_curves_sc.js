@@ -190,7 +190,7 @@ function filtrain(train, index)
 	return output
 }
 
-function learning_curves(classifiers, dataset, numOfFolds) 
+function learning_curves(classifiers, dataset, len,  numOfFolds) 
 {
 
 		checkGnuPlot
@@ -200,7 +200,7 @@ function learning_curves(classifiers, dataset, numOfFolds)
 		
 		stat = {}
 
-		partitions.partitions_consistent(dataset, numOfFolds, function(train, test, fold) {
+		partitions.partitions_hash(dataset, numOfFolds, function(train, test, fold) {
 			var index = 0
 			var stats
 
@@ -209,13 +209,12 @@ function learning_curves(classifiers, dataset, numOfFolds)
 			  	var report = []
 				
 				index += 1
-				var mytrainset = train.slice(0, index)
+				var mytrainset = _.flatten(train.slice(0, index))
 				
-
 				if (mytrainset.length > 100)
 					break
 			  	
-			  	_(3).times(function(n){
+			  	_(len).times(function(n){
 
 			  		n += 1
 
@@ -240,6 +239,27 @@ function learning_curves(classifiers, dataset, numOfFolds)
 			} //while (index < train.lelearning_curveslearning_curvesngth)
 		})
 
+}
+
+function groupbylabel(dataset, minsize, sizetrain)
+{
+
+	console.log(dataset.length)
+
+	dataset = _.compact(_.map(dataset, function(value){ if (value['input']['CORENLP']['sentences'].length >= minsize) return value }))
+	
+	console.log(dataset.length)
+
+	var gro = _.groupBy(dataset, function(num){ return num["output"][0] })
+
+	_.each(gro, function(value, key, list){ 
+		if (value.length < sizetrain)
+			delete gro[key]
+		else
+			gro[key] = _.sample(value, sizetrain)
+	}, this)
+
+	return gro
 }
 
 if (process.argv[1] === __filename)
@@ -277,7 +297,7 @@ if (process.argv[1] === __filename)
 	// }, this)
 
 	// var train_data = _.compact(_.map(train_data, function(value){ var elem = {}
-	// 														if ('BODY' in value['TEXT']) 
+	// 														elemif ('BODY' in value['TEXT']) 
 	// 															{
 	// 															value['CORENLP'] = value['BODY_CORENLP']
 	// 															delete value['TITLE_CORENLP']
@@ -301,14 +321,6 @@ if (process.argv[1] === __filename)
 	// 															}
 	// 														}))
 
-
-	// console.log("test is ready")
-
-	// console.log(train_data.length)
-	// console.log(test_data.length)
-
-	// test_data = _.shuffle(test_data)
-
 	var data = _.map(data, function(value){ var elem = {}
 											// value["CORENLP"]["sentences"].splice(3, value["CORENLP"]["sentences"].length)
 											// value["CORENLP"]["sentences"].splice(0, 5)
@@ -320,6 +332,8 @@ if (process.argv[1] === __filename)
 
 
 	data = _.shuffle(data)
+	
+	var datahash = groupbylabel(data, 5, 25)
 
 	var classifiers  = {
 				
@@ -328,7 +342,7 @@ if (process.argv[1] === __filename)
 
 			}
 
-	learning_curves(classifiers, data, 5/*numOfFolds*/, function(){
+	learning_curves(classifiers, datahash, 5/*len*/, 5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
