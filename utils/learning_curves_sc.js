@@ -147,7 +147,7 @@ function plot(fold, parameter, stat, classifiers)
 		string += "\n"
 	}, this)
 
-	var mapfile = __dirname+"/map_"+fold+parameter
+	var mapfile = __dirname+"/learning_curves/map_"+fold+parameter
 
     fs.writeFileSync(mapfile, string)
 
@@ -257,6 +257,13 @@ function groupbylabel(dataset, minsize, sizetrain)
 
 if (process.argv[1] === __filename)
 {
+
+	var curves_path = __dirname + "/learning_curves"
+	var graph_files = fs.readdirSync(curves_path)
+
+	_.each(graph_files, function(value, key, list){ 
+		fs.unlinkSync(curves_path+"/"+value)
+	}, this)
 
 	var path = "../wikipedia/simple/science/"
 	var files = fs.readdirSync(path)
