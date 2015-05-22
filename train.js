@@ -384,7 +384,7 @@ if (wikipedia_categories)
 	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 
 	files = _.sample(files, 3)
-	console.log(sample)
+	console.log(files)
 
 	_.each(files, function(file, key, list){ 
 		console.log(file)
