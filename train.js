@@ -447,6 +447,8 @@ if (wikipedia_categories)
 	var catar = _.toArray(categories)
 	catar = _.sortBy(catar, function(num){ return num["count_articles"] }).reverse()
 
+	console.log("sorting finished")
+
 	var data_splited = _.groupBy(catar, function(element, index){
         return index%5;
  	})
@@ -456,9 +458,16 @@ if (wikipedia_categories)
         fs.writeFileSync('../wiki/en/categories/wiki.'+key+'.corenlp.json', JSON.stringify(data, null, 4))
  	}, this)
 
-	console.log()
-	process.exit(0)
+ 	var fits = []
+ 	_.each(catar, function(value, key, list){ 
+ 		var ch = _.filter(value["child"], function(num){ return num[1]>10);
+ 		if ((value["child"].length > 10)&&(ch.length > 10))
+ 			fits.push(value) 
+ 	}, this)
 
+    fs.writeFileSync('../wiki/en/categories/fits.json', JSON.stringify(fits, null, 4))
+    console.log()
+    process.exit(0)
 }
 
 if (wikipedia_prepared)
