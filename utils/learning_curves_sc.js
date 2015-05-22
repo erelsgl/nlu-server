@@ -273,7 +273,7 @@ if (process.argv[1] === __filename)
 		fs.unlinkSync(curves_path+"/"+value)
 	}, this)
 
-	var path = "../wikipedia/simple/science/"
+	var path = "../wiki/en/JEL/"
 	var files = fs.readdirSync(path)
 	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 	var data = []
@@ -341,7 +341,7 @@ if (process.argv[1] === __filename)
 
 	data = _.shuffle(data)
 	
-	var datahash = groupbylabel(data, 5, 25)
+	var datahash = groupbylabel(data, 5, 50)
 
 	var classifiers  = {
 				
