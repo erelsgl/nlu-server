@@ -333,9 +333,6 @@ if (wikipedia_parsed)
 
 	ids = _.map(ids, function(value){ return parseInt(value.split(".")[0]) })
 
-	console.log(ids)
-	process.exit(0)
-
 	var files = fs.readdirSync(json)
 
 	_.each(files, function(file, key, list){ 
