@@ -249,8 +249,10 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 function groupbylabel(dataset, minsize, sizetrain)
 {
 
-	dataset = _.compact(_.map(dataset, function(value){ if (value['input']['CORENLP']['sentences'].length >= minsize) return value }))
-	
+	var sends = _.groupBy(dataset , function(num){ return value['input']['CORENLP']['sentences'].length })
+	console.log("sentence distribution")
+	console.log(sends)
+
 	dataset = _.filter(dataset, function(value){ return value['input']['CORENLP']['sentences'].length >= minsize })
 
 	_.each(dataset, function(value, key, list){ 
@@ -258,6 +260,12 @@ function groupbylabel(dataset, minsize, sizetrain)
 	}, this)
 
 	var gro = _.groupBy(dataset, function(num){ return num["output"][0] })
+
+	console.log("label distribution")
+	_.each(gro, function(value, key, list){ 
+		console.log(key)
+		console.log(value.length)
+	}, this)
 
 	_.each(gro, function(value, key, list){ 
 		if (value.length < sizetrain)
