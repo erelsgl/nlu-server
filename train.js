@@ -43,8 +43,8 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_serialization_test = false
 var wikipedia_test = false
 var wikipedia_categories = false
-var wikipedia_prepared = true
-var wikipedia_parsed = false
+var wikipedia_prepared = false
+var wikipedia_parsed = true
 var wikipedia_stats = false
 var index_wordnet = false
 var reuters = false
@@ -325,7 +325,7 @@ if (wikipedia_parsed)
 	var data = []
 
 	var categ = [21417166, 23222281, 21332284, 4140956, 14368811, 18554264, 700692, 1076518,
-695196, 8531227, 718764, 29796077, 717788, 6527330, 4348450, 29717090, 3400672, 26435292, 828361]
+	695196, 8531227, 718764, 29796077, 717788, 6527330, 4348450, 29717090, 3400672, 26435292, 828361]
 
 	var parsed = __dirname+"/../wiki/en/JEL/parsed/"
 	var prepared = __dirname+"/../wiki/en/JEL/prepared/"
