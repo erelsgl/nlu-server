@@ -357,6 +357,7 @@ if (wikipedia_parsed)
 			if (ids.indexOf(parseInt(value["_id"]))!=-1)
 			{
 				console.log(value["_id"])
+				console.log(value["categories"])
 
 				var inters = _.intersection(categ, value["categories"])
 				console.log(inters)
