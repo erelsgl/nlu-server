@@ -330,10 +330,13 @@ if (wikipedia_parsed)
 	var json = __dirname+"/../wiki/en/json/"
 
 	var ids = fs.readdirSync(parsed)
-	var files = fs.readdirSync(json)
+
+	ids = _.map(ids, function(value){ return parseInt(value.split(".")[0]) })
 
 	console.log(ids)
 	process.exit(0)
+
+	var files = fs.readdirSync(json)
 
 	_.each(files, function(file, key, list){ 
 		console.log(file)
