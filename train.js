@@ -376,15 +376,22 @@ if (wikipedia_parsed)
 
 if (wikipedia_categories)
 {
-	var files = ["./part1.json", "./part2.json", "./part3.json"]
+	// var files = ["./part1.json", "./part2.json", "./part3.json"]
 	var data = []
-	var folder = __dirname+"/../wikipedia/prepared/"
+	var folder = __dirname+"/../wiki/en/parsed/"
+	var files = fs.readdirSync(folder)
+
+	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 
 	_.each(files, function(file, key, list){ 
-		data = data.concat(JSON.parse(fs.readFileSync(file)))
+		var new_data = JSON.parse(fs.readFileSync(folder+file))
+		new_data = _.filter(new_data, function(num){ return num["_category"]==1 })
+		data = data.concat(new_data)
 	}, this)
 
 	console.log(data.length)
+	console.log()
+	process.exit(0)
 
 	var categories = {}
 	_.each(data, function(value, key, list){ 
