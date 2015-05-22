@@ -355,6 +355,7 @@ if (wikipedia_parsed)
 			if (value["_id"] in idhash)
 			{
 				var inters = _.intersection(categ, value["categories"])
+				console.log(inters)
 
 				if (inters.length != 1)
 					throw new Error("error")
