@@ -251,6 +251,12 @@ function groupbylabel(dataset, minsize, sizetrain)
 
 	dataset = _.compact(_.map(dataset, function(value){ if (value['input']['CORENLP']['sentences'].length >= minsize) return value }))
 	
+	dataset = _.filter(dataset, function(num){ return value['input']['CORENLP']['sentences'].length >= minsize })
+
+	_.each(dataset, function(value, key, list){ 
+		dataset[key]["input"]["CORENLP"]["sentences"].splice(0,10)
+	}, this)
+
 	var gro = _.groupBy(dataset, function(num){ return num["output"][0] })
 
 	_.each(gro, function(value, key, list){ 
@@ -279,6 +285,7 @@ if (process.argv[1] === __filename)
 	var data = []
 
 	_.each(files, function(file, key, list){ 
+		console.log(file)
 		data = data.concat(JSON.parse(fs.readFileSync(path + file)))
 	}, this)
 
@@ -342,6 +349,7 @@ if (process.argv[1] === __filename)
 	data = _.shuffle(data)
 	
 	var datahash = groupbylabel(data, 5, 50)
+	console.log("dataset groupped")
 
 	var classifiers  = {
 				
