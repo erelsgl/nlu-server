@@ -384,8 +384,10 @@ if (wikipedia_categories)
 	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 
 	files = _.sample(files, 3)
+	console.log(sample)
 
 	_.each(files, function(file, key, list){ 
+		console.log(file)
 		var new_data = JSON.parse(fs.readFileSync(folder+file))
 		new_data = _.filter(new_data, function(num){ return num["_category"]==1 })
 		data = data.concat(new_data)
@@ -414,7 +416,8 @@ if (wikipedia_categories)
 				{
 				categories[value['_id']]['parent'] = categories[value['_id']]['parent'].concat(value['categories'])
 				_.each(value['categories'], function(cat, key, list){
-					categories[cat]['child'].push(value["_id"])
+					if (cat in categories)
+						categories[cat]['child'].push(value["_id"])
 				}, this)
 				}
 		}, this)
