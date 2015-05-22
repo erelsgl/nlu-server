@@ -475,12 +475,14 @@ if (wikipedia_categories)
 if (wikipedia_prepared)
 {
 
-	var data = []
+	var data = {}
 	var prepared = __dirname+"/../wiki/en/JEL/prepared/"
 	var json = __dirname+"/../wiki/en/json/"
 	var files = fs.readdirSync(json)
 	// Categories which are included in the JEL classification codes
-	var categ = [784409, 718764, 772545, 1316171, 1798901, 706213, 946910, 691633, 1654984, 1311467, 4595606, 2364548, 1245386, 873395, 1653309]
+	// var categ = [784409, 718764, 772545, 1316171, 1798901, 706213, 946910, 691633, 1654984, 1311467, 4595606, 2364548, 1245386, 873395, 1653309]
+	var categ = [21417166, 23222281, 21332284, 4140956, 14368811, 18554264, 700692, 1076518,
+695196, 8531227, 718764, 29796077, 717788, 6527330, 4348450, 29717090, 3400672, 26435292, 828361]
 
 	_.each(files, function(file, key, list){ 
 		console.log(file)
@@ -496,23 +498,31 @@ if (wikipedia_prepared)
 				text = text.replace(/\s{2,}/g, ' ')
 				value['text'] = text
 				value['categories'] = cc
-				data.push(value)
+
+				if (!(cc[0] in data))
+					data[cc[0]] = []
+				
+				data[cc[0]].push(value)
 			}
 		}, this)
 	}, this)
 
-	var listo = []
 	_.each(data, function(value, key, list){ 
-		fs.writeFileSync(prepared + value["_id"], value["text"], 'utf-8')
-		listo.push(prepared+value["_id"])
+		data[key] = _.sample(value, 200)
 	}, this)
 
-	var gr = _.groupBy(data, function(num){ return num["categories"][0] })
+	var listo = []
+	_.each(data, function(value, key, list){
+		_.each(value, function(value1, key, list){ 
+			fs.writeFileSync(prepared + value1["_id"], value1["text"], 'utf-8')
+			listo.push(prepared+value1["_id"])
+		 }, this) 
+	}, this)
 
-	_.each(gr, function(value, key, list){ 
+	_.each(data, function(value, key, list){ 
 		console.log(key)
 		console.log(value.length)
-		console.log("-----------")
+		console.log("-------------")
 	}, this)
 
 	fs.writeFileSync(prepared + "list", listo.join("\n"), 'utf-8')
