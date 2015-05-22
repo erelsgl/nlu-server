@@ -444,15 +444,18 @@ if (wikipedia_categories)
 		categories[key]['child'] = cate
 	}, this)
 
-	// var catar = _.toArray(categories)
-	// catar = _.sortBy(catar, function(num){ return num["count_articles"] }).reverse()
-	// console.log(JSON.stringify(catar, null, 4))
+	var catar = _.toArray(categories)
+	catar = _.sortBy(catar, function(num){ return num["count_articles"] }).reverse()
 
-	// var cat = categories[5876]['child']
-	// console.log(cat)
+	var data_splited = _.groupBy(catar, function(element, index){
+        return index%5;
+ 	})
 
-	console.log(JSON.stringify(categories, null, 4))
-	console.log(Object.keys(categories).length)
+ 	_.each(_.toArray(data_splited), function(data, key, list){
+        console.log("writing "+key)
+        fs.writeFileSync('../wiki/en/categories/wiki.'+key+'.corenlp.json', JSON.stringify(data, null, 4))
+ 	}, this)
+
 	console.log()
 	process.exit(0)
 
