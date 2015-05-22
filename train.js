@@ -42,8 +42,8 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 
 // var do_small_temporary_serialization_test = false
 var wikipedia_test = false
-var wikipedia_categories = true
-var wikipedia_prepared = false
+var wikipedia_categories = false
+var wikipedia_prepared = true
 var wikipedia_parsed = false
 var wikipedia_stats = false
 var index_wordnet = false
@@ -376,7 +376,6 @@ if (wikipedia_parsed)
 
 if (wikipedia_categories)
 {
-	// var files = ["./part1.json", "./part2.json", "./part3.json"]
 	var data = []
 	var folder = __dirname+"/../wiki/en/parsed/"
 	var files = fs.readdirSync(folder)
@@ -428,7 +427,7 @@ if (wikipedia_categories)
 		var cate = []
 		_.each(value["parent"], function(cat, key, list){ 
 			if (cat in categories)
-				cate.push([categories[cat]['title'], categories[cat]['count_articles'], categories[cat]['_id']])
+				cate.push([categories[cat]['title'], categories[cat]['count_articles'], categories[cat]['id']])
 			else
 				cate.push([cat, -1])
 		}, this)
@@ -439,7 +438,7 @@ if (wikipedia_categories)
 		var cate = []
 		_.each(value["child"], function(cat, key, list){ 
 			if (cat in categories)
-				cate.push([categories[cat]['title'], categories[cat]['count_articles'], categories[cat]['_id']])
+				cate.push([categories[cat]['title'], categories[cat]['count_articles'], categories[cat]['id']])
 			else
 				cate.push([cat, -1, -1])
 		}, this)
@@ -475,49 +474,20 @@ if (wikipedia_categories)
 
 if (wikipedia_prepared)
 {
-	var files = ["./part1.json", "./part2.json", "./part3.json"]
+
 	var data = []
-	var folder = __dirname+"/../wikipedia/prepared/"
+	var prepared = __dirname+"/../wiki/en/JLE/prepared/"
+	var json = __dirname+"/../wiki/en/json/"
+	var files = fs.readdirSync(json)
+	// Categories which are included in the JEL classification codes
+	var categ = [784409, 718764, 772545, 1316171, 1798901, 706213, 946910, 691633, 1654984, 1311467, 4595606, 2364548, 1245386, 873395, 1653309]
 
 	_.each(files, function(file, key, list){ 
-		data = data.concat(JSON.parse(fs.readFileSync(file)))
-	}, this)
-
-	console.log(data.length)
-
-	var categories = {}
-	_.each(data, function(value, key, list){ 
-		if (value['_category']==1)
-			categories[value["_id"]] = {'id':value["_id"], 'title':value["title"].split(":")[1], 'count_articles':0,'parent': [], 'child':[]}
-	}, this)
-
-	_.each(data, function(value, key, list){ 
-		if (value['_category']==0)
-			_.each(value['categories'], function(cat, key, list){
-				categories[cat]['count_articles'] += 1 
-			}, this)
-
-		if (value['_category']==1)
-			{
-			categories[value['_id']]['parent'] = categories[value['_id']]['parent'].concat(value['categories'])
-			_.each(value['categories'], function(cat, key, list){
-				categories[cat]['child'].push(value["_id"])
-			}, this)
-			}
-	}, this)
-
-	
-	// console.log(JSON.stringify(categories, null, 4))
-
-	var cat = categories[152992]['child']
-	console.log(cat)
-
-	var dataset = {}
-
-	_.each(data, function(value, key, list){ 
-		if (value["_category"] == 0)
-		{
-			var cc =  _.intersection(value["categories"],cat)
+		console.log(file)
+		var new_data = JSON.parse(fs.readFileSync(folder+file))
+		new_data = _.filter(new_data, function(num){ return num["_category"]==0 })
+		_.each(new_data, function(value, key, list){ 
+			var cc =  _.intersection(value["categories"], categ)
 			if (cc.length == 1)
 			{
 				var text = value['text']
@@ -526,32 +496,18 @@ if (wikipedia_prepared)
 				text = text.replace(/\s{2,}/g, ' ')
 				value['text'] = text
 				value['categories'] = [cc]
-
-				if (!(cc in dataset))
-					dataset[cc] = []
-
-				dataset[cc].push(value)
+				data.push(value)
 			}
-		}
-	}, this)
-
-	_.each(dataset, function(value, key, list){ 
-		dataset[key] = _.sortBy(value, function(num){ return num["categories"].length })
-		dataset[key] = dataset[key].slice(0, 100)
-	}, this)
-
-	// console.log(Object.keys(dataset).length)
-
-	var listo = []
-	_.each(dataset, function(value, key, list){ 
-		_.each(value, function(value1, key1, list){ 
-			fs.writeFileSync(folder + "/" + value1["_id"], value1["text"], 'utf-8')
-			listo.push("/home/ir/konovav/wikipedia/prepared/"+value1["_id"])
 		}, this)
 	}, this)
 
+	var listo = []
+	_.each(data, function(value, key, list){ 
+		fs.writeFileSync(prepared + "/" + value["_id"], values["text"], 'utf-8')
+		listo.push(prepared+value1["_id"])
+	}, this)
 
-	fs.writeFileSync(folder + "/list", listo.join("\n"), 'utf-8')
+	fs.writeFileSync(prepared + "/list", listo.join("\n"), 'utf-8')
 
 	process.exit(0)
 }
