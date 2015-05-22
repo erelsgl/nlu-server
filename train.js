@@ -495,7 +495,7 @@ if (wikipedia_prepared)
 				text = text.replace(/\*/g," ")
 				text = text.replace(/\s{2,}/g, ' ')
 				value['text'] = text
-				value['categories'] = [cc]
+				value['categories'] = cc
 				data.push(value)
 			}
 		}, this)
@@ -504,10 +504,10 @@ if (wikipedia_prepared)
 	var listo = []
 	_.each(data, function(value, key, list){ 
 		fs.writeFileSync(prepared + value["_id"], value["text"], 'utf-8')
-		listo.push(prepared+value1["_id"])
+		listo.push(prepared+value["_id"])
 	}, this)
 
-	fs.writeFileSync(prepared + "/list", listo.join("\n"), 'utf-8')
+	fs.writeFileSync(prepared + "list", listo.join("\n"), 'utf-8')
 
 	process.exit(0)
 }
