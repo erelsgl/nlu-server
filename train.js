@@ -424,7 +424,7 @@ if (wikipedia_categories)
 	}, this)
 
 	console.log("not_found_cat")
-	console.log(_.unique(not_found_cat).length)
+	console.log((not_found_cat).length)
 
 	console.log()
 	process.exit(0)
