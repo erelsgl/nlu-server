@@ -41,10 +41,11 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 
 // var do_small_temporary_serialization_test = false
+var technion_300 = true
 var wikipedia_test = false
 var wikipedia_categories = false
 var wikipedia_prepared = false
-var wikipedia_parsed = true
+var wikipedia_parsed = false
 var wikipedia_stats = false
 var index_wordnet = false
 var reuters = false
@@ -211,6 +212,21 @@ function parse_filter(parse)
 }
 
 
+if (technion_300)
+{
+	var tech = __dirname +"/../technion/300/"
+	var files = fs.readdirSync(tech)
+
+	var labs = []
+
+	_.each(files, function(file, key, list){ 
+		labs.push(file.split("_")[2])
+	}, this)
+
+	console.log(_.unique(labs).length)
+	process.exit(0)
+}
+
 if (wikipedia_test)
 
 	// +190074 Category:Art movements
@@ -368,6 +384,7 @@ if (wikipedia_parsed)
 				console.log("read")
 				var corenlp = JSON.parse(fs.readFileSync(parsed+value["_id"]+".json"))
 				value["CORENLP"] = corenlp
+				value["CORENLP"]["sentences"] = value["CORENLP"]["sentences"].slice(0,15)
 				value["categories"] = inters
 				data.push(value)
 			}
