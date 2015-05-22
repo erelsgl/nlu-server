@@ -249,7 +249,7 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 function groupbylabel(dataset, minsize, sizetrain)
 {
 
-	var sends = _.groupBy(dataset , function(num){ return value['input']['CORENLP']['sentences'].length })
+	var sends = _.groupBy(dataset , function(num){ return num['input']['CORENLP']['sentences'].length })
 	console.log("sentence distribution")
 	console.log(sends)
 
