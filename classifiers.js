@@ -267,7 +267,7 @@ function redis_exec(data, db, redis_buffer)
             	}, this)
 
             	var buffer_splited = _.groupBy(_.unique(keys), function(element, index){
-        			return index%5;
+        			return index%8;
 			 	})
 
 				_.each(_.toArray(buffer_splited), function(data, key, list){
