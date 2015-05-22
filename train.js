@@ -339,9 +339,7 @@ if (wikipedia_parsed)
 		console.log(file)
 		var new_data = JSON.parse(fs.readFileSync(json+file))
 		_.each(new_data, function(value, key, list){ 
-			console.log(value)
-			process.exit(0)
-			if (ids.indexOf(value["id"])!=-1)
+			if (ids.indexOf(value["_id"])!=-1)
 			{
 				var corenlp = JSON.parse(fs.readFileSync(parsed+value["id"]+".json"))
 				value["CORENLP"] = corenlp
