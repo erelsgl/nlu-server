@@ -373,15 +373,15 @@ if (wikipedia_parsed)
 			if (ids.indexOf(parseInt(value["_id"]))!=-1)
 			{
 				console.log(value["_id"])
-				console.log(value["categories"])
+				// console.log(value["categories"])
 
 				var inters = _.intersection(categ, value["categories"])
-				console.log(inters)
+				// console.log(inters)
 
 				if (inters.length != 1)
 					throw new Error("error")
 
-				console.log("read")
+				// console.log("read")
 				var corenlp = JSON.parse(fs.readFileSync(parsed+value["_id"]+".json"))
 				value["CORENLP"] = corenlp
 				value["CORENLP"]["sentences"] = value["CORENLP"]["sentences"].slice(0,15)
