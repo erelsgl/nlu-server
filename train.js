@@ -332,6 +332,9 @@ if (wikipedia_parsed)
 	var ids = fs.readdirSync(parsed)
 	var files = fs.readdirSync(json)
 
+	console.log(ids)
+	process.exit(0)
+
 	_.each(files, function(file, key, list){ 
 		console.log(file)
 		var new_data = JSON.parse(fs.readFileSync(json+file))
@@ -344,6 +347,9 @@ if (wikipedia_parsed)
 			}
 		}, this)
 	}, this)
+
+	console.log("number of files "+files.length)
+	console.log("size of data "+data.length)
 
 	var data_splited = _.groupBy(data, function(element, index){
         return index%5;
