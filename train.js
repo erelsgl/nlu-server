@@ -333,13 +333,18 @@ if (wikipedia_parsed)
 
 	ids = _.map(ids, function(value){ return parseInt(value.split(".")[0]) })
 
+	var idhash = {}
+	_.each(ids, function(value, key, list){ 
+		idhash[value] = ''
+	}, this)
+
 	var files = fs.readdirSync(json)
 
 	_.each(files, function(file, key, list){ 
 		console.log(file)
 		var new_data = JSON.parse(fs.readFileSync(json+file))
 		_.each(new_data, function(value, key, list){ 
-			if (ids.indexOf(value["_id"])!=-1)
+			if (value["_id"] in idhash)
 			{
 				var corenlp = JSON.parse(fs.readFileSync(parsed+value["_id"]+".json"))
 				value["CORENLP"] = corenlp
