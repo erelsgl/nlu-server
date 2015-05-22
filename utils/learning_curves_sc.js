@@ -251,7 +251,7 @@ function groupbylabel(dataset, minsize, sizetrain)
 
 	dataset = _.compact(_.map(dataset, function(value){ if (value['input']['CORENLP']['sentences'].length >= minsize) return value }))
 	
-	dataset = _.filter(dataset, function(num){ return value['input']['CORENLP']['sentences'].length >= minsize })
+	dataset = _.filter(dataset, function(value){ return value['input']['CORENLP']['sentences'].length >= minsize })
 
 	_.each(dataset, function(value, key, list){ 
 		dataset[key]["input"]["CORENLP"]["sentences"].splice(0,10)
