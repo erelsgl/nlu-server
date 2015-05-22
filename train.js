@@ -342,19 +342,21 @@ if (wikipedia_parsed)
 
 	_.each(files, function(file, key, list){ 
 		console.log(file)
+
 		var new_data = JSON.parse(fs.readFileSync(json+file))
+		new_data = _.filter(new_data, function(num){ return num["_category"]==0 })
+
 		console.log("file loaded")
 		_.each(new_data, function(value, key, list){ 
-			if (value["_category"]==0)
+
+			if (value["_id"] in idhash)
 			{
-				if (value["_id"] in idhash)
-				{
-					console.log("read")
-					var corenlp = JSON.parse(fs.readFileSync(parsed+value["_id"]+".json"))
-					value["CORENLP"] = corenlp
-					data.push(value)
-				}
+				console.log("read")
+				var corenlp = JSON.parse(fs.readFileSync(parsed+value["_id"]+".json"))
+				value["CORENLP"] = corenlp
+				data.push(value)
 			}
+		
 		}, this)
 	}, this)
 
