@@ -503,7 +503,7 @@ if (wikipedia_prepared)
 
 	var listo = []
 	_.each(data, function(value, key, list){ 
-		fs.writeFileSync(prepared + "/" + value["_id"], value["text"], 'utf-8')
+		fs.writeFileSync(prepared + value["_id"], value["text"], 'utf-8')
 		listo.push(prepared+value1["_id"])
 	}, this)
 
