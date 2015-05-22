@@ -341,6 +341,10 @@ if (wikipedia_parsed)
 		idhash[value] = ''
 	}, this)
 
+	console.log(idhash)
+	console.log()
+	process.exit(0)
+
 	var files = fs.readdirSync(json)
 
 	_.each(files, function(file, key, list){ 
