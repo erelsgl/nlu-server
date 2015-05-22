@@ -43,8 +43,8 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_serialization_test = false
 var wikipedia_test = false
 var wikipedia_categories = false
-var wikipedia_prepared = true
-var wikipedia_parsed = false
+var wikipedia_prepared = false
+var wikipedia_parsed = true
 var wikipedia_stats = false
 var index_wordnet = false
 var reuters = false
@@ -322,53 +322,35 @@ if (wikipedia_test)
 
 if (wikipedia_parsed)
 {
-// Science
-	var cat = [ 328021, 233185, 155620, 240282, 328930, 328520 ]
-// Art
-// var cat = [ 140002, 6582, 11221, 221702, 380549, 176859, 25644, 59198, 379420, 176796, 380539, 88393, 190074, 26711,
-  // 209587, 264364, 379948, 380552, 29677, 63275, 29357, 306221, 306219, 15311 ]
-
-
-	var files = ["./part1.json", "./part2.json", "./part3.json"]
 	var data = []
-	// var prepared = __dirname+"/../wikipedia/prepared/"
-	var parsed = __dirname+"/../wikipedia/parsed/"
+
+	var parsed = __dirname+"/../wiki/en/JEL/parsed/"
+	var prepared = __dirname+"/../wiki/en/JEL/prepared/"
+	var ready = __dirname+"/../wiki/en/JEL/"
+	var json = __dirname+"/../wiki/en/json/"
+
+	var ids = fs.readdirSync(parsed)
+	var files = fs.readdirSync(json)
 
 	_.each(files, function(file, key, list){ 
-		data = data.concat(JSON.parse(fs.readFileSync(file)))
+		var new_data = JSON.parse(fs.readFileSync(json+file))
+		_.each(new_data, function(value, key, list){ 
+			if (ids.indexOf(value["id"])!=-1)
+			{
+				var corenlp = JSON.parse(fs.readFileSync(parsed+value["id"]+".json"))
+				value["CORENLP"] = corenlp
+				data.push(value)
+			}
+		}, this)
 	}, this)
 
-	var datahash = {}
-	_.each(data, function(value, key, list){ 
-		datahash[value["_id"]] = value
-	}, this)
-	console.log("origin load "+Object.keys(datahash).length)
-
-	var files = fs.readdirSync(parsed)
-	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
-
-	console.log("loaded json files "+ files.length)
-	
-	var parsedd = []
-	_.each(files, function(file, key, list){ 	
-		var path = parsed+file
-		console.log(path)
-		var corenlp = JSON.parse(fs.readFileSync(path))
-		var orig = datahash[file.split(".")[0]]
-		orig["categories"] = _.intersection(orig["categories"],cat)
-		orig["CORENLP"] = corenlp
-		parsedd.push(orig)
-	}, this)
-
-	console.log("resulting array "+parsedd.length)
-
-	var data_splited = _.groupBy(parsedd, function(element, index){
+	var data_splited = _.groupBy(data, function(element, index){
         return index%5;
  	})
 
  	_.each(_.toArray(data_splited), function(data, key, list){
         console.log("writing "+key)
-        fs.writeFileSync('../wikipedia/wiki.'+key+'.corenlp.json', JSON.stringify(data, null, 4))
+        fs.writeFileSync(ready + 'wiki.'+key+'.corenlp.json', JSON.stringify(data, null, 4))
  	}, this)
 
 	process.exit(0)
@@ -501,7 +483,7 @@ if (wikipedia_prepared)
 
 				if (!(cc[0] in data))
 					data[cc[0]] = []
-				
+
 				data[cc[0]].push(value)
 			}
 		}, this)
