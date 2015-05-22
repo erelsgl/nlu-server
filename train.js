@@ -399,6 +399,7 @@ if (wikipedia_categories)
 	var not_found_cat = [] 
 	_.each(files, function(file, key, list){ 
 		var new_data = JSON.parse(fs.readFileSync(folder+file))
+		console.log(file)
 
 		_.each(new_data, function(value, key, list){ 
 			if (value['_category']==0)
