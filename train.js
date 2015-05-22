@@ -484,7 +484,7 @@ if (wikipedia_prepared)
 
 	_.each(files, function(file, key, list){ 
 		console.log(file)
-		var new_data = JSON.parse(fs.readFileSync(folder+file))
+		var new_data = JSON.parse(fs.readFileSync(json+file))
 		new_data = _.filter(new_data, function(num){ return num["_category"]==0 })
 		_.each(new_data, function(value, key, list){ 
 			var cc =  _.intersection(value["categories"], categ)
