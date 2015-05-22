@@ -251,12 +251,10 @@ function groupbylabel(dataset, minsize, sizetrain)
 
 	var sends = _.groupBy(dataset , function(num){ return num['input']['CORENLP']['sentences'].length })
 	console.log("sentence distribution")
-	console.log(sends)
-
-	dataset = _.filter(dataset, function(value){ return value['input']['CORENLP']['sentences'].length >= minsize })
-
-	_.each(dataset, function(value, key, list){ 
-		dataset[key]["input"]["CORENLP"]["sentences"].splice(0,10)
+	_.each(sends, function(value, key, list){ 
+		console.log(key)
+		console.log(value.length)
+		console.log("-------------")
 	}, this)
 
 	var gro = _.groupBy(dataset, function(num){ return num["output"][0] })
@@ -265,6 +263,13 @@ function groupbylabel(dataset, minsize, sizetrain)
 	_.each(gro, function(value, key, list){ 
 		console.log(key)
 		console.log(value.length)
+		console.log("-------------")
+	}, this)
+
+	dataset = _.filter(dataset, function(value){ return value['input']['CORENLP']['sentences'].length >= minsize })
+
+	_.each(dataset, function(value, key, list){ 
+		dataset[key]["input"]["CORENLP"]["sentences"].splice(0,10)
 	}, this)
 
 	_.each(gro, function(value, key, list){ 
