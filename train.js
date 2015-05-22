@@ -357,7 +357,7 @@ if (wikipedia_parsed)
 				var inters = _.intersection(categ, value["categories"])
 
 				if (inters.length != 1)
-					throw new Error(value)
+					throw new Error("error")
 
 				console.log("read")
 				var corenlp = JSON.parse(fs.readFileSync(parsed+value["_id"]+".json"))
