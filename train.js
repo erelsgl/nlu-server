@@ -41,8 +41,8 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 
 // var do_small_temporary_serialization_test = false
-var wikipedia_test = true
-var wikipedia_categories = false
+var wikipedia_test = false
+var wikipedia_categories = true
 var wikipedia_prepared = false
 var wikipedia_parsed = false
 var wikipedia_stats = false
@@ -383,15 +383,13 @@ if (wikipedia_categories)
 
 	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 
+	files = _.sample(files, 3)
+
 	_.each(files, function(file, key, list){ 
 		var new_data = JSON.parse(fs.readFileSync(folder+file))
 		new_data = _.filter(new_data, function(num){ return num["_category"]==1 })
 		data = data.concat(new_data)
 	}, this)
-
-	console.log(data.length)
-	console.log()
-	process.exit(0)
 
 	var categories = {}
 	_.each(data, function(value, key, list){ 
@@ -399,20 +397,34 @@ if (wikipedia_categories)
 			categories[value["_id"]] = {'id':value["_id"], 'title':value["title"].split(":")[1], 'count_articles':0,'parent': [], 'child':[]}
 	}, this)
 
-	_.each(data, function(value, key, list){ 
-		if (value['_category']==0)
-			_.each(value['categories'], function(cat, key, list){
-				categories[cat]['count_articles'] += 1 
-			}, this)
+	var not_found_cat = [] 
+	_.each(files, function(file, key, list){ 
+		var new_data = JSON.parse(fs.readFileSync(folder+file))
 
-		if (value['_category']==1)
-			{
-			categories[value['_id']]['parent'] = categories[value['_id']]['parent'].concat(value['categories'])
-			_.each(value['categories'], function(cat, key, list){
-				categories[cat]['child'].push(value["_id"])
-			}, this)
-			}
+		_.each(new_data, function(value, key, list){ 
+			if (value['_category']==0)
+				_.each(value['categories'], function(cat, key, list){
+					if (cat in categories)
+						categories[cat]['count_articles'] += 1 
+					else
+						not_found_cat.push(cat)
+				}, this)
+
+			if (value['_category']==1)
+				{
+				categories[value['_id']]['parent'] = categories[value['_id']]['parent'].concat(value['categories'])
+				_.each(value['categories'], function(cat, key, list){
+					categories[cat]['child'].push(value["_id"])
+				}, this)
+				}
+		}, this)
 	}, this)
+
+	console.log("not_found_cat")
+	console.log(_.unique(not_found_cat).length)
+
+	console.log()
+	process.exit(0)
 
 	_.each(categories, function(value, key, list){ 
 		var cate = []
