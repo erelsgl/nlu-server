@@ -344,11 +344,14 @@ if (wikipedia_parsed)
 		console.log(file)
 		var new_data = JSON.parse(fs.readFileSync(json+file))
 		_.each(new_data, function(value, key, list){ 
-			if (value["_id"] in idhash)
+			if (value["_category"]==0)
 			{
-				var corenlp = JSON.parse(fs.readFileSync(parsed+value["_id"]+".json"))
-				value["CORENLP"] = corenlp
-				data.push(value)
+				if (value["_id"] in idhash)
+				{
+					var corenlp = JSON.parse(fs.readFileSync(parsed+value["_id"]+".json"))
+					value["CORENLP"] = corenlp
+					data.push(value)
+				}
 			}
 		}, this)
 	}, this)
@@ -357,7 +360,7 @@ if (wikipedia_parsed)
 	console.log("size of data "+data.length)
 
 	var data_splited = _.groupBy(data, function(element, index){
-        return index%5;
+        return index%10;
  	})
 
  	_.each(_.toArray(data_splited), function(data, key, list){
