@@ -207,6 +207,7 @@ function redis_exec(data, db, redis_buffer)
 			var files = _.filter(files, function(num){ return !_.isNull(num.match(/redis_buffer/g)) });
 
 			_.each(files, function(file, key, list){ 
+				console.log("buffer loading "+file)
 				var redis_buffer_sub = JSON.parse(fs.readFileSync("./"+file,'UTF-8'))
 
 				_.each(redis_buffer_sub, function(value, db, list){
