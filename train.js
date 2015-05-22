@@ -352,7 +352,7 @@ if (wikipedia_parsed)
 		console.log("file loaded")
 		_.each(new_data, function(value, key, list){ 
 
-			if (value["_id"] in idhash)
+			if (parseInt(value["_id"]) in idhash)
 			{
 				var inters = _.intersection(categ, value["categories"])
 				console.log(inters)
