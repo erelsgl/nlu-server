@@ -507,6 +507,14 @@ if (wikipedia_prepared)
 		listo.push(prepared+value["_id"])
 	}, this)
 
+	var gr = _.groupBy(data, function(num){ return num["categories"][0] })
+
+	_.each(gr, function(value, key, list){ 
+		console.log(key)
+		console.log(value.length)
+		console.log("-----------")
+	}, this)
+
 	fs.writeFileSync(prepared + "list", listo.join("\n"), 'utf-8')
 
 	process.exit(0)
