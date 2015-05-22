@@ -428,19 +428,22 @@ if (wikipedia_categories)
 		var cate = []
 		_.each(value["parent"], function(cat, key, list){ 
 			if (cat in categories)
-				cate.push([categories[cat]['title'], categories[cat]['count_articles']])
+				cate.push([categories[cat]['title'], categories[cat]['count_articles'], categories[cat]['_id']])
 			else
 				cate.push([cat, -1])
 		}, this)
+
+		cate = _.sortBy(cate, function(num){ return num[1] }).reverse()
 		categories[key]['parent'] = cate
 
 		var cate = []
 		_.each(value["child"], function(cat, key, list){ 
 			if (cat in categories)
-				cate.push([categories[cat]['title'], categories[cat]['count_articles']])
+				cate.push([categories[cat]['title'], categories[cat]['count_articles'], categories[cat]['_id']])
 			else
-				cate.push([cat, -1])
+				cate.push([cat, -1, -1])
 		}, this)
+		cate = _.sortBy(cate, function(num){ return num[1] }).reverse()
 		categories[key]['child'] = cate
 	}, this)
 
