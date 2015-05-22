@@ -336,14 +336,11 @@ if (wikipedia_parsed)
 
 	ids = _.map(ids, function(value){ return parseInt(value.split(".")[0]) })
 
-	var idhash = {}
-	_.each(ids, function(value, key, list){ 
-		idhash[value] = ''
-	}, this)
+	// var idhash = {}
+	// _.each(ids, function(value, key, list){ 
+		// idhash[value] = ''
+	// }, this)
 
-	console.log(idhash)
-	console.log()
-	process.exit(0)
 
 	var files = fs.readdirSync(json)
 
@@ -356,7 +353,8 @@ if (wikipedia_parsed)
 		console.log("file loaded")
 		_.each(new_data, function(value, key, list){ 
 
-			if (parseInt(value["_id"]) in idhash)
+			// if (parseInt(value["_id"]) in idhash)
+			if (ids.indexOf(parseInt(value["_id"]))!=-1)
 			{
 				console.log(value["_id"])
 
