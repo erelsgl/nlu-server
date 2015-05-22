@@ -476,7 +476,7 @@ if (wikipedia_prepared)
 {
 
 	var data = {}
-	var prepared = __dirname+"/../wiki/en/JEL/prepared/"
+	var prepared = __dirname+"/../wiki/en/notempl/prepared/"
 	var json = __dirname+"/../wiki/en/json/"
 	var files = fs.readdirSync(json)
 	// Categories which are included in the JEL classification codes
