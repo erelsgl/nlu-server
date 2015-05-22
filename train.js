@@ -383,9 +383,6 @@ if (wikipedia_categories)
 
 	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 
-	files = _.sample(files, 3)
-	console.log(files)
-
 	_.each(files, function(file, key, list){ 
 		console.log(file)
 		var new_data = JSON.parse(fs.readFileSync(folder+file))
@@ -426,29 +423,37 @@ if (wikipedia_categories)
 	console.log("not_found_cat")
 	console.log((not_found_cat).length)
 
-	console.log()
-	process.exit(0)
-
 	_.each(categories, function(value, key, list){ 
 		var cate = []
 		_.each(value["parent"], function(cat, key, list){ 
-			cate.push([categories[cat]['title'], categories[cat]['count_articles']])
+			if (cat in categories)
+				cate.push([categories[cat]['title'], categories[cat]['count_articles']])
+			else
+				cate.push([cat, -1])
 		}, this)
 		categories[key]['parent'] = cate
 
 		var cate = []
 		_.each(value["child"], function(cat, key, list){ 
-			cate.push([categories[cat]['title'], categories[cat]['count_articles']])
+			if (cat in categories)
+				cate.push([categories[cat]['title'], categories[cat]['count_articles']])
+			else
+				cate.push([cat, -1])
 		}, this)
 		categories[key]['child'] = cate
 	}, this)
 
-	var catar = _.toArray(categories)
-	catar = _.sortBy(catar, function(num){ return num["count_articles"] }).reverse()
-	console.log(JSON.stringify(catar, null, 4))
+	// var catar = _.toArray(categories)
+	// catar = _.sortBy(catar, function(num){ return num["count_articles"] }).reverse()
+	// console.log(JSON.stringify(catar, null, 4))
 
-	var cat = categories[5876]['child']
-	console.log(cat)
+	// var cat = categories[5876]['child']
+	// console.log(cat)
+
+	console.log(JSON.stringify(categories, null, 4))
+	console.log(Object.keys(categories).length)
+	console.log()
+	process.exit(0)
 
 }
 
