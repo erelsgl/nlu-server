@@ -460,7 +460,7 @@ if (wikipedia_categories)
 
  	var fits = []
  	_.each(catar, function(value, key, list){ 
- 		var ch = _.filter(value["child"], function(num){ return num[1]>10);
+ 		var ch = _.filter(value["child"], function(num){ return num[1]>10 })
  		if ((value["child"].length > 10)&&(ch.length > 10))
  			fits.push(value) 
  	}, this)
