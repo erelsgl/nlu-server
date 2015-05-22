@@ -348,6 +348,7 @@ if (wikipedia_parsed)
 			{
 				if (value["_id"] in idhash)
 				{
+					console.log("read")
 					var corenlp = JSON.parse(fs.readFileSync(parsed+value["_id"]+".json"))
 					value["CORENLP"] = corenlp
 					data.push(value)
