@@ -515,6 +515,7 @@ if (wikipedia_prepared)
 	var prepared = __dirname+"/../wiki/en/notempl/prepared/"
 	var json = __dirname+"/../wiki/en/json/"
 	var files = fs.readdirSync(json)
+	// 24010846
 	// Categories which are included in the JEL classification codes
 	var categ = [784409, 718764, 772545, 1316171, 1798901, 706213, 946910, 691633, 1654984, 1311467, 4595606, 2364548, 1245386, 873395, 1653309]
 	
