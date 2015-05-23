@@ -384,6 +384,7 @@ if (wikipedia_parsed)
 				// console.log("read")
 				var corenlp = JSON.parse(fs.readFileSync(parsed+value["_id"]+".json"))
 				value["CORENLP"] = corenlp
+				/*ONLY 15 FIRST SENTENCES*/
 				value["CORENLP"]["sentences"] = value["CORENLP"]["sentences"].slice(0,15)
 				value["categories"] = inters
 				data.push(value)
