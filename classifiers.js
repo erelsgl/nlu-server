@@ -714,7 +714,7 @@ var BayesBinaryClassifier = classifiers.Bayesian.bind(0, {
 var SvmPerfBinaryClassifier = classifiers.SvmPerf.bind(0, {
 	// learn_args: "-c 100 --i 1",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
 	// F1 optimization
-	learn_args: "-c 100 -l 1 -w 3",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
+	learn_args: "-c 100 -w 3",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
 	model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf",
 });
 
