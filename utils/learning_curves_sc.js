@@ -185,7 +185,7 @@ function filtrain(train, index)
 	var output = []
 	_.each(train, function(value, key, list){ 
 		var value1 = JSON.parse(JSON.stringify(value))
-		value1["input"]["CORENLP"]["sentences"].splice(index, value1["input"]["CORENLP"]["sentences"].length)
+		value1["input"]["CORENLP"]["sentences"].splice(index)
 		output.push(value1)
 	}, this)
 	return output
@@ -239,7 +239,7 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 
 			   	    var cllist = Object.keys(classifiers)
 			   	    var baseline = cllist[0]
-			   	    var sotas = cllist.slice(1,cllist.length - 1)
+			   	    var sotas = cllist.slice(1)
 
 			   	    _.each(sotas, function(sota, key, list){ 
                     	_.each(stat, function(data, param, list){
