@@ -3,6 +3,7 @@
  */
 
 var _ = require('underscore')._
+var bars = require('./bars.js')
 
 function euclidean_distance(a, b) {
   if (!isVectorNumber(a) || !isVectorNumber(b))
@@ -28,7 +29,8 @@ function vec_minus(a, b) {
 
   var output = []
     for (n=0; n < a.length; n++) {
-      output.push(b[n] - a[n])
+      if (bars.isNumber(a[n]) && bars.isNumber(b[n]))
+        output.push(b[n] - a[n])
     }
     return output
 }
