@@ -44,8 +44,8 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 var technion_300 = false
 var wikipedia_test = false
 var wikipedia_categories = false
-var wikipedia_prepared = false
-var wikipedia_parsed = true
+var wikipedia_prepared = true
+var wikipedia_parsed = false
 var wikipedia_stats = false
 var index_wordnet = false
 var reuters = false
@@ -340,12 +340,14 @@ if (wikipedia_parsed)
 {
 	var data = []
 
-	var categ = [21417166, 23222281, 21332284, 4140956, 14368811, 18554264, 700692, 1076518,
-	695196, 8531227, 718764, 29796077, 717788, 6527330, 4348450, 29717090, 3400672, 26435292, 828361]
+	var categ = [784409, 718764, 772545, 1316171, 1798901, 706213, 946910, 691633, 1654984, 1311467, 4595606, 2364548, 1245386, 873395, 1653309]
 
-	var parsed = __dirname+"/../wiki/en/JEL/parsed/"
-	var prepared = __dirname+"/../wiki/en/JEL/prepared/"
-	var ready = __dirname+"/../wiki/en/JEL/"
+	// var categ = [21417166, 23222281, 21332284, 4140956, 14368811, 18554264, 700692, 1076518,
+	// 695196, 8531227, 718764, 29796077, 717788, 6527330, 4348450, 29717090, 3400672, 26435292, 828361]
+
+	var parsed = __dirname+"/../wiki/en/notempl/parsed/"
+	var prepared = __dirname+"/../wiki/en/notempl/prepared/"
+	var ready = __dirname+"/../wiki/en/notempl/"
 	var json = __dirname+"/../wiki/en/json/"
 
 	var ids = fs.readdirSync(parsed)
@@ -510,13 +512,16 @@ if (wikipedia_prepared)
 {
 
 	var data = {}
-	var prepared = __dirname+"/../wiki/en/JEL/prepared/"
+	var prepared = __dirname+"/../wiki/en/notempl/prepared/"
 	var json = __dirname+"/../wiki/en/json/"
 	var files = fs.readdirSync(json)
+	// 24010846
 	// Categories which are included in the JEL classification codes
-	// var categ = [784409, 718764, 772545, 1316171, 1798901, 706213, 946910, 691633, 1654984, 1311467, 4595606, 2364548, 1245386, 873395, 1653309]
-	var categ = [21417166, 23222281, 21332284, 4140956, 14368811, 18554264, 700692, 1076518,
-695196, 8531227, 718764, 29796077, 717788, 6527330, 4348450, 29717090, 3400672, 26435292, 828361]
+	var categ = [784409, 718764, 772545, 1316171, 1798901, 706213, 946910, 691633, 1654984, 1311467, 4595606, 2364548, 1245386, 873395, 1653309]
+	
+	// Commons category template with no category set
+	// var categ = [21417166, 23222281, 21332284, 4140956, 14368811, 18554264, 700692, 1076518,
+// 695196, 8531227, 718764, 29796077, 717788, 6527330, 4348450, 29717090, 3400672, 26435292, 828361]
 
 	_.each(files, function(file, key, list){ 
 		console.log(file)
