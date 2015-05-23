@@ -232,7 +232,7 @@ function redis_exec(data, db, redis_buffer)
 				data_reduced.push(value)
 		}, this)
 
-		data_reduced = _.without(data_reduced, "punct_``", "punct_`", "xcompI_`") 
+		data_reduced = _.without(data_reduced, "punct_``", "punct_`", "xcompI_`", "p_`" "nmod_-lrb-") 
 
 		// var data_reduced_cmd = _.map(data_reduced, function(value){ return value.replace(/\`/g,'\\`') })
 
