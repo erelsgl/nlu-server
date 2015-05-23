@@ -299,7 +299,7 @@ if (process.argv[1] === __filename)
 		fs.unlinkSync(curves_path+"/"+value)
 	}, this)
 
-	var path = "../wiki/en/JEL/"
+	var path = "../wiki/en/notempl/"
 	var files = fs.readdirSync(path)
 	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 	var data = []
