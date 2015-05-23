@@ -109,18 +109,17 @@ function thereisdata(data)
 }
 
 // only two classifiers in string format
-function plot(fold, parameter, stat, classifiers)
+function plot(fold, parameter, stat, baseline, sota)
 {
-	classifiers = Object.keys(classifiers)
 	stat = stat[parameter]
-	
+
 	var output = []
 		
 	if (fold != 'average')
 	{
 		_.each(stat, function(rowvalue, row, list){ 
 			_.each(rowvalue, function(data, column, list){ 
-				var result = data[classifiers[0]][fold] - data[classifiers[1]][fold]
+				var result = data[sota][fold] - data[baseline][fold]
 				if (bars.isNumber(result))
 					output.push([row, column, result])
 			}, this)
@@ -130,7 +129,7 @@ function plot(fold, parameter, stat, classifiers)
 	{
 		_.each(stat, function(rowvalue, row, list){ 
 			_.each(rowvalue, function(data, column, list){ 
-				var result = distance.vec_minus(data[classifiers[0]], data[classifiers[1]])
+				var result = distance.vec_minus(data[baseline], data[sota])
 				var average = distance.average(result)
 				output.push([row, column, average])
 			}, this)
@@ -147,14 +146,16 @@ function plot(fold, parameter, stat, classifiers)
 		string += "\n"
 	}, this)
 
-	var mapfile = __dirname+"/learning_curves/map_"+fold+parameter
+	var mapfile = __dirname+"/learning_curves/map_"+fold+"_"+parameter+"_"+baseline+"_"+sota
 
     fs.writeFileSync(mapfile, string)
 
-    var command = gnuplot +" -e \"set output 'utils/learning_curves/"+parameter+"_"+fold+".png'\" "+__dirname+"/com " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image\""
+    var command = gnuplot +" -e \"set output 'utils/learning_curves/"+fold+"_"+parameter+"_"+baseline+"_"+sota+".png'\" "+__dirname+"/com " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image\""
     console.log(command)
     execSync.run(command)
+
 }
+
 
 function extractGlobal(classifiers, train, length, report, stat)
 {
@@ -236,11 +237,16 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 			  	
 			   	    extractGlobal(classifiers, mytrainset.length, n,  report, stat)
 
-                    _.each(stat, function(data, param, list){
-	                	// build plot for param 
-						plot(fold, param, stat, classifiers)
-						plot('average', param, stat, classifiers)
-					})
+			   	    var cllist = Object.keys(classifiers)
+			   	    var baseline = cllist[0]
+			   	    var sotas = cllist.slice(1,cllist.length - 1)
+
+			   	    _.each(sotas, function(sota, key, list){ 
+                    	_.each(stat, function(data, param, list){
+							plot(fold, param, stat, baseline, sota)
+							plot('average', param, stat, baseline, sota)
+						})
+			   	    }, this)
 				})
 			} //while (index < train.lelearning_curveslearning_curvesngth)
 		})
@@ -293,7 +299,7 @@ if (process.argv[1] === __filename)
 		fs.unlinkSync(curves_path+"/"+value)
 	}, this)
 
-	var path = "../wiki/en/JEL/"
+	var path = "../wiki/en/notempl/"
 	var files = fs.readdirSync(path)
 	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 	var data = []
@@ -366,7 +372,7 @@ if (process.argv[1] === __filename)
 	console.log("dataset groupped")
 
 	var classifiers  = {
-				
+				// first should be the baseline
 				TC: classifier.TC,
 				TCPPDB: classifier.TCPPDB
 
