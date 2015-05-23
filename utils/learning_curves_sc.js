@@ -121,7 +121,8 @@ function plot(fold, parameter, stat, classifiers)
 		_.each(stat, function(rowvalue, row, list){ 
 			_.each(rowvalue, function(data, column, list){ 
 				var result = data[classifiers[0]][fold] - data[classifiers[1]][fold]
-				output.push([row, column, result])
+				if (bars.isNumber(result))
+					output.push([row, column, result])
 			}, this)
 		}, this)	
 	}
