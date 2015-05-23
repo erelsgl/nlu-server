@@ -23,6 +23,11 @@ describe('Learning curves utilities', function() {
 		_.isEqual(data[0]["input"]["CORENLP"]["sentences"], [1,2,3]).should.be.true
 		_.isEqual(data[1]["input"]["CORENLP"]["sentences"], [7,8,9]).should.be.true
 
+		
+		var data = curves.filtrain(dataset,1 )
+		_.isEqual(data[0]["input"]["CORENLP"]["sentences"], [1]).should.be.true
+		_.isEqual(data[1]["input"]["CORENLP"]["sentences"], [7]).should.be.true
+
 	})
 
 	it('filter', function() {
