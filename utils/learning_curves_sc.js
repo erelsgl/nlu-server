@@ -201,6 +201,9 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
         var fiber = Fiber.current
 
 		checkGnuPlot
+		var statusfile = "/learning_curves/status"
+
+   		fs.writeFileSync(__dirname + statusfile, "")
 
 		if (Object.keys(dataset) == 0)
 			throw new Error("Dataset is empty");
@@ -249,6 +252,8 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 					var report1 = Fiber.yield()
 
 			   	    extractGlobal(classifiers, mytrainset.length, n,  report1, stat)
+
+			   	    fs.appendFileSync(statusfile, stat)
 
 			   	    var cllist = Object.keys(classifiers)
 			   	    var baseline = cllist[0]
@@ -368,7 +373,7 @@ if (process.argv[1] === __filename)
 	// 															elem['input']['input'] = value['TEXT'][field]
 	// 															elem['output'] = value['TOPICS'][0]
 	// 															return elem
-	// 															}
+	// 							map_0_F1_TC_TCPPDB								}
 	// 														}))
 
 	var data = _.map(data, function(value){ var elem = {}
