@@ -253,7 +253,7 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 
 			   	    extractGlobal(classifiers, mytrainset.length, n,  report1, stat)
 
-			   	    fs.appendFileSync(statusfile, stat)
+			   	    fs.appendFileSync(statusfile, JSON.stringify(stat, null, 4))
 
 			   	    var cllist = Object.keys(classifiers)
 			   	    var baseline = cllist[0]
