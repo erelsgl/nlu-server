@@ -7,6 +7,7 @@
 	@author Vasily Konovalov
  */
 
+var async = require('async');
 var Fiber = require('fibers');
 var _ = require('underscore')._;
 var fs = require('fs');
