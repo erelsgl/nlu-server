@@ -138,18 +138,16 @@ var TCSynHypHypoCohypo =
 
 function wordnet_exec(word, pos, relations, wordnet_buffer, callback)
 {
-	console.log("wordnet")
 	async_adapter.getwordnet(word, pos, relations, function(err, candidates){
-		console.log(candidates.length)
+		// console.log(candidates.length)
 		callback(err, candidates)
 	})
 }
 
 function ppdb_exec(word, pos, relations, callback)
 {
-	console.log("ppdb")
 	async_adapter.getppdb(word, pos, relations, function(err, candidates){
-		console.log(candidates.length)
+		// console.log(candidates.length)
 		callback(err, candidates)
 	})
 }
@@ -172,7 +170,7 @@ function redis_exec(data, db, callback)
 				output.push([])
 		}, this)
 
-		console.log(output.length)
+		// console.log(output.length)
 		data = []
 		callback(err, output)
 	})

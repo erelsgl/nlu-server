@@ -284,6 +284,8 @@ module.exports.test_async = function(classifier, testSet, callback) {
 
 	async.forEachOfSeries(testSet, function (testRecord, testKey, callback1) {
 
+		console.log("Test "+testKey+" from "+testSet.length)
+
 		if (_.isUndefined(testRecord))
 			callback1()
 
