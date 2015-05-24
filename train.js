@@ -242,6 +242,7 @@ if (wikipedia_test)
 	var data = []
 
 	_.each(files, function(file, key, list){ 
+		console.log(file)
 		data = data.concat(JSON.parse(fs.readFileSync("../wiki/en/notempl/" + file)))
 	}, this)
 
