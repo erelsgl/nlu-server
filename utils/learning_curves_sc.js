@@ -198,7 +198,6 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 
         var fiber = Fiber.current
 
-
 		checkGnuPlot
 
 		if (dataset.length == 0)
@@ -230,8 +229,6 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 
 			  		n += 1
 
-			  		fiber.run(response)
-
 					mytrain = filtrain(mytrainset, n)
 
 					async.eachSeries(classifiers, function(classifier, callback1){ 
@@ -244,7 +241,7 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 		    			})
 			    		
 				  	}, function(err){
-						fiber.run(response)
+						fiber.run(report)
 					})
 
 					var report = Fiber.yield()
