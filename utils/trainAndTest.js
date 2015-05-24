@@ -12,6 +12,7 @@ var hash = require('limdu/utils/hash');
 var PrecisionRecall = require("limdu/utils/PrecisionRecall");
 var list = require('limdu/utils/list');
 var execSync = require('execSync')
+var async = require('async');
 
 /**
  * A short light-weight test function. Tests the given classifier on the given dataset, and 
@@ -275,11 +276,38 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 
 
 
-module.exports.filter_exp = function(explan, details) {
 
+module.exports.test_async = function(classifier, testSet, callback) {
 
+	var data_stats = []
+	currentStats = new PrecisionRecall()
+
+	async.forEachOfSeries(testSet, function (testRecord, testKey, callback1) {
+
+		if (_.isUndefined(testRecord))
+			callback1()
+
+		classifier.classify_async(testRecord["input"], testRecord, function(error, classesWithExplanation){
+			actualClasses = classesWithExplanation.classes
+
+			currentStats.addCasesLabels(testRecord.output, actualClasses);
+
+			classesWithExplanation['explanation'] = currentStats.addCasesHash(testRecord.output, actualClasses, true)
+			classesWithExplanation["input"] = testRecord.input['input']
+			data_stats.push(classesWithExplanation)
+			callback1()
+
+		})
+	}, function(err){
+		
+		classifierstats = {}
+		classifierstats['labels'] = currentStats.retrieveLabels()
+		classifierstats['data'] = data_stats
+		classifierstats['stats'] = currentStats.retrieveStats()
+
+		callback(err, classifierstats)
+	})
 }
-
 
 /**
  * Test the given classifier on the given test-set.
@@ -518,6 +546,21 @@ function label_enrichment(dataset, func)
  * @return the currentStats.
  * @author Vasily Konovalov
  */
+
+module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, callback) {
+
+		var classifier = new classifierType()
+
+		testSet1 = JSON.parse(JSON.stringify(testSet))
+		trainSet1 = JSON.parse(JSON.stringify(trainSet))
+		classifier.trainBatch(trainSet1)
+
+		module.exports.test_async(classifier, testSet1, function(error, results){
+			callback(error, results)
+		})
+	}
+
+
 module.exports.trainAndTest_hash = function(
 		classifierType, 
 		trainSet, testSet, 

@@ -42,9 +42,9 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 
 // var do_small_temporary_serialization_test = false
 var technion_300 = false
-var wikipedia_test = false
+var wikipedia_test = true
 var wikipedia_categories = false
-var wikipedia_prepared = true
+var wikipedia_prepared = false
 var wikipedia_parsed = false
 var wikipedia_stats = false
 var index_wordnet = false
@@ -236,7 +236,7 @@ if (wikipedia_test)
 //	var cat = [ 140002, 6582, 11221, 221702, 380549, 176859, 25644, 59198, 379420, 176796, 380539, 88393, 190074, 26711,
   //		209587, 264364, 379948, 380552, 29677, 63275, 29357, 306221, 306219, 15311 ]
 
-	var path = "../wikipedia/simple/science/"
+	var path = "../wiki/en/notempl"
 	var files = fs.readdirSync(path)
 	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 	var data = []
@@ -290,14 +290,19 @@ if (wikipedia_test)
 											return elem
 										})
 
+
+	data = _.compact(data)
 	
 	console.log("ready")				
 
-	data = _.shuffle(data)
+	// data = _.shuffle(data)
+
 
 	var compare = {
+		'TCPPDB':classifier.TCPPDB, 
+
 		'TCBOC':classifier.TCBOC, 
-		'TCSynHyp1': classifier.TCSynHyp1, 
+		// 'TCSynHyp1': classifier.TCSynHyp1, 
 		'TC':classifier.TC
 		}
 
@@ -305,34 +310,45 @@ if (wikipedia_test)
 	var resultsm = {}
 	var labels = {}
 
-	partitions.partitions_reverese(data, 5, function(train, test, index) {
-		_.each(compare, function(classifier, key, list){ 
-			if (!(key in results)) results[key] = []
-			if (!(key in resultsm)) resultsm[key] = []
-			if (!(key in labels)) labels[key] = []
-			var stats = trainAndTest.trainAndTest_hash(classifier, train, test, 5)
-			results[key].push(stats['stats']['F1'])
-			resultsm[key].push(stats['stats']['macroF1'])
-			labels[key].push(stats['labels'])
+	var dataset = partitions.partition(data, 1, Math.round(data.length*0.5))
 
-		}, this)
+	// dataset['train'] = dataset['train'].slice(0,10)
+
+	console.log("TART")
+
+	trainAndTest.trainAndTest_async(classifier['TCPPDB'], dataset['train'], dataset['test'], function(err, stats){
+		console.log("FINISHED")
+		// console.log(JSON.stringify(stats['stats'], null, 4))
+	})
+
+
+	// partitions.partitions_reverese(data, 5, function(train, test, index) {
+	// 	_.each(compare, function(classifier, key, list){ 
+	// 		if (!(key in results)) results[key] = []
+	// 		if (!(key in resultsm)) resultsm[key] = []
+	// 		if (!(key in labels)) labels[key] = []
+	// 		var stats = trainAndTest.trainAndTest_async(classifier, train, test, 5)
+	// 		results[key].push(stats['stats']['F1'])
+	// 		resultsm[key].push(stats['stats']['macroF1'])
+	// 		labels[key].push(stats['labels'])
+
+	// 	}, this)
 		
-		console.log("PERFMACROF1")
-		console.log(JSON.stringify(resultsm, null, 4))
-		console.log("PERFF1")
-		console.log(JSON.stringify(results, null, 4))
-		console.log(JSON.stringify(labels, null, 4))
+	// 	console.log("PERFMACROF1")
+	// 	console.log(JSON.stringify(resultsm, null, 4))
+	// 	console.log("PERFF1")
+	// 	console.log(JSON.stringify(results, null, 4))
+	// 	console.log(JSON.stringify(labels, null, 4))
 
-		var aggr = {}
-		_.each(results, function(value, clas, list){ 
-			aggr[clas] = _.reduce(value, function(memo, num){ return memo + num; }, 0)/value.length
-		}, this)
+	// 	var aggr = {}
+	// 	_.each(results, function(value, clas, list){ 
+	// 		aggr[clas] = _.reduce(value, function(memo, num){ return memo + num; }, 0)/value.length
+	// 	}, this)
 
-		console.log(JSON.stringify(aggr, null, 4))
+	// 	console.log(JSON.stringify(aggr, null, 4))
 
-	});
+	// });
 	
-	process.exit(0)
 }
 
 

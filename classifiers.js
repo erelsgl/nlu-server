@@ -23,6 +23,8 @@ var ftrs = limdu.features;
 var Hierarchy = require(__dirname+'/Hierarchy');
 var bars = require('./utils/bars')
 var distance = require('./utils/distance.js')
+var async_adapter = require('./utils/async_adapter.js')
+var async = require('async');
 
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
@@ -134,177 +136,52 @@ var TCSynHypHypoCohypo =
 	'wordnet_relation':['synonym','hypernym','hyponym','cohyponym']
 }
 
-function wordnet_exec(word, pos, relations, wordnet_buffer)
+function wordnet_exec(word, pos, relations, wordnet_buffer, callback)
 {
-	var path = './utils/getwordnet.js'
-	var buffer_path = './wordnet_buffer.json'
-
-	return candidate_retrieve(word, pos, relations, wordnet_buffer, path, buffer_path)
+	console.log("wordnet")
+	async_adapter.getwordnet(word, pos, relations, function(err, candidates){
+		console.log(candidates.length)
+		callback(err, candidates)
+	})
 }
 
-function ppdb_exec(word, pos, relations, wordnet_buffer)
+function ppdb_exec(word, pos, relations, callback)
 {
-	var path = './utils/getppdb.js'
-	var buffer_path = './ppdb_buffer.json'
-
-	return candidate_retrieve(word, pos, relations, wordnet_buffer, path, buffer_path)
+	console.log("ppdb")
+	async_adapter.getppdb(word, pos, relations, function(err, candidates){
+		console.log(candidates.length)
+		callback(err, candidates)
+	})
 }
 
-function candidate_retrieve(word, pos, relations, wordnet_buffer, path, buffer_path)
+function redis_exec(data, db, callback)
 {
-	if (Object.keys(wordnet_buffer) == 0)
-	{
-		var wordnet_buffer_sub = JSON.parse(fs.readFileSync(buffer_path,'UTF-8'))
-		_.each(wordnet_buffer_sub, function(value, key, list){ 
-			wordnet_buffer[key] = value
-		}, this)
-	}
 
 	var output = []
 
-	_.each(relations, function(relation, key, list){ 
-		if (!(relation in wordnet_buffer))
-			wordnet_buffer[relation] = {}
+	async.whilst(
+    function () { return data.length > 0},
+    function (callback) {
+        
+        async_adapter.getred(data, db, function (err, result){
 
-		if (!(word in wordnet_buffer[relation]))
-			wordnet_buffer[relation][word] = {}
-
-		if (!(pos in wordnet_buffer[relation][word]))
-		{
-			var cmd =  "node " + path + " \"" + word + "\" " + pos + " " + relation
-			console.log(cmd)
-			var candidates = JSON.parse(execSync.exec(cmd)['stdout'])
-			console.log(candidates.length)
-			wordnet_buffer[relation][word][pos] = candidates
-
-			if (Object.keys(wordnet_buffer[relation]).length % 50 == 0)
-			{
-			console.log("wordnet writing buffer ...")
-		    fs.writeFileSync(buffer_path, JSON.stringify(wordnet_buffer, null, 4))
-	    	}
-	    }
-
-	    output = output.concat(wordnet_buffer[relation][word][pos])
-	}, this)
-
-    return output
-}
-
-function redis_exec(data, db, redis_buffer)
-	{
-		if (data.length == 0)
-			return []
-
-		if ((data.length == 1) && (data[0] == "punct_``"))
-			return []
-
-		var redis_path = './utils/getred.js'
-		var buffer_path = './redis_buffer.json'
-		
-		if (Object.keys(redis_buffer) == 0)
-		{
-			var files = fs.readdirSync("./")
-			var files = _.filter(files, function(num){ return !_.isNull(num.match(/redis_buffer/g)) });
-
-			_.each(files, function(file, key, list){ 
-				console.log("buffer loading "+file)
-				var redis_buffer_sub = JSON.parse(fs.readFileSync("./"+file,'UTF-8'))
-
-				_.each(redis_buffer_sub, function(value, db, list){
-					_.each(value, function(emb, feat, list){ 
-						
-						if (!(db in redis_buffer))
-							redis_buffer[db] = {}
-
-						redis_buffer[db][feat] = emb
-
-					 }, this) 
-				}, this)
-			}, this)
-		}
-
-		if (!(db in redis_buffer))
-			redis_buffer[db] = {}
-
-		var data_reduced = []
-		_.each(data, function(value, key, list){ 
-			if (!(value in redis_buffer[db]))
-				data_reduced.push(value)
-		}, this)
-
-		data_reduced = _.without(data_reduced, "punct_``", "punct_`", "xcompI_`", "p_`", "nmod_-lrb-", "\\") 
-
-		// var data_reduced_cmd = _.map(data_reduced, function(value){ return value.replace(/\`/g,'\\`') })
-
-		if (data_reduced.length > 0)
-		{
-			var cmd = "node " + redis_path + " " + JSON.stringify(data_reduced).replace(/[\[\]]/g, ' ').replace(/\"\,\"/g,'" "') + " " + db
-			console.log(cmd)
-			// result is hash
-			var result = JSON.parse(execSync.exec(cmd)['stdout'])
-
-			var ret = 0
-			_.each(result, function(value, key, list){
-				if (value.length > 0)
-					ret += 1 
-				// this.redis_buffer[db][key] = {'data': value, 'count':0}
-				redis_buffer[db][key] = value
-			}, this)
-
-			console.log(ret)
-
-			if ((Object.keys(redis_buffer[db]).length % 300 == 0) && (_.isNull(data_reduced[0].match(/punct/g))))
-			{
-				console.log("redis writing buffer ...")
-				console.log(Object.keys(redis_buffer[db]).length)
-				
-            	// fs.writeFileSync(buffer_path, JSON.stringify(redis_buffer, null, 4))
-
-            	var keys = []
-
-            	_.each(redis_buffer, function(value, key, list){ 
-            		keys = keys.concat(Object.keys(value))
-            	}, this)
-
-            	var buffer_splited = _.groupBy(_.unique(keys), function(element, index){
-        			return index%8;
-			 	})
-
-				_.each(_.toArray(buffer_splited), function(data, key, list){
-					var buffer_to_write = {}
-					_.each(data, function(feat, key1, list){ 
-						_.each(redis_buffer, function(value, key2, list){ 
-							if (feat in value)
-								{
-									if (!(key2 in buffer_to_write))
-										buffer_to_write[key2] = {}
-
-									buffer_to_write[key2][feat] = redis_buffer[key2][feat]
-
-								}
-						}, this)
-					}, this)
-				    console.log("writing "+key)
-				    fs.writeFileSync('./redis_buffer.'+key+".json", JSON.stringify(buffer_to_write, null, 4))
-				}, this)
-        	}
-		}
-
-		var data_result = []
-		_.each(data, function(value, key, list){ 
-
-			if (!(value in redis_buffer[db]))
-				{
-				console.log(value+' was not found in redis buffer')	
-				data_result.push([])
-				}
+		_.each(data, function(value, key, list){
+			if (value in result)
+				output.push(result[value])
 			else
-				data_result.push(redis_buffer[db][value])
+				output.push([])
 		}, this)
 
-		return data_result
+		console.log(output.length)
+		data = []
+		callback(err, output)
+	})
 
-}
+    },
+    function (err) {
+		callback(err, output)
+    }
+)}
 
 function featureExpansion(listoffeatures, scale, phrase)
 {
