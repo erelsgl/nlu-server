@@ -195,13 +195,13 @@ function filtrain(train, index)
 function learning_curves(classifiers, dataset, len,  numOfFolds) 
 {
 
-		var f = Fiber(function() {
+	var f = Fiber(function() {
 
         var fiber = Fiber.current
 
 		checkGnuPlot
 
-		if (dataset.length == 0)
+		if (Object.keys(dataset) == 0)
 			throw new Error("Dataset is empty");
 		
 		stat = {}
@@ -392,6 +392,7 @@ if (process.argv[1] === __filename)
 
 			}
 
+	// learning_curves(classifiers, datahash, 5/*len*/, 5/*numOfFolds*/)
 	learning_curves(classifiers, datahash, 5/*len*/, 5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
