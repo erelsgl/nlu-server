@@ -265,7 +265,7 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 			} //while (index < train.lelearning_curveslearning_curvesngth)
 		})
 
-	}
+	})
 f.run()
 }
 
