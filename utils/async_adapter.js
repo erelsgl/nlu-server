@@ -6,8 +6,8 @@ var wordnet = new natural.WordNet();
 
 function getppdb(string, pos, relation, callback)
 {
-	var client = redis.createClient(6369)
-	var db = 2
+	var client = redis.createClient(6379)
+	var db = 4
 	var output = []
 
 	client.select(db, function(err, response) {
@@ -222,7 +222,7 @@ function getwordnet(string, pos, relation, callback)
 function getred(params, db, callback)
 {
 
-	var client = redis.createClient(6369)
+	var client = redis.createClient(6379)
 
 // previouse dataset was 15
 // 13 - 1098401 - context emb
