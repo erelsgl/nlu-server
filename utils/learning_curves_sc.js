@@ -388,7 +388,7 @@ if (process.argv[1] === __filename)
 
 	var classifiers  = {
 				// first should be the baseline
-				// TC: cslassifier.TC,
+				TC: cslassifier.TC,
 				TCPPDB: classifier.TCPPDB
 
 			}
