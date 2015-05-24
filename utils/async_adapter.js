@@ -1,4 +1,5 @@
-var redis = require("redis")
+var Redis = require('ioredis');
+var client = new Redis(6379);
 var async = require('async');
 var _ = require('underscore')._;
 var natural = require('natural');
@@ -6,7 +7,7 @@ var wordnet = new natural.WordNet();
 
 function getppdb(string, pos, relation, callback)
 {
-	var client = redis.createClient(6379)
+	// var client = redis.createClient(6379)
 	var db = 4
 	var output = []
 
@@ -222,7 +223,7 @@ function getwordnet(string, pos, relation, callback)
 function getred(params, db, callback)
 {
 
-	var client = redis.createClient(6379)
+	// var client = redis.createClient(6379)
 
 // previouse dataset was 15
 // 13 - 1098401 - context emb
