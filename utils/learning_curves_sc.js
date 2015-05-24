@@ -201,9 +201,9 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
         var fiber = Fiber.current
 
 		checkGnuPlot
-		var statusfile = "/learning_curves/status"
+		var statusfile = __dirname + "/learning_curves/status"
 
-   		fs.writeFileSync(__dirname + statusfile, "")
+   		fs.writeFileSync(statusfile, "")
 
 		if (Object.keys(dataset) == 0)
 			throw new Error("Dataset is empty");
