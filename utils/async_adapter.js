@@ -254,7 +254,7 @@ function getred(params, db, callback)
 
     	if (params.length != Object.keys(output).length)
     		throw new Error("Vectors should be of the same size")
-		callback(null, output)
+		callback(err, output)
 	})	
 }
 
