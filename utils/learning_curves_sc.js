@@ -205,6 +205,19 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 			var index = 0
 			var stats
 
+
+			async.whilst(
+			    function () { return index <= train.length },
+			    function (callback) {
+			        count++;
+			        setTimeout(callback, 1000);
+			    },
+			    function (err) {
+			        
+			    }
+			);
+
+
 			while (index <= train.length)
 	  		{
 			  	var report = []
@@ -229,7 +242,7 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 			  				  	
 				  	_.each(classifiers, function(classifier, name, list){ 
 				  		console.log("start trainandTest")
-		    			stats = trainAndTest_hash(classifier, mytrain, test, 5)
+		    			stats = trainAndTest_async(classifier, mytrain, test)
 			    		console.log("stop trainandTest")
 			    		
 			    		report.push(stats['stats'])
@@ -373,7 +386,7 @@ if (process.argv[1] === __filename)
 
 	var classifiers  = {
 				// first should be the baseline
-				// TC: classifier.TC,
+				// TC: cslassifier.TC,
 				TCPPDB: classifier.TCPPDB
 
 			}
