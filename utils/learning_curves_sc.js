@@ -192,7 +192,7 @@ function filtrain(train, index)
 	return output
 }
 
-function learning_curves(classifiers, dataset, len,  numOfFolds) 
+function learning_curves(classifiers, dataset, len, numOfFolds) 
 {
 
 	var f = Fiber(function() {
@@ -232,10 +232,10 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 
 					mytrain = filtrain(mytrainset, n)
 
-					async.eachSeries(classifiers, function(classifier, callback1){ 
+					async.eachSeries(Object.keys(classifiers), function(classifier, callback1){ 
 				  	// _.each(classifiers, function(classifier, name, list){ 
 				  		console.log("start trainandTest")
-		    			trainAndTest_async(classifier, mytrain, test, function(err, stats){
+		    			trainAndTest_async(classifiers[classifier], mytrain, test, function(err, stats){
 				    		console.log("stop trainandTest")
 				    		report.push(stats['stats'])
 				    		callback1()
@@ -245,9 +245,9 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 						fiber.run(report)
 					})
 
-					var report = Fiber.yield()
+					var report1 = Fiber.yield()
 
-			   	    extractGlobal(classifiers, mytrainset.length, n,  report, stat)
+			   	    extractGlobal(classifiers, mytrainset.length, n,  report1, stat)
 
 			   	    var cllist = Object.keys(classifiers)
 			   	    var baseline = cllist[0]
