@@ -7,7 +7,7 @@
 	@author Vasily Konovalov
  */
 
-
+var Fiber = require('fibers');
 var _ = require('underscore')._;
 var fs = require('fs');
 var execSync = require('execSync')
@@ -194,6 +194,11 @@ function filtrain(train, index)
 function learning_curves(classifiers, dataset, len,  numOfFolds) 
 {
 
+		var f = Fiber(function() {
+
+        var fiber = Fiber.current
+
+
 		checkGnuPlot
 
 		if (dataset.length == 0)
@@ -204,19 +209,6 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 		partitions.partitions_hash(dataset, numOfFolds, function(train, test, fold) {
 			var index = 0
 			var stats
-
-
-			async.whilst(
-			    function () { return index <= train.length },
-			    function (callback) {
-			        count++;
-			        setTimeout(callback, 1000);
-			    },
-			    function (err) {
-			        
-			    }
-			);
-
 
 			while (index <= train.length)
 	  		{
@@ -238,16 +230,25 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 
 			  		n += 1
 
+			  		fiber.run(response)
+
 					mytrain = filtrain(mytrainset, n)
-			  				  	
-				  	_.each(classifiers, function(classifier, name, list){ 
+
+					async.eachSeries(classifiers, function(classifier, callback1){ 
+				  	// _.each(classifiers, function(classifier, name, list){ 
 				  		console.log("start trainandTest")
-		    			stats = trainAndTest_async(classifier, mytrain, test)
-			    		console.log("stop trainandTest")
+		    			trainAndTest_async(classifier, mytrain, test, function(err, stats){
+				    		console.log("stop trainandTest")
+				    		report.push(stats['stats'])
+				    		callback1()
+		    			})
 			    		
-			    		report.push(stats['stats'])
-				  	}, this)
-			  	
+				  	}, function(err){
+						fiber.run(response)
+					})
+
+					var report = Fiber.yield()
+
 			   	    extractGlobal(classifiers, mytrainset.length, n,  report, stat)
 
 			   	    var cllist = Object.keys(classifiers)
@@ -264,6 +265,8 @@ function learning_curves(classifiers, dataset, len,  numOfFolds)
 			} //while (index < train.lelearning_curveslearning_curvesngth)
 		})
 
+	}
+f.run()
 }
 
 function groupbylabel(dataset, minsize, sizetrain)
