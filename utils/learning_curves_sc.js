@@ -215,11 +215,13 @@ _.each(bytrainsize, function(value, key, list){
 
 var bychar = {}
 _.each(bytrainsize, function(value, key, list){ 
-	var sen = 0
+	var tokens = 0
 	_.each(value, function(value1, key1, list){ 
-		sen += value1["input"]["input"].length
+		_.each(value["input"]["CORENLP"]["sentences"], function(sen, key, list){ 
+			tokens += sen['tokens'].length
+		}, this)
 	}, this)
-	bychar[key] = sen
+	bychar[key] = tokens
 }, this)
 
 var output = "bytrainsize\n" +JSON.stringify(bytrainsizecount, null, 4) + "\n" +
@@ -258,13 +260,9 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 	  		{
 			  	var report = []
 				
-			  	index += (index < 10 ? 1 : 5)
+			  	index += (index < 10 ? 1 : 15)
 				
 				var mytrainset = trainlen(train, index)
-
-				
-				
-				
 
 				if (!_.isObject(mytrainset[0]))
 					throw new Error("flatten is not correct")
