@@ -193,6 +193,11 @@ function filtrain(train, index, startwith)
 	return output
 }
 
+function trainlen(train, index)
+{
+	return _.flatten(JSON.parse(JSON.stringify(train)).slice(0, index))
+}
+
 function learning_curves(classifiers, dataset, len, numOfFolds) 
 {
 
@@ -220,7 +225,7 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 				
 			  	index += (index < 10 ? 1 : 5)
 				
-				var mytrainset = _.flatten(train.slice(0, index))
+				var mytrainset = trainlen(train, index)
 
 				if (!_.isObject(mytrainset[0]))
 					throw new Error("flatten is not correct")
@@ -416,5 +421,6 @@ module.exports = {
 	isProb:isProb,
 	thereisdata:thereisdata,
 	filtrain:filtrain,
-	groupbylabel:groupbylabel
+	groupbylabel:groupbylabel,
+	trainlen:trainlen
 }
