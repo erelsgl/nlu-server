@@ -11,6 +11,31 @@ var _ = require('underscore');
 // curves.learning_curves(classifiers, data, parameters, 3, 5)
 
 describe('Learning curves utilities', function() {
+
+	it('global', function() {
+	// extractGlobal(classifiers, mytrain.length, n,  report1, stat)
+	var stat = {}
+	var classifiers = {'class1':'class1', 'class2':'class2'}
+	var report = []
+
+	report.push({'F1':1, 'Accuracy':2, 'macroF1':3})
+	report.push({'F1':4, 'Accuracy':5, 'macroF1':6})
+
+	curves.extractGlobal(classifiers, 1, 1,  report, stat)
+
+	console.log(JSON.stringify(stat, null, 4))
+
+	var report = []	
+
+	report.push({'F1':11, 'Accuracy':22, 'macroF1':33})
+	report.push({'F1':44, 'Accuracy':55, 'macroF1':66})
+
+	curves.extractGlobal(classifiers, 1, 2,  report, stat)
+
+	console.log(JSON.stringify(stat, null, 4))
+
+	})
+	
 	
 	it('trainlen', function() {
 		var train = [[1,0],[3,2],[5,4],[7,6]]
