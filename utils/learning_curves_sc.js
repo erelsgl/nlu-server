@@ -217,7 +217,7 @@ var bychar = {}
 _.each(bytrainsize, function(value, key, list){ 
 	var tokens = 0
 	_.each(value, function(value1, key1, list){ 
-		_.each(value["input"]["CORENLP"]["sentences"], function(sen, key, list){ 
+		_.each(value1["input"]["CORENLP"]["sentences"], function(sen, key, list){ 
 			tokens += sen['tokens'].length
 		}, this)
 	}, this)
