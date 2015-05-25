@@ -384,7 +384,7 @@ function featureExtractorUCoreNLPConcept(sentence, features, stopwords) {
 	var expansions = []
 
 	_.each(candidates, function(candidate, key, list){ 
-		expansions = expansions.concat(wordnet_exec(candidate['string'], candidate['pos'], ['hypernym_3']))
+		expansions = expansions.concat(wordnet_exec(candidate['string'], candidate['pos'], 'hypernym_3'))
 	}, this)
 
 	// console.log("Expansion")
