@@ -296,10 +296,10 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 
 					var report1 = Fiber.yield()
 
-			   	    extractGlobal(classifiers, mytrainset.length, n,  report1, stat)
+			   	    extractGlobal(classifiers, mytrain.length, n,  report1, stat)
 
 			   	    fs.appendFileSync(statusfile, JSON.stringify(stat, null, 4))
-			   	    fs.appendFileSync(statusfile, setstat(mytrainset))
+			   	    fs.appendFileSync(statusfile, setstat(mytrain))
 			   	    
 			   	    var cllist = Object.keys(classifiers)
 			   	    var baseline = cllist[0]
