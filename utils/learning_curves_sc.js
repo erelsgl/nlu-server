@@ -193,6 +193,39 @@ function filtrain(train, index, startwith)
 	return output
 }
 
+function setstat(data)
+{
+var bytrainsize = _.groupBy(data, function(num){ return num["output"][0] })
+_.each(bytrainsize, function(value, key, list){
+	bytrainsize[key] = value.length 
+}, this)
+
+
+var bynumsen = {}
+_.each(bytrainsize, function(value, key, list){ 
+	var sen = 0
+	_.each(value, function(value1, key1, list){ 
+		sen += value1["input"]["CORENLP"]["sentences"].length
+	}, this)
+	bynumsen[key] = sen
+}, this)
+
+var bychar = {}
+_.each(bytrainsize, function(value, key, list){ 
+	var sen = 0
+	_.each(value, function(value1, key1, list){ 
+		sen += value1["input"]["input"].length
+	}, this)
+	bychar[key] = sen
+}, this)
+
+var output = "bytrainsize\n" + console.log(JSON.stringify(bytrainsize, null, 4)) + "\n" +
+			 "bynumsen\n" + console.log(JSON.stringify(bynumsen, null, 4)) + "\n" +
+			 "bychar\n" + console.log(JSON.stringify(bychar, null, 4))
+
+return output
+}
+
 function trainlen(train, index)
 {
 	return _.flatten(JSON.parse(JSON.stringify(train)).slice(0, index))
@@ -200,7 +233,6 @@ function trainlen(train, index)
 
 function learning_curves(classifiers, dataset, len, numOfFolds) 
 {
-
 	var f = Fiber(function() {
 
         var fiber = Fiber.current
@@ -226,6 +258,9 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 			  	index += (index < 10 ? 1 : 5)
 				
 				var mytrainset = trainlen(train, index)
+
+				console.log(JSON.stringify(setstat(train), null, 4))
+				process.exit(0)
 
 				if (!_.isObject(mytrainset[0]))
 					throw new Error("flatten is not correct")
