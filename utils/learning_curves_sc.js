@@ -284,7 +284,9 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 				  		console.log("start trainandTest")
 		    			trainAndTest_async(classifiers[classifier], mytrain, test, function(err, stats){
 				    		console.log("stop trainandTest")
-				    		report.push(stats['stats'])
+			   	    		fs.appendFileSync(statusfile, classifier+"\n")
+			   	    		fs.appendFileSync(statusfile, JSON.stringify(stats['stats'], null, 4))
+			   	    		report.push(stats['stats'])
 				    		callback1()
 		    			})
 			    		
@@ -297,7 +299,10 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 			   	    extractGlobal(classifiers, mytrain.length, n,  report1, stat)
 
 			   	    fs.appendFileSync(statusfile, JSON.stringify(stat, null, 4))
+
+			   	    console.log("calc stats")
 			   	    fs.appendFileSync(statusfile, setstat(mytrain))
+			   	    console.log("stop stats")
 			   	    
 			   	    var cllist = Object.keys(classifiers)
 			   	    var baseline = cllist[0]
