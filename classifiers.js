@@ -136,7 +136,7 @@ var TCSynHypHypoCohypo =
 	'wordnet_relation':['synonym','hypernym','hyponym','cohyponym']
 }
 
-function wordnet_exec(word, pos, relations, wordnet_buffer, callback)
+function wordnet_exec(word, pos, relations, callback)
 {
 	async_adapter.getwordnet(word, pos, relations, function(err, candidates){
 		// console.log(candidates.length)
@@ -350,7 +350,7 @@ function featureExtractorU(sentence, features) {
 	return features;
 }
 
-function featureExtractorUCoreNLP(sentence, features, wordnet_buffer) {
+function featureExtractorUCoreNLP(sentence, features) {
 
 	_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
 		_.each(sen['tokens'], function(value, key, list){
@@ -367,7 +367,7 @@ function featureExtractorUCoreNLP(sentence, features, wordnet_buffer) {
 }
 
 
-function featureExtractorUCoreNLPConcept(sentence, features, wordnet_buffer, stopwords) {
+function featureExtractorUCoreNLPConcept(sentence, features, stopwords) {
 
 	var candidates = bars.createcandidates(sentence)
 
@@ -377,13 +377,14 @@ function featureExtractorUCoreNLPConcept(sentence, features, wordnet_buffer, sto
 	console.log("Candidate before stopwords "+ candidates.length)
 	candidates = _.filter(candidates, function(num){ return stopwords.indexOf(num['string']) == -1 });
 	console.log("Candidate after stopwords "+ candidates.length)
+	
 	// console.log("Candidates")
 	// console.log(candidates)
 
 	var expansions = []
 
 	_.each(candidates, function(candidate, key, list){ 
-		expansions = expansions.concat(wordnet_exec(candidate['string'], candidate['pos'], ['hypernym_1'], wordnet_buffer))
+		expansions = expansions.concat(wordnet_exec(candidate['string'], candidate['pos'], ['hypernym_3']))
 	}, this)
 
 	// console.log("Expansion")
