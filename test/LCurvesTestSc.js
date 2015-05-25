@@ -19,14 +19,23 @@ describe('Learning curves utilities', function() {
 			{"input":{"CORENLP":{"sentences":[7,8,9,0]}}},
 		]
 
-		var data = curves.filtrain(dataset, 3)
+		var data = curves.filtrain(dataset, 3,  0)
 		_.isEqual(data[0]["input"]["CORENLP"]["sentences"], [1,2,3]).should.be.true
 		_.isEqual(data[1]["input"]["CORENLP"]["sentences"], [7,8,9]).should.be.true
 
 		
-		var data = curves.filtrain(dataset,1 )
+		var data = curves.filtrain(dataset,1, 0 )
 		_.isEqual(data[0]["input"]["CORENLP"]["sentences"], [1]).should.be.true
 		_.isEqual(data[1]["input"]["CORENLP"]["sentences"], [7]).should.be.true
+
+		var data = curves.filtrain(dataset,1, 1)
+		_.isEqual(data[0]["input"]["CORENLP"]["sentences"], [2]).should.be.true
+		_.isEqual(data[1]["input"]["CORENLP"]["sentences"], [8]).should.be.true
+
+
+		var data = curves.filtrain(dataset,2,2)
+		_.isEqual(data[0]["input"]["CORENLP"]["sentences"], [3,4]).should.be.true
+		_.isEqual(data[1]["input"]["CORENLP"]["sentences"], [9,0]).should.be.true
 
 	})
 
