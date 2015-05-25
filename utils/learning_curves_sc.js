@@ -158,7 +158,6 @@ function plot(fold, parameter, stat, baseline, sota)
 
 }
 
-
 function extractGlobal(classifiers, train, length, report, stat)
 {
 	var attributes = ["F1", "Accuracy", "macroF1"]
@@ -394,11 +393,10 @@ if (process.argv[1] === __filename)
 	var classifiers  = {
 				// first should be the baseline
 				TC: classifier.TC,
-				TCPPDB: classifier.TCPPDB
+				TCBOC: classifier.TCBOC
 
 			}
 
-	// learning_curves(classifiers, datahash, 5/*len*/, 5/*numOfFolds*/)
 	learning_curves(classifiers, datahash, 5/*len*/, 5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
