@@ -47,18 +47,23 @@ describe('Learning curves utilities', function() {
 
 	})
 
-	it('filter', function() {
+	it('groupbylabel', function() {
 		var dataset = [
 			{"input":{"CORENLP":{"sentences":[1,2,3,4,5,6]}}, "output": [1]},
 			{"input":{"CORENLP":{"sentences":[7,8,9,0]}}, "output":[2]},
 			{"input":{"CORENLP":{"sentences":[7]}}, "output":[3]},
 			{"input":{"CORENLP":{"sentences":[7]}}, "output":[2]},
+			{"input":{"CORENLP":{"sentences":[1,2,3,4,5,6,7,8,9,10,11,12]}}, "output":[2]},
 			{"input":{"CORENLP":{"sentences":[7,6,7,8,9]}}, "output":[2]},
 			{"input":{"CORENLP":{"sentences":[1,2]}}, "output":[2]},
 		]
-		
-		var data = curves.groupbylabel(dataset, 2, 3)
-		data[2].length.should.equal(3)
+
+		// function groupbylabel(dataset, minsize, sizetrain)
+		var data = curves.groupbylabel(dataset, 2, 4)
+
+		// console.log(JSON.stringify(data, null, 4))
+		Object.keys(data).length.should.equal(1)
+		data["2"].length.should.equal(4)
 	})
 
 
