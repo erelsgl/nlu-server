@@ -182,12 +182,12 @@ function extractGlobal(classifiers, train, length, report, stat)
 	}, this)
 }
 
-function filtrain(train, index)
+function filtrain(train, index, startwith)
 {
 	var output = []
 	_.each(train, function(value, key, list){ 
 		var value1 = JSON.parse(JSON.stringify(value))
-		value1["input"]["CORENLP"]["sentences"].splice(index)
+		value1["input"]["CORENLP"]["sentences"] = value1["input"]["CORENLP"]["sentences"].slice(startwith, index+startwith)
 		output.push(value1)
 	}, this)
 	return output
@@ -234,7 +234,7 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 
 			  		n += 1
 
-					mytrain = filtrain(mytrainset, n)
+					mytrain = filtrain(mytrainset, n, 1)
 
 					async.eachSeries(Object.keys(classifiers), function(classifier, callback1){ 
 				  	// _.each(classifiers, function(classifier, name, list){ 
