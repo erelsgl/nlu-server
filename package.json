@@ -11,6 +11,7 @@
 	    "url": "https://github.com/erelsgl/nlu-server.git"
    },
   "dependencies": {
+    "ioredis": "*",
     "execSync": "*",
     "limdu": "latest",
     "serialization": "latest",
@@ -30,8 +31,7 @@
     "underscore" : ">=1.1.0",
     "seed-random": "*",
     "defaultdict": "*",
-    "rimraf": "*",
-    "node-stanford-postagger": "*"
+    "rimraf": "*"
   },
   "devDependencies": {
 	  "mocha": "*",
