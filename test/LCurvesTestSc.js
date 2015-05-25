@@ -12,6 +12,14 @@ var _ = require('underscore');
 
 describe('Learning curves utilities', function() {
 	
+	it('trainlen', function() {
+		var train = [[1,0],[3,2],[5,4],[7,6]]
+		var train1 = curves.trainlen(train, 2)
+		_.isEqual(train1, [1,0,3,2]).should.be.true
+		var train1 = curves.trainlen(train, 3)
+		_.isEqual(train1, [1,0,3,2,5,4]).should.be.true
+	})
+
 	it('filter', function() {
 	
 		var dataset = [
