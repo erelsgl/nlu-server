@@ -233,17 +233,20 @@ if (wikipedia_test)
 	// +176859 Category:Arts
 {
 
+	var setname = "notempl"
 //	var cat = [ 140002, 6582, 11221, 221702, 380549, 176859, 25644, 59198, 379420, 176796, 380539, 88393, 190074, 26711,
   //		209587, 264364, 379948, 380552, 29677, 63275, 29357, 306221, 306219, 15311 ]
 
-	var path = "../wiki/en/notempl/"
+	var path = "../wiki/en/"+setname+"/"
 	var files = fs.readdirSync(path)
 	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 	var data = []
 
+	files = _.sample(files, 2)
+
 	_.each(files, function(file, key, list){ 
 		console.log(file)
-		data = data.concat(JSON.parse(fs.readFileSync("../wiki/en/notempl/" + file)))
+		data = data.concat(JSON.parse(fs.readFileSync("../wiki/en/"+setname+"/" + file)))
 	}, this)
 
 //	console.log(data.length)
@@ -262,25 +265,7 @@ if (wikipedia_test)
 //	data = _.filter(data, function(num){ return num["categories"].length == 1 });
 //	var count = _.reduce(data, function(memo, num){ return memo + num["categories"].length }, 0)
 
-	console.log(data.length)
-//	console.log(count)
-
-/*	var aggr = {}
-	_.each(data, function(value, key, list){
-		if (!(value["categories"][0] in aggr))
-			aggr[value["categories"][0]] = []
-		aggr[value["categories"][0]].push(value)
-	}, this)
-
-	var data = []
-	_.each(aggr, function(value, key, list){ 
-		if (value.length > 0)
-			data = data.concat(value)
-	}, this)
-*/
-	console.log(data.length)
 	
-	console.log("loaded")
 
 	var data = _.map(data, function(value){ var elem = {}
 											// value["CORENLP"]["sentences"].splice(3, value["CORENLP"]["sentences"].length)
@@ -293,11 +278,8 @@ if (wikipedia_test)
 
 
 	data = _.compact(data)
-	
-	console.log("ready")				
-
-	// data = _.shuffle(data)
-
+	data = _.shuffle(data)
+	data.splice(300)
 
 	var compare = {
 		'TCPPDB':classifier.TCPPDB, 
@@ -313,13 +295,14 @@ if (wikipedia_test)
 
 	var dataset = partitions.partition(data, 1, Math.round(data.length*0.5))
 
-	// dataset['train'] = dataset['train'].slice(0,10)
+	console.log("train "+dataset["train"].length)
+	console.log("test "+dataset["test"].length)
 
-	console.log("TART")
 
-	trainAndTest.trainAndTest_async(classifier['TCPPDB'], dataset['train'], dataset['test'], function(err, stats){
-		console.log("FINISHED")
-		// console.log(JSON.stringify(stats['stats'], null, 4))
+	trainAndTest.trainAndTest_async(classifier['TC'], dataset['train'], dataset['test'], function(err, stats){
+		// console.log("FINISHED")
+		console.log(JSON.stringify(stats['stats'], null, 4))
+		process.exit(0)
 	})
 
 
