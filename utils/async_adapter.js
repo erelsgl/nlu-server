@@ -32,6 +32,9 @@ function getppdb(string, pos, relation, callback)
 
 function getwordnet(string, pos, relation, callback)
 {
+	if (_.isArray(relation))
+		throw new Error("Relation should be an array")
+	
 	var POS = {
 
 		'n': ['NN', 'NNS', 'NNP', 'NNPS', 'noun'],
@@ -44,10 +47,7 @@ function getwordnet(string, pos, relation, callback)
 	var gl_relations = ['synonym', 'hypernym', 'hypernym_1','hypernym_2','hypernym_3', 'hyponym', 'cohyponym']
 
 	if (gl_relations.indexOf(relation) == -1)
-	{
-		console.log("Relation is not in the list")
-		process.exit(0)
-	}
+		throw new Error("Relation is not in the list")
 
 	if (_.flatten(_.toArray(POS)).indexOf(pos) == -1)
 	{
@@ -218,7 +218,6 @@ function getwordnet(string, pos, relation, callback)
 		callback(null, result)
 	})
 }
-
 
 function getred(params, db, callback)
 {
