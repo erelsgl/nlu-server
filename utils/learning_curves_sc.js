@@ -200,10 +200,6 @@ function setstat(data)
 var bytrainsize = _.groupBy(data, function(num){ return num["output"][0] })
 var bytrainsizecount = {}
 
-console.log(JSON.stringify(bytrainsize["691633"], null, 4))
-
-console.log()
-process.exit(0)
 _.each(bytrainsize, function(value, key, list){
 	bytrainsizecount[key] = value.length 
 }, this)
@@ -266,9 +262,9 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 				
 				var mytrainset = trainlen(train, index)
 
-				console.log(setstat(mytrainset))
-				// console.log(JSON.stringify(setstat(mytrainset), null, 4))
-				process.exit(0)
+				
+				
+				
 
 				if (!_.isObject(mytrainset[0]))
 					throw new Error("flatten is not correct")
@@ -303,7 +299,8 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 			   	    extractGlobal(classifiers, mytrainset.length, n,  report1, stat)
 
 			   	    fs.appendFileSync(statusfile, JSON.stringify(stat, null, 4))
-
+			   	    fs.appendFileSync(statusfile, setstat(mytrainset))
+			   	    
 			   	    var cllist = Object.keys(classifiers)
 			   	    var baseline = cllist[0]
 			   	    var sotas = cllist.slice(1)
