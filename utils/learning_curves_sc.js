@@ -161,7 +161,7 @@ function plot(fold, parameter, stat, baseline, sota)
 
 function extractGlobal(classifiers, train, length, report, stat)
 {
-	var attributes = ["F1", "macroF1", "Accuracy"]
+	var attributes = ["F1", "Accuracy", "macroF1"]
 
 	if (_.size(classifiers) == 0)
 		throw new Error("List of classifiers is empty");
@@ -258,7 +258,6 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 
 			while (index <= train.length)
 	  		{
-			  	var report = []
 				
 			  	index += (index < 10 ? 1 : 15)
 				
@@ -274,6 +273,8 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 					throw new Error("flatten is not correct")
 
 			  	_(len).times(function(n){
+
+			  		var report = []
 
 			  		n += 1
 
