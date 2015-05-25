@@ -195,11 +195,14 @@ function filtrain(train, index, startwith)
 
 function setstat(data)
 {
-var bytrainsize = _.groupBy(data, function(num){ return num["output"][0] })
-_.each(bytrainsize, function(value, key, list){
-	bytrainsize[key] = value.length 
-}, this)
 
+
+var bytrainsize = _.groupBy(data, function(num){ return num["output"][0] })
+var bytrainsizecount = {}
+
+_.each(bytrainsize, function(value, key, list){
+	bytrainsizecount[key] = value.length 
+}, this)
 
 var bynumsen = {}
 _.each(bytrainsize, function(value, key, list){ 
@@ -219,9 +222,9 @@ _.each(bytrainsize, function(value, key, list){
 	bychar[key] = sen
 }, this)
 
-var output = "bytrainsize\n" + console.log(JSON.stringify(bytrainsize, null, 4)) + "\n" +
-			 "bynumsen\n" + console.log(JSON.stringify(bynumsen, null, 4)) + "\n" +
-			 "bychar\n" + console.log(JSON.stringify(bychar, null, 4))
+var output = "bytrainsize\n" +JSON.stringify(bytrainsizecount, null, 4) + "\n" +
+			 "bynumsen\n" + JSON.stringify(bynumsen, null, 4) + "\n" +
+			 "bychar\n" + JSON.stringify(bychar, null, 4)
 
 return output
 }
@@ -259,8 +262,9 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 				
 				var mytrainset = trainlen(train, index)
 
-				console.log(JSON.stringify(setstat(train), null, 4))
-				process.exit(0)
+				
+				
+				
 
 				if (!_.isObject(mytrainset[0]))
 					throw new Error("flatten is not correct")
@@ -295,7 +299,8 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 			   	    extractGlobal(classifiers, mytrainset.length, n,  report1, stat)
 
 			   	    fs.appendFileSync(statusfile, JSON.stringify(stat, null, 4))
-
+			   	    fs.appendFileSync(statusfile, setstat(mytrainset))
+			   	    
 			   	    var cllist = Object.keys(classifiers)
 			   	    var baseline = cllist[0]
 			   	    var sotas = cllist.slice(1)
@@ -334,13 +339,12 @@ function groupbylabel(dataset, minsize, sizetrain)
 		console.log("-------------")
 	}, this)
 
-	dataset = _.filter(dataset, function(value){ return value['input']['CORENLP']['sentences'].length >= minsize })
-
-	_.each(dataset, function(value, key, list){ 
-		dataset[key]["input"]["CORENLP"]["sentences"].splice(0,10)
-	}, this)
-
 	_.each(gro, function(value, key, list){ 
+
+		value = _.filter(value, function(num){ return num['input']['CORENLP']['sentences'].length >= minsize })
+		value = _.map(value, function(num){ num["input"]["CORENLP"]["sentences"].splice(10) 
+											return num });
+
 		if (value.length < sizetrain)
 			delete gro[key]
 		else
@@ -371,65 +375,16 @@ if (process.argv[1] === __filename)
 	}, this)
 
 
-	// var field = "BODY"
+	var st_data = []
+
+	_.each(data, function(value, key, list){ 
+		value['input'] = value["text"]
+		st_data.push({'input':value, 'output':value["categories"]})
+	}, this)
+
+	// data = _.shuffle(data)
 	
-	// var path = __dirname + "/../../reuters2json/R8/"
-
-	// var train_files = fs.readdirSync(path + "train")
-	// var test_files = fs.readdirSync(path + "test")
-
-	// var train_data = []
-
-	// _.each(train_files, function(file, key, list){ 
-	// 	console.log("load train"+key)
-	// 	train_data = train_data.concat(JSON.parse(fs.readFileSync(path+"train/"+file)))
-	// }, this)
-
-	// var test_data = []
-
-	// _.each(test_files, function(file, key, list){ 
-	// 	console.log("load test"+key)
-	// 	test_data = test_data.concat(JSON.parse(fs.readFileSync(path+"test/"+file)))
-	// }, this)
-
-	// var train_data = _.compact(_.map(train_data, function(value){ var elem = {}
-	// 														elemif ('BODY' in value['TEXT']) 
-	// 															{
-	// 															value['CORENLP'] = value['BODY_CORENLP']
-	// 															delete value['TITLE_CORENLP']
-	// 															elem['input'] =  value
-	// 															elem['output'] = value['TOPICS'][0]
-	// 															return elem
-	// 															} 
-	// 														}))
-
-	// console.log("train is loaded")
-
-	// var test_data = _.compact(_.map(test_data, function(value){ var elem = {}
-	// 														if ((field in value['TEXT']) && (value['$']['NEWID'] != '20959')) 
-	// 															{
-	// 															value['CORENLP'] = value[field+'_CORENLP']
-	// 															// delete value['TITLE_CORENLP']
-	// 															elem['input'] = value
-	// 															elem['input']['input'] = value['TEXT'][field]
-	// 															elem['output'] = value['TOPICS'][0]
-	// 															return elem
-	// 							map_0_F1_TC_TCPPDB								}
-	// 														}))
-
-	var data = _.map(data, function(value){ var elem = {}
-											// value["CORENLP"]["sentences"].splice(3, value["CORENLP"]["sentences"].length)
-											// value["CORENLP"]["sentences"].splice(0, 5)
-											elem['input'] = value
-											elem['input']['input'] = value["text"]
-											elem['output'] = value['categories']
-											return elem
-										})
-
-
-	data = _.shuffle(data)
-	
-	var datahash = groupbylabel(data, 5, 50)
+	var datahash = groupbylabel(st_data, 5, 50)
 	console.log("dataset groupped")
 
 	var classifiers  = {
