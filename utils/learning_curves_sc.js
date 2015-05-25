@@ -218,7 +218,8 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 	  		{
 			  	var report = []
 				
-				index += 1
+			  	index += (index < 10 ? 1 : 5)
+				
 				var mytrainset = _.flatten(train.slice(0, index))
 
 				if (!_.isObject(mytrainset[0]))
