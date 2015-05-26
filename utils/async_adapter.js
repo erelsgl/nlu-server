@@ -3,7 +3,11 @@ var client = new Redis(6379);
 var async = require('async');
 var _ = require('underscore')._;
 var natural = require('natural');
-var wordnet = new natural.WordNet();
+var WordNet = require("node-wordnet")
+// var wordnet = new natural.WordNet();
+var wordnet = new WordNet({
+  cache: true
+})
 
 function getppdb(string, pos, relation, callback)
 {
@@ -32,8 +36,6 @@ function getppdb(string, pos, relation, callback)
 
 function getwordnet(string, pos, relation, callbackg)
 {
-
-	console.log("inside wordnet")
 
 	if (_.isArray(relation))
 	{
@@ -66,19 +68,12 @@ function getwordnet(string, pos, relation, callbackg)
 
 	var output = []
 
-	console.log("before a fall")
-
-
 	async.waterfall([
 	    function(callback) {
-
-	    	console.log("inside a fall")
 
 	    	var output = []
 		
 	    	wordnet.lookup(string, function(results) {
-
-	    		console.log(results)
 
 	    		_.each(results, function(value, key, list){
 					
@@ -87,8 +82,6 @@ function getwordnet(string, pos, relation, callbackg)
 
 				}, this)
 
-	    		console.log("potentiall from wordnet")
-	    		console.log(output)
 	    		callback(null, output)
 			})
 	    },
@@ -230,9 +223,6 @@ function getwordnet(string, pos, relation, callbackg)
 	    	}
 		}
 	], function (err, result) {
-
-		console.log(err)
-		console.log(result)
 
 		var result = _.map(_.unique(result), function(value){ return value.replace(/\_/g," "); });
 
