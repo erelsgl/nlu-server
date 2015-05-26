@@ -3356,7 +3356,7 @@ function onlyunigrams(strhash)
         features.push({'lemma':value['lemma'], 'word': value['word'], 'pos': value['pos']})
       }, this)
 
-      console.log(features)
+      // console.log(features)
 
       var k = 4
       var i = 0 
