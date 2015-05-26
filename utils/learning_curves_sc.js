@@ -19,6 +19,7 @@ var trainAndTest_async = require(__dirname+'/trainAndTest').trainAndTest_async;
 var bars = require(__dirname+'/bars');
 var distance = require(__dirname+'/distance');
 var path = require("path")
+var corpus = "JEL"
 
 var gnuplot = 'gnuplot'
 var dirr = "/learning_curves/"
@@ -152,7 +153,7 @@ function plot(fold, parameter, stat, baseline, sota)
 
     fs.writeFileSync(mapfile, string)
 
-    var command = gnuplot +" -e \"set title '"+sota+"-"+baseline+"'; set output 'utils/learning_curves/"+fold+"_"+parameter+"_"+sota+"-"+baseline+".png'\" "+__dirname+"/com " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image\""
+    var command = gnuplot +" -e \"set title '"corpus+" : "+sota+" - "+baseline+"'; set output 'utils/learning_curves/"+fold+"_"+parameter+"_"+sota+"-"+baseline+".png'\" "+__dirname+"/com " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image\""
     console.log(command)
     execSync.run(command)
 
@@ -368,7 +369,7 @@ if (process.argv[1] === __filename)
 		fs.unlinkSync(curves_path+"/"+value)
 	}, this)
 
-	var path = "../wiki/en/notempl/"
+	var path = "../wiki/en/"+corpus+"/"
 	var files = fs.readdirSync(path)
 	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 	var data = []
