@@ -152,7 +152,7 @@ function plot(fold, parameter, stat, baseline, sota)
 
     fs.writeFileSync(mapfile, string)
 
-    var command = gnuplot +" -e \"set title \""+baseline+"-"+sota+"\"; set output 'utils/learning_curves/"+fold+"_"+parameter+"_"+baseline+"_"+sota+".png'\" "+__dirname+"/com " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image\""
+    var command = gnuplot +" -e \"set title '"+baseline+"-"+sota+"'; set output 'utils/learning_curves/"+fold+"_"+parameter+"_"+baseline+"_"+sota+".png'\" "+__dirname+"/com " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image\""
     console.log(command)
     execSync.run(command)
 
