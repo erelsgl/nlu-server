@@ -138,8 +138,11 @@ var TCSynHypHypoCohypo =
 
 function wordnet_exec(word, pos, relations, callback)
 {
+	console.log("wordent ecxec "+word)
 	async_adapter.getwordnet(word, pos, relations, function(err, candidates){
-		// console.log(candidates.length)
+		console.log("wordnet_exec results")
+		console.log(candidates.length)
+
 		callback(err, candidates)
 	})
 }
@@ -367,12 +370,9 @@ function featureExtractorUCoreNLP(sentence, features) {
 }
 
 
-function featureExtractorUCoreNLPConcept(sentence, features, stopwords) {
+function featureExtractorUCoreNLPConcept(sentence, features, stopwords, callback) {
 
 	var candidates = bars.createcandidates(sentence)
-
-	// console.log('input')
-	// console.log(sentence['input'])
 
 	console.log("Candidate before stopwords "+ candidates.length)
 	candidates = _.filter(candidates, function(num){ return stopwords.indexOf(num['string']) == -1 });
@@ -383,29 +383,41 @@ function featureExtractorUCoreNLPConcept(sentence, features, stopwords) {
 
 	var expansions = []
 
-	_.each(candidates, function(candidate, key, list){ 
-		expansions = expansions.concat(wordnet_exec(candidate['string'], candidate['pos'], 'hypernym_3'))
-	}, this)
+	async.forEachOfSeries(candidates, function (candidate, senkey, callback2) {
+		console.log("run async")
+		console.log(candidate)
+		wordnet_exec(candidate['string'], candidate['pos'], 'synonym', function(err, expansion){
+			console.log("part")
+			console.log(expansion.length)
+			expansions = expansions.concat(expansion)
+			callback2()
+		})
+	}, 	function (err) {
 
-	// console.log("Expansion")
-	// console.log(expansions)
+		console.log("Expansion "+expansions.length)
+		console.log(expansions)
 
-	_.each(expansions, function(expansion, key, list){ 
-		features["C_"+expansion.toLowerCase()] = 1 
-	}, this)
-
-	_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
-		_.each(sen['tokens'], function(value, key, list){
-			if ('lemma' in value)
-				// if (['ORGANIZATION', 'DATE', 'NUMBER'].indexOf(value['ner']) == -1)
-					features[value['lemma'].toLowerCase()] = 1 
-			else
-				throw new Error("where is lemma '"+value);
-
+		_.each(expansions, function(expansion, key, list){ 
+			features["C_"+expansion.toLowerCase()] = 1 
 		}, this)
-	}, this)
 
-	return features;
+		console.log("Features are enriched")
+
+		_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
+			_.each(sen['tokens'], function(value, key, list){
+				if ('lemma' in value)
+					// if (['ORGANIZATION', 'DATE', 'NUMBER'].indexOf(value['ner']) == -1)
+						features[value['lemma'].toLowerCase()] = 1 
+				else
+					{
+						console.log("There is no lemma "+ value)
+						process.exit(0)
+					}
+			}, this)
+		}, this)
+
+		callback(err, features)
+	})
 }
 
 function featureword2vec(sentence, features) {

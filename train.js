@@ -299,7 +299,7 @@ if (wikipedia_test)
 	console.log("test "+dataset["test"].length)
 
 
-	trainAndTest.trainAndTest_async(classifier['TC'], dataset['train'], dataset['test'], function(err, stats){
+	trainAndTest.trainAndTest_async(classifier['TCBOC'], dataset['train'], dataset['test'], function(err, stats){
 		// console.log("FINISHED")
 		console.log(JSON.stringify(stats['stats'], null, 4))
 		process.exit(0)

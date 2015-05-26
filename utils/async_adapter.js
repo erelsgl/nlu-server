@@ -30,10 +30,16 @@ function getppdb(string, pos, relation, callback)
 	})	
 }
 
-function getwordnet(string, pos, relation, callback)
+function getwordnet(string, pos, relation, callbackg)
 {
+
+	console.log("inside wordnet")
+
 	if (_.isArray(relation))
-		throw new Error("Relation should be an array")
+	{
+		console.log("Relation should not be a list")
+		process.exit(0)
+	}
 	
 	var POS = {
 
@@ -47,7 +53,10 @@ function getwordnet(string, pos, relation, callback)
 	var gl_relations = ['synonym', 'hypernym', 'hypernym_1','hypernym_2','hypernym_3', 'hyponym', 'cohyponym']
 
 	if (gl_relations.indexOf(relation) == -1)
-		throw new Error("Relation is not in the list")
+	{
+		console.log("Relation is not in the list")
+		process.exit(0)
+	}
 
 	if (_.flatten(_.toArray(POS)).indexOf(pos) == -1)
 	{
@@ -57,12 +66,19 @@ function getwordnet(string, pos, relation, callback)
 
 	var output = []
 
+	console.log("before a fall")
+
+
 	async.waterfall([
 	    function(callback) {
+
+	    	console.log("inside a fall")
 
 	    	var output = []
 		
 	    	wordnet.lookup(string, function(results) {
+
+	    		console.log(results)
 
 	    		_.each(results, function(value, key, list){
 					
@@ -71,6 +87,8 @@ function getwordnet(string, pos, relation, callback)
 
 				}, this)
 
+	    		console.log("potentiall from wordnet")
+	    		console.log(output)
 	    		callback(null, output)
 			})
 	    },
@@ -213,9 +231,12 @@ function getwordnet(string, pos, relation, callback)
 		}
 	], function (err, result) {
 
+		console.log(err)
+		console.log(result)
+
 		var result = _.map(_.unique(result), function(value){ return value.replace(/\_/g," "); });
 
-		callback(null, result)
+		callbackg(null, result)
 	})
 }
 
