@@ -138,11 +138,8 @@ var TCSynHypHypoCohypo =
 
 function wordnet_exec(word, pos, relations, callback)
 {
-	console.log("wordent ecxec "+word)
-	async_adapter.getwordnet(word, pos, relations, function(err, candidates){
-		console.log("wordnet_exec results")
-		console.log(candidates.length)
 
+	async_adapter.getwordnet(word, pos, relations, function(err, candidates){
 		callback(err, candidates)
 	})
 }
@@ -150,7 +147,6 @@ function wordnet_exec(word, pos, relations, callback)
 function ppdb_exec(word, pos, relations, callback)
 {
 	async_adapter.getppdb(word, pos, relations, function(err, candidates){
-		// console.log(candidates.length)
 		callback(err, candidates)
 	})
 }
@@ -374,34 +370,26 @@ function featureExtractorUCoreNLPConcept(sentence, features, stopwords, callback
 
 	var candidates = bars.createcandidates(sentence)
 
-	console.log("Candidate before stopwords "+ candidates.length)
+	// console.log("Candidate before stopwords "+ candidates.length)
 	candidates = _.filter(candidates, function(num){ return stopwords.indexOf(num['string']) == -1 });
-	console.log("Candidate after stopwords "+ candidates.length)
+	// console.log("Candidate after stopwords "+ candidates.length)
 	
-	// console.log("Candidates")
+	console.log("fetch wordnet")
 	// console.log(candidates)
 
 	var expansions = []
 
-	async.forEachOfSeries(candidates, function (candidate, senkey, callback2) {
-		console.log("run async")
-		console.log(candidate)
-		wordnet_exec(candidate['string'], candidate['pos'], 'synonym', function(err, expansion){
-			console.log("part")
-			console.log(expansion.length)
+	async.eachSeries(candidates, function (candidate, callback2) {
+		async_adapter.getwordnet(candidate['string'], candidate['pos'], 'synonym', function(err, expansion){
+
 			expansions = expansions.concat(expansion)
 			callback2()
 		})
 	}, 	function (err) {
 
-		console.log("Expansion "+expansions.length)
-		console.log(expansions)
-
 		_.each(expansions, function(expansion, key, list){ 
 			features["C_"+expansion.toLowerCase()] = 1 
 		}, this)
-
-		console.log("Features are enriched")
 
 		_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
 			_.each(sen['tokens'], function(value, key, list){
@@ -411,7 +399,7 @@ function featureExtractorUCoreNLPConcept(sentence, features, stopwords, callback
 				else
 					{
 						console.log("There is no lemma "+ value)
-						process.exit(0)
+						// process.exit(0)
 					}
 			}, this)
 		}, this)
