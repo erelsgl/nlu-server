@@ -261,7 +261,7 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 				
 			  	var mytrainset = trainlen(train, index)
 
-			  	index += (index < 10 ? 1 : 15)
+			  	index += (index < 10 ? 1 : 50)
 				
 				if (!_.isObject(mytrainset[0]))
 					throw new Error("flatten is not correct")
