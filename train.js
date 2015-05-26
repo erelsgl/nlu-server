@@ -233,7 +233,7 @@ if (wikipedia_test)
 	// +176859 Category:Arts
 {
 
-	var setname = "notempl"
+	var setname = "nosem"
 //	var cat = [ 140002, 6582, 11221, 221702, 380549, 176859, 25644, 59198, 379420, 176796, 380539, 88393, 190074, 26711,
   //		209587, 264364, 379948, 380552, 29677, 63275, 29357, 306221, 306219, 15311 ]
 
@@ -286,7 +286,8 @@ if (wikipedia_test)
 
 		'TCBOC':classifier.TCBOC, 
 		// 'TCSynHyp1': classifier.TCSynHyp1, 
-		'TC':classifier.TC
+		'TC':classifier.TC,
+		'TC1':classifier.TC1
 		}
 
 	var results = {}
@@ -299,10 +300,19 @@ if (wikipedia_test)
 	console.log("test "+dataset["test"].length)
 
 
-	trainAndTest.trainAndTest_async(classifier['TCBOC'], dataset['train'], dataset['test'], function(err, stats){
+	trainAndTest.trainAndTest_async(classifier['TC'], dataset['train'], dataset['test'], function(err, stats){
 		// console.log("FINISHED")
 		console.log(JSON.stringify(stats['stats'], null, 4))
-		process.exit(0)
+
+		trainAndTest.trainAndTest_async(classifier['TC1'], dataset['train'], dataset['test'], function(err, stats){
+	
+			console.log(JSON.stringify(stats['stats'], null, 4))
+
+			process.exit(0)
+
+		})
+
+
 	})
 
 
