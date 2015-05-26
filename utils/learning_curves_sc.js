@@ -148,11 +148,11 @@ function plot(fold, parameter, stat, baseline, sota)
 		string += "\n"
 	}, this)
 
-	var mapfile = __dirname+"/learning_curves/map_"+fold+"_"+parameter+"_"+baseline+"_"+sota
+	var mapfile = __dirname+"/learning_curves/map_"+fold+"_"+parameter+"_"+sota+"-"+baseline
 
     fs.writeFileSync(mapfile, string)
 
-    var command = gnuplot +" -e \"set output 'utils/learning_curves/"+fold+"_"+parameter+"_"+baseline+"_"+sota+".png'\" "+__dirname+"/com " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image\""
+    var command = gnuplot +" -e \"set title \""+baseline+"-"+sota+"\"; set output 'utils/learning_curves/"+fold+"_"+parameter+"_"+baseline+"_"+sota+".png'\" "+__dirname+"/com " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image\""
     console.log(command)
     execSync.run(command)
 
@@ -297,7 +297,7 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 
 					var report1 = Fiber.yield()
 
-			   	    extractGlobal(classifiers, mytrain.length, n,  report1, stat)
+			   	    extractGlobal(classifiers, mytrain.length/train[0].length, n,  report1, stat)
 
 			   	    fs.appendFileSync(statusfile, JSON.stringify(stat, null, 4))
 
