@@ -6,7 +6,7 @@ var natural = require('natural');
 var WordNet = require("node-wordnet")
 // var wordnet = new natural.WordNet();
 var wordnet = new WordNet({
-  cache: true
+  cache: { max: 500000, maxAge: 1000 * 60 * 60 }
 })
 
 function getppdb(string, pos, relation, callback)
