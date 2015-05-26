@@ -374,7 +374,6 @@ function featureExtractorUCoreNLPConcept(sentence, features, stopwords, callback
 	candidates = _.filter(candidates, function(num){ return stopwords.indexOf(num['string']) == -1 });
 	// console.log("Candidate after stopwords "+ candidates.length)
 	
-	console.log("fetch wordnet")
 	// console.log(candidates)
 
 	var expansions = []
