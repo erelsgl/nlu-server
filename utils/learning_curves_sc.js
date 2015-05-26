@@ -152,7 +152,7 @@ function plot(fold, parameter, stat, baseline, sota)
 
     fs.writeFileSync(mapfile, string)
 
-    var command = gnuplot +" -e \"set title '"+sota+"-"+baseline+"'; set output 'utils/learning_curves/"+fold+"_"+parameter+"_"+sota+"_"+baseline+".png'\" "+__dirname+"/com " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image\""
+    var command = gnuplot +" -e \"set title '"+sota+"-"+baseline+"'; set output 'utils/learning_curves/"+fold+"_"+parameter+"_"+sota+"-"+baseline+".png'\" "+__dirname+"/com " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image\""
     console.log(command)
     execSync.run(command)
 
@@ -252,16 +252,16 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 		stat = {}
 
 		partitions.partitions_hash(dataset, numOfFolds, function(train, test, fold) {
-			var index = 0
+			var index = 1
 			var stats
 
 			while (index <= train.length)
 	  		{
 				
+			  	var mytrainset = trainlen(train, index)
+
 			  	index += (index < 10 ? 1 : 15)
 				
-				var mytrainset = trainlen(train, index)
-
 				if (!_.isObject(mytrainset[0]))
 					throw new Error("flatten is not correct")
 				
