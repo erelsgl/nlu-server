@@ -5,7 +5,6 @@ unset key
 set view 60, 75, 1, 1
 #set hidden3d back offset 1 trianglepattern 3 undefined 1 altdiagonal bentover
 set style data lines
-set title "dgrid3d splines"
 set pm3d
 #set palette
 #set palette defined (0 "blue", 1 "red")
