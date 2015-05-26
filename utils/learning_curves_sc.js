@@ -282,6 +282,7 @@ function learning_curves(classifiers, dataset, len, numOfFolds)
 					async.eachSeries(Object.keys(classifiers), function(classifier, callback1){ 
 				  	// _.each(classifiers, function(classifier, name, list){ 
 				  		console.log("start trainandTest")
+				  		console.log(classifier)
 		    			trainAndTest_async(classifiers[classifier], mytrain, test, function(err, stats){
 				    		console.log("stop trainandTest")
 			   	    		fs.appendFileSync(statusfile, classifier+"\n")
