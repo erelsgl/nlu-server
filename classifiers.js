@@ -349,7 +349,7 @@ function featureExtractorU(sentence, features) {
 	return features;
 }
 
-function featureExtractorUCoreNLP(sentence, features) {
+function featureExtractorUCoreNLP(sentence, features, stopwords, callback) {
 
 	_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
 		_.each(sen['tokens'], function(value, key, list){
@@ -362,7 +362,7 @@ function featureExtractorUCoreNLP(sentence, features) {
 		}, this)
 	}, this)
 
-	return features;
+	callback(null, features)
 }
 
 
