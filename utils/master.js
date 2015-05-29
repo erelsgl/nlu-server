@@ -7,7 +7,8 @@ var execSync = require('execSync')
 
 var folds = 2
 var len = 2
-var classifiers = ['TC', 'TCBOC']
+// var classifiers = ['TC', 'TCBOC']
+var classifiers = ['TCBOC', 'TC']
 var gnuplot = 'gnuplot'
 var corpus = "JEL"
 var statusfile = __dirname + "/learning_curves/status"
