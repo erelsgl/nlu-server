@@ -16,3 +16,4 @@ npm-debug.log
 /ppdb
 /turboparser
 utils/learning_curves/
+/trainedClassifiers/*
