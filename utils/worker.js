@@ -10,7 +10,12 @@ var trainAndTest_async = require(__dirname+'/trainAndTest').trainAndTest_async;
 if (cluster.isWorker)
 	console.log("worker started")
 
+
+// process.env.worker.process.pid
+
+// var pid = process["pid"]
 var fold = process.env["fold"]
+var datafile = process.env["datafile"]
 var folds = process.env["folds"]
 var classifier = process.env["classifier"]
 var len = process.env["len"]
@@ -33,7 +38,7 @@ function trainlen(train, index)
 
 
 
-var dataset_global = JSON.parse(fs.readFileSync(__dirname+"/../../wiki/en/JEL/hash"));
+var dataset_global = JSON.parse(fs.readFileSync(datafile))
 var dataset = partitions.partitions_hash_fold(dataset_global, folds, fold)
 
 var train = dataset['train']
