@@ -423,7 +423,7 @@ if (wikipedia_parsed)
 if (wikipedia_categories)
 {
 	var data = []
-	var folder = __dirname+"/../wiki/en/parsed/"
+	var folder = __dirname+"/../wiki/unparsed1/"
 	var files = fs.readdirSync(folder)
 
 	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
