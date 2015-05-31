@@ -114,6 +114,7 @@ function plot(fold, parameter, stat, baseline, sota)
 
 function plotlcagr(fold, len, stat)
 {
+
 	var classifiers = []
 
 	var output = []
@@ -158,54 +159,20 @@ function plotlc(fold, parameter, len, stat)
 	stat = stat[parameter]
 	var output = plotlcagr(fold, len, stat)
 
+	var classifiers = output[0].slice(1)
 
-	var classifiers = []
-
-	var output = []
-		
-	if (fold != 'average')
-	{
-		_.each(stat, function(trainlens, trainsize, list){
-			if (output.length == 0)
-			{
-				output.push(['size'].concat(Object.keys(trainlens[len])))
-				classifiers = Object.keys(trainlens[len])
-			}
-			var foldslist = _.toArray(trainlens[len])
-			var foldlist = _.pluck(foldslist, fold)
-			foldlist.unshift(trainsize)
-			output.push(foldlist)
-		}, this)	
-	}
-	else
-	{
-		_.each(stat, function(trainlens, trainsize, list){ 
-			if (output.length == 0)
-			{
-				output.push(['size'].concat(Object.keys(trainlens[len])))
-				classifiers = Object.keys(trainlens[len])
-			}
-			var foldslisthash = _.toArray(trainlens[len])
-			var foldslist = _.map(foldslisthash, function(value){ return _.toArray(value) })
-			var foldslistaverage = _.map(foldslist, function(value){ return distance.average(value) })
-			foldslistaverage.unshift(trainsize)
-			output.push(foldslistaverage)
-		}, this)
-	}
-
-	var stringlist = _.map(output, function(value){ return value.join("\t") });
-	var string = _.map(stringlist, function(value){ return value.join("\n") })
+	var string = _.map(output, function(value){ return value.join("\t") }).join("\n")
 
 	var mapfile = __dirname+"/lc/"+fold+"_"+parameter
 
     fs.writeFileSync(mapfile, string)
 
-    var command = gnuplot +" -e set output 'utils/lc/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=2:"+classifiers.length+1+"] \'"+mapfile+"\' 1:i:xtic(1) with linespoints linecolor i pt "+fold+" ps 3\""
+    var command = gnuplot +" -e \"set output 'utils/lc/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=2:"+(classifiers.length+1)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3\""
     console.log(command)
     execSync.run(command)
 }
 
-function learning_curves(classifiers, datahash, len, folds, datafile, callback)
+function learning_curves(classifiers, len, folds, datafile, callback)
 {
 	var stat = {}
 
@@ -233,7 +200,6 @@ function learning_curves(classifiers, datahash, len, folds, datafile, callback)
 			  	if (Object.keys(cluster.workers) == 0)
 			  	{
 					// console.log("all workers are disconnected")
-					// console.log(JSON.stringify(stat, null, 4))
 				   	var baseline = classifiers[0]
 				   	var sotas = classifiers.slice(1)
 
@@ -248,8 +214,8 @@ function learning_curves(classifiers, datahash, len, folds, datafile, callback)
 
 					_(folds).times(function(fold){
 	                  	_.each(stat, function(data, param, list){
-							plotlc(fold, param, len, stat)
-							plotlc('average', param, len, stat)
+							plotlc(fold, param, len-1, stat)
+							plotlc('average', param, len-1, stat)
 						})
 				   })
 			  	}
@@ -275,34 +241,36 @@ if (process.argv[1] === __filename)
 		}, this)
 	}, this)
 
-	// load corpus files
-	var path = "../wiki/en/"+corpus+"/"
-	var files = fs.readdirSync(path)
-	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
-	var data = []
+	// // load corpus files
+	// var path = "../wiki/en/"+corpus+"/"
+	// var files = fs.readdirSync(path)
+	// files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
+	// var data = []
 
-	// load corpus
-	_.each(files, function(file, key, list){ 
-		console.log(file)
-		data = data.concat(JSON.parse(fs.readFileSync(path + file)))
-	}, this)
+	// // load corpus
+	// _.each(files, function(file, key, list){ 
+	// 	console.log(file)
+	// 	data = data.concat(JSON.parse(fs.readFileSync(path + file)))
+	// }, this)
 
-	// convert corpus
-	var st_data = []
+	// // convert corpus
+	// var st_data = []
 
-	_.each(data, function(value, key, list){ 
-		value['input'] = value["text"]
-		st_data.push({'input':value, 'output':value["categories"]})
-	}, this)
+	// _.each(data, function(value, key, list){ 
+	// 	value['input'] = value["text"]
+	// 	st_data.push({'input':value, 'output':value["categories"]})
+	// }, this)
 
-	// modify corpus
-	var datahash = groupbylabel(st_data, 5, 50)
-	console.log("dataset groupped")
+	// // modify corpus
+	// var datahash = groupbylabel(st_data, len, 50)
+	// console.log("dataset groupped")
 
-	var datafile = path+'/datahash.json'
-	fs.writeFileSync(datafile, JSON.stringify(datahash))
+	// var datafile = path+'/datahash.json'
+	// fs.writeFileSync(datafile, JSON.stringify(datahash))
 
-	learning_curves(classifiers, datahash, len, folds, datafile, function(){
+	var datafile = __dirname+"/../../wiki/en/JEL/hash"
+
+	learning_curves(classifiers, len, folds, datafile, function(){
 		console.log()
 		process.exit(0)
 	})
