@@ -444,62 +444,81 @@ if (wikipedia_json)
 
 if (wikipedia_pickclass)
 {
+	//var category = "695042"
+	var category = "40455234"
+    var categories = {}
 
-	var category = "695042"
-	var categories = {}
+    var data = []
+    var folder = __dirname+"/../wiki/en/categories/"
+    var files = fs.readdirSync(folder)
 
-	var data = []
-	var folder = __dirname+"/../wiki/en/categories"
-	var files = fs.readdirSync(folder)
+    files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 
-	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
+    _.each(files, function(file, key, list){
+        console.log(file)
+        var new_data = JSON.parse(fs.readFileSync(folder+file))
+        _.each(new_data, function(record, key, list){
+            if (record["id"] in categories)
+                    process.exit(0)
 
-	_.each(files, function(file, key, list){ 
-		console.log(file)
-		var new_data = JSON.parse(fs.readFileSync(folder+file))
-		_.each(new_data, function(record, key, list){ 
-			if (record["id"] in categories)
-				process.exit(0)
+            categories[record["id"]] = record
 
-			categories[record["id"]] = record
+        }, this)
+    }, this)
 
-		}, this)
-	}, this)
+    console.log("fullfiled")
 
-	console.log("fullfiled")
+    var childs = {}
 
-	var childs = {}
+    _.each(categories[category]["child"], function(value, key, list){
+            if (value[2] in childs)
+                    process.exit(0)
 
-	_.each(categories[category]["child"], function(value, key, list){
-		if (value[2] in childs) 
-			process.exit(0)
+	 childs[value[2]] = {'buf':[value[2]], 'res':[]}
+        }, this)
 
-		childs[value[2]] = {'buf':[value[2]], 'res':[]}
-	}, this)
+    var buf = _.flatten(_.pluck(_.toArray(childs),"buf"))
 
-	var buf = _.flatten(_.pluck(_.toAttay(childs),"buf"))
+    var ent = true
+    console.log(buf)
+    console.log(childs)
 
-	while (buf.length > 0) {
-		
-		_.each(childs, function(value, cat, list){
+    while ((buf.length > 0)&&(ent)) {
 
-			if (value["buf"].length>0)
-			{
-				var ress = _.map(categories[value["buf"][0]]["child"], function(value){ return value[2] })
-				
-				childs[cat]["res"] = childs[cat]["res"].concat(res)
-				childs[cat]["buf"] = childs[cat]["buf"].slice(1)
-			}
+        ent = false
+        _.each(childs, function(value, cat, list){
 
-		}, this)
 
-		var buf = _.flatten(_.pluck(_.toAttay(childs),"buf"))
-	}
+            if ((value["buf"].length>0) && (value["res"].length < 20))
+            {
+                    ent = true
+                    var ress = _.map(categories[value["buf"][0]]["child"], function(value){ return value[2] })
 
-	console.log(JSON.stringify(childs, null, 4))
-	console.log()
+                    childs[cat]["buf"] = childs[cat]["buf"].concat(ress)
+                    childs[cat]["res"].push(childs[cat]["buf"][0])
+                    childs[cat]["buf"] = childs[cat]["buf"].slice(1)
+                    childs[cat]["buf"] = _.unique(childs[cat]["buf"])
+
+                    childs[cat]["buf"] = _.difference(childs[cat]["buf"], childs[cat]["res"])
+            }
+
+        }, this)
+
+        var buf = _.flatten(_.pluck(_.toArray(childs),"buf"))
+        console.log(buf.length)
+    }
+
+    console.log(JSON.stringify(childs, null, 4))
+
+    _.each(childs, function(value, key, list){ 
+
+    	var catnames = _.map(value, function(value){ return categories[value]['title'] })
+    	childs[key] = catnames
+    	
+    }, this)
+
+    console.log(JSON.stringify(childs, null, 4))
 	process.exit(0)
-
 }
 
 if (wikipedia_categories)
