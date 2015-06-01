@@ -3,51 +3,50 @@
   "version": "0.0.3",
   "private": true,
   "scripts": {
-    "start": "node servertranslate",
-    "test": "mocha test"
+    "test": "mocha"
   },
   "repository": {
-	    "type": "git",
-	    "url": "https://github.com/erelsgl/nlu-server.git"
-   },
+    "type": "git",
+    "url": "https://github.com/erelsgl/nlu-server.git"
+  },
   "dependencies": {
-    "ioredis": "*",
-    "execSync": "*",
-    "limdu": "latest",
-    "serialization": "latest",
-    "connect": "~2.7.10",
-    "express": "~3.2.5",
-    "jade": "~0.30.0",
-    "socket.io": "~0.9.14",
-    "forms": "~0.2.2",
-    "sprintf": "~0.1.1",
-    "xml2js": "~0.2.7",
-    "json-ref": "~1.0.0",
     "browserType": "~0.2.0",
-    "useragent": "~2.0.4",
-    "node-fs": "~0.1.6",
-    "wordsworth": "*",
-    "natural": "*",
-    "underscore" : ">=1.1.0",
-    "seed-random": "*",
+    "connect": "~2.7.10",
     "defaultdict": "*",
-    "rimraf": "*"
+    "execSync": "*",
+    "express": "~3.2.5",
+    "forms": "~0.2.2",
+    "ioredis": "*",
+    "jade": "~0.30.0",
+    "json-ref": "~1.0.0",
+    "limdu": "latest",
+    "natural": "*",
+    "node-fs": "~0.1.6",
+    "node-wordnet": "^0.1.8",
+    "rimraf": "*",
+    "seed-random": "*",
+    "serialization": "latest",
+    "socket.io": "~0.9.14",
+    "sprintf": "~0.1.1",
+    "underscore": ">=1.1.0",
+    "useragent": "~2.0.4",
+    "wndb-with-exceptions": "^3.0.1",
+    "wordsworth": "*",
+    "xml2js": "~0.2.7",
+    "async": "*"
   },
   "devDependencies": {
-	  "mocha": "*",
-	  "should": "*"
+    "mocha": "*",
+    "should": "*"
   },
   "contributors": [
-                   {
-                     "name": "Erel Segal-Halevi",
-                     "email": "erelsgl@gmail.com"
-                   },
-                   {
-                       "name": "Vasily Konovalov",
-                       "email": "vasili.konov@gmail.com"
-                   }
-                  ],
-  "scripts": {
-      "test": "mocha"
-  } 
+    {
+      "name": "Erel Segal-Halevi",
+      "email": "erelsgl@gmail.com"
+    },
+    {
+      "name": "Vasily Konovalov",
+      "email": "vasili.konov@gmail.com"
+    }
+  ]
 }
