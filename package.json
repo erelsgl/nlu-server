@@ -32,7 +32,7 @@
     "wndb-with-exceptions": "^3.0.1",
     "wordsworth": "*",
     "xml2js": "~0.2.7",
-    "async": "*"
+    "async": "^0.9.0"
   },
   "devDependencies": {
     "mocha": "*",
