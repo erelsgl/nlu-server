@@ -490,7 +490,7 @@ if (wikipedia_pickclass)
         _.each(childs, function(value, cat, list){
 
 
-            if ((value["buf"].length>0) && (value["res"].length < 20))
+            if ((value["buf"].length>0) && (_.toArray(value["res"]).length < 20))
             {
                     ent = true
                     childs[cat]["res"][level] = []
