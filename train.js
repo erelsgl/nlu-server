@@ -428,13 +428,14 @@ if (wikipedia_fit)
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../wiki/en/fits.json"))
 	var sort = _.groupBy(data, function(num){ return num['child'].length });
 
-	var maxkey = _.max(Object,keys(sort), function(value){ return value });
+	var maxkey = _.max(Object.keys(sort), function(value){ return value });
 
 	_.each(sort, function(value, key, list){
 		console.log(key) 
 		console.log(value.length) 
 	}, this)
 
+	console.log(maxkey)
 	console.log(JSON.stringify(sort[maxkey], null, 4))
 	console.log()
 	process.exit(0)
