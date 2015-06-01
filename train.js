@@ -526,6 +526,8 @@ if (wikipedia_pickclass)
 
     console.log(JSON.stringify(childsc, null, 4))
 
+    console.log(JSON.stringify(Object.keys(childsc), null, 4))
+
 	process.exit(0)
 }
 
