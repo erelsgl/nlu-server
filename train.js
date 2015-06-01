@@ -41,8 +41,8 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 
 // var do_small_temporary_serialization_test = false
-var wikipedia_fit = true
-var wikipedia_pickclass = false
+var wikipedia_fit = false
+var wikipedia_pickclass = true
 var wikipedia_json = false
 var technion_300 = false
 var wikipedia_test = false
@@ -498,7 +498,7 @@ if (wikipedia_pickclass)
             if (value[2] in childs)
                     process.exit(0)
 
-            var mat = _.filter(stop, function(num){ return value[0].toLowerCase.indexOf(num) != -1 });
+            var mat = _.filter(stop, function(num){ return value[0].toLowerCase().indexOf(num) != -1 });
 
             if (mat.length == 0)
 	 			childs[value[2]] = {'buf':[value[2]], 'res':[]}
@@ -525,7 +525,7 @@ if (wikipedia_pickclass)
 
                     var ressfil = []
                    	_.each(ress, function(value, key, list){ 
-          				var mat = _.filter(stop, function(num){ return value[0].toLowerCase.indexOf(num) != -1 })
+          				var mat = _.filter(stop, function(num){ return value[0].toLowerCase().indexOf(num) != -1 })
           				
           				if (mat.length == 0)
           					ressfil.push(value[1])
