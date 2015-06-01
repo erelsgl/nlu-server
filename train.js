@@ -474,7 +474,7 @@ if (wikipedia_pickclass)
             if (value[2] in childs)
                     process.exit(0)
 
-	 childs[value[2]] = {'buf':[value[2]], 'res':[]}
+	 childs[value[2]] = {'buf':[value[2]], 'res':{}}
         }, this)
 
     var buf = _.flatten(_.pluck(_.toArray(childs),"buf"))
@@ -482,6 +482,7 @@ if (wikipedia_pickclass)
     var ent = true
     console.log(buf)
     console.log(childs)
+    var level = 0
 
     while ((buf.length > 0)&&(ent)) {
 
@@ -492,18 +493,20 @@ if (wikipedia_pickclass)
             if ((value["buf"].length>0) && (value["res"].length < 20))
             {
                     ent = true
+                    childs[cat]["res"][level] = []
                     var ress = _.map(categories[value["buf"][0]]["child"], function(value){ return value[2] })
 
                     childs[cat]["buf"] = childs[cat]["buf"].concat(ress)
-                    childs[cat]["res"].push(childs[cat]["buf"][0])
+                    childs[cat]["res"][level].push(childs[cat]["buf"][0])
                     childs[cat]["buf"] = childs[cat]["buf"].slice(1)
                     childs[cat]["buf"] = _.unique(childs[cat]["buf"])
 
-                    childs[cat]["buf"] = _.difference(childs[cat]["buf"], childs[cat]["res"])
+                    childs[cat]["buf"] = _.difference(childs[cat]["buf"], _.toArray(childs[cat]["res"]))
             }
 
         }, this)
 
+        level += 1
         var buf = _.flatten(_.pluck(_.toArray(childs),"buf"))
         console.log(buf.length)
     }
