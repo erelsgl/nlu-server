@@ -41,8 +41,9 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 
 // var do_small_temporary_serialization_test = false
+var wikipedia_prepared1 = true
 var wikipedia_fit = false
-var wikipedia_pickclass = true
+var wikipedia_pickclass = false
 var wikipedia_json = false
 var technion_300 = false
 var wikipedia_test = false
@@ -103,6 +104,7 @@ var trainAndTest= require('./utils/trainAndTest').trainAndTest_hash;
 var Hierarchy = require(__dirname+'/Hierarchy');
 var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
 var trainutils = require('./utils/bars')
+var wikipedia = require('./utils/wikipedia')
 var bars = require('./utils/bars')
 // var Lemmer = require('node-lemmer').Lemmer;
 var rules = require("./research/rule-based/rules.js")
@@ -215,6 +217,15 @@ function parse_filter(parse)
 }
 
 
+if (wikipedia_prepared1)
+{
+	var hier = wikipedia.wikipedia_pickclass("695042")
+	console.log(hier)
+	process.exit(0)
+
+}
+
+
 if (technion_300)
 {
 	var tech = __dirname +"/../technion/300/"
@@ -255,6 +266,7 @@ if (wikipedia_test)
 //	console.log(data.length)
 //	var count = _.reduce(data, function(memo, num){ return memo + num["categories"].length }, 0)
 //	console.log(count)
+
 
 /*	_.each(data, function(value, key, list){ 
 		var cati = []
@@ -347,6 +359,7 @@ if (wikipedia_test)
 	// });
 	
 }
+
 
 
 if (wikipedia_parsed)
@@ -460,113 +473,6 @@ if (wikipedia_json)
         process.exit(0)
 }
 
-
-if (wikipedia_pickclass)
-{
-
-	var stop = ["scientists", "history", "awards", "methodology", "area", " by ", " of ", 
-	"literature", "lists", "writers", "organizations", "philosophy", "books", 
-	"institutions", "concepts", "terminology"]
-
-	var category = "695042"
-	// var category = "40455234"
-    var categories = {}
-
-    var data = []
-    var folder = __dirname+"/../wiki/en/categories/"
-    var files = fs.readdirSync(folder)
-
-    files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
-
-    _.each(files, function(file, key, list){
-        console.log(file)
-        var new_data = JSON.parse(fs.readFileSync(folder+file))
-        _.each(new_data, function(record, key, list){
-            if (record["id"] in categories)
-                    process.exit(0)
-
-            categories[record["id"]] = record
-
-        }, this)
-    }, this)
-
-    console.log("fullfiled")
-
-    var childs = {}
-
-    _.each(categories[category]["child"], function(value, key, list){
-            if (value[2] in childs)
-                    process.exit(0)
-
-            var mat = _.filter(stop, function(num){ return value[0].toLowerCase().indexOf(num) != -1 });
-
-            if (mat.length == 0)
-	 			childs[value[2]] = {'buf':[value[2]], 'res':[]}
-    }, this)
-
-    var buf = _.flatten(_.pluck(_.toArray(childs),"buf"))
-
-    var ent = true
-    console.log(buf)
-    console.log(childs)
-    var level = 0
-
-    while ((buf.length > 0)&&(ent)) {
-
-        ent = false
-        _.each(childs, function(value, cat, list){
-
-            // if ((value["buf"].length>0) && (_.toArray(value["res"]).length < 20))
-            if ((value["buf"].length>0) && (value["res"]).length < 20)
-            {
-                    ent = true
-                    childs[cat]["res"][level] = []
-                    var ress = _.map(categories[value["buf"][0]]["child"], function(value){ return [value[0], value[2]] })
-
-                    var ressfil = []
-                   	_.each(ress, function(value, key, list){ 
-          				var mat = _.filter(stop, function(num){ return value[0].toLowerCase().indexOf(num) != -1 })
-          				
-          				if (mat.length == 0)
-          					ressfil.push(value[1])
-
-                   	}, this)
-
-
-                    childs[cat]["buf"] = childs[cat]["buf"].concat(ressfil)
-                    childs[cat]["res"][level].push(childs[cat]["buf"][0])
-                    childs[cat]["buf"] = childs[cat]["buf"].slice(1)
-                    childs[cat]["buf"] = _.unique(childs[cat]["buf"])
-
-                    // childs[cat]["buf"] = _.difference(childs[cat]["buf"], _.toArray(childs[cat]["res"]))
-                    // childs[cat]["buf"] = _.difference(childs[cat]["buf"], childs[cat]["res"])
-            }
-
-        }, this)
-
-        level += 1
-        var buf = _.flatten(_.pluck(_.toArray(childs),"buf"))
-        console.log(buf.length)
-    }
-
-    console.log(JSON.stringify(childs, null, 4))
-
-    var childsc = {}
-    _.each(childs, function(value, key, list){
-    	console.log(value) 
-
-    	var catnames = _.map(value['res'], function(el){ return categories[el]['title'] })
-    	// childs[key] = catnames
-    	childsc[categories[key]['title']] = catnames
-    	
-    }, this)
-
-    console.log(JSON.stringify(childsc, null, 4))
-
-    console.log(JSON.stringify(Object.keys(childsc).length, null, 4))
-
-	process.exit(0)
-}
 
 if (wikipedia_categories)
 {
