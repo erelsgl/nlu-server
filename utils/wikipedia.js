@@ -62,7 +62,7 @@ function wikipedia_pickclass(category)
             if ((value["buf"].length>0) && (value["res"]).length < 20)
             {
                     ent = true
-                    childs[cat]["res"] = []
+        
                     var ress = _.map(categories[value["buf"][0]]["child"], function(value){ return [value[0], value[2]] })
 
 
