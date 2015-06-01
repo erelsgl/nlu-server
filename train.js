@@ -474,7 +474,7 @@ if (wikipedia_pickclass)
             if (value[2] in childs)
                     process.exit(0)
 
-	 childs[value[2]] = {'buf':[value[2]], 'res':{}}
+	 childs[value[2]] = {'buf':[value[2]], 'res':[]}
         }, this)
 
     var buf = _.flatten(_.pluck(_.toArray(childs),"buf"))
@@ -489,8 +489,8 @@ if (wikipedia_pickclass)
         ent = false
         _.each(childs, function(value, cat, list){
 
-
-            if ((value["buf"].length>0) && (_.toArray(value["res"]).length < 20))
+            // if ((value["buf"].length>0) && (_.toArray(value["res"]).length < 20))
+            if ((value["buf"].length>0) && (value["res"]).length < 20)
             {
                     ent = true
                     childs[cat]["res"][level] = []
@@ -501,7 +501,8 @@ if (wikipedia_pickclass)
                     childs[cat]["buf"] = childs[cat]["buf"].slice(1)
                     childs[cat]["buf"] = _.unique(childs[cat]["buf"])
 
-                    childs[cat]["buf"] = _.difference(childs[cat]["buf"], _.toArray(childs[cat]["res"]))
+                    // childs[cat]["buf"] = _.difference(childs[cat]["buf"], _.toArray(childs[cat]["res"]))
+                    childs[cat]["buf"] = _.difference(childs[cat]["buf"], childs[cat]["res"])
             }
 
         }, this)
@@ -513,15 +514,15 @@ if (wikipedia_pickclass)
 
     console.log(JSON.stringify(childs, null, 4))
 
-    // _.each(childs, function(value, key, list){
-    // 	console.log(value) 
+    _.each(childs, function(value, key, list){
+    	console.log(value) 
 
-    // 	var catnames = _.map(value['res'], function(el){ return categories[el]['title'] })
-    // 	childs[key] = catnames
+    	var catnames = _.map(value['res'], function(el){ return categories[el]['title'] })
+    	childs[key] = catnames
     	
-    // }, this)
+    }, this)
 
-    // console.log(JSON.stringify(childs, null, 4))
+    console.log(JSON.stringify(childs, null, 4))
 
 	process.exit(0)
 }
