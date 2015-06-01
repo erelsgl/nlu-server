@@ -463,6 +463,11 @@ if (wikipedia_json)
 
 if (wikipedia_pickclass)
 {
+
+	var stop = ["scientists", "history", "awards", "methodology", "area", " by ", " of ", 
+	"literature", "lists", "writers", "organizations", "philosophy", "books", 
+	"institutions", "concepts", "terminology"]
+
 	var category = "695042"
 	// var category = "40455234"
     var categories = {}
@@ -493,8 +498,11 @@ if (wikipedia_pickclass)
             if (value[2] in childs)
                     process.exit(0)
 
-	 childs[value[2]] = {'buf':[value[2]], 'res':[]}
-        }, this)
+            var mat = _.filter(stop, function(num){ return value[0].toLowerCase.indexOf(num) != -1 });
+
+            if (mat.length == 0)
+	 			childs[value[2]] = {'buf':[value[2]], 'res':[]}
+    }, this)
 
     var buf = _.flatten(_.pluck(_.toArray(childs),"buf"))
 
@@ -513,15 +521,25 @@ if (wikipedia_pickclass)
             {
                     ent = true
                     childs[cat]["res"][level] = []
-                    var ress = _.map(categories[value["buf"][0]]["child"], function(value){ return value[2] })
+                    var ress = _.map(categories[value["buf"][0]]["child"], function(value){ return [value[0], value[2]] })
 
-                    childs[cat]["buf"] = childs[cat]["buf"].concat(ress)
+                    var ressfil = []
+                   	_.each(ress, function(value, key, list){ 
+          				var mat = _.filter(stop, function(num){ return value[0].toLowerCase.indexOf(num) != -1 })
+          				
+          				if (mat.length == 0)
+          					ressfil.push(value[1])
+
+                   	}, this)
+
+
+                    childs[cat]["buf"] = childs[cat]["buf"].concat(ressfil)
                     childs[cat]["res"][level].push(childs[cat]["buf"][0])
                     childs[cat]["buf"] = childs[cat]["buf"].slice(1)
                     childs[cat]["buf"] = _.unique(childs[cat]["buf"])
 
                     // childs[cat]["buf"] = _.difference(childs[cat]["buf"], _.toArray(childs[cat]["res"]))
-                    childs[cat]["buf"] = _.difference(childs[cat]["buf"], childs[cat]["res"])
+                    // childs[cat]["buf"] = _.difference(childs[cat]["buf"], childs[cat]["res"])
             }
 
         }, this)
