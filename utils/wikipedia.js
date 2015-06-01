@@ -15,7 +15,7 @@ function wikipedia_pickclass(category)
     var categories = {}
 
     var data = []
-    var folder = __dirname+"/../../../wiki/en/categories/"
+    var folder = __dirname+"/../../wiki/en/categories/"
     var files = fs.readdirSync(folder)
 
     files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
