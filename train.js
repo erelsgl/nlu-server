@@ -41,7 +41,8 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 
 // var do_small_temporary_serialization_test = false
-var wikipedia_pickclass = true
+var wikipedia_fit = true
+var wikipedia_pickclass = false
 var wikipedia_json = false
 var technion_300 = false
 var wikipedia_test = false
@@ -422,6 +423,23 @@ if (wikipedia_parsed)
 	process.exit(0)
 }
 
+if (wikipedia_fit)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../wiki/en/fits.json"))
+	var sort = _.groupBy(data, function(num){ return num['child'].length });
+
+	var maxkey = _.max(Object,keys(sort), function(value){ return value });
+
+	_.each(sort, function(value, key, list){
+		console.log(key) 
+		console.log(value.length) 
+	}, this)
+
+	console.log(JSON.stringify(sort[maxkey], null, 4))
+	console.log()
+	process.exit(0)
+}
+
 if (wikipedia_json)
 {
 
@@ -526,7 +544,7 @@ if (wikipedia_pickclass)
 
     console.log(JSON.stringify(childsc, null, 4))
 
-    console.log(JSON.stringify(Object.keys(childsc), null, 4))
+    console.log(JSON.stringify(Object.keys(childsc).length, null, 4))
 
 	process.exit(0)
 }
