@@ -51,7 +51,7 @@ function wikipedia_pickclass(category)
     var ent = true
     console.log(buf)
     console.log(childs)
-    var level = 0
+    
 
     while ((buf.length > 0)&&(ent)) {
 
@@ -62,8 +62,9 @@ function wikipedia_pickclass(category)
             if ((value["buf"].length>0) && (value["res"]).length < 20)
             {
                     ent = true
-                    childs[cat]["res"][level] = []
+                    childs[cat]["res"] = []
                     var ress = _.map(categories[value["buf"][0]]["child"], function(value){ return [value[0], value[2]] })
+
 
                     var ressfil = []
                    	_.each(ress, function(value, key, list){ 
@@ -76,7 +77,7 @@ function wikipedia_pickclass(category)
 
 
                     childs[cat]["buf"] = childs[cat]["buf"].concat(ressfil)
-                    childs[cat]["res"][level].push(childs[cat]["buf"][0])
+                    childs[cat]["res"].push(childs[cat]["buf"][0])
                     childs[cat]["buf"] = childs[cat]["buf"].slice(1)
                     childs[cat]["buf"] = _.unique(childs[cat]["buf"])
 
@@ -86,7 +87,6 @@ function wikipedia_pickclass(category)
 
         }, this)
 
-        level += 1
         var buf = _.flatten(_.pluck(_.toArray(childs),"buf"))
         // console.log(buf.length)
     }
