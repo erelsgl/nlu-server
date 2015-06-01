@@ -220,7 +220,8 @@ function parse_filter(parse)
 if (wikipedia_prepared1)
 {
 	var hier = wikipedia.wikipedia_pickclass("695042")
-	console.log(hier)
+	
+	console.log(JSON.stringify(hier, null, 4))
 	process.exit(0)
 
 }
