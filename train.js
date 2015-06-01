@@ -444,8 +444,8 @@ if (wikipedia_json)
 
 if (wikipedia_pickclass)
 {
-	//var category = "695042"
-	var category = "40455234"
+	var category = "695042"
+	// var category = "40455234"
     var categories = {}
 
     var data = []
