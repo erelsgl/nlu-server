@@ -512,7 +512,7 @@ if (wikipedia_pickclass)
 
     _.each(childs, function(value, key, list){ 
 
-    	var catnames = _.map(value, function(value){ return categories[value]['title'] })
+    	var catnames = _.map(value, function(el){ return categories[el]['title'] })
     	childs[key] = catnames
     	
     }, this)
