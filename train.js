@@ -513,15 +513,16 @@ if (wikipedia_pickclass)
 
     console.log(JSON.stringify(childs, null, 4))
 
-    _.each(childs, function(value, key, list){
-    	console.log(value) 
+    // _.each(childs, function(value, key, list){
+    // 	console.log(value) 
 
-    	var catnames = _.map(value['res'], function(el){ return categories[el]['title'] })
-    	childs[key] = catnames
+    // 	var catnames = _.map(value['res'], function(el){ return categories[el]['title'] })
+    // 	childs[key] = catnames
     	
-    }, this)
+    // }, this)
 
-    console.log(JSON.stringify(childs, null, 4))
+    // console.log(JSON.stringify(childs, null, 4))
+
 	process.exit(0)
 }
 
