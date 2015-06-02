@@ -3,6 +3,17 @@
 var _ = require('underscore')._;
 var fs = require('fs');
 var execSync = require('execSync')
+var limdu = require("limdu")
+var ftrs = limdu.features
+
+var regexpNormalizer = ftrs.RegexpNormalizer(
+		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/WikiNormalizations.json')));
+
+function normalizer(sentence) {
+	sentence = sentence.toLowerCase().trim();
+	return regexpNormalizer(sentence);
+}
+
 
 function load_category(folder)
 {
@@ -235,10 +246,14 @@ function wikipedia_prepared(categ)
 		}, this)
 	}, this)
 
+	console.log("sorting")
+
 	_.each(data, function(value, key, list){ 
 		value = _.sortBy(value, function(num){ return num["wikicategories"].length })
 		data[key] = value.slice(0,500)
 	}, this)
+
+	console.log("writing")
 
 	var listo = []
 	_.each(data, function(value, key, list){
@@ -265,5 +280,6 @@ module.exports = {
 	wikipedia_pickclass: wikipedia_pickclass,
 	wikipedia_prepared:wikipedia_prepared,
 	load_category:load_category,
-	check_cross:check_cross
+	check_cross:check_cross,
+	normalizer:normalizer
 } 
