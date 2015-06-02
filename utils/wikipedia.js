@@ -198,29 +198,29 @@ function wikipedia_prepared(categ)
 			
 				var inters = _.intersection(value["categories"], math[0])
 
-				if (inters.length != 1)
+				// if (inters.length != 1)
+				// {
+				// 	console.log(inters)
+				// 	console.log(math)
+				// 	process.exit(0)
+				// }
+
+				if (inters.length == 1)
 				{
-					console.log(inters)
-					console.log(math)
-					process.exit(0)
+					var text = value['text']
+					text = text.replace(/\n/g," ")
+					text = text.replace(/\*/g," ")
+					text = text.replace(/\s{2,}/g, ' ')
+					value['text'] = text
+					value['categories'] =  inters
+
+					if (!(inters[0] in data))
+						data[inters[0]] = []
+
+					data[inters[0]].push(value)
 				}
-
-
-
-				var text = value['text']
-				text = text.replace(/\n/g," ")
-				text = text.replace(/\*/g," ")
-				text = text.replace(/\s{2,}/g, ' ')
-				value['text'] = text
-				value['categories'] =  inters
-
-				if (!(inters[0] in data))
-					data[inters[0]] = []
-
-				data[inters[0]].push(value)
 			}
 		}, this)
-
 	}, this)
 
 	_.each(data, function(value, key, list){ 
