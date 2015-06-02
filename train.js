@@ -257,21 +257,22 @@ if (wikipedia_test)
 	// +176859 Category:Arts
 {
 
-	var setname = "nosem"
+	// var setname = "nosem"
 //	var cat = [ 140002, 6582, 11221, 221702, 380549, 176859, 25644, 59198, 379420, 176796, 380539, 88393, 190074, 26711,
   //		209587, 264364, 379948, 380552, 29677, 63275, 29357, 306221, 306219, 15311 ]
 
-	var path = "../wiki/en/"+setname+"/"
-	var files = fs.readdirSync(path)
-	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
-	var data = []
+	// var path = "../wiki/en/"+setname+"/"
+	// var files = fs.readdirSync(path)
+	// files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
+	// var data = []
 
-	files = _.sample(files, 2)
+	// files = _.sample(files, 2)
 
-	_.each(files, function(file, key, list){ 
-		console.log(file)
-		data = data.concat(JSON.parse(fs.readFileSync("../wiki/en/"+setname+"/" + file)))
-	}, this)
+	// _.each(files, function(file, key, list){ 
+		// console.log(file)
+		// data = data.concat(JSON.parse(fs.readFileSync("../wiki/en/"+setname+"/" + file)))
+	// }, this)
+	var data = wikipedia.load_wikipedia("social")
 
 //	console.log(data.length)
 //	var count = _.reduce(data, function(memo, num){ return memo + num["categories"].length }, 0)
