@@ -183,7 +183,7 @@ function wikipedia_prepared(categ)
 	}, this)
 
 
-	var allcat = _.flatten(s_.toArray(categ))
+	var allcat = _.flatten(_.toArray(categ))
 	
 	_.each(files, function(file, key, list){ 
 		console.log(file)
