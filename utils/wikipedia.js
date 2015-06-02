@@ -151,12 +151,12 @@ function wikipedia_prepared(categ)
 					inters = _.intersection(value["categories"], num)
 					return inters != 0 })
 
-			console.log(_.toArray(categ))
-			process.exit(0)
-			
+			if (math.length != 0)			
+			{
+				console.log("------")
 			console.log(math)
 			console.log(inters)
-
+			}
 			if (math.length == 1)
 			{
 				if (inters.length > 1)
