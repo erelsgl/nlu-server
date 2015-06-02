@@ -148,14 +148,15 @@ function wikipedia_prepared(categ)
 			var inters = []
 
 			var math = _.filter(_.toArray(categ), function(num){ 
-					inters = _.intersection(value["categories"], num)
-					return inters.length != 0 })
+					return _.intersection(value["categories"], num).length != 0 })
 
 			if (math.length != 0)			
 			{
 				console.log("------")
 			console.log(math)
-			console.log(inters)
+
+			var inte = _.intersection(value["categories"], math[0])
+			console.log(inte)
 			}
 			if (math.length == 1)
 			{
