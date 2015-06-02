@@ -172,15 +172,18 @@ function wikipedia_prepared(categ)
 	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 
 	// category id -> category title
-	// var categnames = {} 
+	var categnames = {} 
 	// subcategory id -> category id
-	// var categmap = {}
-	// _.each(categ, function(value, key, list){ 
-		// categnames[value[0]] = key
-		// _.each(value, function(elem, key1, list){
-			// categmap[elem] = key 
-		// }, this)
-	// }, this)
+	var categmap = {}
+	_.each(categ, function(value, key, list){ 
+		categnames[value[0]] = key
+		_.each(value, function(elem, key1, list){
+			categmap[elem] = key 
+		}, this)
+	}, this)
+
+
+	var allcat = _.flatten(s_.toArray(categ))
 	
 	_.each(files, function(file, key, list){ 
 		console.log(file)
@@ -188,43 +191,47 @@ function wikipedia_prepared(categ)
 		new_data = _.filter(new_data, function(num){ return num["_category"]==0 })
 		_.each(new_data, function(value, key, list){ 
 
-			var inters = []
-
-			var math = _.filter(_.toArray(categ), function(num){ 
-					return _.intersection(value["categories"], num).length != 0 })
-
-			if (math.length == 1)
+			if (_.intersection(allcat, value["categories"]).length==1)
 			{
-			
-				var inters = _.intersection(value["categories"], math[0])
 
-				// if (inters.length != 1)
-				// {
-				// 	console.log(inters)
-				// 	console.log(math)
-				// 	process.exit(0)
-				// }
+				var inters = []
 
-				if (inters.length == 1)
+				var math = _.filter(_.toArray(categ), function(num){ 
+						return _.intersection(value["categories"], num).length != 0 })
+
+				if (math.length == 1)
 				{
-					var text = value['text']
-					text = text.replace(/\n/g," ")
-					text = text.replace(/\*/g," ")
-					text = text.replace(/\s{2,}/g, ' ')
-					value['text'] = text
-					value['categories'] =  inters
+				
+					var inters = _.intersection(value["categories"], math[0])
 
-					if (!(inters[0] in data))
-						data[inters[0]] = []
+					// if (inters.length != 1)
+					// {
+					// 	console.log(inters)
+					// 	console.log(math)
+					// 	process.exit(0)
+					// }
 
-					data[inters[0]].push(value)
+					if (inters.length == 1)
+					{
+						var text = value['text']
+						text = text.replace(/\n/g," ")
+						text = text.replace(/\*/g," ")
+						text = text.replace(/\s{2,}/g, ' ')
+						value['text'] = text
+						value['categories'] =  inters
+
+						if (!(inters[0] in data))
+							data[categmap[inters[0]]] = []
+
+						data[categmap[inters[0]]].push(value)
+					}
 				}
 			}
 		}, this)
 	}, this)
 
 	_.each(data, function(value, key, list){ 
-		data[key] = _.sample(value, 200)
+		data[key] = _.sample(value, 500)
 	}, this)
 
 	var listo = []
