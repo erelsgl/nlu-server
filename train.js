@@ -222,6 +222,9 @@ if (wikipedia_prepared1)
 	var hier = wikipedia.wikipedia_pickclass("695042")
 	
 	console.log(JSON.stringify(hier, null, 4))
+	
+	wikipedia.wikipedia_prepared(hier)
+
 	process.exit(0)
 
 }
