@@ -123,20 +123,20 @@ function wikipedia_prepared(categ)
 {
 
 	var data = {}
-	var prepared = __dirname+"/../../wiki/unparsed1"
-	var json = __dirname+"/../../wiki/en/social/"
+	var json = __dirname+"/../../wiki/unparsed1/"
+	var prepared = __dirname+"/../../wiki/en/social/"
 	var files = fs.readdirSync(json)
 
 	// category id -> category title
-	var categnames = {} 
+	// var categnames = {} 
 	// subcategory id -> category id
-	var categmap = {}
-	_.each(categ, function(value, key, list){ 
-		categnames[value[0]] = key
-		_.each(value, function(elem, key1, list){
-			categmap[elem] = key 
-		}, this)
-	}, this)
+	// var categmap = {}
+	// _.each(categ, function(value, key, list){ 
+		// categnames[value[0]] = key
+		// _.each(value, function(elem, key1, list){
+			// categmap[elem] = key 
+		// }, this)
+	// }, this)
 	
 	_.each(files, function(file, key, list){ 
 		console.log(file)
