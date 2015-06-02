@@ -178,8 +178,8 @@ function wikipedia_prepared(categ)
 
 	var data = {}
 	var json = __dirname+"/../../wiki/unparsed1/"
-	var prepared = __dirname+"/../../wiki/en/social/prepared"
-	var dirjson = __dirname+"/../../wiki/en/social/json"
+	var prepared = __dirname+"/../../wiki/en/social/prepared/"
+	var dirjson = __dirname+"/../../wiki/en/social/json/"
 	var files = fs.readdirSync(json)
 	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 
