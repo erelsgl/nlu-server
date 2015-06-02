@@ -165,7 +165,7 @@ function wikipedia_prepared(categ)
 				value['text'] = text
 				value['categories'] =  inters
 
-				if !(inters[0] in data)
+				if (!(inters[0] in data))
 					data[inters[0]] = []
 
 				data[inters[0]].push(value)
