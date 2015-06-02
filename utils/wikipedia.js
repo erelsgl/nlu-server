@@ -4,18 +4,11 @@ var _ = require('underscore')._;
 var fs = require('fs');
 var execSync = require('execSync')
 
-function wikipedia_pickclass(category)
+function load_category(folder)
 {
-
-	var stop = ["scientists", "history", "awards", "methodology", "area", " by ", " of ", 
-	"literature", "lists", "writers", "organizations", "philosophy", "books", 
-	"institutions", "concepts", "terminology", "research"]
-
-	// var category = "40455234"
-    var categories = {}
+	var categories = {}
 
     var data = []
-    var folder = __dirname+"/../../wiki/en/categories/"
     var files = fs.readdirSync(folder)
 
     files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
@@ -32,6 +25,42 @@ function wikipedia_pickclass(category)
         }, this)
     }, this)
 
+    return categories
+
+
+}
+
+function check_cross(childsc)
+{
+	_.each(childsc, function(value, key, list){ 
+    	_.each(childsc, function(value1, key1, list){
+    		if (key != key1)
+    		{
+    			var inter = _.intersection(value, value1)
+    			if (inter.length != 0)
+    			{
+    				console.log(key)
+    				console.log(key1)
+    				console.log(inter)
+    				console.log(categories[inter[0]]["title"])
+    				
+    			}
+    		} 
+    	}, this)
+
+    }, this)
+
+}
+
+function wikipedia_pickclass(categories, category)
+{
+
+	var stop = ["scientists", "history", "awards", "methodology", "area", " by ", " of ", 
+	"literature", "lists", "writers", "organizations", "philosophy", "books", 
+	"institutions", "concepts", "terminology", "research"]
+
+	// var category = "40455234"
+    
     console.log("fullfiled")
 
     var childs = {}
@@ -59,7 +88,7 @@ function wikipedia_pickclass(category)
         _.each(childs, function(value, cat, list){
 
             // if ((value["buf"].length>0) && (_.toArray(value["res"]).length < 20))
-            if ((value["buf"].length>0) && (value["res"]).length < 20)
+            if ((value["buf"].length>0) && (value["res"]).length < 30)
             {
                     ent = true
         
@@ -96,24 +125,6 @@ function wikipedia_pickclass(category)
   	_.each(childs, function(value, key, list){ 
   		childsc[categories[key]["title"]] = value['res']
     }, this)    
-
-
-    _.each(childsc, function(value, key, list){ 
-    	_.each(childsc, function(value1, key1, list){
-    		if (key != key1)
-    		{
-    			var inter = _.intersection(value, value1)
-    			if (inter.length != 0)
-    			{
-    				console.log(key)
-    				console.log(key1)
-    				console.log(inter)
-    				console.log(categories[inter[0]]["title"])
-    			}
-    		} 
-    	}, this)
-
-    }, this)
 
     return childsc
 
@@ -226,5 +237,7 @@ function wikipedia_prepared(categ)
 
 module.exports = {
 	wikipedia_pickclass: wikipedia_pickclass,
-	wikipedia_prepared:wikipedia_prepared
+	wikipedia_prepared:wikipedia_prepared,
+	load_category:load_category,
+	check_cross:check_cross
 } 
