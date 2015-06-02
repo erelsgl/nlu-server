@@ -227,7 +227,7 @@ if (wikipedia_prepared1)
 	
 	console.log(JSON.stringify(hier, null, 4))
 	
-	wikipedia.check_cross(hier)
+	wikipedia.check_cross(hier, categories)
 
 	// wikipedia.wikipedia_prepared(hier)
 
