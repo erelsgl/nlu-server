@@ -45,13 +45,11 @@ function check_cross(childsc, categories)
     				console.log(key1)
     				console.log(inter)
     				console.log(categories[inter[0]]["title"])
-    				
     			}
     		} 
     	}, this)
 
     }, this)
-
 }
 
 function wikipedia_pickclass(categories, category)
@@ -198,7 +196,7 @@ function wikipedia_prepared(categ)
 			if (math.length != 0)			
 			{
 				console.log("------")
-			console.log(math)
+				console.log(math)
 
 			var inte = _.intersection(value["categories"], math[0])
 			console.log(inte)
