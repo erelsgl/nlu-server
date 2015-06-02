@@ -223,7 +223,7 @@ if (wikipedia_prepared1)
 	
 	console.log(JSON.stringify(hier, null, 4))
 	
-	wikipedia.wikipedia_prepared(hier)
+	// wikipedia.wikipedia_prepared(hier)
 
 	process.exit(0)
 
