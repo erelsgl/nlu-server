@@ -7,7 +7,7 @@ var limdu = require("limdu")
 var ftrs = limdu.features
 
 var regexpNormalizer = ftrs.RegexpNormalizer(
-		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/WikiNormalizations.json')));
+		JSON.parse(fs.readFileSync(__dirname+'/../knowledgeresources/WikiNormalizations.json')));
 
 function normalizer(sentence) {
 	sentence = sentence.toLowerCase().trim();
