@@ -221,6 +221,7 @@ function wikipedia_prepared(categ)
 						text = text.replace(/\*/g," ")
 						text = text.replace(/\s{2,}/g, ' ')
 						value['text'] = text
+						value['wikicategories'] =  value['categories']
 						value['categories'] =  inters
 
 						var cl = categmap[inters[0]]
@@ -236,7 +237,8 @@ function wikipedia_prepared(categ)
 	}, this)
 
 	_.each(data, function(value, key, list){ 
-		data[key] = _.sample(value, 500)
+		value = _.sortBy(value, function(num){ return num["wikicategories"].length })
+		data[key] = value.slice(0,500)
 	}, this)
 
 	var listo = []
