@@ -32,6 +32,8 @@ function load_category(folder)
 
 function check_cross(childsc, categories)
 {
+	console.log("cross dependencies")
+
 	_.each(childsc, function(value, key, list){ 
     	_.each(childsc, function(value1, key1, list){
     		if (key != key1)
