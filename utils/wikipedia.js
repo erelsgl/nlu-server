@@ -97,6 +97,24 @@ function wikipedia_pickclass(category)
   		childsc[categories[key]["title"]] = value['res']
     }, this)    
 
+
+    _.each(childsc, function(value, key, list){ 
+    	_.each(childsc, function(value1, key1, list){
+    		if (key != key1)
+    		{
+    			var inter = _.intersection(value, value1)
+    			if (inter.length != 0)
+    			{
+    				console.log(key)
+    				console.log(key1)
+    				console.log(inter)
+    				console.log(categories[inter[0]]["title"])
+    			}
+    		} 
+    	}, this)
+
+    }, this)
+
     return childsc
 
  //    console.log(JSON.stringify(childs, null, 4))
