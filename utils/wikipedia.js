@@ -10,10 +10,32 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 		JSON.parse(fs.readFileSync(__dirname+'/../knowledgeresources/WikiNormalizations.json')));
 
 function normalizer(sentence) {
-	sentence = sentence.toLowerCase().trim();
-	return regexpNormalizer(sentence);
+
+	sentence = sentence.replace(/^.+?(?=[A-Z])/g, "");
+	sentence = sentence.replace(/\[.*\]/g, "");
+	sentence = sentence.replace(/<.*>/g, "");
+	sentence = sentence.replace(/See\s.*(?=\.)/g, "");
+	sentence = sentence.replace(/(collapsible|infobox|hatnote|sidebar|citation)/g, "");
+
+	return sentence
 }
 
+function load_wikipedia(folder)
+{
+	var data = []
+	var path = __dirname+"/../../wiki/en/"+folder+"/"
+	var jsonpath = path + "json/"
+	var parsedpath = path + "parsed/"
+    var files = fs.readdirSync(jsonpath)
+    
+     _.each(files, function(file, key, list){
+        var fdata = JSON.parse(fs.readFileSync(jsonpath+file))
+        fdata['CORENLP'] = JSON.parse(fs.readFileSync(parsedpath+file))
+        data.push(fdata)
+    }, this)
+
+    return data
+}
 
 function load_category(folder)
 {
@@ -37,8 +59,6 @@ function load_category(folder)
     }, this)
 
     return categories
-
-
 }
 
 function check_cross(childsc, categories)
@@ -281,5 +301,6 @@ module.exports = {
 	wikipedia_prepared:wikipedia_prepared,
 	load_category:load_category,
 	check_cross:check_cross,
-	normalizer:normalizer
+	normalizer:normalizer,
+	load_wikipedia:load_wikipedia
 } 
