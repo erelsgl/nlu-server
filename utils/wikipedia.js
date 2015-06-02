@@ -151,7 +151,9 @@ function wikipedia_prepared(categ)
 					inters = _.intersection(value["categories"], num)
 					return inters != 0 })
 
-
+			console.log(_.toArray(categ))
+			process.exit(0)
+			
 			console.log(math)
 			console.log(inters)
 
