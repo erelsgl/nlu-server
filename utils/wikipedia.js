@@ -91,13 +91,19 @@ function wikipedia_pickclass(category)
         // console.log(buf.length)
     }
 
-    return childs
+   	var childsc = {}
+
+  	_.each(childs, function(value, key, list){ 
+  		childsc[categories[key]["title"]] = value['res']
+    }, this)    
+
+    return childsc
 
  //    console.log(JSON.stringify(childs, null, 4))
 
  //    var childsc = {}
  //    _.each(childs, function(value, key, list){
- //    	console.log(value) 
+ //    	console.log(value) notempl
 
  //    	var catnames = _.map(value['res'], function(el){ return categories[el]['title'] })
  //    	// childs[key] = catnames
@@ -113,6 +119,85 @@ function wikipedia_pickclass(category)
 
 }
 
+function wikipedia_prepared(categ)
+{
+
+	var data = {}
+	var prepared = __dirname+"/../../wiki/unparsed1"
+	var json = __dirname+"/../../wiki/en/social/"
+	var files = fs.readdirSync(json)
+
+	// category id -> category title
+	var categnames = {} 
+	// subcategory id -> category id
+	var categmap = {}
+	_.each(categ, function(value, key, list){ 
+		categnames[value[0]] = key
+		_.each(value, function(elem, key1, list){
+			categmap[elem] = key 
+		}, this)
+	}, this)
+	
+	_.each(files, function(file, key, list){ 
+		console.log(file)
+		var new_data = JSON.parse(fs.readFileSync(json+file))
+		new_data = _.filter(new_data, function(num){ return num["_category"]==0 })
+		_.each(new_data, function(value, key, list){ 
+
+			var inters = []
+
+			var math = _.filter(_.toArray(categ), function(num){ 
+					inters = _.intersection(value["categories"], num)
+					return inters != 0 })
+
+			if (math.length == 1)
+			{
+				if (inters.length > 1)
+				{
+					console.log("more than 1")
+					process.exit(0)
+				}
+				
+				var text = value['text']
+				text = text.replace(/\n/g," ")
+				text = text.replace(/\*/g," ")
+				text = text.replace(/\s{2,}/g, ' ')
+				value['text'] = text
+				value['categories'] =  inters
+
+				if !(inters[0] in data)
+					data[inters[0]] = []
+
+				data[inters[0]].push(value)
+			}
+		}, this)
+	}, this)
+
+	_.each(data, function(value, key, list){ 
+		data[key] = _.sample(value, 200)
+	}, this)
+
+	var listo = []
+	_.each(data, function(value, key, list){
+		_.each(value, function(value1, key, list){ 
+			fs.writeFileSync(prepared + value1["_id"], value1["text"], 'utf-8')
+			listo.push(prepared+value1["_id"])
+		 }, this) 
+	}, this)
+
+	_.each(data, function(value, key, list){ 
+		console.log(key)
+		console.log(value.length)
+		console.log("-------------")
+	}, this)
+
+	fs.writeFileSync(prepared + "list", listo.join("\n"), 'utf-8')
+
+	process.exit(0)
+}
+
+
 module.exports = {
-	wikipedia_pickclass: wikipedia_pickclass
+	wikipedia_pickclass: wikipedia_pickclass,
+	wikipedia_prepared:wikipedia_prepared
 } 
