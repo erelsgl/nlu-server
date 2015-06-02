@@ -3,11 +3,6 @@
 var _ = require('underscore')._;
 var fs = require('fs');
 var execSync = require('execSync')
-var limdu = require("limdu")
-var ftrs = limdu.features
-
-var regexpNormalizer = ftrs.RegexpNormalizer(
-		JSON.parse(fs.readFileSync(__dirname+'/../knowledgeresources/WikiNormalizations.json')));
 
 function normalizer(sentence) {
 
