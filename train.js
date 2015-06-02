@@ -229,7 +229,7 @@ if (wikipedia_prepared1)
 	
 	wikipedia.check_cross(hier, categories)
 
-	// wikipedia.wikipedia_prepared(hier)
+	wikipedia.wikipedia_prepared(hier)
 
 	process.exit(0)
 
