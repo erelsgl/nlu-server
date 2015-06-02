@@ -12,6 +12,10 @@ function normalizer(sentence) {
 	sentence = sentence.replace(/See\s.*(?=\.)/g, "");
 	sentence = sentence.replace(/(collapsible|infobox|hatnote|sidebar|citation)/g, "");
 
+	sentence = sentence.replace(/\n/g," ")
+	sentence = sentence.replace(/\*/g," ")
+	sentence = sentence.replace(/\s{2,}/g, ' ')
+	
 	return sentence
 }
 
@@ -232,20 +236,10 @@ function wikipedia_prepared(categ)
 				
 					var inters = _.intersection(value["categories"], math[0])
 
-					// if (inters.length != 1)
-					// {
-					// 	console.log(inters)
-					// 	console.log(math)
-					// 	process.exit(0)
-					// }
-
 					if (inters.length == 1)
 					{
-						var text = value['text']
-						text = text.replace(/\n/g," ")
-						text = text.replace(/\*/g," ")
-						text = text.replace(/\s{2,}/g, ' ')
-						value['text'] = text
+						
+						value['text'] = normalizer(value['text'])
 						value['wikicategories'] =  value['categories']
 						value['categories'] =  inters
 
@@ -274,7 +268,7 @@ function wikipedia_prepared(categ)
 	_.each(data, function(value, key, list){
 		_.each(value, function(value1, key, list){ 
 			fs.writeFileSync(prepared + value1["_id"], value1["text"], 'utf-8')
-			fs.writeFileSync(dirjson + value1["_id"], value1, 'utf-8')
+			fs.writeFileSync(dirjson + value1["_id"], JSON.stringify(value1, null, 4), 'utf-8')
 			listo.push(prepared+value1["_id"])
 		 }, this) 
 	}, this)
