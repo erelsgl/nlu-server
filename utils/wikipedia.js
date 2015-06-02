@@ -182,6 +182,7 @@ function wikipedia_prepared(categ)
 		}, this)
 	}, this)
 
+	console.log(categmap)
 
 	var allcat = _.flatten(_.toArray(categ))
 
@@ -222,10 +223,12 @@ function wikipedia_prepared(categ)
 						value['text'] = text
 						value['categories'] =  inters
 
-						if (!(inters[0] in data))
-							data[categmap[inters[0]]] = []
+						var cl = categmap[inters[0]]
 
-						data[categmap[inters[0]]].push(value)
+						if (!(cl in data))
+							data[cl] = []
+
+						data[cl].push(value)
 					}
 				}
 			}
