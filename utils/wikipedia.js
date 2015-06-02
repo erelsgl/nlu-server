@@ -30,7 +30,7 @@ function load_category(folder)
 
 }
 
-function check_cross(childsc)
+function check_cross(childsc, categories)
 {
 	_.each(childsc, function(value, key, list){ 
     	_.each(childsc, function(value1, key1, list){
