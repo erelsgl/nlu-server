@@ -167,7 +167,8 @@ function wikipedia_prepared(categ)
 
 	var data = {}
 	var json = __dirname+"/../../wiki/unparsed1/"
-	var prepared = __dirname+"/../../wiki/en/social/"
+	var prepared = __dirname+"/../../wiki/en/social/prepared"
+	var dirjson = __dirname+"/../../wiki/en/social/json"
 	var files = fs.readdirSync(json)
 	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 
@@ -243,6 +244,7 @@ function wikipedia_prepared(categ)
 	_.each(data, function(value, key, list){
 		_.each(value, function(value1, key, list){ 
 			fs.writeFileSync(prepared + value1["_id"], value1["text"], 'utf-8')
+			fs.writeFileSync(dirjson + value1["_id"], value1, 'utf-8')
 			listo.push(prepared+value1["_id"])
 		 }, this) 
 	}, this)
