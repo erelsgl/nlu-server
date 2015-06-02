@@ -193,22 +193,21 @@ function wikipedia_prepared(categ)
 			var math = _.filter(_.toArray(categ), function(num){ 
 					return _.intersection(value["categories"], num).length != 0 })
 
-			if (math.length != 0)			
-			{
-				console.log("------")
-				console.log(math)
-
-			var inte = _.intersection(value["categories"], math[0])
-			console.log(inte)
-			}
 			if (math.length == 1)
 			{
-				if (inters.length > 1)
+			
+				var inters = _.intersection(value["categories"], math[0])
+
+				if (inters.length != 1)
 				{
-					console.log("more than 1")
+					console.log(inters)
+					console.log(value["categories"])
+					console.log()
 					process.exit(0)
 				}
-				
+
+
+
 				var text = value['text']
 				text = text.replace(/\n/g," ")
 				text = text.replace(/\*/g," ")
