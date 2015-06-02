@@ -149,7 +149,7 @@ function wikipedia_prepared(categ)
 
 			var math = _.filter(_.toArray(categ), function(num){ 
 					inters = _.intersection(value["categories"], num)
-					return inters != 0 })
+					return inters.length != 0 })
 
 			if (math.length != 0)			
 			{
