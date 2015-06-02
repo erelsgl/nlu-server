@@ -151,6 +151,10 @@ function wikipedia_prepared(categ)
 					inters = _.intersection(value["categories"], num)
 					return inters != 0 })
 
+
+			console.log(math)
+			console.log(inters)
+
 			if (math.length == 1)
 			{
 				if (inters.length > 1)
@@ -172,6 +176,7 @@ function wikipedia_prepared(categ)
 				data[inters[0]].push(value)
 			}
 		}, this)
+
 	}, this)
 
 	_.each(data, function(value, key, list){ 
