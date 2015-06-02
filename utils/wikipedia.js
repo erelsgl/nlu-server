@@ -201,8 +201,7 @@ function wikipedia_prepared(categ)
 				if (inters.length != 1)
 				{
 					console.log(inters)
-					console.log(value["categories"])
-					console.log()
+					console.log(math)
 					process.exit(0)
 				}
 
