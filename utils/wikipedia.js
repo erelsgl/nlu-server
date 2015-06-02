@@ -126,6 +126,7 @@ function wikipedia_prepared(categ)
 	var json = __dirname+"/../../wiki/unparsed1/"
 	var prepared = __dirname+"/../../wiki/en/social/"
 	var files = fs.readdirSync(json)
+	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 
 	// category id -> category title
 	// var categnames = {} 
