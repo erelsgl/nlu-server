@@ -185,8 +185,6 @@ function wikipedia_prepared(categ)
 	console.log(categmap)
 
 	var allcat = _.flatten(_.toArray(categ))
-
-	files = _.sample(files,5)
 	
 	_.each(files, function(file, key, list){ 
 		console.log(file)
