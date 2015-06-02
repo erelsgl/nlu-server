@@ -219,10 +219,16 @@ function parse_filter(parse)
 
 if (wikipedia_prepared1)
 {
-	var hier = wikipedia.wikipedia_pickclass("695042")
+	var folder = __dirname+"/../wiki/en/categories/"
+
+	var categories = wikipedia.load_category(folder)
+
+	var hier = wikipedia.wikipedia_pickclass(categories, "695042")
 	
 	console.log(JSON.stringify(hier, null, 4))
 	
+	wikipedia.check_cross(hier)
+
 	// wikipedia.wikipedia_prepared(hier)
 
 	process.exit(0)
