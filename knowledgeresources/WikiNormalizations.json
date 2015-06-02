@@ -1,6 +1,0 @@
-[
-  {"source": "^.+?(?=[A-Z])", "target": ""}
-, {"source": "(collapsible|infobox|hatnote|sidebar|citation)", "target": ""}
-, {"source": "\[.*\]", "target": ""}
-, {"source": "See\s.*(?=\.)", "target": ""}
-]
