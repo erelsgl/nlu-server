@@ -246,7 +246,6 @@ if (process.argv[1] === __filename)
 	}, this)
 
 	var data = wikipedia.load_wikipedia("social")
-
 	
 	// convert corpus
 	var st_data = []
@@ -258,18 +257,17 @@ if (process.argv[1] === __filename)
 
 	// modify corpus
 	var datahash = groupbylabel(st_data, len, 50)
-	console.log("dataset groupped")
+	console.log("master: dataset groupped")
 
 	var datafile = __dirname+"/../../wiki/en/social/datahash.json"
 	fs.writeFileSync(datafile, JSON.stringify(datahash))
+	console.log("master: dataset saved")
 
 	learning_curves(classifiers, len, folds, datafile, function(){
 		console.log()
 		process.exit(0)
-	})
-	
+	})	
 }
-
 
 module.exports = {
 	plotlcagr: plotlcagr
