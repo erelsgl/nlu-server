@@ -37,10 +37,10 @@ function trainlen(train, index)
 }
 
 var dataset_global = JSON.parse(fs.readFileSync(datafile))
-console.log("worker: dataset loaded")
+console.log("worker "+process["pid"]+": dataset loaded")
 
 var dataset = partitions.partitions_hash_fold(dataset_global, folds, fold)
-console.log("worker: dataset partitioned")
+console.log("worker "+process["pid"]+": dataset partitioned")
 
 var train = dataset['train']
 var test = dataset['test']
@@ -59,7 +59,11 @@ async.whilst(
 
 			mytrain = filtrain(mytrainset, n, 1)
 
+			console.log("worker "+process["pid"]+": index=" + index +" train="+train.length+" length="+n+" maxlen="+len)			
+
 		    trainAndTest_async(classifiers[classifier], mytrain, test, function(err, stats){
+
+
 				
 				var results = {
 					'classifier': classifier,
