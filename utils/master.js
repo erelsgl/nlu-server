@@ -15,11 +15,11 @@ function groupbylabel(dataset, minsize, sizetrain)
 
 	var sends = _.groupBy(dataset , function(num){ return num['input']['CORENLP']['sentences'].length })
 	console.log("sentence distribution")
+	var sendist = {}
 	_.each(sends, function(value, key, list){ 
-		console.log(key)
-		console.log(value.length)
-		console.log("-------------")
+		sendist[key]=value.length
 	}, this)
+	console.log(JSON.stringify(sendist, null, 4))
 
 	var gro = _.groupBy(dataset, function(num){ return num["output"][0] })
 
@@ -27,11 +27,11 @@ function groupbylabel(dataset, minsize, sizetrain)
 	console.log(Object.keys(gro).length)
 
 	console.log("label distribution")
+	var labdist = {}
 	_.each(gro, function(value, key, list){ 
-		console.log(key)
-		console.log(value.length)
-		console.log("-------------")
+		labdist[key] = value.length
 	}, this)
+	console.log(JSON.stringify(labdist, null, 4))
 
 	_.each(gro, function(value, key, list){ 
 
@@ -44,6 +44,12 @@ function groupbylabel(dataset, minsize, sizetrain)
 		else
 			gro[key] = _.sample(value, sizetrain)
 	}, this)
+
+	var findist = {}
+	_.each(gro, function(value, key, list){ 
+		findist[key] = value.length
+	}, this)
+	console.log(JSON.stringify(findist, null, 4))
 
 	return gro
 }
