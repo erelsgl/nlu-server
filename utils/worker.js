@@ -30,6 +30,8 @@ console.log("worker "+process["pid"]+": dataset partitioned")
 var train = dataset['train']
 var test = dataset['test']
 
+var classes = Object.key(train[0])
+
 var index = 0
 
 async.whilst(
@@ -44,11 +46,12 @@ async.whilst(
 
 			n+=1
 
-			console.log("worker "+process["pid"]+": index=" + index +" train="+train.length+" length="+n+" maxlen="+len+" classifier:"+classifier)			
+			console.log("worker "+process["pid"]+": index=" + index +" train="+train.length/classes.length+" test="+test.length/classes.length +" length="+n+" maxlen="+len+" classifier="+classifier+" classes="+classes.length)			
 
-			mytrain = master.filtrain(mytrainset, n, 0)
+			var mytrain = master.filtrain(mytrainset, n, 0)
+			var mytest = master.filtrain(test, n, 0)
 
-		    trainAndTest_async(classifiers[classifier], mytrain, test, function(err, stats){
+		    trainAndTest_async(classifiers[classifier], mytrain, mytest, function(err, stats){
 
 
 				var results = {
