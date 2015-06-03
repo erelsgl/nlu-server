@@ -69,7 +69,7 @@ function extractGlobal(workerstats, stat)
 	}, this)
 }
 
-function plot(fold, parameter, stat, baseline, sota)
+function plot(fold, patrainlenrameter, stat, baseline, sota)
 {
 	stat = stat[parameter]
 
@@ -159,7 +159,7 @@ function plotlcagr(fold, len, stat)
 function filtrain(train, index, startwith)
 {
 	startwith = 0
-	
+
 	if (index==0)
 	{
 		console.log("index is 0")
@@ -174,6 +174,30 @@ function filtrain(train, index, startwith)
 	return output
 }
 
+function trainlen(train, index)
+{
+	var train1 = JSON.parse(JSON.stringify(train))
+
+	if (index == 0)
+	{
+		console.log("index is 0")
+		process.exit(0)
+	}
+
+	if (!(_.isArray(train[0])))
+	{
+		console.log("array is not inside")
+		process.exit(0)
+	}
+
+	if (_.isArray(train[0][0]))
+	{
+		console.log("object is not inside")
+		process.exit(0)
+	}
+
+	return _.flatten(train1.slice(0, index))
+}
 
 function plotlc(fold, parameter, len, stat)
 {
@@ -289,5 +313,6 @@ if (process.argv[1] === __filename)
 
 module.exports = {
 	plotlcagr: plotlcagr,
-	filtrain:filtrain
+	filtrain:filtrain,
+	trainlen:trainlen
 } 
