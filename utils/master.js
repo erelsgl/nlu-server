@@ -315,6 +315,7 @@ if (process.argv[1] === __filename)
 	var datafilepath = __dirname+"/../../wiki/en/social/cluster/"
 
 	_.each(datahash, function(value, key, list){ 
+		console.log("write "+key)
 		fs.writeFileSync(datafilepath + key, JSON.stringify(value, null, 4))
 	}, this)
 
