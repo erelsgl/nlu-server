@@ -302,9 +302,9 @@ if (wikipedia_test)
 										})
 
 
-	data = _.compact(data)
+	// data = _.compact(data)
 	data = _.shuffle(data)
-	data.splice(300)
+	// data.splice(300)
 
 	var compare = {
 		'TCPPDB':classifier.TCPPDB, 
