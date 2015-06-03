@@ -32,8 +32,25 @@ function load_wikipedia(folder)
 
     var str1 = "["
     var str2 = "["
+
+    var ar1 = []
+    var ar2 = []
     
      _.each(files, function(file, key, list){
+
+
+     	if (key % 500 == 0)
+     	{
+     		str1 += "{}]"
+     		str2 += "{}]"
+
+     		ar1 = ar1.concat(JSON.parse(str1))
+     		ar1 = ar1.concat(JSON.parse(str2))
+
+     		var str1 = "["
+    		var str2 = "["
+     	}
+
      	str1 += fs.readFileSync(jsonpath+file)
      	str1 += ","
 
@@ -45,8 +62,7 @@ function load_wikipedia(folder)
         // data.push(fdata)
     }, this)
 
-     	str1 += "{}]"
-     	str2 += "{}]"
+     	
 
      	console.log("converting")
 
