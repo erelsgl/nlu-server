@@ -22,7 +22,6 @@ var classifier = process.env["classifier"]
 var len = process.env["len"]
 
 var files = fs.readdirSync(datafilepath)
-files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 
 var dataset_global = {}
 
