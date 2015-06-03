@@ -44,9 +44,9 @@ async.whilst(
 
 			n+=1
 
-			mytrain = master.filtrain(mytrainset, n, 0)
-
 			console.log("worker "+process["pid"]+": index=" + index +" train="+train.length+" length="+n+" maxlen="+len)			
+
+			mytrain = master.filtrain(mytrainset, n, 0)
 
 		    trainAndTest_async(classifiers[classifier], mytrain, test, function(err, stats){
 
