@@ -379,7 +379,8 @@ function featureExtractorUCoreNLPConcept(sentence, features, stopwords, callback
 	var expansions = []
 
 	async.eachSeries(candidates, function (candidate, callback2) {
-		async_adapter.getwordnet(candidate['string'], candidate['pos'], 'hypernym_2', function(err, expansion){
+		// async_adapter.getwordnet(candidate['string'], candidate['pos'], 'hypernym_1', function(err, expansion){
+		async_adapter.getwordnet(candidate['string'], candidate['pos'], 'synonym', function(err, expansion){
 
 			expansions = expansions.concat(expansion)
 			callback2()
