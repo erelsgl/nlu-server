@@ -46,18 +46,17 @@ async.whilst(
 
 			n+=1
 
-			console.log("worker "+process["pid"]+": index=" + index +" train="+train.length/classes.length+" test="+test.length/classes.length +" length="+n+" maxlen="+len+" classifier="+classifier+" classes="+classes.length)			
+			console.log("worker "+process["pid"]+": index=" + index +" train="+train.length/classes.length+" test="+test.length/classes.length +" length="+n+" maxlen="+len+" classifier="+classifier+" classes="+classes.length + " fold="+fold)			
 
 			var mytrain = master.filtrain(mytrainset, n, 0)
 			var mytest = master.filtrain(test, n, 0)
 
 		    trainAndTest_async(classifiers[classifier], mytrain, mytest, function(err, stats){
 
-
 				var results = {
 					'classifier': classifier,
 					'fold': fold,
-					'trainsize': mytrain.length,
+					'trainsize': train.length/classes.length,
 					'trainlen': n,
 					'F1': stats['stats']['F1'],
 					'macroF1': stats['stats']['macroF1'],
