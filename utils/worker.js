@@ -16,12 +16,20 @@ if (cluster.isWorker)
 
 // var pid = process["pid"]
 var fold = process.env["fold"]
-var datafile = process.env["datafile"]
+var datafilepath = process.env["datafile"]
 var folds = process.env["folds"]
 var classifier = process.env["classifier"]
 var len = process.env["len"]
 
-var dataset_global = JSON.parse(fs.readFileSync(datafile))
+var files = fs.readdirSync(datafilepath)
+files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
+
+var dataset_global = {}
+
+_.each(files, function(file, key, list){
+	dataset_global[file]= JSON.parse(fs.readFileSync(datafilepath+file))
+}, this)
+
 console.log("worker "+process["pid"]+": dataset loaded")
 
 var dataset = partitions.partitions_hash_fold(dataset_global, folds, fold)
@@ -38,7 +46,7 @@ async.whilst(
     function () { return index <= train.length },
     function (callbackwhilst) {
        
-       	index += (index < 10 ? 1 : 10)
+       	index += (index < 20 ? 25 : 25)
 
        	var mytrainset = master.trainlen(train, index)
 			
