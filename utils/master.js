@@ -180,7 +180,7 @@ function trainlen(train, index)
 
 	if (index == 0)
 	{
-		console.log("index is 0")
+		console.log("trainlen index is 0")
 		process.exit(0)
 	}
 
