@@ -36,10 +36,10 @@ async.whilst(
     function () { return index <= train.length },
     function (callbackwhilst) {
        
-       	var mytrainset = master.trainlen(train, index)
+       	index += (index < 10 ? 1 : 10)
 
-		index += (index < 10 ? 1 : 10)
-				
+       	var mytrainset = master.trainlen(train, index)
+			
 		async.timesSeries(len, function(n, callbacktime){
 
 			n+=1
