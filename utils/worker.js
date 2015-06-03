@@ -56,19 +56,17 @@ async.whilst(
 				var results = {
 					'classifier': classifier,
 					'fold': fold,
-					'trainsize': train.length/classes.length,
+					'trainsize': mytrainset.length/classes.length,
 					'trainlen': n,
 					'F1': stats['stats']['F1'],
 					'macroF1': stats['stats']['macroF1'],
 					'Accuracy': stats['stats']['Accuracy']
 				}
 
-				process.send(JSON.stringify(results))      	
-
+				process.send(JSON.stringify(results))
 				callbacktime()
 
 		    	})
-
 
 			  	}, function(){
 			  		callbackwhilst()
