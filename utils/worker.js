@@ -25,11 +25,8 @@ var files = fs.readdirSync(datafilepath)
 
 var dataset_global = {}
 
-console.log("path")
-console.log(datafilepath)
-
 _.each(files, function(file, key, list){
-	console.log("loading file")
+	console.log("worker "+process["pid"]+":loading "+file)
 	dataset_global[file]= JSON.parse(fs.readFileSync(datafilepath+file))
 }, this)
 
