@@ -21,11 +21,6 @@ var folds = process.env["folds"]
 var classifier = process.env["classifier"]
 var len = process.env["len"]
 
-function trainlen(train, index)
-{
-	return _.flatten(JSON.parse(JSON.stringify(train)).slice(0, index))
-}
-
 var dataset_global = JSON.parse(fs.readFileSync(datafile))
 console.log("worker "+process["pid"]+": dataset loaded")
 
@@ -41,13 +36,15 @@ async.whilst(
     function () { return index <= train.length },
     function (callbackwhilst) {
        
-       	var mytrainset = trainlen(train, index)
+       	var mytrainset = master.trainlen(train, index)
 
 		index += (index < 10 ? 1 : 10)
 				
 		async.timesSeries(len, function(n, callbacktime){
 
-			mytrain = master.filtrain(mytrainset, n+1, 0)
+			n+=1
+
+			mytrain = master.filtrain(mytrainset, n, 0)
 
 			console.log("worker "+process["pid"]+": index=" + index +" train="+train.length+" length="+n+" maxlen="+len)			
 
