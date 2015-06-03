@@ -23,6 +23,9 @@ function groupbylabel(dataset, minsize, sizetrain)
 
 	var gro = _.groupBy(dataset, function(num){ return num["output"][0] })
 
+	console.log("number of classses")
+	console.log(Object.keys(gro).length)
+
 	console.log("label distribution")
 	_.each(gro, function(value, key, list){ 
 		console.log(key)
