@@ -41,11 +41,11 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 
 // var do_small_temporary_serialization_test = false
-var wikipedia_prepared1 = true
+var wikipedia_prepared1 = false
 var wikipedia_fit = false
 var wikipedia_json = false
 var technion_300 = false
-var wikipedia_test = false
+var wikipedia_test = true
 var wikipedia_categories = false
 var wikipedia_prepared = false
 var wikipedia_parsed = false
