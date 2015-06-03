@@ -37,7 +37,7 @@ function trainlen(train, index)
 }
 
 // var dataset_global = JSON.parse(fs.readFileSync(datafile))
-dataset_global = wikipedia.load_wikipedia("datafile")
+dataset_global = wikipedia.load_wikipedia(datafile)
 var dataset = partitions.partitions_hash_fold(dataset_global, folds, fold)
 
 var train = dataset['train']
