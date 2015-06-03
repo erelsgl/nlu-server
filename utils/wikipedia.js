@@ -38,32 +38,39 @@ function load_wikipedia(folder)
     
      _.each(files, function(file, key, list){
 
-
      	if (key % 100 == 0)
-     	{
      		console.log(key)
 
-     		str1 += "{}]"
-     		str2 += "{}]"
+     	var fdata = JSON.parse(fs.readFileSync(jsonpath+file))
+        fdata['CORENLP'] = JSON.parse(fs.readFileSync(parsedpath+file))
+        data.push(fdata)
 
-     		console.log("json parsing 1")
-     		var tempar1 = JSON.parse(str1)
-     		console.log("json parsing 2")
-     		var tempar2 = JSON.parse(str2)
+
+     	// if (key % 100 == 0)
+     	// {
+     	// 	console.log(key)
+
+     	// 	str1 += "{}]"
+     	// 	str2 += "{}]"
+
+     	// 	console.log("json parsing 1")
+     	// 	var tempar1 = JSON.parse(str1)
+     	// 	console.log("json parsing 2")
+     	// 	var tempar2 = JSON.parse(str2)
      		
-     		console.log("concat 1")
-     		ar1 = ar1.concat(tempar1)
-     		console.log("concat 2")
-     		ar2 = ar2.concat(tempar2)
-     		console.log("stop all")
+     	// 	console.log("concat 1")
+     	// 	ar1 = ar1.concat(tempar1)
+     	// 	console.log("concat 2")
+     	// 	ar2 = ar2.concat(tempar2)
+     	// 	console.log("stop all")
 
-     		str1 = "["
-    		str2 = "["
-     	}
+     	// 	str1 = "["
+    		// str2 = "["
+     	// }
 
-     	str1 += fs.readFileSync(jsonpath+file) + ","
+     	// str1 += fs.readFileSync(jsonpath+file) + ","
      	
-     	str2 += fs.readFileSync(parsedpath+file+".json") + ","
+     	// str2 += fs.readFileSync(parsedpath+file+".json") + ","
      	
 
         // var fdata = JSON.parse(fs.readFileSync(jsonpath+file))
@@ -73,13 +80,13 @@ function load_wikipedia(folder)
 
      	
 
-     	console.log("converting")
+     	// console.log("converting")
 
-     	var dd = JSON.parse(str1)
+     	// var dd = JSON.parse(str1)
      	
-     	console.log("converting")
+     	// console.log("converting")
 
-     	var dd1 = JSON.parse(str2)
+     	// var dd1 = JSON.parse(str2)
      	
      	console.log()
      	process.exit(0)
