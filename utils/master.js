@@ -253,7 +253,7 @@ if (process.argv[1] === __filename)
 
 	_.each(data, function(value, key, list){ 
 		value['input'] = value["text"]
-		st_data.push({'input':value, 'output':[value["catname"]]})
+		st_data.push({'input':value, 'output':value["catid"]})
 	}, this)
 
 	// modify corpus
