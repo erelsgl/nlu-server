@@ -39,7 +39,7 @@ function load_wikipedia(folder)
      _.each(files, function(file, key, list){
 
 
-     	if (key % 500 == 0)
+     	if (key % 100 == 0)
      	{
      		console.log(key)
 
