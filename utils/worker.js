@@ -3,6 +3,7 @@ var async = require('async')
 var _ = require('underscore')._;
 var fs = require('fs');
 var wikipedia = require('./wikipedia');
+var master = require('./master');
 var partitions = require('limdu/utils/partitions');
 var classifiers = require(__dirname+"/../classifiers.js")
 var trainAndTest_async = require(__dirname+'/trainAndTest').trainAndTest_async;
@@ -20,17 +21,6 @@ var folds = process.env["folds"]
 var classifier = process.env["classifier"]
 var len = process.env["len"]
 
-function filtrain(train, index, startwith)
-{
-	var output = []
-	_.each(train, function(value, key, list){ 
-		var value1 = JSON.parse(JSON.stringify(value))
-		value1["input"]["CORENLP"]["sentences"] = value1["input"]["CORENLP"]["sentences"].slice(startwith, index+startwith)
-		output.push(value1)
-	}, this)
-	return output
-}
-
 function trainlen(train, index)
 {
 	return _.flatten(JSON.parse(JSON.stringify(train)).slice(0, index))
@@ -45,7 +35,7 @@ console.log("worker "+process["pid"]+": dataset partitioned")
 var train = dataset['train']
 var test = dataset['test']
 
-var index = 1
+var index = 0
 
 async.whilst(
     function () { return index <= train.length },
@@ -57,14 +47,13 @@ async.whilst(
 				
 		async.timesSeries(len, function(n, callbacktime){
 
-			mytrain = filtrain(mytrainset, n, 1)
+			mytrain = master.filtrain(mytrainset, n+1, 0)
 
 			console.log("worker "+process["pid"]+": index=" + index +" train="+train.length+" length="+n+" maxlen="+len)			
 
 		    trainAndTest_async(classifiers[classifier], mytrain, test, function(err, stats){
 
 
-				
 				var results = {
 					'classifier': classifier,
 					'fold': fold,
@@ -90,7 +79,10 @@ async.whilst(
 		process.exit()
 	})
 
-	
+
+module.exports = {
+	filtrain: filtrain
+} 
 			  	
 // fs.appendFileSync(statusfile, JSON.stringify(stat, null, 4))
 // console.log(JSON.parse(cluster.worker.process.argv[3]))
