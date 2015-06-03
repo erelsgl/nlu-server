@@ -46,8 +46,15 @@ function load_wikipedia(folder)
      		str1 += "{}]"
      		str2 += "{}]"
 
-     		ar1 = ar1.concat(JSON.parse(str1))
-     		ar2 = ar2.concat(JSON.parse(str2))
+     		console.log("json parsing 1")
+     		var tempar1 = JSON.parse(str1)
+     		console.log("json parsing 1")
+     		var tempar2 = JSON.parse(str2)
+     		
+     		console.log("concat 1")
+     		ar1 = ar1.concat(tempar1)
+     		console.log("concat 2")
+     		ar2 = ar2.concat(tempar2)
 
      		str1 = "["
     		str2 = "["
