@@ -28,6 +28,8 @@ function load_wikipedia(folder)
 	var readydpath = path + "ready/"
     var files = fs.readdirSync(jsonpath)
 
+    console.log("start merging")
+
     var str1 = "["
     var str2 = "["
     
