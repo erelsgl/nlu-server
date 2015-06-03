@@ -297,16 +297,19 @@ function wikipedia_prepared(categ)
 					if (inters.length == 1)
 					{
 						
-						value['text'] = normalizer(value['text'])
-						value['wikicategories'] =  value['categories']
-						value['categories'] =  inters
+						if (value['text'].length < 3000)
+						{
+							value['text'] = normalizer(value['text'])
+							value['wikicategories'] =  value['categories']
+							value['categories'] =  inters
 
-						var cl = categmap[inters[0]]
+							var cl = categmap[inters[0]]
 
-						if (!(cl in data))
-							data[cl] = []
+							if (!(cl in data))
+								data[cl] = []
 
-						data[cl].push(value)
+							data[cl].push(value)
+						}
 					}
 				}
 			}
