@@ -2,6 +2,7 @@ var cluster = require('cluster');
 var async = require('async')
 var _ = require('underscore')._;
 var fs = require('fs');
+var wikipedia = require('./wikipedia');
 var partitions = require('limdu/utils/partitions');
 var classifiers = require(__dirname+"/../classifiers.js")
 var trainAndTest_async = require(__dirname+'/trainAndTest').trainAndTest_async;
@@ -35,7 +36,8 @@ function trainlen(train, index)
 	return _.flatten(JSON.parse(JSON.stringify(train)).slice(0, index))
 }
 
-var dataset_global = JSON.parse(fs.readFileSync(datafile))
+// var dataset_global = JSON.parse(fs.readFileSync(datafile))
+dataset_global = wikipedia.load_wikipedia("datafile")
 var dataset = partitions.partitions_hash_fold(dataset_global, folds, fold)
 
 var train = dataset['train']
