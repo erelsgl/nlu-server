@@ -178,7 +178,9 @@ function filtrain(train, index, startwith)
 	}
 	var output = []
 	_.each(train, function(value, key, list){ 
-		output.push(value["input"]["CORENLP"]["sentences"].slice(startwith, index+startwith))
+		value1 = value
+		value1["input"]["CORENLP"]["sentences"].splice(startwith, index+startwith)	
+		output.push(value1)
 	}, this)
 	return output
 }
