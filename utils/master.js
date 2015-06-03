@@ -7,7 +7,7 @@ var execSync = require('execSync')
 var wikipedia = require('./wikipedia')
 
 var gnuplot = 'gnuplot'
-var corpus = "JEL"
+var corpus = "Social Science"
 var statusfile = __dirname + "/status"
 
 function groupbylabel(dataset, minsize, sizetrain)
@@ -116,7 +116,7 @@ function plot(fold, parameter, stat, baseline, sota)
 
     fs.writeFileSync(mapfile, string)
 
-    var command = gnuplot +" -e \"set title '"+corpus+" : "+sota+" - "+baseline+"'; set output 'utils/hm/"+fold+"_"+parameter+"_"+sota+"-"+baseline+".png'\" "+__dirname+"/hm.plot " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image, using 2:1:(strcol(3)) with labels\""
+    var command = gnuplot +" -e \"set title '"+corpus+" : "+sota+" - "+baseline+"'; set output 'utils/hm/"+fold+"_"+parameter+"_"+sota+"-"+baseline+".png'\" "+__dirname+"/hm.plot " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image \""
     console.log(command)
     execSync.run(command)
 }
@@ -208,7 +208,7 @@ function trainlen(train, index)
 function plotlc(fold, parameter, len, stat)
 {
 
-	stat = stat[parameter]
+	var stat = stat[parameter]
 	var output = plotlcagr(fold, len, stat)
 
 	var classifiers = output[0].slice(1)
@@ -249,8 +249,8 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 			worker.on('disconnect', function() {
 			  	console.log("master: " + worker.process.pid + " finished")
 
-			  	if (Object.keys(cluster.workers) == 0)
-			  	{
+			  	// if (Object.keys(cluster.workers) == 0)
+			  	// {
 					// console.log("all workers are disconnected")
 				   	var baseline = classifiers[0]
 				   	var sotas = classifiers.slice(1)
@@ -266,11 +266,11 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 
 					_(folds).times(function(fold){
 	                  	_.each(stat, function(data, param, list){
-							plotlc(fold, param, len-1, stat)
-							plotlc('average', param, len-1, stat)
+							plotlc(fold, param, len, stat)
+							plotlc('average', param, len, stat)
 						})
 				   })
-			  	}
+			  	// }
 			})
 		})
 	}, this)
