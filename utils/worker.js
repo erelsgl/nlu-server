@@ -32,10 +32,6 @@ _.each(files, function(file, key, list){
 
 console.log("worker "+process["pid"]+": dataset loaded")
 
-console.log(JSON.stringify(dataset_global["693803"][0], null, 4))
-console.log()
-process.exit(0)
-
 var dataset = partitions.partitions_hash_fold(dataset_global, folds, fold)
 console.log("worker "+process["pid"]+": dataset partitioned")
 
@@ -62,10 +58,6 @@ async.whilst(
 
 			var mytrain = master.filtrain(mytrainset, n, 0)
 			var mytest = master.filtrain(test, n, 0)
-
-			console.log(JSON.stringify(mytrain[0], null, 4))
-			console.log()
-			process.exit(0)
 
 		    trainAndTest_async(classifiers[classifier], mytrain, mytest, function(err, stats){
 
