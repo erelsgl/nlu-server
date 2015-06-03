@@ -35,7 +35,7 @@ function load_wikipedia(folder)
      	str1 += fs.readFileSync(jsonpath+file)
      	str1 += ","
 
-     	str2 += fs.readFileSync(parsedpath+file)
+     	str2 += fs.readFileSync(parsedpath+file+".json")
      	str2 += ","
 
         // var fdata = JSON.parse(fs.readFileSync(jsonpath+file))
