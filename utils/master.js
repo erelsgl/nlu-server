@@ -241,7 +241,7 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 			})
 
 			worker.on('disconnect', function() {
-			  	console.log("finished")
+			  	console.log("master: " + worker.process.pid + " finished")
 
 			  	if (Object.keys(cluster.workers) == 0)
 			  	{
