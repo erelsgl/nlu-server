@@ -156,6 +156,24 @@ function plotlcagr(fold, len, stat)
 	return output
 }
 
+function filtrain(train, index, startwith)
+{
+	startwith = 0
+	
+	if (index==0)
+	{
+		console.log("index is 0")
+		process.exit(0)
+	}
+	var output = []
+	_.each(train, function(value, key, list){ 
+		var value1 = JSON.parse(JSON.stringify(value))
+		value1["input"]["CORENLP"]["sentences"] = value1["input"]["CORENLP"]["sentences"].slice(startwith, index+startwith)
+		output.push(value1)
+	}, this)
+	return output
+}
+
 
 function plotlc(fold, parameter, len, stat)
 {
@@ -270,5 +288,6 @@ if (process.argv[1] === __filename)
 }
 
 module.exports = {
-	plotlcagr: plotlcagr
+	plotlcagr: plotlcagr,
+	filtrain:filtrain
 } 
