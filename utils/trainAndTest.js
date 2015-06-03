@@ -282,8 +282,6 @@ module.exports.test_async = function(classifier, testSet, callback) {
 	var data_stats = []
 	currentStats = new PrecisionRecall()
 
-	console.log("test")
-
 	async.forEachOfSeries(testSet, function (testRecord, testKey, callback1) {
 
 		// console.log("Test "+testKey+" from "+testSet.length)
@@ -558,7 +556,6 @@ module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, 
 		testSet1 = JSON.parse(JSON.stringify(testSet))
 		trainSet1 = JSON.parse(JSON.stringify(trainSet))
 		
-		console.log("to train")
 		classifier.trainBatch_async(trainSet1, function(err, results){
 				module.exports.test_async(classifier, testSet1, function(error, results){
 				callback(error, results)
