@@ -247,11 +247,13 @@ function wikipedia_prepared(categ)
 						
 						if (value['text'].length < 3000)
 						{
+							
+							var cl = categmap[inters[0]]
+
 							value['text'] = normalizer(value['text'])
 							value['wikicategories'] =  value['categories']
-							value['categories'] =  inters
-
-							var cl = categmap[inters[0]]
+							value['catid'] =  inters
+							value['catname'] =  cl
 
 							if (!(cl in data))
 								data[cl] = []
