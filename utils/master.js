@@ -4,6 +4,7 @@ var _ = require('underscore')._;
 var bars = require(__dirname+'/bars');
 var distance = require(__dirname+'/distance');
 var execSync = require('execSync')
+var wikipedia = require('./wikipedia')
 
 var gnuplot = 'gnuplot'
 var corpus = "JEL"
@@ -241,34 +242,25 @@ if (process.argv[1] === __filename)
 		}, this)
 	}, this)
 
-	// // load corpus files
-	// var path = "../wiki/en/"+corpus+"/"
-	// var files = fs.readdirSync(path)
-	// files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
-	// var data = []
+	var data = wikipedia.load_wikipedia("social")
 
-	// // load corpus
-	// _.each(files, function(file, key, list){ 
-	// 	console.log(file)
-	// 	data = data.concat(JSON.parse(fs.readFileSync(path + file)))
-	// }, this)
+	
+	// convert corpus
+	var st_data = []
 
-	// // convert corpus
-	// var st_data = []
+	_.each(data, function(value, key, list){ 
+		value['input'] = value["text"]
+		st_data.push({'input':value, 'output':value["categories"]})
+	}, this)
 
-	// _.each(data, function(value, key, list){ 
-	// 	value['input'] = value["text"]
-	// 	st_data.push({'input':value, 'output':value["categories"]})
-	// }, this)
+	// modify corpus
+	var datahash = groupbylabel(st_data, len, 50)
+	console.log("dataset groupped")
 
-	// // modify corpus
-	// var datahash = groupbylabel(st_data, len, 50)
-	// console.log("dataset groupped")
+	var datafile = __dirname+"/../../wiki/en/social/datahash.json"
+	fs.writeFileSync(datafile, JSON.stringify(datahash))
 
-	// var datafile = path+'/datahash.json'
-	// fs.writeFileSync(datafile, JSON.stringify(datahash))
-
-	// var datafile = __dirname+"/../../wiki/en/social"
+	// var datafile = 
 	var datafile = "social"
 
 	learning_curves(classifiers, len, folds, datafile, function(){
