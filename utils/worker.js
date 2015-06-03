@@ -46,7 +46,7 @@ async.whilst(
 
 			n+=1
 
-			console.log("worker "+process["pid"]+": index=" + index +" alltrain="+_.flatten(train).length+" train="+train.length/classes.length+" testall="+test.length+" test="+test.length/classes.length +" length="+n+" maxlen="+len+" classifier="+classifier+" classes="+classes.length + " fold="+fold)			
+			console.log("worker "+process["pid"]+": index=" + index +" alltrain="+_.flatten(train).length+" train="+mytrainset.length/classes.length+" testall="+test.length+" test="+test.length/classes.length +" length="+n+" maxlen="+len+" classifier="+classifier+" classes="+classes.length + " fold="+fold)			
 
 			var mytrain = master.filtrain(mytrainset, n, 0)
 			var mytest = master.filtrain(test, n, 0)
