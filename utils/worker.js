@@ -32,6 +32,10 @@ _.each(files, function(file, key, list){
 
 console.log("worker "+process["pid"]+": dataset loaded")
 
+console.log(JSON.stringify(dataset_global["693803"][0], null, 4))
+console.log()
+process.exit(0)
+
 var dataset = partitions.partitions_hash_fold(dataset_global, folds, fold)
 console.log("worker "+process["pid"]+": dataset partitioned")
 
