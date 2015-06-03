@@ -215,7 +215,7 @@ function wikipedia_prepared(categ)
 	var categkey = {}
 	_.each(categ, function(value, key, list){ 
 		categnames[value[0]] = key
-		_.each(value1, function(elem, key1, list){
+		_.each(value, function(elem, key1, list){
 			categmap[elem] = key 
 			categkey[elem] = value[0] 
 		}, this)
