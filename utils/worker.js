@@ -26,7 +26,11 @@ files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
 
 var dataset_global = {}
 
+console.log("path")
+console.log(datafilepath)
+
 _.each(files, function(file, key, list){
+	console.log("loading file")
 	dataset_global[file]= JSON.parse(fs.readFileSync(datafilepath+file))
 }, this)
 
