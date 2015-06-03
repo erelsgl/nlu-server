@@ -23,5 +23,19 @@ describe('wikipedia', function() {
                 trainop[0]['input']['CORENLP']['sentences'].length.should.equal(2)
 	})
 
+        it('trainlen', function() {
+        var train = [
+                [{'input':11, 'output':12},{'input':21, 'output':22}],
+                [{'input':31, 'output':12}]
+                ]
+                
+                var trainop = master.trainlen(train, 1)
+                trainop.length.should.equal(2)
+
+                var trainop = master.trainlen(train, 2)
+                trainop.length.should.equal(3)
+
 	
+        })
+
 })
