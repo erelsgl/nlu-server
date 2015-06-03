@@ -75,7 +75,7 @@ function extractGlobal(workerstats, stat)
 	}, this)
 }
 
-function plot(fold, patrainlenrameter, stat, baseline, sota)
+function plot(fold, parameter, stat, baseline, sota)
 {
 	stat = stat[parameter]
 
