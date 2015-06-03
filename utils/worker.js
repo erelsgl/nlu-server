@@ -59,6 +59,10 @@ async.whilst(
 			var mytrain = master.filtrain(mytrainset, n, 0)
 			var mytest = master.filtrain(test, n, 0)
 
+			console.log(JSON.stringify(mytrain[0], null, 4))
+			console.log()
+			process.exit(0)
+
 		    trainAndTest_async(classifiers[classifier], mytrain, mytest, function(err, stats){
 
 				var results = {
