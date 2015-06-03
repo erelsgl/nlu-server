@@ -122,16 +122,19 @@ function plot(fold, parameter, stat, baseline, sota)
 }
 
 
-function plotlcagr(fold, len, stat)
+function plotlcagr(fold, stat)
 {
 
 	var classifiers = []
+
 
 	var output = []
 		
 	if (fold != 'average')
 	{
 		_.each(stat, function(trainlens, trainsize, list){
+			var len = _.max(Object.keys(trainlens), function(n){ return n })
+			
 			if (output.length == 0)
 			{
 				output.push(['size'].concat(Object.keys(trainlens[len])))
@@ -145,7 +148,9 @@ function plotlcagr(fold, len, stat)
 	}
 	else
 	{
-		_.each(stat, function(trainlens, trainsize, list){ 
+		_.each(stat, function(trainlens, trainsize, list){
+			var len = _.max(Object.keys(trainlens), function(n){ return n })
+
 			if (output.length == 0)
 			{
 				output.push(['size'].concat(Object.keys(trainlens[len])))
@@ -249,8 +254,8 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 			worker.on('disconnect', function() {
 			  	console.log("master: " + worker.process.pid + " finished")
 
-			  	// if (Object.keys(cluster.workers) == 0)
-			  	// {
+			  	if (Object.keys(cluster.workers) == 0)
+			  	{
 					// console.log("all workers are disconnected")
 				   	var baseline = classifiers[0]
 				   	var sotas = classifiers.slice(1)
@@ -266,11 +271,11 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 
 					_(folds).times(function(fold){
 	                  	_.each(stat, function(data, param, list){
-							plotlc(fold, param, len, stat)
-							plotlc('average', param, len, stat)
+							plotlc(fold, param, stat)
+							plotlc('average', param, stat)
 						})
 				   })
-			  	// }
+			  	}
 			})
 		})
 	}, this)
