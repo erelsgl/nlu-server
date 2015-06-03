@@ -40,6 +40,8 @@ function trainlen(train, index)
 dataset_global = wikipedia.load_wikipedia(datafile)
 var dataset = partitions.partitions_hash_fold(dataset_global, folds, fold)
 
+console.log("separated")
+
 var train = dataset['train']
 var test = dataset['test']
 
@@ -50,12 +52,15 @@ async.whilst(
     function (callbackwhilst) {
        
        	var mytrainset = trainlen(train, index)
+       	console.log("trainlen")
 
 		index += (index < 10 ? 1 : 10)
 				
 		async.timesSeries(len, function(n, callbacktime){
 
 			mytrain = filtrain(mytrainset, n, 1)
+			console.log("filtrain")
+			
 		    trainAndTest_async(classifiers[classifier], mytrain, test, function(err, stats){
 				
 				var results = {
