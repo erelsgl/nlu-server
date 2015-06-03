@@ -25,15 +25,46 @@ function load_wikipedia(folder)
 	var path = __dirname+"/../../wiki/en/"+folder+"/"
 	var jsonpath = path + "json/"
 	var parsedpath = path + "parsed/"
+	var readydpath = path + "ready/"
     var files = fs.readdirSync(jsonpath)
+
+    var str1 = "["
+    var str2 = "["
     
      _.each(files, function(file, key, list){
-        var fdata = JSON.parse(fs.readFileSync(jsonpath+file))
-        fdata['CORENLP'] = JSON.parse(fs.readFileSync(parsedpath+file))
-        data.push(fdata)
+     	str1 += fs.readFileSync(jsonpath+file)
+     	str1 += ","
+
+     	str2 += fs.readFileSync(parsedpath+file)
+     	str2 += ","
+
+        // var fdata = JSON.parse(fs.readFileSync(jsonpath+file))
+        // fdata['CORENLP'] = JSON.parse(fs.readFileSync(parsedpath+file))
+        // data.push(fdata)
     }, this)
 
-    return data
+     	str1 += "{}]"
+     	str2 += "{}]"
+
+     	console.log("converting")
+
+     	var dd = JSON.parse(str1)
+     	
+     	console.log("converting")
+
+     	var dd1 = JSON.parse(str2)
+     	
+     	console.log()
+     	process.exit(0)
+
+  //    var data_splited = _.groupBy(data, function(element, index){
+  //       return index%100;
+ 	// })
+
+ 	// _.each(_.toArray(data_splited), function(data, key, list){
+  //       console.log("writing "+key)
+  //       fs.writeFileSync(readydpath + 'wiki.'+key+'.json', JSON.stringify(data, null, 4))
+ 	// }, this)
 }
 
 function load_category(folder)
