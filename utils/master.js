@@ -110,7 +110,7 @@ function plot(fold, patrainlenrameter, stat, baseline, sota)
 
     fs.writeFileSync(mapfile, string)
 
-    var command = gnuplot +" -e \"set title '"+corpus+" : "+sota+" - "+baseline+"'; set output 'utils/hm/"+fold+"_"+parameter+"_"+sota+"-"+baseline+".png'\" "+__dirname+"/hm.plot " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image\""
+    var command = gnuplot +" -e \"set title '"+corpus+" : "+sota+" - "+baseline+"'; set output 'utils/hm/"+fold+"_"+parameter+"_"+sota+"-"+baseline+".png'\" "+__dirname+"/hm.plot " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image, using 2:1:(strcol(3)) with labels\""
     console.log(command)
     execSync.run(command)
 }
