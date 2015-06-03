@@ -75,11 +75,6 @@ async.whilst(
     function (err) {
 		process.exit()
 	})
-
-
-module.exports = {
-	filtrain: filtrain
-} 
 			  	
 // fs.appendFileSync(statusfile, JSON.stringify(stat, null, 4))
 // console.log(JSON.parse(cluster.worker.process.argv[3]))
