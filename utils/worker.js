@@ -36,8 +36,7 @@ function trainlen(train, index)
 	return _.flatten(JSON.parse(JSON.stringify(train)).slice(0, index))
 }
 
-// var dataset_global = JSON.parse(fs.readFileSync(datafile))
-dataset_global = wikipedia.load_wikipedia(datafile)
+var dataset_global = JSON.parse(fs.readFileSync(datafile))
 var dataset = partitions.partitions_hash_fold(dataset_global, folds, fold)
 
 console.log("separated")
