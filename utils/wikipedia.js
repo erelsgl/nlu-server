@@ -30,7 +30,7 @@ function load_wikipedia(folder)
     
      _.each(files, function(file, key, list){
 
-     	if (key % 100 == 0)
+     	if (key % 1000 == 0)
      		console.log(key)
 
      	var fdata = JSON.parse(fs.readFileSync(jsonpath+file))
