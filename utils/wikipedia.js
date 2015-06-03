@@ -212,10 +212,12 @@ function wikipedia_prepared(categ)
 	var categnames = {} 
 	// subcategory id -> category id
 	var categmap = {}
+	var categkey = {}
 	_.each(categ, function(value, key, list){ 
 		categnames[value[0]] = key
-		_.each(value, function(elem, key1, list){
+		_.each(value1, function(elem, key1, list){
 			categmap[elem] = key 
+			categkey[elem] = value[0] 
 		}, this)
 	}, this)
 
@@ -252,7 +254,7 @@ function wikipedia_prepared(categ)
 
 							value['text'] = normalizer(value['text'])
 							value['wikicategories'] =  value['categories']
-							value['catid'] =  inters
+							value['catid'] =  [categkey[inters[0]]]
 							value['catname'] =  [cl]
 
 							if (!(cl in data))
