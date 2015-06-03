@@ -9,7 +9,7 @@ var trainAndTest_async = require(__dirname+'/trainAndTest').trainAndTest_async;
 // var bars = require(__dirname+'/bars');
 
 if (cluster.isWorker)
-	console.log("worker started")
+	console.log("worker: started")
 
 // process.env.worker.process.pid
 
@@ -37,9 +37,10 @@ function trainlen(train, index)
 }
 
 var dataset_global = JSON.parse(fs.readFileSync(datafile))
-var dataset = partitions.partitions_hash_fold(dataset_global, folds, fold)
+console.log("worker: dataset loaded")
 
-console.log("separated")
+var dataset = partitions.partitions_hash_fold(dataset_global, folds, fold)
+console.log("worker: dataset partitioned")
 
 var train = dataset['train']
 var test = dataset['test']
@@ -51,15 +52,13 @@ async.whilst(
     function (callbackwhilst) {
        
        	var mytrainset = trainlen(train, index)
-       	console.log("trainlen")
 
 		index += (index < 10 ? 1 : 10)
 				
 		async.timesSeries(len, function(n, callbacktime){
 
 			mytrain = filtrain(mytrainset, n, 1)
-			console.log("filtrain")
-			
+
 		    trainAndTest_async(classifiers[classifier], mytrain, test, function(err, stats){
 				
 				var results = {
