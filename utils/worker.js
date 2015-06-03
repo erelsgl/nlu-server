@@ -30,7 +30,7 @@ console.log("worker "+process["pid"]+": dataset partitioned")
 var train = dataset['train']
 var test = dataset['test']
 
-var classes = Object.key(train[0])
+var classes = Object.keys(train[0])
 
 var index = 0
 
