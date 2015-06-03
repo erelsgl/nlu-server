@@ -40,11 +40,11 @@ async.whilst(
 
        	var mytrainset = master.trainlen(train, index)
 			
-		async.timesSeries(len, function(n, callbacktime){
+		async.timesSeries(len+1, function(n, callbacktime){
 
 			n+=1
 
-			console.log("worker "+process["pid"]+": index=" + index +" train="+train.length+" length="+n+" maxlen="+len)			
+			console.log("worker "+process["pid"]+": index=" + index +" train="+train.length+" length="+n+" maxlen="+len+" classifier:"+classifier)			
 
 			mytrain = master.filtrain(mytrainset, n, 0)
 
@@ -73,6 +73,7 @@ async.whilst(
 			  	})
     },
     function (err) {
+		console.log("worker "+process["pid"]+": exiting")
 		process.exit()
 	})
 			  	
