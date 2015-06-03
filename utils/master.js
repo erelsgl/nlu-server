@@ -268,7 +268,8 @@ if (process.argv[1] === __filename)
 	// var datafile = path+'/datahash.json'
 	// fs.writeFileSync(datafile, JSON.stringify(datahash))
 
-	var datafile = __dirname+"/../../wiki/en/JEL/hash"
+	// var datafile = __dirname+"/../../wiki/en/social"
+	var datafile = "social"
 
 	learning_curves(classifiers, len, folds, datafile, function(){
 		console.log()
