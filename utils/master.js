@@ -283,7 +283,7 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 
 if (process.argv[1] === __filename)
 {
-	var folds = 2
+	var folds = 10
 	var len = 2
 	var classifiers = ['TCBOC', 'TC']
 	fs.writeFileSync(statusfile, "")
@@ -309,14 +309,18 @@ if (process.argv[1] === __filename)
 	}, this)
 
 	// modify corpus
-	var datahash = groupbylabel(st_data, len, 50)
+	var datahash = groupbylabel(st_data, len, 300)
 	console.log("master: dataset groupped")
 
-	var datafile = __dirname+"/../../wiki/en/social/datahash.json"
-	fs.writeFileSync(datafile, JSON.stringify(datahash))
+	var datafilepath = __dirname+"/../../wiki/en/social/cluster/"
+
+	_.each(datahash, function(value, key, list){ 
+		fs.writeFileSync(datafilepath + key, JSON.stringify(value))
+	}, this)
+
 	console.log("master: dataset saved")
 
-	learning_curves(classifiers, len, folds, datafile, function(){
+	learning_curves(classifiers, len, folds, datafilepath, function(){
 		console.log()
 		process.exit(0)
 	})	
