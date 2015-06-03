@@ -41,21 +41,22 @@ function load_wikipedia(folder)
 
      	if (key % 500 == 0)
      	{
+     		console.log(key)
+
      		str1 += "{}]"
      		str2 += "{}]"
 
      		ar1 = ar1.concat(JSON.parse(str1))
-     		ar1 = ar1.concat(JSON.parse(str2))
+     		ar2 = ar2.concat(JSON.parse(str2))
 
-     		var str1 = "["
-    		var str2 = "["
+     		str1 = "["
+    		str2 = "["
      	}
 
-     	str1 += fs.readFileSync(jsonpath+file)
-     	str1 += ","
-
-     	str2 += fs.readFileSync(parsedpath+file+".json")
-     	str2 += ","
+     	str1 += fs.readFileSync(jsonpath+file) + ","
+     	
+     	str2 += fs.readFileSync(parsedpath+file+".json") + ","
+     	
 
         // var fdata = JSON.parse(fs.readFileSync(jsonpath+file))
         // fdata['CORENLP'] = JSON.parse(fs.readFileSync(parsedpath+file))
