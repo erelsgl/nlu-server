@@ -253,7 +253,7 @@ function wikipedia_prepared(categ)
 							value['text'] = normalizer(value['text'])
 							value['wikicategories'] =  value['categories']
 							value['catid'] =  inters
-							value['catname'] =  cl
+							value['catname'] =  [cl]
 
 							if (!(cl in data))
 								data[cl] = []
