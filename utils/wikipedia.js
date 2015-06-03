@@ -27,14 +27,6 @@ function load_wikipedia(folder)
 	var parsedpath = path + "parsed/"
 	var readydpath = path + "ready/"
     var files = fs.readdirSync(jsonpath)
-
-    console.log("start merging")
-
-    var str1 = "["
-    var str2 = "["
-
-    var ar1 = []
-    var ar2 = []
     
      _.each(files, function(file, key, list){
 
@@ -45,60 +37,9 @@ function load_wikipedia(folder)
         fdata['CORENLP'] = JSON.parse(fs.readFileSync(parsedpath+file+".json"))
         data.push(fdata)
 
-
-     	// if (key % 100 == 0)
-     	// {
-     	// 	console.log(key)
-
-     	// 	str1 += "{}]"
-     	// 	str2 += "{}]"
-
-     	// 	console.log("json parsing 1")
-     	// 	var tempar1 = JSON.parse(str1)
-     	// 	console.log("json parsing 2")
-     	// 	var tempar2 = JSON.parse(str2)
-     		
-     	// 	console.log("concat 1")
-     	// 	ar1 = ar1.concat(tempar1)
-     	// 	console.log("concat 2")
-     	// 	ar2 = ar2.concat(tempar2)
-     	// 	console.log("stop all")
-
-     	// 	str1 = "["
-    		// str2 = "["
-     	// }
-
-     	// str1 += fs.readFileSync(jsonpath+file) + ","
-     	
-     	// str2 += fs.readFileSync(parsedpath+file+".json") + ","
-     	
-
-        // var fdata = JSON.parse(fs.readFileSync(jsonpath+file))
-        // fdata['CORENLP'] = JSON.parse(fs.readFileSync(parsedpath+file))
-        // data.push(fdata)
     }, this)
 
-     	
-
-     	// console.log("converting")
-
-     	// var dd = JSON.parse(str1)
-     	
-     	// console.log("converting")
-
-     	// var dd1 = JSON.parse(str2)
-     	
-     	console.log()
-     	process.exit(0)
-
-  //    var data_splited = _.groupBy(data, function(element, index){
-  //       return index%100;
- 	// })
-
- 	// _.each(_.toArray(data_splited), function(data, key, list){
-  //       console.log("writing "+key)
-  //       fs.writeFileSync(readydpath + 'wiki.'+key+'.json', JSON.stringify(data, null, 4))
- 	// }, this)
+     return data
 }
 
 function load_category(folder)
