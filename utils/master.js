@@ -178,17 +178,13 @@ function filtrain(train, index, startwith)
 	}
 	var output = []
 	_.each(train, function(value, key, list){ 
-		var value1 = JSON.parse(JSON.stringify(value))
-		value1["input"]["CORENLP"]["sentences"] = value1["input"]["CORENLP"]["sentences"].slice(startwith, index+startwith)
-		output.push(value1)
+		output.push(value["input"]["CORENLP"]["sentences"].slice(startwith, index+startwith))
 	}, this)
 	return output
 }
 
 function trainlen(train, index)
 {
-	var train1 = JSON.parse(JSON.stringify(train))
-
 	if (index == 0)
 	{
 		console.log("trainlen index is 0")
@@ -207,7 +203,7 @@ function trainlen(train, index)
 		process.exit(0)
 	}
 
-	return _.flatten(train1.slice(0, index))
+	return _.flatten(train.slice(0, index))
 }
 
 function plotlc(fold, parameter, len, stat)
