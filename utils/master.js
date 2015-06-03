@@ -77,7 +77,7 @@ function extractGlobal(workerstats, stat)
 
 function plot(fold, parameter, stat, baseline, sota)
 {
-	stat = stat[parameter]
+	var stat = stat[parameter]
 
 	var output = []
 		
@@ -134,7 +134,7 @@ function plotlcagr(fold, stat)
 	{
 		_.each(stat, function(trainlens, trainsize, list){
 			var len = _.max(Object.keys(trainlens), function(n){ return n })
-			
+
 			if (output.length == 0)
 			{
 				output.push(['size'].concat(Object.keys(trainlens[len])))
