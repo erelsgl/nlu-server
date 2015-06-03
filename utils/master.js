@@ -260,9 +260,6 @@ if (process.argv[1] === __filename)
 	var datafile = __dirname+"/../../wiki/en/social/datahash.json"
 	fs.writeFileSync(datafile, JSON.stringify(datahash))
 
-	// var datafile = 
-	var datafile = "social"
-
 	learning_curves(classifiers, len, folds, datafile, function(){
 		console.log()
 		process.exit(0)
