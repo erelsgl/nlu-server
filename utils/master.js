@@ -113,6 +113,9 @@ function plot(fold, parameter, stat, baseline, sota)
 		}, this)
 	}
 
+	if (output.length == 0)
+		return
+
 	var results = _.groupBy(output, function(num){ return num[0] })
 	var string = ""
 
@@ -128,9 +131,9 @@ function plot(fold, parameter, stat, baseline, sota)
     fs.writeFileSync(mapfile, string)
 
     var command = gnuplot +" -e \"set title '"+corpus+" : "+sota+" - "+baseline+"'; set output 'utils/hm/"+fold+"_"+parameter+"_"+sota+"-"+baseline+".png'\" "+__dirname+"/hm.plot " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image \""
+    
     console.log(command)
 	child_process.execSync(command)
-
 }
 
 
