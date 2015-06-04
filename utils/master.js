@@ -4,7 +4,7 @@ var _ = require('underscore')._;
 var bars = require(__dirname+'/bars');
 var distance = require(__dirname+'/distance');
 var wikipedia = require('./wikipedia')
-
+var child_process = require('child_process')
 var gnuplot = 'gnuplot'
 var corpus = "Social Science"
 var statusfile = __dirname + "/status"
@@ -117,7 +117,8 @@ function plot(fold, parameter, stat, baseline, sota)
 
     var command = gnuplot +" -e \"set title '"+corpus+" : "+sota+" - "+baseline+"'; set output 'utils/hm/"+fold+"_"+parameter+"_"+sota+"-"+baseline+".png'\" "+__dirname+"/hm.plot " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image \""
     console.log(command)
-    execSync.run(command)
+	child_process.execSync(command)
+
 }
 
 
@@ -223,7 +224,8 @@ function plotlc(fold, parameter, len, stat)
 
     var command = gnuplot +" -e \"set output 'utils/lc/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=2:"+(classifiers.length+1)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3\""
     console.log(command)
-    execSync.run(command)
+    child_process.execSync(command)
+
 }
 
 function learning_curves(classifiers, len, folds, datafile, callback)
