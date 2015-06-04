@@ -1,4 +1,4 @@
-set terminal png nocrop enhanced size 900,640 font "arial,8"
+set terminal png nocrop enhanced size 900,640
 #set output '/tmp/heatmaps.2.png'
 ##set dgrid3d 10,10 splines
 unset key
