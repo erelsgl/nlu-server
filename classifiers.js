@@ -17,7 +17,6 @@ var trainutils = require('./utils/bars')
 var distance = require('./utils/distance')
 var rules = require("./research/rule-based/rules.js")
 var natural = require('natural');
-var execSync = require('execSync');
 var classifiers = limdu.classifiers;
 var ftrs = limdu.features;
 var Hierarchy = require(__dirname+'/Hierarchy');
@@ -575,39 +574,6 @@ function featureExtractorWords(sentence, features) {
  * BINARY CLASSIFIERS (used as basis to other classifiers):
  */
 
-var WinnowBinaryClassifier = classifiers.Winnow.bind(0, {
-	retrain_count: 15,  /* 15 is much better than 5, better than 10 */
-	promotion: 1.5,
-	demotion: 0.5,
-	do_averaging: false,
-	margin: 1,
-	//debug: true,
-});
-
-var BayesBinaryClassifier = classifiers.Bayesian.bind(0, {
-});
-
-var SvmPerfBinaryClassifier = classifiers.SvmPerf.bind(0, {
-	// learn_args: "-c 100 --i 1",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
-	// F1 optimization
-	// learn_args: "-c 100 -w 3",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
-	learn_args: "-c 100 ",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
-	model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf",
-});
-
-
-var SvmPerfMultiClassifier = classifiers.SvmPerf_multi.bind(0, {
-	// learn_args: "-c 100 --i 1",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
-	// F1 optimization
-	learn_args: "-c 100 -w 3",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
-	model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf_multi",
-});
-
-var SvmLinearBinaryClassifier = classifiers.SvmLinear.bind(0, {
-	learn_args: "-c 100", 
-	model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearBinary",
-});
-
 var SvmLinearMulticlassifier = classifiers.SvmLinear.bind(0, {
 	learn_args: "-c 100", 
 	model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearMulti",
@@ -615,15 +581,6 @@ var SvmLinearMulticlassifier = classifiers.SvmLinear.bind(0, {
 })
 
 
-
-/*
- * MULTI-LABEL CLASSIFIERS (used as basis to other classifiers):
- */
-
-var AdaboostClassifier = classifiers.multilabel.Adaboost.bind(0, {
-	ngram_length: 2,
-	iterations: 2000
-});
 
 function weightInstance1(instance) {
 	return 1
@@ -640,71 +597,6 @@ function weightInstance2(instance) {
 	DotDistance
 	*/
 
-var kNNClassifierAnd = classifiers.kNN.bind(0, {
-	k: 1,
-	mode: 'binary',
-	distanceFunctionList: [distance.and_distance],
-	distanceWeightening: weightInstance1
-});
-
-var kNNClassifierEuc = classifiers.kNN.bind(0, {
-	k: 1,
-	mode: 'binary',
-	distanceFunctionList: [distance.euclidean_distance],
-	distanceWeightening: weightInstance1
-});
-
-var kNNClassifierCosMulti = classifiers.kNN.bind(0, {
-	k: 1,
-	mode: 'multi',
-	distanceFunctionList: [distance.cosine_distance],
-	distanceWeightening: weightInstance1
-});
-
-var kNNClassifierCosBinary = classifiers.kNN.bind(0, {
-	k: 1,
-	mode: 'binary',
-	distanceFunctionList: [distance.cosine_distance],
-	distanceWeightening: weightInstance1
-});
-
-var kNNBRAnd = classifiers.multilabel.BinaryRelevance.bind(0, {
-	binaryClassifierType: kNNClassifierAnd,
-});
-
-var kNNBREuc = classifiers.multilabel.BinaryRelevance.bind(0, {
-	binaryClassifierType: kNNClassifierEuc,
-});
-
-var kNNBRCos = classifiers.multilabel.BinaryRelevance.bind(0, {
-	binaryClassifierType: kNNClassifierCosBinary,
-});
-
-var WinnowBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
-	binaryClassifierType: WinnowBinaryClassifier,
-});
-
-var BayesBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
-	binaryClassifierType: BayesBinaryClassifier,
-});
-
-var SvmPerfBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
-	binaryClassifierType: SvmPerfBinaryClassifier,
-});
-
-var SvmLinearBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
-	binaryClassifierType: SvmLinearBinaryClassifier,
-});
-
-var PassiveAggressiveClassifier = classifiers.multilabel.PassiveAggressive.bind(0, {
-	retrain_count: 1,
-	Constant: 5.0,
-});
-
-var LanguageModelClassifier = classifiers.multilabel.CrossLanguageModel.bind(this, {
-	smoothingCoefficient: 0.9,
-	labelFeatureExtractor: Hierarchy.splitJsonFeatures,
-});
 
  var enhance5 = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel) {
 	return classifiers.EnhancedClassifier.bind(0, {
@@ -766,77 +658,6 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 	});
 };
 
-var WinnowSegmenterTruth = 
-			classifiers.multilabel.BinarySegmentation.bind(0, {
-			binaryClassifierType: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined,  new ftrs.FeatureLookupTable()),
-			segmentSplitStrategy: 'cheapestSegment',
-			// strandard: true,
-});
-
-var WinnowSegmenter1 = 
-			classifiers.multilabel.BinarySegmentation.bind(0, {
-			binaryClassifierType: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable()),
-			segmentSplitStrategy: 'cheapestSegment',
-			// strandard: true,
-});
-
-// var WinnowSegmenter2 = 
-var WinnowSegmenterBeginEnd = 
-			classifiers.multilabel.BinarySegmentation.bind(0, {
-			binaryClassifierType: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable()),
-			segmentSplitStrategy: 'cheapestSegment',
-			// strandard: false,
-});
-
-var BayesSegmenter = classifiers.EnhancedClassifier.bind(0, {
-		normalizer: normalizer,
-		inputSplitter: inputSplitter,
-		pastTrainingSamples: [], // to enable retraining
-
-		classifierType: classifiers.multilabel.MulticlassSegmentation.bind(0, {
-			multiclassClassifierType: classifiers.Bayesian.bind(0, {
-				calculateRelativeProbabilities: true,
-			}),
-			// multiclassClassifierType: enhance(SvmPerfBinaryRelevanceClassifier, new ftrs.FeatureLookupTable()),
-			featureExtractor: featureExtractorUB,
-		}),
-});
-
-// numberofclassifiers - defines how many classifiers should be defined on initialization step,
-// current workaround solution for setFeatureLookupTable routine
-var PartialClassification = function(multilabelClassifierType) {
-	return classifiers.multilabel.PartialClassification.bind(0, {
-		multilabelClassifierType: multilabelClassifierType,
-		numberofclassifiers: 3,
-	});
-};
-
-var homer = function(multilabelClassifierType) {
-	return classifiers.multilabel.Homer.bind(0, {
-		splitLabel: Hierarchy.splitJson, 
-		joinLabel:  Hierarchy.joinJson,
-		multilabelClassifierType: multilabelClassifierType,
-	});
-};
-
-var metalabeler = function(rankerType, counterType) {
-	if (!counterType) counterType=rankerType;
-	return classifiers.multilabel.MetaLabeler.bind(0, {
-		rankerType:  rankerType,
-		counterType: counterType,
-	});
-}
-
-var thresholdclassifier = function(multiclassClassifierType) {
-        return classifiers.multilabel.ThresholdClassifier.bind(0, {
-                multiclassClassifierType: multiclassClassifierType,
-                // ['Accuracy','F1']
-                evaluateMeasureToMaximize: 'Accuracy',
-                // set the number of fold for cross-validation, 
-                // =1 use validation set insted of cross - validation
-                numOfFoldsForThresholdCalculation: 10,
-        });
-}
 
 /*
  * FINAL CLASSIFIERS (exports):
@@ -855,52 +676,7 @@ module.exports = {
 		// featureExtractorUnigram: featureExtractorUnigram,
 		instanceFilter: instanceFilterShortString,
 		featureExpansion:featureExpansion,
-		PartialClassification:PartialClassification,
-		SvmPerfBinaryRelevanceClassifier:SvmPerfBinaryRelevanceClassifier,
 		featureExpansionEmpty:featureExpansionEmpty,
-
-		WinnowSegmenter: WinnowSegmenterBeginEnd,
-		WinnowSegmenterSagae: enhance5(WinnowSegmenterBeginEnd,new ftrs.FeatureLookupTable(),undefined,undefined,trainutils.deal,undefined),
-		SvmPerfClassifierIS: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, inputSplitter, new ftrs.FeatureLookupTable()),
-		SvmPerfClassifier: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined/*inputSplitter*/, new ftrs.FeatureLookupTable()),
-		HomerWinnow: enhance(homer(WinnowBinaryRelevanceClassifier), featureExtractorUB, true),
-
-		IntentClassificationIDF: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
-		IntentClassificationBin: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, false),
-
-		IntentClassificationExpansion2: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
-		IntentClassificationExpansion11: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[1,1]', 0, false),
-		IntentClassificationExpansion1Phrase: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[1,1]', 1, false),
-		IntentClassificationNoExpansion: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
-		IntentClassificationExpansion1Fine: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[1]', 0, true),
-
-		PartialClassificationEqually_Component: enhance(PartialClassification(SvmPerfBinaryRelevanceClassifier), featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, undefined,  Hierarchy.splitPartEqually),
-		PartialClassificationEquallySagae: enhance5(PartialClassification(WinnowSegmenter1),new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, trainutils.aggregate_rilesbased, undefined),
-
-		kNN: enhance(kNNBRAnd, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
-		kNN_And: enhance(kNNBRAnd, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
-		kNN_Euc: enhance(kNNBREuc, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
-		kNN_Cos: enhance(kNNBRCos, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
-		
-		kNN_Cos_0: enhance(kNNBRCos, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[0]', 0, false),
-		kNN_Cos_1: enhance(kNNBRCos, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[1]', 0, false),
-		kNN_Cos_2: enhance(kNNBRCos, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
-		kNN_Cos_3: enhance(kNNBRCos, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[3]', 0, false),
-		
-		kNNnoBR: enhance(kNNClassifierCosMulti, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
-		
-		kNN_word2vec: enhance(kNNBRCos, featureword2vec, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
-		SVM_unigram: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
-		SVM_word2vec: enhance(SvmPerfBinaryRelevanceClassifier, featureword2vec, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
-		SVM_word2vec_unigram: enhance(SvmPerfBinaryRelevanceClassifier, [featureword2vec, featureExtractorU], undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
-
-		SVM: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true),
-		SVM_Expansion: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEquallyIntent, undefined,  Hierarchy.splitPartEquallyIntent, true, featureExpansion, '[2]', 0, false),
-
-		// Reuter: enhance(SvmPerfMultiClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false),
-		TCSyn: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSyn),
-		TCSynHypHypo: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHypHypo),
-		TCSynHypHypoNoCon: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHypHypoNoCon),
 
 		// TC: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 		TC: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
@@ -914,6 +690,6 @@ module.exports = {
 };
 
 
-module.exports.defaultClassifier = module.exports.SvmPerfClassifier
+module.exports.defaultClassifier = module.exports.TC
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");

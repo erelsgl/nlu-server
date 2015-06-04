@@ -3,7 +3,6 @@ var fs = require('fs');
 var _ = require('underscore')._;
 var bars = require(__dirname+'/bars');
 var distance = require(__dirname+'/distance');
-var execSync = require('execSync')
 var wikipedia = require('./wikipedia')
 
 var gnuplot = 'gnuplot'

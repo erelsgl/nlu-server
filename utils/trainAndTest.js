@@ -4,14 +4,13 @@
  * @author Erel Segal-Halevi
  * @since 2013-06
  */
-var DefaultDict = require('defaultdict')
+
 var fs = require('fs');
 var _ = require('underscore')._;
 var utils = require('limdu/utils/list');
 var hash = require('limdu/utils/hash');
 var PrecisionRecall = require("limdu/utils/PrecisionRecall");
 var list = require('limdu/utils/list');
-var execSync = require('execSync')
 var async = require('async');
 
 /**

@@ -2,7 +2,6 @@
 
 var _ = require('underscore')._;
 var fs = require('fs');
-var execSync = require('execSync')
 
 function normalizer(sentence) {
 

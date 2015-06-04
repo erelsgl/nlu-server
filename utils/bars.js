@@ -12,13 +12,11 @@
 	@author Vasily Konovalov
  */
 var s = require('net').Socket();
-var Fiber = require('fibers');
+// var Fiber = require('fibers');
 var natural = require('natural');
-var execSync = require('execSync')
 var _ = require('underscore')._;
 var fs = require('fs');
 var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
-var DefaultDict = require('defaultdict')
 var Hierarchy = require('../Hierarchy');
 
 var limdu = require("limdu");
