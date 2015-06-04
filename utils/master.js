@@ -302,13 +302,16 @@ if (process.argv[1] === __filename)
 	var classifiers = ['TCBOC', 'TC']
 	fs.writeFileSync(statusfile, "")
 
+	var datafilepath = __dirname+"/../../wiki/en/social/cluster/"
+	var lc = __dirname + "/lc"
+	var hm = __dirname + "/hm"
+
 	// clean graphs
-	_.each(['lc','hm'], function(type, key, list){ 
-		var curves_path = __dirname + "/"+type
-		var graph_files = fs.readdirSync(curves_path)
+	_.each([lc,hm,datafilepath], function(type, key, list){ 
+		var graph_files = fs.readdirSync(type)
 
 		_.each(graph_files, function(value, key, list){ 
-			fs.unlinkSync(curves_path+"/"+value)
+			fs.unlinkSync(type+"/"+value)
 		}, this)
 	}, this)
 
@@ -326,8 +329,6 @@ if (process.argv[1] === __filename)
 	var datahash = groupbylabel(st_data, len, 200)
 	console.log("master: dataset groupped")
 
-	var datafilepath = __dirname+"/../../wiki/en/social/cluster/"
-
 	_.each(datahash, function(value, key, list){ 
 		console.log("master: write "+key)
 		fs.writeFileSync(datafilepath + key, JSON.stringify(value))
@@ -335,6 +336,7 @@ if (process.argv[1] === __filename)
 
 
 	console.log("master: dataset size "+_.flatten(_.toArray(datahash)).length)
+	console.log("master: labels "+ Object.keys(datahash).length)
 	console.log("master: dataset saved")
 
 	learning_curves(classifiers, len, folds, datafilepath, function(){
