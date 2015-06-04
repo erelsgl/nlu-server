@@ -276,12 +276,12 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 
 
 
-module.exports.test_async = function(classifier, testSet, pid, callback) {
+module.exports.test_async = function(classifier, testSet, callback) {
 
 	var data_stats = []
 	currentStats = new PrecisionRecall()
 
-	console.log("worker "+pid+": test")
+	var testStart = new Date().getTime()
 
 	async.forEachOfSeries(testSet, function (testRecord, testKey, callback1) {
 
@@ -303,13 +303,13 @@ module.exports.test_async = function(classifier, testSet, pid, callback) {
 		})
 	}, function(err){
 
-		
-		console.log("worker "+pid+": test end")
+		var testEnd = new Date().getTime()		
 		
 		classifierstats = {}
 		classifierstats['labels'] = currentStats.retrieveLabels()
 		classifierstats['data'] = data_stats
 		classifierstats['stats'] = currentStats.retrieveStats()
+		classifierstats['testtime'] = testEnd - testStart
 
 		callback(err, classifierstats)
 	})
@@ -553,16 +553,20 @@ function label_enrichment(dataset, func)
  * @author Vasily Konovalov
  */
 
-module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, pid, callback) {
+module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, callback) {
 
-		var classifier = new classifierType()
+	var classifier = new classifierType()
 
-		classifier.trainBatch_async(trainSet, function(err, results){
-				module.exports.test_async(classifier, testSet, pid, function(error, results){
-				callback(error, results)
-			})
+	var trainStart = new Date().getTime()
+
+	classifier.trainBatch_async(trainSet, function(err, results){
+		var trainEnd = new Date().getTime()
+		module.exports.test_async(classifier, testSet, function(error, results){
+		results['traintime'] = trainEnd - trainStart
+		callback(error, results)
 		})
-	}
+	})
+}
 
 
 module.exports.trainAndTest_hash = function(
