@@ -276,12 +276,12 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 
 
 
-module.exports.test_async = function(classifier, testSet, callback) {
+module.exports.test_async = function(classifier, testSet, pid, callback) {
 
 	var data_stats = []
 	currentStats = new PrecisionRecall()
 
-	console.log("test")
+	console.log("worker "+pid+": test")
 
 	async.forEachOfSeries(testSet, function (testRecord, testKey, callback1) {
 
@@ -303,7 +303,8 @@ module.exports.test_async = function(classifier, testSet, callback) {
 		})
 	}, function(err){
 
-		console.log("end test")
+		
+		console.log("worker "+pid+": test end")
 		
 		classifierstats = {}
 		classifierstats['labels'] = currentStats.retrieveLabels()
@@ -552,12 +553,12 @@ function label_enrichment(dataset, func)
  * @author Vasily Konovalov
  */
 
-module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, callback) {
+module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, pid, callback) {
 
 		var classifier = new classifierType()
 
 		classifier.trainBatch_async(trainSet, function(err, results){
-				module.exports.test_async(classifier, testSet, function(error, results){
+				module.exports.test_async(classifier, testSet, pid, function(error, results){
 				callback(error, results)
 			})
 		})
