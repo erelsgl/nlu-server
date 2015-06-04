@@ -246,6 +246,7 @@ function plotlc(fold, parameter, stat)
 function learning_curves(classifiers, len, folds, datafile, callback)
 {
 	var stat = {}
+	var thr = 0
 
 	_.each(classifiers, function(classifier, key, list){ 
 
@@ -257,7 +258,9 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 		  // silent: false
 			});
 
-			worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile})
+			worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
+
+			thr += 1
 
 			worker.on('message', function(message){
 				workerstats = JSON.parse(message)
