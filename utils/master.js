@@ -333,6 +333,8 @@ if (process.argv[1] === __filename)
 		fs.writeFileSync(datafilepath + key, JSON.stringify(value))
 	}, this)
 
+
+	console.log("master: dataset size "+_flatten(_.toArray(datahash)).length)
 	console.log("master: dataset saved")
 
 	learning_curves(classifiers, len, folds, datafilepath, function(){
