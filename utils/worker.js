@@ -31,14 +31,14 @@ _.each(files, function(file, key, list){
 
 console.log(msg("worker "+process["pid"]+": dataset loaded"))
 
+var classes = Object.keys(dataset_global)
+var datasetsize = _.flatten(_.toArray(dataset_global)).length
+
 var dataset = partitions.partitions_hash_fold(dataset_global, folds, fold)
 console.log(msg("worker "+process["pid"]+": dataset partitioned"))
 
 var train = dataset['train']
 var test = dataset['test']
-
-var classes = Object.keys(dataset_global)
-var datasetsize = _.flatten(_.toArray(dataset_global)).length
 
 var index = 0
 
