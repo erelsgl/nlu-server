@@ -113,7 +113,7 @@ function plot(fold, parameter, stat, baseline, sota)
 		}, this)
 	}
 
-	if (output.length == 0)
+	if ((output.length == 0) || (output.length<4) || (output.length % 2 != 0))
 		return
 
 	var results = _.groupBy(output, function(num){ return num[0] })
