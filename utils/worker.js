@@ -7,33 +7,32 @@ var master = require('./master');
 var partitions = require('limdu/utils/partitions');
 var classifiers = require(__dirname+"/../classifiers.js")
 var trainAndTest_async = require(__dirname+'/trainAndTest').trainAndTest_async;
-// var bars = require(__dirname+'/bars');
+var clc = require('cli-color')
 
-if (cluster.isWorker)
-	console.log("worker: started")
-
-// process.env.worker.process.pid
-
-// var pid = process["pid"]
 var fold = process.env["fold"]
 var datafilepath = process.env["datafile"]
 var folds = process.env["folds"]
 var classifier = process.env["classifier"]
 var len = process.env["len"]
+var thread = process.env["thread"]
+var msg = clc.xterm(thread)
+
+if (cluster.isWorker)
+	console.log(msg("worker: started"))
 
 var files = fs.readdirSync(datafilepath)
 
 var dataset_global = {}
 
 _.each(files, function(file, key, list){
-	console.log("worker "+process["pid"]+":loading "+file)
+	console.log(msg("worker "+process["pid"]+":loading "+file))
 	dataset_global[file]= JSON.parse(fs.readFileSync(datafilepath+file))
 }, this)
 
-console.log("worker "+process["pid"]+": dataset loaded")
+console.log(msg("worker "+process["pid"]+": dataset loaded"))
 
 var dataset = partitions.partitions_hash_fold(dataset_global, folds, fold)
-console.log("worker "+process["pid"]+": dataset partitioned")
+console.log(msg("worker "+process["pid"]+": dataset partitioned"))
 
 var train = dataset['train']
 var test = dataset['test']
@@ -54,7 +53,7 @@ async.whilst(
 
 			n+=1
 			
-			console.log("worker "+process["pid"]+": index=" + index +" alltrain="+_.flatten(train).length+" train="+mytrainset.length/classes.length+" testall="+test.length+" test="+test.length/classes.length +" length="+n+" maxlen="+len+" classifier="+classifier+" classes="+classes.length + " fold="+fold)			
+			console.log(msg("worker "+process["pid"]+": index=" + index +" alltrain="+_.flatten(train).length+" train="+mytrainset.length/classes.length+" testall="+test.length+" test="+test.length/classes.length +" length="+n+" maxlen="+len+" classifier="+classifier+" classes="+classes.length + " fold="+fold))
 
 			var mytrain = master.filtrain(mytrainset, n, 0)
 			var mytest = master.filtrain(test, n, 0)
@@ -62,7 +61,7 @@ async.whilst(
 
 		    trainAndTest_async(classifiers[classifier], mytrain, mytest, function(err, stats){
 
-		    	console.log("worker "+process["pid"]+": traintime="+stats['traintime']/1000 + " testtime="+ stats['testtime']/1000)
+		    	console.log(msg("worker "+process["pid"]+": traintime="+stats['traintime']/1000 + " testtime="+ stats['testtime']/1000))
 
 				var results = {
 					'classifier': classifier,
@@ -84,7 +83,7 @@ async.whilst(
 			  	})
     },
     function (err) {
-		console.log("worker "+process["pid"]+": exiting")
+		console.log(msg("worker "+process["pid"]+": exiting"))
 		process.exit()
 	})
 			  	
