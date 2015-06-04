@@ -281,6 +281,8 @@ module.exports.test_async = function(classifier, testSet, callback) {
 	var data_stats = []
 	currentStats = new PrecisionRecall()
 
+	console.log("test")
+
 	async.forEachOfSeries(testSet, function (testRecord, testKey, callback1) {
 
 		// console.log("Test "+testKey+" from "+testSet.length)
@@ -300,6 +302,8 @@ module.exports.test_async = function(classifier, testSet, callback) {
 
 		})
 	}, function(err){
+
+		console.log("end test")
 		
 		classifierstats = {}
 		classifierstats['labels'] = currentStats.retrieveLabels()
