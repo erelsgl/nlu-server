@@ -49,7 +49,7 @@ async.whilst(
        	index += (index < 20 ? 25 : 25)
 
        	var mytrainset = master.trainlen(train, index)
-       	console.log("worker "+process["pid"] ":trainlen")
+       	console.log("worker "+process["pid"] + ":trainlen")
 			
 		async.timesSeries(len+1, function(n, callbacktime){
 
@@ -58,10 +58,10 @@ async.whilst(
 			console.log("worker "+process["pid"]+": index=" + index +" alltrain="+_.flatten(train).length+" train="+mytrainset.length/classes.length+" testall="+test.length+" test="+test.length/classes.length +" length="+n+" maxlen="+len+" classifier="+classifier+" classes="+classes.length + " fold="+fold)			
 
 			var mytrain = master.filtrain(mytrainset, n, 0)
-       		console.log("worker "+process["pid"] ":mytrain")
+       		console.log("worker "+process["pid"] + ":mytrain")
 
 			var mytest = master.filtrain(test, n, 0)
-			console.log("worker "+process["pid"] ":mytest")
+			console.log("worker "+process["pid"] +  ":mytest")
 
 		    trainAndTest_async(classifiers[classifier], mytrain, mytest, function(err, stats){
 
