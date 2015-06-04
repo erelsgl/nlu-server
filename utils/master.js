@@ -83,10 +83,16 @@ function plot(fold, parameter, stat, baseline, sota)
 	if (fold != 'average')
 	{
 		_.each(stat, function(rowvalue, row, list){ 
-			_.each(rowvalue, function(data, column, list){ 
-				var result = data[sota][fold] - data[baseline][fold]
-				if (bars.isNumber(result))
-					output.push([row, column, result])
+			_.each(rowvalue, function(data, column, list){
+				if ((sota in data) && (baseline in data))
+				{
+					if ((fold in data[sota]) && (fold in data[baseline]))
+					{
+						var result = data[sota][fold] - data[baseline][fold]
+						if (bars.isNumber(result))
+							output.push([row, column, result])
+					}
+				}
 			}, this)
 		}, this)	
 	}
@@ -94,9 +100,15 @@ function plot(fold, parameter, stat, baseline, sota)
 	{
 		_.each(stat, function(rowvalue, row, list){ 
 			_.each(rowvalue, function(data, column, list){ 
-				var result = distance.vec_minus(_.toArray(data[baseline]), _.toArray(data[sota]))
-				var average = distance.average(result)
-				output.push([row, column, average])
+				if ((sota in data) && (baseline in data))
+				{
+					if (_.toArray(data[baseline]).length == _.toArray(data[sota]).length)
+					{
+						var result = distance.vec_minus(_.toArray(data[baseline]), _.toArray(data[sota]))
+						var average = distance.average(result)
+						output.push([row, column, average])
+					}
+				}
 			}, this)
 		}, this)
 	}
@@ -248,33 +260,30 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 				workerstats = JSON.parse(message)
 				extractGlobal(workerstats, stat)
 				fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
+
+				var baseline = classifiers[0]
+				var sotas = classifiers.slice(1)
+				var fold = workerstats["fold"]
+   	
+		   		_.each(sotas, function(sota, key, list){ 
+              		_.each(stat, function(data, param, list){
+						plot(fold, param, stat, baseline, sota)
+						plot('average', param, stat, baseline, sota)
+					})
+		   		}, this)
+
+		   		_.each(stat, function(data, param, list){
+					plotlc(fold, param, stat)
+					plotlc('average', param, stat)
+				})
 			})
 
 			worker.on('disconnect', function() {
 			  	console.log("master: " + worker.process.pid + " finished")
 
 			  	if (Object.keys(cluster.workers) == 0)
-			  	{
-					// console.log("all workers are disconnected")
-				   	var baseline = classifiers[0]
-				   	var sotas = classifiers.slice(1)
-
-				   	_(folds).times(function(fold){
-				   		_.each(sotas, function(sota, key, list){ 
-	                  		_.each(stat, function(data, param, list){
-								plot(fold, param, stat, baseline, sota)
-								plot('average', param, stat, baseline, sota)
-							})
-				   		}, this)
-				   })
-
-					_(folds).times(function(fold){
-	                  	_.each(stat, function(data, param, list){
-							plotlc(fold, param, stat)
-							plotlc('average', param, stat)
-						})
-				   })
-			  	}
+					console.log("all workers are disconnected")
+					
 			})
 		})
 	}, this)
