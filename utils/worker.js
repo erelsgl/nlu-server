@@ -63,7 +63,7 @@ async.whilst(
 			var mytest = master.filtrain(test, n, 0)
 			console.log("worker "+process["pid"] +  ":mytest")
 
-		    trainAndTest_async(classifiers[classifier], mytrain, mytest, function(err, stats){
+		    trainAndTest_async(classifiers[classifier], mytrain, mytest, process["pid"], function(err, stats){
 
 				var results = {
 					'classifier': classifier,
