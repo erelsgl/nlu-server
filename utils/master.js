@@ -223,11 +223,11 @@ function trainlen(train, index)
 	return _.flatten(train.slice(0, index))
 }
 
-function plotlc(fold, parameter, len, stat)
+function plotlc(fold, parameter, stat)
 {
 
 	var stat = stat[parameter]
-	var output = plotlcagr(fold, len, stat)
+	var output = plotlcagr(fold, stat)
 
 	var classifiers = output[0].slice(1)
 
@@ -294,7 +294,7 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 
 if (process.argv[1] === __filename)
 {
-	var folds = 10
+	var folds = 2
 	var len = 2
 	var classifiers = ['TCBOC', 'TC']
 	fs.writeFileSync(statusfile, "")
@@ -320,7 +320,7 @@ if (process.argv[1] === __filename)
 	}, this)
 
 	// modify corpus
-	var datahash = groupbylabel(st_data, len, 300)
+	var datahash = groupbylabel(st_data, len, 10)
 	console.log("master: dataset groupped")
 
 	var datafilepath = __dirname+"/../../wiki/en/social/cluster/"
