@@ -334,7 +334,7 @@ if (process.argv[1] === __filename)
 	}, this)
 
 
-	console.log("master: dataset size "+_flatten(_.toArray(datahash)).length)
+	console.log("master: dataset size "+_.flatten(_.toArray(datahash)).length)
 	console.log("master: dataset saved")
 
 	learning_curves(classifiers, len, folds, datafilepath, function(){
