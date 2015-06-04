@@ -552,11 +552,8 @@ module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, 
 
 		var classifier = new classifierType()
 
-		testSet1 = JSON.parse(JSON.stringify(testSet))
-		trainSet1 = JSON.parse(JSON.stringify(trainSet))
-		
-		classifier.trainBatch_async(trainSet1, function(err, results){
-				module.exports.test_async(classifier, testSet1, function(error, results){
+		classifier.trainBatch_async(trainSet, function(err, results){
+				module.exports.test_async(classifier, testSet, function(error, results){
 				callback(error, results)
 			})
 		})
