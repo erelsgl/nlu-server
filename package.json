@@ -31,8 +31,7 @@
     "wndb-with-exceptions": "^3.0.1",
     "wordsworth": "*",
     "xml2js": "~0.2.7",
-    "async": "*",
-    "fibers": "*"
+    "async": "*"
   },
   "devDependencies": {
     "mocha": "*",
