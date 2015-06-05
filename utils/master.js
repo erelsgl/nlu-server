@@ -55,7 +55,8 @@ function groupbylabel(dataset, minsize, sizetrain)
 
 function extractGlobal(workerstats, stat)
 {
-	var attributes = ["F1", "Accuracy", "macroF1"]
+	// var attributes = ["F1", "Accuracy", "macroF1"]
+	var attributes = ["Accuracy"]
 	var trainsize = workerstats["trainsize"]
 	var trainlen = workerstats["trainlen"]
 	var classifier = workerstats["classifier"]
