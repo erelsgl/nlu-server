@@ -382,14 +382,13 @@ function featureExtractorUCoreNLPSync(sentence, features, stopwords) {
 
 function featureExtractorUCoreNLPConcept(sentence, features, stopwords, callback) {
 
-	var candidates = bars.createcandidates(sentence)
+	var candidates = sentence["BOC"]
+    candidates = _.filter(candidates, function(num){ return ['noun'].indexOf(num['pos']) != -1; });
 
 	// console.log("Candidate before stopwords "+ candidates.length)
 	candidates = _.filter(candidates, function(num){ return stopwords.indexOf(num['string']) == -1 });
 	// console.log("Candidate after stopwords "+ candidates.length)
 	
-	// console.log(candidates)
-
 	var expansions = []
 
 	async.eachSeries(candidates, function (candidate, callback2) {
