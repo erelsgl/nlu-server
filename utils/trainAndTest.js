@@ -162,8 +162,8 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 				id = testSet[i]['input']['_id']	
 
 
-		if (i % 100)
-			console.log("Test index is " +  i + " from " + testSet.length + " ID " + id)
+		// if (i % 100)
+			// console.log("Test index is " +  i + " from " + testSet.length + " ID " + id)
 
 		// expectedClasses = list.listembed(testSet[i].output)
 		expectedClasses = testSet[i].output
@@ -246,8 +246,6 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 				
 				}, this)
 
-
-
 			}
 
 			data_stats.push(sentence_hash);
@@ -275,6 +273,14 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 
 
 
+
+
+module.exports.testBatch_async = function(classifier, testSet, callback) {
+
+	classifier.classifyBatch_async(testSet, function(err, results){
+		callback(err, results)
+	})
+}
 
 module.exports.test_async = function(classifier, testSet, callback) {
 
@@ -561,13 +567,12 @@ module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, 
 
 	classifier.trainBatch_async(trainSet, function(err, results){
 		var trainEnd = new Date().getTime()
-		module.exports.test_async(classifier, testSet, function(error, results){
+		module.exports.testBatch_async(classifier, testSet, function(error, results){
 		results['traintime'] = trainEnd - trainStart
 		callback(error, results)
 		})
 	})
 }
-
 
 module.exports.trainAndTest_hash = function(
 		classifierType, 
