@@ -365,6 +365,21 @@ function featureExtractorUCoreNLP(sentence, features, stopwords, callback) {
 }
 
 
+function featureExtractorUCoreNLPSync(sentence, features, stopwords) {
+
+	_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
+		_.each(sen['tokens'], function(value, key, list){
+			if ('lemma' in value)
+				// if (['ORGANIZATION', 'DATE', 'NUMBER'].indexOf(value['ner']) == -1)
+					features[value['lemma'].toLowerCase()] = 1 
+			else
+				throw new Error("where is lemma '"+value);
+
+		}, this)
+	}, this)
+}
+
+
 function featureExtractorUCoreNLPConcept(sentence, features, stopwords, callback) {
 
 	var candidates = bars.createcandidates(sentence)
@@ -442,6 +457,16 @@ function featureword2vec(sentence, features) {
 
 	return features
 }
+
+
+var SvmPerfBinaryClassifier = classifiers.SvmPerf.bind(0, {
+        learn_args: "-c 100 ",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html
+        model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf",
+});
+
+var SvmPerfBinaryRelevanceClassifier = classifiers.multilabelB.bind(0, {
+        binaryClassifierType: SvmPerfBinaryClassifier,
+});
 
 /*function featureExtractorBeginEndTruthTeller(sentence, features) {
 	
@@ -679,6 +704,8 @@ module.exports = {
 		featureExpansionEmpty:featureExpansionEmpty,
 
 		// TC: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
+		
+		TCPerf: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLPSync, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 		TC: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 		// TC1: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 		TCDemo: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCDemo),
