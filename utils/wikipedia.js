@@ -25,6 +25,7 @@ function load_wikipedia(folder)
 	var jsonpath = path + "json/"
 	var parsedpath = path + "parsed/"
 	var readydpath = path + "ready/"
+	var bocpath = path + "boc/"
     var files = fs.readdirSync(jsonpath)
     
      _.each(files, function(file, key, list){
@@ -34,6 +35,7 @@ function load_wikipedia(folder)
 
      	var fdata = JSON.parse(fs.readFileSync(jsonpath+file))
         fdata['CORENLP'] = JSON.parse(fs.readFileSync(parsedpath+file+".json"))
+        fdata['BOC'] = JSON.parse(fs.readFileSync(bocpath+file))
         data.push(fdata)
 
     }, this)
