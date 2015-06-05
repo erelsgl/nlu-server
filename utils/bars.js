@@ -37,6 +37,8 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 Tokenizer = require('natural').WordTokenizer,
   tokenizer = new Tokenizer();
 
+var indexWN = JSON.parse(fs.readFileSync(__dirname + "/../wordnet_index.json", 'UTF-8'))
+
 var stopwords = loadstopwords(__dirname+"/../stopwords")
 var intent_field = 'intent_core'
 var ValueTransition =
@@ -3345,8 +3347,7 @@ function onlyunigrams(strhash)
   function createcandidates(input)
   {
     var candidates = []
-    var index = JSON.parse(fs.readFileSync(__dirname + "/../wordnet_index.json", 'UTF-8'))
-    _.each(input['CORENLP']['sentences'], function(sentence, key, list){ 
+    _.each(input['sentences'], function(sentence, key, list){ 
     
       var features = []
   
@@ -3361,7 +3362,7 @@ function onlyunigrams(strhash)
       while (i<=features.length) {
         for (j = Math.min(k, features.length-i+1); j >= 1; j--) { 
           var s = features.slice(i, i+j)
-          var string = ngraminindex(s, index, 'word')
+          var string = ngraminindex(s, indexWN, 'word')
           if (!_.isUndefined(string))
           {
             candidates.push(string)
@@ -3376,7 +3377,7 @@ function onlyunigrams(strhash)
     }, this)
 
     // candidates = _.filter(candidates, function(num){ return ['verb','noun'].indexOf(num['pos']) != -1; });
-    candidates = _.filter(candidates, function(num){ return ['noun'].indexOf(num['pos']) != -1; });
+    // candidates = _.filter(candidates, function(num){ return ['noun'].indexOf(num['pos']) != -1; });
     return candidates
   }
 
