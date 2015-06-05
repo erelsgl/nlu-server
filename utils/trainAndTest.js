@@ -277,7 +277,12 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 
 module.exports.testBatch_async = function(classifier, testSet, callback) {
 
+	var testStart = new Date().getTime()
+
 	classifier.classifyBatch_async(testSet, function(err, results){
+		
+		var testEnd = new Date().getTime()
+		results['testtime'] = testEnd - testStart
 		callback(err, results)
 	})
 }
