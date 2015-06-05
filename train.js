@@ -41,11 +41,11 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 
 // var do_small_temporary_serialization_test = false
-var wikipedia_prepared1 = true
+var wikipedia_prepared1 = false
 var wikipedia_fit = false
 var wikipedia_json = false
 var technion_300 = false
-var wikipedia_test = false
+var wikipedia_test = true
 var wikipedia_categories = false
 var wikipedia_prepared = false
 var wikipedia_parsed = false
@@ -123,7 +123,6 @@ var explain = 0;
 // var extractor = require('unfluff');
 var cheapest_paths = require('limdu/node_modules/graph-paths').cheapest_paths;
 var natural = require('natural');
-var execSync = require('execSync').exec
 var partitions = require('limdu/utils/partitions');
 var PrecisionRecall = require('limdu/utils/PrecisionRecall');
 // var trainAndTest = require('limdu/utils/trainAndTest').trainAndTest;
@@ -134,7 +133,7 @@ var trainAndTest = require('./utils/trainAndTest');
 // var ToTest = require('limdu/utils/trainAndTest').test;
 // var ToTest = require('./utils/trainAndTest').test;
 var serialization = require('serialization');
-var curves = require('./utils/learning_curves');
+// var curves = require('./utils/learning_curves');
 // var unseen_words_curves = require('limdu/utils/unseen_curves').unseen_word_curves;
 // var unseen_correlation = require('limdu/utils/unseen_correlation').unseen_correlation;
 // var tokenize = require('limdu/utils/unseen_correlation').tokenize;
@@ -271,7 +270,11 @@ if (wikipedia_test)
 		// console.log(file)
 		// data = data.concat(JSON.parse(fs.readFileSync("../wiki/en/"+setname+"/" + file)))
 	// }, this)
-	var data = wikipedia.load_wikipedia("social")
+	// var data = wikipedia.load_wikipedia("social")
+
+	data = JSON.parse(fs.readFileSync("/home/com/Shared/wiki/en/JEL/wiki.0.corenlp.json"))
+	data = data.concat(JSON.parse(fs.readFileSync("/home/com/Shared/wiki/en/JEL/wiki.1.corenlp.json")))
+	data = data.concat(JSON.parse(fs.readFileSync("/home/com/Shared/wiki/en/JEL/wiki.2.corenlp.json")))
 
 //	console.log(data.length)
 //	var count = _.reduce(data, function(memo, num){ return memo + num["categories"].length }, 0)
@@ -307,12 +310,12 @@ if (wikipedia_test)
 	// data.splice(300)
 
 	var compare = {
-		'TCPPDB':classifier.TCPPDB, 
+		// 'TCPPDB':classifier.TCPPDB, 
 
-		'TCBOC':classifier.TCBOC, 
+		// 'TCBOC':classifier.TCBOC, 
 		// 'TCSynHyp1': classifier.TCSynHyp1, 
 		'TC':classifier.TC,
-		'TC1':classifier.TC1
+		// 'TC1':classifier.TC1
 		}
 
 	var results = {}
@@ -328,14 +331,16 @@ if (wikipedia_test)
 	trainAndTest.trainAndTest_async(classifier['TC'], dataset['train'], dataset['test'], function(err, stats){
 		// console.log("FINISHED")
 		console.log(JSON.stringify(stats['stats'], null, 4))
+		// console.log()
+		// process.exit(0)
 
-		trainAndTest.trainAndTest_async(classifier['TC1'], dataset['train'], dataset['test'], function(err, stats){
+		var stats = trainAndTest.trainAndTest_hash(classifier['TCPerf'], dataset['train'], dataset['test'])
 	
-			console.log(JSON.stringify(stats['stats'], null, 4))
+			console.log(JSON.stringify(stats["stats"]["Accuracy"], null, 4))
 
 			process.exit(0)
 
-		})
+	
 
 
 	})
