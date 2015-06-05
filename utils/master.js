@@ -300,7 +300,7 @@ if (process.argv[1] === __filename)
 {
 	var folds = 10
 	var len = 2
-	var classifiers = ['TCBOC', 'TC']
+	var classifiers = ['TC', 'TCBOC']
 	fs.writeFileSync(statusfile, "")
 
 	var datafilepath = __dirname+"/../../wiki/en/social/cluster/"
