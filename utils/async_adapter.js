@@ -6,7 +6,7 @@ var _ = require('underscore')._;
 var WordNet = require("node-wordnet")
 var wordnet = new WordNet({
   // cache: { max: 500000, maxAge: 1000 * 60 * 60 }
-  dataDir: "/mnt/ramdisk/wordnet/dict"
+  dataDir: "/mnt/ramdisk/wordnet/dict",
   cache: true
 })
 
