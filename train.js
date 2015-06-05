@@ -41,11 +41,12 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 
 // var do_small_temporary_serialization_test = false
+var wikipedia_boc = true
 var wikipedia_prepared1 = false
 var wikipedia_fit = false
 var wikipedia_json = false
 var technion_300 = false
-var wikipedia_test = true
+var wikipedia_test = false
 var wikipedia_categories = false
 var wikipedia_prepared = false
 var wikipedia_parsed = false
@@ -246,6 +247,28 @@ if (technion_300)
 	}, this)
 
 	console.log(_.unique(labs).length)
+	process.exit(0)
+}
+
+
+if (wikipedia_boc)
+{
+	var inpath = "../wiki/en/social/parsed/"
+	var outpath =  "../wiki/en/social/boc/"
+
+	var files = fs.readdirSync(inpath)
+
+	console.log(files.length)
+
+	_.each(files, function(file, key, list){
+	 	var data =  JSON.parse(fs.readFileSync(inpath+file))
+	 	var candidates = bars.createcandidates(data)
+        fs.writeFileSync(outpath+file.split(".")[0], JSON.stringify(candidates))
+
+        if (key % 100 == 0)
+        	console.log(key)
+	}, this)
+	console.log()
 	process.exit(0)
 }
 
