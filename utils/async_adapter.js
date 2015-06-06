@@ -42,9 +42,7 @@ function getppdb(string, pos, relation, callback)
 function getwordnetCache(string, pos, relation, callbackg)
 {
 	wordnetcache.get(string+"_"+pos+"_"+relation, function(err, value){
-  		console.log(err)
-  		console.log("+++++++++++++++++++++++++++++++++++")
-  		if( err ){
+  		if( !err ){
     		// if(value == undefined){
     			getwordnet(string, pos, relation, function(err, result){
     				wordnetcache.set(key, result)
