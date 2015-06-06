@@ -41,12 +41,9 @@ function getppdb(string, pos, relation, callback)
 
 function getwordnetCache(string, pos, relation, callbackg)
 {
-	wordnetStat += 1
-	if (wordnetStat % 1000 == 0)
-		console.log(JSON.stringify(wordnetcache.getStats(), null, 4))
-
-	var key = string+"_"+pos+"_"+relation
-	wordnetcache.get(key, function(err, value){
+	wordnetcache.get(string+"_"+pos+"_"+relation, function(err, value){
+  		console.log(err)
+  		console.log("+++++++++++++++++++++++++++++++++++")
   		if( err ){
     		// if(value == undefined){
     			getwordnet(string, pos, relation, function(err, result){
