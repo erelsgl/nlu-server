@@ -44,19 +44,17 @@ function getwordnetCache(string, pos, relation, callbackg)
 	wordnetStat += 1
 	if (wordnetStat % 1000 == 0)
 		console.log(JSON.stringify(getwordnet.getStats(), null, 4))
-	
+
 	var key = string+"_"+pos+"_"+relation
 	wordnetcache.get(key, function(err, value){
   		if( err ){
     		// if(value == undefined){
     			getwordnet(string, pos, relation, function(err, result){
     				wordnetcache.set(key, result)
-
     			})	
-    	// }
+    	}
     	else
     		callbackg(value)
-  		}
 	})
 }
 
