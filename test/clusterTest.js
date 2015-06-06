@@ -53,20 +53,52 @@ describe('wikipedia', function() {
                 trainop.length.should.equal(3)
         })
 
-        it('plotlcagrfold', function() {
+        // it('plotlcagrfold', function() {
+        //         var output = master.plotlcagr(0/*fold*/, stat)
+        //         _.isEqual(output, [     ["size","TC","TCBOC"],
+        //                                         ["15",0,10],
+        //                                         ["30",20,30]]).should.be.true
+
+        //         var str = master.getstringlc(output)
+        //         str.should.be.equal("size\tTC\tTCBOC\n15\t0\t10\n30\t20\t30")
+        // })
+
+        it('plotlcagr', function() {
                 var output = master.plotlcagr(0/*fold*/, stat)
                 _.isEqual(output, [     ["size","TC","TCBOC"],
-                                                ["15",0,10],
-                                                ["30",20,30]]).should.be.true
+                                        [ '15', 250, 210 ],
+                                        [ '30', 20, 30 ] ]).should.be.true
 
-                var str = master.getstringlc(output)
-                str.should.be.equal("size\tTC\tTCBOC\n15\t0\t10\n30\t20\t30")
-        })
-
-        it('plotlcagraverage', function() {
                 var output = master.plotlcagr('average'/*fold*/, stat)
                 _.isEqual(output, [     ["size","TC","TCBOC"],
-                                                        [ '15', 0.5, 10.5 ],
-                                                        [ '30', 20.5, 30.5 ] ]).should.be.true
+                                        [ '15', 225.5, 260.5 ],
+                                        [ '30', 20.5, 30.5 ] ]).should.be.true
+
         })
+
+        it('plotlcagrlen', function() {
+
+                var stat = {
+                "1": {
+                        "TC": { "0": 1, "1": 2, "2": 3, "3": 4 },
+                        "TC1": {"0": 3, "2": 4}
+                },
+                "2": {
+                        "TC": { "1": 5, "2": 6 }   
+                }}
+
+                var output = master.plotlcagrlen(2, stat)
+                _.isEqual(output, { TC: 4.5, TC1: 4 }).should.be.true
+
+                var output = master.plotlcagrlen('average', stat)
+                _.isEqual(output, { TC: 4, TC1: 3.5 }).should.be.true
+
+                })
+
+        it('plotlcagrlenaverge', function() {
+                var stat = { "1": 3, "3": 6, "8": 3 }
+                master.plotlcagrlenaverge(stat).should.be.equal(4)
+
+        })
+
 })
