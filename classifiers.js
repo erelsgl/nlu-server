@@ -379,8 +379,7 @@ function featureExtractorUCoreNLPSync(sentence, features, stopwords) {
 	}, this)
 }
 
-
-function featureExtractorUCoreNLPConcept(sentence, features, stopwords, callback) {
+function featureExtractorUCoreNLPConceptWordnet(sentence, features, stopwords, callback) {
 
 	var candidates = []
 
@@ -390,7 +389,6 @@ function featureExtractorUCoreNLPConcept(sentence, features, stopwords, callback
 
     candidates = _.filter(candidates, function(num){ return ['noun'].indexOf(num['pos']) != -1; });
 	candidates = _.filter(candidates, function(num){ return stopwords.indexOf(num['string']) == -1 });
-	// console.log("Candidate after stopwords "+ candidates.length)
 	
 	var expansions = []
 
@@ -408,22 +406,55 @@ function featureExtractorUCoreNLPConcept(sentence, features, stopwords, callback
 			features["C_"+expansion.toLowerCase()] = 1 
 		}, this)
 
-		_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
-			_.each(sen['tokens'], function(value, key, list){
-				if ('lemma' in value)
-					// if (['ORGANIZATION', 'DATE', 'NUMBER'].indexOf(value['ner']) == -1)
-						features[value['lemma'].toLowerCase()] = 1 
-				else
-					{
-						console.log("There is no lemma "+ value)
-						// process.exit(0)
-					}
-			}, this)
-		}, this)
-
 		callback(err, features)
 	})
 }
+
+
+// function featureExtractorUCoreNLPConcept(sentence, features, stopwords, callback) {
+
+// 	var candidates = []
+
+// 	_.each(sentence["CORENLP"]['sentences'], function(sentence, key, list){ 
+// 		candidates = candidates.concat(sentence["boc"])
+// 	}, this)
+
+//     candidates = _.filter(candidates, function(num){ return ['noun'].indexOf(num['pos']) != -1; });
+// 	candidates = _.filter(candidates, function(num){ return stopwords.indexOf(num['string']) == -1 });
+// 	// console.log("Candidate after stopwords "+ candidates.length)
+	
+// 	var expansions = []
+
+// 	async.eachSeries(candidates, function (candidate, callback2) {
+// 		// async_adapter.getwordnet(candidate['string'], candidate['pos'], 'hypernym_1', function(err, expansion){
+// 		async_adapter.getwordnetCache(candidate['string'], candidate['pos'], 'synonym', function(err, expansion){
+// 		// async_adapter.getwordnet(candidate['string'], candidate['pos'], 'synonym', function(err, expansion){
+
+// 			expansions = expansions.concat(expansion)
+// 			callback2()
+// 		})
+// 	}, 	function (err) {
+
+// 		_.each(expansions, function(expansion, key, list){ 
+// 			features["C_"+expansion.toLowerCase()] = 1 
+// 		}, this)
+
+// 		_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
+// 			_.each(sen['tokens'], function(value, key, list){
+// 				if ('lemma' in value)
+// 					// if (['ORGANIZATION', 'DATE', 'NUMBER'].indexOf(value['ner']) == -1)
+// 						features[value['lemma'].toLowerCase()] = 1 
+// 				else
+// 					{
+// 						console.log("There is no lemma "+ value)
+// 						// process.exit(0)
+// 					}
+// 			}, this)
+// 		}, this)
+
+// 		callback(err, features)
+// 	})
+// }
 
 function featureword2vec(sentence, features) {
 	var words = tokenizer.tokenize(sentence);
@@ -716,7 +747,7 @@ module.exports = {
 		TCPPDBNoCon: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCPPDBNoCon),
 		TCSynHypHypoCohypo: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHypHypoCohypo),
 		TCSynHyp1: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHyp1),
-		TCBOC: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLPConcept, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
+		TCBOC: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptWordnet, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 };
 
 
