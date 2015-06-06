@@ -11,6 +11,7 @@ var wordnet = new WordNet({
 
 var NodeCache = require( "node-cache" );
 var wordnetcache = new NodeCache();
+var wordnetStat = 0
 
 function getppdb(string, pos, relation, callback)
 {
@@ -40,17 +41,21 @@ function getppdb(string, pos, relation, callback)
 
 function getwordnetCache(string, pos, relation, callbackg)
 {
+	wordnetStat += 1
+	if (wordnetStat % 1000 == 0)
+		console.log(JSON.stringify(getwordnet.getStats(), null, 4))
+	
 	var key = string+"_"+pos+"_"+relation
 	wordnetcache.get(key, function(err, value){
-  		if( !err ){
-    		if(value == undefined){
+  		if( err ){
+    		// if(value == undefined){
     			getwordnet(string, pos, relation, function(err, result){
     				wordnetcache.set(key, result)
 
     			})	
-    	}else{
+    	// }
+    	else
     		callbackg(value)
-    	}
   		}
 	})
 }
