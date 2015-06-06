@@ -45,7 +45,7 @@ function getwordnetCache(string, pos, relation, callbackg)
   		if( !err ){
     		// if(value == undefined){
     			getwordnet(string, pos, relation, function(err, result){
-    				wordnetcache.set(key, result)
+    				wordnetcache.set(string+"_"+pos+"_"+relation, result)
     				callbackg(result)
     			})	
     	}
