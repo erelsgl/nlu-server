@@ -34,8 +34,9 @@ function load_wikipedia(folder)
      		console.log(key)
 
      	var fdata = JSON.parse(fs.readFileSync(jsonpath+file))
-        fdata['CORENLP'] = JSON.parse(fs.readFileSync(parsedpath+file+".json"))
-        fdata['BOC'] = JSON.parse(fs.readFileSync(bocpath+file))
+        // fdata['CORENLP'] = JSON.parse(fs.readFileSync(parsedpath+file+".json"))
+        fdata['CORENLP'] = JSON.parse(fs.readFileSync(bocpath+file))
+        // fdata['BOC'] = JSON.parse(fs.readFileSync(bocpath+file))
         data.push(fdata)
 
     }, this)
