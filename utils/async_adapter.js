@@ -120,7 +120,9 @@ function getwordnet(string, pos, relation, callbackg)
 		    		async.timesSeries(count, function(n, nextt){
 		    			var temp = []
 		    			
-		    			async.eachSeries(ptrs, function(result, callback1){ 
+		    			async.eachSeries(ptrs, function(result, callback1){
+							
+							output = output.concat(result['synonyms'])
 		    				
 							async.eachSeries(result['ptrs'], function(res, callback4){
 
