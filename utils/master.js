@@ -143,7 +143,6 @@ function plotlcagr(fold, stat)
 
 	var classifiers = []
 
-
 	var output = []
 		
 	if (fold != 'average')
