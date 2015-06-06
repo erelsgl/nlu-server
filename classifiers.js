@@ -389,8 +389,6 @@ function featureExtractorUCoreNLPConcept(sentence, features, stopwords, callback
 	}, this)
 
     candidates = _.filter(candidates, function(num){ return ['noun'].indexOf(num['pos']) != -1; });
-
-	// console.log("Candidate before stopwords "+ candidates.length)
 	candidates = _.filter(candidates, function(num){ return stopwords.indexOf(num['string']) == -1 });
 	// console.log("Candidate after stopwords "+ candidates.length)
 	
