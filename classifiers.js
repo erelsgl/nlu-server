@@ -382,7 +382,12 @@ function featureExtractorUCoreNLPSync(sentence, features, stopwords) {
 
 function featureExtractorUCoreNLPConcept(sentence, features, stopwords, callback) {
 
-	var candidates = sentence["BOC"]
+	var candidates = []
+
+	_.each(sentence["CORENLP"]['sentences'], function(sentence, key, list){ 
+		candidates = candidates.concat(sentence["boc"])
+	}, this)
+
     candidates = _.filter(candidates, function(num){ return ['noun'].indexOf(num['pos']) != -1; });
 
 	// console.log("Candidate before stopwords "+ candidates.length)
