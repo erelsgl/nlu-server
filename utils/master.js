@@ -143,6 +143,9 @@ function plotlcagr(fold, stat)
 
 	var classifiers = []
 
+	console.log("plotlcagr")
+	console.log(stat)
+
 	var output = []
 		
 	if (fold != 'average')
@@ -179,6 +182,9 @@ function plotlcagr(fold, stat)
 		}, this)
 	}
 
+	console.log("plotlcagr end")
+	console.log(output)
+
 	return output
 }
 
@@ -193,8 +199,8 @@ function filtrain(train, index, startwith)
 	}
 	var output = []
 	_.each(train, function(value, key, list){ 
-		value1 = value
-		value1["input"]["CORENLP"]["sentences"].splice(startwith, index+startwith)	
+		value1 = JSON.parse(JSON.stringify(value))
+		value1["input"]["CORENLP"]["sentences"] = value["input"]["CORENLP"]["sentences"].slice(startwith, index+startwith)	
 		output.push(value1)
 	}, this)
 	return output
