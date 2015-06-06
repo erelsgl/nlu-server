@@ -7,8 +7,10 @@ var WordNet = require("node-wordnet")
 var wordnet = new WordNet({
   // cache: { max: 500000, maxAge: 1000 * 60 * 60 }
   dataDir: "/mnt/ramdisk/wordnet/dict",
-  cache: true
 })
+
+var NodeCache = require( "node-cache" );
+var wordnetcache = new NodeCache();
 
 function getppdb(string, pos, relation, callback)
 {
@@ -33,6 +35,24 @@ function getppdb(string, pos, relation, callback)
 			callback(err, _.uniq(output))
         })
 	})	
+}
+
+
+function getwordnetCache(string, pos, relation, callbackg)
+{
+	var key = string+"_"+pos+"_"+relation
+	wordnetcache.get(key, function(err, value){
+  		if( !err ){
+    		if(value == undefined){
+    			getwordnet(string, pos, relation, function(err, result){
+    				wordnetcache.set(key, result)
+
+    			})	
+    	}else{
+    		callbackg(value)
+    	}
+  		}
+	})
 }
 
 function getwordnet(string, pos, relation, callbackg)
@@ -273,5 +293,6 @@ function getred(params, db, callback)
 module.exports = {
   getppdb:getppdb,
   getwordnet:getwordnet,
-  getred:getred
+  getred:getred,
+  getwordnetCache:getwordnetCache
 }
