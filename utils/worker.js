@@ -13,7 +13,7 @@ var fold = process.env["fold"]
 var datafilepath = process.env["datafile"]
 var folds = process.env["folds"]
 var classifier = process.env["classifier"]
-var len = process.env["len"]
+var maxlen = process.env["len"]
 var thread = process.env["thread"]
 var msg = clc.xterm(thread)
 
@@ -41,48 +41,53 @@ var train = dataset['train']
 var test = dataset['test']
 
 var index = 0
+var len = 1
 
 async.whilst(
     function () { return index <= train.length },
     function (callbackwhilst) {
        
-       	index += (index < 20 ? 25 : 25)
+       	index += (index < 20 ? 1 : 25)
 
        	var mytrainset = master.trainlen(train, index)
+
+       	async.whilst(
+
+    		function () { return len <= maxlen },
+    		function (callbacktime) {
 			
-		async.timesSeries(len+1, function(n, callbacktime){
+				console.log(msg("worker "+process["pid"]+": datasetsize="+datasetsize+" index=" + index +" train="+train.length+" alltrain="+_.flatten(train).length+" traincurrent="+mytrainset.length/classes.length+" testall="+test.length+" test="+test.length/classes.length +
+					" length="+len+" maxlen="+maxlen+" classifier="+classifier+" classes="+classes.length + " fold="+fold))
 
-			n+=1
-			
-			console.log(msg("worker "+process["pid"]+": datasetsize="+datasetsize+" index=" + index +" train="+train.length+" alltrain="+_.flatten(train).length+" traincurrent="+mytrainset.length/classes.length+" testall="+test.length+" test="+test.length/classes.length +
-				" length="+n+" maxlen="+len+" classifier="+classifier+" classes="+classes.length + " fold="+fold))
+				var mytrain = master.filtrain(mytrainset, len, 0)
+				var mytest = master.filtrain(test, len, 0)
+				
+			    trainAndTest_async(classifiers[classifier], mytrain, mytest, function(err, stats){
 
-			var mytrain = master.filtrain(mytrainset, n, 0)
-			var mytest = master.filtrain(test, n, 0)
-			
+			    	console.log(msg("worker "+process["pid"]+": traintime="+stats['traintime']/1000 + " testtime="+ stats['testtime']/1000 + " classifier="+classifier))
 
-		    trainAndTest_async(classifiers[classifier], mytrain, mytest, function(err, stats){
+					var results = {
+						'classifier': classifier,
+						'fold': fold,
+						'trainsize': mytrainset.length/classes.length,
+						'trainlen': len,
+						'F1': stats['stats']['F1'],
+						'macroF1': stats['stats']['macroF1'],
+						'Accuracy': stats['stats']['Accuracy']
+					}
 
-		    	console.log(msg("worker "+process["pid"]+": traintime="+stats['traintime']/1000 + " testtime="+ stats['testtime']/1000 + " classifier="+classifier))
+					len += 1
 
-				var results = {
-					'classifier': classifier,
-					'fold': fold,
-					'trainsize': mytrainset.length/classes.length,
-					'trainlen': n,
-					'F1': stats['stats']['F1'],
-					'macroF1': stats['stats']['macroF1'],
-					'Accuracy': stats['stats']['Accuracy']
-				}
-
-				process.send(JSON.stringify(results))
-				callbacktime()
+					process.send(JSON.stringify(results))
+					callbacktime()
 
 		    	})
-
-			  	}, function(){
-			  		callbackwhilst()
-			  	})
+	    },
+    	function (err) {
+    		callbackwhilst()
+    	}
+		)
+			
     },
     function (err) {
 		console.log(msg("worker "+process["pid"]+": exiting"))
