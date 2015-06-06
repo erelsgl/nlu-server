@@ -3344,10 +3344,10 @@ function onlyunigrams(strhash)
     return {'string': string, 'pos': Pos}
   }
 
-  function createcandidates(input)
+  function createcandidates(sentence)
   {
     var candidates = []
-    _.each(input['sentences'], function(sentence, key, list){ 
+    // _.each(input['sentences'], function(sentence, key, list){ 
     
       var features = []
   
@@ -3374,7 +3374,7 @@ function onlyunigrams(strhash)
               i = i + j
         }
       }
-    }, this)
+    // }, this)
 
     // candidates = _.filter(candidates, function(num){ return ['verb','noun'].indexOf(num['pos']) != -1; });
     // candidates = _.filter(candidates, function(num){ return ['noun'].indexOf(num['pos']) != -1; });
