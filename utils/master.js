@@ -229,15 +229,19 @@ function trainlen(train, index)
 	return _.flatten(train.slice(0, index))
 }
 
+function getstringlc(output)
+{
+	return _.map(output, function(value){ return value.join("\t") }).join("\n")
+}
+
 function plotlc(fold, parameter, stat)
 {
 
-	var stat = stat[parameter]
-	var output = plotlcagr(fold, stat)
+	var output = plotlcagr(fold, stat[parameter])
 
 	var classifiers = output[0].slice(1)
 
-	var string = _.map(output, function(value){ return value.join("\t") }).join("\n")
+	var string = getstringlc(output)
 
 	var mapfile = __dirname+"/lc/"+fold+"_"+parameter
 
@@ -354,5 +358,6 @@ if (process.argv[1] === __filename)
 module.exports = {
 	plotlcagr: plotlcagr,
 	filtrain:filtrain,
-	trainlen:trainlen
+	trainlen:trainlen,
+	getstringlc:getstringlc
 } 
