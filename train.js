@@ -262,8 +262,12 @@ if (wikipedia_boc)
 
 	_.each(files, function(file, key, list){
 	 	var data =  JSON.parse(fs.readFileSync(inpath+file))
-	 	var candidates = bars.createcandidates(data)
-        fs.writeFileSync(outpath+file.split(".")[0], JSON.stringify(candidates))
+
+	 	_.each(data['sentences'], function(sentence, key, list){
+	 		data[key]['boc'] = bars.createcandidates(sentence)
+	 	}, this)
+
+        fs.writeFileSync(outpath+file.split(".")[0], JSON.stringify(data))
 
         if (key % 100 == 0)
         	console.log(key)
