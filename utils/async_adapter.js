@@ -39,24 +39,17 @@ function getppdb(string, pos, relation, callback)
 }
 
 
-function getwordnetCache(string, pos, relation, callbackg)
+function getwordnetCache(string, pos, relation, callback)
 {
 	wordnetcache.get(string+"_"+pos+"_"+relation, function(err, value){
   		if( !err ){
-  			console.log("fetching "+string)
-  			console.log("____________________________")
-    		// if(value == undefined){
     			getwordnet(string, pos, relation, function(err, result){
-    				console.log(result)
     				wordnetcache.set(string+"_"+pos+"_"+relation, result)
-    				callbackg(result)
+    				callback(null, result)
     			})	
     	}
     	else
-    	{
-    		console.log("++++CACHE IS ANSWRE++++")
-    		callbackg(value)
-		}
+    		callback(null, value)
 	})
 }
 
