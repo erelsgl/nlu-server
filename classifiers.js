@@ -350,20 +350,24 @@ function featureExtractorU(sentence, features) {
 
 function featureExtractorUCoreNLP(sentence, features, stopwords, callback) {
 
-	_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
-		_.each(sen['tokens'], function(value, key, list){
+	async.eachSeries(sentence['CORENLP']['sentences'], function (sen, callback1) {
+
+		async.eachSeries(sen['tokens'], function (value, callback2) {
 			if ('lemma' in value)
-				// if (['ORGANIZATION', 'DATE', 'NUMBER'].indexOf(value['ner']) == -1)
-					features[value['lemma'].toLowerCase()] = 1 
+				features[value['lemma'].toLowerCase()] = 1 
 			else
 				throw new Error("where is lemma '"+value);
-
-		}, this)
-	}, this)
-
-	callback(null, features)
+			callback2()
+		}, function(err)
+		{
+			callback1()
+		})}, function(err)
+		{
+			console.log("simiple")
+			console.log(Object.keys(features).length)
+			callback()
+		})
 }
-
 
 function featureExtractorUCoreNLPSync(sentence, features, stopwords) {
 
@@ -406,7 +410,11 @@ function featureExtractorUCoreNLPConceptWordnet(sentence, features, stopwords, c
 			features["C_"+expansion.toLowerCase()] = 1 
 		}, this)
 
-		callback(err, features)
+
+		console.log("wordneet")
+		console.log(Object.keys(features).length)
+			
+		callback()
 	})
 }
 
