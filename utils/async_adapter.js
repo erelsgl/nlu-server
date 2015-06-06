@@ -4,10 +4,10 @@ var async = require('async');
 var _ = require('underscore')._;
 
 var WordNet = require("node-wordnet")
-var wordnet = new WordNet({
-  // cache: { max: 500000, maxAge: 1000 * 60 * 60 }
-  dataDir: "/mnt/ramdisk/wordnet/dict",
-})
+// var wordnet = new WordNet({
+//   // cache: { max: 500000, maxAge: 1000 * 60 * 60 }
+//   dataDir: "/mnt/ramdisk/wordnet/dict",
+// })
 
 var NodeCache = require( "node-cache" );
 var wordnetcache = new NodeCache({'useClones': false});
@@ -55,6 +55,10 @@ function getwordnetCache(string, pos, relation, callback)
 
 function getwordnet(string, pos, relation, callbackg)
 {
+	var wordnet = new WordNet({
+  		// cache: { max: 500000, maxAge: 1000 * 60 * 60 }
+  		dataDir: "/mnt/ramdisk/wordnet/dict",
+	})
 
 	if (_.isArray(relation))
 	{
