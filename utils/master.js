@@ -299,7 +299,7 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 if (process.argv[1] === __filename)
 {
 	var folds = 10
-	var len = 2
+	var len = 5
 	var classifiers = ['TC', 'TCBOC']
 	fs.writeFileSync(statusfile, "")
 
