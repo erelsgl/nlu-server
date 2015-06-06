@@ -406,9 +406,6 @@ function featureExtractorUCoreNLPConcept(sentence, features, stopwords, callback
 		})
 	}, 	function (err) {
 
-		console.log("RESYLTSSSSSSSSSSSSSSSSSS")
-		console.log(expansions)
-
 		_.each(expansions, function(expansion, key, list){ 
 			features["C_"+expansion.toLowerCase()] = 1 
 		}, this)
