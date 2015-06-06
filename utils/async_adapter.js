@@ -43,8 +43,11 @@ function getwordnetCache(string, pos, relation, callbackg)
 {
 	wordnetcache.get(string+"_"+pos+"_"+relation, function(err, value){
   		if( !err ){
+  			console.log("fetching")
+  			console.log("____________________________")
     		// if(value == undefined){
     			getwordnet(string, pos, relation, function(err, result){
+    				console.log(result)
     				wordnetcache.set(string+"_"+pos+"_"+relation, result)
     				callbackg(result)
     			})	
