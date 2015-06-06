@@ -41,12 +41,12 @@ var train = dataset['train']
 var test = dataset['test']
 
 var index = 0
-var len = 1
 
 async.whilst(
     function () { return index <= train.length },
     function (callbackwhilst) {
-       
+
+		var len = 1
        	index += (index < 20 ? 1 : 25)
 
        	var mytrainset = master.trainlen(train, index)
@@ -64,15 +64,15 @@ async.whilst(
 				
 			    trainAndTest_async(classifiers[classifier], mytrain, mytest, function(err, stats){
 
-			    	console.log(msg("worker "+process["pid"]+": traintime="+stats['traintime']/1000 + " testtime="+ stats['testtime']/1000 + " classifier="+classifier))
+			    	console.log(msg("worker "+process["pid"]+": traintime="+stats['traintime']/1000 + " testtime="+ stats['testtime']/1000 + " classifier="+classifier + " Accuracy="+stats['stats']['Accuracy']))
 
 					var results = {
 						'classifier': classifier,
 						'fold': fold,
 						'trainsize': mytrainset.length/classes.length,
 						'trainlen': len,
-						'F1': stats['stats']['F1'],
-						'macroF1': stats['stats']['macroF1'],
+						// 'F1': stats['stats']['F1'],
+						// 'macroF1': stats['stats']['macroF1'],
 						'Accuracy': stats['stats']['Accuracy']
 					}
 
