@@ -10,7 +10,7 @@ var wordnet = new WordNet({
 })
 
 var NodeCache = require( "node-cache" );
-var wordnetcache = new NodeCache();
+var wordnetcache = new NodeCache({'useClones': false});
 var wordnetStat = 0
 
 function getppdb(string, pos, relation, callback)
