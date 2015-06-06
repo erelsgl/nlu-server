@@ -264,7 +264,7 @@ if (wikipedia_boc)
 	 	var data =  JSON.parse(fs.readFileSync(inpath+file))
 
 	 	_.each(data['sentences'], function(sentence, key, list){
-	 		data[key]['boc'] = bars.createcandidates(sentence)
+	 		data["sentences"][key]['boc'] = bars.createcandidates(sentence)
 	 	}, this)
 
         fs.writeFileSync(outpath+file.split(".")[0], JSON.stringify(data))
