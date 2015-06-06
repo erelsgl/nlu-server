@@ -138,52 +138,52 @@ function plot(fold, parameter, stat, baseline, sota)
 }
 
 
-function plotlcagr(fold, stat)
+function plotlcagrlenaverge(stat)
+{
+	return distance.average(_.values(stat))
+}
+
+
+function plotlcagrlen(fold, stat)
 {
 
-	var classifiers = []
+	var classifier_hash = {}
 
-	console.log("plotlcagr")
-	console.log(stat)
+	_.each(stat, function(value, len, list){
+		_.each(value, function(folds, clas, list){
+			if (!(clas in classifier_hash))
+				classifier_hash[clas] = []
 
+			if (fold in folds)
+				classifier_hash[clas].push(folds[fold])
+			else
+			{
+				if (fold == "average")
+					classifier_hash[clas].push(plotlcagrlenaverge(folds))
+			}
+
+		}, this)
+	}, this)
+
+	_.each(classifier_hash, function(value, key, list){ 
+		classifier_hash[key] = distance.average(value)
+	}, this)
+
+	return classifier_hash
+}
+
+function plotlcagr(fold, stat)
+{
 	var output = []
 		
-	if (fold != 'average')
-	{
-		_.each(stat, function(trainlens, trainsize, list){
-			var len = _.max(Object.keys(trainlens), function(n){ return n })
+	_.each(stat, function(trainlens, trainsize, list){
+		var avr = plotlcagrlen(fold, trainlens)
 
-			if (output.length == 0)
-			{
-				output.push(['size'].concat(Object.keys(trainlens[len])))
-				classifiers = Object.keys(trainlens[len])
-			}
-			var foldslist = _.toArray(trainlens[len])
-			var foldlist = _.pluck(foldslist, fold)
-			foldlist.unshift(trainsize)
-			output.push(foldlist)
-		}, this)	
-	}
-	else
-	{
-		_.each(stat, function(trainlens, trainsize, list){
-			var len = _.max(Object.keys(trainlens), function(n){ return n })
+		if (output.length == 0)
+			output.push(["size"].concat(_.keys(avr)))
 
-			if (output.length == 0)
-			{
-				output.push(['size'].concat(Object.keys(trainlens[len])))
-				classifiers = Object.keys(trainlens[len])
-			}
-			var foldslisthash = _.toArray(trainlens[len])
-			var foldslist = _.map(foldslisthash, function(value){ return _.toArray(value) })
-			var foldslistaverage = _.map(foldslist, function(value){ return distance.average(value) })
-			foldslistaverage.unshift(trainsize)
-			output.push(foldslistaverage)
-		}, this)
-	}
-
-	console.log("plotlcagr end")
-	console.log(output)
+		output.push([trainsize].concat(_.values(avr)))
+	})
 
 	return output
 }
@@ -359,5 +359,9 @@ module.exports = {
 	plotlcagr: plotlcagr,
 	filtrain:filtrain,
 	trainlen:trainlen,
-	getstringlc:getstringlc
+	getstringlc:getstringlc,
+	plotlcagrlen:plotlcagrlen,
+	plotlcagrlenaverge:plotlcagrlenaverge
 } 
+
+
