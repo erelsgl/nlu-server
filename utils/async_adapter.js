@@ -44,7 +44,7 @@ function getppdb(string, pos, relation, callback)
 function getwordnetCache(string, pos, relation, callback)
 {
 	wordnetcache.get(string+"_"+pos+"_"+relation, function(err, value){
-  		if( !err ){
+  		if( _.isUndefined(value) ){
     			getwordnet(string, pos, relation, function(err, result){
     				wordnetcache.set(string+"_"+pos+"_"+relation, result)
     				callback(null, result)
@@ -52,6 +52,7 @@ function getwordnetCache(string, pos, relation, callback)
     	}
     	else
     		callback(null, value)
+    	
 	})
 }
 
