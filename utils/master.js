@@ -269,41 +269,43 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 			});
 
 			worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
+			thr += 1	
+		})
+	}, this)
 
-			thr += 1
 
-			worker.on('message', function(message){
-				workerstats = JSON.parse(message)
-				extractGlobal(workerstats, stat)
-				fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
-				fs.appendFileSync(statusfile, JSON.stringify(stat, null, 4))
+	_.each(Object.keys(cluster.workers), function(id, worker, list){ 
+	    cluster.workers[id].on('message', function(message){
+			workerstats = JSON.parse(message)
+			extractGlobal(workerstats, stat)
+			fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
+			fs.appendFileSync(statusfile, JSON.stringify(stat, null, 4))
 
-				var baseline = classifiers[0]
-				var sotas = classifiers.slice(1)
-				var fold = workerstats["fold"]
+			var baseline = classifiers[0]
+			var sotas = classifiers.slice(1)
+			var fold = workerstats["fold"]
    	
-		   		_.each(sotas, function(sota, key, list){ 
-              		_.each(stat, function(data, param, list){
-						plot(fold, param, stat, baseline, sota)
-						plot('average', param, stat, baseline, sota)
-					})
-		   		}, this)
-
-		   		_.each(stat, function(data, param, list){
-					plotlc(fold, param, stat)
-					plotlc('average', param, stat)
+   			_.each(sotas, function(sota, key, list){ 
+            	_.each(stat, function(data, param, list){
+					plot(fold, param, stat, baseline, sota)
+					plot('average', param, stat, baseline, sota)
 				})
-			})
+		   	}, this)
 
-			worker.on('disconnect', function() {
-			  	console.log("master: " + worker.process.pid + " finished")
-
-			  	if (Object.keys(cluster.workers) == 0)
-					console.log("all workers are disconnected")
-					
+		   	_.each(stat, function(data, param, list){
+				plotlc(fold, param, stat)
+				plotlc('average', param, stat)
 			})
 		})
 	}, this)
+
+	_.each(Object.keys(cluster.workers), function(id, worker, list){ 
+	    cluster.workers[id].on('disconnect', function(){
+		  	console.log("master: " + id + " finished")
+		  	if (Object.keys(cluster.workers) == 0)
+				console.log("all workers are disconnected")
+		})
+	})
 }
 
 if (process.argv[1] === __filename)
