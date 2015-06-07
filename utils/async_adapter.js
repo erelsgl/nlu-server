@@ -21,7 +21,7 @@ var ppdbcachecounter = 0
 function getppdbCache(string, pos, db, callback)
 {
 	ppdbcachecounter += 1
-	if (ppdbcachecounter % 1000 == 0)
+	if (ppdbcachecounter % 10000 == 0)
 	{
 		console.log("getppdbCache")
 		console.log(JSON.stringify(ppdbcache.getStats(), null, 4))	
@@ -68,7 +68,7 @@ function getwordnetCache(string, pos, relation, callback)
 {
 	wordnetcachecounter += 1 
 
-	if (wordnetcachecounter % 1000 == 0)
+	if (wordnetcachecounter % 10000 == 0)
 	{
 		console.log("wordnetcache")
 		console.log(JSON.stringify(wordnetcache.getStats(), null, 4))	
