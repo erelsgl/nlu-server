@@ -2,9 +2,9 @@ var Redis = require('ioredis');
 var client = new Redis(6379);
 var async = require('async');
 var _ = require('underscore')._;
-var natural = require('natural')
 
-var wordnet = new natural.WordNet('/mnt/ramdisk/wordnet/dict')
+
+var wordNet = require('wordnet-magic');
 
 // var WordNet = require("node-wordnet")
 // var wordnet = new WordNet({
@@ -92,171 +92,198 @@ function getwordnet(string, pos, relation, callbackg)
 		process.exit(0)
 	}
 
-	var output = []
+	var wnpos = ""
 
-	async.waterfall([
-	    function(callback) {
+	_.each(POS, function(poslist, wnp, list){ 
+		if (poslist.indexOf(pos) != -1)
+			wnpos = wnp
+	}, this)
 
-	    	var output = []
+	var word = new wn.Word(string,wnpos)
+	
+
+	if (relation == "synonym")
+	{
+
+		word.getSynsets(function(err, synsets){
+			var lemls = _.flatten(_.pluck(synsets, 'words'))
+			var lemmas = _.pluck(lemls, 'lemma')
+
+			callback(null, _.unique(lemmas))
+        
+		});
+
+	}
+
+	}
+	
+
+
+	// var output = []
+
+	// async.waterfall([
+	//     function(callback) {
+
+	//     	var output = []
 		
-	    	wordnet.lookup(string, function(results) {
+	//     	wordnet.lookup(string, function(results) {
 
-	    		_.each(results, function(value, key, list){
+	//     		_.each(results, function(value, key, list){
 					
-					if (POS[value['pos']].indexOf(pos) != -1)
-						output.push(value) 
+	// 				if (POS[value['pos']].indexOf(pos) != -1)
+	// 					output.push(value) 
 
-				}, this)
+	// 			}, this)
 
-	    		callback(null, output)
-			})
-	    },
-	    function(results, callback) {
+	//     		callback(null, output)
+	// 		})
+	//     },
+	//     function(results, callback) {
 
-	    	var output = []
+	//     	var output = []
 
-	    	if (relation.indexOf("_") != -1)
-	    	{
-	    		var list = relation.split("_")
-	    		var rel = list[0]
-	    		var count = list[1]
-	    		var ptrs = JSON.parse(JSON.stringify(results))
+	//     	if (relation.indexOf("_") != -1)
+	//     	{
+	//     		var list = relation.split("_")
+	//     		var rel = list[0]
+	//     		var count = list[1]
+	//     		var ptrs = JSON.parse(JSON.stringify(results))
 
-	    		if (rel == "hypernym")
-	    		{
-		    		async.timesSeries(count, function(n, nextt){
-		    			var temp = []
+	//     		if (rel == "hypernym")
+	//     		{
+	// 	    		async.timesSeries(count, function(n, nextt){
+	// 	    			var temp = []
 		    			
-		    			async.eachSeries(ptrs, function(result, callback1){
+	// 	    			async.eachSeries(ptrs, function(result, callback1){
 							
-							output = output.concat(result['synonyms'])
+	// 						output = output.concat(result['synonyms'])
 		    				
-							async.eachSeries(result['ptrs'], function(res, callback4){
+	// 						async.eachSeries(result['ptrs'], function(res, callback4){
 
-								if (res['pointerSymbol'] == '@')
-								{
+	// 							if (res['pointerSymbol'] == '@')
+	// 							{
 
-									wordnet.get(res['synsetOffset'], res['pos'], function(subres) {
-										output = output.concat(subres['synonyms'])
-										temp.push(subres)
-										callback4()
-									})
-								}
-								else
-								callback4()
+	// 								wordnet.get(res['synsetOffset'], res['pos'], function(subres) {
+	// 									output = output.concat(subres['synonyms'])
+	// 									temp.push(subres)
+	// 									callback4()
+	// 								})
+	// 							}
+	// 							else
+	// 							callback4()
 
-							}, function(err, users) {
-								callback1()
-							})
-	    				}, function(err, users) {
-	    					ptrs = JSON.parse(JSON.stringify(temp))
-							nextt()
-						})
-	    			}, function(err, users) {
-						callback(null, _.unique(_.flatten(output)))	
-					})
-				}
-			}
+	// 						}, function(err, users) {
+	// 							callback1()
+	// 						})
+	//     				}, function(err, users) {
+	//     					ptrs = JSON.parse(JSON.stringify(temp))
+	// 						nextt()
+	// 					})
+	//     			}, function(err, users) {
+	// 					callback(null, _.unique(_.flatten(output)))	
+	// 				})
+	// 			}
+	// 		}
 
-	    	if (relation == "synonym")
-	    	{
-				_.each(results, function(value, key, list){
-					output = output.concat(value['synonyms']) 
-				}, this)
+	//     	if (relation == "synonym")
+	//     	{
+	// 			_.each(results, function(value, key, list){
+	// 				output = output.concat(value['synonyms']) 
+	// 			}, this)
 
-				callback(null, _.unique(output))
-	    	}
+	// 			callback(null, _.unique(output))
+	//     	}
 
-	    	if (relation == "hypernym")
-	    	{
-	    		async.eachSeries(results, function(result, callback1){ 
+	//     	if (relation == "hypernym")
+	//     	{
+	//     		async.eachSeries(results, function(result, callback1){ 
 
-					async.eachSeries(result['ptrs'], function(res, callback2){
+	// 				async.eachSeries(result['ptrs'], function(res, callback2){
 
-						if (res['pointerSymbol'] == '@')
-						{
-							wordnet.get(res['synsetOffset'], res['pos'], function(subres) {
-								output = output.concat(subres['synonyms'])
-								callback2()
-							})
-	    				}
-	    				else
-	    				callback2()
+	// 					if (res['pointerSymbol'] == '@')
+	// 					{
+	// 						wordnet.get(res['synsetOffset'], res['pos'], function(subres) {
+	// 							output = output.concat(subres['synonyms'])
+	// 							callback2()
+	// 						})
+	//     				}
+	//     				else
+	//     				callback2()
 
-					}, function(err){ callback1() })
-				},  function(err){ callback(null, output) })
-			}
+	// 				}, function(err){ callback1() })
+	// 			},  function(err){ callback(null, output) })
+	// 		}
 
-			if (relation == "hyponym")
-	    	{
-	    		async.eachSeries(results, function(result, callback1){ 
+	// 		if (relation == "hyponym")
+	//     	{
+	//     		async.eachSeries(results, function(result, callback1){ 
 
-					async.eachSeries(result['ptrs'], function(res, callback2){
+	// 				async.eachSeries(result['ptrs'], function(res, callback2){
 
-						if (res['pointerSymbol'] == '~')
-						{
-							wordnet.get(res['synsetOffset'], res['pos'], function(subres) {
-								output = output.concat(subres['synonyms'])
-								callback2()
-							})
-	    				}
-	    				else
-	    				callback2()
+	// 					if (res['pointerSymbol'] == '~')
+	// 					{
+	// 						wordnet.get(res['synsetOffset'], res['pos'], function(subres) {
+	// 							output = output.concat(subres['synonyms'])
+	// 							callback2()
+	// 						})
+	//     				}
+	//     				else
+	//     				callback2()
 
-					}, function(err){ callback1() })
-				},  function(err){ callback(null, output) })
-			}
+	// 				}, function(err){ callback1() })
+	// 			},  function(err){ callback(null, output) })
+	// 		}
 
-	    	if (relation == "cohyponym")
-	    	{
+	//     	if (relation == "cohyponym")
+	//     	{
 			
-				async.eachSeries(results, function(result, callback1){ 
+	// 			async.eachSeries(results, function(result, callback1){ 
 
-					async.eachSeries(result['ptrs'], function(res, callback2){
+	// 				async.eachSeries(result['ptrs'], function(res, callback2){
 
-						if (res['pointerSymbol'] == '@')
-						{
+	// 					if (res['pointerSymbol'] == '@')
+	// 					{
 
-							wordnet.get(res['synsetOffset'], res['pos'], function(subres) {
+	// 						wordnet.get(res['synsetOffset'], res['pos'], function(subres) {
 
-								async.eachSeries(subres['ptrs'], function(subsubres, callback3){
+	// 							async.eachSeries(subres['ptrs'], function(subsubres, callback3){
 						
-									if (subsubres['pointerSymbol'] == '~')
-									{
+	// 								if (subsubres['pointerSymbol'] == '~')
+	// 								{
 
-										wordnet.get(subsubres['synsetOffset'], subsubres['pos'], function(susubsubbres) {
+	// 									wordnet.get(subsubres['synsetOffset'], subsubres['pos'], function(susubsubbres) {
 
-											output = output.concat(susubsubbres['synonyms'])
-											callback3()
+	// 										output = output.concat(susubsubbres['synonyms'])
+	// 										callback3()
 
-										})
-									}
-									else
-									callback3()
+	// 									})
+	// 								}
+	// 								else
+	// 								callback3()
 
-								},  function(err){ callback2() })
-							})
-						}
-						else
-						callback2()			
+	// 							},  function(err){ callback2() })
+	// 						})
+	// 					}
+	// 					else
+	// 					callback2()			
 			
-					}, function(err){ callback1() })
+	// 				}, function(err){ callback1() })
 
-				}, function(err){
+	// 			}, function(err){
 				
-					callback(null, output)	
+	// 				callback(null, output)	
 				
-				})
+	// 			})
 
-	    	}
-		}
-	], function (err, result) {
+	//     	}
+	// 	}
+	// ], function (err, result) {
 
-		var result = _.map(_.unique(result), function(value){ return value.replace(/\_/g," "); });
+	// 	var result = _.map(_.unique(result), function(value){ return value.replace(/\_/g," "); });
 
-		callbackg(null, result)
-	})
-}
+	// 	callbackg(null, result)
+	// })
+
 
 function getred(params, db, callback)
 {
