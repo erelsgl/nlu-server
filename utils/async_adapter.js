@@ -2,16 +2,14 @@ var Redis = require('ioredis');
 var client = new Redis(6379);
 var async = require('async');
 var _ = require('underscore')._;
-
-
+var os = require("os");
+var hostname = os.hostname();
 var wordNet = require('wordnet-magic')
-var wn = wordNet("/mnt/ramdisk/wordnet/dict/sqlite-31.db", true)
 
-// var WordNet = require("node-wordnet")
-// var wordnet = new WordNet({
-//   // cache: { max: 500000, maxAge: 1000 * 60 * 60 }
-//   dataDir: "/mnt/ramdisk/wordnet/dict",
-// })
+if (hostname == "te-srv4.cs.biu.ac.il")
+	var wn = wordNet("/mnt/ramdisk/wordnet/dict/sqlite-31.db", true)
+else
+	var wn = wordNet()
 
 var NodeCache = require( "node-cache" );
 var wordnetcache = new NodeCache({'useClones': false});
@@ -57,13 +55,15 @@ function getwordnetCache(string, pos, relation, callback)
 	})
 }
 
+function synset2lemmas(synsets)
+{
+	var lemls = _.flatten(_.pluck(synsets, 'words'))
+	var lemmas = _.pluck(lemls, 'lemma')
+	return lemmas
+}
+
 function getwordnet(string, pos, relation, callbackg)
 {
-	// var wordnet = new WordNet({
-  		// cache: { max: 500000, maxAge: 1000 * 60 * 60 }
-  		// dataDir: "/mnt/ramdisk/wordnet/dict",
-	// })
-
 	if (_.isArray(relation))
 	{
 		console.log("Relation should not be a list")
@@ -89,7 +89,7 @@ function getwordnet(string, pos, relation, callbackg)
 
 	if (_.flatten(_.toArray(POS)).indexOf(pos) == -1)
 	{
-		console.log([])
+		console.log("err")
 		process.exit(0)
 	}
 
@@ -100,23 +100,32 @@ function getwordnet(string, pos, relation, callbackg)
 			wnpos = wnp
 	}, this)
 
-	var word = new wn.Word(string,wnpos)
-	
+	var word = new wn.Word(string, wnpos)
 
 	if (relation == "synonym")
-	{
-
+	{	
 		word.getSynsets(function(err, synsets){
-			var lemls = _.flatten(_.pluck(synsets, 'words'))
-			var lemmas = _.pluck(lemls, 'lemma')
-
+			var lemmas = synset2lemmas(synsets)
 			callbackg(null, _.unique(lemmas))
         
 		});
-
 	}
 
+	if (relation == "hypernym")
+	{
+		var output = []
+		word.getSynsets(function(err, synsets){
+			async.eachSeries(synsets, function(synset, callback1){ 
+				synset.getHypernyms(function(err, hypernyms){
+					output = output.concat(synset2lemmas(hypernyms))
+        			callback1()
+				})
+    		}, function(err){
+				callbackg(null, _.unique(output))
+    		})
+        })
 	}
+}
 	
 
 
