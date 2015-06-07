@@ -12,13 +12,26 @@ else
 	var wn = wordNet()
 
 var NodeCache = require( "node-cache" );
-var wordnetcache = new NodeCache({'useClones': false});
-var wordnetStat = 0
 
-function getppdb(string, pos, relation, callback)
+var wordnetcache = new NodeCache({'useClones': false});
+var ppdbcache = new NodeCache({'useClones': false});
+
+function getppdbCache(string, pos, db, callback)
 {
-	// var client = redis.createClient(6379)
-	var db = 4
+	ppdbcache.get(string+"_"+pos+"_"+db, function(err, value){
+  		if( _.isUndefined(value) ){
+    			getppdb(string, pos, db, function(err, result){
+    				ppdbcache.set(string+"_"+pos+"_"+db, result)
+    				callback(null, result)
+    			})
+    	}
+    	else
+    		callback(null, value)
+	})
+}
+
+function getppdb(string, pos, db, callback)
+{	
 	var output = []
 
 	client.select(db, function(err, response) {
