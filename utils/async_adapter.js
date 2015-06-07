@@ -14,10 +14,19 @@ else
 var NodeCache = require( "node-cache" );
 
 var wordnetcache = new NodeCache({'useClones': false});
+var wordnetcachecounter = 0
 var ppdbcache = new NodeCache({'useClones': false});
+var ppdbcachecounter = 0
 
 function getppdbCache(string, pos, db, callback)
 {
+	ppdbcachecounter += 1
+	if (ppdbcachecounter % 1000 == 0)
+	{
+		console.log("getppdbCache")
+		console.log(JSON.stringify(ppdbcache.getStats(), null, 4))	
+	}
+
 	ppdbcache.get(string+"_"+pos+"_"+db, function(err, value){
   		if( _.isUndefined(value) ){
     			getppdb(string, pos, db, function(err, result){
@@ -27,6 +36,7 @@ function getppdbCache(string, pos, db, callback)
     	}
     	else
     		callback(null, value)
+
 	})
 }
 
@@ -56,6 +66,15 @@ function getppdb(string, pos, db, callback)
 
 function getwordnetCache(string, pos, relation, callback)
 {
+	wordnetcachecounter += 1 
+
+	if (wordnetcachecounter % 1000 == 0)
+	{
+		console.log("wordnetcache")
+		console.log(JSON.stringify(wordnetcache.getStats(), null, 4))	
+	}
+
+
 	wordnetcache.get(string+"_"+pos+"_"+relation, function(err, value){
   		if( _.isUndefined(value) ){
     			getwordnet(string, pos, relation, function(err, result){
@@ -352,5 +371,6 @@ module.exports = {
   getppdb:getppdb,
   getwordnet:getwordnet,
   getred:getred,
-  getwordnetCache:getwordnetCache
+  getwordnetCache:getwordnetCache,
+  getppdbCache:getppdbCache
 }
