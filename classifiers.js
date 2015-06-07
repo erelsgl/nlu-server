@@ -407,7 +407,7 @@ function featureExtractorUCoreNLPConceptWordnet(sentence, features, stopwords, c
 	}, 	function (err) {
 
 		_.each(expansions, function(expansion, key, list){ 
-			features["C_"+expansion.toLowerCase()] = 1 
+			features[expansion.toLowerCase()] = 1 
 		}, this)
 			
 		callback()
@@ -437,7 +437,7 @@ function featureExtractorUCoreNLPConceptPPDBM(sentence, features, stopwords, cal
 	}, 	function (err) {
 
 		_.each(expansions, function(expansion, key, list){ 
-			features["C_"+expansion.toLowerCase()] = 1 
+			features[expansion.toLowerCase()] = 1 
 		}, this)
 			
 		callback()
@@ -466,7 +466,7 @@ function featureExtractorUCoreNLPConceptPPDBS(sentence, features, stopwords, cal
 	}, 	function (err) {
 
 		_.each(expansions, function(expansion, key, list){ 
-			features["C_"+expansion.toLowerCase()] = 1 
+			features[expansion.toLowerCase()] = 1 
 		}, this)
 			
 		callback()
