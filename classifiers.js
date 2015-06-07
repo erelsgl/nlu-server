@@ -397,9 +397,12 @@ function featureExtractorUCoreNLPConceptWordnet(sentence, features, stopwords, c
 	async.eachSeries(candidates, function (candidate, callback2) {
 		
 		async_adapter.getwordnetCache(candidate['string'], candidate['pos'], 'synonym', function(err, expansion){
-
 			expansions = expansions.concat(expansion)
-			callback2()
+
+			async_adapter.getwordnetCache(candidate['string'], candidate['pos'], 'hypernym', function(err, expansion){
+				expansions = expansions.concat(expansion)
+				callback2()
+			})
 		})
 	}, 	function (err) {
 
