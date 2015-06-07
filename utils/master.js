@@ -258,17 +258,17 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 	var stat = {}
 	var thr = 0
 
+	cluster.setupMaster({
+  	exec: __dirname + '/worker.js',
+	// args: [JSON.stringify({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len})],
+	// silent: false
+	});
+
 	_.each(classifiers, function(classifier, key, list){ 
-
 		_(folds).times(function(fold){
-
-			cluster.setupMaster({
-		  	exec: __dirname + '/worker.js',
-		  // args: [JSON.stringify({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len})],
-		  // silent: false
-			});
-
-			worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
+		
+			// worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
+			cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
 			thr += 1	
 		})
 	}, this)
