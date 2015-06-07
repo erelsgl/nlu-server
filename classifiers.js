@@ -363,8 +363,6 @@ function featureExtractorUCoreNLP(sentence, features, stopwords, callback) {
 			callback1()
 		})}, function(err)
 		{
-			console.log("simiple")
-			console.log(Object.keys(features).length)
 			callback()
 		})
 }
@@ -409,10 +407,6 @@ function featureExtractorUCoreNLPConceptWordnet(sentence, features, stopwords, c
 		_.each(expansions, function(expansion, key, list){ 
 			features["C_"+expansion.toLowerCase()] = 1 
 		}, this)
-
-
-		console.log("wordneet")
-		console.log(Object.keys(features).length)
 			
 		callback()
 	})
