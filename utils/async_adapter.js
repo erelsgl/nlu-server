@@ -4,7 +4,8 @@ var async = require('async');
 var _ = require('underscore')._;
 
 
-var wordNet = require('wordnet-magic');
+var wordNet = require('wordnet-magic')
+var wn = wordNet("/mnt/ramdisk/wordnet/dict/sqlite-31.db", true)
 
 // var WordNet = require("node-wordnet")
 // var wordnet = new WordNet({
@@ -109,7 +110,7 @@ function getwordnet(string, pos, relation, callbackg)
 			var lemls = _.flatten(_.pluck(synsets, 'words'))
 			var lemmas = _.pluck(lemls, 'lemma')
 
-			callback(null, _.unique(lemmas))
+			callbackg(null, _.unique(lemmas))
         
 		});
 
