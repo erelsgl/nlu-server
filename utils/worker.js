@@ -64,7 +64,14 @@ async.whilst(
 				
 			    trainAndTest_async(classifiers[classifier], mytrain, mytest, function(err, stats){
 
-			    	console.log(msg("worker "+process["pid"]+": traintime="+stats['traintime']/1000 + " testtime="+ stats['testtime']/1000 + " classifier="+classifier + " Accuracy="+stats['stats']['Accuracy']))
+			    	var uniqueid = new Date().getTime()
+
+			    	console.log(msg("worker "+process["pid"]+": 
+			    		traintime="+stats['traintime']/1000 + " testtime="+ 
+			    		stats['testtime']/1000 + " classifier="+classifier + 
+			    		" Accuracy="+stats['stats']['Accuracy']+ " fold="+fold + 
+			    		" trainsize="+mytrainset.length/classes.length+ " trainlen="+
+			    		len+ " id="+uniqueid))
 
 					var results = {
 						'classifier': classifier,
@@ -73,7 +80,8 @@ async.whilst(
 						'trainlen': len,
 						// 'F1': stats['stats']['F1'],
 						// 'macroF1': stats['stats']['macroF1'],
-						'Accuracy': stats['stats']['Accuracy']
+						'Accuracy': stats['stats']['Accuracy'],
+						'uniqueid': uniqueid
 					}
 
 					len += 1
