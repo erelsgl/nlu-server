@@ -32,7 +32,8 @@
     "wordsworth": "*",
     "xml2js": "~0.2.7",
     "async": "*",
-    "node-cache": "*"
+    "node-cache": "*",
+    "wordnet-magic": "*"
   },
   "devDependencies": {
     "mocha": "*",
