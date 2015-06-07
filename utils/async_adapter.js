@@ -2,8 +2,11 @@ var Redis = require('ioredis');
 var client = new Redis(6379);
 var async = require('async');
 var _ = require('underscore')._;
+var natural = require('natural')
 
-var WordNet = require("node-wordnet")
+var wordnet = new natural.WordNet('/mnt/ramdisk/wordnet/dict')
+
+// var WordNet = require("node-wordnet")
 // var wordnet = new WordNet({
 //   // cache: { max: 500000, maxAge: 1000 * 60 * 60 }
 //   dataDir: "/mnt/ramdisk/wordnet/dict",
@@ -55,10 +58,10 @@ function getwordnetCache(string, pos, relation, callback)
 
 function getwordnet(string, pos, relation, callbackg)
 {
-	var wordnet = new WordNet({
+	// var wordnet = new WordNet({
   		// cache: { max: 500000, maxAge: 1000 * 60 * 60 }
-  		dataDir: "/mnt/ramdisk/wordnet/dict",
-	})
+  		// dataDir: "/mnt/ramdisk/wordnet/dict",
+	// })
 
 	if (_.isArray(relation))
 	{
