@@ -273,7 +273,6 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 		})
 	}, this)
 
-
 	_.each(Object.keys(cluster.workers), function(id, worker, list){ 
 	    cluster.workers[id].on('message', function(message){
 			workerstats = JSON.parse(message)
