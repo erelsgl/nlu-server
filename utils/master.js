@@ -276,6 +276,7 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 				workerstats = JSON.parse(message)
 				extractGlobal(workerstats, stat)
 				fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
+				fs.appendFileSync(statusfile, JSON.stringify(stat, null, 4))
 
 				var baseline = classifiers[0]
 				var sotas = classifiers.slice(1)
