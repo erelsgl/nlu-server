@@ -395,10 +395,68 @@ function featureExtractorUCoreNLPConceptWordnet(sentence, features, stopwords, c
 	var expansions = []
 
 	async.eachSeries(candidates, function (candidate, callback2) {
-		// async_adapter.getwordnet(candidate['string'], candidate['pos'], 'hypernym_1', function(err, expansion){
+		
 		async_adapter.getwordnetCache(candidate['string'], candidate['pos'], 'synonym', function(err, expansion){
-		// async_adapter.getwordnet(candidate['string'], candidate['pos'], 'synonym', function(err, expansion){
 
+			expansions = expansions.concat(expansion)
+			callback2()
+		})
+	}, 	function (err) {
+
+		_.each(expansions, function(expansion, key, list){ 
+			features["C_"+expansion.toLowerCase()] = 1 
+		}, this)
+			
+		callback()
+	})
+}
+
+
+function featureExtractorUCoreNLPConceptPPDBM(sentence, features, stopwords, callback) {
+
+	var candidates = []
+
+	_.each(sentence["CORENLP"]['sentences'], function(sentence, key, list){ 
+		candidates = candidates.concat(sentence["boc"])
+	}, this)
+
+    candidates = _.filter(candidates, function(num){ return ['noun'].indexOf(num['pos']) != -1; });
+	candidates = _.filter(candidates, function(num){ return stopwords.indexOf(num['string']) == -1 });
+	
+	var expansions = []
+
+	async.eachSeries(candidates, function (candidate, callback2) {
+		
+		async_adapter.getppdbCache(candidate['string'], candidate['pos'], 2, function(err, expansion){
+			expansions = expansions.concat(expansion)
+			callback2()
+		})
+	}, 	function (err) {
+
+		_.each(expansions, function(expansion, key, list){ 
+			features["C_"+expansion.toLowerCase()] = 1 
+		}, this)
+			
+		callback()
+	})
+}
+
+function featureExtractorUCoreNLPConceptPPDBS(sentence, features, stopwords, callback) {
+
+	var candidates = []
+
+	_.each(sentence["CORENLP"]['sentences'], function(sentence, key, list){ 
+		candidates = candidates.concat(sentence["boc"])
+	}, this)
+
+    candidates = _.filter(candidates, function(num){ return ['noun'].indexOf(num['pos']) != -1; });
+	candidates = _.filter(candidates, function(num){ return stopwords.indexOf(num['string']) == -1 });
+	
+	var expansions = []
+
+	async.eachSeries(candidates, function (candidate, callback2) {
+		
+		async_adapter.getppdbCache(candidate['string'], candidate['pos'], 1, function(err, expansion){
 			expansions = expansions.concat(expansion)
 			callback2()
 		})
@@ -749,7 +807,9 @@ module.exports = {
 		TCPPDBNoCon: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCPPDBNoCon),
 		TCSynHypHypoCohypo: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHypHypoCohypo),
 		TCSynHyp1: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHyp1),
-		TCBOC: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptWordnet, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
+		TCBOCWN: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptWordnet, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
+		TCBOCPPDBS: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptPPDBS, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
+		TCBOCPPDBM: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptPPDBM, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 };
 
 
