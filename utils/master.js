@@ -8,6 +8,7 @@ var child_process = require('child_process')
 var gnuplot = 'gnuplot'
 var corpus = "Social Science"
 var statusfile = __dirname + "/status"
+var plotfile = __dirname + "/plotstatus"
 
 function groupbylabel(dataset, minsize, sizetrain, catnames)
 {
@@ -244,6 +245,9 @@ function getstringlc(output)
 function plotlc(fold, parameter, stat)
 {
 
+	fs.appendFileSync(plotfile, fold)
+	fs.appendFileSync(plotfile, JSON.stringify(parameter, null, 4))
+
 	var output = plotlcagr(fold, stat[parameter])
 
 	var classifiers = output[0].slice(1)
@@ -252,6 +256,7 @@ function plotlc(fold, parameter, stat)
 
 	var mapfile = __dirname+"/lc/"+fold+"_"+parameter
 
+	fs.appendFileSync(plotfile, string)
     fs.writeFileSync(mapfile, string)
 
     var command = gnuplot +" -e \"set output 'utils/lc/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=2:"+(classifiers.length+1)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3\""
@@ -335,6 +340,7 @@ if (process.argv[1] === __filename)
 
 	var classifiers = ['TC', 'TCBOCWN', 'TCBOCPPDBS', 'TCBOCPPDBL']
 	fs.writeFileSync(statusfile, "")
+	fs.writeFileSync(plotfile, "")
 
 	var datafilepath = __dirname+"/../../wiki/en/social/cluster/"
 	var lc = __dirname + "/lc"
