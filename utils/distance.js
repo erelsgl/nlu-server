@@ -194,5 +194,6 @@ module.exports = {
   Mult:Mult,
   BalMult:BalMult,
   average:average,
-  vec_minus: vec_minus
+  vec_minus: vec_minus,
+  isVectorNumber:isVectorNumber
 }
