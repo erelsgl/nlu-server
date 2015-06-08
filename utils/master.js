@@ -9,7 +9,7 @@ var gnuplot = 'gnuplot'
 var corpus = "Social Science"
 var statusfile = __dirname + "/status"
 
-function groupbylabel(dataset, minsize, sizetrain)
+function groupbylabel(dataset, minsize, sizetrain, catnames)
 {
 
 	var sends = _.groupBy(dataset , function(num){ return num['input']['CORENLP']['sentences'].length })
@@ -26,10 +26,12 @@ function groupbylabel(dataset, minsize, sizetrain)
 	console.log(Object.keys(gro).length)
 
 	console.log("label distribution")
+	
 	var labdist = {}
 	_.each(gro, function(value, key, list){ 
-		labdist[key] = value.length
+		labdist[catnames[key]] = value.length
 	}, this)
+
 	console.log(JSON.stringify(labdist, null, 4))
 
 	_.each(gro, function(value, key, list){ 
@@ -46,7 +48,7 @@ function groupbylabel(dataset, minsize, sizetrain)
 
 	var findist = {}
 	_.each(gro, function(value, key, list){ 
-		findist[key] = value.length
+		findist[catnames[key]] = value.length
 	}, this)
 	console.log(JSON.stringify(findist, null, 4))
 
@@ -101,7 +103,7 @@ function hmcalc(fold, stat, baseline, sota)
 				if ((sota in data) && (baseline in data))
 				{
 					if ((_.toArray(data[baseline]).length == _.toArray(data[sota]).length) &&
-						(distance.isVectorNumber(_.toArray(data[baseline]))) && (distance.isVectorNumber(_.toArray(data[sota])))
+						(distance.isVectorNumber(_.toArray(data[baseline]))) && (distance.isVectorNumber(_.toArray(data[sota]))))
 					{
 						var result = distance.vec_minus(_.toArray(data[baseline]), _.toArray(data[sota]))
 						var average = distance.average(result)
@@ -117,6 +119,11 @@ function hmcalc(fold, stat, baseline, sota)
 	return  output
 }
 
+function hmstring(output)
+{
+       return _.map(output, function(value){ return value.join(" ") }).join("\n")
+}
+
 function plot(fold, parameter, stat, baseline, sota)
 {
 
@@ -125,15 +132,7 @@ function plot(fold, parameter, stat, baseline, sota)
 	if ((output.length == 0) || (output.length<4) || (output.length % 2 != 0))
 		return
 
-	// var results = _.groupBy(output, function(num){ return num[0] })
-	// var string = ""
-
-	_.each(results, function(value, key, list){ 
-		_.each(value, function(value1, key1, list1){ 
-			string += value1.join(" ")+"\n"
-		}, this)
-		string += "\n"
-	}, this)
+	var string = hmstring(output)
 
 	var mapfile = __dirname+"/hm/"+fold+"_"+parameter+"_"+sota+"-"+baseline
 
@@ -322,11 +321,19 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 	})
 }
 
+function isInt(value) {
+  return !isNaN(value) && 
+         parseInt(Number(value)) == value && 
+         !isNaN(parseInt(value, 10));
+}
+
 if (process.argv[1] === __filename)
 {
 	var folds = 10
 	var len = 5
-	var classifiers = ['TC', 'TCBOCWN', 'TCBOCPPDBS', 'TCBOCPPDBM']
+	var perlabelsize = 300
+
+	var classifiers = ['TC', 'TCBOCWN', 'TCBOCPPDBS', 'TCBOCPPDBL']
 	fs.writeFileSync(statusfile, "")
 
 	var datafilepath = __dirname+"/../../wiki/en/social/cluster/"
@@ -357,18 +364,20 @@ if (process.argv[1] === __filename)
 		st_data.push({'input':value, 'output':value["catid"]})
 	}, this)
 
+	console.log("size before filtering "+st_data.length)
+	st_data = _.filter(st_data, function(num){ return isInt(num["output"][0])})
+	console.log("size after filtering "+st_data.length)
+
 	console.log("catnames")
 	console.log(JSON.stringify(catnames, null, 4))
 	// modify corpus
-	var datahash = groupbylabel(st_data, len, 200)
+	var datahash = groupbylabel(st_data, len, perlabelsize, catnames)
 	console.log("master: dataset groupped")
 
 	_.each(datahash, function(value, key, list){ 
 		console.log("master: write "+key)
 		fs.writeFileSync(datafilepath + key, JSON.stringify(value))
 	}, this)
-
-
 	
 	console.log("master: dataset size "+_.flatten(_.toArray(datahash)).length)
 	console.log("master: labels "+ Object.keys(datahash).length)
@@ -387,7 +396,8 @@ module.exports = {
 	getstringlc:getstringlc,
 	plotlcagrlen:plotlcagrlen,
 	plotlcagrlenaverge:plotlcagrlenaverge,
-	hmcalc:hmcalc
+	hmcalc:hmcalc,
+	isInt:isInt
 } 
 
 
