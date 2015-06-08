@@ -91,7 +91,7 @@ function hmcalc(fold, stat, baseline, sota)
 					{
 						var result = data[sota][fold] - data[baseline][fold]
 						if (bars.isNumber(result))
-							output.push([row, column, result])
+							output.push([parseInt(row), parseInt(column), result])
 					}
 				}
 			}, this)
@@ -108,7 +108,7 @@ function hmcalc(fold, stat, baseline, sota)
 					{
 						var result = distance.vec_minus(_.toArray(data[baseline]), _.toArray(data[sota]))
 						var average = distance.average(result)
-						output.push([row, column, average])
+						output.push([parseInt(row), parseInt(column), average])
 					}
 				}
 			}, this)
@@ -338,7 +338,7 @@ if (process.argv[1] === __filename)
 	var len = 5
 	var perlabelsize = 300
 
-	var classifiers = ['TC', 'TCBOCWN', 'TCBOCPPDBS', 'TCBOCPPDBL']
+	var classifiers = ['TC', 'TCBOCWN', 'TCBOCPPDBS', 'TCBOCPPDBM']
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
 
