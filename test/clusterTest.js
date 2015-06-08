@@ -101,4 +101,32 @@ describe('wikipedia', function() {
 
         })
 
+        it('hmcalc', function() {
+                
+                var out = master.hmcalc(0, stat, 'TC', 'TCBOC')
+                _.isEqual(out,[["15","0",-90],["15","1",10],["30","1",10]]).should.be.true
+
+                var stat1 = JSON.parse(JSON.stringify(stat))
+                stat1['15']["0"]["TC"][3] = 10
+                stat1['15']["1"]["TCBOC"][3] = 10
+
+                var out = master.hmcalc(3, stat1, 'TC', 'TCBOC')
+                out.length.should.equal(0)
+
+                var stat1 = JSON.parse(JSON.stringify(stat))
+                stat1['15']["0"]["TC"][0] = undefined
+
+                var out = master.hmcalc(0, stat1, 'TC', 'TCBOC')
+                out.length.should.equal(2)
+
+                var out = master.hmcalc('average', stat, 'TC', 'TCBOC')
+                _.isEqual(out,[["15","0",60],["15","1",10],["30","1",10]]).should.be.true
+                
+                var stat1 = JSON.parse(JSON.stringify(stat))
+                stat1['15']["0"]["TC"][0] = undefined
+                var out = master.hmcalc('average', stat1, 'TC', 'TCBOC')
+                _.isEqual(out,[["15","1",10],["30","1",10]]).should.be.true
+
+        })
+
 })
