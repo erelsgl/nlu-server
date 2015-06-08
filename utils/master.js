@@ -75,12 +75,9 @@ function extractGlobal(workerstats, stat)
 	}, this)
 }
 
-function plot(fold, parameter, stat, baseline, sota)
+function hmcalc(fold, stat, baseline, sota)
 {
-	var stat = stat[parameter]
-
 	var output = []
-		
 	if (fold != 'average')
 	{
 		_.each(stat, function(rowvalue, row, list){ 
@@ -103,7 +100,8 @@ function plot(fold, parameter, stat, baseline, sota)
 			_.each(rowvalue, function(data, column, list){ 
 				if ((sota in data) && (baseline in data))
 				{
-					if (_.toArray(data[baseline]).length == _.toArray(data[sota]).length)
+					if ((_.toArray(data[baseline]).length == _.toArray(data[sota]).length) &&
+						(distance.isVectorNumber(_.toArray(data[baseline]))) && (distance.isVectorNumber(_.toArray(data[sota])))
 					{
 						var result = distance.vec_minus(_.toArray(data[baseline]), _.toArray(data[sota]))
 						var average = distance.average(result)
@@ -114,11 +112,21 @@ function plot(fold, parameter, stat, baseline, sota)
 		}, this)
 	}
 
+	output = _.sortBy(output, function(num){ return num[0] })
+
+	return  output
+}
+
+function plot(fold, parameter, stat, baseline, sota)
+{
+
+	var output = hmcalc(fold, stat[parameter], baseline, sota)
+	
 	if ((output.length == 0) || (output.length<4) || (output.length % 2 != 0))
 		return
 
-	var results = _.groupBy(output, function(num){ return num[0] })
-	var string = ""
+	// var results = _.groupBy(output, function(num){ return num[0] })
+	// var string = ""
 
 	_.each(results, function(value, key, list){ 
 		_.each(value, function(value1, key1, list1){ 
@@ -127,7 +135,7 @@ function plot(fold, parameter, stat, baseline, sota)
 		string += "\n"
 	}, this)
 
-	var mapfile = __dirname+"/hm/map_"+fold+"_"+parameter+"_"+sota+"-"+baseline
+	var mapfile = __dirname+"/hm/"+fold+"_"+parameter+"_"+sota+"-"+baseline
 
     fs.writeFileSync(mapfile, string)
 
@@ -280,6 +288,13 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 			fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
 			fs.appendFileSync(statusfile, JSON.stringify(stat, null, 4))
 
+            var Ac = workerstats['Accuracy']
+            if (_.isNaN(Ac) || _.isNull(Ac) || _.isUndefined(Ac))
+            {
+				console.log("Accuracy is not OK")
+				process.exit(0)
+			}
+
 			var baseline = classifiers[0]
 			var sotas = classifiers.slice(1)
 			var fold = workerstats["fold"]
@@ -328,6 +343,11 @@ if (process.argv[1] === __filename)
 	}, this)
 
 	var data = wikipedia.load_wikipedia("social")
+
+	var catnames = {}
+	_.each(data, function(record, key, list){ 
+		catnames[record['catid']] = record['catname']
+	}, this)
 	
 	// convert corpus
 	var st_data = []
@@ -337,6 +357,8 @@ if (process.argv[1] === __filename)
 		st_data.push({'input':value, 'output':value["catid"]})
 	}, this)
 
+	console.log("catnames")
+	console.log(JSON.stringify(catnames, null, 4))
 	// modify corpus
 	var datahash = groupbylabel(st_data, len, 200)
 	console.log("master: dataset groupped")
@@ -347,6 +369,7 @@ if (process.argv[1] === __filename)
 	}, this)
 
 
+	
 	console.log("master: dataset size "+_.flatten(_.toArray(datahash)).length)
 	console.log("master: labels "+ Object.keys(datahash).length)
 	console.log("master: dataset saved")
@@ -363,7 +386,8 @@ module.exports = {
 	trainlen:trainlen,
 	getstringlc:getstringlc,
 	plotlcagrlen:plotlcagrlen,
-	plotlcagrlenaverge:plotlcagrlenaverge
+	plotlcagrlenaverge:plotlcagrlenaverge,
+	hmcalc:hmcalc
 } 
 
 
