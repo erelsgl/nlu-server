@@ -66,12 +66,12 @@ async.whilst(
 
 			    	var uniqueid = new Date().getTime()
 
-			    	console.log(msg("worker "+process["pid"]+": 
-			    		traintime="+stats['traintime']/1000 + " testtime="+ 
+			    	console.log(msg("worker "+process["pid"]+": traintime="+
+			    		stats['traintime']/1000 + " testtime="+ 
 			    		stats['testtime']/1000 + " classifier="+classifier + 
 			    		" Accuracy="+stats['stats']['Accuracy']+ " fold="+fold + 
 			    		" trainsize="+mytrainset.length/classes.length+ " trainlen="+
-			    		len+ " id="+uniqueid))
+			       	    len+ " id="+stats['stats']['id']))
 
 					var results = {
 						'classifier': classifier,
@@ -81,7 +81,7 @@ async.whilst(
 						// 'F1': stats['stats']['F1'],
 						// 'macroF1': stats['stats']['macroF1'],
 						'Accuracy': stats['stats']['Accuracy'],
-						'uniqueid': uniqueid
+						'uniqueid': stats['stats']['id']
 					}
 
 					len += 1
