@@ -407,14 +407,14 @@ function featureExtractorUCoreNLPConceptWordnet(sentence, features, stopwords, c
 	}, 	function (err) {
 
 		_.each(expansions, function(expansion, key, list){ 
-			features[expansion.toLowerCase()] = 1 
+			features["C_"+expansion.toLowerCase()] = 1 
 		}, this)
 			
 		callback()
 	})
 }
 
-function featureExtractorUCoreNLPConceptPPDBL(sentence, features, stopwords, callback) {
+function featureExtractorUCoreNLPConceptPPDBM(sentence, features, stopwords, callback) {
 
 	var candidates = []
 
@@ -429,14 +429,14 @@ function featureExtractorUCoreNLPConceptPPDBL(sentence, features, stopwords, cal
 
 	async.eachSeries(candidates, function (candidate, callback2) {
 		
-		async_adapter.getppdbCache(candidate['string'], candidate['pos'], 3, function(err, expansion){
+		async_adapter.getppdbCache(candidate['string'], candidate['pos'], 2, function(err, expansion){
 			expansions = expansions.concat(expansion)
 			callback2()
 		})
 	}, 	function (err) {
 
 		_.each(expansions, function(expansion, key, list){ 
-			features[expansion.toLowerCase()] = 1 
+			features["C_"+expansion.toLowerCase()] = 1 
 		}, this)
 			
 		callback()
@@ -465,7 +465,7 @@ function featureExtractorUCoreNLPConceptPPDBS(sentence, features, stopwords, cal
 	}, 	function (err) {
 
 		_.each(expansions, function(expansion, key, list){ 
-			features[expansion.toLowerCase()] = 1 
+			features["C_"+expansion.toLowerCase()] = 1 
 		}, this)
 			
 		callback()
@@ -811,7 +811,7 @@ module.exports = {
 		TCSynHyp1: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHyp1),
 		TCBOCWN: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptWordnet, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 		TCBOCPPDBS: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptPPDBS, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
-		TCBOCPPDBL: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptPPDBL, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
+		TCBOCPPDBM: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptPPDBM, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 };
 
 
