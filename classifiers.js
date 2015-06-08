@@ -414,8 +414,7 @@ function featureExtractorUCoreNLPConceptWordnet(sentence, features, stopwords, c
 	})
 }
 
-
-function featureExtractorUCoreNLPConceptPPDBM(sentence, features, stopwords, callback) {
+function featureExtractorUCoreNLPConceptPPDBL(sentence, features, stopwords, callback) {
 
 	var candidates = []
 
@@ -430,7 +429,7 @@ function featureExtractorUCoreNLPConceptPPDBM(sentence, features, stopwords, cal
 
 	async.eachSeries(candidates, function (candidate, callback2) {
 		
-		async_adapter.getppdbCache(candidate['string'], candidate['pos'], 2, function(err, expansion){
+		async_adapter.getppdbCache(candidate['string'], candidate['pos'], 3, function(err, expansion){
 			expansions = expansions.concat(expansion)
 			callback2()
 		})
@@ -812,7 +811,7 @@ module.exports = {
 		TCSynHyp1: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHyp1),
 		TCBOCWN: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptWordnet, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 		TCBOCPPDBS: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptPPDBS, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
-		TCBOCPPDBM: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptPPDBM, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
+		TCBOCPPDBL: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptPPDBL, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 };
 
 
