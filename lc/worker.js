@@ -2,11 +2,11 @@ var cluster = require('cluster');
 var async = require('async')
 var _ = require('underscore')._;
 var fs = require('fs');
-var wikipedia = require('./wikipedia');
+var wikipedia = require(__dirname + '/../utils/wikipedia');
 var master = require('./master');
 var partitions = require('limdu/utils/partitions');
 var classifiers = require(__dirname+"/../classifiers.js")
-var trainAndTest_async = require(__dirname+'/trainAndTest').trainAndTest_async;
+var trainAndTest_async = require(__dirname+'/../utils/trainAndTest').trainAndTest_async;
 var clc = require('cli-color')
 
 var fold = process.env["fold"]
