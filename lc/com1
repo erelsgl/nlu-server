@@ -1,0 +1,34 @@
+set terminal png nocrop enhanced size 900,640 font "arial,8" 
+#set output 'utils/heatmaps.2.png'
+unset key
+set view map scale 0
+set style data lines
+set xtics border in scale 0,0 mirror norotate  autojustify
+set ytics border in scale 0,0 mirror norotate  autojustify
+set ztics border in scale 0,0 nomirror norotate  autojustify
+unset cbtics
+set rtics axis in scale 0,0 nomirror norotate  autojustify
+set paxis 1 tics border in scale 0,0 nomirror norotate  autojustify
+set paxis 1 tics autofreq  rangelimit
+set paxis 2 tics border in scale 0,0 nomirror norotate  autojustify
+set paxis 2 tics autofreq  rangelimit
+set paxis 3 tics border in scale 0,0 nomirror norotate  autojustify
+set paxis 3 tics autofreq  rangelimit
+set paxis 4 tics border in scale 0,0 nomirror norotate  autojustify
+set paxis 4 tics autofreq  rangelimit
+set paxis 5 tics border in scale 0,0 nomirror norotate  autojustify
+set paxis 5 tics autofreq  rangelimit
+set paxis 6 tics border in scale 0,0 nomirror norotate  autojustify
+set paxis 6 tics autofreq  rangelimit
+set paxis 7 tics border in scale 0,0 nomirror norotate  autojustify
+set paxis 7 tics autofreq  rangelimit
+set title "" 
+set xrange [ -0.500000 : 4.50000 ] noreverse nowriteback
+set yrange [ -0.500000 : 4.50000 ] noreverse nowriteback
+set cblabel "Delta" 
+set cbrange [ -5 : 5 ] noreverse nowriteback
+#set palette rgbformulae 2, 2, -7
+set palette defined (0 "blue", 1 "red")
+x = 1
+## Last datafile plotted: "$map2"
+#plot 'utils/map' using 2:1:3 with image

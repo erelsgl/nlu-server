@@ -1,0 +1,129 @@
+{
+    "classifier": "TC",
+    "fold": "1",
+    "trainsize": 15,
+    "trainlen": 0,
+    "F1": 0.06666666666666667,
+    "macroF1": -0.058333333333333334,
+    "Accuracy": 0.06666666666666667
+}{
+    "classifier": "TC",
+    "fold": "0",
+    "trainsize": 15,
+    "trainlen": 0,
+    "F1": 0.06666666666666667,
+    "macroF1": -0.058333333333333334,
+    "Accuracy": 0.06666666666666667
+}{
+    "classifier": "TC",
+    "fold": "0",
+    "trainsize": 15,
+    "trainlen": 1,
+    "F1": 0.29444444444444445,
+    "macroF1": 0.2015892183712979,
+    "Accuracy": 0.29444444444444445
+}{
+    "classifier": "TC",
+    "fold": "1",
+    "trainsize": 15,
+    "trainlen": 1,
+    "F1": 0.22777777777777777,
+    "macroF1": 0.15232245481452,
+    "Accuracy": 0.22777777777777777
+}{
+    "classifier": "TC",
+    "fold": "0",
+    "trainsize": 30,
+    "trainlen": 0,
+    "F1": 0.06666666666666667,
+    "macroF1": -0.058333333333333334,
+    "Accuracy": 0.06666666666666667
+}{
+    "classifier": "TC",
+    "fold": "1",
+    "trainsize": 30,
+    "trainlen": 0,
+    "F1": 0.06666666666666667,
+    "macroF1": -0.058333333333333334,
+    "Accuracy": 0.06666666666666667
+}{
+    "classifier": "TC",
+    "fold": "0",
+    "trainsize": 30,
+    "trainlen": 1,
+    "F1": 0.2722222222222222,
+    "macroF1": 0.1846212518132023,
+    "Accuracy": 0.2722222222222222
+}{
+    "classifier": "TC",
+    "fold": "1",
+    "trainsize": 30,
+    "trainlen": 1,
+    "F1": 0.3333333333333333,
+    "macroF1": 0.2376748763510222,
+    "Accuracy": 0.3333333333333333
+}{
+    "classifier": "TCBOC",
+    "fold": "1",
+    "trainsize": 15,
+    "trainlen": 0,
+    "F1": 0.06666666666666667,
+    "macroF1": -0.058333333333333334,
+    "Accuracy": 0.06666666666666667
+}{
+    "classifier": "TCBOC",
+    "fold": "0",
+    "trainsize": 15,
+    "trainlen": 0,
+    "F1": 0.06666666666666667,
+    "macroF1": -0.058333333333333334,
+    "Accuracy": 0.06666666666666667
+}{
+    "classifier": "TCBOC",
+    "fold": "0",
+    "trainsize": 15,
+    "trainlen": 1,
+    "F1": 0.29444444444444445,
+    "macroF1": 0.2015892183712979,
+    "Accuracy": 0.29444444444444445
+}{
+    "classifier": "TCBOC",
+    "fold": "1",
+    "trainsize": 15,
+    "trainlen": 1,
+    "F1": 0.22777777777777777,
+    "macroF1": 0.15232245481452,
+    "Accuracy": 0.22777777777777777
+}{
+    "classifier": "TCBOC",
+    "fold": "0",
+    "trainsize": 30,
+    "trainlen": 0,
+    "F1": 0.06666666666666667,
+    "macroF1": -0.058333333333333334,
+    "Accuracy": 0.06666666666666667
+}{
+    "classifier": "TCBOC",
+    "fold": "1",
+    "trainsize": 30,
+    "trainlen": 0,
+    "F1": 0.06666666666666667,
+    "macroF1": -0.058333333333333334,
+    "Accuracy": 0.06666666666666667
+}{
+    "classifier": "TCBOC",
+    "fold": "0",
+    "trainsize": 30,
+    "trainlen": 1,
+    "F1": 0.2722222222222222,
+    "macroF1": 0.1846212518132023,
+    "Accuracy": 0.2722222222222222
+}{
+    "classifier": "TCBOC",
+    "fold": "1",
+    "trainsize": 30,
+    "trainlen": 1,
+    "F1": 0.3333333333333333,
+    "macroF1": 0.2376748763510222,
+    "Accuracy": 0.3333333333333333
+}
