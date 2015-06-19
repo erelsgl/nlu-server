@@ -1,9 +1,9 @@
 var cluster = require('cluster');
 var fs = require('fs');
 var _ = require('underscore')._;
-var bars = require(__dirname+'/bars');
-var distance = require(__dirname+'/distance');
-var wikipedia = require('./wikipedia')
+var bars = require(__dirname+'/../utils/bars');
+var distance = require(__dirname+'/../utils/distance');
+var wikipedia = require(__dirname+'/../utils/wikipedia')
 var child_process = require('child_process')
 var gnuplot = 'gnuplot'
 var corpus = "Social Science"
@@ -334,15 +334,16 @@ function isInt(value) {
 
 if (process.argv[1] === __filename)
 {
-	var folds = 10
-	var len = 5
-	var perlabelsize = 300
+	var folds = 3
+	var len = 1
+	var perlabelsize = 3
 
-	var classifiers = ['TC', 'TCBOCWN', 'TCBOCPPDBS', 'TCBOCPPDBM']
+	//var classifiers = ['TC', 'TCBOCWN', 'TCBOCPPDBS', 'TCBOCPPDBM']
+	var classifiers = ['TC']
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
 
-	var datafilepath = __dirname+"/../../wiki/en/social/cluster/"
+	var datafilepath = __dirname+"/../../wiki/en/social_small/cluster/"
 	var lc = __dirname + "/lc"
 	var hm = __dirname + "/hm"
 
@@ -355,7 +356,7 @@ if (process.argv[1] === __filename)
 		}, this)
 	}, this)
 
-	var data = wikipedia.load_wikipedia("social")
+	var data = wikipedia.load_wikipedia("social_small")
 
 	var catnames = {}
 	_.each(data, function(record, key, list){ 

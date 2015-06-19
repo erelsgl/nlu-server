@@ -1,0 +1,231 @@
+{
+    "classifier": "TC",
+    "fold": "0",
+    "trainsize": 1,
+    "trainlen": 1,
+    "Accuracy": 16,
+    "uniqueid": 1434723504399
+}{
+    "Accuracy": {
+        "1": {
+            "1": {
+                "TC": {
+                    "0": 16
+                }
+            }
+        }
+    }
+}{
+    "classifier": "TC",
+    "fold": "0",
+    "trainsize": 2,
+    "trainlen": 1,
+    "Accuracy": 20,
+    "uniqueid": 1434723504713
+}{
+    "Accuracy": {
+        "1": {
+            "1": {
+                "TC": {
+                    "0": 16
+                }
+            }
+        },
+        "2": {
+            "1": {
+                "TC": {
+                    "0": 20
+                }
+            }
+        }
+    }
+}{
+    "classifier": "TC",
+    "fold": "1",
+    "trainsize": 1,
+    "trainlen": 1,
+    "Accuracy": 12,
+    "uniqueid": 1434723504536
+}{
+    "Accuracy": {
+        "1": {
+            "1": {
+                "TC": {
+                    "0": 16,
+                    "1": 12
+                }
+            }
+        },
+        "2": {
+            "1": {
+                "TC": {
+                    "0": 20
+                }
+            }
+        }
+    }
+}{
+    "classifier": "TC",
+    "fold": "2",
+    "trainsize": 1,
+    "trainlen": 1,
+    "Accuracy": 8,
+    "uniqueid": 1434723504579
+}{
+    "Accuracy": {
+        "1": {
+            "1": {
+                "TC": {
+                    "0": 16,
+                    "1": 12,
+                    "2": 8
+                }
+            }
+        },
+        "2": {
+            "1": {
+                "TC": {
+                    "0": 20
+                }
+            }
+        }
+    }
+}{
+    "classifier": "TC",
+    "fold": "2",
+    "trainsize": 2,
+    "trainlen": 1,
+    "Accuracy": 12,
+    "uniqueid": 1434723504837
+}{
+    "Accuracy": {
+        "1": {
+            "1": {
+                "TC": {
+                    "0": 16,
+                    "1": 12,
+                    "2": 8
+                }
+            }
+        },
+        "2": {
+            "1": {
+                "TC": {
+                    "0": 20,
+                    "2": 12
+                }
+            }
+        }
+    }
+}{
+    "classifier": "TC",
+    "fold": "2",
+    "trainsize": 2,
+    "trainlen": 1,
+    "Accuracy": 12,
+    "uniqueid": 1434723505058
+}{
+    "Accuracy": {
+        "1": {
+            "1": {
+                "TC": {
+                    "0": 16,
+                    "1": 12,
+                    "2": 8
+                }
+            }
+        },
+        "2": {
+            "1": {
+                "TC": {
+                    "0": 20,
+                    "2": 12
+                }
+            }
+        }
+    }
+}{
+    "classifier": "TC",
+    "fold": "1",
+    "trainsize": 2,
+    "trainlen": 1,
+    "Accuracy": 12,
+    "uniqueid": 1434723504759
+}{
+    "Accuracy": {
+        "1": {
+            "1": {
+                "TC": {
+                    "0": 16,
+                    "1": 12,
+                    "2": 8
+                }
+            }
+        },
+        "2": {
+            "1": {
+                "TC": {
+                    "0": 20,
+                    "1": 12,
+                    "2": 12
+                }
+            }
+        }
+    }
+}{
+    "classifier": "TC",
+    "fold": "1",
+    "trainsize": 2,
+    "trainlen": 1,
+    "Accuracy": 12,
+    "uniqueid": 1434723510095
+}{
+    "Accuracy": {
+        "1": {
+            "1": {
+                "TC": {
+                    "0": 16,
+                    "1": 12,
+                    "2": 8
+                }
+            }
+        },
+        "2": {
+            "1": {
+                "TC": {
+                    "0": 20,
+                    "1": 12,
+                    "2": 12
+                }
+            }
+        }
+    }
+}{
+    "classifier": "TC",
+    "fold": "0",
+    "trainsize": 2,
+    "trainlen": 1,
+    "Accuracy": 20,
+    "uniqueid": 1434723504930
+}{
+    "Accuracy": {
+        "1": {
+            "1": {
+                "TC": {
+                    "0": 16,
+                    "1": 12,
+                    "2": 8
+                }
+            }
+        },
+        "2": {
+            "1": {
+                "TC": {
+                    "0": 20,
+                    "1": 12,
+                    "2": 12
+                }
+            }
+        }
+    }
+}
