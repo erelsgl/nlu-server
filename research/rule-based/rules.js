@@ -380,9 +380,9 @@ function inSentence(sentence, keyphrase, goldLable)
 					{	
 					var negation1 = truth_utils.negation(sentence.replace('without','no'),['car','lease'], truth_filename)
 					if (negation1 == true)
-						output.push(['Without leased car','car',getWords(sentence,"car"), whatinSentence(sentence,['car','leased'])])
+						output.push(['Without leased car','car',getWords(sentence,"car"), whatinSentence(sentence,['car','leased', 'company'])])
 					else
-						output.push(['With leased car','car',getWords(sentence,"car"), whatinSentence(sentence,['car','leased'])])
+						output.push(['With leased car','car',getWords(sentence,"car"), whatinSentence(sentence,['car','leased', 'company'])])
 					}
 				}	
 			output.push([goldLable, sentence.slice(index, index + phrase.length), getWords(sentence, phrase), [index, index + phrase.length]])
