@@ -41,12 +41,17 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 
 // var do_small_temporary_serialization_test = false
+var test_phrases = true
+var test_initiative = false
+var test_label = false
+var test_distance = false
+
 var wikipedia_boc = false
 var wikipedia_prepared1 = false
 var wikipedia_fit = false
 var wikipedia_json = false
 var technion_300 = false
-var wikipedia_test = true
+var wikipedia_test = false
 var wikipedia_categories = false
 var wikipedia_prepared = false
 var wikipedia_parsed = false
@@ -57,7 +62,6 @@ var test_proportion = false
 var trans = false
 var test_ppdb = false
 var test_knn = false
-var test_label = false
 var test_clust = false
 var do_learning_curves = false
 var test_pp = false
@@ -106,48 +110,24 @@ var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
 var trainutils = require('./utils/bars')
 var wikipedia = require('./utils/wikipedia')
 var bars = require('./utils/bars')
-// var Lemmer = require('node-lemmer').Lemmer;
 var rules = require("./research/rule-based/rules.js")
-// var ppdb_utils = require("./research/ppdb/utils.js")
 
-// var grammarDataset = JSON.parse(fs.readFileSync("datasets/Employer/0_grammar.json"));
-// var collectedDatasetMulti = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students.json"));
-// var collectedDatasetSingle = JSON.parse(fs.readFileSync("datasets/Employer/1_woz_kbagent_students1class.json"));
-// var collectedDatasetMulti2 = JSON.parse(fs.readFileSync("datasets/Employer/2_experts.json"));
-// var collectedDatasetSingle2 = JSON.parse(fs.readFileSync("datasets/Employer/2_experts1class.json"));
-// var collectedDatasetMulti4 = JSON.parse(fs.readFileSync("datasets/Employer/3_woz_kbagent_turkers_negonlp2.json"));
-// var collectedDatasetMulti8 = JSON.parse(fs.readFileSync("datasets/Employer/4_various.json"));
 
 var verbosity = 0;
 var explain = 0;
 
-// var extractor = require('unfluff');
 var cheapest_paths = require('limdu/node_modules/graph-paths').cheapest_paths;
 var natural = require('natural');
 var partitions = require('limdu/utils/partitions');
 var PrecisionRecall = require('limdu/utils/PrecisionRecall');
-// var trainAndTest = require('limdu/utils/trainAndTest').trainAndTest;
 var trainAndTest = require('./utils/trainAndTest');
-// var trainAndCompare = require('limdu/utils/trainAndTest').trainAndCompare;
-// var trainAndTestLite = require('limdu/utils/trainAndTest').trainAndTestLite;
-// var trainAndTestLite = require('./utils/trainAndTest').trainAndTestLite;
-// var ToTest = require('limdu/utils/trainAndTest').test;
-// var ToTest = require('./utils/trainAndTest').test;
 var serialization = require('serialization');
-// var curves = require('./utils/learning_curves');
-// var unseen_words_curves = require('limdu/utils/unseen_curves').unseen_word_curves;
-// var unseen_correlation = require('limdu/utils/unseen_correlation').unseen_correlation;
-// var tokenize = require('limdu/utils/unseen_correlation').tokenize;
-
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
 // var Fiber = require('fibers');
 
 var classifier = require(__dirname+'/classifiers')
-
-// var regexpNormalizer = ftrs.RegexpNormalizer(
-		// JSON.parse(fs.readFileSync('knowledgeresources/BiuNormalizations1.json')));
 
 var regexpNormalizer = ftrs.RegexpNormalizer(
 		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json')));
@@ -185,25 +165,6 @@ function smart_normalizer(sentence) {
 	return sentence
 }
 
-
-
-var datasetNames = [
-			"0_grammar.json",
-			"1_woz_kbagent_students.json",
-			"1_woz_kbagent_students1class.json",
-			"2_experts.json",
-			"2_experts1class.json",
-			"4_various.json",
-			"4_various1class.json",
-			"6_expert.json",
-			"3_woz_kbagent_turkers_negonlp2.json",
-			"5_woz_ncagent_turkers_negonlp2ncAMT.json",
-			"nlu_kbagent_turkers_negonlpAMT.json",
-			"nlu_ncagent_students_negonlpnc.json",
-			"nlu_ncagent_turkers_negonlpncAMT.json",
-			"woz_kbagent_students_negonlp.json"
-			];
-
 function parse_filter(parse)
 {
         _.each(parse['sentences'], function(value, key, list){
@@ -235,92 +196,10 @@ if (wikipedia_prepared1)
 }
 
 
-if (technion_300)
-{
-	var tech = __dirname +"/../technion/300/"
-	var files = fs.readdirSync(tech)
-
-	var labs = []
-
-	_.each(files, function(file, key, list){ 
-		labs.push(file.split("_")[2])
-	}, this)
-
-	console.log(_.unique(labs).length)
-	process.exit(0)
-}
-
-
-if (wikipedia_boc)
-{
-	var inpath = "../wiki/en/social/parsed/"
-	var outpath =  "../wiki/en/social/boc/"
-
-	var files = fs.readdirSync(inpath)
-
-	console.log(files.length)
-
-	_.each(files, function(file, key, list){
-	 	var data =  JSON.parse(fs.readFileSync(inpath+file))
-
-	 	_.each(data['sentences'], function(sentence, key, list){
-	 		data["sentences"][key]['boc'] = bars.createcandidates(sentence)
-	 	}, this)
-
-        fs.writeFileSync(outpath+file.split(".")[0], JSON.stringify(data))
-
-        if (key % 100 == 0)
-        	console.log(key)
-	}, this)
-	console.log()
-	process.exit(0)
-}
-
 if (wikipedia_test)
-
-	// +190074 Category:Art movements
-	// +176859 Category:Arts
 {
 
-	// var setname = "nosem"
-//	var cat = [ 140002, 6582, 11221, 221702, 380549, 176859, 25644, 59198, 379420, 176796, 380539, 88393, 190074, 26711,
-  //		209587, 264364, 379948, 380552, 29677, 63275, 29357, 306221, 306219, 15311 ]
-
-	// var path = "../wiki/en/"+setname+"/"
-	// var files = fs.readdirSync(path)
-	// files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
-	// var data = []
-
-	// files = _.sample(files, 2)
-
-	// _.each(files, function(file, key, list){ 
-		// console.log(file)
-		// data = data.concat(JSON.parse(fs.readFileSync("../wiki/en/"+setname+"/" + file)))
-	// }, this)
 	var data = wikipedia.load_wikipedia("social")
-
-	// data = JSON.parse(fs.readFileSync("/home/com/Shared/wiki/en/JEL/wiki.0.corenlp.json"))
-	// data = data.concat(JSON.parse(fs.readFileSync("/home/com/Shared/wiki/en/JEL/wiki.1.corenlp.json")))
-	// data = data.concat(JSON.parse(fs.readFileSync("/home/com/Shared/wiki/en/JEL/wiki.2.corenlp.json")))
-
-//	console.log(data.length)
-//	var count = _.reduce(data, function(memo, num){ return memo + num["categories"].length }, 0)
-//	console.log(count)
-
-
-/*	_.each(data, function(value, key, list){ 
-		var cati = []
-		_.each(value["categories"], function(categ, key1, list){ 
-			if (cat.indexOf(categ)!= -1)
-				cati.push(categ)
-		}, this)
-		data[key]["categories"] = JSON.parse(JSON.stringify(cati, null, 4))
-	}, this)
-*/
-//	data = _.filter(data, function(num){ return num["categories"].length == 1 });
-//	var count = _.reduce(data, function(memo, num){ return memo + num["categories"].length }, 0)
-
-	
 
 	var data = _.map(data, function(value){ var elem = {}
 											// value["CORENLP"]["sentences"].splice(3, value["CORENLP"]["sentences"].length)
@@ -332,18 +211,8 @@ if (wikipedia_test)
 										})
 
 
-	// data = _.compact(data)
 	data = _.shuffle(data)
 	data.splice(300)
-
-	// var compare = {
-		// 'TCPPDB':classifier.TCPPDB, 
-
-		// 'TCBOC':classifier.TCBOC, 
-		// 'TCSynHyp1': classifier.TCSynHyp1, 
-		// 'TC':classifier.TC,
-		// 'TC1':classifier.TC1
-		// }
 
 	var results = {}
 	var resultsm = {}
@@ -356,700 +225,10 @@ if (wikipedia_test)
 
 
 	trainAndTest.trainAndTest_async(classifier['TCBOC'], dataset['train'], dataset['test'], function(err, stats){
-		// console.log("FINISHED")
+
 		console.log(JSON.stringify(stats['stats'], null, 4))
-		// console.log()
-		// process.exit(0)
-
-		// var stats = trainAndTest.trainAndTest_hash(classifier['TCPerf'], dataset['train'], dataset['test'])
-	
-			// console.log(JSON.stringify(stats["stats"]["Accuracy"], null, 4))
-
-			// process.exit(0)
-
-	
-
 
 	})
-// 
-
-	// partitions.partitions_reverese(data, 5, function(train, test, index) {
-	// 	_.each(compare, function(classifier, key, list){ 
-	// 		if (!(key in results)) results[key] = []
-	// 		if (!(key in resultsm)) resultsm[key] = []
-	// 		if (!(key in labels)) labels[key] = []
-	// 		var stats = trainAndTest.trainAndTest_async(classifier, train, test, 5)
-	// 		results[key].push(stats['stats']['F1'])
-	// 		resultsm[key].push(stats['stats']['macroF1'])
-	// 		labels[key].push(stats['labels'])
-
-	// 	}, this)
-		
-	// 	console.log("PERFMACROF1")
-	// 	console.log(JSON.stringify(resultsm, null, 4))
-	// 	console.log("PERFF1")
-	// 	console.log(JSON.stringify(results, null, 4))
-	// 	console.log(JSON.stringify(labels, null, 4))
-
-	// 	var aggr = {}
-	// 	_.each(results, function(value, clas, list){ 
-	// 		aggr[clas] = _.reduce(value, function(memo, num){ return memo + num; }, 0)/value.length
-	// 	}, this)
-
-	// 	console.log(JSON.stringify(aggr, null, 4))
-
-	// });
-	
-}
-
-
-
-if (wikipedia_parsed)
-{
-	var data = []
-
-	var categ = [784409, 718764, 772545, 1316171, 1798901, 706213, 946910, 691633, 1654984, 1311467, 4595606, 2364548, 1245386, 873395, 1653309]
-
-	// var categ = [21417166, 23222281, 21332284, 4140956, 14368811, 18554264, 700692, 1076518,
-	// 695196, 8531227, 718764, 29796077, 717788, 6527330, 4348450, 29717090, 3400672, 26435292, 828361]
-
-	var parsed = __dirname+"/../wiki/en/notempl/parsed/"
-	var prepared = __dirname+"/../wiki/en/notempl/prepared/"
-	var ready = __dirname+"/../wiki/en/notempl/"
-	var json = __dirname+"/../wiki/en/json/"
-
-	var ids = fs.readdirSync(parsed)
-
-	ids = _.map(ids, function(value){ return parseInt(value.split(".")[0]) })
-
-	// var idhash = {}
-	// _.each(ids, function(value, key, list){ 
-		// idhash[value] = ''
-	// }, this)
-
-
-	var files = fs.readdirSync(json)
-
-	_.each(files, function(file, key, list){ 
-		console.log(file)
-
-		var new_data = JSON.parse(fs.readFileSync(json+file))
-		new_data = _.filter(new_data, function(num){ return num["_category"]==0 })
-
-		console.log("file loaded")
-		_.each(new_data, function(value, key, list){ 
-
-			// if (parseInt(value["_id"]) in idhash)
-			if (ids.indexOf(parseInt(value["_id"]))!=-1)
-			{
-				console.log(value["_id"])
-				// console.log(value["categories"])
-
-				var inters = _.intersection(categ, value["categories"])
-				// console.log(inters)
-
-				if (inters.length != 1)
-					throw new Error("error")
-
-				// console.log("read")
-				var corenlp = JSON.parse(fs.readFileSync(parsed+value["_id"]+".json"))
-				value["CORENLP"] = corenlp
-				/*ONLY 15 FIRST SENTENCES*/
-				value["CORENLP"]["sentences"] = value["CORENLP"]["sentences"].slice(0,15)
-				value["categories"] = inters
-				data.push(value)
-			}
-		
-		}, this)
-	}, this)
-
-	console.log("number of files "+files.length)
-	console.log("size of data "+data.length)
-
-	var data_splited = _.groupBy(data, function(element, index){
-        return index%10;
- 	})
-
- 	_.each(_.toArray(data_splited), function(data, key, list){
-        console.log("writing "+key)
-        fs.writeFileSync(ready + 'wiki.'+key+'.corenlp.json', JSON.stringify(data, null, 4))
- 	}, this)
-
-	process.exit(0)
-}
-
-if (wikipedia_fit)
-{
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../wiki/en/fits.json"))
-	var sort = _.groupBy(data, function(num){ return num['child'].length });
-
-	var maxkey = _.max(Object.keys(sort), function(value){ return value });
-
-	_.each(sort, function(value, key, list){
-		console.log(key) 
-		console.log(value.length) 
-	}, this)
-
-	console.log(maxkey)
-	console.log(JSON.stringify(sort[maxkey], null, 4))
-	console.log()
-	process.exit(0)
-}
-
-if (wikipedia_json)
-{
-
-        var data = []
-        var folder = __dirname+"/../wiki/unparsed1/"
-        var files = fs.readdirSync(folder)
-
-//        files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
-
-        _.each(files, function(file, key, list){
-                console.log(file)
-                var ex = "/u/ir/konovav/wiki/wikiprep-postprocess/wikiprep-to-json.py"
-                var result = execSync.exec(ex+ " "+ folder+file+" > "+folder+file+".json")
-                console.log(result)
-        }, this)
-        console.log("done")
-        process.exit(0)
-}
-
-
-if (wikipedia_categories)
-{
-	var data = []
-	var folder = __dirname+"/../wiki/unparsed1/"
-	var files = fs.readdirSync(folder)
-
-	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
-
-	_.each(files, function(file, key, list){ 
-		console.log(file)
-		var new_data = JSON.parse(fs.readFileSync(folder+file))
-		new_data = _.filter(new_data, function(num){ return num["_category"]==1 })
-		data = data.concat(new_data)
-	}, this)
-
-	var categories = {}
-	_.each(data, function(value, key, list){ 
-		if (value['_category']==1)
-			categories[value["_id"]] = {'id':value["_id"], 'title':value["title"].split(":")[1], 'count_articles':0,'parent': [], 'child':[]}
-	}, this)
-
-	var not_found_cat = [] 
-	_.each(files, function(file, key, list){ 
-		var new_data = JSON.parse(fs.readFileSync(folder+file))
-		console.log(file)
-
-		_.each(new_data, function(value, key, list){ 
-			if (value['_category']==0)
-				_.each(value['categories'], function(cat, key, list){
-					if (cat in categories)
-						categories[cat]['count_articles'] += 1 
-					else
-						not_found_cat.push(cat)
-				}, this)
-
-			if (value['_category']==1)
-				{
-				categories[value['_id']]['parent'] = categories[value['_id']]['parent'].concat(value['categories'])
-				_.each(value['categories'], function(cat, key, list){
-					if (cat in categories)
-						categories[cat]['child'].push(value["_id"])
-				}, this)
-				}
-		}, this)
-	}, this)
-
-	console.log("not_found_cat")
-	console.log((not_found_cat).length)
-
-	_.each(categories, function(value, key, list){ 
-		var cate = []
-		_.each(value["parent"], function(cat, key, list){ 
-			if (cat in categories)
-				cate.push([categories[cat]['title'], categories[cat]['count_articles'], categories[cat]['id']])
-			else
-				cate.push([cat, -1])
-		}, this)
-
-		cate = _.sortBy(cate, function(num){ return num[1] }).reverse()
-		categories[key]['parent'] = cate
-
-		var cate = []
-		_.each(value["child"], function(cat, key, list){ 
-			if (cat in categories)
-				cate.push([categories[cat]['title'], categories[cat]['count_articles'], categories[cat]['id']])
-			else
-				cate.push([cat, -1, -1])
-		}, this)
-		cate = _.sortBy(cate, function(num){ return num[1] }).reverse()
-		categories[key]['child'] = cate
-	}, this)
-
-	var catar = _.toArray(categories)
-	catar = _.sortBy(catar, function(num){ return num["count_articles"] }).reverse()
-
-	console.log("sorting finished")
-
-	var data_splited = _.groupBy(catar, function(element, index){
-        return index%5;
- 	})
-
- 	_.each(_.toArray(data_splited), function(data, key, list){
-        console.log("writing "+key)
-        fs.writeFileSync('../wiki/en/categories/wiki.'+key+'.corenlp.json', JSON.stringify(data, null, 4))
- 	}, this)
-
- 	var fits = []
- 	_.each(catar, function(value, key, list){ 
- 		var ch = _.filter(value["child"], function(num){ return num[1]>10 })
- 		if ((value["child"].length > 10)&&(ch.length > 10))
- 			fits.push(value) 
- 	}, this)
-
-    fs.writeFileSync('../wiki/en/categories/fits.json', JSON.stringify(fits, null, 4))
-    console.log()
-    process.exit(0)
-}
-
-if (wikipedia_prepared)
-{
-
-	var data = {}
-	var prepared = __dirname+"/../wiki/en/notempl/prepared/"
-	var json = __dirname+"/../wiki/en/json/"
-	var files = fs.readdirSync(json)
-	// 24010846
-	// Categories which are included in the JEL classification codes
-	var categ = [784409, 718764, 772545, 1316171, 1798901, 706213, 946910, 691633, 1654984, 1311467, 4595606, 2364548, 1245386, 873395, 1653309]
-	
-	// Commons category template with no category set
-	// var categ = [21417166, 23222281, 21332284, 4140956, 14368811, 18554264, 700692, 1076518,
-// 695196, 8531227, 718764, 29796077, 717788, 6527330, 4348450, 29717090, 3400672, 26435292, 828361]
-
-	_.each(files, function(file, key, list){ 
-		console.log(file)
-		var new_data = JSON.parse(fs.readFileSync(json+file))
-		new_data = _.filter(new_data, function(num){ return num["_category"]==0 })
-		_.each(new_data, function(value, key, list){ 
-			var cc =  _.intersection(value["categories"], categ)
-			if (cc.length == 1)
-			{
-				var text = value['text']
-				text = text.replace(/\n/g," ")
-				text = text.replace(/\*/g," ")
-				text = text.replace(/\s{2,}/g, ' ')
-				value['text'] = text
-				value['categories'] = cc
-
-				if (!(cc[0] in data))
-					data[cc[0]] = []
-
-				data[cc[0]].push(value)
-			}
-		}, this)
-	}, this)
-
-	_.each(data, function(value, key, list){ 
-		data[key] = _.sample(value, 200)
-	}, this)
-
-	var listo = []
-	_.each(data, function(value, key, list){
-		_.each(value, function(value1, key, list){ 
-			fs.writeFileSync(prepared + value1["_id"], value1["text"], 'utf-8')
-			listo.push(prepared+value1["_id"])
-		 }, this) 
-	}, this)
-
-	_.each(data, function(value, key, list){ 
-		console.log(key)
-		console.log(value.length)
-		console.log("-------------")
-	}, this)
-
-	fs.writeFileSync(prepared + "list", listo.join("\n"), 'utf-8')
-
-	process.exit(0)
-}
-
-if (index_wordnet)
-{
-	var path = '/home/com/Shared/natural/node_modules/WNdb/dict/'
-	var files = ['index.adv', 'index.noun', 'index.verb', 'index.adj']
-	var index = {}
-
-	_.each(files, function(file, key, list){
-		index[file] = {}
-		var data =fs.readFileSync(path+file, 'UTF-8')
-		var lines = data.split("\n")
-		_.each(lines, function(line, key, list){ 
-			if (line[0] == "")
-				return
-
-			var elem = line.split(" ")
-			index[file][elem[0].split("_").join(" ")] = ""
-		}, this)
-	}, this)
-
-	console.log()
-	console.log(JSON.stringify(index, null, 4))
-	process.exit(0)
-}
-
-if (wikipedia_stats)
-{
-	// Art - 5876
-	// +190074 Category:Art movements
-	// +176859 Category:Arts
-
-	var cat = [ 140002, 6582, 11221, 221702, 380549,  25644, 59198, 379420, 176796, 380539, 88393,  26711,
-  209587, 264364, 379948, 380552, 29677, 63275, 29357, 306221, 306219, 15311 ]
-	// var files = ["./part1.json", "./part2.json", "./part3.json"]
-	// var data = []
-	// var parsed = __dirname+"/../wikipedia/prepared/"
-
-	var path = "../wikipedia"
-	var files = fs.readdirSync(path)
-	files = _.filter(files, function(num){ return num.indexOf("json") != -1 })
-	var data = []
-
-	_.each(files, function(file, key, list){ 
-		data = data.concat(JSON.parse(fs.readFileSync(file)))
-	}, this)
-
-	console.log("loaded")
-
-	var dataset = []
-	var categ = {}
-	var multi = []
-	_.each(data, function(value, key, list){ 
-		if (value["_category"]==1)
-			categ[value["_id"]] = value["title"]
-
-		if (value["_category"]==0)
-			if (_.intersection(value['categories'], cat).length>0)
-			{
-				dataset.push(value)
-				if (_.intersection(value['categories'], cat).length>1)
-					multi.push(value)
-			}
-	}, this)
-
-	console.log("preprocessed")
-	var count = 0
-	var count1 = 0
-	var single = []
-
-	_.each(dataset, function(value, key, list){ 
-		if (value["categories"].length > 1)
-		{
-			count += 1
-			console.log(value["_id"])
-			console.log(value["title"])
-			_.each(value["categories"], function(val, key, list){ 
-				{
-					if (cat.indexOf(val)!=-1)
-						console.log("+"+val +" "+ categ[val])
-					else
-						console.log(val +" "+ categ[val])
-				}
-
-			}, this)
-			console.log("___________________")
-		}
-		else
-		{
-		count1 += 1
-		single.push(value)
-		}
-
-	}, this)
-
-	console.log("SINGLE")
-
-	_.each(single, function(value, key, list){ 
-		console.log(value["_id"])
-		console.log(value["title"])
-		console.log(categ[value["categories"][0]])		
-		console.log("___________________")
-	}, this)
-
-	console.log("MULTI")
-
-	_.each(multi, function(value, key, list){ 
-		console.log(value["_id"])
-		console.log(value["title"])
-		_.each(value["categories"], function(val, key, list){ 
-		{
-			if (cat.indexOf(val)!=-1)
-				console.log("+"+val +" "+ categ[val])
-			else
-				console.log(val +" "+ categ[val])
-			}
-		})
-
-		console.log("++++++++++++++++++++++++++")
-	}, this)
-
-	console.log("many "+count)
-	console.log("single "+count1)
-	console.log("multi "+multi.length)
-	
-	process.exit(0)
-}
-
-if (reuters)
-{
-
-	var field = "BODY"
-	
-	var path = __dirname + "/../reuters2json/R8/"
-
-	var train_files = fs.readdirSync(path + "train")
-	var test_files = fs.readdirSync(path + "test")
-
-	var train_data = []
-
-	_.each(train_files, function(file, key, list){ 
-		console.log("load train"+key)
-		train_data = train_data.concat(JSON.parse(fs.readFileSync(path+"train/"+file)))
-	}, this)
-
-	var test_data = []
-
-	_.each(test_files, function(file, key, list){ 
-		console.log("load test"+key)
-		test_data = test_data.concat(JSON.parse(fs.readFileSync(path+"test/"+file)))
-	}, this)
-
-	// filter EARN
-
-	test_data = _.compact(_.filter(test_data, function(num){ if (num['TOPICS'].indexOf('earn')==-1) return num }))
-	train_data = _.compact(_.filter(train_data, function(num){ if (num['TOPICS'].indexOf('earn')==-1) return num }))
-
-	// there is a number of more that one sentence	
-	
-	var train_data = _.compact(_.map(train_data, function(value){ var elem = {}
-															// if (('BODY' in value['TEXT']) && ('TITLE' in value['TEXT']) )
-															if (('BODY' in value['TEXT']))
-																{
-																	// if (value['TITLE_CORENLP']['sentences'].length > 0)
-																	{
-																		value['CORENLP'] = value['BODY_CORENLP']
-																		
-																		// value['CORENLP']['sentences'][0]['token'] = value['BODY_CORENLP']['sentences'][0]['tokens'].concat(value['TITLE_CORENLP']['sentences'][0]['tokens'])
-
-																		delete value['TITLE_CORENLP']
-																		elem['input'] =  value
-																		elem['output'] = value['TOPICS'][0]
-																		return elem
-																	}
-																} 
-															}))
-
-	// 	// var test_data = _.compact(_.map(test, function(value){ if (field in value['TEXT']) return value }))
-	var test_data = _.compact(_.map(test_data, function(value){ var elem = {}
-															if ((field in value['TEXT']) && (value['$']['NEWID'] != '20959')) 
-																{
-																value['CORENLP'] = value[field + '_CORENLP']
-																// delete value['TITLE_CORENLP']
-																elem['input'] = value
-																elem['input']['input'] = value['TEXT'][field]
-																elem['output'] = value['TOPICS'][0]
-																return elem
-																}
-															}))
-
-
-
-	// var train_data = _.compact(_.map(train_data, function(value){ var elem = {}
-	// 														if ('BODY' in value['TEXT']) 
-	// 															{
-																	
-	// 															value['BODY_CORENLP']['sentences'] = [ value['BODY_CORENLP']['sentences'][0] ]
-	// 															value['CORENLP'] = value['BODY_CORENLP']
-																	
-	// 															delete value['TITLE_CORENLP']
-	// 															elem['input'] =  value
-	// 															elem['output'] = value['TOPICS'][0]
-	// 															return elem
-																	
-	// 															} 
-	// 														}))
-
-	// var test_data = _.compact(_.map(test_data, function(value){ var elem = {}
-	// 														if ('BODY' in value['TEXT'])
-	// 															{
-																
-	// 															value['BODY_CORENLP']['sentences'] = [ value['BODY_CORENLP']['sentences'][0] ]
-	// 															value['CORENLP'] = value['BODY_CORENLP']
-	// 															delete value['TITLE_CORENLP']
-
-	// 															elem['input'] = value
-	// 															elem['input']['input'] = _.pluck(value['BODY_CORENLP']['sentences'][0]['tokens'], 'word').join(" ")
-	// 															elem['output'] = value['TOPICS'][0]
-	// 															return elem
-	// 															}
-	// 														}))
-	console.log("test is ready")
-
-	console.log(train_data.length)
-	console.log(test_data.length)
-
-	train_data = _.shuffle(train_data)
-	test_data = _.shuffle(test_data)
-
-	// train_data = train_data.splice(0,100)
-	// test_data = test_data.splice(0,200)
-
-	// console.log(train_data.length)
-	// console.log(test_data.length)
-
-	var dataset = train_data.concat(test_data)
-	dataset = _.shuffle(dataset)
-	dataset = dataset.splice(0,200)
-
-	var F1 = []
-	var stats = []
-	partitions.partitions_reverese(dataset, 10, function(train, test, index) {
-		stats = trainAndTest.trainAndTest_hash(classifier.TC, train, test, 5)
-		F1.push(stats[0]['stats']['F1'])
-	});
-	console.log("F1")
-	console.log(F1)
-	console.log(_.reduce(F1, function(memo, num){ return memo + num; }, 0)/F1.length)
-
-	// var stats = trainAndTest.trainAndTest_hash(classifier.ReuterBin, train_data, test_data, 5)
-	console.log(JSON.stringify(stats[0]['data'], null, 4))
-
-
-	var F1 = []
-	partitions.partitions_reverese(dataset, 10, function(train, test, index) {
-		F1.push(trainAndTest.trainAndTest_hash(classifier.TCPPDB, train, test, 5)[0]['stats']['F1'])
-	});
-	console.log("F1")
-	console.log(F1)
-	console.log(_.reduce(F1, function(memo, num){ return memo + num; }, 0)/F1.length)
-
-
-	var stats = []
-	var F1 = []
-	partitions.partitions_reverese(dataset, 10, function(train, test, index) {
-		stats = trainAndTest.trainAndTest_hash(classifier.TCBOC, train, test, 5)
-		F1.push(stats[0]['stats']['F1'])
-	});
-	console.log("F1")
-	console.log(F1)
-	console.log(_.reduce(F1, function(memo, num){ return memo + num; }, 0)/F1.length)
-	console.log(JSON.stringify(stats[0]['data'], null, 4))
-
-	console.log()
-	process.exit(0)
-
-	var F1 = []
-	partitions.partitions_reverese(dataset, 10, function(train, test, index) {
-		F1.push(trainAndTest.trainAndTest_hash(classifier.TCSynHypHypoCohypo, train, test, 5)[0]['stats']['F1'])
-	});
-	console.log("F1")
-	console.log(F1)
-	console.log(_.reduce(F1, function(memo, num){ return memo + num; }, 0)/F1.length)
-
-	var F1 = []
-	partitions.partitions_reverese(dataset, 10, function(train, test, index) {
-		F1.push(trainAndTest.trainAndTest_hash(classifier.TCSynHyp2, train, test, 5)[0]['stats']['F1'])
-	});
-	console.log("F1")
-	console.log(F1)
-	console.log(_.reduce(F1, function(memo, num){ return memo + num; }, 0)/F1.length)
-
-	// var stats = trainAndTest.trainAndTest_hash(classifier.ReuterBinPPDB, train_data, test_data, 5)
-
-	// console.log(JSON.stringify(stats[0]['data'], null, 4))
-	// console.log(JSON.stringify(stats[0]['stats'], null, 4))
-
-	// var features_all = 0
-	// var features_different_with_lemma = 0
-	// var features_with_emb = 0
-	// var wordnet_candidates = 0
-	// var candidates_in_train = 0
-	// var features_expaned_with_context = 0
-	// var expansion_useful_with_context = 0
-	// var expansion_useful_without_context = 0
-	// var candidates_with_emb = 0
-	// var expansion_with_context = 0 
-	// var expansion_without_context = 0
-
-	// _.each(stats[0]['data'], function(record, key, list){ 
-	// 	features_all += Object.keys(record['expansioned']).length
-
-	// 	_.each(record['expansioned'], function(value, key, list){ 
-
-	// 		if (value['lemma'] != value['word'])
-	// 			features_different_with_lemma += 1
-			
-	// 		if ('embedding_true' in value)
-	// 			if (value['embedding_true'] == 1)
-	// 				features_with_emb += 1
-		
-	// 		if ('wordnet_candidates' in value)
-	// 			if (value['wordnet_candidates'].length > 0)
-	// 				wordnet_candidates += 1
-
-	// 		if ('candidates_in_train' in value)
-	// 			if (value['candidates_in_train'].length > 0)
-	// 				candidates_in_train += 1
-
-	// 		if ('candidates_with_emb' in value)
-	// 			if (value['candidates_with_emb'].length > 0)
-	// 				candidates_with_emb += 1
-		
-	// 		if ('expansion_with_context' in value)
-	// 			if (value['expansion_with_context'].length > 0)
-	// 				expansion_with_context += 1
-
-	// 		if ('expansion_without_context' in value)
-	// 			if (value['expansion_without_context'].length > 0)
-	// 				expansion_without_context += 1
-
-	// 		if ('expansion_with_context' in value)
-	// 			if (value['expansion_with_context_result'][0][1] > 0)
-	// 				expansion_useful_with_context += 1
-
-	// 		if ('expansion_without_context' in value)
-	// 			if (value['expansion_without_context_result'][0][1] > 0)
-	// 				expansion_useful_without_context += 1
-		
-	// 	}, this)
-	// }, this)
-
-	// console.log("features_all "+features_all)
-	// console.log("features_different_lemma "+features_different_with_lemma)
-	// console.log("features_with_emb "+features_with_emb)
-	// console.log("wordnet_candidates "+wordnet_candidates)
-	// console.log("candidates_in_train "+candidates_in_train)
-	// console.log("candidates_with_emb "+candidates_with_emb)
-
-	// // console.log("expansion_with_context "+expansion_with_context)
-	// // console.log("expansion_without_context "+expansion_without_context)
-
-	// console.log("expansion "+expansion_without_context)
-	// console.log("expansion_useful_with_context "+expansion_useful_with_context)
-	// console.log("expansion_useful_without_context "+expansion_useful_without_context)
-
-
-	// var stats1 = trainAndTest.trainAndTest_hash(classifier.ReuterBinPPDBNoContext, train_data, test_data, 5)
-	// console.log(JSON.stringify(stats1[0]['stats'], null, 4))
-
-	// var stats1 = trainAndTest.trainAndTest_hash(classifier.ReuterBinExpSynHyperHypo, train_data, test_data, 5)
-	// console.log(JSON.stringify(stats1[0]['stats'], null, 4))
-
-	// var stats1 = trainAndTest.trainAndTest_hash(classifier.ReuterBinExpSynHyperHypoNoContext, train_data, test_data, 5)
-	// console.log(JSON.stringify(stats1[0]['stats'], null, 4))
-
-	process.exit(0)
 }
 
 if (test_pp)
@@ -1339,12 +518,14 @@ if (trans)
 
 }
 
-// 91%
+// 91% - 85%
 if (test_label)
 {
 	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))
 	var filtered = bars.filterdataset(data, 5)
 	var ext = bars.extractdataset(filtered)
+
+	console.log("dialogues " + filtered.length)
 
 	var doubles = []
 	
@@ -1358,12 +539,168 @@ if (test_label)
 			doubles.push(Hierarchy.splitPartEquallyIntent(value['output']))
 	}, this)
 
+	console.log(JSON.stringify(filtered, null, 4))
+
+
 	console.log(all)
 	console.log(single)
 	console.log(single/all)
-	console.log(doubles)
 	process.exit(0)
 }
+
+if (test_phrases)
+{
+	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))
+
+	_.filter(data, function(num){ return num[""] == 0; });
+
+	var filtered = bars.filterdataset(data, 5)
+	var ext = bars.extractdataset(data)
+	
+	console.log(JSON.stringify(ext, null, 4))
+	process.exit(0)
+
+
+	var dataset = partitions.partition(ext, 1, Math.round(dataset.length*0.5))
+	
+
+	stats = trainAndTest_hash(classifier.IntentClass, bars.copyobj(testset), 5)
+
+
+	
+
+	process.exit(0)
+
+
+	var distances = []
+
+	var count = 0
+
+	_.each(ext, function(value, key, list){ 
+		if ('intent_absolute' in value)
+		{
+			if (Object.keys(value['intent_absolute']).length == 1)
+			{
+				count += 1
+				// console.log(value["input"])
+				var norm = smart_normalizer(value["input"]).trim()
+				var keyphrase = _.values(value['intent_absolute'])[0].trim()
+				var dist = natural.DiceCoefficient(norm,keyphrase)
+
+				console.log(norm)
+				console.log(keyphrase)
+				console.log(dist)
+				console.log("")
+
+				distances.push(dist)
+
+			}
+		}
+	}, this)
+
+	
+	var dist = _.countBy(distances, function(num) { return num.toFixed(1) })
+	// var dist = _.countBy(distances, function(num) { return num % 10 })
+
+	console.log(JSON.stringify(dist, null, 4))
+	console.log(count)
+	process.exit(0)
+}
+
+if (test_distance)
+{
+	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))
+	// var filtered = bars.filterdataset(data, 5)
+	var ext = bars.extractdataset(data)
+	var distances = []
+
+	var count = 0
+
+	_.each(ext, function(value, key, list){ 
+		if ('intent_absolute' in value)
+		{
+			if (Object.keys(value['intent_absolute']).length == 1)
+			{
+				count += 1
+				// console.log(value["input"])
+				var norm = smart_normalizer(value["input"]).trim()
+				var keyphrase = _.values(value['intent_absolute'])[0].trim()
+				var dist = natural.DiceCoefficient(norm,keyphrase)
+
+				console.log(norm)
+				console.log(keyphrase)
+				console.log(dist)
+				console.log("")
+
+				distances.push(dist)
+
+			}
+		}
+	}, this)
+
+	
+	var dist = _.countBy(distances, function(num) { return num.toFixed(1) })
+	// var dist = _.countBy(distances, function(num) { return num % 10 })
+
+	console.log(JSON.stringify(dist, null, 4))
+	console.log(count)
+	process.exit(0)
+}
+
+
+// man
+// {
+//     "Greet": 40,
+//     "Offer": 195,
+//     "Accept": 98,
+//     "Reject": 49,
+//     "Insist": 1
+// }
+// agn
+// {
+//     "Reject": 264,
+//     "Greet": 41,
+//     "Accept": 50,
+//     "Offer": 139
+// }
+
+// mixed - initiatiive negotiation
+if (test_initiative)
+{
+	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule_core.json"))
+	// var filtered = bars.filterdataset(data, 5)
+	var ext = bars.extractdatasetallturns(data)
+
+	var man = []
+	var agn = []
+
+	_.each(ext, function(value, key, list){ 
+
+		
+		var intents = Hierarchy.splitPartEquallyIntent(value['output'])
+
+		intents = _.unique(intents)
+
+		if (bars.ishumanturn(value))
+			man = man.concat(intents)
+		else
+			agn = agn.concat(intents)
+	}, this)
+
+	var manh = _.countBy(man, function(num) { return num })
+	var agnh = _.countBy(agn, function(num) { return num })
+
+	console.log("man")
+	console.log(JSON.stringify(manh, null, 4))
+
+	console.log("agn")
+	console.log(JSON.stringify(agnh, null, 4))
+
+	console.log()
+	process.exit(0)
+
+}
+
 
 if (test_knn)
 {
@@ -1497,19 +834,6 @@ if (keyphrase_transformation)
 	process.exit(0)
 }
 
-if (shuffle)
-{
-	var data = JSON.parse(fs.readFileSync("../datasets/DatasetDraft/dial_usa_rule.json"))
-	data = _.shuffle(data)	
-	data = _.shuffle(data)	
-	data = _.shuffle(data)	
-	data = _.shuffle(data)	
-	console.log(JSON.stringify(data, null, 4))
-	console.log()
-	process.exit(0)
-}
-
-
 if (sequnce_classification)
 {
 
@@ -1570,230 +894,6 @@ if (sequnce_classification)
 }
 
 
-if (test_dataset)
-{
-	var data = JSON.parse(fs.readFileSync("./test2.json"))
-	process.exit(0)
-}
-
-if (prepare_dataset_for_gaby1)
-{
-
-	var utdata = []
-
-	var olddata = JSON.parse(fs.readFileSync("./dialogue_restore/dial_usa.json"))
-
-	var oldddata = JSON.parse(fs.readFileSync("./datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
-	oldddata = trainutils.extractturns(oldddata)
-	var transfer = []
-
-	var scfg = JSON.parse(fs.readFileSync("./scfg_detailed.json"))
-	
-	// _.each(trainutils.dividedataset(oldddata)['one'], function(value, key, list){ 
-	_.each(oldddata, function(value, key, list){ 
-		value['input'] = normalizer(value['input'])
-		if (
-			(value['input'].indexOf('salary') == -1) &&
-			(value['input'].indexOf('NIS') == -1) &&
-			(value['input'].indexOf('12000') == -1) &&
-			(value['input'].indexOf('7000') == -1)&&
-			(value['input'].indexOf('20000') == -1)
-			)
-		{
-			transfer.push({'input':value['input'], 'output':value['output']})
-		}
-	}, this)
-
-	// 
-	// utdata = _.shuffle(utdata)
-	// var clean = partitions.partition(utdata, 1, Math.round(utdata.length*0.4))
-
-	// console.log("one "+trainutils.dividedataset(utdata)['one'].length)
-	// console.log("two "+trainutils.dividedataset(utdata)['two'].length)
-	
-	// console.log()
-	// process.exit(0)
-	// var filename = './dialogue_restore/new_ag1.json'
-	// data = JSON.parse(fs.readFileSync(filename))
-
-
-	_.each(olddata, function(dialogue, key, list){ 
-		// console.log(dialogue['status'])
-		if (_.find(dialogue['users'], function(num){ return num.indexOf("NewAgent")}) != -1)
-		{
-			_.each(dialogue['turns'], function(turn, key, list){ 
-				if ((turn['user'].toLowerCase().indexOf('agent') == -1) &&
-					(turn['output'] != ''))
-				{
-					utdata.push({'input': normalizer(turn['input']),
-								'output': turn['output']})
-				}
-			}, this)
-		}
-	}, this)
-
-
-	utdata = utdata.concat(transfer)
-	// console.log(utdata.length)
-	// console.log(JSON.stringify(utdata, null, 4))
-
-	// utdata = utdata.concat(olddata)
-	utdata = _.shuffle(utdata)
-
-	var dataset = partitions.partition(utdata, 1, Math.round(utdata.length*0.4))
-
-	// console.log("one "+trainutils.dividedataset(utdata)['one'].length)
-	// console.log("two "+trainutils.dividedataset(utdata)['two'].length)
-
-	_.each(scfg, function(value, key, list){ 
-		dataset['train'].push({'input': normalizer(value['input']),
-								'output': value['output']})
-	}, this)
-	
-	var output = {}
-	var zero = 0
-	var inputs = []
-
-	// _.each(dataset['train'], function(value, key, list){ 
-		// if (value["output"]  == "")
-			// inputs.push(value['input'])
-	// }, this)
-
-	// console.log(inputs)
-	// process.exit(0)
-
-	_.each(trainutils.dividedataset(dataset['train'])['one'], function(value, key, list){
-		
-		// console.log(value)
-		// process.exit(0)
-		// console.log(value['output'][0])
-		var str = _.isString(value['output'][0])? value['output'][0]: JSON.stringify(value['output'][0])
-		
-		// var str = JSON.stringify(value['output'][0])
-		if (!(str in output))
-			 output[str] = []
-		output[str].push(normalizer(value['input']))
-		output[str] = _.compact(_.unique(output[str]))
-	}, this)
-
-	// console.log(zero)
-		
-	_.each(output, function(value, key, list){ 
-		output[key] = _.sample(value,50)
-	}, this)
-
-
-	var test = []
-	_.each(dataset['test'], function(value, key, list){ 
-			var out = []
-
-			// console.log(value['output'])
-			_.each(value['output'], function(value1, key1, list1){ 
-
-					out.push(_.isString(value1)? JSON.parse(value1): value1)
-			}, this)
-
-		test.push({'input': normalizer(value['input']),
-					// 'output': _.isString(value['output'])? value['output']: JSON.stringify(value['output'])})
-					'output': out})
-	}, this)
-
-	console.log(JSON.stringify(output, null, 4))
-	
-	
-	test = _.sample(test, 200)
-
-	console.log(JSON.stringify(test, null, 4))
-	process.exit(0)
-}
-
-
-if (prepare_dataset_for_gaby)
-{
-	
-	var olddata = []
-	var utdata = []
-	
-	olddata = olddata.concat(JSON.parse(fs.readFileSync("./datasets/Employer/Dialogue/students_keyphrases_only_rule.json")))
-	olddata = olddata.concat(JSON.parse(fs.readFileSync("./datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json")))
-	olddata = trainutils.extractturns(olddata)
-	
-	// utdata = _.shuffle(utdata)
-	// var clean = partitions.partition(utdata, 1, Math.round(utdata.length*0.4))
-
-	// console.log("one "+trainutils.dividedataset(utdata)['one'].length)
-	// console.log("two "+trainutils.dividedataset(utdata)['two'].length)
-	
-	// console.log()
-	// process.exit(0)
-	var filename = './dialogue_restore/new_ag1.json'
-	data = JSON.parse(fs.readFileSync(filename))
-
-
-	_.each(data, function(dialogue, key, list){ 
-		// console.log(dialogue['status'])
-		if (dialogue['status'] == 'goodconv')
-		{
-			_.each(dialogue['turns'], function(turn, key, list){ 
-				if (turn['user'].toLowerCase().indexOf('agent') == -1)
-				{
-					utdata.push({'input': normalizer(turn['input']),
-								'output': turn['output']})
-				}
-			}, this)
-		}
-	}, this)
-
-	// console.log(utdata.length)
-	// console.log(JSON.stringify(utdata, null, 4))
-
-	utdata = utdata.concat(olddata)
-	utdata = _.shuffle(utdata)
-
-	var dataset = partitions.partition(utdata, 1, Math.round(utdata.length*0.4))
-
-	// console.log("one "+trainutils.dividedataset(utdata)['one'].length)
-	// console.log("two "+trainutils.dividedataset(utdata)['two'].length)
-	
-	var output = {}
-	var zero = 0
-	var inputs = []
-
-	// _.each(dataset['train'], function(value, key, list){ 
-		// if (value["output"]  == "")
-			// inputs.push(value['input'])
-	// }, this)
-
-	// console.log(inputs)
-	// process.exit(0)
-
-	_.each(trainutils.dividedataset(dataset['train'])['one'], function(value, key, list){
-		
-		// console.log(value)
-		// process.exit(0)
-		// console.log(value['output'][0])
-		var str = _.isString(value['output'][0])? value['output'][0]: JSON.stringify(value['output'][0])
-		
-		// var str = JSON.stringify(value['output'][0])
-		if (!(str in output))
-			 output[str] = []
-		output[str].push(normalizer(value['input']))
-		output[str] = _.compact(_.unique(output[str]))
-	}, this)
-
-	// console.log(zero)
-	console.log(JSON.stringify(output, null, 4))
-
-
-	var test = []
-	_.each(dataset['train'], function(value, key, list){ 
-		test.push({'input': normalizer(value['input']),
-					'output': _.isString(value['output'])? value['output']: JSON.stringify(value['output'])})
-	}, this)
-
-	console.log(JSON.stringify(test, null, 4))
-	process.exit(0)
-}
 
 if (do_keyphrase_only_rule)
 {
