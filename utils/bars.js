@@ -1040,14 +1040,12 @@ function isnotokaccept(turn)
 
   if (_.filter(unig, function(num){ return ok.indexOf(num) != -1 }).length > 0)
   {
-
     if (_.isEqual(intents, ['Accept']))
       return false
   }
 
   if (_.filter(unig, function(num){ return no.indexOf(num) != -1 }).length > 0)
   {
-
     if (_.isEqual(intents, ['Reject']))
       return false
   }
@@ -1092,8 +1090,8 @@ function ishumanturn(turn)
 
 function isseqturn(turn)
 {
-  if (intent_field in turn)
-  {
+  // if (intent_field in turn)
+  // {
     if (('output' in turn) && (_.isArray(turn['output'])) == true)
       {
         if (turn['output'].length == 1)
@@ -1101,18 +1099,18 @@ function isseqturn(turn)
       }
     else
       return false
-  }
-  else
-    return false
+  // }
+  // else
+    // return false
 }
 
 function isgoodturn(turn)
-{
-  if (isactiveturn(turn) && ishumanturn(turn) && isseqturn(turn) && ispermittedturn(turn))
-    return isnotokaccept(turn)
+{  
+  if (isactiveturn(turn) && ishumanturn(turn) && isseqturn(turn) /*single label*/ && ispermittedturn(turn) /*no accept no DEFAULT INTENT*/ )
+    // return isnotokaccept(turn)
+    return true
   return false
 }
-
 
 function isoutput(turn)
 {
@@ -1122,10 +1120,37 @@ function isoutput(turn)
   return false
 }
 
-
 function isgoodturn_test(turn)
 {
   return (isactiveturn(turn) && ishumanturn(turn) && isoutput(turn))
+}
+
+function extractdatasetallturns(dataset)
+{
+  var output = []
+  _.each(dataset, function(dial, key, list){ 
+    output = output.concat(extractdialall(dial))
+  }, this)
+  return output
+}
+
+function extractdialall(dialogue)
+{
+  var output = []
+  _.each(dialogue['turns'], function(turn, key, list){ 
+    if (isgoodturnall(turn))
+      output.push(turn)
+  }, this)
+  return output
+}
+
+function isgoodturnall(turn)
+{  
+  // if (isactiveturn(turn) && ishumanturn(turn) && isseqturn(turn) && ispermittedturn(turn))
+  if (isactiveturn(turn) && ispermittedturn(turn) && isseqturn(turn))
+    return true
+    // return isnotokaccept(turn)
+  return false
 }
 
 function extractdial(dialogue)
@@ -1172,6 +1197,7 @@ function extractintent(dataset, intent)
   return output
 }
 
+// take all dialogues where number of utterances is exceeds min
 function filterdataset(dataset, min)
 {
   var output = []
@@ -3540,5 +3566,6 @@ extractintent:extractintent,
 isnotokaccept:isnotokaccept,
 extractdial_test:extractdial_test,
 createcandidates:createcandidates,
-ngraminindex:ngraminindex
+ngraminindex:ngraminindex,
+extractdatasetallturns:extractdatasetallturns
 }
