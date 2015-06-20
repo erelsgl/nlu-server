@@ -33,7 +33,8 @@
     "xml2js": "~0.2.7",
     "async": "*",
     "node-cache": "*",
-    "wordnet-magic": "*"
+    "wordnet-magic": "*",
+    "cli-color": "*"
   },
   "devDependencies": {
     "mocha": "*",
