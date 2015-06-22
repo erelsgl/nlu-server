@@ -59,7 +59,8 @@ function groupbylabel(dataset, minsize, sizetrain, catnames)
 function extractGlobal(workerstats, stat)
 {
 	// var attributes = ["F1", "Accuracy", "macroF1"]
-	var attributes = ["Accuracy"]
+	// var attributes = ["Accuracy"]
+	var attributes = Object.keys(workerstats['stats'])
 	var trainsize = workerstats["trainsize"]
 	var trainlen = workerstats["trainlen"]
 	var classifier = workerstats["classifier"]
@@ -73,7 +74,8 @@ function extractGlobal(workerstats, stat)
 		if (!(classifier in stat[attr][trainsize][trainlen])) 
 				stat[attr][trainsize][trainlen][classifier] = {}
 		
-		stat[attr][trainsize][trainlen][classifier][fold] = workerstats[attr]
+		// stat[attr][trainsize][trainlen][classifier][fold] = workerstats[attr]
+		stat[attr][trainsize][trainlen][classifier][fold] = workerstats['stats'][attr]
 
 	}, this)
 }
@@ -139,7 +141,7 @@ function plot(fold, parameter, stat, baseline, sota)
 
     fs.writeFileSync(mapfile, string)
 
-    var command = gnuplot +" -e \"set title '"+corpus+" : "+sota+" - "+baseline+"'; set output 'utils/hm/"+fold+"_"+parameter+"_"+sota+"-"+baseline+".png'\" "+__dirname+"/hm.plot " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image \""
+    var command = gnuplot +" -e \"set title '"+corpus+" : "+sota+" - "+baseline+"'; set output 'lc/hm/"+fold+"_"+parameter+"_"+sota+"-"+baseline+".png'\" "+__dirname+"/hm.plot " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image \""
     
     console.log(command)
 	child_process.execSync(command)
@@ -172,6 +174,9 @@ function plotlcagrlen(fold, stat)
 
 		}, this)
 	}, this)
+
+	console.log(JSON.stringify(classifier_hash, null, 4))
+	console.log("------------------------------------")
 
 	_.each(classifier_hash, function(value, key, list){ 
 		classifier_hash[key] = distance.average(value)
@@ -259,7 +264,7 @@ function plotlc(fold, parameter, stat)
 	fs.appendFileSync(plotfile, string)
     fs.writeFileSync(mapfile, string)
 
-    var command = gnuplot +" -e \"set output 'utils/lc/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=2:"+(classifiers.length+1)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3\""
+    var command = gnuplot +" -e \"set output 'lc/lc/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=2:"+(classifiers.length+1)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3\""
     console.log(command)
     child_process.execSync(command)
 
@@ -292,12 +297,12 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 			fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
 			fs.appendFileSync(statusfile, JSON.stringify(stat, null, 4))
 
-            var Ac = workerstats['Accuracy']
-            if (_.isNaN(Ac) || _.isNull(Ac) || _.isUndefined(Ac))
-            {
-				console.log("Accuracy is not OK")
-				process.exit(0)
-			}
+            // var Ac = workerstats['Accuracy']
+            // if (_.isNaN(Ac) || _.isNull(Ac) || _.isUndefined(Ac))
+            // {
+				// console.log("Accuracy is not OK")
+				// process.exit(0)
+			// }
 
 			var baseline = classifiers[0]
 			var sotas = classifiers.slice(1)
@@ -344,8 +349,12 @@ if (process.argv[1] === __filename)
 	fs.writeFileSync(plotfile, "")
 
 	var datafilepath = __dirname+"/../../wiki/en/social_small/cluster/"
+
 	var lc = __dirname + "/lc"
 	var hm = __dirname + "/hm"
+
+	var dataset = JSON.parse(fs.readFileSync(__dirname + "/../../datasets/DatasetDraft/dial_usa_rule_core.json"))
+	var filtered = bars.filterdataset(dataset, 5)
 
 	// clean graphs
 	_.each([lc,hm,datafilepath], function(type, key, list){ 
@@ -356,39 +365,39 @@ if (process.argv[1] === __filename)
 		}, this)
 	}, this)
 
-	var data = wikipedia.load_wikipedia("social_small")
+	// var data = wikipedia.load_wikipedia("social_small")
 
-	var catnames = {}
-	_.each(data, function(record, key, list){ 
-		catnames[record['catid']] = record['catname']
-	}, this)
+	// var catnames = {}
+	// _.each(data, function(record, key, list){ 
+	// 	catnames[record['catid']] = record['catname']
+	// }, this)
 	
 	// convert corpus
-	var st_data = []
+	// var st_data = []
 
-	_.each(data, function(value, key, list){ 
-		value['input'] = value["text"]
-		st_data.push({'input':value, 'output':value["catid"]})
-	}, this)
+	// _.each(data, function(value, key, list){ 
+	// 	value['input'] = value["text"]
+	// 	st_data.push({'input':value, 'output':value["catid"]})
+	// }, this)
 
-	console.log("size before filtering "+st_data.length)
-	st_data = _.filter(st_data, function(num){ return isInt(num["output"][0])})
-	console.log("size after filtering "+st_data.length)
+	// console.log("size before filtering "+st_data.length)
+	// st_data = _.filter(st_data, function(num){ return isInt(num["output"][0])})
+	// console.log("size after filtering "+st_data.length)
 
-	console.log("catnames")
-	console.log(JSON.stringify(catnames, null, 4))
+	// console.log("catnames")
+	// console.log(JSON.stringify(catnames, null, 4))
 	// modify corpus
-	var datahash = groupbylabel(st_data, len, perlabelsize, catnames)
-	console.log("master: dataset groupped")
+	// var datahash = groupbylabel(st_data, len, perlabelsize, catnames)
+	// console.log("master: dataset groupped")
 
-	_.each(datahash, function(value, key, list){ 
-		console.log("master: write "+key)
-		fs.writeFileSync(datafilepath + key, JSON.stringify(value))
-	}, this)
+	// _.each(datahash, function(value, key, list){ 
+	// 	console.log("master: write "+key)
+	// 	fs.writeFileSync(datafilepath + key, JSON.stringify(value))
+	// }, this)
 	
-	console.log("master: dataset size "+_.flatten(_.toArray(datahash)).length)
-	console.log("master: labels "+ Object.keys(datahash).length)
-	console.log("master: dataset saved")
+	// console.log("master: dataset size "+_.flatten(_.toArray(datahash)).length)
+	// console.log("master: labels "+ Object.keys(datahash).length)
+	// console.log("master: dataset saved")
 
 	learning_curves(classifiers, len, folds, datafilepath, function(){
 		console.log()
