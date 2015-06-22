@@ -572,8 +572,8 @@ module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, 
 
 	classifier.trainBatch_async(trainSet, function(err, results){
 		var trainEnd = new Date().getTime()
-		// module.exports.testBatch_async(classifier, testSet, function(error, results){
-		module.exports.test_async(classifier, testSet, function(error, results){
+		module.exports.testBatch_async(classifier, testSet, function(error, results){
+		// module.exports.test_async(classifier, testSet, function(error, results){
 		results['traintime'] = trainEnd - trainStart
 		callback(error, results)
 		})
