@@ -5,6 +5,8 @@ var bars = require(__dirname+'/../utils/bars');
 var distance = require(__dirname+'/../utils/distance');
 var wikipedia = require(__dirname+'/../utils/wikipedia')
 var child_process = require('child_process')
+var partitions = require('limdu/utils/partitions');
+
 var gnuplot = 'gnuplot'
 var corpus = "Social Science"
 var statusfile = __dirname + "/status"
@@ -270,8 +272,10 @@ function plotlc(fold, parameter, stat)
 
 }
 
-function learning_curves(classifiers, len, folds, datafile, callback)
+function learning_curves(classifiers, len, folds, dataset, callback)
 {
+
+	// datafile
 	var stat = {}
 	var thr = 0
 
@@ -285,7 +289,14 @@ function learning_curves(classifiers, len, folds, datafile, callback)
 		_(folds).times(function(fold){
 		
 			// worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
-			cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
+			var worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'thread': thr})
+			
+			var data = partitions.partitions_consistent_by_fold(dataset, folds, fold)
+			
+			worker.send({ 
+						'train': JSON.stringify(data['train']), 
+						'test': JSON.stringify(data['test']) 
+						})
 			thr += 1	
 		})
 	}, this)
@@ -344,7 +355,7 @@ if (process.argv[1] === __filename)
 	var perlabelsize = 3
 
 	//var classifiers = ['TC', 'TCBOCWN', 'TCBOCPPDBS', 'TCBOCPPDBM']
-	var classifiers = ['TC']
+	var classifiers = ['IntentClass']
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
 
@@ -399,7 +410,12 @@ if (process.argv[1] === __filename)
 	// console.log("master: labels "+ Object.keys(datahash).length)
 	// console.log("master: dataset saved")
 
-	learning_curves(classifiers, len, folds, datafilepath, function(){
+	// console.log(JSON.stringify(filtered, null, 4))
+	// console.log(_.isArray(filtered))
+	// console.log()
+	// process.exit(0)
+
+	learning_curves(classifiers, len, folds, filtered, function(){
 		console.log()
 		process.exit(0)
 	})	
