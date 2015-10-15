@@ -76,7 +76,28 @@ classifierNames.forEach(function(classifierName) {
 	activeClassifiers[classifierName].precisionrecall = limdu.utils.test(activeClassifiers[classifierName], activeClassifiers[classifierName].pastTrainingSamples).calculateStats();
 
 	activeClassifiers[classifierName].classes = activeClassifiers[classifierName].getAllClasses();
-	activeClassifiers[classifierName].classes.sort();
+	// activeClassifiers[classifierName].classes.sort();
+
+	activeClassifiers[classifierName].classes = _.sort(activeClassifiers[classifierName].classes, function(label){
+		if (_.isObject(label))
+		{
+			if (_.keys(label)[0]=="Offer")
+				return 10
+			if ((_.values(label)[0]==true) || (_.values(label)[0]=="true"))
+				return 9
+			if (_.keys(label)[0]=="Accept")
+				return 8
+			if (_.keys(label)[0]=="Reject")
+				return 7
+			return 6
+		}
+		else
+		return 1
+	}).reverse()
+
+	console.log("Classes of classifier")
+	console.log(activeClassifiers[classifierName].classes)
+
 	if (!activeClassifiers[classifierName].classes)
 		throw new Error("Classes of classifier '"+classifierName+"' are null!");
 	var elapsedTime = new Date()-startTime;
