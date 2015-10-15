@@ -2,12 +2,12 @@
 // docker run -t -i -p 9000:9000 cuzzo/stanford-pos-tagger
  // sudo tcpdump -s 0 -A 'tcp dst port 10345 and (tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x504f5354)' -i lo
 
-var Fiber = require('fibers');
+//var Fiber = require('fibers');
 var fs = require('fs');
 var _ = require('underscore')._;
 var natural = require('natural');
-var Lemmer = require('node-lemmer').Lemmer;
-var lemmerEng = new Lemmer('english');
+//var Lemmer = require('node-lemmer').Lemmer;
+//var lemmerEng = new Lemmer('english');
 var Hierarchy = require('../../Hierarchy');
 var splitJson = Hierarchy.splitJson
 var bars = require('../../utils/bars')
@@ -31,7 +31,7 @@ var buffer = {}
 var DBSELECT = 0
 
 var requestify = require('requestify'); 
-var querystring = require('querystring');
+//var querystring = require('querystring');
 
 
 var intent_field = 'intent_core'
