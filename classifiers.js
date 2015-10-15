@@ -22,7 +22,7 @@ var ftrs = limdu.features;
 var Hierarchy = require(__dirname+'/Hierarchy');
 var bars = require('./utils/bars')
 var distance = require('./utils/distance.js')
-var async_adapter = require('./utils/async_adapter.js')
+// var async_adapter = require('./utils/async_adapter.js')
 var async = require('async');
 
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
@@ -346,13 +346,18 @@ function featureExtractorU(sentence, features) {
 // 	return features;
 // }
 
-function featureExtractorUB(sentence, features, stopwords, callback) {
+function featureExtractorUB(sentence, features, stopwords) {
+
+
+
 	var words = tokenizer.tokenize(sentence);
 	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
 	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
+
 	_.each(feature, function(feat, key, list){ features[feat.join(" ")] = 1 }, this)
-	// return features;
-	callback()
+
+	return features;
+	// callback()
 }
 
 function featureExtractorUCoreNLP(sentence, features, stopwords, callback) {
@@ -706,9 +711,8 @@ var SvmLinearMulticlassifier = classifiers.SvmLinear.bind(0, {
 	learn_args: "-c 100", 
 	model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearMulti",
 	multiclass: true,
+	multilabel: true
 })
-
-
 
 function weightInstance1(instance) {
 	return 1
@@ -724,7 +728,6 @@ function weightInstance2(instance) {
 	AndDistance
 	DotDistance
 	*/
-
 
  var enhance5 = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel) {
 	return classifiers.EnhancedClassifier.bind(0, {
@@ -821,6 +824,8 @@ module.exports = {
 		TCBOCPPDBM: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptPPDBM, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 		// IntentClass: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
 		IntentClass: enhance(SvmLinearMulticlassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
+		DS: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true)
+		// DS: enhance(SvmLinearMulticlassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true)
 };
 
 
