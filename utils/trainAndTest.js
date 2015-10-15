@@ -142,131 +142,51 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 	var startTime = new Date();
 	var explain = 50;
 
-	// testSetOriginal = utils.clonedataset(testSet1)
-
-	// if ((typeof classifier.TestSplitLabel === 'function')) 
-		// testSet = classifier.outputToFormat(testSet1)
-    // else
     testSet = JSON.parse(JSON.stringify(testSet1, null, 4))
-
 	currentStats = new PrecisionRecall()
+	
 
 	for (var i=0; i<testSet.length; ++i) 
 	{
 		var id = 0
-		if ("$" in testSet[i]['input'])
-				if ("NEWID" in testSet[i]['input']['$'])
-					id = testSet[i]['input']['$']['NEWID']	
 
-			if ("_id" in testSet[i]['input'])
-				id = testSet[i]['input']['_id']	
-
-
-		// if (i % 100)
-			// console.log("Test index is " +  i + " from " + testSet.length + " ID " + id)
-
+		console.log(testSet[i])
+		
 		// expectedClasses = list.listembed(testSet[i].output)
 		expectedClasses = testSet[i].output
 
-		// console.log(JSON.stringify(testSet[i], null, 4))
 		// classified = classifier.classify(testSet[i].input, 50, testSet[i].input)
 		// classesWithExplanation = classifier.classify(testSet[i].input, explain, true, testSet[i].output, classifier_compare)
 		classesWithExplanation = classifier.classify(testSet[i].input, explain, true, testSet[i])
-		
-
-		// console.log(JSON.stringify(classesWithExplanation, null, 4))
-		// console.log("-----------------------")
-
-		// if (explain > 0)
-			// classes = classesWithExplanation.classes
-		// else
-			// classes = classesWithExplanation
-		// actualClasses = list.listembed(classes)
-	
+				
 		actualClasses = classesWithExplanation.classes
 	
-		// _(expectedClasses.length).times(function(n){
-			// if (currentStats.length<n+1) 
-				// {	
-				// currentStats.push(new PrecisionRecall())
-				// data_stats.push([])
-				// }
-
-
-			var sentence_hash = {}
-			data_stats.push(sentence_hash);
-			expl = currentStats.addCasesHash(expectedClasses, actualClasses, (verbosity>2));
-			currentStats.addCasesLabels(expectedClasses, actualClasses);
-			sentence_hash['input'] = testSet[i].input['input'];
-			// sentence_hash['expected'] = expectedClasses[n];
-			// sentence_hash['classified'] = actualClasses[n];
-			sentence_hash['id'] = id
-			sentence_hash['expansioned'] = classesWithExplanation.expansioned
-			sentence_hash['features'] = classesWithExplanation.features
-			sentence_hash['explanation'] = expl;
-
-			sentence_hash['explanation_source'] = {}
-
-			_.each(_.unique(_.flatten(_.toArray(expl))), function(lab, key, list){ 
-				sentence_hash['explanation_source'][lab] = _.filter(classesWithExplanation.explanation['all'][lab], function(num){ return num[1] != 0 })
-			}, this)
-			
-			if ('expansioned' in classesWithExplanation)
-			{
-				var label = actualClasses[0]
-				var explan = _.object(sentence_hash['explanation_source'][label])
-
-				_.each(sentence_hash['expansioned'], function(value, key, list){ 
-					var exp = []
-					
-					_.each(value['expansion_with_context'], function(valuep, key, list){
-						if (valuep in explan)
-							exp.push([valuep, explan[valuep]])
-						else
-							exp.push([valuep, 0])
-
-					}, this)
-					
-					if (exp.length > 0)
-						sentence_hash['expansioned'][key]['expansion_with_context_result'] = exp 
-				
-					var exp = []
-
-					_.each(value['expansion_without_context'], function(valuep, key, list){
-						if (valuep in explan)
-							exp.push([valuep, explan[valuep]])
-						else
-							exp.push([valuep, 0])
-
-					}, this)
-					
-					if (exp.length > 0)
-						sentence_hash['expansioned'][key]['expansion_without_context_result'] = exp 
-				
-				
-				}, this)
-
-			}
-
-			data_stats.push(sentence_hash);
-
-			// sentence_hash['expected original'] = testSetOriginal[i]['output']
-			// sentence_hash['classified original'] = classified
-			
+		var sentence_hash = {}
+		data_stats.push(sentence_hash);
 		
-		// if (microAverage) microAverage.addCases(expectedClasses, actualClasses);
+		expl = currentStats.addCasesHash(expectedClasses, actualClasses, (verbosity>2));
+		currentStats.addCasesLabels(expectedClasses, actualClasses);
+		
+		sentence_hash['input'] = testSet[i].input['input'];
+		// sentence_hash['expected'] = expectedClasses[n];
+		// sentence_hash['classified'] = actualClasses[n];
+		sentence_hash['id'] = id
+		// sentence_hash['expansioned'] = classesWithExplanation.expansioned
+		// sentence_hash['features'] = classesWithExplanation.features
+		sentence_hash['explanation'] = expl;
+		sentence_hash['explanation_source'] = {}
 
+		data_stats.push(sentence_hash);
+
+		// sentence_hash['expected original'] = testSetOriginal[i]['output']
+		// sentence_hash['classified original'] = classified
+		// if (microAverage) microAverage.addCases(expectedClasses, actualClasses);
 	}
 	
-	// testResult = []
-
-		// _(expectedClasses.length).times(function(n){
 		classifierstats = {}
 		classifierstats['labels'] = currentStats.retrieveLabels()
 		classifierstats['data'] = data_stats
 		classifierstats['stats'] = currentStats.retrieveStats()
-		// testResult.push(classifierstats)
-		// }, this)
 
 	return classifierstats
 };
@@ -277,6 +197,7 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 
 module.exports.testBatch_async = function(classifier, testSet, callback) {
 
+	console.log("test")
 	var testStart = new Date().getTime()
 
 	classifier.classifyBatch_async(testSet, function(err, results){
@@ -570,15 +491,39 @@ module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, 
 
 	var trainStart = new Date().getTime()
 
+	console.log("enter")
+
 	classifier.trainBatch_async(trainSet, function(err, results){
 		var trainEnd = new Date().getTime()
+		console.log("trained")
 		module.exports.testBatch_async(classifier, testSet, function(error, results){
 		// module.exports.test_async(classifier, testSet, function(error, results){
-		results['traintime'] = trainEnd - trainStart
-		callback(error, results)
+			results['traintime'] = trainEnd - trainStart
+			callback(error, results)
 		})
 	})
 }
+
+
+module.exports.trainAndTestbatch = function(
+		classifierType, 
+		trainSet, testSet, 
+		verbosity, microAverage, macroSum) {
+		
+		var startTime = new Date();
+		var classifier = new classifierType();
+		TrainCountEmbed = true
+
+		testSet1 = JSON.parse(JSON.stringify(testSet))	
+		trainSet1 = JSON.parse(JSON.stringify(trainSet))
+
+		classifier.trainBatch(trainSet1);
+
+		var stat_hash = classifier.classifyBatch(testSet1);
+
+		return stat_hash;
+};
+
 
 module.exports.trainAndTest_hash = function(
 		classifierType, 
@@ -589,42 +534,14 @@ module.exports.trainAndTest_hash = function(
 		TrainCountEmbed = true
 
 		testSet1 = JSON.parse(JSON.stringify(testSet))
-		
 		trainSet1 = JSON.parse(JSON.stringify(trainSet))
 
-		// if ((typeof classifier.InputSplitLabel === 'function')) {
- 	// 		agghash = label_enrichment(trainSet1, classifier.InputSplitLabel)
- 	// 	}
-
-
- 		// var classifier_compare = new classifierType1()
-
- 		// classifier_compare.trainBatch(utils.clonedataset(trainSet1))
-
- 		// console.log(trainSet1)
 		classifier.trainBatch(trainSet1);
-
 		console.log("classifier is trained")
-
 
 		// stat_hash = module.exports.test_hash(classifier, testSet1, verbosity, microAverage, macroSum, classifier_compare);
 		var stat_hash = module.exports.test_hash(classifier, testSet1, verbosity, microAverage, macroSum);
 		
-		// stat_hash['train_time'] = new Date()-startTime;
-
-
-		// if (TrainCountEmbed)
-		// {
-		// _.each(stat_hash, function(value, key, list){ 
-		// 	_.each(agghash, function(value1, key1, list){ 
-		// 		_.each(value1, function(count, label, list){
-		// 			if (label in value['labels'])
-		// 				stat_hash[key]['labels'][label]['Train'] = count 
-		// 			}, this)
-		// 		}, this)
-		// 	}, this)
-		// }
-
 		return stat_hash;
 };
 
@@ -745,11 +662,6 @@ module.exports.learningCurve = function(createNewClassifierFunction, datasets, v
 		console.log("Train on "+trainSet.length+" samples ("+elapsedTime+" ms): "+testStats);
 	}
 };
-
-
-
-
-
 
 var stringifyClass = function (aClass) {
 	return (_(aClass).isString()? aClass: JSON.stringify(aClass));
