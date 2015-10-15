@@ -5,7 +5,7 @@
  */
 
 var should = require('should');
-var async_adapter = require('../utils/async_adapter');
+var async_adapter = require(__dirname+'/../utils/async_adapter');
 var _ = require('underscore');
 
 describe('async adapters', function() {
