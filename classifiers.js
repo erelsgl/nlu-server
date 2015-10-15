@@ -22,6 +22,8 @@ var ftrs = limdu.features;
 var Hierarchy = require(__dirname+'/Hierarchy');
 var bars = require('./utils/bars')
 var distance = require('./utils/distance.js')
+var execSync = require('child_process').execSync
+
 // var async_adapter = require('./utils/async_adapter.js')
 var async = require('async');
 
@@ -183,7 +185,7 @@ function featureExpansion(listoffeatures, scale, phrase)
 	var listoffeatures = _.unique(listoffeatures)
 	// console.log("featureExpansion scale"+scale+ " phrase "+phrase  )
 	fs.writeFileSync(__dirname+"/utils/featureexp_input", JSON.stringify(listoffeatures, null, 4), 'utf-8')
-	var result = execSync.run("node "+__dirname+"/utils/featureexp.js '"+scale+"' "+phrase);
+	var result = execSync("node "+__dirname+"/utils/featureexp.js '"+scale+"' "+phrase);
 	var results = JSON.parse(fs.readFileSync(__dirname+"/utils/featureexp_output"))
 	
 	fs.unlinkSync(__dirname+"/utils/featureexp_input")
@@ -540,7 +542,7 @@ function featureword2vec(sentence, features) {
 	
 	console.log(params)
 
-	var result = execSync.exec("node "+__dirname+"/utils/getred.js " + params)
+	var result = execSync("node "+__dirname+"/utils/getred.js " + params)
 
 	result = JSON.parse(result['stdout'])
 
