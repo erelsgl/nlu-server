@@ -34,7 +34,10 @@
     "async": "*",
     "node-cache": "*",
     "wordnet-magic": "*",
-    "cli-color": "*"
+    "cli-color": "*",
+    "node-stanford-postagger": "*",
+    "redis": "*",
+    "requestify": "*"
   },
   "devDependencies": {
     "mocha": "*",
