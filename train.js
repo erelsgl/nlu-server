@@ -41,10 +41,12 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 // var do_small_temporary_test = false
 
 // var do_small_temporary_serialization_test = false
-var test_phrases = true
+var test_phrases = false
 var test_initiative = false
 var test_label = false
 var test_distance = false
+
+var check_ds = true
 
 var wikipedia_boc = false
 var wikipedia_prepared1 = false
@@ -701,6 +703,118 @@ if (test_initiative)
 
 }
 
+function walkSync(dir, filelist) {
+	files = fs.readdirSync(dir);
+  	filelist = filelist || [];
+  	
+  	files.forEach(function(file) {
+    	if (fs.statSync(dir + file).isDirectory()) {
+      		filelist = walkSync(dir + file + '/', filelist);
+    	}
+    	else {
+      	filelist.push(dir+file);
+    	}
+  	})
+  return filelist;
+}
+
+function hashtoar(hash)
+{
+
+	//console.log(hash)
+	var output = []
+	_.each(hash, function(value, key, list){
+		if (_.isObject(value))
+		{
+			_.each(value, function(value1, key1, list){
+				var rec = {}
+				rec[key] = {}
+				rec[key][key1]=value1
+				output.push(rec)
+			}, this)
+		}
+		else
+		{
+			var rec = {}
+			rec[key]=value
+			output.push(rec)
+		}
+	}, this)
+//	console.log(output)
+//	process.exit(0)
+	return output
+}
+
+if (check_ds)
+{
+	var files = []
+	var folder = "../dialogues_arb"
+
+	var dialfiles = fs.readdirSync(folder)
+
+    dialfiles = _.without(dialfiles, ".git");
+    
+	// files  = walkSync(fodler, files)
+	// files = _.filter(files, function(filename){ 
+		// return (filename.indexOf("gold")!=-1)
+	// });
+
+	var train = []
+	var test = []
+
+	_.each(dialfiles, function(file, key, list){
+		if (file.split(".")[0]<70)
+			train.push(JSON.parse(fs.readFileSync(folder+"/"+file)))
+		else
+			test.push(JSON.parse(fs.readFileSync(folder+"/"+file)))
+	}, this)
+
+	_.each(train, function(di, key, list){
+		_.each(di['turns'], function(utt, key1, list){
+			train[key]['turns'][key1]['output'] = hashtoar(utt.output)
+			train[key]['turns'][key1]['output'] = _.map(train[key]['turns'][key1]['output'], function(num){ return JSON.stringify(num) });
+
+		}, this)
+
+		train[key]['turns'] = _.filter(train[key]['turns'], function(num){ return (num.output.length > 0 && num.role == "Employer"); });
+
+	}, this)
+
+	_.each(test, function(di, key, list){
+		_.each(di['turns'], function(utt, key1, list){
+			test[key]['turns'][key1]['output'] = hashtoar(utt.output)
+			test[key]['turns'][key1]['output'] = _.map(test[key]['turns'][key1]['output'], function(num){ return JSON.stringify(num) });
+
+		}, this)
+		test[key]['turns'] = _.filter(test[key]['turns'], function(num){ return (num.output.length > 0 && num.role == "Employer"); });
+	}, this)
+
+	console.log(test.length)
+	console.log(train.length)
+
+	var train_turns = []
+	var test_turns = []
+
+	_.each(train, function(value, key, list){
+		train_turns = train_turns.concat(value['turns'])
+	}, this)
+
+	_.each(test, function(value, key, list){
+		test_turns = test_turns.concat(value['turns'])
+	}, this)
+
+	// var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.5))
+	// var stats = trainAndTest.trainAndTestbatch(classifier.DS, train_turns, test_turns, 5)
+
+	var stats = trainAndTest.trainAndTest_hash(classifier.DS, train_turns, test_turns, 5)
+
+	console.log(JSON.stringify(stats['stats'], null, 4))
+
+	process.exit()
+
+
+	// console.log("sadasd")
+}
 
 if (test_knn)
 {
