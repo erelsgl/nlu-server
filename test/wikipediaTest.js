@@ -5,7 +5,7 @@
  */
 
 var should = require('should');
-var curves = require('../utils/master');
+var curves = require(__dirname+'/../lc/master');
 var wikipedia = require('../utils/wikipedia');
 var _ = require('underscore');
 
@@ -24,7 +24,7 @@ describe('wikipedia', function() {
 	
         var sen = "sasd asdas  I will citation survive"
         var output = wikipedia.normalizer(sen)
-        output.should.equal("I will  survive")
+        output.should.equal("I will survive")
         	
 	})
 
