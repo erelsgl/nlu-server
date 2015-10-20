@@ -12,6 +12,8 @@ var hash = require('limdu/utils/hash');
 var PrecisionRecall = require("limdu/utils/PrecisionRecall");
 var list = require('limdu/utils/list');
 var async = require('async');
+var natural = require('natural');
+var combinations = require('js-combinatorics');
 
 /**
  * A short light-weight test function. Tests the given classifier on the given dataset, and 
@@ -158,18 +160,43 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 		// classified = classifier.classify(testSet[i].input, 50, testSet[i].input)
 		// classesWithExplanation = classifier.classify(testSet[i].input, explain, true, testSet[i].output, classifier_compare)
 		classesWithExplanation = classifier.classify(testSet[i].input, explain, true, testSet[i])
-				
+
+		console.log(JSON.stringify(classesWithExplanation, null, 4))
+
+		// var rerank = _.keys(classesWithExplanation['scores']).slice(0,3)
+		// var combin = combinations.power(rerank)
+		// var combin_lst = combin.toArray()
+
+		// console.log(JSON.stringify(combin_lst, null, 4))
+
+		// var mindst = 10000
+		// var bestclose = []
+
+		// _.each(combin_lst, function(value, key, list){
+		// 	if ((natural.LevenshteinDistance(value, testSet[i].output))<mindst)
+		// 	{
+		// 		mindst = natural.LevenshteinDistance(value, testSet[i].output)
+		// 		bestclose = value
+		// 	}
+		// }, this)
+
+		// console.log(JSON.stringify(bestclose, null, 4))
+		
 		actualClasses = classesWithExplanation.classes
-	
+		// actualClasses = bestclose
+
 		var sentence_hash = {}
 		data_stats.push(sentence_hash);
 		
 		expl = currentStats.addCasesHash(expectedClasses, actualClasses, (verbosity>2));
 		currentStats.addCasesLabels(expectedClasses, actualClasses);
+
+		console.log(JSON.stringify(expl, null, 4))
 		
-		sentence_hash['input'] = testSet[i].input['input'];
-		// sentence_hash['expected'] = expectedClasses[n];
-		// sentence_hash['classified'] = actualClasses[n];
+		sentence_hash['input'] = testSet[i].input
+		sentence_hash['output'] = testSet[i].output
+		sentence_hash['expected'] = expectedClasses
+		sentence_hash['classified'] = actualClasses
 		sentence_hash['id'] = id
 		// sentence_hash['expansioned'] = classesWithExplanation.expansioned
 		// sentence_hash['features'] = classesWithExplanation.features
