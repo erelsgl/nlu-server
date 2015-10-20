@@ -349,14 +349,49 @@ function featureExtractorU(sentence, features) {
 // }
 
 function featureExtractorUB(sentence, features, stopwords) {
+	
+	var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
 
+	var context = sentence['context']
+	sentence = sentence['text']
 
+	sentence = sentence.toLowerCase().trim()
+
+	sentence = regexpNormalizer(sentence)
+
+	sentence_clean = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+	sentence_clean = sentence_clean.replace(/<VALUE>/g,'')
+	sentence_clean = sentence_clean.replace(/<ATTRIBUTE>/g,'')
+	sentence_clean = sentence_clean.replace(/NIS/,'')
+	sentence_clean = sentence_clean.replace(/nis/,'')
+	sentence_clean = sentence_clean.replace(/track/,'')
+	sentence_clean = sentence_clean.replace(/USD/,'')
+	sentence_clean = sentence_clean.trim()
 
 	var words = tokenizer.tokenize(sentence);
+	var words_clean = tokenizer.tokenize(sentence_clean);
 	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
 	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
 
+	var feature_clean = _.flatten(natural.NGrams.ngrams(words_clean, 1))
+
+	_.each(stopwords, function(stopvalue, key, list){
+		feature_clean = _.without(feature_clean, stopvalue);
+	}, this)
+
 	_.each(feature, function(feat, key, list){ features[feat.join(" ")] = 1 }, this)
+
+	_.each(context, function(feat, key, list){ 
+
+		var obj = JSON.parse(feat)
+		// features["CON_"+_.keys(obj)[0]] = 1 
+		// features["CON_"+_.keys(obj)[0]+"_"+_.keys(_.values(obj)[0])[0]] = 1 
+
+		_.each(feature_clean, function(fcl, key, list){
+			features[fcl+"_"+"CON_"+_.keys(obj)[0]] = 1 
+		}, this)
+
+	}, this)
 
 	return features;
 	// callback()
@@ -574,8 +609,21 @@ var SvmPerfBinaryClassifier = classifiers.SvmPerf.bind(0, {
         model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf",
 });
 
-var SvmPerfBinaryRelevanceClassifier = classifiers.multilabelB.bind(0, {
-        binaryClassifierType: SvmPerfBinaryClassifier,
+var SvmPerfBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
+        binaryClassifierType: SvmPerfBinaryClassifier
+        // debug: true
+});
+
+var SvmLinearBinaryClassifier = classifiers.SvmLinear.bind(0, {
+        learn_args: "-c 100",
+        model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearBinary",
+        // debug: true,
+        multiclass: false
+});
+
+var SvmLinearBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
+        binaryClassifierType: SvmLinearBinaryClassifier,
+        debug: true
 });
 
 /*function featureExtractorBeginEndTruthTeller(sentence, features) {
@@ -826,7 +874,7 @@ module.exports = {
 		TCBOCPPDBM: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptPPDBM, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 		// IntentClass: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
 		IntentClass: enhance(SvmLinearMulticlassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
-		DS: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true)
+		DS: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true)
 		// DS: enhance(SvmLinearMulticlassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true)
 };
 
