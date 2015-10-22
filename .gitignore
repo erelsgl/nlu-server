@@ -1,5 +1,4 @@
 /build
-111.js
 *.seed
 *.out
 *.pid
@@ -20,3 +19,4 @@ npm-debug.log
 utils/learning_curves/
 /trainedClassifiers/*
 /workspace
+/lc/learning_curves
