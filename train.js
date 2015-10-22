@@ -1,4 +1,4 @@
-/**
+7/**
  * Trains and tests the NLU component.
  * 
  * @author Erel Segal-Halevi
@@ -8,46 +8,6 @@
 
 var async = require('async');
 var Hierarchy = require(__dirname+'/Hierarchy');
-
-// var intent_stat = false
-// var add_context = false
-// var convert_tran = false
-// var try_sequence = false
-// var prepare_sequence = false
-// var compare_performance = false
-// var project_dataset = false
-// var prepare_truthteller = false
-// var do_separate_dialogue = false
-// var test_conv = false
-// var sample_kbagent = false
-// var do_coverage = false
-// var do_coverage_version2 = false
-// var do_separate_datasets = false
-// var test_aggregate_errors = false
-// var test_aggregate_keyphases = false
-// var test_underscore = false
-// var test_error_analysis = false
-// var test_keywords = false
-// var test_egypt = false
-// var test_natural = false
-// var test_spell = false
-// var test_segmentation = false
-// var do_spell_correction_test = false
-// var do_compare_approach = false
-// var do_partial_classification = false
-// var do_unseen_word_fp = false
-// var do_unseen_word_curve = false
-// var do_checking_tag = false
-// var do_small_temporary_test = false
-
-// var do_small_temporary_serialization_test = false
-var test_phrases = false
-var test_initiative = false
-var test_label = false
-var test_distance = false
-
-var check_ds = true
-
 var _ = require('underscore')._;
 var fs = require('fs');
 var trainAndTest= require('./utils/trainAndTest').trainAndTest_hash;
@@ -57,10 +17,6 @@ var trainutils = require('./utils/bars')
 var wikipedia = require('./utils/wikipedia')
 var bars = require('./utils/bars')
 var rules = require("./research/rule-based/rules.js")
-
-var verbosity = 0;
-var explain = 0;
-
 var cheapest_paths = require('limdu/node_modules/graph-paths').cheapest_paths;
 var natural = require('natural');
 var partitions = require('limdu/utils/partitions');
@@ -69,6 +25,19 @@ var trainAndTest = require('./utils/trainAndTest');
 var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
+
+var counting = false
+var check_ds = true
+var do_small_temporary_serialization_test=  false
+var do_cross_dataset_testing = false
+var do_final_test = false
+var do_cross_validation= false
+var do_serialization = false
+
+
+var verbosity = 0;
+var explain = 0;
+
 
 var classifier = require(__dirname+'/classifiers')
 
@@ -163,7 +132,7 @@ function hashtoar(hash)
 	return output
 }
 
-if (check_ds)
+if (counting)
 {
 	var files = []
 	var folder = "../dialogues_arb"
@@ -172,15 +141,64 @@ if (check_ds)
 
     dialfiles = _.without(dialfiles, ".git");
     
+	var dataset = []
+
+	_.each(dialfiles, function(file, key, list){
+		dataset.push(JSON.parse(fs.readFileSync(folder+"/"+file)))
+	}, this)
+
+	console.log(dataset.length)
+
+	var human = 0
+	var agent = 0
+	_.each(dataset, function(dialogue, key, list){
+		_.each(dialogue["turns"], function(record, key, list){
+			if (record.role=="Candidate")
+				agent += 1
+			if (record.role=="Employer")
+				human += 1
+		}, this)
+	}, this)
+
+	console.log("human "+human)
+	console.log("agent "+agent)
+}
+
+
+if (check_ds)
+{
+
+	var files = []
+	var folder = "../negochat_private/dialogues"
+
+	var dialfolders = fs.readdirSync(folder)
+	       
 	var train = []
 	var test = []
 
-	_.each(dialfiles, function(file, key, list){
-		if (file.split(".")[0]<70)
-			train.push(JSON.parse(fs.readFileSync(folder+"/"+file)))
-		else
-			test.push(JSON.parse(fs.readFileSync(folder+"/"+file)))
-	}, this)
+	_.each(dialfolders, function(dialfolder, key, list){
+		
+		var dial = JSON.parse(fs.readFileSync(folder+"/"+dialfolder+"/gold.json"))
+
+			if (!("set" in dial))
+			{
+				console.log(JSON.stringify(dialfolder, null, 4))
+				process.exit(0)
+			}
+			
+			if (["test","train"].indexOf(dial['set'])==-1)
+			{
+				console.log(JSON.stringify(dialfolder, null, 4))
+				process.exit(0)
+			}
+
+			if (dial.set == "train")		
+				train.push(dial)
+
+			if (dial.set == "test")		
+				test.push(dial)
+		
+		}, this)
 
 	var trainset = []
 	var testset = []
@@ -189,20 +207,21 @@ if (check_ds)
 	_.each(train, function(di, key, list){
 		_.each(di['turns'], function(utt, key1, list){
 
-			if (utt.role == "Candidate")
-				context = hashtoar(utt.output)
+			// if (utt.role == "Candidate")
+			// 	context = hashtoar(utt.output)
 
 			if (utt.role == "Employer")
 			{
 				if (_.keys(utt.output).length!=0)
 				{
 					var record = {}
-					record['input'] = {}
-					record['input']['text'] = utt.input
-					record['input']['context'] = context
+					//record['input'] = {}
+					//record['input']['text'] = utt.input
+					//record['input']['context'] = context
+					record['input'] = utt.input
 					record['output'] = hashtoar(utt.output)
 					trainset.push(record)
-					context = []
+					//context = []
 				}
 			}
 
@@ -215,20 +234,23 @@ if (check_ds)
 	_.each(test, function(di, key, list){
 		_.each(di['turns'], function(utt, key1, list){
 
-			if (utt.role == "Candidate")
-				context = hashtoar(utt.output)
+			//if (utt.role == "Candidate")
+			//	context = hashtoar(utt.output)
 
 			if (utt.role == "Employer")
 			{
-				if (_.keys(utt.output).length!=0)
+				// if (_.keys(utt.output).length!=0)
 				{
 					var record = {}
-					record['input'] = {}
-					record['input']['text'] = utt.input
-					record['input']['context'] = context
+					// record['input'] = {}
+					// record['input']['text'] = utt.input
+					record['input'] = utt.input
+					// record['input']['context'] = context
 					record['output'] = hashtoar(utt.output)
 					testset.push(record)
-					context = []
+					//context = []
+					
+			
 				}
 			}
 			
@@ -237,6 +259,11 @@ if (check_ds)
 
 	console.log(testset.length)
 	console.log(trainset.length)
+
+	// _.each(testset, function(value, key, list){
+	// 	if (value.output.length == 0)
+	// 		console.log(JSON.stringify(value, null, 4))
+	// }, this)
 
 	// var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.5))
 	// var stats = trainAndTest.trainAndTestbatch(classifier.DS, train_turns, test_turns, 5)
