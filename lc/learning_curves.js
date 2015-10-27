@@ -10,14 +10,16 @@
 
 var _ = require('underscore')._;
 var fs = require('fs');
-var execSync = require('execSync')
 var classifier = require(__dirname+"/../classifiers.js")
 var partitions = require('limdu/utils/partitions');
-var trainAndTest_hash = require(__dirname+'/trainAndTest').trainAndTest_hash;
-var bars = require(__dirname+'/bars');
+var trainAndTest_hash = require(__dirname+'/../utils/trainAndTest').trainAndTest_hash;
+var bars = require(__dirname+'/../utils/bars');
 var path = require("path")
+var execSync = require('child_process').execSync
 
-var gnuplot = __dirname + '/gnuplot'
+
+// var gnuplot = __dirname + '/gnuplot'
+var gnuplot = 'gnuplot'
 var dirr = "/learning_curves/"
 /* @params classifiers - classifier for learning curves
    @params dataset - dataset for evaluation, 20% is takes for evaluation
@@ -117,14 +119,17 @@ function extractGlobal(parameters, classifiers, trainset, report, stat)
     	if (!('_size' in stat[param][trainsize])) stat[param][trainsize]['_size'] = []
 		if (!('__size' in stat[param][trainsize])) stat[param][trainsize]['__size'] = []
     	
+    	// if Intent in the name of the parameter then count the number of sentences with the same intent
     	if (param.indexOf("_") != -1)
     	{
     		stat[param][trainsize]['__size'].push(bars.extractintent(trainset, param.substring(0,param.indexOf("_"))).length)
     	}
     	else
-    	stat[param][trainsize]['__size'].push(bars.extractdataset(trainset).length)
+    		// else just the size of the set in utterances
+    	stat[param][trainsize]['__size'].push(_.flatten(trainset).length)
 
-    	stat[param][trainsize]['_size'].push(bars.extractdataset(trainset).length)
+    		// the size of the set in utterances
+    	stat[param][trainsize]['_size'].push(_.flatten(trainset).length)
 
 		_.each(Object.keys(classifiers), function(classifier, key, list){
     		
@@ -203,53 +208,6 @@ function thereisdata(data)
 	return output
 }
 
-
-function compare(gldata)
-{
-
-	var names = Object.keys(gldata)
-	var maxlen = gldata[names[0]].length
-	var diff = []
-
-	console.log('Length of output '+maxlen)
-
-	_(maxlen).times(function(n){
-		var glodata = {}
-		var locdata = {}
-		_.each(gldata, function(value, name, list){ 
-			locdata[name] = gldata[name][n]['explanation']
-			glodata[name] = gldata[name][n]
-		}, this)
-
-		if (!bars.equallist(_.values(locdata)))
-			diff.push(glodata)
-
-		// kNN_And
-		// kNN_And_1
-
-		// if ('kNNClassifier' in locdata)
-			// if ((locdata['kNNClassifier']['FP'].length != 0) || (locdata['kNNClassifier']['FN'].length != 0))
-				// diff.push(glodata)
-		
-		// if ((locdata['kNN_And_1']['TP'].length < locdata['kNN_And']['TP'].length) ||
-			// (locdata['kNN_And_1']['FN'].length > locdata['kNN_And']['FN'].length))
-				// diff.push(glodata)
-
-		// if ((locdata['kNN_Cos']['TP'].length < locdata['kNN_And']['TP'].length) ||
-			// (locdata['new']['FN'].length > locdata['old']['FN'].length))
-				// diff.push(glodata)
-
-
-
-	})
-
-	console.log('Length of diff '+diff.length)
-	console.log(JSON.stringify(diff, null, 4))
-
-
-}
-
-
 function plot(fold, parameter, stat, classifiers)
 {
 
@@ -308,14 +266,13 @@ function plot(fold, parameter, stat, classifiers)
 		// var com = gnuplot +" -p -e \"reset; set title \'"+stat['_sized']+"("+stat['_sizec']+")\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
 		var com = gnuplot +" -p -e \"reset; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
 		// console.log(com)
-		result = execSync.run(com)
+		result = execSync(com)
 	}
 }
 
 
 function learning_curves(classifiers, dataset, parameters, step, step0, limit, numOfFolds) 
 {
-
 		checkGnuPlot
 
 		if (dataset.length == 0)
@@ -327,10 +284,10 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 		partitions.partitions_consistent(dataset, numOfFolds, function(train, test, fold) {
 			var index = step0
-			var oldstats = []
-			var stats
+			// var oldstats = []
+			// var stats
 
-			fs.writeFileSync(__dirname + dirr + "fold" + fold, "TEST \n"+JSON.stringify(test, null, 4)+"\n TRAIN \n"+JSON.stringify(train, null, 4), 'utf-8')
+			// fs.writeFileSync(__dirname + dirr + "fold" + fold, "TEST \n"+JSON.stringify(test, null, 4)+"\n TRAIN \n"+JSON.stringify(train, null, 4), 'utf-8')
 
 			while (index <= train.length)
 	  		{
@@ -339,78 +296,37 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				var mytrain = train.slice(0, index)
 			  	
 			  	index += (index < limit ? step0 : step)
-			  	var mytrainset = (bars.isDialogue(mytrain) ? bars.extractdataset(mytrain) : mytrain)
-			  	var testset = (bars.isDialogue(test) ? bars.extractdataset(test) : test)
+			  	var mytrainset = (bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)
+			  	var testset = (bars.isDialogue(test) ? _.flatten(test) : test)
 
 				console.log("fold"+fold)
 				console.log("train"+mytrainset.length)
 
-			  	var gldata = {}
+			  	// var gldata = {}
 
 			  	_.each(classifiers, function(classifier, name, list){ 
-			  		console.log("start trainandTest")
-	    			stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
-		    		console.log("stop trainandTest")
-		    		report.push(_.pick(stats[0]['stats'], parameters))
+			  		console.log("start trainandTest "+name)
+	    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
+		    		console.log("stop trainandTest "+name)
+		    		report.push(_.pick(stats['stats'], parameters))
 
-		    		gldata[name] = stats[0]['data']
+		    		// gldata[name] = stats['data']
 
 			  	}, this)
 
-			  	_.each(report, function(value, key, list){ 
-			  		if (value['F1'] < 0)
-			  			process.exit(0)
-			  	}, this)
+			  	// _.each(report, function(value, key, list){ 
+			  		// if (value['F1'] < 0)
+			  			// process.exit(0)
+			  	// }, this)
 
-			  	// if (oldstats.length > 0)
-			  		// {
-			  			// var gldata = {}
-			  			// gldata['old'] = oldstats[0]['data']
-			  			// gldata['new'] = stats[0]['data']
-					  	compare(gldata)
-			  		// }
-
-
-
-			  	// if (oldreport.length > 0)
-			  	// {
-			  	// 	var done = false
-
-			  	// 	_.each(oldreport[0]['data'], function(value, key, list){
-
-			  	// 		if (stats[0]['data'][key]['input'] != value['input'])
-			  	// 			{
-			  	// 				console.log("error")
-			  	// 				process.exit(0)
-			  	// 			}
-			  			
-			  	// 		if (stats[0]['data'][key]['explanation']['TP'].length < value['explanation']['TP'].length)
-			  	// 		{
-			  	// 			console.log("old")
-			  	// 			console.log(value)
-			  	// 			console.log("new")
-			  	// 			console.log(stats[0]['data'][key])
-			  	// 			done = true
-			  	// 		}
-
-			  	// 		if (stats[0]['data'][key]['explanation']['FN'].length > value['explanation']['FN'].length)
-			  	// 		{
-			  	// 			console.log("old")
-			  	// 			console.log(value)
-			  	// 			console.log("new")
-			  	// 			console.log(stats[0]['data'][key])
-			  	// 			done = true
-			  	// 		}_
-
-			  	// 	}, this)
-			  	// }
-
-			  	oldstats = bars.copyobj(stats)
+			  	// oldstats = bars.copyobj(stats)
 
                 extractGlobal(parameters, classifiers, mytrain, report, stat)
                 
-                stat['_sized'] = test.length
-                stat['_sizec'] = bars.extractdataset(test).length
+                // size in dialogues
+                // stat['_sized'] = test.length
+                // size in utterances
+                // stat['_sizec'] = _.flatten(test).length
 
                 _.each(parameters, function(parameter, key, list){
 					plot(fold, parameter, stat, classifiers)
@@ -425,49 +341,29 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 if (process.argv[1] === __filename)
 {
 
-	var dataset = JSON.parse(fs.readFileSync(__dirname + "/../../datasets/DatasetDraft/dial_usa_rule_core.json"))
-
 	var classifiers  = {
-				
-				// IDF: classifier.IntentClassificationIDF,
-				// Binary: classifier.IntentClassificationBin
-			
-/*				SVM_unigram 			: classifier.SVM_unigram,
-				SVM_word2vec 			: classifier.SVM_word2vec,
-				SVM_word2vec_unigram 	: classifier.SVM_word2vec_unigram,
-				kNN_word2vec 			: classifier.kNN_word2vec
-*/
-				// SVM_Expansion: classifier.SVM_Expansion,
-				// kNN_Expansion: classifier.kNN_Expansion,
-
-				// kNN_Cos: classifier.kNN_Cos,
-				// kNN_And: classifier.kNN_And,
-				// kNN_Euc: classifier.kNN_Euc,
-
-				kNN_Cos: classifier.kNN_Cos,
-				kNN_Cos_0: classifier.kNN_Cos_0,
-/*				kNN_Cos_1: classifier.kNN_Cos_1,
-				kNN_Cos_2: classifier.kNN_Cos_2,
-				kNN_Cos_3: classifier.kNN_Cos_3,
-*/				
-			}
+			SVM_unigram : classifier.DS_unigram,
+			SVM_bigram : classifier.DS_bigram
+		}
 	
 	var parameters = [
-					  'F1','Precision','Recall', 'FN', 'Accuracy',
-					  'Offer_F1', 'Offer_Precision', 'Offer_Recall', 'Offer_FN', 'Offer_TP', 'Offer_Accuracy', 
-					  'Reject_F1','Reject_Precision','Reject_Recall', 'Reject_FN', 'Reject_TP', 'Reject_Accuracy', 
-					  'Accept_F1','Accept_Precision','Accept_Recall', 'Accept_FN', 'Accept_TP', 'Accept_Accuracy', 
-					  'Greet_F1','Greet_Precision','Greet_Recall', 'Greet_FN', 'Greet_Accuracy'
+					  // 'F1','Precision','Recall', 'FN', 'Accuracy',
+					  // 'Offer_F1', 'Offer_Precision', 'Offer_Recall', 'Offer_FN', 'Offer_TP', 'Offer_Accuracy', 
+					  // 'Reject_F1','Reject_Precision','Reject_Recall', 'Reject_FN', 'Reject_TP', 'Reject_Accuracy', 
+					  // 'Accept_F1','Accept_Precision','Accept_Recall', 'Accept_FN', 'Accept_TP', 'Accept_Accuracy', 
+					  // 'Greet_F1','Greet_Precision','Greet_Recall', 'Greet_FN', 'Greet_Accuracy'
+						'macroF1', 'microF1'
 					]
 	
-	var filtered = bars.filterdataset(dataset, 5)
-	console.log(filtered.length)
+	
+	var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
+	var utterset = bars.getsetnocontext(dataset)
+	
+	var dataset = utterset["train"].concat(utterset["test"])
 
-	filtered = _.shuffle(filtered)
+	dataset = dataset.slice(0,10)
 
-	// filtered = filtered.slice(0, 5)
-
-	learning_curves(classifiers, filtered, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
+	learning_curves(classifiers, dataset, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
