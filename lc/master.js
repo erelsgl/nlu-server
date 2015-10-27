@@ -356,40 +356,27 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 
 			worker.on('disconnect', function(){
-		  	console.log("master: " + id + " finished")
-		  	if (Object.keys(cluster.workers) == 0)
-		  	{
-				console.log("all workers are disconnected")
-		  	_.each(stat, function(data, param, list){
-				// update the graph for current fold per parameter
-				plotlc(fold, param, stat)
-				// build average per parameters
-				plotlc('average', param, stat)
+			  	console.log("master: finished")
+			  	if (Object.keys(cluster.workers).length == 1)
+			  	{
+					console.log("all workers are disconnected")
+			  		_.each(stat, function(data, param, list){
+						// update the graph for current fold per parameter
+						_(folds).times(function(fold){
+							plotlc(fold, param, stat)
+						})
+						// build average per parameters
+						plotlc('average', param, stat)
+					})
+			  	}
 			})
-		  	}
-		})
 
 
 			worker.on('message', function(message){
-			workerstats = JSON.parse(message)
-
-			console.log(JSON.stringify(workerstats, null, 4))
-
-			extractGlobal(workerstats, stat)
-
-			// fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
-			// fs.appendFileSync(statusfile, JSON.stringify(stat, null, 4))
-
-			var fold = workerstats["fold"]
-   	
-
-		 //   	_.each(stat, function(data, param, list){
-			// 	// update the graph for current fold per parameter
-			// 	plotlc(fold, param, stat)
-			// 	// build average per parameters
-			// 	plotlc('average', param, stat)
-			// })
-		})
+				workerstats = JSON.parse(message)
+				// console.log(JSON.stringify(workerstats, null, 4))
+				extractGlobal(workerstats, stat)
+			})
 		})
 	}, this)
 
