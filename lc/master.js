@@ -408,7 +408,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 if (process.argv[1] === __filename)
 {
-	var folds = 3
+	var folds = 5
 
 	//var classifiers = ['TC', 'TCBOCWN', 'TCBOCPPDBS', 'TCBOCPPDBM']
 	var classifiers = ['DS_unigram', 'DS_bigram']
@@ -427,13 +427,12 @@ if (process.argv[1] === __filename)
 
 	// clean graphs
 	// _.each(lc, function(type, key, list){ 
-		var graph_files = fs.readdirSync(lc)
+	var graph_files = fs.readdirSync(lc)
 
-
-
-		_.each(graph_files, function(value, key, list){ 
-			fs.unlinkSync(lc+"/"+value)
-		}, this)
+	_.each(graph_files, function(value, key, list){ 
+		fs.unlinkSync(lc+"/"+value)
+	}, this)
+	
 	// }, this)
 // 
 	// var data = wikipedia.load_wikipedia("social_small")
