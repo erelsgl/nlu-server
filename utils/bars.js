@@ -3502,6 +3502,31 @@ function loadds(folder)
   return {'train':train, 'test':test}
 }
 
+function getsetcontext(dataset)
+{
+  var utteranceset = {'train':[], 'test':[]}
+  var context = []
+
+  _.each(dataset, function(dialogue, settype, list){
+    _.each(dialogue['turns'], function(turn, key, list){
+  
+      if (turn.role == "Candidate")
+        context = hashtoar(utt.output)
+
+      if (turn.role == "Employer")
+      {
+        var record = {}
+        record['input'] = {}
+        record['input']['text'] = turn.input
+        record['input']['context'] = context
+        record['output'] = hashtoar(turn.output)
+        utteranceset[dialogue.set].push(record)
+        context = []
+      }
+    }, this)
+  }, this)
+}
+
 function getsetnocontext(dataset)
 {
   utteranceset = {}
@@ -3555,6 +3580,7 @@ function hashtoar(hash)
 
 
 module.exports = {
+  getsetcontext:getsetcontext,
   loadds: loadds,
   getsetnocontext:getsetnocontext,
   uniqueaggregate:uniqueaggregate,
