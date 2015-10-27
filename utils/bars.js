@@ -1187,13 +1187,14 @@ function extractdataset(dataset)
 
 function extractintent(dataset, intent)
 {
-  dataset = extractdataset(dataset)
+  dataset = _.flatten(dataset)
   var output = []
 
   _.each(dataset, function(dial, key, list){ 
     if (Hierarchy.splitPartEquallyIntent(dial['output']).indexOf(intent) != -1)
       output.push(dial)
   }, this)
+
   return output
 }
 
@@ -1282,13 +1283,7 @@ function extractturnsold(dataset)
 
 function isDialogue(dataset)
 	{
-		if (dataset.length == 0)
-			return false
-
-		if ("id" in dataset[0])
-			return true
-		else
-			return false
+	return _.isArray(dataset[0])
 	}
 
 
@@ -3473,8 +3468,95 @@ function onlyunigrams(strhash)
   // return candidates
   // }
 
+function loadds(folder)
+{
+  var dialfolders = fs.readdirSync(folder)
+         
+  var train = []
+  var test = []
+
+  _.each(dialfolders, function(dialfolder, key, list){
+    
+    var dial = JSON.parse(fs.readFileSync(folder+"/"+dialfolder+"/gold.json"))
+
+    if (!("set" in dial))
+    {
+      console.log(JSON.stringify(dialfolder, null, 4))
+      process.exit(0)
+    }
+      
+    if (["test","train"].indexOf(dial['set'])==-1)
+    {
+      console.log(JSON.stringify(dialfolder, null, 4))
+      process.exit(0)
+    }
+
+    if (dial.set == "train")    
+      train.push(dial)
+
+    if (dial.set == "test")   
+      test.push(dial)
+    
+  }, this)
+
+  return {'train':train, 'test':test}
+}
+
+function getsetnocontext(dataset)
+{
+  utteranceset = {}
+  _.each(dataset, function(value, settype, list){
+    _.each(value, function(di, key, list){
+        var utterances = []
+      _.each(di['turns'], function(utt, key1, list){
+        if (utt.role == "Employer")
+        {
+          var record = {}
+          record['input'] = utt.input
+          record['output'] = hashtoar(utt.output)
+          utterances.push(record)
+        }
+      }, this)
+      if (!(settype in utteranceset))
+        utteranceset[settype] = []
+      utteranceset[settype].push(utterances)
+    }, this)
+  }, this)
+  return utteranceset
+}
+
+function hashtoar(hash)
+{
+
+  //console.log(hash)
+  var output = []
+  _.each(hash, function(value, key, list){
+    if (_.isObject(value))
+    {
+      _.each(value, function(value1, key1, list){
+        var rec = {}
+        rec[key] = {}
+        rec[key][key1]=value1
+        output.push(rec)
+      }, this)
+    }
+    else
+    {
+      var rec = {}
+      rec[key]=value
+      output.push(rec)
+    }
+  }, this)
+
+  output = _.map(output, function(num){ return JSON.stringify(num) });
+
+  return output
+}
+
 
 module.exports = {
+  loadds: loadds,
+  getsetnocontext:getsetnocontext,
   uniqueaggregate:uniqueaggregate,
   uniquecandidate:uniquecandidate,
   copyobj:copyobj,
