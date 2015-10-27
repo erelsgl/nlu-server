@@ -2,10 +2,10 @@ var cluster = require('cluster');
 var async = require('async')
 var _ = require('underscore')._;
 var fs = require('fs');
-var wikipedia = require(__dirname + '/../utils/wikipedia');
+// var wikipedia = require(__dirname + '/../utils/wikipedia');
 var master = require('./master');
 var classifiers = require(__dirname+"/../classifiers.js")
-var trainAndTest_async = require(__dirname+'/../utils/trainAndTest').trainAndTest_async;
+var trainAndTest_hash = require(__dirname+'/../utils/trainAndTest').trainAndTest_hash;
 var clc = require('cli-color')
 var bars = require(__dirname+'/../utils/bars');
 
@@ -38,48 +38,39 @@ process.on('message', function(message) {
 
 	       	var mytrain = train.slice(0, index)
 
-	       	var mytrainex = (bars.isDialogue(mytrain) ? bars.extractdataset(mytrain) : mytrain)
-			var mytestex  = (bars.isDialogue(test) ? bars.extractdataset(test) : test)
-
-	       	// var mytrainset = master.trainlen(train, index)
+	       	var mytrainex = (bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)
+			var mytestex  = (bars.isDialogue(test) ? _.flatten(test) : test)
 
 			console.log(msg("worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+mytrainex.length+
 				" test_dialogue="+test.length +" test_turns="+mytestex.length+
 				" classifier="+classifier+ " fold="+fold))
 
-		    trainAndTest_async(classifiers[classifier], mytrainex, mytestex, function(err, stats){
+		    	stats = trainAndTest_hash(classifiers[classifier], mytrainex, mytestex)
 
 		    	var uniqueid = new Date().getTime()
 
 		    	console.log(msg("worker "+process["pid"]+": traintime="+
 		    		stats['traintime']/1000 + " testtime="+ 
 		    		stats['testtime']/1000 + " classifier="+classifier + 
-		    		" Accuracy="+stats['stats']['Accuracy']+ " fold="+fold + " id="+stats['id']))
+		    		" Accuracy="+stats['stats']['Accuracy']+ " fold="+fold))
 
 		    	var stats1 = {}
 		    	_.each(stats['stats'], function(value, key, list){ 
-		    		if ((key.indexOf("F1") != -1) || (key.indexOf("Accuracy") != -1 ))
+		    		if ((key.indexOf("macro") != -1) || (key.indexOf("Accuracy") != -1 ) || (key.indexOf("micro") != -1))
 		    			stats1[key] = value
 		    	}, this)
 
 				var results = {
 					'classifier': classifier,
 					'fold': fold,
-					'trainsize': mytrainset.length/classes.length,
-					'trainlen': len,
-					// 'F1': stats['stats']['F1'],
-					// 'macroF1': stats['stats']['macroF1'],
-					// 'Accuracy': stats['stats']['Accuracy'],
-					// 'stats': stats['stats'],
+					'trainsize': mytrain.length,
 					'stats': stats1,
 					'uniqueid': stats['id']
 				}
 
 				process.send(JSON.stringify(results))
 		   		callbackwhilst()
-		   	})
-						
     	},
     	function (err) {
 			console.log(msg("worker "+process["pid"]+": exiting"))
