@@ -1,79 +1,64 @@
 /**
- * a unit-test for learning curves unit
+ * a unit-test for learning curves
  * 
- * @since 2013-08
+ * @author Vasily Konovalov
+ * @since 2015
  */
 
-// var should = require('should');
-// var curves = require(__dirname+'/../utils/learning_curves');
-// var _ = require('underscore');
+var should = require('should');
+var _ = require('underscore');
+var curves = require('../lc/learning_curves.js');
 
-// curves.learning_curves(classifiers, data, parameters, 3, 5)
+describe('Curves test', function() {
 
-// describe('Learning curves utilities', function() {
+	it('thereisdata', function() {	
+		curves.thereisdata([1,'?',3]).should.be.true
+		curves.thereisdata(['?','?']).should.be.false
+		curves.thereisdata('?').should.be.false
+		curves.thereisdata(5).should.be.true
+	})
+
+	it('getAverage', function() {
+		var classifiers = { PPDB: [], Original: [] }
+
+		var stat = { "GreetRecall": 
+						{ "2": {
+		            			"_size": 19,
+		            			"PPDB": [ 1, 2, 3, 0.5 ],
+		            			"Original": [ 0.6 ]
+		        			 }}}
+
+		var stat1 = { "GreetRecall": 
+						{ "2": {
+		            			"_size": 19,
+		            			"PPDB": [ 1, 2, - 3  ],
+		            			"Original": [ 0.6 ]
+		        			 }}}
+		// calculates average over several folds, ignores negative values
+		_.isEqual(curves.getAverage(stat, 'GreetRecall', 2, classifiers),   [ 1.625, 0.6 ]).should.be.true
+		_.isEqual(curves.getAverage(stat1, 'GreetRecall', 2, classifiers),   [ 1.5, 0.6 ]).should.be.true
+		
+	})
+
+
+	it('onlyNumbers', function() {
+		_.isEqual(curves.onlyNumbers([1,2,0.5,-8,'5','abs','3']), [ 1, 2, 0.5, -8, '5', '3' ]).should.be.true
+	})
+
+	it('isProb', function() {
+		curves.isProb([1.2,0.5,-0.6]).should.be.false
+		curves.isProb([0.1,0.7,0.9]).should.be.true
+		curves.isProb([0.1,0.7,1.9]).should.be.false
+	})
+
+	it('filternan', function() {
+		// replaces bad values with ?
+		_.isEqual(curves.filternan([1,2,'wqd',0,-1]), [ 1, 2, '?', 0, '?' ]).should.be.true
+		_.isEqual(curves.filternan(5), 5).should.be.true
+		_.isEqual(curves.filternan('a'), '?').should.be.true
+		_.isEqual(curves.filternan(-1), '?').should.be.true
+		_.isEqual(curves.filternan([1.5,8.9]), [1.5,8.9]).should.be.true
+	})
 	
-// 	it('correctly aggregate average', function() {
-	
-// 	var stat = []
-// 	var stats = []
-// 	var average = []
+})
 
-// 	var classifiers = [['classifier1','classifier1'], ['classifier2', 'classifier2'], 
-// 						['classifier3', 'classifier3'], ['classifier4', 'classifier4']]
-// 	var parameters = [ 'F1', 'Precision', 'Recall' ]
-
-// 	 stats = [{ F1: 1, Precision: 2, Recall: 3 },
-//   			   { F1: 4, Precision: 5, Recall: 6 },
-//   			   { F1: 7, Precision: 1, Recall: 8 },
-//   			   { F1: 9, Precision: 1, Recall: 2 }]
-
-// 	curves.extractGlobal(parameters, classifiers, 10, stats, stat)
-
-// 	average = curves.getAverage(stat, 'F1', 10, classifiers)
-// 	_.isEqual(average,[1,4,7,9]).should.equal(true)
-
-// 	average = curves.getAverage(stat, 'Precision', 10, classifiers)
-// 	_.isEqual(average,[2,5,1,1]).should.equal(true)
-
-// 	_.isEqual(stat['F1']['10']['classifier1'],[1]).should.equal(true)
-// 	_.isEqual(stat['F1']['10']['classifier2'],[4]).should.equal(true)
-// 	_.isEqual(stat['Precision']['10']['classifier1'],[2]).should.equal(true)
-
-
-// 	 stats = [ { F1: 2, Precision: 1, Recall: 1 },
-//   			   { F1: 3, Precision: 2, Recall: 5 },
-//   		       { F1: 5, Precision: 6, Recall: 7 },
-//   			   { F1: 7, Precision: 5, Recall: 8 }]
-
-// 	curves.extractGlobal(parameters, classifiers, 10, stats, stat)
-
-// 	average = curves.getAverage(stat, 'F1', 10, classifiers)
-// 	_.isEqual(average,[1.5,3.5,6,8]).should.equal(true)
-
-// 	average = curves.getAverage(stat, 'Precision', 10, classifiers)
-// 	_.isEqual(average,[1.5,3.5,3.5,3]).should.equal(true)
-
-// 	_.isEqual(stat['F1']['10']['classifier1'],[1,2]).should.equal(true)
-// 	_.isEqual(stat['F1']['10']['classifier2'],[4,3]).should.equal(true)
-// 	_.isEqual(stat['Precision']['10']['classifier1'],[2,1]).should.equal(true)
-
-// 	 stats = [{ F1: 5, Precision: 3, Recall: 2 },
-//   			  { F1: 3, Precision: 2, Recall: 1 },
-//   			  { F1: 1, Precision: 8, Recall: 3 },
-//   			  { F1: 5, Precision: 9, Recall: 4 }]
-
-// 	curves.extractGlobal(parameters, classifiers, 10, stats, stat)
-
-// 	average = curves.getAverage(stat, 'F1', 10, classifiers)
-// 	_.isEqual(average,[8/3,10/3,13/3,21/3]).should.equal(true)
-
-// 	average = curves.getAverage(stat, 'Precision', 10, classifiers)
-// 	_.isEqual(average,[2,3,5,5]).should.equal(true)
-
-// 	_.isEqual(stat['F1']['10']['classifier1'],[1,2,5]).should.equal(true)
-// 	_.isEqual(stat['F1']['10']['classifier2'],[4,3,3]).should.equal(true)
-// 	_.isEqual(stat['Precision']['10']['classifier1'],[2,1,3]).should.equal(true)
-
-// 	})
-
-// })
