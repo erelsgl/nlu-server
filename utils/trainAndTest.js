@@ -139,10 +139,10 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 	var sentence_hash = {}
 	var data_stats = []
 	var currentStats = []
-	var data_stats = []
 	var indexes = []
-	var startTime = new Date();
 	var explain = 50;
+
+	var testStart = new Date().getTime()	
 
     testSet = JSON.parse(JSON.stringify(testSet1, null, 4))
 	currentStats = new PrecisionRecall()
@@ -152,16 +152,16 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 	{
 		var id = 0
 
-		console.log(testSet[i])
-		
+		// console.log(testSet[i])
 		// expectedClasses = list.listembed(testSet[i].output)
+	
 		expectedClasses = testSet[i].output
 
 		// classified = classifier.classify(testSet[i].input, 50, testSet[i].input)
 		// classesWithExplanation = classifier.classify(testSet[i].input, explain, true, testSet[i].output, classifier_compare)
 		classesWithExplanation = classifier.classify(testSet[i].input, explain, true, testSet[i])
 
-		console.log(JSON.stringify(classesWithExplanation, null, 4))
+		// console.log(JSON.stringify(classesWithExplanation, null, 4))
 
 		// var rerank = _.keys(classesWithExplanation['scores']).slice(0,3)
 		// var combin = combinations.power(rerank)
@@ -185,14 +185,12 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 		actualClasses = classesWithExplanation.classes
 		// actualClasses = bestclose
 
-		var sentence_hash = {}
-		data_stats.push(sentence_hash);
-		
 		expl = currentStats.addCasesHash(expectedClasses, actualClasses, (verbosity>2));
-		currentStats.addCasesLabels(expectedClasses, actualClasses);
+		// currentStats.addCasesLabels(expectedClasses, actualClasses);
 
-		console.log(JSON.stringify(expl, null, 4))
+		// console.log(JSON.stringify(expl, null, 4))
 		
+		var sentence_hash = {}
 		sentence_hash['input'] = testSet[i].input
 		sentence_hash['output'] = testSet[i].output
 		sentence_hash['expected'] = expectedClasses
@@ -210,17 +208,19 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 		// if (microAverage) microAverage.addCases(expectedClasses, actualClasses);
 	}
 	
+		currentStats.calculateStats()
+		
+		var testEnd = new Date().getTime()
+	
+
 		classifierstats = {}
-		classifierstats['labels'] = currentStats.retrieveLabels()
+		// classifierstats['labels'] = currentStats.retrieveLabels()
 		classifierstats['data'] = data_stats
-		classifierstats['stats'] = currentStats.retrieveStats()
+		classifierstats['stats'] = currentStats
+		classifierstats['testtime'] = testEnd - testStart
 
 	return classifierstats
 };
-
-
-
-
 
 module.exports.testBatch_async = function(classifier, testSet, callback) {
 
@@ -563,11 +563,15 @@ module.exports.trainAndTest_hash = function(
 		testSet1 = JSON.parse(JSON.stringify(testSet))
 		trainSet1 = JSON.parse(JSON.stringify(trainSet))
 
+		var trainStart = new Date().getTime()
 		classifier.trainBatch(trainSet1);
+		var trainEnd = new Date().getTime()
 		console.log("classifier is trained")
 
 		// stat_hash = module.exports.test_hash(classifier, testSet1, verbosity, microAverage, macroSum, classifier_compare);
 		var stat_hash = module.exports.test_hash(classifier, testSet1, verbosity, microAverage, macroSum);
+
+		stat_hash['traintime'] = trainEnd - trainStart
 		
 		return stat_hash;
 };
