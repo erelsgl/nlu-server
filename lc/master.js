@@ -7,7 +7,6 @@ var child_process = require('child_process')
 var partitions = require('limdu/utils/partitions');
 
 var gnuplot = 'gnuplot'
-// var corpus = "Social Science"
 var statusfile = __dirname + "/status"
 var plotfile = __dirname + "/plotstatus"
 
@@ -105,47 +104,6 @@ function extractGlobal(workerstats, stat)
 	}, this)
 }
 
-// function hmcalc(fold, stat, baseline, sota)
-// {
-// 	var output = []
-// 	if (fold != 'average')
-// 	{
-// 		_.each(stat, function(rowvalue, row, list){ 
-// 			_.each(rowvalue, function(data, column, list){
-// 				if ((sota in data) && (baseline in data))
-// 				{
-// 					if ((fold in data[sota]) && (fold in data[baseline]))
-// 					{
-// 						var result = data[sota][fold] - data[baseline][fold]
-// 						if (bars.isNumber(result))
-// 							output.push([parseInt(row), parseInt(column), result])
-// 					}
-// 				}
-// 			}, this)
-// 		}, this)	
-// 	}
-// 	else
-// 	{
-// 		_.each(stat, function(rowvalue, row, list){ 
-// 			_.each(rowvalue, function(data, column, list){ 
-// 				if ((sota in data) && (baseline in data))
-// 				{
-// 					if ((_.toArray(data[baseline]).length == _.toArray(data[sota]).length) &&
-// 						(distance.isVectorNumber(_.toArray(data[baseline]))) && (distance.isVectorNumber(_.toArray(data[sota]))))
-// 					{
-// 						var result = distance.vec_minus(_.toArray(data[baseline]), _.toArray(data[sota]))
-// 						var average = distance.average(result)
-// 						output.push([parseInt(row), parseInt(column), average])
-// 					}
-// 				}
-// 			}, this)
-// 		}, this)
-// 	}
-
-// 	output = _.sortBy(output, function(num){ return num[0] })
-
-// 	return  output
-// }
 
 function hmstring(output)
 {
@@ -329,8 +287,6 @@ function plotlc(fold, parameter, stat)
 // there is a worker for every classifier and every fold
 function learning_curves(classifiers, folds, dataset, callback)
 {
-
-	// datafile
 	var stat = {}
 	var thr = 0
 
@@ -354,7 +310,6 @@ function learning_curves(classifiers, folds, dataset, callback)
 						})
 			thr += 1	
 
-
 			worker.on('disconnect', function(){
 			  	console.log("master: finished")
 			  	if (Object.keys(cluster.workers).length == 1)
@@ -375,65 +330,11 @@ function learning_curves(classifiers, folds, dataset, callback)
 			worker.on('message', function(message){
 				workerstats = JSON.parse(message)
 				// console.log(JSON.stringify(workerstats, null, 4))
+				fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
 				extractGlobal(workerstats, stat)
 			})
 		})
 	}, this)
-
-	// _.each(Object.keys(cluster.workers), function(id, worker, list){ 
-	//     cluster.workers[id].on('message', function(message){
-	// 		workerstats = JSON.parse(message)
-
-	// 		console.log(JSON.stringify(workerstats, null, 4))
-
-	// 		extractGlobal(workerstats, stat)
-
-	// 		fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
-	// 		fs.appendFileSync(statusfile, JSON.stringify(stat, null, 4))
-
- //            // var Ac = workerstats['Accuracy']
- //            // if (_.isNaN(Ac) || _.isNull(Ac) || _.isUndefined(Ac))
- //            // {
-	// 			// console.log("Accuracy is not OK")
-	// 			// process.exit(0)
-	// 		// }
-
-	// 		// var baseline = classifiers[0]
-	// 		// all other classifiers without baseline
-	// 		// var sotas = classifiers.slice(1)
-	// 		var fold = workerstats["fold"]
-   	
- //   			// _.each(sotas, function(sota, key, list){ 
- //            	// _.each(stat, function(data, param, list){
-	// 				// plot(fold, param, stat, baseline, sota)
-	// 				// plot('average', param, stat, baseline, sota)
-	// 			// })
-	// 	   	// }, this)
-
-	// 	   	_.each(stat, function(data, param, list){
-	// 			// update the graph for current fold per parameter
-	// 			plotlc(fold, param, stat)
-	// 			// build average per parameters
-	// 			plotlc('average', param, stat)
-	// 		})
-	// 	})
-	// }, this)
-
-	// _.each(Object.keys(cluster.workers), function(id, worker, list){ 
-	//     cluster.workers[id].on('disconnect', function(){
-	// 	  	console.log("master: " + id + " finished")
-	// 	  	if (Object.keys(cluster.workers) == 0)
-	// 	  	{
-	// 			console.log("all workers are disconnected")
-	// 	  	_.each(stat, function(data, param, list){
-	// 			// update the graph for current fold per parameter
-	// 			plotlc(fold, param, stat)
-	// 			// build average per parameters
-	// 			plotlc('average', param, stat)
-	// 		})
-	// 	  	}
-	// 	})
-	// })
 }
 
 // function isInt(value) {
@@ -446,71 +347,29 @@ if (process.argv[1] === __filename)
 {
 	var folds = 5
 
-	//var classifiers = ['TC', 'TCBOCWN', 'TCBOCPPDBS', 'TCBOCPPDBM']
-	var classifiers = ['DS_unigram', 'DS_bigram']
+	var classifiers = ['DS_bigram_con', 'DS_bigram']
 
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
 
 	var lc = __dirname + "/lc"
-	// var hm = __dirname + "/hm"
-	// var datafilepath = "/tmp/pic"
 
 	var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
-	var utterset = bars.getsetnocontext(dataset)
+	// var utterset = bars.getsetnocontext(dataset)
+	var utterset = bars.getsetcontext(dataset)
 
 	var dataset = utterset["train"].concat(utterset["test"])
 
 	dataset = dataset.slice(0,20)
 
 	// clean graphs
-	// _.each(lc, function(type, key, list){ 
 	var graph_files = fs.readdirSync(lc)
 
 	_.each(graph_files, function(value, key, list){ 
 		fs.unlinkSync(lc+"/"+value)
 	}, this)
-	
-	// }, this)
-// 
-	// var data = wikipedia.load_wikipedia("social_small")
 
-	// var catnames = {}
-	// _.each(data, function(record, key, list){ 
-	// 	catnames[record['catid']] = record['catname']
-	// }, this)
-	
-	// convert corpus
-	// var st_data = []
-
-	// _.each(data, function(value, key, list){ 
-	// 	value['input'] = value["text"]
-	// 	st_data.push({'input':value, 'output':value["catid"]})
-	// }, this)
-
-	// console.log("size before filtering "+st_data.length)
-	// st_data = _.filter(st_data, function(num){ return isInt(num["output"][0])})
-	// console.log("size after filtering "+st_data.length)
-
-	// console.log("catnames")
-	// console.log(JSON.stringify(catnames, null, 4))
-	// modify corpus
-	// var datahash = groupbylabel(st_data, len, perlabelsize, catnames)
-	// console.log("master: dataset groupped")
-
-	// _.each(datahash, function(value, key, list){ 
-	// 	console.log("master: write "+key)
-	// 	fs.writeFileSync(datafilepath + key, JSON.stringify(value))
-	// }, this)
-	
-	// console.log("master: dataset size "+_.flatten(_.toArray(datahash)).length)
-	// console.log("master: labels "+ Object.keys(datahash).length)
-	// console.log("master: dataset saved")
-
-	// console.log(JSON.stringify(filtered, null, 4))
-	// console.log(_.isArray(filtered))
-	// console.log()
-	// process.exit(0)
+	console.log("master: dataset size "+ dataset.length)
 
 	learning_curves(classifiers, folds, dataset, function(){
 		console.log()
@@ -520,13 +379,9 @@ if (process.argv[1] === __filename)
 
 module.exports = {
 	plotlcagr: plotlcagr,
-	// filtrain:filtrain,
-	// trainlen:trainlen,
 	getstringlc:getstringlc,
 	plotlcagrlen:plotlcagrlen,
 	plotlcagrlenaverge:plotlcagrlenaverge,
-	// hmcalc:hmcalc,
-	// isInt:isInt
 } 
 
 
