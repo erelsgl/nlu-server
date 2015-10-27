@@ -36,6 +36,65 @@ var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-]+/});
  * ENHANCEMENTS:
  */
 
+ var enhance5 = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel) {
+	return classifiers.EnhancedClassifier.bind(0, {
+		normalizer: normalizer1,
+		classifierType: classifierType,
+		// filter only external classifier data
+		instanceFilter: instanceFilterShortString,
+		InputSplitLabel: InputSplitLabel,
+		OutputSplitLabel: OutputSplitLabel,
+		TestSplitLabel: TestSplitLabel
+	});
+};
+
+/*
+ * CONSTRUCTORS:
+ */
+
+var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel, multiplyFeaturesByIDF, featureExpansion, featureExpansionScale, featureExpansionPhrase, featureFine, expansionParam) {
+// var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
+	return classifiers.EnhancedClassifier.bind(0, {
+		normalizer: normalizer,
+
+		// inputSplitter: inputSplitter,
+
+		// featureExpansion: featureExpansion,
+		// featureExpansionScale: featureExpansionScale,
+		// featureExpansionPhrase: featureExpansionPhrase,
+		// featureFine: featureFine,
+		// expansionParam: expansionParam,
+		stopwords: JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8'))),
+		
+		// inputSplitter: inputSplitter,
+		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
+
+		featureExtractor: featureExtractor,
+
+		featureLookupTable: featureLookupTable,
+		labelLookupTable: labelLookupTable,
+		
+		// featureExtractorForClassification: [
+			// ftrs.Hypernyms(JSON.parse(fs.readFileSync(__dirname + '/knowledgeresources/hypernyms.json'))),
+		// ],
+
+		multiplyFeaturesByIDF: multiplyFeaturesByIDF,
+
+		TfIdfImpl: natural.TfIdf,
+
+		// tokenizer: new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$,]+/}),
+		//minFeatureDocumentFrequency: 2,
+		// pastTrainingSamples: [], // to enable retraining
+			
+		classifierType: classifierType,
+
+		// InputSplitLabel: InputSplitLabel,
+		// OutputSplitLabel: OutputSplitLabel,
+		// TestSplitLabel: TestSplitLabel
+	});
+};
+
+
 var regexpNormalizer = ftrs.RegexpNormalizer(
 		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json')));
 
@@ -350,52 +409,79 @@ function featureExtractorU(sentence, features) {
 
 function featureExtractorUB(sentence, features, stopwords) {
 	
-	// var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
-
-	// var context = sentence['context']
-	// sentence = sentence['text']
-
 	sentence = sentence.toLowerCase().trim()
-
-	// sentence = regexpNormalizer(sentence)
-
-	// sentence_clean = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
-	// sentence_clean = sentence_clean.replace(/<VALUE>/g,'')
-	// sentence_clean = sentence_clean.replace(/<ATTRIBUTE>/g,'')
-	// sentence_clean = sentence_clean.replace(/NIS/,'')
-	// sentence_clean = sentence_clean.replace(/nis/,'')
-	// sentence_clean = sentence_clean.replace(/track/,'')
-	// sentence_clean = sentence_clean.replace(/USD/,'')
-	// sentence_clean = sentence_clean.trim()
+	sentence = regexpNormalizer(sentence)
 
 	var words = tokenizer.tokenize(sentence);
-	// var words_clean = tokenizer.tokenize(sentence_clean);
-	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
 	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
 
-	// var feature_clean = _.flatten(natural.NGrams.ngrams(words_clean, 1))
-
-	// _.each(stopwords, function(stopvalue, key, list){
-	// 	feature_clean = _.without(feature_clean, stopvalue);
-	// }, this)
-
 	_.each(feature, function(feat, key, list){ features[feat.join(" ")] = 1 }, this)
-
-	// _.each(context, function(feat, key, list){ 
-
-	// 	var obj = JSON.parse(feat)
-	// 	// features["CON_"+_.keys(obj)[0]] = 1 
-	// 	// features["CON_"+_.keys(obj)[0]+"_"+_.keys(_.values(obj)[0])[0]] = 1 
-
-	// 	_.each(feature_clean, function(fcl, key, list){
-	// 		features[fcl+"_"+"CON_"+_.keys(obj)[0]] = 1 
-	// 	}, this)
-
-	// }, this)
 
 	return features;
 	// callback()
 }
+
+function featureExtractorU(sentence, features, stopwords) {
+	
+	sentence = sentence.toLowerCase().trim()
+	var words = tokenizer.tokenize(sentence);
+	var feature = natural.NGrams.ngrams(words, 1)
+
+	_.each(feature, function(feat, key, list){ features[feat.join(" ")] = 1 }, this)
+
+	return features;
+	// callback()
+}
+
+function featureExtractorUBContext(sentence, features, stopwords) {
+	
+	var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
+
+	var context = sentence['context']
+	sentence = sentence['text']
+
+	sentence = sentence.toLowerCase().trim()
+
+	sentence = regexpNormalizer(sentence)
+
+	sentence_clean = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+	sentence_clean = sentence_clean.replace(/<VALUE>/g,'')
+	sentence_clean = sentence_clean.replace(/<ATTRIBUTE>/g,'')
+	sentence_clean = sentence_clean.replace(/NIS/,'')
+	sentence_clean = sentence_clean.replace(/nis/,'')
+	sentence_clean = sentence_clean.replace(/track/,'')
+	sentence_clean = sentence_clean.replace(/USD/,'')
+	sentence_clean = sentence_clean.trim()
+
+	var words = tokenizer.tokenize(sentence);
+	var words_clean = tokenizer.tokenize(sentence_clean);
+	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
+	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
+
+	var feature_clean = _.flatten(natural.NGrams.ngrams(words_clean, 1))
+
+	_.each(stopwords, function(stopvalue, key, list){
+		feature_clean = _.without(feature_clean, stopvalue);
+	}, this)
+
+	_.each(feature, function(feat, key, list){ features[feat.join(" ")] = 1 }, this)
+
+	_.each(context, function(feat, key, list){ 
+
+		var obj = JSON.parse(feat)
+		// features["CON_"+_.keys(obj)[0]] = 1 
+		// features["CON_"+_.keys(obj)[0]+"_"+_.keys(_.values(obj)[0])[0]] = 1 
+
+		_.each(feature_clean, function(fcl, key, list){
+			features[fcl+"_"+"CON_"+_.keys(obj)[0]] = 1 
+		}, this)
+
+	}, this)
+
+	return features;
+	// callback()
+}
+
 
 function featureExtractorUCoreNLP(sentence, features, stopwords, callback) {
 
@@ -626,6 +712,12 @@ var SvmLinearBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.
         // debug: true
 });
 
+var SagaeSegmenter =
+	classifiers.multilabel.BinarySegmentation.bind(0, {
+	binaryClassifierType: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined,  new ftrs.FeatureLookupTable()),
+	segmentSplitStrategy: 'cheapestSegment'
+});
+
 /*function featureExtractorBeginEndTruthTeller(sentence, features) {
 	
 	var sentence = trainutils.truth_sentence(sentence)
@@ -779,67 +871,6 @@ function weightInstance2(instance) {
 	DotDistance
 	*/
 
- var enhance5 = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel) {
-	return classifiers.EnhancedClassifier.bind(0, {
-		normalizer: normalizer1,
-		classifierType: classifierType,
-		// filter only external classifier data
-		instanceFilter: instanceFilterShortString,
-		InputSplitLabel: InputSplitLabel,
-		OutputSplitLabel: OutputSplitLabel,
-		TestSplitLabel: TestSplitLabel
-	});
-};
-
-/*
- * CONSTRUCTORS:
- */
-
-var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel, multiplyFeaturesByIDF, featureExpansion, featureExpansionScale, featureExpansionPhrase, featureFine, expansionParam) {
-// var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
-	return classifiers.EnhancedClassifier.bind(0, {
-		normalizer: normalizer,
-
-		// inputSplitter: inputSplitter,
-
-		// featureExpansion: featureExpansion,
-		// featureExpansionScale: featureExpansionScale,
-		// featureExpansionPhrase: featureExpansionPhrase,
-		// featureFine: featureFine,
-		expansionParam: expansionParam,
-		stopwords: JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8'))),
-		
-		// inputSplitter: inputSplitter,
-		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
-
-		featureExtractor: featureExtractor,
-
-		featureLookupTable: featureLookupTable,
-		labelLookupTable: labelLookupTable,
-		
-		featureExtractorForClassification: [
-			ftrs.Hypernyms(JSON.parse(fs.readFileSync(__dirname + '/knowledgeresources/hypernyms.json'))),
-		],
-
-		multiplyFeaturesByIDF: multiplyFeaturesByIDF,
-
-		TfIdfImpl: natural.TfIdf,
-
-		tokenizer: new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$,]+/}),
-
-		//minFeatureDocumentFrequency: 2,
-
-		pastTrainingSamples: [], // to enable retraining
-			
-		classifierType: classifierType,
-
-		// InputSplitLabel: InputSplitLabel,
-		// OutputSplitLabel: OutputSplitLabel,
-		// TestSplitLabel: TestSplitLabel
-	});
-};
-
-
 /*
  * FINAL CLASSIFIERS (exports):
  */
@@ -874,7 +905,8 @@ module.exports = {
 		TCBOCPPDBM: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptPPDBM, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 		// IntentClass: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
 		IntentClass: enhance(SvmLinearMulticlassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
-		DS: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true)
+		DS_bigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
+		DS_unigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true)
 		// DS: enhance(SvmLinearMulticlassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true)
 };
 
