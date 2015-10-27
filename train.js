@@ -1,10 +1,9 @@
-7/**
+/**
  * Trains and tests the NLU component.
  * 
  * @author Erel Segal-Halevi
  * @since 2013-06
  */
-
 
 var async = require('async');
 var Hierarchy = require(__dirname+'/Hierarchy');
@@ -26,7 +25,8 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
-var counting = false
+var check_ds_context = false
+var binary_seg = false
 var check_ds = true
 var do_small_temporary_serialization_test=  false
 var do_cross_dataset_testing = false
@@ -34,10 +34,8 @@ var do_final_test = false
 var do_cross_validation= false
 var do_serialization = false
 
-
 var verbosity = 0;
 var explain = 0;
-
 
 var classifier = require(__dirname+'/classifiers')
 
@@ -104,105 +102,55 @@ function walkSync(dir, filelist) {
   return filelist;
 }
 
-function hashtoar(hash)
+
+if (binary_seg)
 {
-
-	//console.log(hash)
-	var output = []
-	_.each(hash, function(value, key, list){
-		if (_.isObject(value))
-		{
-			_.each(value, function(value1, key1, list){
-				var rec = {}
-				rec[key] = {}
-				rec[key][key1]=value1
-				output.push(rec)
-			}, this)
-		}
-		else
-		{
-			var rec = {}
-			rec[key]=value
-			output.push(rec)
-		}
-	}, this)
-
-	output = _.map(output, function(num){ return JSON.stringify(num) });
-
-	return output
+	var dataset = bars.loadds("../negochat_private/dialogues")
+	var utterset = bars.getsetnocontext(dataset)
+	var stats = trainAndTest.trainAndTest_hash(classifier.BinarySegmentation, utterset["train"], utterset["test"], 5)
 }
-
-if (counting)
-{
-	var files = []
-	var folder = "../dialogues_arb"
-
-	var dialfiles = fs.readdirSync(folder)
-
-    dialfiles = _.without(dialfiles, ".git");
-    
-	var dataset = []
-
-	_.each(dialfiles, function(file, key, list){
-		dataset.push(JSON.parse(fs.readFileSync(folder+"/"+file)))
-	}, this)
-
-	console.log(dataset.length)
-
-	var human = 0
-	var agent = 0
-	_.each(dataset, function(dialogue, key, list){
-		_.each(dialogue["turns"], function(record, key, list){
-			if (record.role=="Candidate")
-				agent += 1
-			if (record.role=="Employer")
-				human += 1
-		}, this)
-	}, this)
-
-	console.log("human "+human)
-	console.log("agent "+agent)
-}
-
 
 if (check_ds)
 {
 
-	var files = []
-	var folder = "../negochat_private/dialogues"
+// 70
+// 966
+// ----
+// 35
+// 518
 
-	var dialfolders = fs.readdirSync(folder)
-	       
-	var train = []
-	var test = []
+	var dataset = bars.loadds("../negochat_private/dialogues")
+	var utterset = bars.getsetnocontext(dataset)
 
-	_.each(dialfolders, function(dialfolder, key, list){
-		
-		var dial = JSON.parse(fs.readFileSync(folder+"/"+dialfolder+"/gold.json"))
+	console.log(utterset["train"].length)
+	console.log(_.flatten(utterset["train"]).length)
+	console.log("----")
+	
+	console.log(utterset["test"].length)
+	console.log(_.flatten(utterset["test"]).length)
 
-			if (!("set" in dial))
-			{
-				console.log(JSON.stringify(dialfolder, null, 4))
-				process.exit(0)
-			}
-			
-			if (["test","train"].indexOf(dial['set'])==-1)
-			{
-				console.log(JSON.stringify(dialfolder, null, 4))
-				process.exit(0)
-			}
+	utterset["test"] = _.flatten(utterset["test"])
+	utterset["train"] = _.flatten(utterset["train"])
 
-			if (dial.set == "train")		
-				train.push(dial)
+	var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 5)
 
-			if (dial.set == "test")		
-				test.push(dial)
-		
-		}, this)
+	// var stats_cl = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 5)
 
+	console.log(JSON.stringify(stats["stats"], null, 4))
+
+}
+
+if (check_ds_context)
+{
+	
 	var trainset = []
 	var testset = []
 	var context = []
+
+	var dataset = bars.loadds("../negochat_private/dialogues")
+
+	var train = dataset['train']
+	var test = dataset['test']
 
 	_.each(train, function(di, key, list){
 		_.each(di['turns'], function(utt, key1, list){
@@ -259,14 +207,6 @@ if (check_ds)
 
 	console.log(testset.length)
 	console.log(trainset.length)
-
-	// _.each(testset, function(value, key, list){
-	// 	if (value.output.length == 0)
-	// 		console.log(JSON.stringify(value, null, 4))
-	// }, this)
-
-	// var dataset = partitions.partition(dataset, 1, Math.round(dataset.length*0.5))
-	// var stats = trainAndTest.trainAndTestbatch(classifier.DS, train_turns, test_turns, 5)
 
 	var stats = trainAndTest.trainAndTest_hash(classifier.DS, trainset, testset, 5)
 
