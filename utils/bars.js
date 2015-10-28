@@ -3582,7 +3582,51 @@ function hashtoar(hash)
 }
 
 
+// {\"Reject\":true}",
+// "{\"Reject\":{\"Leased Car\":\"With leased car\"}}"
+
+function filterlabels(labels)
+{
+  var reject_single = 0
+  var accept_single = 0
+
+  var reject_detailed = 0
+  var accept_detailed = 0
+
+  var labels_output = []
+
+  _.each(labels, function(value, key, list){
+    var label = JSON.parse(value)
+
+    if (_.isEqual(label, {'Reject':true}))
+      reject_single = 1      
+
+    if (_.isEqual(label, {'Accept':true}))
+      accept_single = 1     
+
+    if ((_.keys(label)[0] == "Reject") && (_.isObject(_.values(label)[0]))) 
+      reject_detailed = 1
+
+    if ((_.keys(label)[0] == "Accept") && (_.isObject(_.values(label)[0]))) 
+      accept_detailed = 1
+
+    if ((!_.isEqual(label,{'Reject':true})) && (!_.isEqual(label,{'Accept':true})))
+      labels_output.push(JSON.stringify(label))
+  }, this)
+
+  if ((reject_single == 1) && (reject_detailed == 0))
+      labels_output.push(JSON.stringify({'Reject':true}))
+
+  if ((accept_single == 1) && (accept_detailed == 0))
+      labels_output.push(JSON.stringify({'Accept':true}))
+
+    return labels_output
+}
+
+
+
 module.exports = {
+  filterlabels:filterlabels,
   getsetcontext:getsetcontext,
   loadds: loadds,
   getsetnocontext:getsetnocontext,
