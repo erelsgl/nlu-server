@@ -119,8 +119,21 @@ if (check_ds)
 // 35
 // 518
 
+// PERF
+// "TP": 487,
+// "FP": 95,
+// "FN": 181,
+
+// Linear
+// "TP": 492,
+// "FP": 100,
+// "FN": 176,
+
 	var dataset = bars.loadds("../negochat_private/dialogues")
 	var utterset = bars.getsetnocontext(dataset)
+
+	// utterset["train"] = utterset["train"].slice(0,20)
+	// utterset["test"] = utterset["test"].slice(0,5)
 
 	console.log(utterset["train"].length)
 	console.log(_.flatten(utterset["train"]).length)
@@ -132,7 +145,7 @@ if (check_ds)
 	utterset["test"] = _.flatten(utterset["test"])
 	utterset["train"] = _.flatten(utterset["train"])
 
-	var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 5)
+	var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), false)
 
 	// var stats_cl = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 5)
 

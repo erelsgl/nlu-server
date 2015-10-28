@@ -1,0 +1,66 @@
+{
+    "classifier": "DS_bigram",
+    "fold": "4",
+    "trainsize": 2,
+    "stats": {
+        "Accuracy": 0,
+        "macroPrecision": 0,
+        "macroRecall": null,
+        "macroF1": -0.05555555555555555,
+        "microPrecision": 0,
+        "microRecall": 0,
+        "microF1": 0
+    }
+}{
+    "classifier": "DS_bigram",
+    "fold": "0",
+    "trainsize": 2,
+    "stats": {
+        "Accuracy": 0,
+        "macroPrecision": 0,
+        "macroRecall": null,
+        "macroF1": -0.038461538461538464,
+        "microPrecision": 0,
+        "microRecall": 0,
+        "microF1": 0
+    }
+}{
+    "classifier": "DS_bigram",
+    "fold": "1",
+    "trainsize": 2,
+    "stats": {
+        "Accuracy": 0,
+        "macroPrecision": 0,
+        "macroRecall": null,
+        "macroF1": -0.043478260869565216,
+        "microPrecision": 0,
+        "microRecall": 0,
+        "microF1": 0
+    }
+}{
+    "classifier": "DS_bigram",
+    "fold": "2",
+    "trainsize": 2,
+    "stats": {
+        "Accuracy": 0,
+        "macroPrecision": 0,
+        "macroRecall": null,
+        "macroF1": -0.04,
+        "microPrecision": 0,
+        "microRecall": 0,
+        "microF1": 0
+    }
+}{
+    "classifier": "DS_bigram",
+    "fold": "3",
+    "trainsize": 2,
+    "stats": {
+        "Accuracy": 0,
+        "macroPrecision": 0,
+        "macroRecall": null,
+        "macroF1": -0.03333333333333333,
+        "microPrecision": 0,
+        "microRecall": 0,
+        "microF1": 0
+    }
+}

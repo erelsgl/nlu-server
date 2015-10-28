@@ -134,7 +134,7 @@ module.exports.testLite1 = function(classifier, testSet, explain) {
  * @return the currentStats.
  * @author Vasily Konovalov
  */
-module.exports.test_hash = function( classifier, testSet1, verbosity, microAverage, macroSum, sequence) {
+module.exports.test_hash = function( classifier, testSet1, verbosity) {
 	var stat_hash = {}
 	var sentence_hash = {}
 	var data_stats = []
@@ -159,9 +159,7 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 
 		// classified = classifier.classify(testSet[i].input, 50, testSet[i].input)
 		// classesWithExplanation = classifier.classify(testSet[i].input, explain, true, testSet[i].output, classifier_compare)
-		classesWithExplanation = classifier.classify(testSet[i].input, explain, true, testSet[i])
-
-		// console.log(JSON.stringify(classesWithExplanation, null, 4))
+		classesWithExplanation = classifier.classify(testSet[i].input, verbosity)
 
 		// var rerank = _.keys(classesWithExplanation['scores']).slice(0,3)
 		// var combin = combinations.power(rerank)
@@ -181,8 +179,9 @@ module.exports.test_hash = function( classifier, testSet1, verbosity, microAvera
 		// }, this)
 
 		// console.log(JSON.stringify(bestclose, null, 4))
-		
-		actualClasses = classesWithExplanation.classes
+		if (verbosity) actualClasses = classesWithExplanation.classes
+		else
+			actualClasses = classesWithExplanation
 		// actualClasses = bestclose
 
 		expl = currentStats.addCasesHash(expectedClasses, actualClasses, (verbosity>2));
@@ -555,7 +554,7 @@ module.exports.trainAndTestbatch = function(
 module.exports.trainAndTest_hash = function(
 		classifierType, 
 		trainSet, testSet, 
-		verbosity, microAverage, macroSum) {
+		verbosity) {
 		var startTime = new Date();
 		var classifier = new classifierType();
 		TrainCountEmbed = true
@@ -569,7 +568,7 @@ module.exports.trainAndTest_hash = function(
 		console.log("classifier is trained")
 
 		// stat_hash = module.exports.test_hash(classifier, testSet1, verbosity, microAverage, macroSum, classifier_compare);
-		var stat_hash = module.exports.test_hash(classifier, testSet1, verbosity, microAverage, macroSum);
+		var stat_hash = module.exports.test_hash(classifier, testSet1, verbosity);
 
 		stat_hash['traintime'] = trainEnd - trainStart
 		
