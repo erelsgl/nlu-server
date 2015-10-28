@@ -409,7 +409,7 @@ function featureExtractorU(sentence, features) {
 
 function featureExtractorUBC(sentence, features) {
 	
-	sentence = sentence['text']
+	if (_.isObject(sentence)) sentence = sentence['text']
 
 	sentence = sentence.toLowerCase().trim()
 	sentence = regexpNormalizer(sentence)
