@@ -1,11 +1,8 @@
 [
   {"source": "won't", "target": "will not"}
-, {"source": "60,000", "target": "60000"}
-, {"source": "90,000", "target": "90000"}
-, {"source": "120,000", "target": "120000"}
-, {"source": "120.000", "target": "120000"}
-, {"source": "60.000", "target": "60000"}
-, {"source": "90.000", "target": "90000"}
+, {"source": " 60 ", "target": "60000"}
+, {"source": " 90 ", "target": "90000"}
+, {"source": " 120 ", "target": "90000"}
 , {"source": "don't", "target": "do not"}
 , {"source": "dont", "target": "do not"}
 , {"source": "doesn't", "target": "does not"}
@@ -56,18 +53,14 @@
 
 , {"source": "\\b(\\d+) hundreds?\\b", "target": "$100"}
 , {"source": "\\b(\\d+) thousands?\\b", "target": "$1000"}
-
-, {"source": "\\b(\\d+)\\s*k\\b", "target": "$1000"}
-, {"source": "(\\d+),(\\d+)", "target": "$1$2"}
 , {"source": "(\\d+)\\.(\\d+)", "target": "$1$2"}
-, {"source": "\\b(\\d+)\\s*percent\\b", "target": "$1%"}
-, {"source": "\\b(\\d+)\\s+%\\b", "target": "$1%"}
-
-, {"source": "(\\d+)([^\\d\\s%])", "target": "$1 $2"}
-, {"source": "(\\d+)\\s+%", "target": "$1%"}
-
+, {"source": "(\\d+)[K|k]", "target": "$1000"}
+, {"source": "(\\d+),(\\d+)", "target": "$1$2"}
 , {"source": "\\b[o][.][k][.]?", "target": "okay"}
 , {"source": "\\b[o][k]\\b", "target": "okay"}
+
+, {"source": "(\\d+)\\s*percent", "target": "$1%"}
+, {"source": "(\\d+)\\s+%", "target": "$1%"}
 
 , {"source": "\\$", "target": " usd "}
 ]
