@@ -407,8 +407,10 @@ function featureExtractorU(sentence, features) {
 // 	return features;
 // }
 
-function featureExtractorUB(sentence, features, stopwords) {
+function featureExtractorUBC(sentence, features) {
 	
+	sentence = sentence['text']
+
 	sentence = sentence.toLowerCase().trim()
 	sentence = regexpNormalizer(sentence)
 
@@ -433,7 +435,7 @@ function featureExtractorU(sentence, features, stopwords) {
 	// callback()
 }
 
-function featureExtractorUBContext(sentence, features, stopwords) {
+function featureExtractorUBContext(sentence, features) {
 	
 	var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
 
@@ -481,132 +483,6 @@ function featureExtractorUBContext(sentence, features, stopwords) {
 	return features;
 	// callback()
 }
-
-
-function featureExtractorUCoreNLP(sentence, features, stopwords, callback) {
-
-	async.eachSeries(sentence['CORENLP']['sentences'], function (sen, callback1) {
-
-		async.eachSeries(sen['tokens'], function (value, callback2) {
-			if ('lemma' in value)
-				features[value['lemma'].toLowerCase()] = 1 
-			else
-				throw new Error("where is lemma '"+value);
-			callback2()
-		}, function(err)
-		{
-			callback1()
-		})}, function(err)
-		{
-			callback()
-		})
-}
-
-function featureExtractorUCoreNLPSync(sentence, features, stopwords) {
-
-	_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
-		_.each(sen['tokens'], function(value, key, list){
-			if ('lemma' in value)
-				// if (['ORGANIZATION', 'DATE', 'NUMBER'].indexOf(value['ner']) == -1)
-					features[value['lemma'].toLowerCase()] = 1 
-			else
-				throw new Error("where is lemma '"+value);
-
-		}, this)
-	}, this)
-}
-
-function featureExtractorUCoreNLPConceptWordnet(sentence, features, stopwords, callback) {
-
-	var candidates = []
-
-	_.each(sentence["CORENLP"]['sentences'], function(sentence, key, list){ 
-		candidates = candidates.concat(sentence["boc"])
-	}, this)
-
-    candidates = _.filter(candidates, function(num){ return ['noun'].indexOf(num['pos']) != -1; });
-	candidates = _.filter(candidates, function(num){ return stopwords.indexOf(num['string']) == -1 });
-	
-	var expansions = []
-
-	async.eachSeries(candidates, function (candidate, callback2) {
-		
-		async_adapter.getwordnetCache(candidate['string'], candidate['pos'], 'synonym', function(err, expansion){
-			expansions = expansions.concat(expansion)
-
-			async_adapter.getwordnetCache(candidate['string'], candidate['pos'], 'hypernym', function(err, expansion){
-				expansions = expansions.concat(expansion)
-				callback2()
-			})
-		})
-	}, 	function (err) {
-
-		_.each(expansions, function(expansion, key, list){ 
-			features["C_"+expansion.toLowerCase()] = 1 
-		}, this)
-			
-		callback()
-	})
-}
-
-function featureExtractorUCoreNLPConceptPPDBM(sentence, features, stopwords, callback) {
-
-	var candidates = []
-
-	_.each(sentence["CORENLP"]['sentences'], function(sentence, key, list){ 
-		candidates = candidates.concat(sentence["boc"])
-	}, this)
-
-    candidates = _.filter(candidates, function(num){ return ['noun'].indexOf(num['pos']) != -1; });
-	candidates = _.filter(candidates, function(num){ return stopwords.indexOf(num['string']) == -1 });
-	
-	var expansions = []
-
-	async.eachSeries(candidates, function (candidate, callback2) {
-		
-		async_adapter.getppdbCache(candidate['string'], candidate['pos'], 2, function(err, expansion){
-			expansions = expansions.concat(expansion)
-			callback2()
-		})
-	}, 	function (err) {
-
-		_.each(expansions, function(expansion, key, list){ 
-			features["C_"+expansion.toLowerCase()] = 1 
-		}, this)
-			
-		callback()
-	})
-}
-
-function featureExtractorUCoreNLPConceptPPDBS(sentence, features, stopwords, callback) {
-
-	var candidates = []
-
-	_.each(sentence["CORENLP"]['sentences'], function(sentence, key, list){ 
-		candidates = candidates.concat(sentence["boc"])
-	}, this)
-
-    candidates = _.filter(candidates, function(num){ return ['noun'].indexOf(num['pos']) != -1; });
-	candidates = _.filter(candidates, function(num){ return stopwords.indexOf(num['string']) == -1 });
-	
-	var expansions = []
-
-	async.eachSeries(candidates, function (candidate, callback2) {
-		
-		async_adapter.getppdbCache(candidate['string'], candidate['pos'], 1, function(err, expansion){
-			expansions = expansions.concat(expansion)
-			callback2()
-		})
-	}, 	function (err) {
-
-		_.each(expansions, function(expansion, key, list){ 
-			features["C_"+expansion.toLowerCase()] = 1 
-		}, this)
-			
-		callback()
-	})
-}
-
 
 // function featureExtractorUCoreNLPConcept(sentence, features, stopwords, callback) {
 
@@ -714,7 +590,7 @@ var SvmLinearBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.
 
 var SagaeSegmenter =
 	classifiers.multilabel.BinarySegmentation.bind(0, {
-	binaryClassifierType: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined,  new ftrs.FeatureLookupTable()),
+	binaryClassifierType: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorU, undefined,  new ftrs.FeatureLookupTable()),
 	segmentSplitStrategy: 'cheapestSegment'
 });
 
@@ -881,10 +757,10 @@ module.exports = {
 		enhance: enhance,
 		tokenizer: tokenizer,
 		normalizer: normalizer,
-		featureExtractorUB: featureExtractorUB,
-		featureExtractorB: featureExtractorB,
-		featureExtractorU: featureExtractorU,
-		featureword2vec:featureword2vec,
+		// featureExtractorUB: featureExtractorUB,
+		// featureExtractorB: featureExtractorB,
+		// featureExtractorU: featureExtractorU,
+		// featureword2vec:featureword2vec,
 		// featureExtractorUnigram: featureExtractorUnigram,
 		instanceFilter: instanceFilterShortString,
 		featureExpansion:featureExpansion,
@@ -892,25 +768,25 @@ module.exports = {
 
 		// TC: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 		
-		TCPerf: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLPSync, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
-		TC: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
+		// TCPerf: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLPSync, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
+		// TC: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 		// TC1: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
-		TCDemo: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCDemo),
-		TCPPDB: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCPPDB),
-		TCPPDBNoCon: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCPPDBNoCon),
-		TCSynHypHypoCohypo: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHypHypoCohypo),
-		TCSynHyp1: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHyp1),
-		TCBOCWN: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptWordnet, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
-		TCBOCPPDBS: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptPPDBS, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
-		TCBOCPPDBM: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptPPDBM, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
+		// TCDemo: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCDemo),
+		// TCPPDB: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCPPDB),
+		// TCPPDBNoCon: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCPPDBNoCon),
+		// TCSynHypHypoCohypo: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHypHypoCohypo),
+		// TCSynHyp1: enhance(SvmLinearMulticlassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, TCSynHyp1),
+		// TCBOCWN: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptWordnet, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
+		// TCBOCPPDBS: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptPPDBS, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
+		// TCBOCPPDBM: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptPPDBM, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 		// IntentClass: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
-		IntentClass: enhance(SvmLinearMulticlassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
-		DS_bigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
+		// IntentClass: enhance(SvmLinearMulticlassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
+		DS_bigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		// DS_unigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		DS_bigram_con: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBContext, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true)
 };
 
 
-module.exports.defaultClassifier = module.exports.TC
+module.exports.defaultClassifier = module.exports.DS_bigram
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
