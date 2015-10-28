@@ -3536,11 +3536,10 @@ function getsetcontext(dataset)
 
 function getsetnocontext(dataset)
 {
-  var utteranceset = {}
-  _.each(dataset, function(value, settype, list){
-    _.each(value, function(di, key, list){
-        var utterances = []
-      _.each(di['turns'], function(utt, key1, list){
+  var utteranceset = {'train':[], 'test':[]}
+  _.each(dataset, function(dialogue, key, list){
+    var utterances = []
+    _.each(dialogue['turns'], function(utt, key1, list){
         if (utt.role == "Employer")
         {
           var record = {}
@@ -3548,11 +3547,8 @@ function getsetnocontext(dataset)
           record['output'] = hashtoar(utt.output)
           utterances.push(record)
         }
-      }, this)
-      if (!(settype in utteranceset))
-        utteranceset[settype] = []
-      utteranceset[settype].push(utterances)
     }, this)
+    utteranceset[dialogue.set].push(utterances)
   }, this)
   return utteranceset
 }
