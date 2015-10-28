@@ -14,6 +14,7 @@ var list = require('limdu/utils/list');
 var async = require('async');
 var natural = require('natural');
 var combinations = require('js-combinatorics');
+var bars = require('./bars');
 
 /**
  * A short light-weight test function. Tests the given classifier on the given dataset, and 
@@ -147,47 +148,21 @@ module.exports.test_hash = function( classifier, testSet1, verbosity) {
     testSet = JSON.parse(JSON.stringify(testSet1, null, 4))
 	currentStats = new PrecisionRecall()
 	
-
 	for (var i=0; i<testSet.length; ++i) 
 	{
 		var id = 0
 
-		// console.log(testSet[i])
-		// expectedClasses = list.listembed(testSet[i].output)
-	
 		expectedClasses = testSet[i].output
 
-		// classified = classifier.classify(testSet[i].input, 50, testSet[i].input)
-		// classesWithExplanation = classifier.classify(testSet[i].input, explain, true, testSet[i].output, classifier_compare)
 		classesWithExplanation = classifier.classify(testSet[i].input, verbosity)
 
-		// var rerank = _.keys(classesWithExplanation['scores']).slice(0,3)
-		// var combin = combinations.power(rerank)
-		// var combin_lst = combin.toArray()
-
-		// console.log(JSON.stringify(combin_lst, null, 4))
-
-		// var mindst = 10000
-		// var bestclose = []
-
-		// _.each(combin_lst, function(value, key, list){
-		// 	if ((natural.LevenshteinDistance(value, testSet[i].output))<mindst)
-		// 	{
-		// 		mindst = natural.LevenshteinDistance(value, testSet[i].output)
-		// 		bestclose = value
-		// 	}
-		// }, this)
-
-		// console.log(JSON.stringify(bestclose, null, 4))
 		if (verbosity) actualClasses = classesWithExplanation.classes
 		else
 			actualClasses = classesWithExplanation
-		// actualClasses = bestclose
+
+		actualClasses = bars.filterlabels(actualClasses)
 
 		expl = currentStats.addCasesHash(expectedClasses, actualClasses, (verbosity>2));
-		// currentStats.addCasesLabels(expectedClasses, actualClasses);
-
-		// console.log(JSON.stringify(expl, null, 4))
 		
 		var sentence_hash = {}
 		sentence_hash['input'] = testSet[i].input
@@ -195,25 +170,17 @@ module.exports.test_hash = function( classifier, testSet1, verbosity) {
 		sentence_hash['expected'] = expectedClasses
 		sentence_hash['classified'] = actualClasses
 		sentence_hash['id'] = id
-		// sentence_hash['expansioned'] = classesWithExplanation.expansioned
-		// sentence_hash['features'] = classesWithExplanation.features
 		sentence_hash['explanation'] = expl;
-		sentence_hash['explanation_source'] = {}
+		sentence_hash['explanation_source'] = classesWithExplanation
 
 		data_stats.push(sentence_hash);
-
-		// sentence_hash['expected original'] = testSetOriginal[i]['output']
-		// sentence_hash['classified original'] = classified
-		// if (microAverage) microAverage.addCases(expectedClasses, actualClasses);
 	}
 	
 		currentStats.calculateStats()
 		
 		var testEnd = new Date().getTime()
 	
-
 		classifierstats = {}
-		// classifierstats['labels'] = currentStats.retrieveLabels()
 		classifierstats['data'] = data_stats
 		classifierstats['stats'] = currentStats
 		classifierstats['testtime'] = testEnd - testStart
