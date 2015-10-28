@@ -326,7 +326,6 @@ function learning_curves(classifiers, folds, dataset, callback)
 			  	}
 			})
 
-
 			worker.on('message', function(message){
 				workerstats = JSON.parse(message)
 				// console.log(JSON.stringify(workerstats, null, 4))

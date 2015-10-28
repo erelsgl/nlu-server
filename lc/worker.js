@@ -46,7 +46,7 @@ process.on('message', function(message) {
 				" test_dialogue="+test.length +" test_turns="+mytestex.length+
 				" classifier="+classifier+ " fold="+fold))
 
-		    	stats = trainAndTest_hash(classifiers[classifier], mytrainex, mytestex)
+		    	stats = trainAndTest_hash(classifiers[classifier], mytrainex, mytestex, false)
 
 		    	var uniqueid = new Date().getTime()
 
