@@ -130,7 +130,7 @@ if (check_ds)
 // "FN": 176,
 
 	var dataset = bars.loadds("../negochat_private/dialogues")
-	var utterset = bars.getsetnocontext(dataset)
+	var utterset = bars.getsetcontext(dataset)
 
 	// utterset["train"] = utterset["train"].slice(0,20)
 	// utterset["test"] = utterset["test"].slice(0,5)
@@ -145,7 +145,7 @@ if (check_ds)
 	utterset["test"] = _.flatten(utterset["test"])
 	utterset["train"] = _.flatten(utterset["train"])
 
-	var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), false)
+	var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram_con, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), false)
 
 	// var stats_cl = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 5)
 
