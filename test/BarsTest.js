@@ -16,6 +16,13 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
+	it('filterlabels', function() {
+		_.isEqual(bars.filterlabels(["{\"Reject\":true}","{\"Reject\":{\"Leased Car\":\"With leased car\"}}"]), [ '{"Reject":{"Leased Car":"With leased car"}}' ]).should.be.true
+		_.isEqual(bars.filterlabels(["{\"Reject\":true}","{\"Reject\":{\"Leased Car\":\"With leased car\"}}", "{\"Offer\":true}"]), [ '{"Reject":{"Leased Car":"With leased car"}}', "{\"Offer\":true}" ]).should.be.true
+		_.isEqual(bars.filterlabels(["{\"Reject\":true}","{\"Offer\":true}"]), [ "{\"Offer\":true}","{\"Reject\":true}" ]).should.be.true
+		_.isEqual(bars.filterlabels(["{\"Accept\":true}","{\"Offer\":true}"]), [ "{\"Offer\":true}","{\"Accept\":true}" ]).should.be.true
+	})
+
 	it('ngraminindex', function() {
 	  // function ngraminindex(ngram, index, type)
   		var index = JSON.parse(fs.readFileSync("./wordnet_index.json", 'UTF-8'))
