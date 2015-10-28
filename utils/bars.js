@@ -3472,8 +3472,7 @@ function loadds(folder)
 {
   var dialfolders = fs.readdirSync(folder)
          
-  var train = []
-  var test = []
+  var dataset = []
 
   _.each(dialfolders, function(dialfolder, key, list){
     
@@ -3485,21 +3484,25 @@ function loadds(folder)
       process.exit(0)
     }
       
-    if (["test","train"].indexOf(dial['set'])==-1)
-    {
-      console.log(JSON.stringify(dialfolder, null, 4))
-      process.exit(0)
-    }
+    // if (["test","train"].indexOf(dial['set'])==-1)
+    // {
+      // console.log(JSON.stringify(dialfolder, null, 4))
+      // process.exit(0)
+    // }
 
-    if (dial.set == "train")    
-      train.push(dial)
+    // if (dial.set == "train")    
+      // train.push(dial)
 
-    if (dial.set == "test")   
-      test.push(dial)
+    // if (dial.set == "test")   
+      // test.push(dial)
+
+    dataset.push(dial)
+
     
   }, this)
 
-  return {'train':train, 'test':test}
+  // return {'train':train, 'test':test}
+  return dataset
 }
 
 function getsetcontext(dataset)
@@ -3507,11 +3510,12 @@ function getsetcontext(dataset)
   var utteranceset = {'train':[], 'test':[]}
   var context = []
 
-  _.each(dataset, function(dialogue, settype, list){
+  _.each(dataset, function(dialogue, key, list){
+    var processed_dialogue = []
     _.each(dialogue['turns'], function(turn, key, list){
-  
+
       if (turn.role == "Candidate")
-        context = hashtoar(utt.output)
+        context = hashtoar(turn.output)
 
       if (turn.role == "Employer")
       {
@@ -3520,16 +3524,19 @@ function getsetcontext(dataset)
         record['input']['text'] = turn.input
         record['input']['context'] = context
         record['output'] = hashtoar(turn.output)
-        utteranceset[dialogue.set].push(record)
+
+        processed_dialogue.push(record)
         context = []
       }
     }, this)
+    utteranceset[dialogue.set].push(processed_dialogue)
   }, this)
+  return utteranceset
 }
 
 function getsetnocontext(dataset)
 {
-  utteranceset = {}
+  var utteranceset = {}
   _.each(dataset, function(value, settype, list){
     _.each(value, function(di, key, list){
         var utterances = []
