@@ -426,7 +426,7 @@ function featureExtractorUBC(sentence, features) {
 
 function featureExtractorUBContext(sentence, features) {
 	
-	// var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
+	var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
 
 	var context = sentence['context']
 	sentence = sentence['text']
@@ -439,7 +439,6 @@ function featureExtractorUBContext(sentence, features) {
 
 	var attrs = attrval[0]
 	var values = attrval[1]
-
 
 	sentence_clean = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
 	sentence_clean = sentence_clean.replace(/<VALUE>/g,'')
@@ -458,9 +457,9 @@ function featureExtractorUBContext(sentence, features) {
 
 	var feature_clean = _.flatten(natural.NGrams.ngrams(words_clean, 1))
 
-	// _.each(stopwords, function(stopvalue, key, list){
-		// feature_clean = _.without(feature_clean, stopvalue);
-	// }, this)
+	_.each(stopwords, function(stopvalue, key, list){
+		feature_clean = _.without(feature_clean, stopvalue);
+	}, this)
 
 	_.each(feature_clean, function(feat, key, list){ features[feat] = 1 }, this)
 
@@ -470,17 +469,17 @@ function featureExtractorUBContext(sentence, features) {
 	if (values.length > 0)
 		_.each(values, function(value, key, list){ features[value[0]] = 1 }, this)
 
-	// _.each(context, function(feat, key, list){ 
+	_.each(context, function(feat, key, list){ 
 
-		// /var obj = JSON.parse(feat)
-		// features["CON_"+_.keys(obj)[0]] = 1 
-		// features["CON_"+_.keys(obj)[0]+"_"+_.keys(_.values(obj)[0])[0]] = 1 
+		var obj = JSON.parse(feat)
+		features["CON_"+_.keys(obj)[0]] = 1 
+		features["CON_"+_.keys(obj)[0]+"_"+_.keys(_.values(obj)[0])[0]] = 1 
 
 	// 	_.each(feature_clean, function(fcl, key, list){
 	// 		features[fcl+"_"+"CON_"+_.keys(obj)[0]] = 1 
 	// 	}, this)
 
-	// }, this)
+	}, this)
 
 	return features;
 	// callback()
