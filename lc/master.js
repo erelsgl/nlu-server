@@ -351,7 +351,7 @@ if (process.argv[1] === __filename)
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
 
-	var lc = __dirname + "/lc"
+	
 
 	var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
 	// var utterset = bars.getsetnocontext(dataset)
@@ -362,6 +362,7 @@ if (process.argv[1] === __filename)
 	dataset = dataset.slice(0,20)
 
 	// clean graphs
+	var lc = __dirname + "/lc"
 	var graph_files = fs.readdirSync(lc)
 
 	_.each(graph_files, function(value, key, list){ 
