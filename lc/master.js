@@ -346,12 +346,10 @@ if (process.argv[1] === __filename)
 {
 	var folds = 5
 
-	var classifiers = ['DS_bigram_con', 'DS_bigram']
+	var classifiers = ['DS_bigram', 'DS_bigram_kernel']
 
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
-
-	
 
 	var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
 	// var utterset = bars.getsetnocontext(dataset)
