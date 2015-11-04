@@ -3657,7 +3657,7 @@ function simulateds(dataset, size, params)
   var labs = []
   var sim_dataset = []
 
-  while (sim_dataset.length <= size) {
+  while (sim_dataset.length < size) {
     
     var label = distribute(params)
     var elem_index = _.findIndex(dataset, function(utterance){ return ((utterance.output.length == 1) && (utterance.output.indexOf(label)!=-1)); });
