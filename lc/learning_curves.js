@@ -101,6 +101,54 @@ function getAverage(stat, param, trainsize, classifiers)
 		return average
 	}
 
+function countLabel(mytrain, label, single)
+{
+	var results = _.countBy(_.flatten(mytrain), function(utterance) {
+  			return utterance['output'].indexOf(label) != -1 ? 'found':'notfound';
+	});
+
+	return results["found"]
+}
+
+function extractLabels(stats, mytrain, labels)
+{
+	_.each(stats, function(params, label, list){
+
+
+		var label_json = JSON.parse(label)
+		var label_str = _.keys(label_json)[0]
+
+		if (_.isObject(_.values(label_json)[0]))
+			label_str += "_"+(_.keys(_.values(label_json)[0])[0]) + "_" + (_.values(_.values(label_json)[0])[0])
+		else
+			label_str += "_"+_.values(label_json)[0]
+
+		label_str = label_str.replace(" ","_")
+
+		var count = countLabel(mytrain, label, true)
+
+		if (!(_.isUndefined(count)))
+		{
+			if (!(label_str in labels))
+				labels[label_str] = {}
+
+			if (!(count in labels[label_str]))
+				labels[label_str][count] = {}
+
+			_.each(params, function(value, param, list){
+				if (["Recall","Precision","F1"].indexOf(param) != -1)
+				{
+					if (!(param in labels[label_str][count]))
+						labels[label_str][count][param] = []
+		
+					if (!(_.isNaN(value)))
+						labels[label_str][count][param].push(value)
+				}
+			}, this)
+		}
+	}, this)
+}
+
 function extractGlobal(parameters, classifiers, trainset, report, stat)
 	{
 
@@ -240,13 +288,14 @@ function plot(fold, parameter, stat, classifiers)
 	{
 		_.each(stat[parameter], function(value, trainsize, list){ 
 			
-			if (parameter.indexOf("_"))
-				var intent = parameter.substring(0,parameter.indexOf("_")).length
+			// if (parameter.indexOf("_"))
+				// var intent = parameter.substring(0,parameter.indexOf("_")).length
 
 			var average = getAverage(stat, parameter, trainsize, classifiers)
-			var intsize = _.reduce(stat[parameter][trainsize]['__size'], function(memo, num){ return (memo + num) }, 0)/stat[parameter][trainsize]['__size'].length
+			// var intsize = _.reduce(stat[parameter][trainsize]['__size'], function(memo, num){ return (memo + num) }, 0)/stat[parameter][trainsize]['__size'].length
 			// str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"+filternan(average).join("\t")+"\n"
-			str += trainsize.toString() + "(" + intsize + ")\t"+filternan(average).join("\t")+"\n"
+			// str += trainsize.toString() + "(" + intsize + ")\t"+filternan(average).join("\t")+"\n"
+			str += trainsize.toString() + "(" + trainsize.toString() + ")\t"+filternan(average).join("\t")+"\n"
 			values = values.concat(filternan(average))
 		}, this)
 
@@ -279,6 +328,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			throw new Error("Dataset is empty");
 		
 		stat = {}
+		labels = {}
 		
 		var mytrain = []
 
@@ -299,6 +349,8 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	var mytrainset = (bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)
 			  	var testset = (bars.isDialogue(test) ? _.flatten(test) : test)
 
+			  	// for simulated
+
 				console.log("fold"+fold)
 				console.log("train"+mytrainset.length)
 
@@ -308,21 +360,20 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  		console.log("start trainandTest "+name)
 	    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
 		    		console.log("stop trainandTest "+name)
-		    		report.push(_.pick(stats['stats'], parameters))
+		    		
+		    		report.push(_.pick(stats['stats'], parameters))		    		
 
-		    		// gldata[name] = stats['data']
+		    		extractLabels(stats['stats']['labels'], mytrain, labels)
+
+					// function simulateds(dataset, size, params)
+		    		// var sim_dataset = bars.simulateds(_.flatten(train.slice(index)), 20, stats['stats']['labels'])
+		    		// console.log(JSON.stringify(sim_dataset, null, 4))
+		    		// process.exit(0)
 
 			  	}, this)
-
-			  	// _.each(report, function(value, key, list){ 
-			  		// if (value['F1'] < 0)
-			  			// process.exit(0)
-			  	// }, this)
-
-			  	// oldstats = bars.copyobj(stats)
-
+			  	
                 extractGlobal(parameters, classifiers, mytrain, report, stat)
-                
+                           
                 // size in dialogues
                 // stat['_sized'] = test.length
                 // size in utterances
@@ -334,6 +385,11 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				})
 
 			} //while (index < train.length)
+
+				_.each(labels, function(value, label, list){
+		    		plot('average', label, labels, {"Precision":true, "Recall":true, "F1":true})
+				})
+
 			}); //fold
 
 }
@@ -341,9 +397,16 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 if (process.argv[1] === __filename)
 {
 
+	var lc = __dirname + "/learning_curves"
+	var graph_files = fs.readdirSync(lc)
+
+	_.each(graph_files, function(value, key, list){ 
+		fs.unlinkSync(lc+"/"+value)
+	}, this)
+
 	var classifiers  = {
-			SVM_unigram : classifier.DS_unigram,
-			SVM_bigram : classifier.DS_bigram
+			SVM_unigram : classifier.DS_bigram
+			// SVM_bigram : classifier.DS_bigram_con
 		}
 	
 	var parameters = [
@@ -357,13 +420,13 @@ if (process.argv[1] === __filename)
 	
 	
 	var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
-	var utterset = bars.getsetnocontext(dataset)
+	var utterset = bars.getsetcontext(dataset)
 	
 	var dataset = utterset["train"].concat(utterset["test"])
 
-	dataset = dataset.slice(0,10)
+	// dataset = dataset.slice(0,10)
 
-	learning_curves(classifiers, dataset, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
+	learning_curves(classifiers, dataset, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  3/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
@@ -379,3 +442,4 @@ module.exports = {
 	isProb:isProb,
 	thereisdata:thereisdata
 }
+
