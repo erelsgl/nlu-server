@@ -16,6 +16,26 @@ var ppdb = require("../research/ppdb/utils.js")
 
 describe('Bars utilities', function() {
 
+	it('simulateds', function() {
+		var dataset = [
+			{"input":1, "output":["a"]},
+			{"input":2, "output":["b"]},
+			{"input":3, "output":["b"]},
+			{"input":4, "output":["a"]},
+			{"input":5, "output":["a"]}
+		]
+		var size = 2
+		var params = {
+			"a":{"TP":5,"FN":5,"F1":0},
+			"b":{"TP":5,"FN":5,"F1":0.5}
+		}
+
+		var sim_dataset =  bars.simulateds(dataset, size, params)
+
+		var inputs = _.pluck(sim_dataset, 'input');
+		_.uniq(inputs).length.should.equal(inputs.length)
+	})
+
 	it('filterlabels', function() {
 		_.isEqual(bars.filterlabels(["{\"Reject\":true}","{\"Reject\":{\"Leased Car\":\"With leased car\"}}"]), [ '{"Reject":{"Leased Car":"With leased car"}}' ]).should.be.true
 		_.isEqual(bars.filterlabels(["{\"Reject\":true}","{\"Reject\":{\"Leased Car\":\"With leased car\"}}", "{\"Offer\":true}"]), [ '{"Reject":{"Leased Car":"With leased car"}}', "{\"Offer\":true}" ]).should.be.true
