@@ -361,13 +361,16 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 	    		var dial = Math.floor(index/10)+1;
 	    	 	var size = _.flatten(mytrain.slice(mytrain.length - dial)).length
-		    	var sim_dataset = bars.simulateds(_.flatten(train.slice(index)), size, stats['stats']['labels'])
-		    	var sim_train = _.flatten(mytrain.slice(0,mytrain.length-dial)).concat(sim_dataset)
-
-				console.log(mytrain.length+" dialogues in train with "+ mytrainset.length + " utterances")
+		    	
+	    	 	console.log(mytrain.length+" dialogues in train with "+ mytrainset.length + " utterances")
 				console.log(dial+" dialogues should be simulated")
 				console.log(size+" in total utterances are simulated")
-	    		console.log(mytrainset.length+" and "+sim_train.length)
+	    		
+	    	 	var sim_dataset = bars.simulateds(_.flatten(train.slice(index)), size, stats['stats']['labels'])
+		    	var sim_train = _.flatten(mytrain.slice(0,mytrain.length-dial)).concat(sim_dataset)
+
+		    	console.log(sim_dataset.length + " utterances were simulated")
+				console.log(mytrainset.length+" and "+sim_train.length)
 	    	
 				var stats = trainAndTest_hash(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
 	    			    		
