@@ -3623,9 +3623,59 @@ function filterlabels(labels)
     return labels_output
 }
 
+function distribute(params) {
 
+  var totalscore = _.reduce(params, function(memo, num){ return memo + num["score"]; }, 0);
+
+  _.each(params, function(value, param, list){
+    params[param]["ratio"] = params[param]["score"]/totalscore
+  }, this) 
+
+  var dist = []
+  _.each(params, function(value, key, list){
+    dist.push([key, value["ratio"]])
+  }, this)
+
+  var probs = _.sortBy(dist, function(num){ return num[1] })
+
+  var r = Math.random()
+  var i = 0
+  var acc = 0
+  while ((acc += probs[i][1]) <= r)
+      i++;
+
+  return probs[i][0];
+}
+
+function simulateds(dataset, size, params)
+{
+  _.each(params, function(value, param, list){
+    var F1 = ( value["F1"] == 0 || _.isNaN(value["F1"]) || value["F1"]==-1 ) ? 1 : value["F1"]
+    params[param]["score"] = (value["TP"]+value["FN"])/F1
+  }, this)
+
+  var labs = []
+  var sim_dataset = []
+
+  while (sim_dataset.length <= size) {
+    
+    var label = distribute(params)
+    var elem_index = _.findIndex(dataset, function(utterance){ return ((utterance.output.length == 1) && (utterance.output.indexOf(label)!=-1)); });
+    
+    if (elem_index == -1)
+      delete params[label]
+    else
+    {
+      sim_dataset.push(dataset[elem_index])
+      dataset.splice(elem_index, 1);
+    }
+  }
+
+  return sim_dataset
+}
 
 module.exports = {
+  simulateds:simulateds,
   filterlabels:filterlabels,
   getsetcontext:getsetcontext,
   loadds: loadds,
