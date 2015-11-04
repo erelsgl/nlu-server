@@ -339,7 +339,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 			// fs.writeFileSync(__dirname + dirr + "fold" + fold, "TEST \n"+JSON.stringify(test, null, 4)+"\n TRAIN \n"+JSON.stringify(train, null, 4), 'utf-8')
 
-			while (index <= train.length)
+			while (index <= train.length-10)
 	  		{
 			  	var report = []
 
@@ -362,9 +362,10 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	    		
 	    		report.push(_.pick(stats['stats'], parameters))		    		
 
-	    	 	var size = mytrain[mytrain.length - 1].length
+	    		var dial = Math.floor(index/10)+1;
+	    	 	var size = _.flatten(mytrain.slice(mytrain.length - dial)).length
 		    	var sim_dataset = bars.simulateds(_.flatten(train.slice(index)), size, stats['stats']['labels'])
-		    	var sim_train = _.flatten(mytrain.slice(0,mytrain.length-1)).concat(sim_dataset)
+		    	var sim_train = _.flatten(mytrain.slice(0,mytrain.length-dial)).concat(sim_dataset)
 
 				console.log(size+" len dialogue is added")
 	    		console.log(mytrainset.length+" and "+sim_train.length)
