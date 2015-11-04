@@ -451,35 +451,31 @@ function featureExtractorUBContext(sentence, features) {
 
 
 	// var words = tokenizer.tokenize(sentence);
-	var words_clean = tokenizer.tokenize(sentence_clean);
+	var words_clean = tokenizer.tokenize(sentence);
 	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
 	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
 
 	var feature_clean = _.flatten(natural.NGrams.ngrams(words_clean, 1))
 
-	_.each(stopwords, function(stopvalue, key, list){
-		feature_clean = _.without(feature_clean, stopvalue);
-	}, this)
+	// _.each(stopwords, function(stopvalue, key, list){
+		// feature_clean = _.without(feature_clean, stopvalue);
+	// }, this)
 
 	_.each(feature_clean, function(feat, key, list){ features[feat] = 1 }, this)
 
-	if (attrs.length > 0)
-		_.each(attrs, function(attr, key, list){ features[attr[0]] = 1 }, this)
+	// if (attrs.length > 0)
+	// 	_.each(attrs, function(attr, key, list){ features[attr[0]] = 1 }, this)
 
-	if (values.length > 0)
-		_.each(values, function(value, key, list){ features[value[0]] = 1 }, this)
+	// if (values.length > 0)
+	// 	_.each(values, function(value, key, list){ features[value[0]] = 1 }, this)
 
-	// _.each(context, function(feat, key, list){ 
+	_.each(context, function(feat, key, list){ 
 
-	// 	var obj = JSON.parse(feat)
-	// 	features["CON_"+_.keys(obj)[0]] = 1 
-	// 	features["CON_"+_.keys(obj)[0]+"_"+_.keys(_.values(obj)[0])[0]] = 1 
+		var obj = JSON.parse(feat)
+		features["CON_"+_.keys(obj)[0]] = 1 
+		features["CON_"+_.keys(obj)[0]+"_"+_.keys(_.values(obj)[0])[0]] = 1 
 
-	// // 	_.each(feature_clean, function(fcl, key, list){
-	// // 		features[fcl+"_"+"CON_"+_.keys(obj)[0]] = 1 
-	// // 	}, this)
-
-	// }, this)
+	}, this)
 
 	return features;
 	// callback()
@@ -567,9 +563,19 @@ function featureword2vec(sentence, features) {
 }
 
 
+var SvmPerfKernelBinaryClassifier = classifiers.SvmPerf.bind(0, {
+        learn_args: "-c 100 -t 2",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html
+        model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf",
+});
+
 var SvmPerfBinaryClassifier = classifiers.SvmPerf.bind(0, {
         learn_args: "-c 100 ",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html
         model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf",
+});
+
+var SvmPerfKernelBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
+        binaryClassifierType: SvmPerfKernelBinaryClassifier
+        // debug: true
 });
 
 var SvmPerfBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
@@ -782,7 +788,8 @@ module.exports = {
 		// TCBOCPPDBM: enhance(SvmLinearMulticlassifier, [featureExtractorUCoreNLPConceptPPDBM, featureExtractorUCoreNLP], undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 		// IntentClass: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
 		// IntentClass: enhance(SvmLinearMulticlassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
-		DS_bigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
+		DS_bigram: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUBContext, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
+		DS_bigram_kernel: enhance(SvmPerfKernelBinaryRelevanceClassifier, featureExtractorUBContext, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		// DS_unigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		DS_bigram_con: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBContext, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true)
 };
