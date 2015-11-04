@@ -352,13 +352,10 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	// for simulated
 
 				console.log("fold"+fold)
-				console.log("train"+mytrainset.length)
 
 				var classifier	= _.values(classifiers)[0]	
 
-		  		// console.log("start trainandTest")
     			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
-	    		console.log(mytrainset.length)
 	    		
 	    		report.push(_.pick(stats['stats'], parameters))		    		
 
@@ -367,6 +364,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    	var sim_dataset = bars.simulateds(_.flatten(train.slice(index)), size, stats['stats']['labels'])
 		    	var sim_train = _.flatten(mytrain.slice(0,mytrain.length-dial)).concat(sim_dataset)
 
+				console.log(mytrain.length+" dialogues in train with "+ mytrainset.length + " utterances")
 				console.log(dial+" dialogues should be simulated")
 				console.log(size+" in total utterances are simulated")
 	    		console.log(mytrainset.length+" and "+sim_train.length)
