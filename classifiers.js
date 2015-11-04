@@ -469,17 +469,17 @@ function featureExtractorUBContext(sentence, features) {
 	if (values.length > 0)
 		_.each(values, function(value, key, list){ features[value[0]] = 1 }, this)
 
-	_.each(context, function(feat, key, list){ 
+	// _.each(context, function(feat, key, list){ 
 
-		var obj = JSON.parse(feat)
-		features["CON_"+_.keys(obj)[0]] = 1 
-		features["CON_"+_.keys(obj)[0]+"_"+_.keys(_.values(obj)[0])[0]] = 1 
+	// 	var obj = JSON.parse(feat)
+	// 	features["CON_"+_.keys(obj)[0]] = 1 
+	// 	features["CON_"+_.keys(obj)[0]+"_"+_.keys(_.values(obj)[0])[0]] = 1 
 
-	// 	_.each(feature_clean, function(fcl, key, list){
-	// 		features[fcl+"_"+"CON_"+_.keys(obj)[0]] = 1 
-	// 	}, this)
+	// // 	_.each(feature_clean, function(fcl, key, list){
+	// // 		features[fcl+"_"+"CON_"+_.keys(obj)[0]] = 1 
+	// // 	}, this)
 
-	}, this)
+	// }, this)
 
 	return features;
 	// callback()
