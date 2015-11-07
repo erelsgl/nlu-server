@@ -693,17 +693,19 @@ describe('Bars utilities', function() {
 	_.isEqual(bars.join_labels([['1'],['3'],['5']],[['2'],['4'],['6']]), [ [ '1', '2' ], [ '3', '4' ], [ '5', '6' ] ]).should.equal(true)
 	})
 
-	it('correctly resolve emptiness', function() {
+	it('resolve emptiness', function() {
 
-		_.isEqual(bars.resolve_emptiness([['Reject'],[],[]]),[['Reject'],[],['previous']]).should.equal(true)
-		_.isEqual(bars.resolve_emptiness([['Accept'],[],[]]),[['Accept'],[],['previous']]).should.equal(true)
+		_.isEqual(bars.resolve_emptiness([['Reject'],[],[]]),[['Reject'],[],['true']]).should.equal(true)
+		_.isEqual(bars.resolve_emptiness([['Accept'],[],[]]),[['Accept'],[],['true']]).should.equal(true)
 		_.isEqual(bars.resolve_emptiness([[],[],['Without leased car']]),[['Offer'],['Leased Car'],['Without leased car']])
 		_.isEqual(bars.resolve_emptiness([['Greet'],[],[]]), [ ['Greet' ],[  ],[ true ] ]).should.equal(true)
 		// _.isEqual(bars.resolve_emptiness([['Accept'],[],['20,000 NIS', 'QA']]), [ [ 'Accept', 'Offer' ],[ 'Salary', 'Job Description' ],[ '20,000 NIS', 'QA' ] ]).should.equal(true)
 		// _.isEqual(bars.resolve_emptiness([[],[],['20,000 NIS']]), [['Offer'],['Salary'],['20,000 NIS']]).should.equal(true)
 		// _.isEqual(bars.resolve_emptiness([['Accept'],[],[]]), [['Accept'],[],['previous']]).should.equal(false)
-		_.isEqual(bars.resolve_emptiness([['Insist'],[],[]]), [['Insist'],[],['previous']]).should.equal(false)
-		_.isEqual(bars.resolve_emptiness([['Offer'],[],[]]), [['Offer'],[],['previous']]).should.equal(false)
+		// _.isEqual(bars.resolve_emptiness([['Insist'],[],[]]), [['Insist'],[],['previous']]).should.equal(false)
+		// _.isEqual(bars.resolve_emptiness([['Offer'],[],[]]), [['Offer'],[],['previous']]).should.equal(false)
+		console.log(bars.resolve_emptiness([['Offer'],[],["10%"]]))
+		console.log(bars.semlang_ambiguity(['Offer','10%']))
 
 	})
 	
@@ -716,6 +718,21 @@ describe('Bars utilities', function() {
 		_.isEqual(bars.resolve_emptiness_rule([['Accept'],[],[]]), [ [ 'Accept' ], [], [ 'previous' ] ]).should.equal(true)
 		_.isEqual(bars.resolve_emptiness_rule([['Accept'],[],['20,000 NIS']]), [ [ 'Accept' ], [ 'Salary' ], [ '20,000 NIS' ] ]).should.equal(true)
 		})
+
+
+	it('genlab', function() {
+		_.isEqual(bars.generate_labels([['Query','Offer'],[],[]]),  [ '{"Query":"Offer"}' ]).should.be.true
+		_.isEqual(bars.generate_labels([['Reject'],[],[]]),  [ '{"Reject":"true"}' ]).should.be.true
+		_.isEqual(bars.generate_labels([['Accept'],[],[]]),  [ '{"Accept":"true"}' ]).should.be.true
+		_.isEqual(bars.generate_labels([['Greet'],[],[]]),  [ '{"Greet":"true"}' ]).should.be.true
+		// _.isEqual(bars.generate_labels([['Greet'],[],[]]),  [ '{"Greet":"true"}' ]).should.be.true
+		_.isEqual(bars.generate_labels([['Offer'],['Pension Fund'],['10%']]),  [ '{"Offer":{"Pension Fund":"10%"}}' ]).should.be.true
+		_.isEqual(bars.generate_labels([['Offer'],[],['10%']]),  [ '{"Offer":{"Pension Fund":"10%"}}' ]).should.be.true
+		_.isEqual(bars.generate_labels([['Offer','Reject'],[],['10%']]), [ '{"Offer":{"Pension Fund":"10%"}}',
+  '{"Reject":{"Pension Fund":"10%"}}' ]).should.be.true
+		_.isEqual(bars.generate_labels([['Accept'],[],[]]), [ '{"Accept":"true"}' ]).should.be.true
+	})
+
 
 	it('correctly resolve emptiness', function() {
 		var res = bars.filterreject([[ 'Reject', 'no..you', [0,1], {Reject:[Object]}], ['Accept','be programmer',[1,3], {Offer:[Object]}]])
