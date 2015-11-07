@@ -168,12 +168,10 @@ Placement:
 var _ = require('underscore')._;
 var truth_utils = require(__dirname+'/truth_utils')
 var fs = require('fs');
-var trainAndTest= require('../../utils/trainAndTest').trainAndTest_hash;
 var Hierarchy = require('../../Hierarchy');
 var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
-var trainutils = require('../../utils/bars')
 var natural = require('natural');
-var bars = require('../../utils/bars')
+// var bars = require(__dirname+'/../../utils/bars')
 var splitJson = Hierarchy.splitJson
 var PrecisionRecall = require("limdu/utils/PrecisionRecall");
 var cp = require("child_process");
@@ -310,8 +308,8 @@ function compeletePhrase(sentence, phrase)
 
 	if (_.isArray(phrase)) phrase = phrase.join(" ")
 
-	sentence = bars.biunormalizer(sentence)
-	phrase = bars.biunormalizer(phrase)
+	// sentence = bars.biunormalizer(sentence)
+	// phrase = bars.biunormalizer(phrase)
 
 	var separator = [' ', ',', '?', '.']
 	var output = -1
@@ -501,7 +499,7 @@ var RuleItents = ['Offer', 'Accept', 'Reject', 'Insist', 'QueryYN', 'QueryWH']
 var RuleIntentsSingle = ['Greet', 'Quit']
 var RuleAttributes = ['Salary', 'Pension Fund', 'Working Hours', 'Promotion Possibilities', 'Job Description', 'Leased Car']
 var RuleValues = {
-//		  'Salary': [['7000','7,000 NIS'],['10000','10,000 NIS'],['12000','12,000 NIS'], ['20000','20,000 NIS']],
+// //		  'Salary': [['7000','7,000 NIS'],['10000','10,000 NIS'],['12000','12,000 NIS'], ['20000','20,000 NIS']],
 		  'Salary': [['60000','60,000 USD'],['90000','90,000 USD'],['120000','120,000 USD']],
 		  'Pension Fund': ['0%','10%','15%','20%'],
 		  'Promotion Possibilities': [['fast','Fast promotion track'],['slow','Slow promotion track']],
@@ -511,105 +509,105 @@ var RuleValues = {
 		  'Leased Car': ['Ferrari']
 		}
 
-var stats = new PrecisionRecall();
-var stats_value = new PrecisionRecall();
-var stats_attribute = new PrecisionRecall();
+// var stats = new PrecisionRecall();
+// var stats_value = new PrecisionRecall();
+// var stats_attribute = new PrecisionRecall();
 
-if (process.argv[1] === __filename)
-{
+// if (process.argv[1] === __filename)
+// {
 
-// dataset = [
-// 			// "turkers_keyphrases_only_rule.json",
-// 			// "students_keyphrases_only_rule.json"
-// 			]
+// // dataset = [
+// // 			// "turkers_keyphrases_only_rule.json",
+// // 			// "students_keyphrases_only_rule.json"
+// // 			]
 
-// var data = []
-// _.each(dataset, function(value, key, list){ 
-// 	data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/"+value)))
-// })
+// // var data = []
+// // _.each(dataset, function(value, key, list){ 
+// // 	data = data.concat(JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/"+value)))
+// // })
 
-// data = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json"))
-//data = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
-data = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule_core.json"))
+// // data = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule.json"))
+// //data = JSON.parse(fs.readFileSync("../../../datasets/Employer/Dialogue/turkers_keyphrases_only_rule.json"))
+// data = JSON.parse(fs.readFileSync("../../../datasets/DatasetDraft/dial_usa_rule_core.json"))
 
-data = bars.extractturns(data)
-data = _.shuffle(data)
+// data = bars.extractturns(data)
+// data = _.shuffle(data)
 
-var datanew = []
-_.each(data, function(record, key, list){ 
-	data[key]['input'] = bars.biunormalizer(record['input'])
-	if (data[key]['input'] != "")
-		datanew.push(data[key])
-}, this)
+// var datanew = []
+// _.each(data, function(record, key, list){ 
+// 	data[key]['input'] = bars.biunormalizer(record['input'])
+// 	if (data[key]['input'] != "")
+// 		datanew.push(data[key])
+// }, this)
 
-data = datanew
+// data = datanew
 
-var file_content = _.reduce(data, function(memo, num){ 
-	if (memo == 0) memo = ""
-	return memo+num['input'].replace('without','no')+"\n"; }, 0);
-fs.writeFileSync(truth_filename, file_content, 'utf-8', function(err) {})
+// var file_content = _.reduce(data, function(memo, num){ 
+// 	if (memo == 0) memo = ""
+// 	return memo+num['input'].replace('without','no')+"\n"; }, 0);
+// fs.writeFileSync(truth_filename, file_content, 'utf-8', function(err) {})
 
-// cp.exec(easyfirst_path, {cwd: path}, function(error,stdout,stderr){
-// })
+// // cp.exec(easyfirst_path, {cwd: path}, function(error,stdout,stderr){
+// // })
 
-	console.log("Wait 10 sec default timeout")
+// 	console.log("Wait 10 sec default timeout")
 
-	setTimeout(function() {
+// 	setTimeout(function() {
 
-		cp.exec(truth_path, {cwd: path}, function(error,stdout,stderr){
-			console.log(error + stdout + stderr)
+// 		cp.exec(truth_path, {cwd: path}, function(error,stdout,stderr){
+// 			console.log(error + stdout + stderr)
 
-			_.each(data, function(record, key, list){
+// 			_.each(data, function(record, key, list){
 
-				data[key]['found'] = findData(record['input'])
+// 				data[key]['found'] = findData(record['input'])
 
-				data[key]['got'] = _.map(data[key]['found'][0], function(num){ return num[0]; });
+// 				data[key]['got'] = _.map(data[key]['found'][0], function(num){ return num[0]; });
 			
-				data[key]['got'] = data[key]['got'].concat(_.map(data[key]['found'][1], function(num){ return num[0]; }))
+// 				data[key]['got'] = data[key]['got'].concat(_.map(data[key]['found'][1], function(num){ return num[0]; }))
 
-				data[key]['got'] = uniqueValues(data[key]['got'])	
+// 				data[key]['got'] = uniqueValues(data[key]['got'])	
 				
-				/* 
-				is there is 20,000 NIS in the sentence then add Salary too
-				*/
+// 				/* 
+// 				is there is 20,000 NIS in the sentence then add Salary too
+// 				*/
 
-				data[key]['got'] = addcomplement(data[key]['got'])	
+// 				data[key]['got'] = addcomplement(data[key]['got'])	
 		
-			}, this)
+// 			}, this)
 
-			console.log("evaluation")
+// 			console.log("evaluation")
 
-		// evaluation
-			_.each(data, function(record, key, list){
+// 		// evaluation
+// 			_.each(data, function(record, key, list){
 				
-				stats_value.addCasesHash(filterValues(onlyValue(record['output'])), filterValues(record['got']))
-				stats_attribute.addCasesHash(filterAttributes(onlyValue(record['output'])), filterAttributes(record['got']))
+// 				stats_value.addCasesHash(filterValues(onlyValue(record['output'])), filterValues(record['got']))
+// 				stats_attribute.addCasesHash(filterAttributes(onlyValue(record['output'])), filterAttributes(record['got']))
 				
-				var expl = stats.addCasesHash(onlyValue(record['output']), record['got'], true);
-				if ((expl['FP'].length!=0) || (expl['FN'].length!=0))
-				{
-					// console.log(record)
-					// process.exit(0)
-					console.log(record['input'])
-					console.log("Gold: "+record['output'])
-					console.log("Found: "+record['got'])
-					console.log("Placement: ")
-					console.log(record['found'])
-					console.log(expl)
-					console.log("---------------------------") 
-				}
-			}, this)
+// 				var expl = stats.addCasesHash(onlyValue(record['output']), record['got'], true);
+// 				if ((expl['FP'].length!=0) || (expl['FN'].length!=0))
+// 				{
+// 					// console.log(record)
+// 					// process.exit(0)
+// 					console.log(record['input'])
+// 					console.log("Gold: "+record['output'])
+// 					console.log("Found: "+record['got'])
+// 					console.log("Placement: ")
+// 					console.log(record['found'])
+// 					console.log(expl)
+// 					console.log("---------------------------") 
+// 				}
+// 			}, this)
 
-			console.log(stats.retrieveStats())
-			console.log("value stats")
-			console.log(stats_value.retrieveStats())
-			console.log("attribute stats")
-			console.log(stats_attribute.retrieveStats())
+// 			console.log(stats.retrieveStats())
+// 			console.log("value stats")
+// 			console.log(stats_value.retrieveStats())
+// 			console.log("attribute stats")
+// 			console.log(stats_attribute.retrieveStats())
 			
 
-		})
-	}, 10000);
-}
+// 		})
+// 	}, 10000);
+// }
 module.exports = {
         generatesentence:generatesentence,
         findData:findData,
