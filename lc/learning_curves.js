@@ -405,7 +405,9 @@ if (process.argv[1] === __filename)
 					  // 'Reject_F1','Reject_Precision','Reject_Recall', 'Reject_FN', 'Reject_TP', 'Reject_Accuracy', 
 					  // 'Accept_F1','Accept_Precision','Accept_Recall', 'Accept_FN', 'Accept_TP', 'Accept_Accuracy', 
 					  // 'Greet_F1','Greet_Precision','Greet_Recall', 'Greet_FN', 'Greet_Accuracy'
-						'macroF1', 'microF1'
+						// 'macroF1', 'microF1'
+						'macroF1', 'macroPrecision', 'macroRecall',
+						'microF1', 'microPrecision', 'microRecall',
 					]
 	
 	
