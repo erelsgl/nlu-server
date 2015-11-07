@@ -328,18 +328,21 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			throw new Error("Dataset is empty");
 		
 		stat = {}
+		stat1 = {}
 		labels = {}
 		
 		var mytrain = []
 
 		partitions.partitions_consistent(dataset, numOfFolds, function(train, test, fold) {
-			var index = step0
-			// var oldstats = []
-			// var stats
+			
+			var index = 4
+			var testset = (bars.isDialogue(test) ? _.flatten(test) : test)
+			var sim_train = _.flatten(train.slice(0, index-1))
+			var buffer_train = _.flatten(train.slice(index+1))
 
 			// fs.writeFileSync(__dirname + dirr + "fold" + fold, "TEST \n"+JSON.stringify(test, null, 4)+"\n TRAIN \n"+JSON.stringify(train, null, 4), 'utf-8')
 
-			while (index <= train.length-10)
+			while ((index <= train.length) && buffer_train.length > 100)
 	  		{
 			  	var report = []
 
@@ -347,7 +350,6 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	
 			  	index += (index < limit ? step0 : step)
 			  	var mytrainset = (bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)
-			  	var testset = (bars.isDialogue(test) ? _.flatten(test) : test)
 
 			  	// for simulated
 
@@ -355,26 +357,35 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 				var classifier	= _.values(classifiers)[0]	
 
+				console.log("size of strandard " + mytrain.length + " in utterances "+ mytrainset.length)
     			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
 	    		
+	    		console.log(JSON.stringify(stats['stats']['confusion'], null, 4))
 	    		report.push(_.pick(stats['stats'], parameters))		    		
 
-	    		var dial = Math.floor(index/10)+1;
-	    	 	var size = _.flatten(mytrain.slice(mytrain.length - dial)).length
-		    	
-	    	 	console.log(mytrain.length+" dialogues in train with "+ mytrainset.length + " utterances")
-				console.log(dial+" dialogues should be simulated")
-				console.log(size+" in total utterances are simulated")
-	    		
-	    	 	var sim_dataset = bars.simulateds(_.flatten(train.slice(index)), size, stats['stats']['labels'])
-		    	var sim_train = _.flatten(mytrain.slice(0,mytrain.length-dial)).concat(sim_dataset)
+	    	 	var size_last_dial = _.flatten(mytrain[mytrain.length-1]).length
 
-		    	console.log(sim_dataset.length + " utterances were simulated")
-				console.log(mytrainset.length+" and "+sim_train.length)
-	    	
-				var stats = trainAndTest_hash(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
+	    	 	console.log(size_last_dial+" size of the last dialogue")
+	    	 	console.log(buffer_train.length+" size of the buffer train")
+
+	    	 	var results = bars.simulateds(buffer_train, size_last_dial, _.keys(stats1).length > 0 ? stats1['stats']['labels']: stats['stats']['labels'])
+
+	    	 	console.log(results["simulated"].length+" size of the simulated train")
+	    	 	console.log(results["dataset"].length+" size of the buffer train after simulation")
+
+	    	 	console.log("size of sim "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
+
+				buffer_train = results["dataset"]
+
+				console.log(JSON.stringify(results["simulated"], null, 4))
+
+		    	sim_train = sim_train.concat(results["simulated"])
+
+		    	console.log(sim_train.length+" "+mytrainset.length)
+
+		    	var stats1 = trainAndTest_hash(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
 	    			    		
-	    		report.push(_.pick(stats['stats'], parameters))		    		
+	    		report.push(_.pick(stats1['stats'], parameters))		    		
 	    		
 	    		extractGlobal(parameters, classifiers, mytrain, report, stat)
                            
@@ -427,7 +438,7 @@ if (process.argv[1] === __filename)
 
 	// dataset = dataset.slice(0,10)
 
-	learning_curves(classifiers, dataset, parameters, 10/*step*/, 2/*step0*/, 30/*limit*/,  3/*numOfFolds*/, function(){
+	learning_curves(classifiers, dataset, parameters, 1/*step*/, 1/*step0*/, 30/*limit*/,  3/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
