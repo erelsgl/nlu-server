@@ -363,22 +363,12 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    		
 		    		report.push(_.pick(stats['stats'], parameters))		    		
 
-		    		extractLabels(stats['stats']['labels'], mytrain, labels)
-
-					// function simulateds(dataset, size, params)
-		    		// var sim_dataset = bars.simulateds(_.flatten(train.slice(index)), 20, stats['stats']['labels'])
-		    		// console.log(JSON.stringify(sim_dataset, null, 4))
-		    		// process.exit(0)
+		    		// extractLabels(stats['stats']['labels'], mytrain, labels)
 
 			  	}, this)
 			  	
                 extractGlobal(parameters, classifiers, mytrain, report, stat)
                            
-                // size in dialogues
-                // stat['_sized'] = test.length
-                // size in utterances
-                // stat['_sizec'] = _.flatten(test).length
-
                 _.each(parameters, function(parameter, key, list){
 					plot(fold, parameter, stat, classifiers)
 					plot('average', parameter, stat, classifiers)
@@ -386,9 +376,9 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 			} //while (index < train.length)
 
-				_.each(labels, function(value, label, list){
-		    		plot('average', label, labels, {"Precision":true, "Recall":true, "F1":true})
-				})
+				// _.each(labels, function(value, label, list){
+		    		// plot('average', label, labels, {"Precision":true, "Recall":true, "F1":true})
+				// })
 
 			}); //fold
 
@@ -405,8 +395,8 @@ if (process.argv[1] === __filename)
 	}, this)
 
 	var classifiers  = {
-			SVM_unigram : classifier.DS_bigram
-			// SVM_bigram : classifier.DS_bigram_con
+			SVM_unigram : classifier.DS_bigram,
+			SVM_rule : classifier.DS_rule
 		}
 	
 	var parameters = [
