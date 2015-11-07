@@ -11,36 +11,34 @@
 
 	@author Vasily Konovalov
  */
-var s = require('net').Socket();
+// var s = require('net').Socket();
 // var Fiber = require('fibers');
 var natural = require('natural');
 var _ = require('underscore')._;
 var fs = require('fs');
 var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
-var Hierarchy = require('../Hierarchy');
+var Hierarchy = require(__dirname+'/../Hierarchy');
 
-var limdu = require("limdu");
-var ftrs = limdu.features
+// var limdu = require("limdu");
+// var ftrs = limdu.features
 
 var splitJson = Hierarchy.splitJson
 var joinJson = Hierarchy.joinJson
-
 var splitJsonRecursive = Hierarchy.splitJsonRecursive
 var splitPartEqually = Hierarchy.splitPartEqually
 var splitPartEqually1 = Hierarchy.splitPartEqually1
-
 var joinJsonRecursive = Hierarchy.joinJsonRecursive
 
-var regexpNormalizer = ftrs.RegexpNormalizer(
-    JSON.parse(fs.readFileSync(__dirname+'/../knowledgeresources/BiuNormalizations.json')));
+// var regexpNormalizer = ftrs.RegexpNormalizer(
+    // JSON.parse(fs.readFileSync(__dirname+'/../knowledgeresources/BiuNormalizations.json')));
 
-Tokenizer = require('natural').WordTokenizer,
-  tokenizer = new Tokenizer();
+// Tokenizer = require('natural').WordTokenizer,
+  // tokenizer = new Tokenizer();
 
-var indexWN = JSON.parse(fs.readFileSync(__dirname + "/../wordnet_index.json", 'UTF-8'))
+// var indexWN = JSON.parse(fs.readFileSync(__dirname + "/../wordnet_index.json", 'UTF-8'))
 
-var stopwords = loadstopwords(__dirname+"/../stopwords")
-var intent_field = 'intent_core'
+// var stopwords = loadstopwords(__dirname+"/../stopwords")
+// var intent_field = 'intent_core'
 var ValueTransition =
 {
 	"8 hours": "8",
@@ -49,7 +47,10 @@ var ValueTransition =
 	"7,000 NIS": "7000",
 	"12,000 NIS": "12000",
 	"20,000 NIS": "20000",
-	"0%": "0%",
+	"60,000 USD": "60000",
+  "90,000 USD": "90000",
+  "120,000 USD": "120000",
+  "0%": "0%",
 	"10%": "10%",
 	"20%": "20%",
 	"Fast promotion track": "fast",
@@ -69,10 +70,10 @@ semlang = [
   '{"Offer":{"Job Description":"Programmer"}}',
   '{"Offer":{"Job Description":"QA"}}',  
   '{"Offer":{"Job Description":"Team Manager"}}',
-  '{"Offer":{"Salary":"7,000 NIS"}}',
-  '{"Offer":{"Salary":"10,000 NIS"}}',
-  '{"Offer":{"Salary":"12,000 NIS"}}',
-  '{"Offer":{"Salary":"20,000 NIS"}}',
+  // '{"Offer":{"Salary":"7,000 NIS"}}',
+  '{"Offer":{"Salary":"60,000 USD"}}',
+  '{"Offer":{"Salary":"90,000 USD"}}',
+  '{"Offer":{"Salary":"120,000 USD"}}',
   '{"Offer":{"Pension Fund":"0%"}}',
   '{"Offer":{"Pension Fund":"10%"}}',
   '{"Offer":{"Pension Fund":"20%"}}',
@@ -90,16 +91,18 @@ semlang = [
   '{"Accept":{"Job Description":"Programmer"}}',
   '{"Accept":{"Job Description":"QA"}}',  
   '{"Accept":{"Job Description":"Team Manager"}}',
-  '{"Accept":{"Salary":"7,000 NIS"}}',
-  '{"Accept":{"Salary":"10,000 NIS"}}',
-  '{"Accept":{"Salary":"12,000 NIS"}}',
-  '{"Accept":{"Salary":"20,000 NIS"}}',
+  // '{"Accept":{"Salary":"7,000 NIS"}}',
+  '{"Accept":{"Salary":"60,000 USD"}}',
+  '{"Accept":{"Salary":"90,000 USD"}}',
+  '{"Accept":{"Salary":"120,000 USD"}}',
   '{"Accept":{"Pension Fund":"0%"}}',
   '{"Accept":{"Pension Fund":"10%"}}',
   '{"Accept":{"Pension Fund":"20%"}}',
   '{"Accept":{"Pension Fund":"No agreement"}}',
   '{"Accept":{"Promotion Possibilities":"Fast promotion track"}}',
   '{"Accept":{"Promotion Possibilities":"Slow promotion track"}}',
+
+  '{"Accept":"true"}',
 
   '{"Accept":"Salary"}',
   '{"Accept":"previous"}',
@@ -119,10 +122,10 @@ semlang = [
   '{"Reject":{"Job Description":"Programmer"}}',
   '{"Reject":{"Job Description":"QA"}}',  
   '{"Reject":{"Job Description":"Team Manager"}}',
-  '{"Reject":{"Salary":"7,000 NIS"}}',
-  '{"Reject":{"Salary":"10,000 NIS"}}',
-  '{"Reject":{"Salary":"12,000 NIS"}}',
-  '{"Reject":{"Salary":"20,000 NIS"}}',
+  // '{"Reject":{"Salary":"7,000 NIS"}}',
+  '{"Reject":{"Salary":"60,000 USD"}}',
+  '{"Reject":{"Salary":"90,000 USD"}}',
+  '{"Reject":{"Salary":"120,000 USD"}}',
   '{"Reject":{"Pension Fund":"0%"}}',
   '{"Reject":{"Pension Fund":"10%"}}',
   '{"Reject":{"Pension Fund":"20%"}}',
@@ -130,7 +133,8 @@ semlang = [
   '{"Reject":{"Promotion Possibilities":"Fast promotion track"}}',
   '{"Reject":{"Promotion Possibilities":"Slow promotion track"}}',
 
-  '{"Reject":"previous"}',
+  '{"Reject":"true"}',
+  // '{"Reject":"previous"}',
   '{"Reject":"Salary"}',
   '{"Reject":"Leased Car"}',
   '{"Reject":"Working Hours"}',
@@ -138,29 +142,39 @@ semlang = [
   '{"Reject":"Job Description"}',
   '{"Reject":"Promotion Possibilities"}',
 
-  '{"Append":"previous"}',
-  '{"Insist":"Working Hours"}',
-  '{"Insist":"Job Description"}',
+  // '{"Append":"previous"}',
+  // '{"Insist":"Working Hours"}',
+  // '{"Insist":"Job Description"}',
   
 
-  '{"Query":"accept"}',
-  '{"Greet":true}',
-  '{"Quit":true}',
-  '{"Query":"issues"}',
-  '{"Query":"Salary"}',
-  '{"Query":"compromise"}',
-  '{"Query":"Job Description"}',
-  '{"Insist":"previous"}',
-  '{"Insist":"Salary"}',
-  '{"Query":"Leased Car"}',
-  '{"Insist":"Promotion Possibilities"}',
-  '{"Query":"Promotion Possibilities"}',
-  // '{"Offer":{"Salary":"10,000 NIS"}}',
-  '{"Query":"Working Hours"}',
-  '{"Insist":"Pension Fund"}',
-  '{"Query":"bid"}',
-  '{"Query":"Pension Fund"}',
-  '{"Insist":"Leased Car"}' ]
+  '{"Query":"Offer"}',
+  '{"Query":{"Offer":"Salary"}}',
+  '{"Query":{"Offer":"Job Description"}}',
+  '{"Query":{"Offer":"Leased Car"}}',
+  '{"Query":{"Offer":"Promotion Possibilities"}}',
+  '{"Query":{"Offer":"Working Hours"}}',
+  '{"Query":{"Offer":"Pension Fund"}}',
+  
+
+  // '{"Query":"accept"}',
+  '{"Greet":"true"}',
+  '{"Quit":"true"}'
+  // '{"Query":"issues"}',
+  // '{"Query":"Salary"}',
+  // '{"Query":"compromise"}',
+  // '{"Query":"Job Description"}',
+  // '{"Insist":"previous"}',
+  // '{"Insist":"Salary"}',
+  // '{"Query":"Leased Car"}',
+  // '{"Insist":"Promotion Possibilities"}',
+  // '{"Query":"Promotion Possibilities"}',
+  // // '{"Offer":{"Salary":"10,000 NIS"}}',
+  // '{"Query":"Working Hours"}',
+  // '{"Insist":"Pension Fund"}',
+  // '{"Query":"bid"}',
+  // '{"Query":"Pension Fund"}',
+  // '{"Insist":"Leased Car"}' 
+  ]
 
 
 // semlang = [ '{"Reject":"previous"}',
@@ -255,62 +269,62 @@ semlang = [
 //   '{"Offer":{"Pension Fund":"No agreement"}}',
 //   '{"Insist":"Leased Car"}' ]
 
-newsemlang = [ '{"Reject":null}',
-  '{"Append":null}',
-  '{"Offer":{"Leased Car":"With leased car"}}',
-  '{"Reject":"Salary"}',
-  '{"Reject":"Leased Car"}',
-  '{"Offer":{"Leased Car":"With leased car"}}',
-  '{"Offer":{"Working Hours":"9 hours"}}',
-  '{"Insist":"Job Description"}',
-  '{"Offer":{"Job Description":"Programmer"}}',
-  '{"Offer":{"Working Hours":"10 hours"}}',
-  '{"Offer":{"Leased Car":"No agreement"}}',
-  '{"Offer":{"Leased Car":"Without leased car"}}',
-  '{"Accept":null}',
-  '{"Accept":"Salary"}',
-  '{"Insist":"Working Hours"}',
-  '{"Offer":{"Promotion Possibilities":"Slow promotion track"}}',
-  '{"Offer":{"Working Hours":"8 hours"}}',
-  '{"Offer":{"Job Description":"Project Manager"}}',
-  '{"Offer":{"Salary":"7,000 NIS"}}',
-  '{"Offer":{"Salary":"10,000 NIS"}}',
-  '{"Offer":{"Pension Fund":"10%"}}',
-  '{"Offer":{"Promotion Possibilities":"Fast promotion track"}}',
-  '{"Offer":{"Salary":"12,000 NIS"}}',
-  '{"Offer":{"Pension Fund":"0%"}}',
-  '{"Offer":{"Job Description":"QA"}}',
-  '{"Query":"accept"}',
-  '{"Greet":null}',
-  '{"Offer":{"Pension Fund":"20%"}}',
-  '{"Offer":{"Job Description":"Team Manager"}}',
-  '{"Quit":null}',
-  '{"Query":"issues"}',
-  '{"Query":"Salary"}',
-  '{"Query":"compromise"}',
-  '{"Query":"Job Description"}',
-  '{"Reject":"Working Hours"}',
-  '{"Accept":"Leased Car"}',
-  '{"Accept":"Pension Fund"}',
-  '{"Reject":"Pension Fund"}',
-  '{"Insist":"previous"}',
-  '{"Insist":"Salary"}',
-  '{"Query":"Leased Car"}',
-  '{"Reject":"Job Description"}',
-  '{"Reject":"Promotion Possibilities"}',
-  '{"Offer":{"Salary":"20,000 NIS"}}',
-  '{"Accept":"Working Hours"}',
-  '{"Accept":"Job Description"}',
-  '{"Insist":"Promotion Possibilities"}',
-  '{"Query":"Promotion Possibilities"}',
-  // '{"Offer":{"Salary":"10,000 NIS"}}',
-  '{"Query":"Working Hours"}',
-  '{"Insist":"Pension Fund"}',
-  '{"Query":"bid"}',
-  '{"Accept":"Promotion Possibilities"}',
-  '{"Query":"Pension Fund"}',
-  '{"Offer":{"Pension Fund":"No agreement"}}',
-  '{"Insist":"Leased Car"}' ]
+// newsemlang = [ '{"Reject":null}',
+//   '{"Append":null}',
+//   '{"Offer":{"Leased Car":"With leased car"}}',
+//   '{"Reject":"Salary"}',
+//   '{"Reject":"Leased Car"}',
+//   '{"Offer":{"Leased Car":"With leased car"}}',
+//   '{"Offer":{"Working Hours":"9 hours"}}',
+//   '{"Insist":"Job Description"}',
+//   '{"Offer":{"Job Description":"Programmer"}}',
+//   '{"Offer":{"Working Hours":"10 hours"}}',
+//   '{"Offer":{"Leased Car":"No agreement"}}',
+//   '{"Offer":{"Leased Car":"Without leased car"}}',
+//   '{"Accept":null}',
+//   '{"Accept":"Salary"}',
+//   '{"Insist":"Working Hours"}',
+//   '{"Offer":{"Promotion Possibilities":"Slow promotion track"}}',
+//   '{"Offer":{"Working Hours":"8 hours"}}',
+//   '{"Offer":{"Job Description":"Project Manager"}}',
+//   '{"Offer":{"Salary":"7,000 NIS"}}',
+//   '{"Offer":{"Salary":"10,000 NIS"}}',
+//   '{"Offer":{"Pension Fund":"10%"}}',
+//   '{"Offer":{"Promotion Possibilities":"Fast promotion track"}}',
+//   '{"Offer":{"Salary":"12,000 NIS"}}',
+//   '{"Offer":{"Pension Fund":"0%"}}',
+//   '{"Offer":{"Job Description":"QA"}}',
+//   '{"Query":"accept"}',
+//   '{"Greet":null}',
+//   '{"Offer":{"Pension Fund":"20%"}}',
+//   '{"Offer":{"Job Description":"Team Manager"}}',
+//   '{"Quit":null}',
+//   '{"Query":"issues"}',
+//   '{"Query":"Salary"}',
+//   '{"Query":"compromise"}',
+//   '{"Query":"Job Description"}',
+//   '{"Reject":"Working Hours"}',
+//   '{"Accept":"Leased Car"}',
+//   '{"Accept":"Pension Fund"}',
+//   '{"Reject":"Pension Fund"}',
+//   '{"Insist":"previous"}',
+//   '{"Insist":"Salary"}',
+//   '{"Query":"Leased Car"}',
+//   '{"Reject":"Job Description"}',
+//   '{"Reject":"Promotion Possibilities"}',
+//   '{"Offer":{"Salary":"20,000 NIS"}}',
+//   '{"Accept":"Working Hours"}',
+//   '{"Accept":"Job Description"}',
+//   '{"Insist":"Promotion Possibilities"}',
+//   '{"Query":"Promotion Possibilities"}',
+//   // '{"Offer":{"Salary":"10,000 NIS"}}',
+//   '{"Query":"Working Hours"}',
+//   '{"Insist":"Pension Fund"}',
+//   '{"Query":"bid"}',
+//   '{"Accept":"Promotion Possibilities"}',
+//   '{"Query":"Pension Fund"}',
+//   '{"Offer":{"Pension Fund":"No agreement"}}',
+//   '{"Insist":"Leased Car"}' ]
 
 
 Itents = ['Offer', 'Accept', 'Reject', 'Insist', 'QueryYN', 'QueryWH']
@@ -324,7 +338,7 @@ Values = {'Salary': ['7000','10000','12000'],
 		}
 
 labeltree = { Offer: 
-   { Salary: { '12,000 NIS': {}, '7,000 NIS': {}, '20,000 NIS': {} },
+   { Salary: { '60,000 USD': {}, '90,000 USD': {}, '120,000 USD': {} },
      'Job Description': 
       { QA: {},
         'Team Manager': {},
@@ -2370,7 +2384,8 @@ function aggregate_label(classifier, sample, explanations, trick, draw, original
 function isValuesofAttribute(val)
 {
 Values = {
-            'Salary': [,'7,000 NIS','10,000 NIS','12,000 NIS','20,000 NIS'],
+            // 'Salary': [,'7,000 NIS','10,000 NIS','12,000 NIS','20,000 NIS'],
+            'Salary': [,'60,000 USD','90,000 USD','120,000 USD'],
             'Pension Fund': ['0%','10%','15%','20%'],
             'Promotion Possibilities': ['Fast promotion track','Slow promotion track'],
             'Working Hours': ['8 hours','9 hours','10 hours'],
@@ -2411,9 +2426,109 @@ function resolve_emptiness_rule(label)
   return label
 }
 
+function generate_labels(labels)
+{
+
+  // treat empty Query
+  if ((labels[0].indexOf("Query")!=-1)&&(labels[0].indexOf("Offer")!=-1))
+    labels[1].push("Offer")
+
+// treat Query with attribute
+  if ((labels[0].indexOf("Query")!=-1)&&(labels[2].length>0)&&(labels[1].indexOf("Offer")==-1)) 
+    labels[1].push("Offer")
+
+  // default intent is Offer
+  if (labels[0].length == 0)
+    labels[0].push("Offer")
+
+  if ((labels[0].indexOf("Accept")!=-1)||(labels[0].indexOf("Reject")!=-1)||
+    (labels[0].indexOf("Greet")!=-1)||(labels[0].indexOf("Quit")!=-1))
+    labels[2].push("true")
+
+  // all components should be here
+  // let's go over all values and place them in attributes
+
+  _.each(labels[2], function(value, key, list){
+    var attr = []
+    _.each(semlang, function(semlabel, key, list){
+      var parse =  Hierarchy.splitPartEqually(semlabel)
+      if (parse.length > 2)
+      {
+        if (parse[2][0] == value)
+          attr.push(parse[1][0])
+      }
+    }, this)
+    attr = _.uniq(attr)
+    if (attr.length==1)
+      labels[1].push(attr[0])
+   }, this) 
+
+  var active_labels = []
+
+  var reject = 0
+  var accept = 0
+
+  _.each(semlang, function(semlabel, key, list){
+    var parse =  Hierarchy.splitPartEqually(semlabel)
+    // console.log(JSON.stringify(parse, null, 4))
+    var found = true
+    _.each(parse, function(component, key1, list){
+      if (component.length > 0)
+      if (labels[key1].indexOf(component[0])==-1)
+      {
+        found = false
+      }
+    }, this)
+    if (found)
+    {
+      active_labels.push(semlabel)
+      if (parse[0].indexOf("Reject")!=-1)
+        reject += 1
+      if (parse[0].indexOf("Accept")!=-1)
+        accept += 1
+    }
+  })
+
+  // filter concise labels
+  var labels_hash = {}
+
+  _.each(active_labels, function(label, key, list){
+    labels_hash[label] = 1
+  }, this)
+
+  if (reject>1)
+    delete labels_hash["{\"Reject\":\"true\"}"]
+
+  if (accept>1)
+    delete labels_hash["{\"Accept\":\"true\"}"]
+
+  _.each(labels_hash, function(value, label, list){
+    _.each(labels_hash, function(value, label1, list){
+      var parse =  Hierarchy.splitPartEqually(label)
+      var parse1 =  Hierarchy.splitPartEqually(label1)
+
+      // parse is covering
+      if (label!=label1)
+      if ((_.isEqual(parse[0], parse1[0])) && (_.isEqual(parse[1], parse1[1])) && (parse1[2].length == 0))
+        labels_hash[label1] = 0
+
+    }, this)
+
+  }, this)
+
+  
+  var output = []
+  _.each(labels_hash, function(value, key, list){
+    if (value==1)
+      output.push(key)
+  }, this)
+
+  return output
+}
+
 function resolve_emptiness(label)
 {
-	// the most popular vased on intent
+	// the most popular based on intent
 	_.each(label[2], function(value, key, list){ 
 		var amb = semlang_ambiguity([value])
 		if (amb.length == 1)
@@ -2428,7 +2543,7 @@ function resolve_emptiness(label)
 	}, this)
 
   if ((label[0]=='Accept')||(label[0]=='Reject'))
-    label[2].push('previous')
+    label[2].push('true')
 
 	_(3).times(function(n){
 		label[n] = _.uniq(label[n])
@@ -3636,7 +3751,11 @@ function distribute(params) {
     dist.push([key, value["ratio"]])
   }, this)
 
+  dist = _.shuffle(dist)
+
   var probs = _.sortBy(dist, function(num){ return num[1] })
+  if (probs.length < 5)
+    console.log(JSON.stringify(probs, null, 4))
 
   var r = Math.random()
   var i = 0
@@ -3652,10 +3771,15 @@ function simulateds(dataset, size, params)
   _.each(params, function(value, param, list){
     var F1 = ( value["F1"] == 0 || _.isNaN(value["F1"]) || value["F1"]==-1 ) ? 1 : value["F1"]
     params[param]["score"] = (value["TP"]+value["FN"])/F1
+    // params[param]["score"] = 1/F1
+    if (F1 > 0.5) params[param]["score"] = 0
+    // if (value["F1"] == -1) params[param]["score"] = 1/0.1
   }, this)
 
   var labs = []
   var sim_dataset = []
+
+  console.log(JSON.stringify(params, null, 4))
 
   while (sim_dataset.length < size) {
     
@@ -3671,7 +3795,7 @@ function simulateds(dataset, size, params)
     }
   }
 
-  return sim_dataset
+  return {"simulated":sim_dataset, "dataset":dataset}
 }
 
 module.exports = {
@@ -3772,5 +3896,6 @@ isnotokaccept:isnotokaccept,
 extractdial_test:extractdial_test,
 createcandidates:createcandidates,
 ngraminindex:ngraminindex,
-extractdatasetallturns:extractdatasetallturns
+extractdatasetallturns:extractdatasetallturns,
+generate_labels:generate_labels
 }
