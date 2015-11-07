@@ -363,7 +363,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    		
 		    		report.push(_.pick(stats['stats'], parameters))		    		
 
-		    		// extractLabels(stats['stats']['labels'], mytrain, labels)
+		    		extractLabels(stats['stats']['labels'], mytrain, labels)
 
 			  	}, this)
 			  	
@@ -376,9 +376,9 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 			} //while (index < train.length)
 
-				// _.each(labels, function(value, label, list){
-		    		// plot('average', label, labels, {"Precision":true, "Recall":true, "F1":true})
-				// })
+				_.each(labels, function(value, label, list){
+		    		plot('average', label, labels, {"Precision":true, "Recall":true, "F1":true})
+				})
 
 			}); //fold
 
@@ -395,8 +395,8 @@ if (process.argv[1] === __filename)
 	}, this)
 
 	var classifiers  = {
-			SVM_unigram : classifier.DS_bigram,
-			SVM_rule : classifier.DS_rule
+			SVM_unigram : classifier.DS_bigram
+			// SVM_rule : classifier.DS_rule
 		}
 	
 	var parameters = [
@@ -405,9 +405,9 @@ if (process.argv[1] === __filename)
 					  // 'Reject_F1','Reject_Precision','Reject_Recall', 'Reject_FN', 'Reject_TP', 'Reject_Accuracy', 
 					  // 'Accept_F1','Accept_Precision','Accept_Recall', 'Accept_FN', 'Accept_TP', 'Accept_Accuracy', 
 					  // 'Greet_F1','Greet_Precision','Greet_Recall', 'Greet_FN', 'Greet_Accuracy'
-						// 'macroF1', 'microF1'
-						'macroF1', 'macroPrecision', 'macroRecall',
-						'microF1', 'microPrecision', 'microRecall',
+						'macroF1', 'microF1'
+						// 'macroF1', 'macroPrecision', 'macroRecall',
+						// 'microF1', 'microPrecision', 'microRecall',
 					]
 	
 	
