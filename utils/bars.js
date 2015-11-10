@@ -3770,9 +3770,9 @@ function simulateds(dataset, size, params)
 {
   _.each(params, function(value, param, list){
     var F1 = ( value["F1"] == 0 || _.isNaN(value["F1"]) || value["F1"]==-1 ) ? 1 : value["F1"]
-    params[param]["score"] = (value["TP"]+value["FN"])/F1
-    // params[param]["score"] = 1/F1
-    if (F1 > 0.5) params[param]["score"] = 0
+    // params[param]["score"] = (value["TP"]+value["FN"])/F1
+    params[param]["score"] = 1/F1
+    if (F1 > 0.5) params[param]["score"] = 2
     // if (value["F1"] == -1) params[param]["score"] = 1/0.1
   }, this)
 
