@@ -110,10 +110,9 @@ function countLabel(mytrain, label, single)
 	return results["found"]
 }
 
-function extractLabels(stats, mytrain, labels)
+function extractLabels(stats, mytrain, labels, mytest)
 {
 	_.each(stats, function(params, label, list){
-
 
 		var label_json = JSON.parse(label)
 		var label_str = _.keys(label_json)[0]
@@ -131,6 +130,8 @@ function extractLabels(stats, mytrain, labels)
 		{
 			if (!(label_str in labels))
 				labels[label_str] = {}
+
+			labels[label_str]['title'] = countLabel(mytest, label, true)
 
 			if (!(count in labels[label_str]))
 				labels[label_str][count] = {}
@@ -272,16 +273,19 @@ function plot(fold, parameter, stat, classifiers)
 	if (fold != 'average')
 	{
 		_.each(stat[parameter], function(value, trainsize, list){ 
+			if (_.isNumber(trainsize))
+			{
 			// str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"
-			str += trainsize.toString() + "(" + value['__size'][fold]+ ")\t"
-			_.each(value, function(results, cl, list){ 
-				if ((cl != '_size') && (cl != '__size'))
-				{
-					values.push(filternan(results[fold]))
-					str += filternan(results[fold]) + "\t"
-				}
-			}, this)
-			str += "\n"
+				str += trainsize.toString() + "(" + value['__size'][fold]+ ")\t"
+				_.each(value, function(results, cl, list){ 
+					if ((cl != '_size') && (cl != '__size'))
+					{
+						values.push(filternan(results[fold]))
+						str += filternan(results[fold]) + "\t"
+					}
+				}, this)
+				str += "\n"
+			}
 		}, this)
 	}
 	else
@@ -291,12 +295,15 @@ function plot(fold, parameter, stat, classifiers)
 			// if (parameter.indexOf("_"))
 				// var intent = parameter.substring(0,parameter.indexOf("_")).length
 
-			var average = getAverage(stat, parameter, trainsize, classifiers)
-			// var intsize = _.reduce(stat[parameter][trainsize]['__size'], function(memo, num){ return (memo + num) }, 0)/stat[parameter][trainsize]['__size'].length
-			// str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"+filternan(average).join("\t")+"\n"
-			// str += trainsize.toString() + "(" + intsize + ")\t"+filternan(average).join("\t")+"\n"
-			str += trainsize.toString() + "(" + trainsize.toString() + ")\t"+filternan(average).join("\t")+"\n"
-			values = values.concat(filternan(average))
+			if (_.isNumber(trainsize))
+			{
+				var average = getAverage(stat, parameter, trainsize, classifiers)
+				// var intsize = _.reduce(stat[parameter][trainsize]['__size'], function(memo, num){ return (memo + num) }, 0)/stat[parameter][trainsize]['__size'].length
+				// str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"+filternan(average).join("\t")+"\n"
+				// str += trainsize.toString() + "(" + intsize + ")\t"+filternan(average).join("\t")+"\n"
+				str += trainsize.toString() + "(" + trainsize.toString() + ")\t"+filternan(average).join("\t")+"\n"
+				values = values.concat(filternan(average))
+			}
 		}, this)
 
 		linetype = 5
@@ -313,7 +320,7 @@ function plot(fold, parameter, stat, classifiers)
 		// var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
 		var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
 		// var com = gnuplot +" -p -e \"reset; set title \'"+stat['_sized']+"("+stat['_sizec']+")\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
-		var com = gnuplot +" -p -e \"reset; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+		var com = gnuplot +" -p -e \"reset; set title \'"+stat[parameter]['title']+"\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
 		// console.log(com)
 		result = execSync(com)
 	}
@@ -357,7 +364,16 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	// var gldata = {}
 
 			  	_.each(classifiers, function(classifier, name, list){ 
-			  		console.log("start trainandTest "+name)
+			  		console.log("start trainan dTest "+name)
+
+		  		// if (name == "SVM_unigram_single")
+			  		// {
+			  		// 	console.log("single guy")
+			  		// 	console.log("size of train before cleaning "+mytrainset.length)
+			  		// 	mytrainset = _.filter(mytrainset, function(utterance){ return utterance.output.length == 1 });
+			  		// 	console.log("size of train after cleaning "+mytrainset.length)
+			  		// }
+
 	    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
 		    		console.log("stop trainandTest "+name)
 		    		
@@ -396,7 +412,8 @@ if (process.argv[1] === __filename)
 
 	var classifiers  = {
 			SVM_unigram : classifier.DS_bigram
-			// SVM_rule : classifier.DS_rule
+			// ,SVM_unigram_single : classifier.DS_bigram
+			// ,SVM_rule : classifier.DS_rule
 		}
 	
 	var parameters = [
