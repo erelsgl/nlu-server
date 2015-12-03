@@ -553,8 +553,8 @@ module.exports.trainAndTest_batch = function(
 		var startTime = new Date();
 		var classifier = new classifierType();
 
-		testSet1 = utils.clonedataset(testSet)
-		trainSet1 = utils.clonedataset(trainSet)
+		testSet1 = JSON.parse(JSON.stringify(testSet))
+		trainSet1 = JSON.parse(JSON.stringify(trainSet))
 
 		classifier.trainBatch(trainSet1);
 
