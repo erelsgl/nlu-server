@@ -152,6 +152,9 @@ module.exports.test_hash = function( classifier, testSet1, verbosity) {
 	{
 		var id = 0
 
+		if (i % 10 == 0)
+			console.log(i)
+
 		expectedClasses = testSet[i].output
 
 		classesWithExplanation = classifier.classify(testSet[i].input, verbosity)
