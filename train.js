@@ -145,7 +145,7 @@ if (check_ds)
 	utterset["test"] = _.flatten(utterset["test"])
 	utterset["train"] = _.flatten(utterset["train"])
 
-	var stats = trainAndTest.trainAndTest_hash(classifier.DS_rule, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
+	var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
 
 	// var stats_cl = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 5)
 
