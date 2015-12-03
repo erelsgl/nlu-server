@@ -137,7 +137,7 @@ function extractLabels(stats, mytrain, labels, mytest)
 				labels[label_str][count] = {}
 
 			_.each(params, function(value, param, list){
-				if (["Recall","Precision","F1"].indexOf(param) != -1)
+				if (["Recall","Precision","F1","TP","FP","FN"].indexOf(param) != -1)
 				{
 					if (!(param in labels[label_str][count]))
 						labels[label_str][count][param] = []
@@ -379,7 +379,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    		
 		    		report.push(_.pick(stats['stats'], parameters))		    		
 
-		    		extractLabels(stats['stats']['labels'], mytrain, labels)
+		    		extractLabels(stats['stats']['labels'], mytrain, labels, testset)
 
 			  	}, this)
 			  	
@@ -393,6 +393,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			} //while (index < train.length)
 
 				_.each(labels, function(value, label, list){
+				console.log("plotting")
 		    		plot('average', label, labels, {"Precision":true, "Recall":true, "F1":true})
 				})
 
