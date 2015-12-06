@@ -500,27 +500,6 @@ module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, 
 	})
 }
 
-
-module.exports.trainAndTestbatch = function(
-		classifierType, 
-		trainSet, testSet, 
-		verbosity, microAverage, macroSum) {
-		
-		var startTime = new Date();
-		var classifier = new classifierType();
-		TrainCountEmbed = true
-
-		testSet1 = JSON.parse(JSON.stringify(testSet))	
-		trainSet1 = JSON.parse(JSON.stringify(trainSet))
-
-		classifier.trainBatch(trainSet1);
-
-		var stat_hash = classifier.classifyBatch(testSet1);
-
-		return stat_hash;
-};
-
-
 module.exports.trainAndTest_hash = function(
 		classifierType, 
 		trainSet, testSet, 
@@ -557,6 +536,8 @@ module.exports.trainAndTest_batch = function(
 		var classifier = new classifierType();
 
 		testSet1 = JSON.parse(JSON.stringify(testSet))
+		testSet2 = JSON.parse(JSON.stringify(testSet))
+
 		trainSet1 = JSON.parse(JSON.stringify(trainSet))
 
 		classifier.trainBatch(trainSet1);
@@ -569,19 +550,23 @@ module.exports.trainAndTest_batch = function(
 		var currentStats = new PrecisionRecall();
 		
 		var data_stats = []
-		_.each(testSet1, function(value, key, list){ 
+		_.each(testSet2, function(value, key, list){ 
 			var sentence_hash = {}
 			sentence_hash['input'] = value.input;
 			sentence_hash['expected'] = value.output
-			sentence_hash['classified'] = [output[key]]
-			sentence_hash['explanation'] = currentStats.addCasesHash(value.output, [output[key]], (verbosity>2));
+			sentence_hash['classified'] = output[key].output
+			sentence_hash['explanation'] = currentStats.addCasesHash(value.output, output[key].output, (verbosity>2));
 			data_stats.push(sentence_hash)
 		}, this)
 
+		currentStats.calculateStats()
+		
+		var testEnd = new Date().getTime()
+	
 		classifierstats = {}
 		classifierstats['labels'] = currentStats.retrieveLabels()
 		classifierstats['data'] = data_stats
-		classifierstats['stats'] = currentStats.retrieveStats()
+		classifierstats['stats'] = currentStats
 
 		return classifierstats
 };
