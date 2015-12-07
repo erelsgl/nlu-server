@@ -580,15 +580,11 @@ function featureword2vec(sentence, features) {
 var SvmPerfKernelBinaryClassifier = classifiers.SvmPerf.bind(0, {
         learn_args: "-c 100 -t 2",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html
         model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf",
-        train_command: "svm-train",
-        test_command: "svm-test"
 });
 
 var SvmPerfBinaryClassifier = classifiers.SvmPerf.bind(0, {
         learn_args: "-c 100 ",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html
-        model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf",
-        train_command: "liblinear_train",
-        test_command: "liblinear_test"
+        model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf"
 });
 
 var SvmPerfKernelBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
@@ -607,10 +603,18 @@ var SvmPerfRulebasedClassifier = classifiers.multilabel.Rulebased.bind(0, {
 });
 
 var SvmLinearBinaryClassifier = classifiers.SvmLinear.bind(0, {
-        learn_args: "-c 100",
+        
         model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearBinary",
         // debug: true,
-        multiclass: false
+        multiclass: false,
+
+        // learn_args: "-c 100 -t 1 -d 2",
+        // train_command: "svm-train",
+        // test_command: "svm-predict"
+
+        learn_args: "-c 100",
+        train_command: "liblinear_train",
+        test_command: "liblinear_test"
 });
 
 var SvmLinearBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
