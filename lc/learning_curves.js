@@ -13,6 +13,7 @@ var fs = require('fs');
 var classifier = require(__dirname+"/../classifiers.js")
 var partitions = require('limdu/utils/partitions');
 var trainAndTest_hash = require(__dirname+'/../utils/trainAndTest').trainAndTest_hash;
+var trainAndTest_batch = require(__dirname+'/../utils/trainAndTest').trainAndTest_batch;
 var bars = require(__dirname+'/../utils/bars');
 var path = require("path")
 var execSync = require('child_process').execSync
@@ -131,8 +132,18 @@ function extractLabels(stats, mytrain, labels, mytest)
 			if (!(label_str in labels))
 				labels[label_str] = {}
 
-			labels[label_str]['title'] = countLabel(mytest, label, true)
+			var test_count = countLabel(mytest, label, true)
+				
+			labels[label_str]['title'] = test_count
 
+/*			if (_.isUndefined(test_count))
+			{
+				console.log(label)
+				console.log(test_count)
+				console.log(JSON.stringify(mytest, null, 4))
+				process.exit(0)
+			}
+*/
 			if (!(count in labels[label_str]))
 				labels[label_str][count] = {}
 
@@ -273,7 +284,8 @@ function plot(fold, parameter, stat, classifiers)
 	if (fold != 'average')
 	{
 		_.each(stat[parameter], function(value, trainsize, list){ 
-			if (_.isNumber(trainsize))
+
+			if (bars.isNumber(trainsize))
 			{
 			// str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"
 				str += trainsize.toString() + "(" + value['__size'][fold]+ ")\t"
@@ -295,7 +307,7 @@ function plot(fold, parameter, stat, classifiers)
 			// if (parameter.indexOf("_"))
 				// var intent = parameter.substring(0,parameter.indexOf("_")).length
 
-			if (_.isNumber(trainsize))
+			if (bars.isNumber(trainsize))
 			{
 				var average = getAverage(stat, parameter, trainsize, classifiers)
 				// var intsize = _.reduce(stat[parameter][trainsize]['__size'], function(memo, num){ return (memo + num) }, 0)/stat[parameter][trainsize]['__size'].length
@@ -374,12 +386,18 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  		// 	console.log("size of train after cleaning "+mytrainset.length)
 			  		// }
 
-	    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
+//	    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
+	    			var stats = trainAndTest_batch(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
+				
+				console.log(JSON.stringify(stats['stats'], null, 4))
+
 		    		console.log("stop trainandTest "+name)
 		    		
 		    		report.push(_.pick(stats['stats'], parameters))		    		
 
-		    		extractLabels(stats['stats']['labels'], mytrain, labels)
+		    		extractLabels(stats['stats']['labels'], mytrain, labels, testset)
+
+				console.log(JSON.stringify(labels, null, 4))
 
 			  	}, this)
 			  	
