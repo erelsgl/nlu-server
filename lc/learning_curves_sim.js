@@ -13,6 +13,7 @@ var fs = require('fs');
 var classifier = require(__dirname+"/../classifiers.js")
 var partitions = require('limdu/utils/partitions');
 var trainAndTest_hash = require(__dirname+'/../utils/trainAndTest').trainAndTest_hash;
+var trainAndTest_batch = require(__dirname+'/../utils/trainAndTest').trainAndTest_batch;
 var bars = require(__dirname+'/../utils/bars');
 var path = require("path")
 var execSync = require('child_process').execSync
@@ -358,7 +359,8 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				var classifier	= _.values(classifiers)[0]	
 
 				console.log("size of strandard " + mytrain.length + " in utterances "+ mytrainset.length)
-    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
+//    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
+    			var stats = trainAndTest_batch(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
 	    		
 	    		console.log(JSON.stringify(stats['stats']['confusion'], null, 4))
 	    		report.push(_.pick(stats['stats'], parameters))		    		
@@ -383,7 +385,8 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 		    	console.log(sim_train.length+" "+mytrainset.length)
 
-		    	var stats1 = trainAndTest_hash(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
+//		    	var stats1 = trainAndTest_hash(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
+		    	var stats1 = trainAndTest_batch(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
 	    			    		
 	    		report.push(_.pick(stats1['stats'], parameters))		    		
 	    		
