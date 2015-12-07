@@ -132,10 +132,6 @@ function extractLabels(stats, mytrain, labels, mytest)
 			if (!(label_str in labels))
 				labels[label_str] = {}
 
-			var test_count = countLabel(mytest, label, true)
-				
-			labels[label_str]['title'] = test_count
-
 /*			if (_.isUndefined(test_count))
 			{
 				console.log(label)
@@ -332,7 +328,7 @@ function plot(fold, parameter, stat, classifiers)
 		// var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
 		var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
 		// var com = gnuplot +" -p -e \"reset; set title \'"+stat['_sized']+"("+stat['_sizec']+")\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
-		var com = gnuplot +" -p -e \"reset; set title \'"+stat[parameter]['title']+"\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+		var com = gnuplot +" -p -e \"reset; set title \'"+stat[parameter]['title'].join(" ")+"\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
 		// console.log(com)
 		result = execSync(com)
 	}
@@ -409,6 +405,14 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				})
 
 			} //while (index < train.length)
+
+				// update labels with test size
+
+				_.each(labels, function(value, label, list){
+					if (!('title' in value))
+						labels[label]['title'] = []
+					labels[label]['title'].push(countLabel(testset, label, true))
+				}, this)
 
 				_.each(labels, function(value, label, list){
 		    		plot('average', label, labels, {"Precision":true, "Recall":true, "F1":true})
