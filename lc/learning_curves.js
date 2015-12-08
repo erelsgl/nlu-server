@@ -111,26 +111,43 @@ function countLabel(mytrain, label, single)
 	return results["found"]
 }
 
+function convertLabel(label)
+{
+	if (label.indexOf("{")==-1)
+		return label
+	var label_json = JSON.parse(label)
+	
+	var label_str = _.keys(label_json)[0]
+
+        if (_.isObject(_.values(label_json)[0]))
+		label_str += "_"+(_.keys(_.values(label_json)[0])[0]) + "_" + (_.values(_.values(label_json)[0])[0])
+	else
+        	label_str += "_"+_.values(label_json)[0]
+
+        label_str = label_str.replace(" ","_")
+	return label_str
+}
+
 function extractLabels(stats, mytrain, labels, mytest)
 {
 	_.each(stats, function(params, label, list){
 
-		var label_json = JSON.parse(label)
-		var label_str = _.keys(label_json)[0]
+//		var label_json = JSON.parse(label)
+//		var label_str = _.keys(label_json)[0]
 
-		if (_.isObject(_.values(label_json)[0]))
-			label_str += "_"+(_.keys(_.values(label_json)[0])[0]) + "_" + (_.values(_.values(label_json)[0])[0])
-		else
-			label_str += "_"+_.values(label_json)[0]
+//		if (_.isObject(_.values(label_json)[0]))
+//			label_str += "_"+(_.keys(_.values(label_json)[0])[0]) + "_" + (_.values(_.values(label_json)[0])[0])
+//		else
+//			label_str += "_"+_.values(label_json)[0]
 
-		label_str = label_str.replace(" ","_")
+//		label_str = label_str.replace(" ","_")
 
 		var count = countLabel(mytrain, label, true)
 
 		if (!(_.isUndefined(count)))
 		{
-			if (!(label_str in labels))
-				labels[label_str] = {}
+			if (!(label in labels))
+				labels[label] = {}
 
 /*			if (_.isUndefined(test_count))
 			{
@@ -140,17 +157,17 @@ function extractLabels(stats, mytrain, labels, mytest)
 				process.exit(0)
 			}
 */
-			if (!(count in labels[label_str]))
-				labels[label_str][count] = {}
+			if (!(count in labels[label]))
+				labels[label][count] = {}
 
 			_.each(params, function(value, param, list){
 				if (["Recall","Precision","F1"].indexOf(param) != -1)
 				{
-					if (!(param in labels[label_str][count]))
-						labels[label_str][count][param] = []
+					if (!(param in labels[label][count]))
+						labels[label][count][param] = []
 		
 					if (!(_.isNaN(value)))
-						labels[label_str][count][param].push(value)
+						labels[label][count][param].push(value)
 				}
 			}, this)
 		}
@@ -273,7 +290,7 @@ function plot(fold, parameter, stat, classifiers)
 	console.log(JSON.stringify(stat, null, 4))
 
 	var header = "train\t" + Object.keys(classifiers).join("-fold"+fold+"\t")+"-fold"+fold+"\n";
-	fs.writeFileSync(__dirname + dirr + parameter+"fold"+fold, header, 'utf-8')
+	fs.writeFileSync(__dirname + dirr + convertLabel(parameter)+"fold"+fold, header, 'utf-8')
 
 	var str = ""
 	
@@ -321,7 +338,7 @@ function plot(fold, parameter, stat, classifiers)
 	// console.log(parameter)
 	// console.log(values)
 
-	fs.appendFileSync(__dirname + dirr +parameter+"fold"+fold, str, 'utf-8')
+	fs.appendFileSync(__dirname + dirr +convertLabel(parameter)+"fold"+fold, str, 'utf-8')
 
 	if (plot)
 	{
@@ -331,9 +348,9 @@ function plot(fold, parameter, stat, classifiers)
 			title = stat[parameter]['title'].join(" ")
 
 		// var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
-		var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
+		var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + convertLabel(parameter) + "fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
 		// var com = gnuplot +" -p -e \"reset; set title \'"+stat['_sized']+"("+stat['_sizec']+")\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
-		var com = gnuplot +" -p -e \"reset; set title \'"+title+"\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+		var com = gnuplot +" -p -e \"reset; set title \'"+title+"\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + convertLabel(parameter) + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
 		// console.log(com)
 		result = execSync(com)
 	}
@@ -419,9 +436,14 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 					labels[label]['title'].push(countLabel(testset, label, true))
 				}, this)
 
+				console.log("------------------------")
+				console.log(JSON.stringify(labels, null, 4))
+
 				_.each(labels, function(value, label, list){
 		    		plot('average', label, labels, {"Precision":true, "Recall":true, "F1":true})
 				})
+
+				process.exit(0)
 
 			}); //fold
 
