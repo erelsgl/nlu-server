@@ -365,26 +365,36 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	    		console.log(JSON.stringify(stats['stats']['confusion'], null, 4))
 	    		report.push(_.pick(stats['stats'], parameters))		    		
 
-	    	 	var size_last_dial = _.flatten(mytrain[mytrain.length-1]).length
+	   //  	 	var size_last_dial = _.flatten(mytrain[mytrain.length-1]).length
 
-	    	 	console.log(size_last_dial+" size of the last dialogue")
-	    	 	console.log(buffer_train.length+" size of the buffer train")
+	   //  	 	console.log(size_last_dial+" size of the last dialogue")
+	   //  	 	console.log(buffer_train.length+" size of the buffer train")
 
-	    	 	var results = bars.simulateds(buffer_train, size_last_dial, _.keys(stats1).length > 0 ? stats1['stats']['labels']: stats['stats']['labels'])
+	   //  	 	var results = bars.simulateds(buffer_train, size_last_dial, _.keys(stats1).length > 0 ? stats1['stats']['labels']: stats['stats']['labels'])
 
-	    	 	console.log(results["simulated"].length+" size of the simulated train")
-	    	 	console.log(results["dataset"].length+" size of the buffer train after simulation")
+	   //  	 	console.log(results["simulated"].length+" size of the simulated train")
+	   //  	 	console.log(results["dataset"].length+" size of the buffer train after simulation")
 
-	    	 	console.log("size of sim "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
+	   //  	 	console.log("size of sim "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
 
-				buffer_train = results["dataset"]
+				// buffer_train = results["dataset"]
 
-				console.log(JSON.stringify(results["simulated"], null, 4))
+				// console.log(JSON.stringify(results["simulated"], null, 4))
 
-		    	sim_train = sim_train.concat(results["simulated"])
+		  //   	sim_train = sim_train.concat(results["simulated"])
 
-		    	console.log(sim_train.length+" "+mytrainset.length)
+		  //   	console.log(sim_train.length+" "+mytrainset.length)
 
+
+
+		    	// single label sentences for training
+
+		    	var sim_train = []
+		    	_.each(mytrainset, function(value, key, list){
+		    		if (value.output.length==1)
+		    			sim_train.push(value)
+		    	}, this)
+		    	
 //		    	var stats1 = trainAndTest_hash(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
 		    	var stats1 = trainAndTest_batch(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
 	    			    		
