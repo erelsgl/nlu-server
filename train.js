@@ -25,9 +25,10 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+var check_single_multi = true
+var check_ds = false
 var check_ds_context = false
 var binary_seg = false
-var check_ds = true
 var do_small_temporary_serialization_test=  false
 var do_cross_dataset_testing = false
 var do_final_test = false
@@ -109,6 +110,57 @@ if (binary_seg)
 	var utterset = bars.getsetnocontext(dataset)
 	var stats = trainAndTest.trainAndTest_hash(classifier.BinarySegmentation, utterset["train"], utterset["test"], 5)
 }
+
+if (check_single_multi)
+{
+
+	var single = []
+	var multi = []
+
+	var dataset = bars.loadds("../negochat_private/dialogues")
+	var utterset = bars.getsetcontext(dataset)
+
+	var data = _.flatten(utterset['train'].concat(utterset['test']))
+	
+	_.each(data, function(value, key, list){
+		if (value.output.length > 1)
+			multi = multi.concat(value.output)
+		else
+			single = single.concat(value.output)
+	}, this)
+
+	console.log(JSON.stringify(multi.length, null, 4))
+	console.log(JSON.stringify(single.length, null, 4))
+	
+	var multis = _.countBy(multi, function(num) { return num })
+	var singles = _.countBy(single, function(num) { return num })
+
+	console.log(JSON.stringify(multis, null, 4))
+	console.log(JSON.stringify(singles, null, 4))
+
+	var aggree = {}
+
+	_.each(multis, function(value, label, list){
+		aggree[label] = {}
+		aggree[label]['multi'] = value
+	}, this)
+
+	_.each(singles, function(value, label, list){
+		if (!(label in aggree))
+			aggree[label] = {}
+		
+		aggree[label]['single'] = value
+	}, this)
+
+	console.log(JSON.stringify(aggree, null, 4))
+	process.exit(0)
+}
+
+    // "{\"Offer\":{\"Pension Fund\":\"20%\"}}": {
+    //     "multi": 45,
+    //     "single": 2
+
+
 
 if (check_ds)
 {
