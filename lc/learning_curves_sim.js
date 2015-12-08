@@ -362,7 +362,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 //    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
     			var stats = trainAndTest_batch(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
 	    		
-	    		console.log(JSON.stringify(stats['stats']['confusion'], null, 4))
+	    		// console.log(JSON.stringify(stats['stats']['confusion'], null, 4))
 	    		report.push(_.pick(stats['stats'], parameters))		    		
 
 	   //  	 	var size_last_dial = _.flatten(mytrain[mytrain.length-1]).length
@@ -394,6 +394,9 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    		if (value.output.length==1)
 		    			sim_train.push(value)
 		    	}, this)
+
+		    	console.log("Size of the origin train "+mytrainset.length)
+		    	console.log("Size of the single label train "+sim_train.length)
 		    	
 //		    	var stats1 = trainAndTest_hash(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
 		    	var stats1 = trainAndTest_batch(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
