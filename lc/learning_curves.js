@@ -419,9 +419,9 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 			  	}, this)
 			  	
-                extractGlobal(parameters, classifiers, mytrain, report, stat)
+		                extractGlobal(parameters, classifiers, mytrain, report, stat)
                            
-                _.each(parameters, function(parameter, key, list){
+		                _.each(parameters, function(parameter, key, list){
 					plot(fold, parameter, stat, classifiers)
 					plot('average', parameter, stat, classifiers)
 				})
@@ -442,8 +442,6 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				_.each(labels, function(value, label, list){
 		    		plot('average', label, labels, {"Precision":true, "Recall":true, "F1":true})
 				})
-
-				process.exit(0)
 
 			}); //fold
 
