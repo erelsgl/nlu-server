@@ -403,10 +403,10 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 	    		var labcom = {}
 
-	    		_.each(stats, function(performance, label, list){
+	    		_.each(stats['labels'], function(performance, label, list){
 	    			labcom[label] = {}
 	    			labcom[label]['original'] = performance
-	    			labcom[label]['simulated'] = stats1[label]
+	    			labcom[label]['simulated'] = stats1['labels'][label]
 	    		}, this)
 
 	    		console.log(JSON.stringify(labcom, null, 4))
