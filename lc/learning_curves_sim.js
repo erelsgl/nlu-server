@@ -409,7 +409,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    	// console.log("Size of the origin train "+mytrainset.length)
 		    	// console.log("Size of the single label train "+sim_train.length)
 		    	
-//		    	var stats1 = trainAndTest_hash(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
+				// var stats1 = trainAndTest_hash(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
 		    	var stats1 = trainAndTest_batch(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
 
 		    	_.each(stats1['labels'], function(value, label, list){
@@ -429,6 +429,11 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	    		var diffcom = {}
 
 	    		_.each(labcom, function(value, label, list){
+	    			if (!('simulated' in value))
+	    			{
+	    				console.log(JSON.stringify(value, null, 4))
+	    				process.exit(0)
+	    			}
 	    			if (value['original']['F1']!=value['simulated']['F1'])
 	    				diffcom[label] = value
 	    		}, this)
