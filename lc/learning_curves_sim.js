@@ -257,6 +257,15 @@ function thereisdata(data)
 	return output
 }
 
+function countLabel(mytrain, label, single)
+{
+	var results = _.countBy(_.flatten(mytrain), function(utterance) {
+  			return utterance['output'].indexOf(label) != -1 ? 'found':'notfound';
+	});
+
+	return results["found"]
+}
+
 function plot(fold, parameter, stat, classifiers)
 {
 
@@ -361,6 +370,10 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				console.log("size of strandard " + mytrain.length + " in utterances "+ mytrainset.length)
 //    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
     			var stats = trainAndTest_batch(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
+
+    			_.each(stats['labels'], function(value, label, list){
+    				stats['labels']['count'] = countLabel(mytrainset, label)
+    			}, this)
 	    		
 	    		// console.log(JSON.stringify(stats['stats']['confusion'], null, 4))
 	    		report.push(_.pick(stats['stats'], parameters))		    		
@@ -398,6 +411,10 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    	
 //		    	var stats1 = trainAndTest_hash(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
 		    	var stats1 = trainAndTest_batch(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
+
+		    	_.each(stats1['labels'], function(value, label, list){
+    				stats1['labels']['count'] = countLabel(sim_train, label)
+    			}, this)
 	    			    		
 	    		report.push(_.pick(stats1['stats'], parameters))		    		
 
