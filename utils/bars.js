@@ -18,6 +18,7 @@ var _ = require('underscore')._;
 var fs = require('fs');
 var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
 var Hierarchy = require(__dirname+'/../Hierarchy');
+var distance = require(__dirname+'/distance');
 
 // var limdu = require("limdu");
 // var ftrs = limdu.features
@@ -3768,6 +3769,9 @@ function distribute(params) {
 
 function simulateds(dataset, size, params)
 {
+
+  dataset = _.flatten(dataset)
+
   _.each(params, function(value, param, list){
     var F1 = ( value["F1"] == 0 || _.isNaN(value["F1"]) || value["F1"]==-1 ) ? 1 : value["F1"]
     // params[param]["score"] = (value["TP"]+value["FN"])/F1
@@ -3775,11 +3779,6 @@ function simulateds(dataset, size, params)
     if (F1 > 0.5) params[param]["score"] = 2
     // if (value["F1"] == -1) params[param]["score"] = 1/0.1
   }, this)
-
-  var labs = []
-  var sim_dataset = []
-
-  console.log(JSON.stringify(params, null, 4))
 
   while (sim_dataset.length < size) {
     
@@ -3799,7 +3798,92 @@ function simulateds(dataset, size, params)
   return {"simulated":sim_dataset, "dataset":dataset}
 }
 
+function getdist(dialogue)
+{
+  var dist = {}
+  var total = 0
+
+  _.each(dialogue, function(value, key, list){
+    _.each(value['output'], function(label, key, list){
+      if (!(label in dist))
+        dist[label] = 0
+      
+      dist[label] += 1
+      total += 1      
+    }, this)
+  }, this)
+
+  _.each(dist, function(value, label, list){
+    dist[label] = dist[label]/total
+  }, this)
+
+  return dist
+}
+
+function distdistance(a,b)
+{
+
+  var labels = _.uniq(_.keys(a).concat(_.keys(b)))
+  
+  var veca = Array(labels.length)
+  var vecb = Array(labels.length)
+
+  _.each(veca, function(value, key, list){
+      veca[key] = 0
+  }, this)
+
+  _.each(vecb, function(value, key, list){
+      vecb[key] = 0
+  }, this)
+
+  _.each(a, function(dist, label, list){
+    veca[labels.indexOf(label)] = dist
+  }, this)
+
+  _.each(b, function(dist, label, list){
+    vecb[labels.indexOf(label)] = dist
+  }, this)
+
+  return {'a': veca, 'b':vecb}
+}
+
+function simulaterealds(dataset, size, params)
+{
+  _.each(params, function(value, param, list){
+    var F1 = ( value["F1"] == 0 || _.isNaN(value["F1"]) || value["F1"]==-1 ) ? 1 : value["F1"]
+    // params[param]["score"] = (value["TP"]+value["FN"])/F1
+    params[param]["score"] = 1/F1
+    if (F1 > 0.5) params[param]["score"] = 2
+    // if (value["F1"] == -1) params[param]["score"] = 1/0.1
+  }, this)
+
+  var totalscore = _.reduce(params, function(memo, num){ return memo + num["score"]; }, 0);
+  var ideal_dist = {}
+  
+  _.each(params, function(value, param, list){
+    ideal_dist[param] = params[param]["score"]/totalscore
+  }, this) 
+
+  var distvec = []
+  
+  _.each(dataset, function(dialogue, key, list){
+    var dialdist = getdist(dialogue)
+    var vecs = distdistance(ideal_dist, dialdist)
+    distvec.push(distance.cosine_distance(vecs['a'], vecs['b']))
+  }, this)
+
+  var mindist = _.min(distvec);
+  var bestdial = distvec.indexOf(mindist)
+
+  var sim_dataset = dataset[bestdial]
+  dataset.splice(bestdial,1)
+
+  return {"simulated":sim_dataset, "dataset":dataset}
+}
+
+
 module.exports = {
+  simulaterealds:simulaterealds,
   simulateds:simulateds,
   filterlabels:filterlabels,
   getsetcontext:getsetcontext,
@@ -3898,5 +3982,7 @@ extractdial_test:extractdial_test,
 createcandidates:createcandidates,
 ngraminindex:ngraminindex,
 extractdatasetallturns:extractdatasetallturns,
-generate_labels:generate_labels
+generate_labels:generate_labels,
+getdist:getdist,
+distdistance:distdistance
 }
