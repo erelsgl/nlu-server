@@ -15,6 +15,35 @@ var ppdb = require("../research/ppdb/utils.js")
 
 
 describe('Bars utilities', function() {
+	
+	it('distdistance', function() {
+		var a = {
+			'a':0.2,
+			'c':0.1,
+			'b':0.4
+		}
+
+		var b = {
+			'a':0.2,
+			'd':0.5,
+			'e':0.4
+		}
+
+		var dist = bars.distdistance(a,b)
+		console.log(JSON.stringify(dist, null, 4))
+		process.exit(0)
+	})
+
+	it('simulateds', function() {
+		var dial = [
+			{'output':['a','b']},
+			{'output':['b','c']},
+			{'output':['a','c']},
+			{'output':['b']}
+		]
+
+		var dist = bars.getdist(dial)
+	})
 
 	it('simulateds', function() {
 		var dataset = [
