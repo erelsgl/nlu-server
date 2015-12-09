@@ -400,7 +400,17 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    	var stats1 = trainAndTest_batch(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
 	    			    		
 	    		report.push(_.pick(stats1['stats'], parameters))		    		
-	    		
+
+	    		var labcom = {}
+
+	    		_.each(stats, function(performance, label, list){
+	    			labcom[label] = {}
+	    			labcom[label]['original'] = performance
+	    			labcom[label]['simulated'] = stats1[label]
+	    		}, this)
+
+	    		console.log(JSON.stringify(labcom, null, 4))
+
 	    		extractGlobal(parameters, classifiers, mytrain, report, stat)
                            
                 _.each(parameters, function(parameter, key, list){
