@@ -3784,7 +3784,8 @@ function simulateds(dataset, size, params)
   while (sim_dataset.length < size) {
     
     var label = distribute(params)
-    var elem_index = _.findIndex(dataset, function(utterance){ return ((utterance.output.length == 1) && (utterance.output.indexOf(label)!=-1)); });
+    // var elem_index = _.findIndex(dataset, function(utterance){ return ((utterance.output.length == 1) && (utterance.output.indexOf(label)!=-1)); });
+    var elem_index = _.findIndex(dataset, function(utterance){ return (utterance.output.indexOf(label)!=-1); });
     
     if (elem_index == -1)
       delete params[label]
