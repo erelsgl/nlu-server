@@ -372,7 +372,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
     			var stats = trainAndTest_batch(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
 
     			_.each(stats['labels'], function(value, label, list){
-    				stats['labels']['count'] = countLabel(mytrainset, label)
+    				stats['labels'][label]['count'] = countLabel(mytrainset, label)
     			}, this)
 	    		
 	    		// console.log(JSON.stringify(stats['stats']['confusion'], null, 4))
@@ -413,7 +413,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    	var stats1 = trainAndTest_batch(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
 
 		    	_.each(stats1['labels'], function(value, label, list){
-    				stats1['labels']['count'] = countLabel(sim_train, label)
+    				stats1['labels'][label]['count'] = countLabel(sim_train, label)
     			}, this)
 	    			    		
 	    		report.push(_.pick(stats1['stats'], parameters))		    		
