@@ -434,6 +434,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	    				console.log(JSON.stringify(value, null, 4))
 	    				process.exit(0)
 	    			}
+	    			console.log(JSON.stringify(value, null, 4))
 	    			if (!('F1' in value['simulated']))
 	    			{
 	    				console.log(JSON.stringify(value, null, 4))
