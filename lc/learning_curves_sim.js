@@ -428,15 +428,26 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	    		}, this)
 
 	    		var diffcom = {}
+	    		var difflist = []
 
 	    		_.each(labcom, function(valuee, label, list){
 	    			if ('simulated' in valuee)
 	    			{
 	    				if (valuee['original']['F1']!=valuee['simulated']['F1'])
+	    				{
 	    					diffcom[label] = valuee
+
+	    					var origF1 = (valuee['original']['F1'] == -1 ) ? 0 : valuee['original']['F1']
+	    					var simF1 = (valuee['simulated']['F1'] == -1 ) ? 0 : valuee['simulated']['F1']
+	    					difflist.push([label, simF1-origF1, valuee['simulated']['count'] - valuee['original']['count']])
+	    				}
+
 	    			}
 	    		}, this)
 
+	    		difflist = _.sortBy(difflist, function(num){ return num[1] })
+
+	    		console.log(JSON.stringify(difflist, null, 4))
 	    		console.log(JSON.stringify(diffcom, null, 4))
 
 	    		extractGlobal(parameters, classifiers, mytrain, report, stat)
