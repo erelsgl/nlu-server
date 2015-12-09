@@ -409,7 +409,14 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	    			labcom[label]['simulated'] = stats1['labels'][label]
 	    		}, this)
 
-	    		console.log(JSON.stringify(labcom, null, 4))
+	    		var diffcom = {}
+
+	    		_.each(labcom, function(value, label, list){
+	    			if (value['original']['F1']!=value['simulated']['F1'])
+	    				diffcom[label] = value
+	    		}, this)
+
+	    		console.log(JSON.stringify(diffcom, null, 4))
 
 	    		extractGlobal(parameters, classifiers, mytrain, report, stat)
                            
