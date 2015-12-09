@@ -423,7 +423,8 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	    		_.each(stats['labels'], function(performance, label, list){
 	    			labcom[label] = {}
 	    			labcom[label]['original'] = performance
-	    			labcom[label]['simulated'] = stats1['labels'][label]
+	    			if (label in stats1['labels'])
+	    				labcom[label]['simulated'] = stats1['labels'][label]
 	    		}, this)
 
 	    		var diffcom = {}
