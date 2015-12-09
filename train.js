@@ -122,6 +122,21 @@ if (check_single_multi)
 
 	var data = _.flatten(utterset['train'].concat(utterset['test']))
 	
+	// the third of the utterances are multi-label utterances
+	// var sing = 0	
+	// var mult = 0	
+
+	// _.each(data, function(value, key, list){
+	// 	if (value.output.length > 1)
+	// 		mult += 1
+	// 	else
+	// 		sing += 1
+	// }, this)
+
+	// console.log(JSON.stringify(data.length, null, 4))	
+	// console.log(JSON.stringify(mult, null, 4))
+	// console.log(JSON.stringify(sing, null, 4))
+	
 	_.each(data, function(value, key, list){
 		if (value.output.length > 1)
 			multi = multi.concat(value.output)
