@@ -429,19 +429,11 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	    		var diffcom = {}
 
 	    		_.each(labcom, function(value, label, list){
-	    			if (!('simulated' in value))
+	    			if ('simulated' in value)
 	    			{
-	    				console.log(JSON.stringify(value, null, 4))
-	    				process.exit(0)
+	    				if (value['original']['F1']!=value['simulated']['F1'])
+	    					diffcom[label] = value
 	    			}
-	    			console.log(JSON.stringify(value, null, 4))
-	    			if (!('F1' in value['simulated']))
-	    			{
-	    				console.log(JSON.stringify(value, null, 4))
-	    				process.exit(0)
-	    			}
-	    			if (value['original']['F1']!=value['simulated']['F1'])
-	    				diffcom[label] = value
 	    		}, this)
 
 	    		console.log(JSON.stringify(diffcom, null, 4))
