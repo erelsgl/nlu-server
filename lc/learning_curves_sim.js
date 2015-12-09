@@ -432,6 +432,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	    			if ('simulated' in valuee)
 	    			{
 	    				console.log('simulated' in valuee)
+	    				console.log('some' in valuee)
 	    				console.log(JSON.stringify(valuee, null, 4))
 	    				if (valuee['original']['F1']!=valuee['simulated']['F1'])
 	    					diffcom[label] = valuee
