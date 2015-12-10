@@ -3773,10 +3773,13 @@ function simulateds(dataset, size, params)
   dataset = _.flatten(dataset)
 
   _.each(params, function(value, param, list){
-    var F1 = ( value["F1"] == 0 || _.isNaN(value["F1"]) || value["F1"]==-1 ) ? 1 : value["F1"]
+    // var F1 = ( value["F1"] == 0 || _.isNaN(value["F1"]) || value["F1"]==-1 ) ? 1 : value["F1"]
+    var FN = ( value["FN"] == 0 ) ? 1 : value["FN"]
     // params[param]["score"] = (value["TP"]+value["FN"])/F1
-    params[param]["score"] = 1/F1
-    if (F1 > 0.5) params[param]["score"] = 2
+
+    // params[param]["score"] = 1/F1
+    params[param]["score"] = FN
+    // if (F1 > 0.5) params[param]["score"] = 2
     // if (value["F1"] == -1) params[param]["score"] = 1/0.1
   }, this)
 
