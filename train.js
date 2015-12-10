@@ -25,7 +25,8 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
-var check_single_multi = true
+var check_cross_batch = true
+var check_single_multi = false
 var check_ds = false
 var check_ds_context = false
 var binary_seg = false
@@ -176,6 +177,29 @@ if (check_single_multi)
     //     "single": 2
 
 
+if (check_cross_batch)
+{
+	var dataset = bars.loadds("../negochat_private/dialogues")
+	var utterset = bars.getsetcontext(dataset)
+
+	// utterset["train"] = utterset["train"].slice(0,20)
+	// utterset["test"] = utterset["test"].slice(0,5)
+
+	console.log(utterset["train"].length)
+	console.log(_.flatten(utterset["train"]).length)
+	console.log("----")
+	
+	console.log(utterset["test"].length)
+	console.log(_.flatten(utterset["test"]).length)
+
+	utterset["test"] = _.flatten(utterset["test"])
+	utterset["train"] = _.flatten(utterset["train"])
+
+	var stats = trainAndTest.cross_batch(classifier.DS_bigram, bars.copyobj(utterset["train"]), 2)
+
+	console.log(JSON.stringify(stats, null, 4))
+	process.exit(0)
+}
 
 if (check_ds)
 {
