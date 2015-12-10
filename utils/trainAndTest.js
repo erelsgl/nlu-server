@@ -15,6 +15,8 @@ var async = require('async');
 var natural = require('natural');
 var combinations = require('js-combinatorics');
 var bars = require('./bars');
+var distance = require('./distance');
+var partitions = require('limdu/utils/partitions');
 
 /**
  * A short light-weight test function. Tests the given classifier on the given dataset, and 
@@ -527,6 +529,37 @@ module.exports.trainAndTest_hash = function(
 /*
 trainAndTest_batch is created solely for short text classification
 */
+
+module.exports.cross_batch = function(classifierType, dataset, folds) {
+	var labels = {}
+	partitions.partitions(dataset, folds, function(trainSet, testSet, index) {
+		var stats = module.exports.trainAndTest_batch(classifierType, trainSet, testSet)
+
+		_.each(stats['labels'], function(performance, label, list){
+			if (!(label in labels))
+				labels[label] = {}
+			_.each(performance, function(value, perf, list){
+				if (!(perf in labels[label]))
+					labels[label][perf] = []
+				
+				if ((value != -1) && (bars.isNumber(value)))
+					labels[label][perf].push(value)
+				else
+					labels[label][perf].push(0)
+				// labels[label][perf].push(value)
+			}, this)
+		}, this)
+	})	
+
+	_.each(labels, function(performance, label, list){
+		_.each(performance, function(value, perf, list){
+			labels[label][perf] = distance.average(value)
+		}, this)
+	}, this)
+
+	return labels
+};
+
 module.exports.trainAndTest_batch = function(
 		classifierType, 
 		trainSet, testSet, 
