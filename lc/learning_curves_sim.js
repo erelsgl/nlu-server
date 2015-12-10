@@ -14,6 +14,7 @@ var classifier = require(__dirname+"/../classifiers.js")
 var partitions = require('limdu/utils/partitions');
 var trainAndTest_hash = require(__dirname+'/../utils/trainAndTest').trainAndTest_hash;
 var trainAndTest_batch = require(__dirname+'/../utils/trainAndTest').trainAndTest_batch;
+var cross_batch = require(__dirname+'/../utils/trainAndTest').cross_batch;
 var bars = require(__dirname+'/../utils/bars');
 var path = require("path")
 var execSync = require('child_process').execSync
@@ -348,13 +349,13 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			var index = 4
 			var testset = (bars.isDialogue(test) ? _.flatten(test) : test)
 			var sim_train = _.flatten(train.slice(0, index-1))
-			// var buffer_train = _.flatten(train.slice(index+1))
-			var buffer_train = train.slice(index+1)
+			var buffer_train = _.flatten(train.slice(index+1))
+			// var buffer_train = train.slice(index+1)
 
 			// fs.writeFileSync(__dirname + dirr + "fold" + fold, "TEST \n"+JSON.stringify(test, null, 4)+"\n TRAIN \n"+JSON.stringify(train, null, 4), 'utf-8')
 
-			// while ((index <= train.length) && buffer_train.length > 100)
-			while (index <= train.length)
+			while ((index <= train.length) && buffer_train.length > 100)
+			// while (index <= train.length)
 	  		{
 			  	var report = []
 
@@ -385,8 +386,10 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	    	 	console.log(size_last_dial+" size of the last dialogue")
 	    	 	console.log(buffer_train.length+" size of the buffer train")
 
+	    	 	var stats2 = cross_batch(classifier, bars.copyobj(mytrainset), 2)
+	    	 	var results = bars.simulateds(buffer_train, size_last_dial, stats2)
 	    	 	// var results = bars.simulateds(buffer_train, size_last_dial, _.keys(stats1).length > 0 ? stats1['stats']['labels']: stats['stats']['labels'])
-	    	 	var results = bars.simulaterealds(buffer_train, size_last_dial, _.keys(stats1).length > 0 ? stats1['stats']['labels']: stats['stats']['labels'])
+	    	 	// var results = bars.simulaterealds(buffer_train, size_last_dial, _.keys(stats1).length > 0 ? stats1['stats']['labels']: stats['stats']['labels'])
 
 	    	 	console.log(results["simulated"].length+" size of the simulated train")
 	    	 	console.log(results["dataset"].length+" size of the buffer train after simulation")
