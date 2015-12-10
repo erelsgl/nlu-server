@@ -3780,6 +3780,8 @@ function simulateds(dataset, size, params)
     // if (value["F1"] == -1) params[param]["score"] = 1/0.1
   }, this)
 
+  var sim_dataset = []
+
   while (sim_dataset.length < size) {
     
     var label = distribute(params)
@@ -3822,7 +3824,6 @@ function getdist(dialogue)
 
 function distdistance(a,b)
 {
-
   var labels = _.uniq(_.keys(a).concat(_.keys(b)))
   
   var veca = Array(labels.length)
