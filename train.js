@@ -25,9 +25,13 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+var multi_lab = false
+var mmm = false
+var check_cross_batch = false
+var check_single_multi = false
+var check_ds = true
 var check_ds_context = false
 var binary_seg = false
-var check_ds = true
 var do_small_temporary_serialization_test=  false
 var do_cross_dataset_testing = false
 var do_final_test = false
@@ -110,6 +114,173 @@ if (binary_seg)
 	var stats = trainAndTest.trainAndTest_hash(classifier.BinarySegmentation, utterset["train"], utterset["test"], 5)
 }
 
+if (mmm)
+{
+
+	var single = []
+	var multi = []
+
+	var dataset = bars.loadds("../negochat_private/dialogues")
+	var utterset = bars.getsetcontext(dataset)
+
+	var data = _.flatten(utterset['train'].concat(utterset['test']))
+
+	_.each(data, function(value, key, list){
+		if (value.output.length>1)
+			console.log(JSON.stringify(value, null, 4))
+	}, this)
+}
+
+if (multi_lab)
+{
+	var dataset = bars.loadds("../negochat_private/dialogues")
+	var utterset = bars.getsetcontext(dataset)
+
+	var data = _.flatten(utterset['train'].concat(utterset['test']))
+
+	var unlab = 0
+	var single = 0
+	var multi = 0
+	var multioffer = 0
+	var multihash = 0
+
+	var truemulti = []
+	var multistats = []
+	var offerreject = []
+
+	_.each(data, function(value, key, list){
+		if (value.output.length==0)
+			unlab += 1
+
+		if (value.output.length==1)
+			single += 1
+
+		if (value.output.length>1)
+		{
+			multi += 1
+			var intents = _.map(value.output, Hierarchy.splitPartEquallyIntent);
+			intents = _.flatten(intents)
+
+			// console.log(JSON.stringify(intents, null, 4))
+			if ((_.unique(intents).length==1)&&(_.unique(intents)[0]=='Offer'))
+				multioffer += 1
+		}
+
+		if (_.keys(value.outputhash).length>1)
+		{	
+			multihash += 1
+			truemulti.push(value)
+		}
+
+		if (_.isEqual(['Offer','Reject'],_.sortBy(_.keys(value.outputhash),function(num){ return num } ))==true)
+			offerreject.push(value)
+
+		multistats.push(_.sortBy(_.keys(value.outputhash),function(num){ return num } ))
+
+	}, this)
+
+	console.log(JSON.stringify(offerreject, null, 4))
+
+	multistats = _.countBy(multistats, function(num) { return num });
+	// console.log(JSON.stringify(truemulti, null, 4))
+	console.log(JSON.stringify(multistats, null, 4))
+
+	console.log(JSON.stringify("unlab "+unlab, null, 4))
+	console.log(JSON.stringify("single "+single, null, 4))
+	console.log(JSON.stringify("multi "+multi, null, 4))
+	console.log(JSON.stringify("multioffer "+multioffer, null, 4))
+	console.log(JSON.stringify("multihash "+multihash, null, 4))
+}
+
+if (check_single_multi)
+{
+
+	var single = []
+	var multi = []
+
+	var dataset = bars.loadds("../negochat_private/dialogues")
+	var utterset = bars.getsetcontext(dataset)
+
+	var data = _.flatten(utterset['train'].concat(utterset['test']))
+	
+	// the third of the utterances are multi-label utterances
+	// var sing = 0	
+	// var mult = 0	
+
+	// _.each(data, function(value, key, list){
+	// 	if (value.output.length > 1)
+	// 		mult += 1
+	// 	else
+	// 		sing += 1
+	// }, this)
+
+	// console.log(JSON.stringify(data.length, null, 4))	
+	// console.log(JSON.stringify(mult, null, 4))
+	// console.log(JSON.stringify(sing, null, 4))
+	
+	_.each(data, function(value, key, list){
+		if (value.output.length > 1)
+			multi = multi.concat(value.output)
+		else
+			single = single.concat(value.output)
+	}, this)
+
+	console.log(JSON.stringify(multi.length, null, 4))
+	console.log(JSON.stringify(single.length, null, 4))
+	
+	var multis = _.countBy(multi, function(num) { return num })
+	var singles = _.countBy(single, function(num) { return num })
+
+	console.log(JSON.stringify(multis, null, 4))
+	console.log(JSON.stringify(singles, null, 4))
+
+	var aggree = {}
+
+	_.each(multis, function(value, label, list){
+		aggree[label] = {}
+		aggree[label]['multi'] = value
+	}, this)
+
+	_.each(singles, function(value, label, list){
+		if (!(label in aggree))
+			aggree[label] = {}
+		
+		aggree[label]['single'] = value
+	}, this)
+
+	console.log(JSON.stringify(aggree, null, 4))
+	process.exit(0)
+}
+
+    // "{\"Offer\":{\"Pension Fund\":\"20%\"}}": {
+    //     "multi": 45,
+    //     "single": 2
+
+
+if (check_cross_batch)
+{
+	var dataset = bars.loadds("../negochat_private/dialogues")
+	var utterset = bars.getsetcontext(dataset)
+
+	// utterset["train"] = utterset["train"].slice(0,20)
+	// utterset["test"] = utterset["test"].slice(0,5)
+
+	console.log(utterset["train"].length)
+	console.log(_.flatten(utterset["train"]).length)
+	console.log("----")
+	
+	console.log(utterset["test"].length)
+	console.log(_.flatten(utterset["test"]).length)
+
+	utterset["test"] = _.flatten(utterset["test"])
+	utterset["train"] = _.flatten(utterset["train"])
+
+	var stats = trainAndTest.cross_batch(classifier.DS_bigram, bars.copyobj(utterset["train"]), 2)
+
+	console.log(JSON.stringify(stats, null, 4))
+	process.exit(0)
+}
+
 if (check_ds)
 {
 
@@ -145,8 +316,9 @@ if (check_ds)
 	utterset["test"] = _.flatten(utterset["test"])
 	utterset["train"] = _.flatten(utterset["train"])
 
-	var stats = trainAndTest.trainAndTest_batch(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
-	// var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
+	// var stats = trainAndTest.trainAndTest_batch(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
+	var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
+	// var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram_split, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
 
 	// var stats_cl = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 5)
 

@@ -13,6 +13,8 @@ var fs = require('fs');
 var classifier = require(__dirname+"/../classifiers.js")
 var partitions = require('limdu/utils/partitions');
 var trainAndTest_hash = require(__dirname+'/../utils/trainAndTest').trainAndTest_hash;
+var trainAndTest_batch = require(__dirname+'/../utils/trainAndTest').trainAndTest_batch;
+var cross_batch = require(__dirname+'/../utils/trainAndTest').cross_batch;
 var bars = require(__dirname+'/../utils/bars');
 var path = require("path")
 var execSync = require('child_process').execSync
@@ -256,6 +258,15 @@ function thereisdata(data)
 	return output
 }
 
+function countLabel(mytrain, label, single)
+{
+	var results = _.countBy(_.flatten(mytrain), function(utterance) {
+  			return utterance['output'].indexOf(label) != -1 ? 'found':'notfound';
+	});
+
+	return results["found"]
+}
+
 function plot(fold, parameter, stat, classifiers)
 {
 
@@ -339,10 +350,12 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			var testset = (bars.isDialogue(test) ? _.flatten(test) : test)
 			var sim_train = _.flatten(train.slice(0, index-1))
 			var buffer_train = _.flatten(train.slice(index+1))
+			// var buffer_train = train.slice(index+1)
 
 			// fs.writeFileSync(__dirname + dirr + "fold" + fold, "TEST \n"+JSON.stringify(test, null, 4)+"\n TRAIN \n"+JSON.stringify(train, null, 4), 'utf-8')
 
 			while ((index <= train.length) && buffer_train.length > 100)
+			// while (index <= train.length)
 	  		{
 			  	var report = []
 
@@ -358,9 +371,14 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				var classifier	= _.values(classifiers)[0]	
 
 				console.log("size of strandard " + mytrain.length + " in utterances "+ mytrainset.length)
-    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
+//    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
+    			var stats = trainAndTest_batch(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
+
+    			_.each(stats['labels'], function(value, label, list){
+    				stats['labels'][label]['count'] = countLabel(mytrainset, label)
+    			}, this)
 	    		
-	    		console.log(JSON.stringify(stats['stats']['confusion'], null, 4))
+	    		// console.log(JSON.stringify(stats['stats']['confusion'], null, 4))
 	    		report.push(_.pick(stats['stats'], parameters))		    		
 
 	    	 	var size_last_dial = _.flatten(mytrain[mytrain.length-1]).length
@@ -368,7 +386,10 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	    	 	console.log(size_last_dial+" size of the last dialogue")
 	    	 	console.log(buffer_train.length+" size of the buffer train")
 
-	    	 	var results = bars.simulateds(buffer_train, size_last_dial, _.keys(stats1).length > 0 ? stats1['stats']['labels']: stats['stats']['labels'])
+	    	 	var stats2 = cross_batch(classifier, bars.copyobj(mytrainset), 2)
+	    	 	var results = bars.simulateds(buffer_train, size_last_dial, stats2)
+	    	 	// var results = bars.simulateds(buffer_train, size_last_dial, _.keys(stats1).length > 0 ? stats1['stats']['labels']: stats['stats']['labels'])
+	    	 	// var results = bars.simulaterealds(buffer_train, size_last_dial, _.keys(stats1).length > 0 ? stats1['stats']['labels']: stats['stats']['labels'])
 
 	    	 	console.log(results["simulated"].length+" size of the simulated train")
 	    	 	console.log(results["dataset"].length+" size of the buffer train after simulation")
@@ -383,10 +404,58 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 		    	console.log(sim_train.length+" "+mytrainset.length)
 
-		    	var stats1 = trainAndTest_hash(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
+		    	// single label sentences for training
+
+		    	// var sim_train = []
+		    	// _.each(mytrainset, function(value, key, list){
+		    	// 	if (value.output.length==1)
+		    	// 		sim_train.push(value)
+		    	// }, this)
+
+		    	// console.log("Size of the origin train "+mytrainset.length)
+		    	// console.log("Size of the single label train "+sim_train.length)
+		    	
+				// var stats1 = trainAndTest_hash(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
+		    	var stats1 = trainAndTest_batch(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
+
+		    	_.each(stats1['labels'], function(value, label, list){
+    				stats1['labels'][label]['count'] = countLabel(sim_train, label)
+    			}, this)
 	    			    		
 	    		report.push(_.pick(stats1['stats'], parameters))		    		
-	    		
+
+	    		var labcom = {}
+
+	    		_.each(stats['labels'], function(performance, label, list){
+	    			labcom[label] = {}
+	    			labcom[label]['original'] = performance
+	    			if (label in stats1['labels'])
+	    				labcom[label]['simulated'] = stats1['labels'][label]
+	    		}, this)
+
+	    		var diffcom = {}
+	    		var difflist = []
+
+	    		_.each(labcom, function(valuee, label, list){
+	    			if ('simulated' in valuee)
+	    			{
+	    				if (valuee['original']['F1']!=valuee['simulated']['F1'])
+	    				{
+	    					diffcom[label] = valuee
+
+	    					var origF1 = (valuee['original']['F1'] == -1 ) ? 0 : valuee['original']['F1']
+	    					var simF1 = (valuee['simulated']['F1'] == -1 ) ? 0 : valuee['simulated']['F1']
+	    					difflist.push([label, simF1-origF1, valuee['simulated']['count'] - valuee['original']['count']])
+	    				}
+
+	    			}
+	    		}, this)
+
+	    		difflist = _.sortBy(difflist, function(num){ return num[1] })
+
+	    		console.log(JSON.stringify(difflist, null, 4))
+	    		console.log(JSON.stringify(diffcom, null, 4))
+
 	    		extractGlobal(parameters, classifiers, mytrain, report, stat)
                            
                 _.each(parameters, function(parameter, key, list){

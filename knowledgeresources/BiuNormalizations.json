@@ -1,8 +1,14 @@
 [
   {"source": "won't", "target": "will not"}
-, {"source": " 60 ", "target": "60000"}
-, {"source": " 90 ", "target": "90000"}
-, {"source": " 120 ", "target": "90000"}
+, {"source": "60,000", "target": "60000"}
+, {"source": "90,000", "target": "90000"}
+, {"source": "120,000", "target": "120000"}
+, {"source": "60\\,000", "target": "60000"}
+, {"source": "90\\,000", "target": "90000"}
+, {"source": "120\\,000", "target": "120000"}
+, {"source": "60", "target": "60000"}
+, {"source": "90", "target": "90000"}
+, {"source": "120", "target": "120000"}
 , {"source": "don't", "target": "do not"}
 , {"source": "dont", "target": "do not"}
 , {"source": "doesn't", "target": "does not"}

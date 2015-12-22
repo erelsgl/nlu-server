@@ -13,6 +13,7 @@ var fs = require('fs');
 var classifier = require(__dirname+"/../classifiers.js")
 var partitions = require('limdu/utils/partitions');
 var trainAndTest_hash = require(__dirname+'/../utils/trainAndTest').trainAndTest_hash;
+var trainAndTest_batch = require(__dirname+'/../utils/trainAndTest').trainAndTest_batch;
 var bars = require(__dirname+'/../utils/bars');
 var path = require("path")
 var execSync = require('child_process').execSync
@@ -110,40 +111,63 @@ function countLabel(mytrain, label, single)
 	return results["found"]
 }
 
+function convertLabel(label)
+{
+	if (label.indexOf("{")==-1)
+		return label
+	var label_json = JSON.parse(label)
+	
+	var label_str = _.keys(label_json)[0]
+
+        if (_.isObject(_.values(label_json)[0]))
+		label_str += "_"+(_.keys(_.values(label_json)[0])[0]) + "_" + (_.values(_.values(label_json)[0])[0])
+	else
+        	label_str += "_"+_.values(label_json)[0]
+
+        label_str = label_str.replace(" ","_")
+	return label_str
+}
+
 function extractLabels(stats, mytrain, labels, mytest)
 {
 	_.each(stats, function(params, label, list){
 
-		var label_json = JSON.parse(label)
-		var label_str = _.keys(label_json)[0]
+//		var label_json = JSON.parse(label)
+//		var label_str = _.keys(label_json)[0]
 
-		if (_.isObject(_.values(label_json)[0]))
-			label_str += "_"+(_.keys(_.values(label_json)[0])[0]) + "_" + (_.values(_.values(label_json)[0])[0])
-		else
-			label_str += "_"+_.values(label_json)[0]
+//		if (_.isObject(_.values(label_json)[0]))
+//			label_str += "_"+(_.keys(_.values(label_json)[0])[0]) + "_" + (_.values(_.values(label_json)[0])[0])
+//		else
+//			label_str += "_"+_.values(label_json)[0]
 
-		label_str = label_str.replace(" ","_")
+//		label_str = label_str.replace(" ","_")
 
 		var count = countLabel(mytrain, label, true)
 
 		if (!(_.isUndefined(count)))
 		{
-			if (!(label_str in labels))
-				labels[label_str] = {}
+			if (!(label in labels))
+				labels[label] = {}
 
-			labels[label_str]['title'] = countLabel(mytest, label, true)
-
-			if (!(count in labels[label_str]))
-				labels[label_str][count] = {}
+/*			if (_.isUndefined(test_count))
+			{
+				console.log(label)
+				console.log(test_count)
+				console.log(JSON.stringify(mytest, null, 4))
+				process.exit(0)
+			}
+*/
+			if (!(count in labels[label]))
+				labels[label][count] = {}
 
 			_.each(params, function(value, param, list){
 				if (["Recall","Precision","F1","TP","FP","FN"].indexOf(param) != -1)
 				{
-					if (!(param in labels[label_str][count]))
-						labels[label_str][count][param] = []
+					if (!(param in labels[label][count]))
+						labels[label][count][param] = []
 		
 					if (!(_.isNaN(value)))
-						labels[label_str][count][param].push(value)
+						labels[label][count][param].push(value)
 				}
 			}, this)
 		}
@@ -266,14 +290,15 @@ function plot(fold, parameter, stat, classifiers)
 	console.log(JSON.stringify(stat, null, 4))
 
 	var header = "train\t" + Object.keys(classifiers).join("-fold"+fold+"\t")+"-fold"+fold+"\n";
-	fs.writeFileSync(__dirname + dirr + parameter+"fold"+fold, header, 'utf-8')
+	fs.writeFileSync(__dirname + dirr + convertLabel(parameter)+"fold"+fold, header, 'utf-8')
 
 	var str = ""
 	
 	if (fold != 'average')
 	{
 		_.each(stat[parameter], function(value, trainsize, list){ 
-			if (_.isNumber(trainsize))
+
+			if (bars.isNumber(trainsize))
 			{
 			// str += trainsize.toString() + "(" + stat[parameter][trainsize]['_size'] + ")" + "\t"
 				str += trainsize.toString() + "(" + value['__size'][fold]+ ")\t"
@@ -295,7 +320,7 @@ function plot(fold, parameter, stat, classifiers)
 			// if (parameter.indexOf("_"))
 				// var intent = parameter.substring(0,parameter.indexOf("_")).length
 
-			if (_.isNumber(trainsize))
+			if (bars.isNumber(trainsize))
 			{
 				var average = getAverage(stat, parameter, trainsize, classifiers)
 				// var intsize = _.reduce(stat[parameter][trainsize]['__size'], function(memo, num){ return (memo + num) }, 0)/stat[parameter][trainsize]['__size'].length
@@ -313,14 +338,19 @@ function plot(fold, parameter, stat, classifiers)
 	// console.log(parameter)
 	// console.log(values)
 
-	fs.appendFileSync(__dirname + dirr +parameter+"fold"+fold, str, 'utf-8')
+	fs.appendFileSync(__dirname + dirr +convertLabel(parameter)+"fold"+fold, str, 'utf-8')
 
 	if (plot)
 	{
+		var title = ""
+		
+		if ('title' in stat[parameter])
+			title = stat[parameter]['title'].join(" ")
+
 		// var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
-		var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
+		var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + convertLabel(parameter) + "fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
 		// var com = gnuplot +" -p -e \"reset; set title \'"+stat['_sized']+"("+stat['_sizec']+")\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
-		var com = gnuplot +" -p -e \"reset; set title \'"+stat[parameter]['title']+"\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+		var com = gnuplot +" -p -e \"reset; set title \'"+title+"\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + convertLabel(parameter) + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
 		// console.log(com)
 		result = execSync(com)
 	}
@@ -357,7 +387,6 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	var testset = (bars.isDialogue(test) ? _.flatten(test) : test)
 
 			  	// for simulated
-
 				console.log("fold"+fold)
 				console.log("train"+mytrainset.length)
 
@@ -374,23 +403,39 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  		// 	console.log("size of train after cleaning "+mytrainset.length)
 			  		// }
 
+//	    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
 	    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
+				
+					console.log(JSON.stringify(stats['stats'], null, 4))
 		    		console.log("stop trainandTest "+name)
 		    		
 		    		report.push(_.pick(stats['stats'], parameters))		    		
 
 		    		extractLabels(stats['stats']['labels'], mytrain, labels, testset)
 
+				console.log(JSON.stringify(labels, null, 4))
+
 			  	}, this)
 			  	
-                extractGlobal(parameters, classifiers, mytrain, report, stat)
+		                extractGlobal(parameters, classifiers, mytrain, report, stat)
                            
-                _.each(parameters, function(parameter, key, list){
+		        _.each(parameters, function(parameter, key, list){
 					plot(fold, parameter, stat, classifiers)
 					plot('average', parameter, stat, classifiers)
 				})
 
 			} //while (index < train.length)
+
+				// update labels with test size
+
+				_.each(labels, function(value, label, list){
+					if (!('title' in value))
+						labels[label]['title'] = []
+					labels[label]['title'].push(countLabel(testset, label, true))
+				}, this)
+
+				console.log("------------------------")
+				console.log(JSON.stringify(labels, null, 4))
 
 				_.each(labels, function(value, label, list){
 				console.log("plotting")
@@ -412,9 +457,8 @@ if (process.argv[1] === __filename)
 	}, this)
 
 	var classifiers  = {
-			SVM_unigram : classifier.DS_bigram
-			// ,SVM_unigram_single : classifier.DS_bigram
-			// ,SVM_rule : classifier.DS_rule
+			SVM_multi : classifier.DS_bigram,
+			SVM_compose : classifier.DS_bigram_split
 		}
 	
 	var parameters = [
