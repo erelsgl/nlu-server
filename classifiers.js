@@ -66,12 +66,12 @@ var rule = function (classifierType, featureExtractor, featureLookupTable, label
 	})
 }
 
-var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel, multiplyFeaturesByIDF, featureExpansion, featureExpansionScale, featureExpansionPhrase, featureFine, expansionParam) {
+var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, preProcessor, postProcessor, TestSplitLabel, multiplyFeaturesByIDF, featureExpansion, featureExpansionScale, featureExpansionPhrase, featureFine, expansionParam) {
 // var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
 
-		// inputSplitter: inputSplitter,
+		inputSplitter: inputSplitter,
 
 		// featureExpansion: featureExpansion,
 		// featureExpansionScale: featureExpansionScale,
@@ -102,8 +102,8 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 			
 		classifierType: classifierType,
 
-		// InputSplitLabel: InputSplitLabel,
-		// OutputSplitLabel: OutputSplitLabel,
+		preProcessor: preProcessor,
+		postProcessor: postProcessor,
 		// TestSplitLabel: TestSplitLabel
 	});
 };
@@ -112,8 +112,8 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 var regexpNormalizer = ftrs.RegexpNormalizer(
 		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json')));
 
-var regexpNormalizer_simple = ftrs.RegexpNormalizer(
-		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/SimpleNormalizations.json')));
+// var regexpNormalizer_simple = ftrs.RegexpNormalizer(
+// 		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/SimpleNormalizations.json')));
 
 var TCSyn = 
 {
@@ -222,6 +222,97 @@ function ppdb_exec(word, pos, relations, callback)
 	async_adapter.getppdb(word, pos, relations, function(err, candidates){
 		callback(err, candidates)
 	})
+}
+
+// output: only intent
+// and only single labeled or null output
+
+// shoud be prepared for train(input and output) and test(input)
+function preProcessor_onlyIntent(value)
+{
+	if (_.isObject(value))
+	{
+		// it's from test and it's object
+		if ("text" in value)
+		{	
+			var sentence = rules.generatesentence({'input':value.text, 'found': rules.findData(value.text)})['generated']
+			sentence = sentence.replace(/<VALUE>/g,'').replace(/<ATTRIBUTE>/g,'').replace(/NIS/,'').replace(/nis/,'').replace(/track/,'').replace(/USD/,'').trim()
+			value.text = sentence
+			return value	
+		}
+
+		// it's from train
+		if ("input" in value)
+		{
+			value.output = _.map(value.output, Hierarchy.splitPartEquallyIntent);
+			value.output = _.unique(_.flatten(value.output))
+			if (value.output.length > 1)
+				return undefined
+
+			// text in input
+			if (_.isObject(value.input))
+				{
+					var sentence = rules.generatesentence({'input':value.input.text, 'found': rules.findData(value.input.text)})['generated']
+					sentence = sentence.replace(/<VALUE>/g,'').replace(/<ATTRIBUTE>/g,'').replace(/NIS/,'').replace(/nis/,'').replace(/track/,'').replace(/USD/,'').trim()
+					value.input.text = sentence
+
+					return value	
+				}
+			else
+				{
+					var sentence = rules.generatesentence({'input':value.input, 'found': rules.findData(value.input)})['generated']
+					sentence = sentence.replace(/<VALUE>/g,'').replace(/<ATTRIBUTE>/g,'').replace(/NIS/,'').replace(/nis/,'').replace(/track/,'').replace(/USD/,'').trim()
+					value.input = sentence
+
+					return value	
+				}
+		}
+	}
+	else
+	{
+		// it's just string from test
+		sentence_clean = rules.generatesentence({'input':value, 'found': rules.findData(value)})['generated']
+		sentence_clean = sentence_clean.replace(/<VALUE>/g,'').replace(/<ATTRIBUTE>/g,'').replace(/NIS/,'').replace(/nis/,'').replace(/track/,'').replace(/USD/,'').trim()
+		return sentence_clean
+	}
+
+}
+
+function postProcessor(sample,classes)
+{
+
+	// console.log(JSON.stringify(classes, null, 4))
+
+	if (classes.length > 1)
+		console.log("WARNING")
+
+	var attrval = rules.findData(sample)
+
+	var attrs = []
+	var values = []
+
+	_.each(attrval[0], function(value, key, list){
+		attrs.push(value[0])
+	}, this)
+
+	_.each(attrval[1], function(value, key, list){
+		values.push(value[0])
+	}, this)
+
+	console.log("rulezzz")
+	console.log(JSON.stringify(attrval, null, 4))
+
+	// console.log(JSON.stringify(attrval, null, 4))
+	// console.log(JSON.stringify(classes, null, 4))
+	// console.log(JSON.stringify(attrs, null, 4))
+	// console.log(JSON.stringify(values, null, 4))
+
+	var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([classes, attrs, values])))
+	// console.log(JSON.stringify(labels, null, 4))
+
+	// console.log("==========================================")
+
+	return labels
 }
 
 function redis_exec(data, db, callback)
@@ -335,19 +426,11 @@ function normalizer1(sentence) {
 
 function normalizer(sentence) {
 	
+	if (_.isObject(sentence))
+		sentence.text = regexpNormalizer(sentence.text.toLowerCase().trim())
+	else
+		sentence = regexpNormalizer(sentence.toLowerCase().trim())
 
-// in short text classification, text somethins is several sentences
-
-// KELSEY-HAYES CANADA LTD <KEL.TO> NINE MTHS NET
-// kelsey hayes canada ltd lt kel to nine mths net
-
-// CONVERGENT SOLUTIONS INC <CSOL.O> 2ND QTR NET
-// convergent solutions inc lt csol o 2nd qtr net
-
-	
-	// sentence = sentence.toLowerCase().trim();
-
-	// sentence = regexpNormalizer(sentence)
 	// sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
 	
 	// sentence = sentence.replace(/[\<,\>]/g,' ')
@@ -359,11 +442,16 @@ function normalizer(sentence) {
 	return sentence
 }
 
-var regexpString = "([.,;?!]|and)";  // to capture the delimiters
+var regexpString = "([.;?!]|and)";  // to capture the delimiters
 var regexp = new RegExp(regexpString, "i");
 var delimitersToInclude = {"?":true};
 
 function inputSplitter(text) {
+
+	if (_.isObject(text)) text = text.text
+
+	console.log(JSON.stringify(text, null, 4))
+
 	var normalizedParts = [];
 	if (/^and/i.test(text)) {   // special treatment to a sentence that starts with "and"
 		normalizedParts.push("and");
@@ -382,6 +470,9 @@ function inputSplitter(text) {
 		if (part.length>0)
 			normalizedParts.push(part);
 	}
+
+	console.log(JSON.stringify(normalizedParts, null, 4))
+	console.log("-------------------------------")
 
 	return normalizedParts;
 }
@@ -816,12 +907,15 @@ module.exports = {
 		// IntentClass: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
 		// IntentClass: enhance(SvmLinearMulticlassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
 		DS_bigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
+		DS_bigram_split: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
 		DS_bigram_kernel: enhance(SvmPerfKernelBinaryRelevanceClassifier, featureExtractorUBContext, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		// DS_unigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		DS_bigram_con: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBContext, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		DS_rule: rule(SvmPerfBinaryRelevanceClassifier, featureExtractorUBC, new ftrs.FeatureLookupTable(), undefined, true)
 
 };
+
+
 
 
 module.exports.defaultClassifier = module.exports.DS_bigram
