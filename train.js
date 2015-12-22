@@ -25,9 +25,11 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
-var check_cross_batch = true
+var multi_lab = false
+var mmm = false
+var check_cross_batch = false
 var check_single_multi = false
-var check_ds = false
+var check_ds = true
 var check_ds_context = false
 var binary_seg = false
 var do_small_temporary_serialization_test=  false
@@ -110,6 +112,84 @@ if (binary_seg)
 	var dataset = bars.loadds("../negochat_private/dialogues")
 	var utterset = bars.getsetnocontext(dataset)
 	var stats = trainAndTest.trainAndTest_hash(classifier.BinarySegmentation, utterset["train"], utterset["test"], 5)
+}
+
+if (mmm)
+{
+
+	var single = []
+	var multi = []
+
+	var dataset = bars.loadds("../negochat_private/dialogues")
+	var utterset = bars.getsetcontext(dataset)
+
+	var data = _.flatten(utterset['train'].concat(utterset['test']))
+
+	_.each(data, function(value, key, list){
+		if (value.output.length>1)
+			console.log(JSON.stringify(value, null, 4))
+	}, this)
+}
+
+if (multi_lab)
+{
+	var dataset = bars.loadds("../negochat_private/dialogues")
+	var utterset = bars.getsetcontext(dataset)
+
+	var data = _.flatten(utterset['train'].concat(utterset['test']))
+
+	var unlab = 0
+	var single = 0
+	var multi = 0
+	var multioffer = 0
+	var multihash = 0
+
+	var truemulti = []
+	var multistats = []
+	var offerreject = []
+
+	_.each(data, function(value, key, list){
+		if (value.output.length==0)
+			unlab += 1
+
+		if (value.output.length==1)
+			single += 1
+
+		if (value.output.length>1)
+		{
+			multi += 1
+			var intents = _.map(value.output, Hierarchy.splitPartEquallyIntent);
+			intents = _.flatten(intents)
+
+			// console.log(JSON.stringify(intents, null, 4))
+			if ((_.unique(intents).length==1)&&(_.unique(intents)[0]=='Offer'))
+				multioffer += 1
+		}
+
+		if (_.keys(value.outputhash).length>1)
+		{	
+			multihash += 1
+			truemulti.push(value)
+		}
+
+		if (_.isEqual(['Offer','Reject'],_.sortBy(_.keys(value.outputhash),function(num){ return num } ))==true)
+			offerreject.push(value)
+
+		multistats.push(_.sortBy(_.keys(value.outputhash),function(num){ return num } ))
+
+	}, this)
+
+	console.log(JSON.stringify(offerreject, null, 4))
+
+	multistats = _.countBy(multistats, function(num) { return num });
+	// console.log(JSON.stringify(truemulti, null, 4))
+	console.log(JSON.stringify(multistats, null, 4))
+
+	console.log(JSON.stringify("unlab "+unlab, null, 4))
+	console.log(JSON.stringify("single "+single, null, 4))
+	console.log(JSON.stringify("multi "+multi, null, 4))
+	console.log(JSON.stringify("multioffer "+multioffer, null, 4))
+	console.log(JSON.stringify("multihash "+multihash, null, 4))
 }
 
 if (check_single_multi)
@@ -238,6 +318,7 @@ if (check_ds)
 
 	// var stats = trainAndTest.trainAndTest_batch(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
 	var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
+	// var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram_split, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
 
 	// var stats_cl = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 5)
 
