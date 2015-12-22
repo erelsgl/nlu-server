@@ -161,13 +161,18 @@ module.exports.test_hash = function( classifier, testSet1, verbosity) {
 
 		classesWithExplanation = classifier.classify(testSet[i].input, verbosity)
 
+		console.log("*********RESULTS**************")
+		console.log(JSON.stringify(classesWithExplanation, null, 4))
+
 		if (verbosity) actualClasses = classesWithExplanation.classes
 		else
 			actualClasses = classesWithExplanation
 
-		actualClasses = bars.filterlabels(actualClasses)
+		// actualClasses = bars.filterlabels(actualClasses)
 
 		expl = currentStats.addCasesHash(expectedClasses, actualClasses, (verbosity>2));
+
+		console.log(JSON.stringify(expl, null, 4))
 		
 		var sentence_hash = {}
 		sentence_hash['input'] = testSet[i].input
