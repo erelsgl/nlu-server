@@ -1,31 +1,5 @@
 {
     "classifier": "DS_bigram",
-    "fold": "2",
-    "trainsize": 2,
-    "stats": {
-        "Accuracy": 0.26666666666666666,
-        "macroPrecision": null,
-        "macroRecall": 0.10166666666666666,
-        "macroF1": 0.06322689075630253,
-        "microPrecision": 0.6,
-        "microRecall": 0.23076923076923078,
-        "microF1": 0.3333333333333333
-    }
-}{
-    "classifier": "DS_bigram",
-    "fold": "4",
-    "trainsize": 2,
-    "stats": {
-        "Accuracy": 0.28,
-        "macroPrecision": 0.26900584795321636,
-        "macroRecall": 0.17894736842105263,
-        "macroF1": 0.2077251953412944,
-        "microPrecision": 0.5172413793103449,
-        "microRecall": 0.28846153846153844,
-        "microF1": 0.37037037037037035
-    }
-}{
-    "classifier": "DS_bigram",
     "fold": "0",
     "trainsize": 2,
     "stats": {
@@ -52,6 +26,19 @@
     }
 }{
     "classifier": "DS_bigram",
+    "fold": "2",
+    "trainsize": 2,
+    "stats": {
+        "Accuracy": 0.26666666666666666,
+        "macroPrecision": null,
+        "macroRecall": 0.10166666666666666,
+        "macroF1": 0.06322689075630253,
+        "microPrecision": 0.6,
+        "microRecall": 0.23076923076923078,
+        "microF1": 0.3333333333333333
+    }
+}{
+    "classifier": "DS_bigram",
     "fold": "3",
     "trainsize": 2,
     "stats": {
@@ -65,32 +52,6 @@
     }
 }{
     "classifier": "DS_bigram",
-    "fold": "2",
-    "trainsize": 4,
-    "stats": {
-        "Accuracy": 0.26666666666666666,
-        "macroPrecision": 0.2465277777777778,
-        "macroRecall": 0.2465277777777778,
-        "macroF1": 0.17013888888888887,
-        "microPrecision": 0.625,
-        "microRecall": 0.28846153846153844,
-        "microF1": 0.39473684210526316
-    }
-}{
-    "classifier": "DS_bigram",
-    "fold": "4",
-    "trainsize": 4,
-    "stats": {
-        "Accuracy": 0.54,
-        "macroPrecision": 0.40350877192982454,
-        "macroRecall": 0.2631578947368421,
-        "macroF1": 0.306140350877193,
-        "microPrecision": 0.875,
-        "microRecall": 0.40384615384615385,
-        "microF1": 0.5526315789473684
-    }
-}{
-    "classifier": "DS_bigram",
     "fold": "0",
     "trainsize": 4,
     "stats": {
@@ -101,6 +62,19 @@
         "microPrecision": 0.7741935483870968,
         "microRecall": 0.375,
         "microF1": 0.5052631578947369
+    }
+}{
+    "classifier": "DS_bigram",
+    "fold": "4",
+    "trainsize": 2,
+    "stats": {
+        "Accuracy": 0.28,
+        "macroPrecision": 0.26900584795321636,
+        "macroRecall": 0.17894736842105263,
+        "macroF1": 0.2077251953412944,
+        "microPrecision": 0.5172413793103449,
+        "microRecall": 0.28846153846153844,
+        "microF1": 0.37037037037037035
     }
 }{
     "classifier": "DS_bigram",
@@ -130,29 +104,29 @@
     }
 }{
     "classifier": "DS_bigram",
-    "fold": "2",
-    "trainsize": 6,
+    "fold": "4",
+    "trainsize": 4,
     "stats": {
-        "Accuracy": 0.26666666666666666,
-        "macroPrecision": 0.21466666666666667,
-        "macroRecall": 0.18833333333333332,
-        "macroF1": 0.15644444444444447,
-        "microPrecision": 0.6153846153846154,
-        "microRecall": 0.3076923076923077,
-        "microF1": 0.41025641025641024
+        "Accuracy": 0.52,
+        "macroPrecision": 0.3929824561403509,
+        "macroRecall": 0.2631578947368421,
+        "macroF1": 0.3034412955465587,
+        "microPrecision": 0.84,
+        "microRecall": 0.40384615384615385,
+        "microF1": 0.5454545454545454
     }
 }{
     "classifier": "DS_bigram",
-    "fold": "4",
-    "trainsize": 6,
+    "fold": "2",
+    "trainsize": 4,
     "stats": {
-        "Accuracy": 0.6,
-        "macroPrecision": 0.47619047619047616,
-        "macroRecall": 0.34833333333333333,
-        "macroF1": 0.38571428571428573,
-        "microPrecision": 0.7878787878787878,
-        "microRecall": 0.5,
-        "microF1": 0.611764705882353
+        "Accuracy": 0.24444444444444444,
+        "macroPrecision": 0.2465277777777778,
+        "macroRecall": 0.25347222222222227,
+        "macroF1": 0.17708333333333334,
+        "microPrecision": 0.625,
+        "microRecall": 0.28846153846153844,
+        "microF1": 0.39473684210526316
     }
 }{
     "classifier": "DS_bigram",
@@ -161,11 +135,11 @@
     "stats": {
         "Accuracy": 0.42592592592592593,
         "macroPrecision": null,
-        "macroRecall": 0.30533333333333335,
-        "macroF1": 0.26533333333333337,
-        "microPrecision": 0.75,
+        "macroRecall": 0.2935897435897436,
+        "macroF1": 0.25512820512820517,
+        "microPrecision": 0.7297297297297297,
         "microRecall": 0.421875,
-        "microF1": 0.54
+        "microF1": 0.5346534653465347
     }
 }{
     "classifier": "DS_bigram",
@@ -182,6 +156,19 @@
     }
 }{
     "classifier": "DS_bigram",
+    "fold": "4",
+    "trainsize": 6,
+    "stats": {
+        "Accuracy": 0.58,
+        "macroPrecision": 0.4708333333333333,
+        "macroRecall": 0.34833333333333333,
+        "macroF1": 0.3832142857142857,
+        "microPrecision": 0.7647058823529411,
+        "microRecall": 0.5,
+        "microF1": 0.6046511627906977
+    }
+}{
+    "classifier": "DS_bigram",
     "fold": "3",
     "trainsize": 6,
     "stats": {
@@ -192,6 +179,32 @@
         "microPrecision": 0.7027027027027027,
         "microRecall": 0.2988505747126437,
         "microF1": 0.4193548387096775
+    }
+}{
+    "classifier": "DS_bigram",
+    "fold": "2",
+    "trainsize": 6,
+    "stats": {
+        "Accuracy": 0.26666666666666666,
+        "macroPrecision": 0.21466666666666667,
+        "macroRecall": 0.18833333333333332,
+        "macroF1": 0.15644444444444447,
+        "microPrecision": 0.5925925925925926,
+        "microRecall": 0.3076923076923077,
+        "microF1": 0.4050632911392405
+    }
+}{
+    "classifier": "DS_bigram",
+    "fold": "1",
+    "trainsize": 8,
+    "stats": {
+        "Accuracy": 0.3958333333333333,
+        "macroPrecision": 0.40101010101010104,
+        "macroRecall": 0.2971139971139971,
+        "macroF1": 0.3126869342778434,
+        "microPrecision": 0.696969696969697,
+        "microRecall": 0.39655172413793105,
+        "microF1": 0.5054945054945055
     }
 }{
     "classifier": "DS_bigram",
@@ -208,45 +221,6 @@
     }
 }{
     "classifier": "DS_bigram",
-    "fold": "2",
-    "trainsize": 8,
-    "stats": {
-        "Accuracy": 0.35555555555555557,
-        "macroPrecision": 0.2946666666666667,
-        "macroRecall": 0.2816666666666666,
-        "macroF1": 0.2716825396825397,
-        "microPrecision": 0.6,
-        "microRecall": 0.40384615384615385,
-        "microF1": 0.48275862068965514
-    }
-}{
-    "classifier": "DS_bigram",
-    "fold": "0",
-    "trainsize": 8,
-    "stats": {
-        "Accuracy": 0.42592592592592593,
-        "macroPrecision": null,
-        "macroRecall": 0.31153846153846154,
-        "macroF1": 0.2675824175824176,
-        "microPrecision": 0.7631578947368421,
-        "microRecall": 0.453125,
-        "microF1": 0.5686274509803921
-    }
-}{
-    "classifier": "DS_bigram",
-    "fold": "1",
-    "trainsize": 8,
-    "stats": {
-        "Accuracy": 0.3958333333333333,
-        "macroPrecision": 0.35000000000000003,
-        "macroRecall": 0.27456709956709957,
-        "macroF1": 0.29074357015533486,
-        "microPrecision": 0.696969696969697,
-        "microRecall": 0.39655172413793105,
-        "microF1": 0.5054945054945055
-    }
-}{
-    "classifier": "DS_bigram",
     "fold": "3",
     "trainsize": 8,
     "stats": {
@@ -257,6 +231,19 @@
         "microPrecision": 0.82,
         "microRecall": 0.47126436781609193,
         "microF1": 0.5985401459854014
+    }
+}{
+    "classifier": "DS_bigram",
+    "fold": "0",
+    "trainsize": 8,
+    "stats": {
+        "Accuracy": 0.42592592592592593,
+        "macroPrecision": null,
+        "macroRecall": 0.3,
+        "macroF1": 0.25767195767195766,
+        "microPrecision": 0.7435897435897436,
+        "microRecall": 0.453125,
+        "microF1": 0.5631067961165048
     }
 }{
     "classifier": "DS_bigram",
@@ -273,42 +260,42 @@
     }
 }{
     "classifier": "DS_bigram",
-    "fold": "2",
+    "fold": "1",
     "trainsize": 10,
     "stats": {
-        "Accuracy": 0.35555555555555557,
-        "macroPrecision": 0.30133333333333334,
+        "Accuracy": 0.375,
+        "macroPrecision": 0.4753787878787879,
+        "macroRecall": 0.39837662337662344,
+        "macroF1": 0.40815295815295816,
+        "microPrecision": 0.7368421052631579,
+        "microRecall": 0.4827586206896552,
+        "microF1": 0.5833333333333334
+    }
+}{
+    "classifier": "DS_bigram",
+    "fold": "2",
+    "trainsize": 8,
+    "stats": {
+        "Accuracy": 0.37777777777777777,
+        "macroPrecision": 0.3146666666666667,
         "macroRecall": 0.32166666666666666,
-        "macroF1": 0.2878730158730159,
-        "microPrecision": 0.5945945945945946,
+        "macroF1": 0.29834920634920636,
+        "microPrecision": 0.6111111111111112,
         "microRecall": 0.4230769230769231,
-        "microF1": 0.49438202247191015
+        "microF1": 0.5
     }
 }{
     "classifier": "DS_bigram",
     "fold": "0",
     "trainsize": 10,
     "stats": {
-        "Accuracy": 0.4444444444444444,
+        "Accuracy": 0.46296296296296297,
         "macroPrecision": null,
         "macroRecall": 0.35,
         "macroF1": 0.315018315018315,
-        "microPrecision": 0.8157894736842105,
+        "microPrecision": 0.8378378378378378,
         "microRecall": 0.484375,
-        "microF1": 0.607843137254902
-    }
-}{
-    "classifier": "DS_bigram",
-    "fold": "1",
-    "trainsize": 10,
-    "stats": {
-        "Accuracy": 0.3958333333333333,
-        "macroPrecision": 0.47943722943722944,
-        "macroRecall": 0.3870129870129871,
-        "macroF1": 0.40165945165945166,
-        "microPrecision": 0.75,
-        "microRecall": 0.46551724137931033,
-        "microF1": 0.5744680851063829
+        "microF1": 0.6138613861386139
     }
 }{
     "classifier": "DS_bigram",
@@ -328,26 +315,39 @@
     "fold": "4",
     "trainsize": 12,
     "stats": {
-        "Accuracy": 0.64,
-        "macroPrecision": 0.41403508771929826,
-        "macroRecall": 0.4144736842105263,
-        "macroF1": 0.4067521745540321,
-        "microPrecision": 0.7619047619047619,
-        "microRecall": 0.6153846153846154,
-        "microF1": 0.6808510638297872
+        "Accuracy": 0.62,
+        "macroPrecision": 0.4052631578947368,
+        "macroRecall": 0.40131578947368424,
+        "macroF1": 0.39422084623323017,
+        "microPrecision": 0.7560975609756098,
+        "microRecall": 0.5961538461538461,
+        "microF1": 0.6666666666666666
+    }
+}{
+    "classifier": "DS_bigram",
+    "fold": "1",
+    "trainsize": 12,
+    "stats": {
+        "Accuracy": 0.5625,
+        "macroPrecision": 0.5075757575757577,
+        "macroRecall": 0.49603174603174605,
+        "macroF1": 0.48899286987522284,
+        "microPrecision": 0.8444444444444444,
+        "microRecall": 0.6551724137931034,
+        "microF1": 0.737864077669903
     }
 }{
     "classifier": "DS_bigram",
     "fold": "2",
-    "trainsize": 12,
+    "trainsize": 10,
     "stats": {
         "Accuracy": 0.35555555555555557,
-        "macroPrecision": 0.3213333333333333,
+        "macroPrecision": 0.30133333333333334,
         "macroRecall": 0.32166666666666666,
-        "macroF1": 0.3012063492063492,
-        "microPrecision": 0.6388888888888888,
-        "microRecall": 0.4423076923076923,
-        "microF1": 0.5227272727272727
+        "macroF1": 0.2878730158730159,
+        "microPrecision": 0.5641025641025641,
+        "microRecall": 0.4230769230769231,
+        "microF1": 0.48351648351648346
     }
 }{
     "classifier": "DS_bigram",
@@ -358,35 +358,9 @@
         "macroPrecision": 0.5222222222222223,
         "macroRecall": 0.4327160493827161,
         "macroF1": 0.458641975308642,
-        "microPrecision": 0.8043478260869565,
+        "microPrecision": 0.7872340425531915,
         "microRecall": 0.578125,
-        "microF1": 0.6727272727272727
-    }
-}{
-    "classifier": "DS_bigram",
-    "fold": "1",
-    "trainsize": 12,
-    "stats": {
-        "Accuracy": 0.5833333333333334,
-        "macroPrecision": 0.5530303030303031,
-        "macroRecall": 0.5187590187590188,
-        "macroF1": 0.5192959001782531,
-        "microPrecision": 0.8478260869565217,
-        "microRecall": 0.6724137931034483,
-        "microF1": 0.7499999999999999
-    }
-}{
-    "classifier": "DS_bigram",
-    "fold": "3",
-    "trainsize": 12,
-    "stats": {
-        "Accuracy": 0.3709677419354839,
-        "macroPrecision": 0.4601010101010102,
-        "macroRecall": 0.37530423280423275,
-        "macroF1": 0.3859222648696333,
-        "microPrecision": 0.8,
-        "microRecall": 0.45977011494252873,
-        "microF1": 0.5839416058394161
+        "microF1": 0.6666666666666666
     }
 }{
     "classifier": "DS_bigram",
@@ -397,22 +371,22 @@
         "macroPrecision": 0.4929824561403509,
         "macroRecall": 0.4381578947368421,
         "macroF1": 0.4577129097252936,
-        "microPrecision": 0.8,
+        "microPrecision": 0.782608695652174,
         "microRecall": 0.6923076923076923,
-        "microF1": 0.7422680412371133
+        "microF1": 0.7346938775510203
     }
 }{
     "classifier": "DS_bigram",
-    "fold": "2",
-    "trainsize": 14,
+    "fold": "3",
+    "trainsize": 12,
     "stats": {
-        "Accuracy": 0.4,
-        "macroPrecision": 0.33866666666666667,
-        "macroRecall": 0.36666666666666664,
-        "macroF1": 0.32565079365079364,
-        "microPrecision": 0.625,
-        "microRecall": 0.4807692307692308,
-        "microF1": 0.5434782608695652
+        "Accuracy": 0.3709677419354839,
+        "macroPrecision": 0.47676767676767684,
+        "macroRecall": 0.37530423280423275,
+        "macroF1": 0.3970333759807444,
+        "microPrecision": 0.8163265306122449,
+        "microRecall": 0.45977011494252873,
+        "microF1": 0.5882352941176472
     }
 }{
     "classifier": "DS_bigram",
@@ -429,6 +403,45 @@
     }
 }{
     "classifier": "DS_bigram",
+    "fold": "2",
+    "trainsize": 12,
+    "stats": {
+        "Accuracy": 0.35555555555555557,
+        "macroPrecision": 0.3213333333333333,
+        "macroRecall": 0.32166666666666666,
+        "macroF1": 0.3012063492063492,
+        "microPrecision": 0.6216216216216216,
+        "microRecall": 0.4423076923076923,
+        "microF1": 0.5168539325842696
+    }
+}{
+    "classifier": "DS_bigram",
+    "fold": "4",
+    "trainsize": 16,
+    "stats": {
+        "Accuracy": 0.68,
+        "macroPrecision": 0.5021929824561403,
+        "macroRecall": 0.4118421052631579,
+        "macroF1": 0.4387697184136813,
+        "microPrecision": 0.8292682926829268,
+        "microRecall": 0.6538461538461539,
+        "microF1": 0.7311827956989247
+    }
+}{
+    "classifier": "DS_bigram",
+    "fold": "3",
+    "trainsize": 14,
+    "stats": {
+        "Accuracy": 0.3548387096774194,
+        "macroPrecision": 0.41010101010101013,
+        "macroRecall": 0.3216534391534392,
+        "macroF1": 0.33213716108452945,
+        "microPrecision": 0.74,
+        "microRecall": 0.42528735632183906,
+        "microF1": 0.5401459854014599
+    }
+}{
+    "classifier": "DS_bigram",
     "fold": "0",
     "trainsize": 14,
     "stats": {
@@ -442,29 +455,81 @@
     }
 }{
     "classifier": "DS_bigram",
-    "fold": "3",
+    "fold": "1",
+    "trainsize": 16,
+    "stats": {
+        "Accuracy": 0.5,
+        "macroPrecision": 0.5307539682539683,
+        "macroRecall": 0.5039021164021164,
+        "macroF1": 0.5042289137877373,
+        "microPrecision": 0.7755102040816326,
+        "microRecall": 0.6551724137931034,
+        "microF1": 0.7102803738317757
+    }
+}{
+    "classifier": "DS_bigram",
+    "fold": "4",
+    "trainsize": 16,
+    "stats": {
+        "Accuracy": 0.68,
+        "macroPrecision": 0.5021929824561403,
+        "macroRecall": 0.4118421052631579,
+        "macroF1": 0.4387697184136813,
+        "microPrecision": 0.8292682926829268,
+        "microRecall": 0.6538461538461539,
+        "microF1": 0.7311827956989247
+    }
+}{
+    "classifier": "DS_bigram",
+    "fold": "2",
     "trainsize": 14,
     "stats": {
+        "Accuracy": 0.4,
+        "macroPrecision": 0.33575757575757575,
+        "macroRecall": 0.36666666666666664,
+        "macroF1": 0.3237794486215539,
+        "microPrecision": 0.6097560975609756,
+        "microRecall": 0.4807692307692308,
+        "microF1": 0.5376344086021505
+    }
+}{
+    "classifier": "DS_bigram",
+    "fold": "3",
+    "trainsize": 16,
+    "stats": {
         "Accuracy": 0.3709677419354839,
-        "macroPrecision": 0.41111111111111115,
-        "macroRecall": 0.32582010582010584,
-        "macroF1": 0.33424242424242423,
-        "microPrecision": 0.7450980392156863,
-        "microRecall": 0.4367816091954023,
-        "microF1": 0.5507246376811594
+        "macroPrecision": 0.3594017094017094,
+        "macroRecall": 0.31915343915343913,
+        "macroF1": 0.31852813852813855,
+        "microPrecision": 0.7254901960784313,
+        "microRecall": 0.42528735632183906,
+        "microF1": 0.536231884057971
     }
 }{
     "classifier": "DS_bigram",
-    "fold": "4",
+    "fold": "0",
     "trainsize": 16,
     "stats": {
-        "Accuracy": 0.68,
-        "macroPrecision": 0.5021929824561403,
-        "macroRecall": 0.4118421052631579,
-        "macroF1": 0.4387697184136813,
-        "microPrecision": 0.8292682926829268,
-        "microRecall": 0.6538461538461539,
-        "microF1": 0.7311827956989247
+        "Accuracy": 0.5925925925925926,
+        "macroPrecision": 0.5092592592592593,
+        "macroRecall": 0.45123456790123456,
+        "macroF1": 0.4695847362514029,
+        "microPrecision": 0.7959183673469388,
+        "microRecall": 0.609375,
+        "microF1": 0.6902654867256638
+    }
+}{
+    "classifier": "DS_bigram",
+    "fold": "1",
+    "trainsize": 16,
+    "stats": {
+        "Accuracy": 0.5,
+        "macroPrecision": 0.5307539682539683,
+        "macroRecall": 0.5039021164021164,
+        "macroF1": 0.5042289137877373,
+        "microPrecision": 0.7755102040816326,
+        "microRecall": 0.6551724137931034,
+        "microF1": 0.7102803738317757
     }
 }{
     "classifier": "DS_bigram",
@@ -475,61 +540,35 @@
         "macroPrecision": 0.35333333333333333,
         "macroRecall": 0.38666666666666666,
         "macroF1": 0.338984126984127,
-        "microPrecision": 0.6046511627906976,
+        "microPrecision": 0.6190476190476191,
         "microRecall": 0.5,
-        "microF1": 0.5473684210526315
-    }
-}{
-    "classifier": "DS_bigram",
-    "fold": "1",
-    "trainsize": 16,
-    "stats": {
-        "Accuracy": 0.5625,
-        "macroPrecision": 0.6017316017316017,
-        "macroRecall": 0.5588023088023089,
-        "macroF1": 0.5626941685765215,
-        "microPrecision": 0.8297872340425532,
-        "microRecall": 0.6724137931034483,
-        "microF1": 0.7428571428571428
-    }
-}{
-    "classifier": "DS_bigram",
-    "fold": "0",
-    "trainsize": 16,
-    "stats": {
-        "Accuracy": 0.5740740740740741,
-        "macroPrecision": 0.5480769230769231,
-        "macroRecall": 0.4685897435897436,
-        "macroF1": 0.48901931401931403,
-        "microPrecision": 0.8297872340425532,
-        "microRecall": 0.609375,
-        "microF1": 0.7027027027027027
+        "microF1": 0.5531914893617021
     }
 }{
     "classifier": "DS_bigram",
     "fold": "3",
     "trainsize": 16,
     "stats": {
-        "Accuracy": 0.3870967741935484,
-        "macroPrecision": 0.34305923961096374,
-        "macroRecall": 0.30717022441160374,
-        "macroF1": 0.3042245111210628,
-        "microPrecision": 0.74,
+        "Accuracy": 0.3709677419354839,
+        "macroPrecision": 0.3594017094017094,
+        "macroRecall": 0.31915343915343913,
+        "macroF1": 0.31852813852813855,
+        "microPrecision": 0.7254901960784313,
         "microRecall": 0.42528735632183906,
-        "microF1": 0.5401459854014599
+        "microF1": 0.536231884057971
     }
 }{
     "classifier": "DS_bigram",
-    "fold": "4",
+    "fold": "0",
     "trainsize": 16,
     "stats": {
-        "Accuracy": 0.68,
-        "macroPrecision": 0.5021929824561403,
-        "macroRecall": 0.4118421052631579,
-        "macroF1": 0.4387697184136813,
-        "microPrecision": 0.8292682926829268,
-        "microRecall": 0.6538461538461539,
-        "microF1": 0.7311827956989247
+        "Accuracy": 0.5925925925925926,
+        "macroPrecision": 0.5092592592592593,
+        "macroRecall": 0.45123456790123456,
+        "macroF1": 0.4695847362514029,
+        "microPrecision": 0.7959183673469388,
+        "microRecall": 0.609375,
+        "microF1": 0.6902654867256638
     }
 }{
     "classifier": "DS_bigram",
@@ -540,47 +579,8 @@
         "macroPrecision": 0.35333333333333333,
         "macroRecall": 0.38666666666666666,
         "macroF1": 0.338984126984127,
-        "microPrecision": 0.6046511627906976,
+        "microPrecision": 0.6190476190476191,
         "microRecall": 0.5,
-        "microF1": 0.5473684210526315
-    }
-}{
-    "classifier": "DS_bigram",
-    "fold": "1",
-    "trainsize": 16,
-    "stats": {
-        "Accuracy": 0.5625,
-        "macroPrecision": 0.6017316017316017,
-        "macroRecall": 0.5588023088023089,
-        "macroF1": 0.5626941685765215,
-        "microPrecision": 0.8297872340425532,
-        "microRecall": 0.6724137931034483,
-        "microF1": 0.7428571428571428
-    }
-}{
-    "classifier": "DS_bigram",
-    "fold": "3",
-    "trainsize": 16,
-    "stats": {
-        "Accuracy": 0.3870967741935484,
-        "macroPrecision": 0.34305923961096374,
-        "macroRecall": 0.30717022441160374,
-        "macroF1": 0.3042245111210628,
-        "microPrecision": 0.74,
-        "microRecall": 0.42528735632183906,
-        "microF1": 0.5401459854014599
-    }
-}{
-    "classifier": "DS_bigram",
-    "fold": "0",
-    "trainsize": 16,
-    "stats": {
-        "Accuracy": 0.5740740740740741,
-        "macroPrecision": 0.5480769230769231,
-        "macroRecall": 0.4685897435897436,
-        "macroF1": 0.48901931401931403,
-        "microPrecision": 0.8297872340425532,
-        "microRecall": 0.609375,
-        "microF1": 0.7027027027027027
+        "microF1": 0.5531914893617021
     }
 }
