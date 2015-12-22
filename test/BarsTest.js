@@ -15,6 +15,17 @@ var ppdb = require("../research/ppdb/utils.js")
 
 
 describe('Bars utilities', function() {
+
+
+	it('pipeline', function() {
+		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Reject"], [], []])))
+		console.log(JSON.stringify(labels, null, 4))
+	})
+
+	it('coverfilter', function() {
+		var a =  ["{\"Accept\":\"Pension Fund\"}","{\"Accept\":{\"Pension Fund\":\"10%\"}}"]
+		_.isEqual(bars.coverfilter(a), ["{\"Accept\":{\"Pension Fund\":\"10%\"}}"]).should.be.true
+	})
 	
 	it('distdistance', function() {
 		var a = {
@@ -70,6 +81,12 @@ describe('Bars utilities', function() {
 		_.isEqual(bars.filterlabels(["{\"Reject\":true}","{\"Reject\":{\"Leased Car\":\"With leased car\"}}", "{\"Offer\":true}"]), [ '{"Reject":{"Leased Car":"With leased car"}}', "{\"Offer\":true}" ]).should.be.true
 		_.isEqual(bars.filterlabels(["{\"Reject\":true}","{\"Offer\":true}"]), [ "{\"Offer\":true}","{\"Reject\":true}" ]).should.be.true
 		_.isEqual(bars.filterlabels(["{\"Accept\":true}","{\"Offer\":true}"]), [ "{\"Offer\":true}","{\"Accept\":true}" ]).should.be.true
+
+		console.log(JSON.stringify(bars.filterlabels(["{\"Accept\":\"Pension Fund\"}","{\"Accept\":{\"Pension Fund\":\"10%\"}}"]), null, 4))
+
+	
+
+		_.isEqual(bars.filterlabels(["{\"Accept\":\"Pension Fund\"}","{\"Accept\":{\"Pension Fund\":\"10%\"}}"]), ["{\"Accept\":{\"Pension Fund\":\"10%\"}}"]).should.be.true
 	})
 
 	it('ngraminindex', function() {
@@ -727,7 +744,9 @@ describe('Bars utilities', function() {
 		_.isEqual(bars.resolve_emptiness([['Reject'],[],[]]),[['Reject'],[],['true']]).should.equal(true)
 		_.isEqual(bars.resolve_emptiness([['Accept'],[],[]]),[['Accept'],[],['true']]).should.equal(true)
 		_.isEqual(bars.resolve_emptiness([[],[],['Without leased car']]),[['Offer'],['Leased Car'],['Without leased car']])
-		_.isEqual(bars.resolve_emptiness([['Greet'],[],[]]), [ ['Greet' ],[  ],[ true ] ]).should.equal(true)
+
+
+				_.isEqual(bars.resolve_emptiness([['Greet'],[],[]]), [ ['Greet' ],[  ],[ 'true' ] ]).should.equal(true)
 		// _.isEqual(bars.resolve_emptiness([['Accept'],[],['20,000 NIS', 'QA']]), [ [ 'Accept', 'Offer' ],[ 'Salary', 'Job Description' ],[ '20,000 NIS', 'QA' ] ]).should.equal(true)
 		// _.isEqual(bars.resolve_emptiness([[],[],['20,000 NIS']]), [['Offer'],['Salary'],['20,000 NIS']]).should.equal(true)
 		// _.isEqual(bars.resolve_emptiness([['Accept'],[],[]]), [['Accept'],[],['previous']]).should.equal(false)
@@ -742,10 +761,13 @@ describe('Bars utilities', function() {
 		_.isEqual(bars.filterValues([['Offer'],['Accept'],['accept'],['compromise']]), [['accept'],['compromise']]).should.be.true
 	})
 
-	it('correctly resolve emptiness only attribute not sem lang oriented', function() {
-		_.isEqual(bars.resolve_emptiness_rule([['Greet'],[],[]]), [ ['Greet' ],[  ],[ true ] ]).should.equal(true)
-		_.isEqual(bars.resolve_emptiness_rule([['Accept'],[],[]]), [ [ 'Accept' ], [], [ 'previous' ] ]).should.equal(true)
-		_.isEqual(bars.resolve_emptiness_rule([['Accept'],[],['20,000 NIS']]), [ [ 'Accept' ], [ 'Salary' ], [ '20,000 NIS' ] ]).should.equal(true)
+	it('resolve_emptiness_rule', function() {
+		_.isEqual(bars.resolve_emptiness_rule([['Greet'],[],[]]), [['Greet'],[],[true]]).should.equal(true)
+		_.isEqual(bars.resolve_emptiness_rule([['Accept'],[],[]]), [['Accept'],[],[true]]).should.equal(true)
+		_.isEqual(bars.resolve_emptiness_rule([['Reject'],['Salary'],[]]), [['Reject'],['Salary'],[]]).should.equal(true)
+		_.isEqual(bars.resolve_emptiness_rule([['Accept'],[],['120,000 USD']]), [['Accept'],['Salary'],['120,000 USD']]).should.equal(true)
+		_.isEqual(bars.resolve_emptiness_rule([['Offer'],[],['10%']]), [['Offer'],['Pension Fund'],['10%']]).should.equal(true)
+		_.isEqual(bars.resolve_emptiness_rule([['Offer'],[],[]]), [['Offer'],[],[]]).should.equal(true)
 		})
 
 
