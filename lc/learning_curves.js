@@ -387,7 +387,6 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	var testset = (bars.isDialogue(test) ? _.flatten(test) : test)
 
 			  	// for simulated
-
 				console.log("fold"+fold)
 				console.log("train"+mytrainset.length)
 
@@ -405,23 +404,22 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  		// }
 
 //	    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
-	    			var stats = trainAndTest_batch(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
+	    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
 				
-				console.log(JSON.stringify(stats['stats'], null, 4))
-
+					console.log(JSON.stringify(stats['stats'], null, 4))
 		    		console.log("stop trainandTest "+name)
 		    		
 		    		report.push(_.pick(stats['stats'], parameters))		    		
 
 		    		extractLabels(stats['stats']['labels'], mytrain, labels, testset)
 
-				console.log(JSON.stringify(labels, null, 4))
+					console.log(JSON.stringify(labels, null, 4))
 
 			  	}, this)
 			  	
 		                extractGlobal(parameters, classifiers, mytrain, report, stat)
                            
-		                _.each(parameters, function(parameter, key, list){
+		        _.each(parameters, function(parameter, key, list){
 					plot(fold, parameter, stat, classifiers)
 					plot('average', parameter, stat, classifiers)
 				})
@@ -458,9 +456,8 @@ if (process.argv[1] === __filename)
 	}, this)
 
 	var classifiers  = {
-			SVM_unigram : classifier.DS_bigram
-			// ,SVM_unigram_single : classifier.DS_bigram
-			// ,SVM_rule : classifier.DS_rule
+			SVM_multi : classifier.DS_bigram,
+			SVM_compose : classifier.DS_bigram_split
 		}
 	
 	var parameters = [
