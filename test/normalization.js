@@ -23,7 +23,7 @@ describe('normalization test', function() {
 		regexpNormalizer("60k").should.equal("60000")
 		regexpNormalizer("60.000").should.equal("60000")
 		regexpNormalizer("60,000").should.equal("60000")
-		regexpNormalizer(" 60 ").should.equal("60000")
+		regexpNormalizer(" 60 ").should.equal(" 60000 ")
 		regexpNormalizer("10 %").should.equal("10%")
 	})
 })
