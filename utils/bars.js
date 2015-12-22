@@ -158,6 +158,7 @@ semlang = [
   
 
   // '{"Query":"accept"}',
+  '{"Greet":true}',
   '{"Greet":"true"}',
   '{"Quit":"true"}'
   // '{"Query":"issues"}',
@@ -2411,15 +2412,15 @@ function resolve_emptiness_rule(label)
   }, this)
 
   // TODO: to complete the list
-  var previous = ['Accept', 'Reject', 'Insist']
+  var previous = ['Accept', 'Reject', 'Greet','Quit']
   if ((label[1].length == 0) && (label[2].length == 0) && 
     (previous.indexOf(label[0][0])!=-1))
-    label[2].push('previous')
+    label[2].push("true")
 
-  var truel = ['Greet','Quit']
-  if ((label[1].length == 0) && (label[2].length == 0) && 
-    (truel.indexOf(label[0][0])!=-1))
-    label[2].push(true)
+  // var truel = ['Greet','Quit']
+  // if ((label[1].length == 0) && (label[2].length == 0) && 
+  //   (truel.indexOf(label[0][0])!=-1))
+  //   label[2].push(true)
 
   _(3).times(function(n){
     label[n] = _.uniq(label[n])
@@ -2543,8 +2544,8 @@ function resolve_emptiness(label)
 				label = join_labels(label,amb[0])
 	}, this)
 
-  if ((label[0]=='Accept')||(label[0]=='Reject'))
-    label[2].push('true')
+  // if ((label[0]=='Accept')||(label[0]=='Reject'))
+    // label[2].push('true')
 
 	_(3).times(function(n){
 		label[n] = _.uniq(label[n])
@@ -3639,6 +3640,7 @@ function getsetcontext(dataset)
         record['input'] = {}
         record['input']['text'] = turn.input
         record['input']['context'] = context
+        record['outputhash'] = turn.output
         record['output'] = hashtoar(turn.output)
 
         processed_dialogue.push(record)
@@ -3700,6 +3702,64 @@ function hashtoar(hash)
 
 // {\"Reject\":true}",
 // "{\"Reject\":{\"Leased Car\":\"With leased car\"}}"
+
+function coverfilter(labels)
+{
+  var b = _.map(labels, function(num){ return JSON.parse(num) });
+
+  var lists = []
+
+  _.each(b, function(value, key, list){
+    var item = []
+    item.push(_.keys(value)[0])
+    if (_.isObject(_.values(value)[0]))
+    {
+      item.push(_.keys(_.values(value)[0])[0])
+      item.push(_.values(_.values(value)[0])[0])
+    }
+    else
+    item.push(_.values(value)[0]) 
+    lists.push(item)
+  }, this)
+
+  // console.log(JSON.stringify(lists, null, 4))
+
+  var clear = []
+
+  _.each(lists, function(value, key, list){
+    var covered = false
+    _.each(lists, function(value1, key1, list1){
+
+      if (_.isEqual(_.intersection(value, value1), value)==true)
+        if (key!=key1)
+          covered = true
+
+    }, this)
+    if (!covered)
+      clear.push(value)
+  }, this)
+
+  var output = []
+  _.each(clear, function(value, key, list){
+    var item = {}
+
+    if (value[1]=="true")
+      value[1] = true
+
+    if (value.length == 2)
+      item[value[0]] = value[1]
+
+    if (value.length == 3)
+    {
+      item[value[0]] = {}
+      item[value[0]][value[1]] = value[2]
+    }
+
+    output.push(JSON.stringify(item))
+  }, this)
+
+  return output
+}
 
 function filterlabels(labels)
 {
@@ -3773,13 +3833,13 @@ function simulateds(dataset, size, params)
   dataset = _.flatten(dataset)
 
   _.each(params, function(value, param, list){
-    // var F1 = ( value["F1"] == 0 || _.isNaN(value["F1"]) || value["F1"]==-1 ) ? 1 : value["F1"]
-    var FN = ( value["FN"] == 0 ) ? 1 : value["FN"]
+    var F1 = ( value["F1"] == 0 || _.isNaN(value["F1"]) || value["F1"]==-1 ) ? 1 : value["F1"]
+    // var FN = ( value["FN"] == 0 ) ? 1 : value["FN"]
     // params[param]["score"] = (value["TP"]+value["FN"])/F1
 
-    // params[param]["score"] = 1/F1
-    params[param]["score"] = FN
-    // if (F1 > 0.5) params[param]["score"] = 2
+    params[param]["score"] = 1/F1
+    // params[param]["score"] = FN
+    if (F1 > 0.5) params[param]["score"] = 2
     // if (value["F1"] == -1) params[param]["score"] = 1/0.1
   }, this)
 
@@ -3988,5 +4048,6 @@ ngraminindex:ngraminindex,
 extractdatasetallturns:extractdatasetallturns,
 generate_labels:generate_labels,
 getdist:getdist,
-distdistance:distdistance
+distdistance:distdistance,
+coverfilter:coverfilter
 }
