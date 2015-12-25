@@ -152,11 +152,6 @@ module.exports.test_hash = function( classifier, testSet1, verbosity) {
 	
 	for (var i=0; i<testSet.length; ++i) 
 	{
-		var id = 0
-
-		if (i % 10 == 0)
-			console.log(i)
-
 		expectedClasses = testSet[i].output
 
 		classesWithExplanation = classifier.classify(testSet[i].input, verbosity)
@@ -169,19 +164,18 @@ module.exports.test_hash = function( classifier, testSet1, verbosity) {
 			actualClasses = classesWithExplanation
 
 		// actualClasses = bars.filterlabels(actualClasses)
-
-		expl = currentStats.addCasesHash(expectedClasses, actualClasses, (verbosity>2));
-
-		console.log(JSON.stringify(expl, null, 4))
+		// expl = currentStats.addCasesHash(expectedClasses, actualClasses, (verbosity>2));
+		// console.log(JSON.stringify(expl, null, 4))
 		
 		var sentence_hash = {}
-		sentence_hash['input'] = testSet[i].input
-		sentence_hash['output'] = testSet[i].output
-		sentence_hash['expected'] = expectedClasses
-		sentence_hash['classified'] = actualClasses
-		sentence_hash['id'] = id
-		sentence_hash['explanation'] = expl;
-		sentence_hash['explanation_source'] = classesWithExplanation
+		sentence_hash.input = testSet[i].input
+		sentence_hash.output = testSet[i].output
+		sentence_hash.classified = actualClasses
+		sentence_hash.explanation = currentStats.addCasesHash(expectedClasses, actualClasses, (verbosity>2));
+
+		// sentence_hash['expected'] = expectedClasses
+		// sentence_hash['id'] = id
+		// sentence_hash['explanation_source'] = classesWithExplanation
 
 		data_stats.push(sentence_hash);
 	}
@@ -190,12 +184,11 @@ module.exports.test_hash = function( classifier, testSet1, verbosity) {
 		
 		var testEnd = new Date().getTime()
 	
-		classifierstats = {}
-		classifierstats['data'] = data_stats
-		classifierstats['stats'] = currentStats
-		classifierstats['testtime'] = testEnd - testStart
-
-	return classifierstats
+	return {
+		'data': data_stats,
+		'stats': currentStats,
+		'testtime': testEnd - testStart
+	}
 };
 
 module.exports.test_async = function(classifier, testSet, callback) {
@@ -207,15 +200,16 @@ module.exports.test_async = function(classifier, testSet, callback) {
 
 	async.forEachOfSeries(testSet, function (testRecord, testKey, callback1) {
 
-		// console.log("Test "+testKey+" from "+testSet.length)
-		// if (_.isUndefined(testRecord))
-			// callback1()
+		classifier.classifyAsync(testRecord.input, 50, function(error, classes){
 
-		classifier.classifyAsync(testRecord.input, 50, function(error, classesWithExplanation){
+			var record = {}
 
-			classesWithExplanation['explanation'] = currentStats.addCasesHash(testRecord.output, classesWithExplanation, true)
-			classesWithExplanation["input"] = testRecord.input['input']
-			data_stats.push(classesWithExplanation)
+			record.input = testRecord.input
+			record.output = testRecord.output
+			record.classified = classes
+			record.explanation = currentStats.addCasesHash(testRecord.output, classes, true)
+
+			data_stats.push(record)
 			callback1()
 
 		})
@@ -225,14 +219,9 @@ module.exports.test_async = function(classifier, testSet, callback) {
 
 		currentStats.calculateStats()
 
-		classifierstats = {}
-		classifierstats['data'] = data_stats
-		classifierstats['stats'] = currentStats
-		classifierstats['testtime'] = testEnd - testStart
-
-		console.log(JSON.stringify(currentStats, null, 4))
-
-		callback(err, classifierstats)
+		callback(err, { 'data': data_stats,
+						'stats': currentStats,
+						'testtime': testEnd - testStart})
 	})
 }
 
@@ -475,7 +464,7 @@ function label_enrichment(dataset, func)
  */
 
 // module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, callback) {
-module.exports.trainAndTest_async = function(classifierType, trainSet, testSet) {
+module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, callback) {
 
 	var classifier = new classifierType()
 
@@ -488,8 +477,7 @@ module.exports.trainAndTest_async = function(classifierType, trainSet, testSet) 
 		// module.exports.testBatch_async(classifier, testSet, function(error, results){
 		module.exports.test_async(classifier, testSet, function(error, results){
 			results['traintime'] = trainEnd - trainStart
-			return results
-			// callback(error, results)
+			callback(null, results)
 		})
 	})
 }
