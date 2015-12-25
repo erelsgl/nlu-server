@@ -315,8 +315,8 @@ if (check_ds)
 	var dataset = bars.loadds("../negochat_private/dialogues")
 	var utterset = bars.getsetcontext(dataset)
 
-	// utterset["train"] = utterset["train"].slice(0,20)
-	// utterset["test"] = utterset["test"].slice(0,5)
+	utterset["train"] = utterset["train"].slice(0,20)
+	utterset["test"] = utterset["test"].slice(0,5)
 
 	console.log(utterset["train"].length)
 	console.log(_.flatten(utterset["train"]).length)
@@ -330,15 +330,27 @@ if (check_ds)
 
 	// var stats = trainAndTest.trainAndTest_batch(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
 	// var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
-	var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram_split, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
 	// var stats_cl = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 5)
 
-	var stats1 = trainAndTest.trainAndTest_async(classifier.DS_bigram_split_async, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]))
+
+	// var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram_split, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
 	// console.log(JSON.stringify(stats, null, 4))
+
+	trainAndTest.trainAndTest_async(classifier.DS_bigram_split_async, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+		console.log("DONE")
+		console.log(JSON.stringify(results, null, 4))
+		// _.each(results.data, function(value, key, list){
+		// 	if (!_.isEqual(results.data[key].explanation, stats.data[key].explanation))
+		// 	{
+		// 		console.log("sync")
+		// 		console.log(JSON.stringify(stats.data[key], null, 4))
+		// 		console.log("async")
+		// 		console.log(JSON.stringify(results.data[key], null, 4))
+		// 	}
+		// }, this)
+	})
 	
 
-	console.log(JSON.stringify(stats['data'][0], null, 4))
-	console.log(JSON.stringify(stats1['data'][0], null, 4))
 
 	// trainAndTest.trainAndTest_async(classifier.DS_bigram_split, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(error, results){
 	// 	console.log(JSON.stringify(results, null, 4))
