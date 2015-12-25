@@ -26,7 +26,7 @@ function getembed(string, callback)
 		client.get(string, function(err, results) {
 			if (err) callback(err)
 
-			callback(err, JSON.parse(results))
+			callback(err, _.map(results.split(","), parseFloat))
 		})
 	})
 }
