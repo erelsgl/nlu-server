@@ -198,19 +198,6 @@ module.exports.test_hash = function( classifier, testSet1, verbosity) {
 	return classifierstats
 };
 
-module.exports.testBatch_async = function(classifier, testSet, callback) {
-
-	console.log("test")
-	var testStart = new Date().getTime()
-
-	classifier.classifyBatch_async(testSet, function(err, results){
-		
-		var testEnd = new Date().getTime()
-		results['testtime'] = testEnd - testStart
-		callback(err, results)
-	})
-}
-
 module.exports.test_async = function(classifier, testSet, callback) {
 
 	var data_stats = []
@@ -221,16 +208,12 @@ module.exports.test_async = function(classifier, testSet, callback) {
 	async.forEachOfSeries(testSet, function (testRecord, testKey, callback1) {
 
 		// console.log("Test "+testKey+" from "+testSet.length)
+		// if (_.isUndefined(testRecord))
+			// callback1()
 
-		if (_.isUndefined(testRecord))
-			callback1()
+		classifier.classifyAsync(testRecord.input, 50, function(error, classesWithExplanation){
 
-		classifier.classify_async(testRecord["input"], testRecord, function(error, classesWithExplanation){
-			actualClasses = classesWithExplanation.classes
-
-			currentStats.addCasesLabels(testRecord.output, actualClasses);
-
-			classesWithExplanation['explanation'] = currentStats.addCasesHash(testRecord.output, actualClasses, true)
+			classesWithExplanation['explanation'] = currentStats.addCasesHash(testRecord.output, classesWithExplanation, true)
 			classesWithExplanation["input"] = testRecord.input['input']
 			data_stats.push(classesWithExplanation)
 			callback1()
@@ -239,12 +222,15 @@ module.exports.test_async = function(classifier, testSet, callback) {
 	}, function(err){
 
 		var testEnd = new Date().getTime()		
-		
+
+		currentStats.calculateStats()
+
 		classifierstats = {}
-		classifierstats['labels'] = currentStats.retrieveLabels()
 		classifierstats['data'] = data_stats
-		classifierstats['stats'] = currentStats.retrieveStats()
+		classifierstats['stats'] = currentStats
 		classifierstats['testtime'] = testEnd - testStart
+
+		console.log(JSON.stringify(currentStats, null, 4))
 
 		callback(err, classifierstats)
 	})
@@ -488,21 +474,22 @@ function label_enrichment(dataset, func)
  * @author Vasily Konovalov
  */
 
-module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, callback) {
+// module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, callback) {
+module.exports.trainAndTest_async = function(classifierType, trainSet, testSet) {
 
 	var classifier = new classifierType()
 
 	var trainStart = new Date().getTime()
 
-	console.log("enter")
-
-	classifier.trainBatch_async(trainSet, function(err, results){
+	classifier.trainBatchAsync(trainSet, function(err, results){
 		var trainEnd = new Date().getTime()
 		console.log("trained")
-		module.exports.testBatch_async(classifier, testSet, function(error, results){
-		// module.exports.test_async(classifier, testSet, function(error, results){
+		// module.exports.test_hash(classifier, testSet, function(error, results){
+		// module.exports.testBatch_async(classifier, testSet, function(error, results){
+		module.exports.test_async(classifier, testSet, function(error, results){
 			results['traintime'] = trainEnd - trainStart
-			callback(error, results)
+			return results
+			// callback(error, results)
 		})
 	})
 }
@@ -697,3 +684,16 @@ var normalizeClasses = function (expectedClasses) {
 	expectedClasses.sort();
 	return expectedClasses;
 };
+
+// module.exports.testBatch_async = function(classifier, testSet, callback) {
+
+// 	console.log("test")
+// 	var testStart = new Date().getTime()
+
+// 	classifier.classifyBatch_async(testSet, function(err, results){
+		
+// 		var testEnd = new Date().getTime()
+// 		results['testtime'] = testEnd - testStart
+// 		callback(err, results)
+// 	})
+// }
