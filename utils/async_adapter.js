@@ -385,5 +385,6 @@ module.exports = {
   getwordnet:getwordnet,
   getred:getred,
   getwordnetCache:getwordnetCache,
-  getppdbCache:getppdbCache
+  getppdbCache:getppdbCache,
+  getembed:getembed
 }
