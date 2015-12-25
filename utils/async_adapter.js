@@ -18,6 +18,19 @@ var wordnetcachecounter = 0
 var ppdbcache = new NodeCache({'useClones': false});
 var ppdbcachecounter = 0
 
+function getembed(string, callback)
+{
+	client.select(10, function(err, response) {
+		if (err) callback(err)
+
+		client.get(string, function(err, results) {
+			if (err) callback(err)
+
+			callback(err, JSON.parse(results))
+		})
+	})
+}
+
 function getppdbCache(string, pos, db, callback)
 {
 	ppdbcachecounter += 1
