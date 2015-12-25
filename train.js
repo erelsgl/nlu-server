@@ -9,7 +9,6 @@ var async = require('async');
 var Hierarchy = require(__dirname+'/Hierarchy');
 var _ = require('underscore')._;
 var fs = require('fs');
-var trainAndTest= require('./utils/trainAndTest').trainAndTest_hash;
 var Hierarchy = require(__dirname+'/Hierarchy');
 var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
 var trainutils = require('./utils/bars')
@@ -141,7 +140,11 @@ if (multi_lab)
 	var unlab = 0
 	var single = 0
 	var multi = 0
+
+	var multiaccept = 0
+	var multireject = 0
 	var multioffer = 0
+
 	var multihash = 0
 
 	var truemulti = []
@@ -164,6 +167,13 @@ if (multi_lab)
 			// console.log(JSON.stringify(intents, null, 4))
 			if ((_.unique(intents).length==1)&&(_.unique(intents)[0]=='Offer'))
 				multioffer += 1
+
+			if ((_.unique(intents).length==1)&&(_.unique(intents)[0]=='Accept'))
+				multiaccept += 1
+
+			if ((_.unique(intents).length==1)&&(_.unique(intents)[0]=='Reject'))
+				multireject += 1
+
 		}
 
 		if (_.keys(value.outputhash).length>1)
@@ -189,6 +199,8 @@ if (multi_lab)
 	console.log(JSON.stringify("single "+single, null, 4))
 	console.log(JSON.stringify("multi "+multi, null, 4))
 	console.log(JSON.stringify("multioffer "+multioffer, null, 4))
+	console.log(JSON.stringify("multiaccept "+multiaccept, null, 4))
+	console.log(JSON.stringify("multireject "+multireject, null, 4))
 	console.log(JSON.stringify("multihash "+multihash, null, 4))
 }
 
@@ -317,13 +329,20 @@ if (check_ds)
 	utterset["train"] = _.flatten(utterset["train"])
 
 	// var stats = trainAndTest.trainAndTest_batch(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
-	var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
-	// var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram_split, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
-
+	// var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
+	var stats = trainAndTest.trainAndTest_hash(classifier.DS_bigram_split, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
 	// var stats_cl = trainAndTest.trainAndTest_hash(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 5)
 
-	console.log(JSON.stringify(stats, null, 4))
+	var stats1 = trainAndTest.trainAndTest_async(classifier.DS_bigram_split_async, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]))
+	// console.log(JSON.stringify(stats, null, 4))
+	
 
+	console.log(JSON.stringify(stats['data'][0], null, 4))
+	console.log(JSON.stringify(stats1['data'][0], null, 4))
+
+	// trainAndTest.trainAndTest_async(classifier.DS_bigram_split, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(error, results){
+	// 	console.log(JSON.stringify(results, null, 4))
+	// })
 }
 
 if (do_small_temporary_serialization_test) {
