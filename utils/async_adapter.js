@@ -6,10 +6,10 @@ var os = require("os");
 var hostname = os.hostname();
 var wordNet = require('wordnet-magic')
 
-if (hostname == "te-srv4.cs.biu.ac.il")
-	var wn = wordNet("/mnt/ramdisk/wordnet/dict/sqlite-31.db", true)
-else
-	var wn = wordNet()
+// if (hostname == "te-srv4.cs.biu.ac.il")
+	// var wn = wordNet("/mnt/ramdisk/wordnet/dict/sqlite-31.db", true)
+// else
+	// var wn = wordNet()
 
 var NodeCache = require( "node-cache" );
 
