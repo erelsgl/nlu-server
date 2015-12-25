@@ -230,6 +230,8 @@ function ppdb_exec(word, pos, relations, callback)
 // shoud be prepared for train(input and output) and test(input)
 function preProcessor_onlyIntent(value)
 {
+	var initial = value
+
 	if (_.isObject(value))
 	{
 		// it's from test and it's object
@@ -247,7 +249,11 @@ function preProcessor_onlyIntent(value)
 			value.output = _.map(value.output, Hierarchy.splitPartEquallyIntent);
 			value.output = _.unique(_.flatten(value.output))
 			if (value.output.length > 1)
+			{
+				console.log("FILTERED")
+				console.log(JSON.stringify(initial.output, null, 4))
 				return undefined
+			}
 
 			// text in input
 			if (_.isObject(value.input))
@@ -512,8 +518,24 @@ function featureExtractorU(sentence, features) {
 // 	return features;
 // }
 
+function featureExtractorUBCAsync(sentence, features, callback) {
+
+	if (_.isObject(sentence)) sentence = sentence['text']
+
+	sentence = sentence.toLowerCase().trim()
+	sentence = regexpNormalizer(sentence)
+
+	var words = tokenizer.tokenize(sentence);
+	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
+	// var feature = natural.NGrams.ngrams(words, 1)
+
+	_.each(feature, function(feat, key, list){ features[feat] = 1 }, this)
+
+	callback(null, features)
+}
+
 function featureExtractorUBC(sentence, features) {
-	
+
 	if (_.isObject(sentence)) sentence = sentence['text']
 
 	sentence = sentence.toLowerCase().trim()
@@ -526,7 +548,6 @@ function featureExtractorUBC(sentence, features) {
 	_.each(feature, function(feat, key, list){ features[feat] = 1 }, this)
 
 	return features;
-	// callback()
 }
 
 function featureExtractorUBContext(sentence, features) {
@@ -854,7 +875,8 @@ var SvmLinearMulticlassifier = classifiers.SvmLinear.bind(0, {
 	learn_args: "-c 100", 
 	model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearMulti",
 	multiclass: true,
-	multilabel: true
+	train_command: "liblinear_train",
+	test_command: "liblinear_test"
 })
 
 function weightInstance1(instance) {
@@ -907,6 +929,8 @@ module.exports = {
 		// IntentClass: enhance(SvmPerfBinaryRelevanceClassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
 		// IntentClass: enhance(SvmLinearMulticlassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
 		DS_bigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
+		// DS_bigram_split: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
+		DS_bigram_split_async: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBCAsync, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
 		DS_bigram_split: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
 		DS_bigram_kernel: enhance(SvmPerfKernelBinaryRelevanceClassifier, featureExtractorUBContext, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		// DS_unigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
@@ -914,9 +938,6 @@ module.exports = {
 		DS_rule: rule(SvmPerfBinaryRelevanceClassifier, featureExtractorUBC, new ftrs.FeatureLookupTable(), undefined, true)
 
 };
-
-
-
 
 module.exports.defaultClassifier = module.exports.DS_bigram
 
