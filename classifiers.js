@@ -23,6 +23,8 @@ var Hierarchy = require(__dirname+'/Hierarchy');
 var bars = require('./utils/bars')
 var distance = require('./utils/distance.js')
 var execSync = require('child_process').execSync
+var async_adapter = require('./utils/async_adapter')
+
 
 // var async_adapter = require('./utils/async_adapter.js')
 var async = require('async');
@@ -518,6 +520,37 @@ function featureExtractorU(sentence, features) {
 // 	return features;
 // }
 
+function feEmbedAverage(sentence, features, callback) {
+	if (_.isObject(sentence)) sentence = sentence['text']
+	sentence = sentence.toLowerCase().trim()
+	var words = tokenizer.tokenize(sentence);
+	var feature = natural.NGrams.ngrams(words, 1)
+
+	var embs = []
+	async.eachSeries(feature, function(word, callback1){
+
+		async_adapter.getembed(word, function(err, emb){
+			embs.push(emb)
+		})
+
+ 	}, function(err) {
+
+ 		var sumvec = []
+
+ 		_.each(embs, function(value, key, list){ 
+			sumvec = bars.vectorsum(sumvec, value)
+		}, this)
+
+		var sumvec = _.map(sumvec, function(value){ return value/embs.length })
+
+		_.each(sumvec, function(value, key, list){ 
+			features['w2v'+key] = value
+		}, this)
+
+	    callback(null, features)
+	})	
+}
+
 function featureExtractorUBCAsync(sentence, features, callback) {
 
 	if (_.isObject(sentence)) sentence = sentence['text']
@@ -931,6 +964,7 @@ module.exports = {
 		DS_bigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		// DS_bigram_split: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
 		DS_bigram_split_async: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBCAsync, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
+		DS_bigram_split_embed: enhance(SvmLinearBinaryRelevanceClassifier, feEmbedAverage, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false),
 		DS_bigram_split: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
 		DS_bigram_kernel: enhance(SvmPerfKernelBinaryRelevanceClassifier, featureExtractorUBContext, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		// DS_unigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
