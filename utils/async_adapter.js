@@ -25,8 +25,11 @@ function getembed(string, callback)
 
 		client.get(string, function(err, results) {
 			if (err) callback(err)
-
-			callback(err, _.map(results.split(","), parseFloat))
+			
+			if (_.isNull(results))
+				callback(err, Array.apply(null, Array(300)).map(function () { return 0}))
+			else
+				callback(err, _.map(results.split(","), parseFloat))
 		})
 	})
 }
