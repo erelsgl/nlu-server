@@ -54,7 +54,7 @@ var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-]+/});
  * CONSTRUCTORS:
  */
 
-var rule = function (classifierType, featureExtractor, featureLookupTable, labelLookupTable, multiplyFeaturesByIDF) {
+/*var rule = function (classifierType, featureExtractor, featureLookupTable, labelLookupTable, multiplyFeaturesByIDF) {
 	return classifiers.multilabel.Rulebased.bind(0, {
 		ClassifierType:  classifiers.EnhancedClassifier.bind(0, {
 			// normalizer: function normalizer(sentence){return sentence},
@@ -67,7 +67,7 @@ var rule = function (classifierType, featureExtractor, featureLookupTable, label
 			classifierType: classifierType})
 	})
 }
-
+*/
 var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, preProcessor, postProcessor, TestSplitLabel, multiplyFeaturesByIDF, featureExpansion, featureExpansionScale, featureExpansionPhrase, featureFine, expansionParam) {
 // var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 	return classifiers.EnhancedClassifier.bind(0, {
@@ -754,11 +754,11 @@ var SvmPerfBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bi
         // debug: true
 });
 
-var SvmPerfRulebasedClassifier = classifiers.multilabel.Rulebased.bind(0, {
+/*var SvmPerfRulebasedClassifier = classifiers.multilabel.Rulebased.bind(0, {
         ClassifierType: SvmPerfBinaryRelevanceClassifier
         // debug: true
 });
-
+*/
 var SvmLinearBinaryClassifier = classifiers.SvmLinear.bind(0, {
         
         model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearBinary",
@@ -981,7 +981,7 @@ module.exports = {
 		DS_bigram_kernel: enhance(SvmPerfKernelBinaryRelevanceClassifier, featureExtractorUBContext, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		// DS_unigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		DS_bigram_con: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBContext, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
-		DS_rule: rule(SvmPerfBinaryRelevanceClassifier, featureExtractorUBC, new ftrs.FeatureLookupTable(), undefined, true)
+		// DS_rule: rule(SvmPerfBinaryRelevanceClassifier, featureExtractorUBC, new ftrs.FeatureLookupTable(), undefined, true)
 
 };
 
