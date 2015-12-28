@@ -12,11 +12,11 @@ var _ = require('underscore')._;
 var fs = require('fs');
 var classifier = require(__dirname+"/../classifiers.js")
 var partitions = require('limdu/utils/partitions');
-var trainAndTest_hash = require(__dirname+'/../utils/trainAndTest').trainAndTest_hash;
-var trainAndTest_batch = require(__dirname+'/../utils/trainAndTest').trainAndTest_batch;
+var trainAndTest = require(__dirname+'/../utils/trainAndTest')
 var bars = require(__dirname+'/../utils/bars');
 var path = require("path")
 var execSync = require('child_process').execSync
+var async = require('async');
 
 
 // var gnuplot = __dirname + '/gnuplot'
@@ -376,7 +376,8 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 			// fs.writeFileSync(__dirname + dirr + "fold" + fold, "TEST \n"+JSON.stringify(test, null, 4)+"\n TRAIN \n"+JSON.stringify(train, null, 4), 'utf-8')
 
-			while (index <= train.length)
+			//while (index <= train.length)
+			async.whilst(function () { return index <= train.length; }, function(callback_gl)			
 	  		{
 			  	var report = []
 
@@ -387,22 +388,25 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			  	var testset = (bars.isDialogue(test) ? _.flatten(test) : test)
 
 			  	// for simulated
-				console.log("fold"+fold)
-				console.log("train"+mytrainset.length)
+				console.log("DEBUG: FOLD"+fold)
+				console.log("DEBUG: TRAIN "+mytrainset.length)
+				console.log("DEBUG: "+_.keys(classifiers).length)
 
 			  	// _.each(classifiers, function(classifier, name, list){ 
-			  	async.eachSeries(classifiers, function(classifier, callback1){
-
-			  		console.log("start trainan dTest "+name)
-
-					trainAndTest.trainAndTest_async(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), function(err, stats){
+			  	async.eachSeries(_.keys(classifiers), function(classifier, callback1){
+					
+					console.log("DEBUG: classifier "+ classifier)
+		
+					trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(mytrainset), bars.copyobj(testset), function(err, stats){
 	    							
+						console.log("DEBUG: STATS")
 						console.log(JSON.stringify(stats['stats'], null, 4))
-			    		console.log("stop trainandTest "+name)
 			    		
-			    		report.push(_.pick(stats['stats'], parameters))		    		
+			    			report.push(_.pick(stats['stats'], parameters))		    		
 
-			    		extractLabels(stats['stats']['labels'], mytrain, labels, testset)
+			    			extractLabels(stats['stats']['labels'], mytrain, labels, testset)
+		
+						callback1()
 
 					})
 
@@ -411,12 +415,15 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 			        extractGlobal(parameters, classifiers, mytrain, report, stat)
 	                           
 			        _.each(parameters, function(parameter, key, list){
+						console.log("DEBUG: PLOT "+parameter)
 						plot(fold, parameter, stat, classifiers)
 						plot('average', parameter, stat, classifiers)
 					})
+
+				callback_gl()
 				})
 
-			} //while (index < train.length)
+			}, function (err, n){ //while (index < train.length)
 
 				// update labels with test size
 
@@ -433,6 +440,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				console.log("plotting")
 		    		plot('average', label, labels, {"Precision":true, "Recall":true, "F1":true})
 				})
+			})
 
 			}); //fold
 
