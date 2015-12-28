@@ -4,7 +4,7 @@ var async = require('async');
 var _ = require('underscore')._;
 var os = require("os");
 var hostname = os.hostname();
-var wordNet = require('wordnet-magic')
+//var wordNet = require('wordnet-magic')
 
 // if (hostname == "te-srv4.cs.biu.ac.il")
 	// var wn = wordNet("/mnt/ramdisk/wordnet/dict/sqlite-31.db", true)
@@ -13,10 +13,10 @@ var wordNet = require('wordnet-magic')
 
 var NodeCache = require( "node-cache" );
 
-var wordnetcache = new NodeCache({'useClones': false});
-var wordnetcachecounter = 0
-var ppdbcache = new NodeCache({'useClones': false});
-var ppdbcachecounter = 0
+//var wordnetcache = new NodeCache({'useClones': false});
+//var wordnetcachecounter = 0
+//var ppdbcache = new NodeCache({'useClones': false});
+//var ppdbcachecounter = 0
 
 function getembed(string, callback)
 {
