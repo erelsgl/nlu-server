@@ -3415,7 +3415,7 @@ function onlyunigrams(strhash)
   {
     if (a.length != b.length)
     {
-      console.error("The length is different")
+      console.error("The length is different "+a.length+" "+b.length)
       process.exit(0)
     }
 
