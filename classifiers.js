@@ -433,11 +433,16 @@ function normalizer1(sentence) {
 }
 
 function normalizer(sentence) {
+
+//	console.log("norm")
+//	console.log(sentence)
+		
+//	if (_.isObject(sentence))
+//		sentence.text = regexpNormalizer(sentence.text.toLowerCase().trim())
+//	else
+	sentence = regexpNormalizer(sentence.toLowerCase().trim())
 	
-	if (_.isObject(sentence))
-		sentence.text = regexpNormalizer(sentence.text.toLowerCase().trim())
-	else
-		sentence = regexpNormalizer(sentence.toLowerCase().trim())
+//	console.log(sentence)
 
 	// sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
 	
@@ -521,32 +526,36 @@ function featureExtractorU(sentence, features) {
 // }
 
 function feEmbedAverage(sentence, features, callback) {
+
 	if (_.isObject(sentence)) sentence = sentence['text']
 	sentence = sentence.toLowerCase().trim()
 	var words = tokenizer.tokenize(sentence);
-	var feature = natural.NGrams.ngrams(words, 1)
+	var feature = _.flatten(natural.NGrams.ngrams(words, 1))
 
 	var embs = []
 	async.eachSeries(feature, function(word, callback1){
-
+		
 		async_adapter.getembed(word, function(err, emb){
 			embs.push(emb)
+			callback1()
 		})
 
  	}, function(err) {
 
- 		var sumvec = []
+ 		var sumvec = Array.apply(null, Array(300)).map(function () { return 0})
 
  		_.each(embs, function(value, key, list){ 
 			sumvec = bars.vectorsum(sumvec, value)
 		}, this)
 
-		var sumvec = _.map(sumvec, function(value){ return value/embs.length })
+		if (embs.length > 0)
+			var sumvec = _.map(sumvec, function(value){ return value/embs.length })
 
 		_.each(sumvec, function(value, key, list){ 
 			features['w2v'+key] = value
 		}, this)
 
+    	    //console.log(_.keys(features).length)
 	    callback(null, features)
 	})	
 }
