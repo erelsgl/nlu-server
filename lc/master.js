@@ -291,7 +291,8 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var thr = 0
 
 	cluster.setupMaster({
-  	exec: __dirname + '/worker.js',
+  	exec: __dirname + '/worker_async.js',
+  	// exec: __dirname + '/worker.js',
 	// args: [JSON.stringify({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len})],
 	// silent: false
 	});
@@ -346,7 +347,7 @@ if (process.argv[1] === __filename)
 {
 	var folds = 5
 
-	var classifiers = ['DS_bigram', 'DS_bigram_kernel']
+	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed']
 
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
@@ -381,10 +382,6 @@ module.exports = {
 	plotlcagrlen:plotlcagrlen,
 	plotlcagrlenaverge:plotlcagrlenaverge,
 } 
-
-
-
-
 
 // {
 //     "Accuracy": {
