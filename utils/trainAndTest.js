@@ -468,6 +468,7 @@ module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, 
 
 	var testSet_copy = JSON.parse(JSON.stringify(testSet))
 	var trainSet_copy = JSON.parse(JSON.stringify(trainSet))
+
 	var classifier = new classifierType()
 	var trainStart = new Date().getTime()
 
