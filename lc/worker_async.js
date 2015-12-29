@@ -16,16 +16,16 @@ var thread = process.env["thread"]
 var msg = clc.xterm(thread)
 
 if (cluster.isWorker)
-	console.log(msg("worker: started"))
+	console.log(msg("DEBUG: worker "+ process.pid+": started"))
 
 process.on('message', function(message) {
-    console.log(msg('worker ' + process.pid + ' received message from master.'))
+    console.log(msg('DEBUG: worker ' + process.pid + ' received message from master.'))
 	
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
 
-	console.log(msg("train is array:"+_.isArray(train) + " and its size "+train.length))
-	console.log(msg("test is array:"+_.isArray(test) + " and its size "+test.length))
+	console.log(msg("DEBUG: worker "+process.pid+": train is array:"+_.isArray(train) + " and its size "+train.length))
+	console.log(msg("DEBUG: worker "+process.pid+": test is array:"+_.isArray(test) + " and its size "+test.length))
 
 	var index = 0
 
@@ -41,7 +41,7 @@ process.on('message', function(message) {
 	       	var mytrainex = (bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)
 			var mytestex  = (bars.isDialogue(test) ? _.flatten(test) : test)
 
-			console.log(msg("worker "+process["pid"]+": index=" + index +
+			console.log(msg("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+mytrainex.length+
 				" test_dialogue="+test.length +" test_turns="+mytestex.length+
 				" classifier="+classifier+ " fold="+fold))
@@ -51,7 +51,7 @@ process.on('message', function(message) {
 
 		    		var uniqueid = new Date().getTime()
 
-			    	console.log(msg("worker "+process["pid"]+": traintime="+
+			    	console.log(msg("DEBUG: worker "+process["pid"]+": traintime="+
 			    		stats['traintime']/1000 + " testtime="+ 
 			    		stats['testtime']/1000 + " classifier="+classifier + 
 			    		" Accuracy="+stats['stats']['Accuracy']+ " fold="+fold))
@@ -75,7 +75,7 @@ process.on('message', function(message) {
 			   	})
 	    	},
     	function (err) {
-			console.log(msg("worker "+process["pid"]+": exiting"))
+			console.log(msg("DEBUG: worker "+process["pid"]+": exiting"))
 			process.exit()
 		})
 			  	
