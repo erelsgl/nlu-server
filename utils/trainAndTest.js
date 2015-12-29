@@ -466,16 +466,17 @@ function label_enrichment(dataset, func)
 // module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, callback) {
 module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, callback) {
 
+	var testSet_copy = JSON.parse(JSON.stringify(testSet))
+	var trainSet_copy = JSON.parse(JSON.stringify(trainSet))
 	var classifier = new classifierType()
-
 	var trainStart = new Date().getTime()
 
-	classifier.trainBatchAsync(trainSet, function(err, results){
+	classifier.trainBatchAsync(trainSet_copy, function(err, results){
 		var trainEnd = new Date().getTime()
 		console.log("trained")
 		// module.exports.test_hash(classifier, testSet, function(error, results){
 		// module.exports.testBatch_async(classifier, testSet, function(error, results){
-		module.exports.test_async(classifier, testSet, function(error, results){
+		module.exports.test_async(classifier, testSet_copy, function(error, results){
 			results['traintime'] = trainEnd - trainStart
 			callback(null, results)
 		})
