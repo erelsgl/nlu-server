@@ -353,7 +353,7 @@ if (process.argv[1] === __filename)
 {
 	var folds = 5
 
-	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed']
+	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_embed_unig']
 
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
@@ -364,7 +364,7 @@ if (process.argv[1] === __filename)
 
 	var dataset = utterset["train"].concat(utterset["test"])
 
-//	dataset = dataset.slice(0,20)
+	// dataset = dataset.slice(0,20)
 
 	// clean graphs
 	var lc = __dirname + "/learning_curves"
@@ -374,7 +374,7 @@ if (process.argv[1] === __filename)
 		fs.unlinkSync(lc+"/"+value)
 	}, this)
 
-	console.log("master: dataset size "+ dataset.length)
+	console.log("DEBUG: master: dataset size "+ dataset.length)
 
 	learning_curves(classifiers, folds, dataset, function(){
 		console.log()
