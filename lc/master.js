@@ -273,12 +273,12 @@ function plotlc(fold, parameter, stat)
 
 	var string = getstringlc(output)
 
-	var mapfile = __dirname+"/lc/"+fold+"_"+parameter
+	var mapfile = __dirname+"/learning_curves/"+fold+"_"+parameter
 
 	fs.appendFileSync(plotfile, string)
     fs.writeFileSync(mapfile, string)
 
-    var command = gnuplot +" -e \"set output 'lc/lc/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=2:"+(classifiers.length+1)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3\""
+    var command = gnuplot +" -e \"set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=2:"+(classifiers.length+1)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3\""
     console.log(command)
     child_process.execSync(command)
 
@@ -315,18 +315,21 @@ function learning_curves(classifiers, folds, dataset, callback)
 			thr += 1	
 
 			worker.on('disconnect', function(){
-			  	console.log("master: finished")
+			  	console.log("DEBUG: master: finished")
 			  	if (Object.keys(cluster.workers).length == 1)
 			  	{
-					console.log("all workers are disconnected")
+					console.log("DEBUG: all workers are disconnected")
 			  		_.each(stat, function(data, param, list){
 						// update the graph for current fold per parameter
 						_(folds).times(function(fold){
 							plotlc(fold, param, stat)
+							console.log("DEBUG: param "+param+" fold "+fold+" build")
 						})
 						// build average per parameters
 						plotlc('average', param, stat)
+				
 					})
+					console.log(JSON.stringify(stat, null, 4))
 			  	}
 			})
 
@@ -348,10 +351,9 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 if (process.argv[1] === __filename)
 {
-	var folds = 1
+	var folds = 5
 
-	//var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed']
-	var classifiers = ['DS_bigram_split_embed']
+	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed']
 
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
@@ -362,10 +364,10 @@ if (process.argv[1] === __filename)
 
 	var dataset = utterset["train"].concat(utterset["test"])
 
-	dataset = dataset.slice(0,20)
+//	dataset = dataset.slice(0,20)
 
 	// clean graphs
-	var lc = __dirname + "/lc"
+	var lc = __dirname + "/learning_curves"
 	var graph_files = fs.readdirSync(lc)
 
 	_.each(graph_files, function(value, key, list){ 
