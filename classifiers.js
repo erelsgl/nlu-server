@@ -443,6 +443,13 @@ function normalizer(sentence) {
 //	if (_.isObject(sentence))
 //		sentence.text = regexpNormalizer(sentence.text.toLowerCase().trim())
 //	else
+	if (_.isUndefined(sentence))
+	{
+	
+	throw new Error("For some reason sentence is undefined")
+	process.exit(0)
+	}	
+
 	sentence = regexpNormalizer(sentence.toLowerCase().trim())
 	
 //	console.log(sentence)
