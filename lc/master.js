@@ -304,6 +304,9 @@ function learning_curves(classifiers, folds, dataset, callback)
 			var worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'thread': thr})
 			
 			var data = partitions.partitions_consistent_by_fold(dataset, folds, fold)
+
+			console.log("DEBUG: train size "+data.train.length)
+			console.log("DEBUG: test size "+data.test.length)
 			
 			worker.send({ 
 						'train': JSON.stringify(data['train']), 
@@ -345,9 +348,10 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 if (process.argv[1] === __filename)
 {
-	var folds = 5
+	var folds = 1
 
-	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed']
+	//var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed']
+	var classifiers = ['DS_bigram_split_embed']
 
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
