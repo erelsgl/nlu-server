@@ -358,10 +358,11 @@ if (process.argv[1] === __filename)
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
 
-	var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
+	// var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
 	// var utterset = bars.getsetnocontext(dataset)
-	var utterset = bars.getsetcontext(dataset)
-
+	
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
+	var utterset = bars.getsetcontext(data)
 	var dataset = utterset["train"].concat(utterset["test"])
 
 	// dataset = dataset.slice(0,20)
