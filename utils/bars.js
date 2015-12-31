@@ -3637,13 +3637,14 @@ function getsetcontext(dataset)
       if (turn.role == "Employer")
       {
         var record = {}
-        record['input'] = {}
-        record['input']['text'] = turn.input
-        record['input']['context'] = context
-        record['outputhash'] = turn.output
-        record['output'] = hashtoar(turn.output)
+        // record['input'] = {}
+        // record['input']['text'] = turn.input
+        // record['input']['context'] = context
+        turn['input']['context'] = context
+        turn['outputhash'] = turn.output
+        turn['output'] = hashtoar(turn.output)
 
-        processed_dialogue.push(record)
+        processed_dialogue.push(turn)
         context = []
       }
     }, this)
