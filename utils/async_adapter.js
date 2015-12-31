@@ -34,6 +34,33 @@ function getembed(string, callback)
 	})
 }
 
+function getppdb(string, pos, db, relation, callback)
+{	
+	var output = []
+
+	client.select(db, function(err, response) {
+		if (err) callback(err)
+
+		client.smembers(string, function(err, replies) {
+			if (err) callback(err)
+
+			_.each(replies, function(value, key, list){ 
+
+				var splited = value.split("^")
+				if (splited[1] = pos) 
+					if (_.isUndefined(relation))
+						output.push([splited[0], parseFloat(splited[2]), parseFloat(splited[3]]))
+					else
+						if (splited[4]==relation)
+							output.push([splited[0], parseFloat(splited[2]), parseFloat(splited[3]]))
+			}, this)
+
+			callback(err, output)
+        })
+	})	
+}
+
+
 function getppdbCache(string, pos, db, callback)
 {
 	ppdbcachecounter += 1
@@ -56,28 +83,28 @@ function getppdbCache(string, pos, db, callback)
 	})
 }
 
-function getppdb(string, pos, db, callback)
-{	
-	var output = []
+// function getppdb(string, pos, db, callback)
+// {	
+// 	var output = []
 
-	client.select(db, function(err, response) {
-		if (err) callback(err)
+// 	client.select(db, function(err, response) {
+// 		if (err) callback(err)
 
-		client.zrange(string, 0, -1, 'WITHSCORES', function(err, replies) {
-			if (err) callback(err)
+// 		client.zrange(string, 0, -1, 'WITHSCORES', function(err, replies) {
+// 			if (err) callback(err)
 
-			_.each(replies, function(value, key, list){ 
+// 			_.each(replies, function(value, key, list){ 
 
-				var wordpos = value.split("^")
-				if (wordpos[1] = pos) 
-					if (key % 2 == 0)
-						output.push(wordpos[0])
-			}, this)
+// 				var wordpos = value.split("^")
+// 				if (wordpos[1] = pos) 
+// 					if (key % 2 == 0)
+// 						output.push(wordpos[0])
+// 			}, this)
 
-			callback(err, _.uniq(output))
-        })
-	})	
-}
+// 			callback(err, _.uniq(output))
+//         })
+// 	})	
+// }
 
 
 function getwordnetCache(string, pos, relation, callback)
