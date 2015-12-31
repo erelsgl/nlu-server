@@ -34,6 +34,9 @@ function getembed(string, callback)
 	})
 }
 
+// splited[2] - PPDB 1.0 Score
+// splited[3] - PPDB 2.0 Score
+
 function getppdb(string, pos, db, relation, callback)
 {	
 	var output = []
@@ -59,7 +62,6 @@ function getppdb(string, pos, db, relation, callback)
         })
 	})	
 }
-
 
 function getppdbCache(string, pos, db, callback)
 {
