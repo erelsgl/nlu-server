@@ -52,10 +52,10 @@ function getppdb(string, pos, db, relation, callback)
 				var splited = value.split("^")
 				if (splited[1] = pos) 
 					if (_.isUndefined(relation))
-						output.push([splited[0], parseFloat(splited[2]), parseFloat(splited[3]]))
+						output.push([splited[0], parseFloat(splited[2]), parseFloat(splited[3])])
 					else
 						if (splited[4]==relation)
-							output.push([splited[0], parseFloat(splited[2]), parseFloat(splited[3]]))
+							output.push([splited[0], parseFloat(splited[2]), parseFloat(splited[3])])
 			}, this)
 
 			callback(err, output)
