@@ -535,8 +535,50 @@ function featureExtractorU(sentence, features) {
 // 	return features;
 // }
 
-function feEmbedAverageUnigram(sentence, features, callback) {
-if (_.isObject(sentence)) sentence = sentence['text']
+
+//  if train then true
+function feExpansionTrivial(input, features, train, callback) {
+
+	if (_.isObject(sentence)) sentence = sentence['text']
+
+	sentence = sentence.toLowerCase().trim()
+	var words = tokenizer.tokenize(sentence);
+	var unigrams = _.flatten(natural.NGrams.ngrams(words, 1))
+
+	_.each(feature, function(feat, key, list){ features[feat] = 1 }, this)
+
+	if (train)
+	{		
+		
+		callback(null, features)
+	}
+	else
+	{
+		var poses = {}
+
+		_.each(input['sentences'], function(sentence, key, list){ 
+			_.each(sentence['tokens'], function(token, key, list){ 
+				poses[token.word] = token.pos
+			}, this)	
+		}, this)
+
+		_.each(unigrams, function(unigram, key, list){
+			getppdb(unigram, poses[unigram], 2, undefined,  function(err, results){
+				_.each(results, function(expan, key, list){ 
+					features[expan[0]] = 1
+				}, this)
+			})
+		}, this)
+
+		console.log(JSON.stringify(features, null, 4))
+		process.exit(0)
+
+		callback(null, features)	
+	}
+}
+
+function feEmbedAverageUnigram(sentence, features, train, callback) {
+	if (_.isObject(sentence)) sentence = sentence['text']
 	sentence = sentence.toLowerCase().trim()
 	var words = tokenizer.tokenize(sentence);
 	var unigrams = _.flatten(natural.NGrams.ngrams(words, 1))
@@ -573,7 +615,7 @@ if (_.isObject(sentence)) sentence = sentence['text']
 	})	
 }	
 
-function feEmbedAverage(sentence, features, callback) {
+function feEmbedAverage(sentence, features, train, callback) {
 
 	if (_.isObject(sentence)) sentence = sentence['text']
 	sentence = sentence.toLowerCase().trim()
@@ -608,7 +650,7 @@ function feEmbedAverage(sentence, features, callback) {
 	})	
 }
 
-function featureExtractorUBCAsync(sentence, features, callback) {
+function featureExtractorUBCAsync(sentence, features, train, callback) {
 
 	if (_.isObject(sentence)) sentence = sentence['text']
 
@@ -1020,6 +1062,7 @@ module.exports = {
 		// IntentClass: enhance(SvmLinearMulticlassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
 		DS_bigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		// DS_bigram_split: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
+		DS_bigram_split_exp: enhance(SvmLinearMulticlassifier, feExpansionTrivial, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
 		DS_bigram_split_async: enhance(SvmLinearMulticlassifier, featureExtractorUBCAsync, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
 		DS_bigram_split_embed: enhance(SvmLinearMulticlassifier, feEmbedAverage, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false),
 		DS_bigram_split_embed_unig: enhance(SvmLinearMulticlassifier, feEmbedAverageUnigram, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false),
@@ -1028,6 +1071,7 @@ module.exports = {
 		// DS_unigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorU, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		DS_bigram_con: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBContext, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		// DS_rule: rule(SvmPerfBinaryRelevanceClassifier, featureExtractorUBC, new ftrs.FeatureLookupTable(), undefined, true)
+
 
 };
 
