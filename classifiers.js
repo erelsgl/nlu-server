@@ -539,42 +539,53 @@ function featureExtractorU(sentence, features) {
 //  if train then true
 function feExpansionTrivial(input, features, train, callback) {
 
-	if (_.isObject(sentence)) sentence = sentence['text']
+	var sentence = ""
+	if (_.isObject(input)) sentence = input.text
+
+	console.log("DEBUG: "+sentence+" train  "+train)
 
 	sentence = sentence.toLowerCase().trim()
 	var words = tokenizer.tokenize(sentence);
 	var unigrams = _.flatten(natural.NGrams.ngrams(words, 1))
 
-	_.each(feature, function(feat, key, list){ features[feat] = 1 }, this)
+	_.each(unigrams, function(unigram, key, list){ features[unigram] = 1 }, this)
 
 	if (train)
-	{		
-		
-		callback(null, features)
-	}
-	else
 	{
 		var poses = {}
-
-		_.each(input['sentences'], function(sentence, key, list){ 
+		
+		_.each(input['parse']['sentences'], function(sentence, key, list){ 
 			_.each(sentence['tokens'], function(token, key, list){ 
 				poses[token.word] = token.pos
 			}, this)	
 		}, this)
 
-		_.each(unigrams, function(unigram, key, list){
-			getppdb(unigram, poses[unigram], 2, undefined,  function(err, results){
-				_.each(results, function(expan, key, list){ 
-					features[expan[0]] = 1
-				}, this)
-			})
-		}, this)
+		async.waterfall([
+		    function(callbackl) {
+			async.forEachOfSeries(unigrams, function(unigram, dind, callback2){ 
 
-		console.log(JSON.stringify(features, null, 4))
-		process.exit(0)
+				console.log("DEBUG: to exp: "+unigram+" "+poses[unigram])
+				async_adapter.getppdb(unigram, poses[unigram], 1, undefined,  function(err, results){
+//					console.log("DEBUG: expansioned "+results)
+					_.each(results, function(expan, key, list){ 
+						features[expan[0]] = 1
+					}, this)
+					callback2()
+				})
+			}, function(err){callbackl()})
+		}],
+		function (err, result) {
+			console.log("DEBUG EXP: "+unigrams+ " EXPANSIONED "+_.keys(features))
+	                callback(null, features)
+	     });
 
+	}
+	else
+	{
+		console.log("DEBUG: callback classify " + _.keys(features))
 		callback(null, features)	
 	}
+	
 }
 
 function feEmbedAverageUnigram(sentence, features, train, callback) {
