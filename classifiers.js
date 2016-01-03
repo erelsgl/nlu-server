@@ -539,6 +539,7 @@ function featureExtractorU(sentence, features) {
 function feExpansionTrivial(sample, features, train, callback) {
 
 	var sentence = ""
+	
 	if (_.isObject(sample)) 
 		if ("input" in sample)
 			sentence = sample.input.text
@@ -601,8 +602,15 @@ function feExpansionTrivial(sample, features, train, callback) {
 	
 }
 
-function feEmbedAverageUnigram(sentence, features, train, callback) {
-	if (_.isObject(sentence)) sentence = sentence['text']
+function feEmbedAverageUnigram(sample, features, train, callback) {
+	var sentence = ""
+	
+	if (_.isObject(sample)) 
+		if ("input" in sample)
+			sentence = sample.input.text
+		else
+			sentence = sample.text
+
 	sentence = sentence.toLowerCase().trim()
 	var words = tokenizer.tokenize(sentence);
 	var unigrams = _.flatten(natural.NGrams.ngrams(words, 1))
@@ -639,9 +647,16 @@ function feEmbedAverageUnigram(sentence, features, train, callback) {
 	})	
 }	
 
-function feEmbedAverage(sentence, features, train, callback) {
+function feEmbedAverage(sample, features, train, callback) {
 
-	if (_.isObject(sentence)) sentence = sentence['text']
+	var sentence = ""
+	
+	if (_.isObject(sample)) 
+		if ("input" in sample)
+			sentence = sample.input.text
+		else
+			sentence = sample.text
+
 	sentence = sentence.toLowerCase().trim()
 	var words = tokenizer.tokenize(sentence);
 	var feature = _.flatten(natural.NGrams.ngrams(words, 1))
@@ -674,9 +689,15 @@ function feEmbedAverage(sentence, features, train, callback) {
 	})	
 }
 
-function featureExtractorUBCAsync(sentence, features, train, callback) {
+function featureExtractorUBCAsync(sample, features, train, callback) {
 
-	if (_.isObject(sentence)) sentence = sentence['text']
+	var sentence = ""
+	
+	if (_.isObject(sample)) 
+		if ("input" in sample)
+			sentence = sample.input.text
+		else
+			sentence = sample.text
 
 	sentence = sentence.toLowerCase().trim()
 	sentence = regexpNormalizer(sentence)
