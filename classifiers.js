@@ -252,8 +252,7 @@ function preProcessor_onlyIntent(value)
 			value.output = _.unique(_.flatten(value.output))
 			if (value.output.length > 1)
 			{
-				console.log("FILTERED")
-				console.log(JSON.stringify(initial.output, null, 4))
+				console.log("DEBUG: the train instance is filtered "+initial.output)
 				return undefined
 			}
 
@@ -537,12 +536,16 @@ function featureExtractorU(sentence, features) {
 
 
 //  if train then true
-function feExpansionTrivial(input, features, train, callback) {
+function feExpansionTrivial(sample, features, train, callback) {
 
 	var sentence = ""
-	if (_.isObject(input)) sentence = input.text
+	if (_.isObject(sample)) 
+		if ("input" in sample)
+			sentence = sample.input.text
+		else
+			sentence = sample.text
 
-	console.log("DEBUG: "+sentence+" train  "+train)
+	console.log("DEBUG: "+sentence+" train "+train)
 
 	sentence = sentence.toLowerCase().trim()
 	var words = tokenizer.tokenize(sentence);
@@ -551,17 +554,27 @@ function feExpansionTrivial(input, features, train, callback) {
 	_.each(unigrams, function(unigram, key, list){ features[unigram] = 1 }, this)
 
 	if (train)
-	{
-		var poses = {}
-		
-		_.each(input['parse']['sentences'], function(sentence, key, list){ 
-			_.each(sentence['tokens'], function(token, key, list){ 
-				poses[token.word] = token.pos
-			}, this)	
-		}, this)
-
+	{	
 		async.waterfall([
-		    function(callbackl) {
+			function(callbackl) {
+
+				if (sample.output[0] == "Offer")
+					{
+					console.log("Offer no expansion")
+					return callback(null, features)	
+					}
+
+				var poses = {}
+		
+				_.each(sample['input']['sentences'], function(sentence, key, list){ 
+					_.each(sentence['tokens'], function(token, key, list){ 
+						poses[token.word] = token.pos
+					}, this)	
+				}, this)
+
+        		callbackl(null, poses);
+    		},
+		    function(poses, callbackll) {
 			async.forEachOfSeries(unigrams, function(unigram, dind, callback2){ 
 
 				console.log("DEBUG: to exp: "+unigram+" "+poses[unigram])
@@ -572,18 +585,18 @@ function feExpansionTrivial(input, features, train, callback) {
 					}, this)
 					callback2()
 				})
-			}, function(err){callbackl()})
+			}, function(err){callbackll()})
 		}],
 		function (err, result) {
 			console.log("DEBUG EXP: "+unigrams+ " EXPANSIONED "+_.keys(features))
-	                callback(null, features)
+	            return callback(null, features)
 	     });
 
 	}
 	else
 	{
 		console.log("DEBUG: callback classify " + _.keys(features))
-		callback(null, features)	
+		return callback(null, features)	
 	}
 	
 }
