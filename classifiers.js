@@ -572,14 +572,14 @@ function feExpansionTrivial(sample, features, train, callback) {
 					}, this)	
 				}, this)
 
-				console.log(JSON.stringify(poses, null, 4))
+				// console.log(JSON.stringify(poses, null, 4))
         		callbackl(null, poses);
     		},
 		    function(poses, callbackll) {
 			async.forEachOfSeries(unigrams, function(unigram, dind, callback2){ 
-				async_adapter.getppdb(unigram, poses[unigram], 1, undefined,  function(err, results){
-					console.log("DEBUG: to exp: "+unigram+" "+poses[unigram]+" EXPANDED "+results+" ERROR "+err)
-//					console.log("DEBUG: expansioned "+results)
+				async_adapter.getppdb(unigram, poses[unigram], 0, undefined,  function(err, results){
+					// console.log("DEBUG: to exp: "+unigram+" "+poses[unigram]+" EXPANDED "+results+" ERROR "+err)
+					// console.log("DEBUG: expansioned "+results)
 					_.each(results, function(expan, key, list){ 
 						features[expan[0]] = 1
 					}, this)
