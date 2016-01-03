@@ -69,6 +69,8 @@ process.on('message', function(message) {
 					'uniqueid': stats['id']
 				}
 
+				console.log(msg("DEBUG:"+JSON.stringify(results, null, 4)))
+
 				process.send(JSON.stringify(results))
 		   		callbackwhilst()
     	},
