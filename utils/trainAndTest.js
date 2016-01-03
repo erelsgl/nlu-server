@@ -194,8 +194,7 @@ module.exports.test_hash = function( classifier, testSet1, verbosity) {
 module.exports.test_async = function(classifier, testSet, callback) {
 
 	var data_stats = []
-	currentStats = new PrecisionRecall()
-
+	var currentStats = new PrecisionRecall()
 	var testStart = new Date().getTime()
 
 	async.forEachOfSeries(testSet, function (testRecord, testKey, callback1) {
@@ -218,7 +217,6 @@ module.exports.test_async = function(classifier, testSet, callback) {
 	}, function(err){
 
 		var testEnd = new Date().getTime()		
-
 		currentStats.calculateStats()
 
 		callback(err, { 'data': data_stats,
