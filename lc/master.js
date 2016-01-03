@@ -354,8 +354,8 @@ if (process.argv[1] === __filename)
 	var folds = 1
 
 	//var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_embed_unig', 'DS_bigram_split_exp']
-	//var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_exp']
-	var classifiers = ['DS_bigram_split_exp']
+	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_exp']
+	// var classifiers = ['DS_bigram_split_exp']
 
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
