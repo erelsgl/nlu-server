@@ -252,7 +252,7 @@ function preProcessor_onlyIntent(value)
 			value.output = _.unique(_.flatten(value.output))
 			if (value.output.length > 1)
 			{
-				console.log("DEBUG: the train instance is filtered "+initial.output)
+				console.log(process.pid + "DEBUG: the train instance is filtered "+initial.output)
 				return undefined
 			}
 
@@ -546,7 +546,7 @@ function feExpansionTrivial(sample, features, train, callback) {
 		else
 			sentence = sample.text
 
-	console.log("DEBUG: "+sentence+" train "+train)
+	console.log(process.pid + " DEBUG: "+sentence+" train "+train)
 
 	sentence = sentence.toLowerCase().trim()
 	var words = tokenizer.tokenize(sentence);
@@ -589,14 +589,14 @@ function feExpansionTrivial(sample, features, train, callback) {
 			}, function(err){callbackll()})
 		}],
 		function (err, result) {
-			console.log("DEBUG EXP: "+unigrams+ " EXPANSIONED "+_.keys(features))
+			console.log(process.pid + " DEBUG EXP: "+unigrams+ " EXPANSIONED "+_.keys(features))
 	            return callback(null, features)
 	     });
 
 	}
 	else
 	{
-		console.log("DEBUG: callback classify " + _.keys(features))
+		console.log(process.pid + " DEBUG: callback classify " + _.keys(features))
 		return callback(null, features)	
 	}
 	
