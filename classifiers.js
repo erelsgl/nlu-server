@@ -698,6 +698,8 @@ function featureExtractorUBCAsync(sample, features, train, callback) {
 			sentence = sample.input.text
 		else
 			sentence = sample.text
+	else
+		sentence = sample
 
 	sentence = sentence.toLowerCase().trim()
 	sentence = regexpNormalizer(sentence)
