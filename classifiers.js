@@ -545,6 +545,8 @@ function feExpansionTrivial(sample, features, train, callback) {
 			sentence = sample.input.text
 		else
 			sentence = sample.text
+	else
+		sentence = sample
 
 	console.log(process.pid + " DEBUG: "+sentence+" train "+train)
 
@@ -656,6 +658,8 @@ function feEmbedAverage(sample, features, train, callback) {
 			sentence = sample.input.text
 		else
 			sentence = sample.text
+	else
+		sentence = sample
 
 	sentence = sentence.toLowerCase().trim()
 	var words = tokenizer.tokenize(sentence);
