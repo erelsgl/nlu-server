@@ -25,6 +25,7 @@ var distance = require('./utils/distance.js')
 var execSync = require('child_process').execSync
 var async_adapter = require('./utils/async_adapter')
 
+var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
 
 // var async_adapter = require('./utils/async_adapter.js')
 var async = require('async');
@@ -571,7 +572,8 @@ function feExpansionTrivial(sample, features, train, callback) {
 		
 				_.each(sample['input']['sentences'], function(sentence, key, list){ 
 					_.each(sentence['tokens'], function(token, key, list){ 
-						poses[token.word.toLowerCase()] = token.pos
+						if (stopwords.indexOf(token.word.toLowerCase())==-1)
+							poses[token.word.toLowerCase()] = token.pos
 					}, this)	
 				}, this)
 
@@ -579,12 +581,13 @@ function feExpansionTrivial(sample, features, train, callback) {
         		callbackl(null, poses);
     		},
 		    function(poses, callbackll) {
-			async.forEachOfSeries(unigrams, function(unigram, dind, callback2){ 
+			// async.forEachOfSeries(unigrams, function(unigram, dind, callback2){ 
+			async.forEachOfSeries(_.keys(poses), function(unigram, dind, callback2){ 
 				async_adapter.getppdb(unigram, poses[unigram], 0, undefined,  function(err, results){
 					// console.log("DEBUG: to exp: "+unigram+" "+poses[unigram]+" EXPANDED "+results+" ERROR "+err)
 					// console.log("DEBUG: expansioned "+results)
 					_.each(results, function(expan, key, list){ 
-						features[expan[0]] = 1
+						features[expan[0].toLowerCase()] = 1
 					}, this)
 					callback2()
 				})
