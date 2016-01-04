@@ -56,6 +56,8 @@ process.on('message', function(message) {
 			    		stats['testtime']/1000 + " classifier="+classifier + 
 			    		" Accuracy="+stats['stats']['Accuracy']+ " fold="+fold))
 
+			    	console.log(JSON.stringify(stats['stats'], null, 4))
+
 			    	var stats1 = {}
 			    	_.each(stats['stats'], function(value, key, list){ 
 			    		if ((key.indexOf("macro") != -1) || (key.indexOf("Accuracy") != -1 ) || (key.indexOf("micro") != -1))
