@@ -351,11 +351,11 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 if (process.argv[1] === __filename)
 {
-	var folds = 2
+	var folds = 5
 
-	//var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_embed_unig', 'DS_bigram_split_exp']
-	//var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_exp']
-	var classifiers = ['DS_bigram_split_async']
+	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_exp']
+//	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_exp']
+	//var classifiers = ['DS_bigram_split_async']
 
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
