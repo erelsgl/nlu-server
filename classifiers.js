@@ -69,21 +69,22 @@ var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-]+/});
 	})
 }
 */
-var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, preProcessor, postProcessor, TestSplitLabel, multiplyFeaturesByIDF, featureExpansion, featureExpansionScale, featureExpansionPhrase, featureFine, expansionParam) {
+// var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, preProcessor, postProcessor, TestSplitLabel, multiplyFeaturesByIDF, featureExpansion, featureExpansionScale, featureExpansionPhrase, featureFine, expansionParam) {
+var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, preProcessor, postProcessor, TestSplitLabel, multiplyFeaturesByIDF, featureOptions) {
 // var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
 	return classifiers.EnhancedClassifier.bind(0, {
 		normalizer: normalizer,
 
 		inputSplitter: inputSplitter,
+		featureOptions:featureOptions,
 
 		// featureExpansion: featureExpansion,
 		// featureExpansionScale: featureExpansionScale,
 		// featureExpansionPhrase: featureExpansionPhrase,
 		// featureFine: featureFine,
 		// expansionParam: expansionParam,
-		stopwords: JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8'))),
+		// stopwords: JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8'))),
 		
-		// inputSplitter: inputSplitter,
 		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
 
 		featureExtractor: featureExtractor,
@@ -96,7 +97,6 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 		// ],
 
 		multiplyFeaturesByIDF: multiplyFeaturesByIDF,
-
 		TfIdfImpl: natural.TfIdf,
 
 		// tokenizer: new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9%'$,]+/}),
@@ -107,7 +107,7 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 
 		preProcessor: preProcessor,
 		postProcessor: postProcessor,
-		// TestSplitLabel: TestSplitLabel
+
 	});
 };
 
@@ -537,7 +537,10 @@ function featureExtractorU(sentence, features) {
 
 
 //  if train then true
-function feExpansionTrivial(sample, features, train, callback) {
+function feExpansion(sample, features, train, featureOptions, callback) {
+
+// featureOptions.scale
+// featureOptions.relation
 
 	var sentence = ""
 	
@@ -583,7 +586,7 @@ function feExpansionTrivial(sample, features, train, callback) {
 		    function(poses, callbackll) {
 			// async.forEachOfSeries(unigrams, function(unigram, dind, callback2){ 
 			async.forEachOfSeries(_.keys(poses), function(unigram, dind, callback2){ 
-				async_adapter.getppdb(unigram, poses[unigram], 0, undefined,  function(err, results){
+				async_adapter.getppdb(unigram, poses[unigram], featureOptions.scale, featureOptions.relation,  function(err, results){
 					// console.log("DEBUG: to exp: "+unigram+" "+poses[unigram]+" EXPANDED "+results+" ERROR "+err)
 					// console.log("DEBUG: expansioned "+results)
 					_.each(results, function(expan, key, list){ 
@@ -607,7 +610,7 @@ function feExpansionTrivial(sample, features, train, callback) {
 	
 }
 
-function feEmbedAverageUnigram(sample, features, train, callback) {
+function feEmbedAverageUnigram(sample, features, train, featureOptions, callback) {
 	var sentence = ""
 	
 	if (_.isObject(sample)) 
@@ -652,7 +655,7 @@ function feEmbedAverageUnigram(sample, features, train, callback) {
 	})	
 }	
 
-function feEmbedAverage(sample, features, train, callback) {
+function feEmbedAverage(sample, features, train, featureOptions, callback) {
 
 	var sentence = ""
 	
@@ -696,7 +699,7 @@ function feEmbedAverage(sample, features, train, callback) {
 	})	
 }
 
-function featureExtractorUBCAsync(sample, features, train, callback) {
+function featureExtractorUBCAsync(sample, features, train, featureOptions, callback) {
 
 	var sentence = ""
 	
@@ -1116,7 +1119,7 @@ module.exports = {
 		// IntentClass: enhance(SvmLinearMulticlassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
 		DS_bigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		// DS_bigram_split: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
-		DS_bigram_split_exp: enhance(SvmLinearMulticlassifier, feExpansionTrivial, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
+		DS_bigram_split_exp: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':0, 'relation': undefined}),
 		DS_bigram_split_async: enhance(SvmLinearMulticlassifier, featureExtractorUBCAsync, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
 		DS_bigram_split_embed: enhance(SvmLinearMulticlassifier, feEmbedAverage, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false),
 		DS_bigram_split_embed_unig: enhance(SvmLinearMulticlassifier, feEmbedAverageUnigram, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false),
