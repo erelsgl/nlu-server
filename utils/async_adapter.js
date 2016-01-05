@@ -54,7 +54,7 @@ function getppdb(string, pos, db, relation, callback)
 					if (_.isUndefined(relation))
 						output.push([splited[0], parseFloat(splited[2]), parseFloat(splited[3])])
 					else
-						if (splited[4]==relation)
+						if (relation.indexOf(splited[4])!=-1)
 							output.push([splited[0], parseFloat(splited[2]), parseFloat(splited[3])])
 			}, this)
 
