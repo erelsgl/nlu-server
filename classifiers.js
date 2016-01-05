@@ -21,14 +21,10 @@ var classifiers = limdu.classifiers;
 var ftrs = limdu.features;
 var Hierarchy = require(__dirname+'/Hierarchy');
 var bars = require('./utils/bars')
-var distance = require('./utils/distance.js')
 var execSync = require('child_process').execSync
 var async_adapter = require('./utils/async_adapter')
-
-var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
-
-// var async_adapter = require('./utils/async_adapter.js')
 var async = require('async');
+var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
 
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
@@ -39,36 +35,10 @@ var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-]+/});
  * ENHANCEMENTS:
  */
 
- var enhance5 = function (classifierType, featureLookupTable, labelLookupTable, InputSplitLabel, OutputSplitLabel, TestSplitLabel) {
-	return classifiers.EnhancedClassifier.bind(0, {
-		normalizer: normalizer1,
-		classifierType: classifierType,
-		// filter only external classifier data
-		instanceFilter: instanceFilterShortString,
-		InputSplitLabel: InputSplitLabel,
-		OutputSplitLabel: OutputSplitLabel,
-		TestSplitLabel: TestSplitLabel
-	});
-};
-
 /*
  * CONSTRUCTORS:
  */
 
-/*var rule = function (classifierType, featureExtractor, featureLookupTable, labelLookupTable, multiplyFeaturesByIDF) {
-	return classifiers.multilabel.Rulebased.bind(0, {
-		ClassifierType:  classifiers.EnhancedClassifier.bind(0, {
-			// normalizer: function normalizer(sentence){return sentence},
-			// normalizer: function normalizer(sentence){return sentence},
-			featureExtractor: featureExtractor,
-			featureLookupTable: featureLookupTable,
-			labelLookupTable: labelLookupTable,
-			multiplyFeaturesByIDF: multiplyFeaturesByIDF,
-			TfIdfImpl: natural.TfIdf,		
-			classifierType: classifierType})
-	})
-}
-*/
 // var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, preProcessor, postProcessor, TestSplitLabel, multiplyFeaturesByIDF, featureExpansion, featureExpansionScale, featureExpansionPhrase, featureFine, expansionParam) {
 var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, preProcessor, postProcessor, TestSplitLabel, multiplyFeaturesByIDF, featureOptions) {
 // var enhance = function (classifierType, featureLookupTable, labelLookupTable) {
@@ -84,7 +54,6 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 		// featureFine: featureFine,
 		// expansionParam: expansionParam,
 		// stopwords: JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8'))),
-		
 		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
 
 		featureExtractor: featureExtractor,
@@ -117,115 +86,6 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 
 // var regexpNormalizer_simple = ftrs.RegexpNormalizer(
 // 		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/SimpleNormalizations.json')));
-
-var TCSyn = 
-{
-	'redisId_words':14,
-	'redisId_context':13,
-	'comparison': distance.Add,
-	'redis_exec': redis_exec,
-	'wordnet_exec': wordnet_exec,
-	'context': true,
-	'wordnet_relation':['synonym']
-}
-
-var TCSynHypHypo = 
-{
-	'redisId_words':14,
-	'redisId_context':13,
-	'comparison': distance.Add,
-	'redis_exec': redis_exec,
-	'wordnet_exec': wordnet_exec,
-	'context': true,
-	'wordnet_relation': ['synonym','hypernym','hyponym']
-}
-
-var TCDemo = 
-{
-	'redisId_words':14,
-	'redisId_context':13,
-	'comparison': distance.Add,
-	'redis_exec': redis_exec,
-	'wordnet_exec': wordnet_exec,
-	'context': true,
-	'wordnet_relation':'all',
-	'detail': true,
-	'detail_distance': distance.cosine_distance
-}
-
-var TCPPDBNoCon = 
-{
-	'redisId_words':14,
-	'redisId_context':13,
-	'comparison': distance.cosine_distance,
-	'redis_exec': redis_exec,
-	'wordnet_exec': ppdb_exec,
-	'context': false,
-	'wordnet_relation':['ppdb'],
-	'detail': false,
-	// 'detail_distance': distance.cosine_distance
-}
-
-var TCPPDB = 
-{
-	'redisId_words':14,
-	'redisId_context':13,
-	'comparison': distance.Add,
-	'redis_exec': redis_exec,
-	'wordnet_exec': ppdb_exec,
-	'context': true,
-	'wordnet_relation':['ppdb'],
-	'detail': false,
-	// 'detail_distance': distance.cosine_distance
-}
-
-var TCSynHypHypoNoCon = 
-{
-	'redisId_words':14,
-	'redisId_context':13,
-	'comparison': distance.cosine_distance,
-	'redis_exec': redis_exec,
-	'wordnet_exec': wordnet_exec,
-	'context': false,
-	'wordnet_relation':['synonym','hypernym','hyponym']
-}
-
-var TCSynHyp1 = 
-{
-	'redisId_words':14,
-	'redisId_context':13,
-	'comparison': distance.Add,
-	'redis_exec': redis_exec,
-	'wordnet_exec': wordnet_exec,
-	'context': true,
-	'wordnet_relation':['synonym','hypernym_1']
-}
-
-var TCSynHypHypoCohypo = 
-{
-	'redisId_words':14,
-	'redisId_context':13,
-	'comparison': distance.Add,
-	'redis_exec': redis_exec,
-	'wordnet_exec': wordnet_exec,
-	'context': true,
-	'wordnet_relation':['synonym','hypernym','hyponym','cohyponym']
-}
-
-function wordnet_exec(word, pos, relations, callback)
-{
-
-	async_adapter.getwordnet(word, pos, relations, function(err, candidates){
-		callback(err, candidates)
-	})
-}
-
-function ppdb_exec(word, pos, relations, callback)
-{
-	async_adapter.getppdb(word, pos, relations, function(err, candidates){
-		callback(err, candidates)
-	})
-}
 
 // output: only intent
 // and only single labeled or null output
@@ -324,76 +184,6 @@ function postProcessor(sample,classes)
 	// console.log("==========================================")
 
 	return labels
-}
-
-function redis_exec(data, db, callback)
-{
-
-	var output = []
-
-	async.whilst(
-    function () { return data.length > 0},
-    function (callback) {
-        
-        async_adapter.getred(data, db, function (err, result){
-
-		_.each(data, function(value, key, list){
-			if (value in result)
-				output.push(result[value])
-			else
-				output.push([])
-		}, this)
-
-		// console.log(output.length)
-		data = []
-		callback(err, output)
-	})
-
-    },
-    function (err) {
-		callback(err, output)
-    }
-)}
-
-function featureExpansion(listoffeatures, scale, phrase)
-{
-	var listoffeatures = _.unique(listoffeatures)
-	// console.log("featureExpansion scale"+scale+ " phrase "+phrase  )
-	fs.writeFileSync(__dirname+"/utils/featureexp_input", JSON.stringify(listoffeatures, null, 4), 'utf-8')
-	var result = execSync("node "+__dirname+"/utils/featureexp.js '"+scale+"' "+phrase);
-	var results = JSON.parse(fs.readFileSync(__dirname+"/utils/featureexp_output"))
-	
-	fs.unlinkSync(__dirname+"/utils/featureexp_input")
-	fs.unlinkSync(__dirname+"/utils/featureexp_output")
-
-	console.log("featureExpansion finished")
-
-	// console.log("featureExpansion "+ Object.keys(results).length)
-	return results
-}
-
-function featureExpansionEmpty(listoffeatures)
-{
-	return {}
-}
-
-function instanceFilterShortString(datum)
-{
-	if (_.isString(datum))
-	{
-		if (datum.trim().split(/\s+/).length < 4)
-			return true
-	}
-	else
-	if (datum.input.trim().split(/\s+/).length < 4)
-		if (datum.output.length > 0)
-			if (datum.output[0].length > 0)
-				if (datum.output[0][0] == "Offer")
-					{
-						// console.log("it's short offer and it's excluded")
-						return true
-					}
-	return false
 }
 
 function normalizer1(sentence) {
@@ -500,32 +290,32 @@ function inputSplitter(text) {
 	return normalizedParts;
 }
 
-function featureExtractorB(sentence, features) {
-	var words = tokenizer.tokenize(sentence);
-	var feature = natural.NGrams.ngrams(words, 2)	
-	_.each(feature, function(feat, key, list){ features[feat.join(" ")] = 1 }, this)
-	return features;
-}
+// function featureExtractorB(sentence, features) {
+// 	var words = tokenizer.tokenize(sentence);
+// 	var feature = natural.NGrams.ngrams(words, 2)	
+// 	_.each(feature, function(feat, key, list){ features[feat.join(" ")] = 1 }, this)
+// 	return features;
+// }
 
-function featureExtractorU(sentence, features) {
+// function featureExtractorU(sentence, features) {
 
-	var corp = sentence.match(/\<\w*\.*\w*\>/g)
-	var sentence = sentence.replace(/\<\w*\.*\w*\>/g," ")
+// 	var corp = sentence.match(/\<\w*\.*\w*\>/g)
+// 	var sentence = sentence.replace(/\<\w*\.*\w*\>/g," ")
 
-	var words = tokenizer.tokenize(sentence);
+// 	var words = tokenizer.tokenize(sentence);
 
-	var feature = natural.NGrams.ngrams(words, 1)
-	_.each(feature, function(feat, key, list){ 
-		// if (!bars.isstopword(feat.join(" ")))
-			features[feat.join(" ")] = 1 } 
-		,this)
+// 	var feature = natural.NGrams.ngrams(words, 1)
+// 	_.each(feature, function(feat, key, list){ 
+// 		// if (!bars.isstopword(feat.join(" ")))
+// 			features[feat.join(" ")] = 1 } 
+// 		,this)
 
-	_.each(corp, function(co, key, list){ 
-		features[co] = 1
-	}, this)
+// 	_.each(corp, function(co, key, list){ 
+// 		features[co] = 1
+// 	}, this)
 
-	return features;
-}
+// 	return features;
+// }
 
 // function featureExtractorUB(sentence, features) {
 // 	var words = tokenizer.tokenize(sentence);
@@ -796,88 +586,6 @@ function featureExtractorUBContext(sentence, features) {
 	// callback()
 }
 
-// function featureExtractorUCoreNLPConcept(sentence, features, stopwords, callback) {
-
-// 	var candidates = []
-
-// 	_.each(sentence["CORENLP"]['sentences'], function(sentence, key, list){ 
-// 		candidates = candidates.concat(sentence["boc"])
-// 	}, this)
-
-//     candidates = _.filter(candidates, function(num){ return ['noun'].indexOf(num['pos']) != -1; });
-// 	candidates = _.filter(candidates, function(num){ return stopwords.indexOf(num['string']) == -1 });
-// 	// console.log("Candidate after stopwords "+ candidates.length)
-	
-// 	var expansions = []
-
-// 	async.eachSeries(candidates, function (candidate, callback2) {
-// 		// async_adapter.getwordnet(candidate['string'], candidate['pos'], 'hypernym_1', function(err, expansion){
-// 		async_adapter.getwordnetCache(candidate['string'], candidate['pos'], 'synonym', function(err, expansion){
-// 		// async_adapter.getwordnet(candidate['string'], candidate['pos'], 'synonym', function(err, expansion){
-
-// 			expansions = expansions.concat(expansion)
-// 			callback2()
-// 		})
-// 	}, 	function (err) {
-
-// 		_.each(expansions, function(expansion, key, list){ 
-// 			features["C_"+expansion.toLowerCase()] = 1 
-// 		}, this)
-
-// 		_.each(sentence['CORENLP']['sentences'], function(sen, key, list){ 
-// 			_.each(sen['tokens'], function(value, key, list){
-// 				if ('lemma' in value)
-// 					// if (['ORGANIZATION', 'DATE', 'NUMBER'].indexOf(value['ner']) == -1)
-// 						features[value['lemma'].toLowerCase()] = 1 
-// 				else
-// 					{
-// 						console.log("There is no lemma "+ value)
-// 						// process.exit(0)
-// 					}
-// 			}, this)
-// 		}, this)
-
-// 		callback(err, features)
-// 	})
-// }
-
-function featureword2vec(sentence, features) {
-	var words = tokenizer.tokenize(sentence);
-	var vector = []
-
-	console.log("featureword2vec start "+words.length)
-
-	var params = words.join(" ")
-	
-	console.log(params)
-
-	var result = execSync("node "+__dirname+"/utils/getred.js " + params)
-
-	result = JSON.parse(result['stdout'])
-
-	console.log("featureword2vec stop")
-	
-	var result = _.filter(result, function(num){ return num.length != 0 });
-
-	var sumvec = []
-
-	_(result[0].length).times(function(n){sumvec.push(0)})
-
-	_.each(result, function(value, key, list){ 
-		sumvec = bars.vectorsum(sumvec, value)
-	}, this)
-
-	var sumvec = _.map(sumvec, function(value){ return value/result.length })
-
-	// FULLFILL THE VECTOR
-	_.each(sumvec, function(value, key, list){ 
-		features['w2v'+key] = value
-	}, this)
-
-	return features
-}
-
-
 var SvmPerfKernelBinaryClassifier = classifiers.SvmPerf.bind(0, {
         learn_args: "-c 100 -t 2",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html
         model_file_prefix: "trainedClassifiers/tempfiles/SvmPerf",
@@ -1068,14 +776,6 @@ var SvmLinearMulticlassifier = classifiers.SvmLinear.bind(0, {
 	test_command: "liblinear_test"
 })
 
-function weightInstance1(instance) {
-	return 1
-}
-
-function weightInstance2(instance) {
-	return 1/instance
-}
-
 /*EuclideanDistance
 	ChebyshevDistance
 	ManhattanDistance
@@ -1119,7 +819,12 @@ module.exports = {
 		// IntentClass: enhance(SvmLinearMulticlassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
 		DS_bigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		// DS_bigram_split: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
-		DS_bigram_split_exp: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':0, 'relation': undefined}),
+		DS_comp_exp_0_undefined: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':0, 'relation': undefined}),
+		DS_comp_exp_1_undefined: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':1, 'relation': undefined}),
+		DS_comp_exp_2_undefined: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':2, 'relation': undefined}),
+		DS_comp_exp_3_ref: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'relation': ['ReverseEntailment','Equivalence','ForwardEntailment']}),
+		DS_comp_exp_4_ref: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':4, 'relation': ['ReverseEntailment','Equivalence','ForwardEntailment']}),
+
 		DS_bigram_split_async: enhance(SvmLinearMulticlassifier, featureExtractorUBCAsync, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
 		DS_bigram_split_embed: enhance(SvmLinearMulticlassifier, feEmbedAverage, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false),
 		DS_bigram_split_embed_unig: enhance(SvmLinearMulticlassifier, feEmbedAverageUnigram, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false),
