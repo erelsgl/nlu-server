@@ -55,22 +55,32 @@ function getppdb(string, pos, db, relation, callback)
 
 				var splited = value.split("^")
 
+				console.log(splited)
+
 				if (splited[0].indexOf(" ")!=-1)
 				{
+				splited[0] = splited[0].replace(/ /g,',')
+				if (_.isArray(relation))
+					{
 					if (relation.indexOf(splited[4])!=-1)
-							output.push([splited[0], parseFloat(splited[2]), parseFloat(splited[3])])
+							output.push([splited[0], splited[1], parseFloat(splited[2]), parseFloat(splited[3])])
+					}
+					else
+					output.push([splited[0], splited[1], parseFloat(splited[2]), parseFloat(splited[3])])
+	
 				}
 				else
 				{
 					if (splited[1] == pos) 
 						if (_.isUndefined(relation))
-							output.push([splited[0], parseFloat(splited[2]), parseFloat(splited[3])])
+							output.push([splited[0], splited[1], parseFloat(splited[2]), parseFloat(splited[3])])
 						else
 							if (relation.indexOf(splited[4])!=-1)
-								output.push([splited[0], parseFloat(splited[2]), parseFloat(splited[3])])
+								output.push([splited[0], splited[1], parseFloat(splited[2]), parseFloat(splited[3])])
 				}
 			}, this)
 
+			output = _.sortBy(output, function(num){ return num[2] });
 			console.log("DEBUGPPDB: final output " + JSON.stringify(output))
 			callback(err, output)
         })
