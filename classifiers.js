@@ -376,6 +376,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 			// async.forEachOfSeries(unigrams, function(unigram, dind, callback2){ 
 			async.forEachOfSeries(_.keys(poses), function(unigram, dind, callback2){ 
 				async_adapter.getppdb(unigram, poses[unigram], featureOptions.scale, featureOptions.relation,  function(err, results){
+					results.splice(5)
 					// console.log("DEBUG: to exp: "+unigram+" "+poses[unigram]+" EXPANDED "+results+" ERROR "+err)
 					// console.log("DEBUG: expansioned "+results)
 					_.each(results, function(expan, key, list){ 
@@ -504,8 +505,8 @@ function featureExtractorUBCAsync(sample, features, train, featureOptions, callb
 	sentence = regexpNormalizer(sentence)
 
 	var words = tokenizer.tokenize(sentence);
-	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
-	// var feature = natural.NGrams.ngrams(words, 1)
+	//var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
+	var feature = natural.NGrams.ngrams(words, 1)
 
 	_.each(feature, function(feat, key, list){ features[feat] = 1 }, this)
 
@@ -821,9 +822,10 @@ module.exports = {
 		DS_comp_exp_0_undefined: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':0, 'relation': undefined}),
 		DS_comp_exp_1_undefined: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':1, 'relation': undefined}),
 		DS_comp_exp_2_undefined: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':2, 'relation': undefined}),
+		DS_comp_exp_3_undefined: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'relation': undefined}),
 		DS_comp_exp_3_ref: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'relation': ['ReverseEntailment','Equivalence','ForwardEntailment']}),
-		DS_vanilla_svm: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBCAsync, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
-		DS_bigram_split_async: enhance(SvmLinearMulticlassifier, featureExtractorUBCAsync, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
+//		DS_vanilla_svm: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBCAsync, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
+		DS_bigram_split_async: enhance(SvmLinearMulticlassifier, featureExtractorUBCAsync, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, undefined),
 		DS_bigram_split_embed: enhance(SvmLinearMulticlassifier, feEmbedAverage, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false),
 		DS_bigram_split_embed_unig: enhance(SvmLinearMulticlassifier, feEmbedAverageUnigram, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false),
 		DS_bigram_split: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
