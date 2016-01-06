@@ -255,7 +255,7 @@ function normalizer(sentence) {
 	return sentence
 }
 
-var regexpString = "([.;?!]|and)";  // to capture the delimiters
+var regexpString = "([.;?!]| and | if | however | but )";  // to capture the delimiters
 var regexp = new RegExp(regexpString, "i");
 var delimitersToInclude = {"?":true};
 
@@ -297,25 +297,24 @@ function inputSplitter(text) {
 // 	return features;
 // }
 
-// function featureExtractorU(sentence, features) {
+ function featureExtractorU(sentence, features) {
+ 	var corp = sentence.match(/\<\w*\.*\w*\>/g)
+ 	var sentence = sentence.replace(/\<\w*\.*\w*\>/g," ")
 
-// 	var corp = sentence.match(/\<\w*\.*\w*\>/g)
-// 	var sentence = sentence.replace(/\<\w*\.*\w*\>/g," ")
+ 	var words = tokenizer.tokenize(sentence);
 
-// 	var words = tokenizer.tokenize(sentence);
+ 	var feature = natural.NGrams.ngrams(words, 1)
+ 	_.each(feature, function(feat, key, list){ 
+ 		// if (!bars.isstopword(feat.join(" ")))
+ 			features[feat.join(" ")] = 1 } 
+ 		,this)
 
-// 	var feature = natural.NGrams.ngrams(words, 1)
-// 	_.each(feature, function(feat, key, list){ 
-// 		// if (!bars.isstopword(feat.join(" ")))
-// 			features[feat.join(" ")] = 1 } 
-// 		,this)
+ 	_.each(corp, function(co, key, list){ 
+ 		features[co] = 1
+ 	}, this)
 
-// 	_.each(corp, function(co, key, list){ 
-// 		features[co] = 1
-// 	}, this)
-
-// 	return features;
-// }
+ 	return features;
+ }
 
 // function featureExtractorUB(sentence, features) {
 // 	var words = tokenizer.tokenize(sentence);
@@ -355,11 +354,11 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 		async.waterfall([
 			function(callbackl) {
 
-				if (sample.output[0] == "Offer")
-					{
-					console.log("Offer no expansion")
-					return callback(null, features)	
-					}
+//				if (sample.output[0] == "Offer")
+//					{
+//					console.log("Offer no expansion")
+//					return callback(null, features)	
+//					}
 
 				var poses = {}
 		
@@ -798,9 +797,9 @@ module.exports = {
 		// featureExtractorU: featureExtractorU,
 		// featureword2vec:featureword2vec,
 		// featureExtractorUnigram: featureExtractorUnigram,
-		instanceFilter: instanceFilterShortString,
-		featureExpansion:featureExpansion,
-		featureExpansionEmpty:featureExpansionEmpty,
+		//instanceFilter: instanceFilterShortString,
+//		featureExpansion:featureExpansion,
+//		featureExpansionEmpty:featureExpansionEmpty,
 
 		// TC: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUCoreNLP, undefined, new ftrs.FeatureLookupTable(),undefined, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined, undefined),
 		
@@ -823,8 +822,7 @@ module.exports = {
 		DS_comp_exp_1_undefined: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':1, 'relation': undefined}),
 		DS_comp_exp_2_undefined: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':2, 'relation': undefined}),
 		DS_comp_exp_3_ref: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'relation': ['ReverseEntailment','Equivalence','ForwardEntailment']}),
-		DS_comp_exp_4_ref: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':4, 'relation': ['ReverseEntailment','Equivalence','ForwardEntailment']}),
-
+		DS_vanilla_svm: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBCAsync, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		DS_bigram_split_async: enhance(SvmLinearMulticlassifier, featureExtractorUBCAsync, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
 		DS_bigram_split_embed: enhance(SvmLinearMulticlassifier, feEmbedAverage, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false),
 		DS_bigram_split_embed_unig: enhance(SvmLinearMulticlassifier, feEmbedAverageUnigram, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false),
