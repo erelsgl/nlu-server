@@ -54,12 +54,21 @@ function getppdb(string, pos, db, relation, callback)
 			_.each(replies, function(value, key, list){ 
 
 				var splited = value.split("^")
-				if (splited[1] = pos) 
-					if (_.isUndefined(relation))
-						output.push([splited[0], parseFloat(splited[2]), parseFloat(splited[3])])
-					else
-						if (relation.indexOf(splited[4])!=-1)
+
+				if (splited[0].indexOf(" ")!=-1)
+				{
+					if (relation.indexOf(splited[4])!=-1)
 							output.push([splited[0], parseFloat(splited[2]), parseFloat(splited[3])])
+				}
+				else
+				{
+					if (splited[1] == pos) 
+						if (_.isUndefined(relation))
+							output.push([splited[0], parseFloat(splited[2]), parseFloat(splited[3])])
+						else
+							if (relation.indexOf(splited[4])!=-1)
+								output.push([splited[0], parseFloat(splited[2]), parseFloat(splited[3])])
+				}
 			}, this)
 
 			console.log("DEBUGPPDB: final output " + JSON.stringify(output))
