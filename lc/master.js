@@ -355,7 +355,9 @@ if (process.argv[1] === __filename)
 
 	// var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_exp']
 	// var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_exp']
-	var classifiers = ['DS_comp_exp_0_undefined','DS_comp_exp_1_undefined','DS_comp_exp_2_undefined','DS_comp_exp_3_ref','DS_comp_exp_4_ref']
+	//var classifiers = ['DS_comp_exp_0_undefined','DS_comp_exp_1_undefined','DS_comp_exp_2_undefined','DS_comp_exp_3_ref','DS_comp_exp_4_ref']
+	//var classifiers = ['DS_comp_exp_3_ref','DS_vanilla_svm']
+	var classifiers = ['DS_vanilla_svm']
 
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
