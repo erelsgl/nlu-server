@@ -45,7 +45,11 @@ function getppdb(string, pos, db, relation, callback)
 		if (err) callback(err)
 
 		client.smembers(string, function(err, replies) {
+
 			if (err) callback(err)
+			
+			console.log("DEBUGPPDB: err " + err)
+			console.log("DEBUGPPDB: string to expansion " + string+ " POS "+pos + " relation "+ relation+ " db "+ db +" replies " + JSON.stringify(replies))
 
 			_.each(replies, function(value, key, list){ 
 
@@ -58,6 +62,7 @@ function getppdb(string, pos, db, relation, callback)
 							output.push([splited[0], parseFloat(splited[2]), parseFloat(splited[3])])
 			}, this)
 
+			console.log("DEBUGPPDB: final output " + JSON.stringify(output))
 			callback(err, output)
         })
 	})	
