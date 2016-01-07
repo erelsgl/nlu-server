@@ -410,6 +410,52 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 	
 }
 
+function feEmbed(sample, features, train, featureOptions, callback) {
+	var sentence = ""
+	
+	if (_.isObject(sample)) 
+		if ("input" in sample)
+			sentence = sample.input.text
+		else
+			sentence = sample.text
+
+	sentence = sentence.toLowerCase().trim()
+	var words = tokenizer.tokenize(sentence);
+	var unigrams = _.flatten(natural.NGrams.ngrams(words, 1))
+
+	var embs = []
+
+	async.eachSeries(unigrams, featureOptions.embdeddb, function(word, callback1){
+		
+		async_adapter.getembed(word, function(err, emb){
+			embs.push(emb)
+			callback1()
+		})
+
+ 	}, function(err) {
+
+ 		var sumvec = Array.apply(null, Array(embs[0].length)).map(function () { return 0})
+
+ 		_.each(embs, function(value, key, list){ 
+			sumvec = bars.vectorsum(sumvec, value)
+		}, this)
+
+		if (embs.length > 0)
+			var sumvec = _.map(sumvec, function(value){ return value/embs.length })
+
+		_.each(sumvec, function(value, key, list){ 
+			features['w2v'+key] = value
+		}, this)
+	
+		// _.each(unigrams, function(value, key, list){ 
+		// 	features[value] = 1
+		// }, this)
+
+    	    //console.log(_.keys(features).length)
+	    callback(null, features)
+	})	
+}	
+
 function feEmbedAverageUnigram(sample, features, train, featureOptions, callback) {
 	var sentence = ""
 	
@@ -829,6 +875,11 @@ module.exports = {
 		// IntentClass: enhance(SvmLinearMulticlassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
 		DS_bigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		// DS_bigram_split: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
+		DS_comp_embed_d300_average: enhance(SvmLinearMulticlassifier, feEmbed, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 10, 'aggregate':'average'}),
+		DS_comp_embed_d100_average: enhance(SvmLinearMulticlassifier, feEmbed, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 9, 'aggregate':'average'}),
+		DS_comp_embed_d50_average: enhance(SvmLinearMulticlassifier, feEmbed, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 8, 'aggregate':'average'}),
+		DS_comp_embed_d25_average: enhance(SvmLinearMulticlassifier, feEmbed, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 7, 'aggregate':'average'}),
+
 		DS_comp_exp_0_undefined: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':0, 'onlyroot': false, 'relation': undefined}),
 		DS_comp_exp_1_undefined: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':1, 'onlyroot': false, 'relation': undefined}),
 		DS_comp_exp_2_undefined: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':2, 'onlyroot': false, 'relation': undefined}),
