@@ -21,3 +21,5 @@ utils/learning_curves/
 /trainedClassifiers/*
 /workspace
 /lc/learning_curves
+/lc/plotstatus
+/lc/status
