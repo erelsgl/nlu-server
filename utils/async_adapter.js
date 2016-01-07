@@ -18,16 +18,18 @@ var NodeCache = require( "node-cache" );
 //var ppdbcache = new NodeCache({'useClones': false});
 //var ppdbcachecounter = 0
 
-function getembed(string, callback)
+function getembed(string, db, callback)
 {
-	client.select(10, function(err, response) {
+	client.select(db, function(err, response) {
 		if (err) callback(err)
 
 		client.get(string, function(err, results) {
 			if (err) callback(err)
 			
 			if (_.isNull(results))
-				callback(err, Array.apply(null, Array(300)).map(function () { return 0}))
+				client.get("1", function(err, results) {
+					callback(err, Array.apply(null, Array(results.split(",").length)).map(function () { return 0}))
+				})
 			else
 				callback(err, _.map(results.split(","), parseFloat))
 		})
