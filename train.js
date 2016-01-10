@@ -134,10 +134,21 @@ if (mmm)
 
 if (check_word)
 {
-	async_adapter.getembedall(5, function(err, results){
-		console.log(JSON.stringify(results, null, 4))
-	})
+	var wordembs = {}
+	var inc = 0
 
+	async_adapter.getembedall(5, function(err, results){
+		async.forEachOfSeries(results, function(word, dind, callback2){ 
+			inc += 1
+			if (inc % 100 == 0) console.log(inc)
+			async_adapter.getembed(word, function(err, wordemb){
+				wordembs[word] = wordemb
+				callback2()
+			})
+		}, function(err){
+			console.log("Finished")
+			console.log(_.keys(wordembs).length)
+		})
 }
 
 if (multi_lab)
