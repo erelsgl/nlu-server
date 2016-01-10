@@ -18,6 +18,17 @@ var NodeCache = require( "node-cache" );
 //var ppdbcache = new NodeCache({'useClones': false});
 //var ppdbcachecounter = 0
 
+function getembedall(db, callback)
+{
+	client.select(db, function(err, response) {
+		if (err) callback(err)
+
+		client.keys("*", function(err, results) {
+			callback(err, results)
+		})
+	})
+}
+
 function getembed(string, db, callback)
 {
 	client.select(db, function(err, response) {
@@ -444,5 +455,6 @@ module.exports = {
   getred:getred,
   getwordnetCache:getwordnetCache,
   getppdbCache:getppdbCache,
-  getembed:getembed
+  getembed:getembed,
+  getembedall:getembedall
 }
