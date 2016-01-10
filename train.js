@@ -349,11 +349,13 @@ if (check_ds)
 // "FP": 100,
 // "FN": 176,
 
-	var dataset = bars.loadds("../negochat_private/dialogues")
-	var utterset = bars.getsetcontext(dataset)
+//	var dataset = bars.loadds("../negochat_private/dialogues")
+//
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var utterset = bars.getsetcontext(data)
 
-	utterset["train"] = utterset["train"].slice(0,20)
-	utterset["test"] = utterset["test"].slice(0,5)
+	//utterset["train"] = utterset["train"].slice(0,20)
+//	utterset["test"] = utterset["test"].slice(0,5)
 
 	console.log(utterset["train"].length)
 	console.log(_.flatten(utterset["train"]).length)
@@ -381,6 +383,7 @@ if (check_ds)
 	trainAndTest.trainAndTest_async(classifier.DS_vanilla_svm, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		console.log("DONE")
 		console.log(JSON.stringify(results, null, 4))
+		process.exit(0)
 		// _.each(results.data, function(value, key, list){
 		// 	if (!_.isEqual(results.data[key].explanation, stats.data[key].explanation))
 		// 	{
