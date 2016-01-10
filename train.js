@@ -26,12 +26,12 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
-var check_word = true
+var check_word = false
 var multi_lab = false
 var mmm = false
 var check_cross_batch = false
 var check_single_multi = false
-var check_ds = false
+var check_ds = true
 var check_ds_context = false
 var binary_seg = false
 var do_small_temporary_serialization_test=  false
@@ -378,7 +378,7 @@ if (check_ds)
 
 
 	//trainAndTest.trainAndTest_async(classifier.DS_bigram_split_embed, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
-	trainAndTest.trainAndTest_async(classifier.DS_bigram_split_embed, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	trainAndTest.trainAndTest_async(classifier.DS_vanilla_svm, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		console.log("DONE")
 		console.log(JSON.stringify(results, null, 4))
 		// _.each(results.data, function(value, key, list){
