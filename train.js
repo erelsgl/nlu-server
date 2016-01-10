@@ -6,6 +6,7 @@
  */
 
 var async = require('async');
+var async_adapter = require(__dirname+'/utils/async_adapter.js');
 var Hierarchy = require(__dirname+'/Hierarchy');
 var _ = require('underscore')._;
 var fs = require('fs');
@@ -24,11 +25,12 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+var check_word = true
 var multi_lab = false
 var mmm = false
 var check_cross_batch = false
 var check_single_multi = false
-var check_ds = true
+var check_ds = false
 var check_ds_context = false
 var binary_seg = false
 var do_small_temporary_serialization_test=  false
@@ -128,6 +130,14 @@ if (mmm)
 		if (value.output.length>1)
 			console.log(JSON.stringify(value, null, 4))
 	}, this)
+}
+
+if (check_word)
+{
+	async_adapter.getembedall(5, function(err, results){
+		console.log(JSON.stringify(results, null, 4))
+	})
+
 }
 
 if (multi_lab)
