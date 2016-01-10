@@ -891,6 +891,10 @@ module.exports = {
 		DS_comp_embed_d50_average: enhance(SvmLinearMulticlassifier, feEmbed, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 8, 'aggregate':'average', 'unigrams': false}),
 		DS_comp_embed_d25_average: enhance(SvmLinearMulticlassifier, feEmbed, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 7, 'aggregate':'average', 'unigrams': false}),
 
+		DS_comp_embed_d100_sub_average: enhance(SvmLinearMulticlassifier, feEmbed, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 5, 'aggregate':'average', 'unigrams':false}),
+		DS_comp_embed_d100_dep_average: enhance(SvmLinearMulticlassifier, feEmbed, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 6, 'aggregate':'average', 'unigrams':false}),
+		DS_comp_embed_d100_average: enhance(SvmLinearMulticlassifier, feEmbed, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'unigrams':false}),
+
 		DS_comp_exp_0_undefined: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':0, 'onlyroot': false, 'relation': undefined}),
 		DS_comp_exp_1_undefined: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':1, 'onlyroot': false, 'relation': undefined}),
 		DS_comp_exp_2_undefined: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':2, 'onlyroot': false, 'relation': undefined}),
