@@ -150,8 +150,17 @@ if (check_word)
 		}, function(err){
 			console.log("Finished")
 			console.log(_.keys(wordembs).length)
+			inc = 0
 
-	
+			_.each(wordembs, function(value, key, list){
+				inc += 1
+				if (inc % 10000 == 0) console.log(inc)
+				distances.push([key, distances.cosine_distance(wordembs['offer'], value)])
+			}, this)
+
+			distances = _.sortBy(distances, function(num){ return num[1] });
+
+			console.log(distances.slice(5))
 
 		})
 	})
