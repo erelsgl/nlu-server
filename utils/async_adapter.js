@@ -39,10 +39,10 @@ function getembed(string, db, callback)
 			
 			if (_.isNull(results))
 				client.get("1", function(err, results) {
-					callback(err, Array.apply(null, Array(results.split(",").length)).map(function () { return 0}))
+					callback(err, Array.apply(null, Array(results.slice(0,-1).split(",").length)).map(function () { return 0}))
 				})
 			else
-				callback(err, _.map(results.split(","), parseFloat))
+				callback(err, _.map(results.slice(0,-1).split(","), parseFloat))
 		})
 	})
 }
