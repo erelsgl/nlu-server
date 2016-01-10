@@ -54,8 +54,7 @@ function dot_distance(a, b) {
     throw new Error("Vectors should be of the same size " + JSON.stringify(a.length) + " " +JSON.stringify(b.length))
 
 	var sum = 0;
-	var n;
-  	for (n=0; n < a.length; n++) {
+  	for (var n=0; n < a.length; n++) {
    		sum += a[n]*b[n]
   	}
   	return sum
@@ -120,12 +119,12 @@ function cosine_distance(a, b) {
   var norm1 = 0 
   var norm2 = 0 
 
-  for (n=0; n < a.length; n++) {
+  for (var n=0; n < a.length; n++) {
     norm1 += a[n]*a[n]
     norm2 += b[n]*b[n]
     }
   
-    return 1/(dot_distance(a,b)/(Math.sqrt(norm1)*Math.sqrt(norm2)))
+    return dot_distance(a,b)/(Math.sqrt(norm1)*Math.sqrt(norm2))
 }
 
 function pcosine_distance(a, b) {
