@@ -6,6 +6,7 @@
  */
 
 var async = require('async');
+var distances = require(__dirname+'/utils/distance.js');
 var async_adapter = require(__dirname+'/utils/async_adapter.js');
 var Hierarchy = require(__dirname+'/Hierarchy');
 var _ = require('underscore')._;
@@ -136,14 +137,14 @@ if (check_word)
 {
 	var wordembs = {}
 	var inc = 0
-	var distances = []
+	var distance = []
 
-	async_adapter.getembedall(5, function(err, results){
+	async_adapter.getembedall(9, function(err, results){
 		console.log("List is loaded"+ results.length)
 		async.forEachOfSeries(results, function(word, dind, callback2){ 
 			inc += 1
 			if (inc % 10000 == 0) console.log(inc)
-			async_adapter.getembed(word,5, function(err, wordemb){
+			async_adapter.getembed(word, 9, function(err, wordemb){
 				wordembs[word] = wordemb
 				callback2()
 			})
@@ -155,12 +156,12 @@ if (check_word)
 			_.each(wordembs, function(value, key, list){
 				inc += 1
 				if (inc % 10000 == 0) console.log(inc)
-				distances.push([key, distances.cosine_distance(wordembs['offer'], value)])
+				distance.push([key, distances.cosine_distance(wordembs['offer'], value)])
 			}, this)
 
-			distances = _.sortBy(distances, function(num){ return num[1] });
+			distance = _.sortBy(distance, function(num){ return num[1] }).reverse()
 
-			console.log(distances.slice(5))
+			console.log(distance.slice(0,50))
 
 		})
 	})
