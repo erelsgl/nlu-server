@@ -2421,7 +2421,6 @@ function resolve_emptiness_rule(label)
   {
     label[2] = label[2].concat(label[1])
     label[1].push("Offer")
-
   }
 
 if ((label[0].indexOf("Reject")!=-1) && (label[2].indexOf("Without leased car")!=-1))
