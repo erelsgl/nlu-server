@@ -356,9 +356,11 @@ if (process.argv[1] === __filename)
 	// var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_exp']
 	// var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_exp']
 	//var classifiers = ['DS_comp_exp_0_undefined','DS_comp_exp_1_undefined','DS_comp_exp_2_undefined','DS_comp_exp_3_ref','DS_comp_exp_4_ref']
-	// var classifiers = ['DS_comp_unigrams_async', 'DS_comp_embed_d300_average', 'DS_comp_embed_d100_average', 'DS_comp_embed_d50_average', 'DS_comp_embed_d25_average']
+	//var classifiers = ['DS_comp_unigrams_async', 'DS_comp_embed_d300_average', 'DS_comp_embed_d100_average', 'DS_comp_embed_d50_average', 'DS_comp_embed_d25_average']
+//	var classifiers = ['DS_comp_unigrams_bigrams_async', 'DS_vanilla_svm']
+//
+	var classifiers = ['DS_comp_unigrams_async', 'DS_comp_embed_d100_average', 'DS_comp_embed_d100_dep_average', 'DS_comp_embed_d100_sub_average']
 
-	var classifiers = ['DS_comp_embed_d100_sub_average', 'DS_comp_embed_d100_dep_average', 'DS_comp_embed_d100_average']
 
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
@@ -370,7 +372,7 @@ if (process.argv[1] === __filename)
 	var utterset = bars.getsetcontext(data)
 	var dataset = utterset["train"].concat(utterset["test"])
 
-	// dataset = dataset.slice(0,20)
+	//dataset = dataset.slice(0,20)
 
 	// clean graphs
 	var lc = __dirname + "/learning_curves"
