@@ -359,7 +359,8 @@ if (process.argv[1] === __filename)
 	//var classifiers = ['DS_comp_unigrams_async', 'DS_comp_embed_d300_average', 'DS_comp_embed_d100_average', 'DS_comp_embed_d50_average', 'DS_comp_embed_d25_average']
 //	var classifiers = ['DS_comp_unigrams_bigrams_async', 'DS_vanilla_svm']
 //
-	var classifiers = ['DS_comp_unigrams_async', 'DS_comp_embed_d100_average', 'DS_comp_embed_d100_dep_average', 'DS_comp_embed_d100_sub_average']
+	// var classifiers = ['DS_comp_unigrams_async', 'DS_comp_embed_d100_average', 'DS_comp_embed_d100_dep_average', 'DS_comp_embed_d100_sub_average']
+	var classifiers = ['DS_comp_unigrams_async', 'DS_comp_unigrams_async_context']
 
 
 	fs.writeFileSync(statusfile, "")
