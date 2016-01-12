@@ -166,7 +166,7 @@ Placement:
 
 
 var _ = require('underscore')._;
-var truth_utils = require(__dirname+'/truth_utils')
+//var truth_utils = require(__dirname+'/truth_utils')
 var fs = require('fs');
 var Hierarchy = require('../../Hierarchy');
 var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
@@ -243,22 +243,26 @@ function getFound(sentence)
 {
 	var data = []
 	_.each(RuleValues, function(values, key1, list1){ 
-		data = data.concat(inSentence(sentence, key1, key1))
-		_.each(values, function(value, key2, list2){
-			if (value instanceof Array)
-				data = data.concat(inSentence(sentence, value[0], value[1]))
-			else
-				data = data.concat(inSentence(sentence, value, value))
+		var results = inSentence(sentence, key1, key1)
+		data = data.concat(results)
+		if (((key1=="Leased Car")&&(results.length > 0)) || (key1!="Leased Car"))
+		{
+			_.each(values, function(value, key2, list2){
+				if (value instanceof Array)
+					data = data.concat(inSentence(sentence, value[0], value[1]))
+				else
+					data = data.concat(inSentence(sentence, value, value))
 
-			// var found = inSentence(record['input'], value)
-			// if (found.length != 0)
-				// {
-				// data[key]['found'].push([found, value])
-				// }
-			// if (found == true)
-				// data[key]['found'].push(value)
+				// var found = inSentence(record['input'], value)
+				// if (found.length != 0)
+					// {
+					// data[key]['found'].push([found, value])
+					// }
+				// if (found == true)
+					// data[key]['found'].push(value)
 
-		}, this)
+			}, this)
+		}
 	 }, this) 
 
 //filtering, attributes got to attri
@@ -350,11 +354,13 @@ function inSentence(sentence, keyphrase, goldLable)
 	listToFind = _.unique(listToFind.concat(keyphrase.split(" ")))
 
 	// remove "with" from labels
-	listToFind = _.without(listToFind,'with')
-	listToFind = _.without(listToFind,'without')
+//	listToFind = _.without(listToFind,'with')
+//	listToFind = _.without(listToFind,'without')
 	listToFind = _.without(listToFind,'working')
-	listToFind = _.without(listToFind,'no')
+//	listToFind = _.without(listToFind,'no')
 	listToFind = _.without(listToFind,'usd')
+
+	//console.log(listToFind)
 
 	// process.exit(0)
 	var alreadycared = false
@@ -365,7 +371,8 @@ function inSentence(sentence, keyphrase, goldLable)
 		// console.log(index)
 		if (index != -1)
 			{
-			if ((goldLable == 'Leased Car') && (alreadycared == false) && (TRUTHTELLER == true))
+	//		console.log(goldLable)
+/*			if ((goldLable == 'Leased Car') && (alreadycared == false) && (TRUTHTELLER == true))
 				{
 				alreadycared = true
 				var negation = truth_utils.negation(sentence.replace('without','no'),['agreement'], truth_filename)
@@ -382,7 +389,8 @@ function inSentence(sentence, keyphrase, goldLable)
 					else
 						output.push(['With leased car','car',getWords(sentence,"car"), whatinSentence(sentence,['car','leased', 'company'])])
 					}
-				}	
+				}
+*/	
 			output.push([goldLable, sentence.slice(index, index + phrase.length), getWords(sentence, phrase), [index, index + phrase.length]])
 			}
 		// else
@@ -506,10 +514,12 @@ var RuleValues = {
 		  'Working Hours': [['8','8 hours'],['9','9 hours'],['10','10 hours']],
 		  'Job Description': ['QA','Programmer','Team Manager','Project Manager'],
 		  // 'Leased Car': ['Without leased car', 'With leased car', 'No agreement']
-		  'Leased Car': ['Ferrari']
+		  'Leased Car': [['without','Without leased car'], ['with', 'With leased car'], ['agreement','No agreement']]
+
 		}
 
-// var stats = new PrecisionRecall();
+// var stats = newsed Car': [['without','Without leased car'], ['with', 'With leased car'], ['agreement','No agreement']]
+// PrecisionRecall();
 // var stats_value = new PrecisionRecall();
 // var stats_attribute = new PrecisionRecall();
 
