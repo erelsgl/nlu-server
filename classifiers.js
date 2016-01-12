@@ -255,7 +255,7 @@ function normalizer(sentence) {
 	return sentence
 }
 
-var regexpString = "([.;?!]| and | if | however | but )";  // to capture the delimiters
+var regexpString = "([,.;?!]| and | if | however | but )";  // to capture the delimiters
 var regexp = new RegExp(regexpString, "i");
 var delimitersToInclude = {"?":true};
 
