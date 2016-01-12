@@ -2418,13 +2418,21 @@ function resolve_emptiness_rule(label)
     label[2].push("true")
 
   if (label[0].indexOf("Query")!=-1) 
+  {
+    label[2] = label[2].concat(label[1])
     label[1].push("Offer")
 
-if ((label[0].indexOf("Reject")!=-1) && (label[2].indexOf("With leased car")!=-1))
-  {
-    label[2].splice(label[2].indexOf("With leased car"),1)
-    label[2].push("Without leased car")
   }
+
+if ((label[0].indexOf("Reject")!=-1) && (label[2].indexOf("Without leased car")!=-1))
+  {
+    label[2].splice(label[2].indexOf("Without leased car"),1)
+    label[2].push("With leased car")
+  }
+
+if (((label[0].indexOf("Reject")!=-1)||(label[0].indexOf("Accept")!=-1)) && (label[1].indexOf("Leased Car")!=-1) && (label[2].indexOf("Without leased car")==-1) && (label[2].indexOf("With leased car")==-1))
+  label[2].push("With leased car")
+
     
   // var truel = ['Greet','Quit']
   // if ((label[1].length == 0) && (label[2].length == 0) && 
