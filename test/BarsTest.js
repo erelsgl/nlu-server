@@ -18,6 +18,10 @@ describe('Bars utilities', function() {
 
 
 	it('pipeline', function() {
+		
+		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([[], [], []])))
+		labels.length.should.equal(0)
+
 		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Reject"], [], []])))
 		// console.log(JSON.stringify(labels, null, 4))
 		labels[0].should.equal("{\"Reject\":true}")
@@ -25,14 +29,14 @@ describe('Bars utilities', function() {
 		var labels = bars.resolve_emptiness_rule([["Query"], [], ['Salary']])
 		labels[1][0].should.equal("Offer")
 
-		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Query"], ['Offer'], []])))
-		labels[0].should.equal("{\"Query\":\"Offer\"}")
+		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Query"], ['Salary'], []])))
+		labels[0].should.equal("{\"Query\":{\"Offer\":\"Salary\"}}")
 
 		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Query"], [], []])))
 		labels[0].should.equal("{\"Query\":\"Offer\"}")
 
-		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Reject"], ["Leased Car"], ["With leased car"]])))
-		labels[0].should.equal("{\"Reject\":{\"Leased Car\":\"Without leased car\"}}")
+		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Reject"], ["Leased Car"], ["Without leased car"]])))
+		labels[0].should.equal("{\"Reject\":{\"Leased Car\":\"With leased car\"}}")
 	})
 
 	it('coverfilter', function() {
