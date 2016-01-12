@@ -557,14 +557,22 @@ function feContext(sample, features, train, featureOptions, callback) {
 	else
 		context = sample.context
 
+	var intents = []
+
 	_.each(context, function(feat, key, list){ 
-
 		var obj = JSON.parse(feat)
-		features["CON_"+_.keys(obj)[0]] = 1 
-		// features["CON_"+_.keys(obj)[0]+"_"+_.keys(_.values(obj)[0])[0]] = 1 
-
+		intents.push(_.keys(obj)[0])
 	}, this)
 
+	intents = _.unique(intents)
+
+	if (intents.length == 1)
+	{
+		_.each(intents, function(intent, key, list){ 
+			features["CON_"+intent]] = 1 
+		}, this)
+	}
+	
 	callback(null, features)
 }
 
