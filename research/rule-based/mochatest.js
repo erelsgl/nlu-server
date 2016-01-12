@@ -15,7 +15,6 @@ var truth_filename = path + "/sentence_to_truthteller.txt"
 
 describe('Util test', function() {
 
-
 	it('truthtel', function() {
 		var sentence = 'I want and need a salary of 90000'
 		sentence = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence, false)})['generated']
@@ -25,17 +24,28 @@ describe('Util test', function() {
 	it('check no agreement', function() {
 		var data = rules.getFound("there will be no agreement for car")
 		var filtered = rules.getFilter(data)
-		_.isEqual(filtered, [[["Leased Car","car",[6,6],[31,34]]],[["No agreement","no agreement",[3,4],[-1,-1]]]]).should.be.true
-		
+		filtered[0][0][0].should.equal("Leased Car")
+		filtered[1][0][0].should.equal("No agreement")
 	})
-	
 
-	it('check filter', function() {
+	it('checkcar', function() {
+                var data = rules.getFound("with leased car pension fund 10%")
+                var filtered = rules.getFilter(data)
+		filtered[0][1][0].should.equal("Leased Car")
+		filtered[0][0][0].should.equal("Pension Fund")
+		filtered[1][0][0].should.equal("10%")
+		filtered[1][1][0].should.equal("With leased car")
+
 		var data = rules.getFound("let us compromise without a leased car")
-		var filtered = rules.getFilter(data)
-		_.isEqual([[["Leased Car","leased car",[5,6],[28,38]]],[["Without leased car","car",[6,6],[-1,-1]]]], filtered).should.be.true
-	})
-			
+        var filtered = rules.getFilter(data)
+        filtered[0][0][0].should.equal("Leased Car")
+        filtered[1][0][0].should.equal("Without leased car")
+
+        var data = rules.getFound("with a pension fund 10%")
+        var filtered = rules.getFilter(data)
+        filtered[0][0][0].should.equal("Pension Fund")
+        filtered[1][0][0].should.equal("10%")
+    })
 
 	it('check filter', function() {
 		var fil = rules.filterValues(['Salary', 'Pension Fund', 'car'])
