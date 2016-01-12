@@ -1,4 +1,4 @@
-/**
+	/**
  * a unit-test for Bars unit
  * 
  * @since 2013-08
@@ -19,7 +19,18 @@ describe('Bars utilities', function() {
 
 	it('pipeline', function() {
 		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Reject"], [], []])))
-		console.log(JSON.stringify(labels, null, 4))
+		// console.log(JSON.stringify(labels, null, 4))
+		labels[0].should.equal("{\"Reject\":true}")
+		// var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Query"], [''], ['Salary']])))
+		var labels = bars.resolve_emptiness_rule([["Query"], [], ['Salary']])
+		labels[1][0].should.equal("Offer")
+
+		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Query"], ['Offer'], []])))
+		labels[0].should.equal("{\"Query\":\"Offer\"}")
+
+		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Query"], [], []])))
+		labels[0].should.equal("{\"Query\":\"Offer\"}")
+
 	})
 
 	it('coverfilter', function() {
