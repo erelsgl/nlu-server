@@ -31,6 +31,8 @@ describe('Bars utilities', function() {
 		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Query"], [], []])))
 		labels[0].should.equal("{\"Query\":\"Offer\"}")
 
+		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Reject"], ["Leased Car"], ["With leased car"]])))
+		labels[0].should.equal("{\"Reject\":{\"Leased Car\":\"Without leased car\"}}")
 	})
 
 	it('coverfilter', function() {
