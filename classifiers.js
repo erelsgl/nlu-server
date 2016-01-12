@@ -347,7 +347,6 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 	var words = tokenizer.tokenize(sentence);
 	var unigrams = _.flatten(natural.NGrams.ngrams(words, 1))
 	
-
 	_.each(unigrams, function(unigram, key, list){ features[unigram] = 1 }, this)
 
 	if (train)
@@ -548,6 +547,25 @@ function feEmbedAverage(sample, features, train, featureOptions, callback) {
     	    //console.log(_.keys(features).length)
 	    callback(null, features)
 	})	
+}
+
+function feContext(sample, features, train, featureOptions, callback) {
+	
+	var context = {}
+	if ('input' in sample)
+		context = sample['input']['context']
+	else
+		context = sample.context
+
+	_.each(context, function(feat, key, list){ 
+
+		var obj = JSON.parse(feat)
+		features["CON_"+_.keys(obj)[0]] = 1 
+		// features["CON_"+_.keys(obj)[0]+"_"+_.keys(_.values(obj)[0])[0]] = 1 
+
+	}, this)
+
+	callback(null, features)
 }
 
 function feAsync(sample, features, train, featureOptions, callback) {
@@ -904,7 +922,8 @@ module.exports = {
 		DS_comp_exp_3_ref: enhance(SvmLinearMulticlassifier, feExpansion, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': ['ReverseEntailment','Equivalence','ForwardEntailment']}),
 		DS_vanilla_svm: enhance(SvmLinearBinaryRelevanceClassifier, feAsync, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true, {'unigrams':true, 'bigrams':true}),
 		
-		DS_comp_unigrams_async: enhance(SvmLinearMulticlassifier, feAsync, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false}),
+		DS_comp_unigrams_async: enhance(SvmLinearMulticlassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false}),
+		DS_comp_unigrams_async_context: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false}),
 		DS_comp_unigrams_bigrams_async: enhance(SvmLinearMulticlassifier, feAsync, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':true}),
 
 //		DS_bigram_split_embed: enhance(SvmLinearMulticlassifier, feEmbedAverage, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false),
