@@ -558,27 +558,46 @@ function feEmbedAverage(sample, features, train, featureOptions, callback) {
 function feContext(sample, features, train, featureOptions, callback) {
 	
 	var context = {}
+	var sentence = ""
+
 	if ('input' in sample)
+	{
 		context = sample['input']['context']
+		sentence = sample['input']['unproc']
+	}
 	else
+	{
 		context = sample.context
+		sentence = sample.unproc
+	}
+		
+	console.log("DEBUGCONTEXT: sentence " + sentence + " context " + JSON.stringify(context))
+
+	var attrval = rules.findData(sentence)
+
+	// attrval[0] - attrs
+	// attrval[1] - values
 
 	var intents = []
+	var values = []
 
 	_.each(context, function(feat, key, list){ 
 		var obj = JSON.parse(feat)
-		intents.push(_.keys(obj)[0])
+		if (_.keys(obj)[0] == "Offer")
+			values.push(_.values(_.values(obj)[0])[0])
 	}, this)
 
-	intents = _.unique(intents)
+	console.log(JSON.stringify(values, null, 4))
+	console.log(JSON.stringify(attrval, null, 4))
+	console.log("vaalues")
 
-	// if (intents.length == 1)
-	// {
-		// _.each(intents, function(intent, key, list){ 
-			// features["CON_"+intent]] = 1 
-		// }, this)
-	// }
+	_.each(attrval[1], function(value, key, list){
+		if (values.indexOf(value[0])!=-1)
+			features['REPEATED_ACCEPT'] = 1
+	}, this)
 
+	console.log("DEBUGCONTEXT: " + JSON.stringify(features))
+	
 	callback(null, features)
 }
 
@@ -892,6 +911,7 @@ module.exports = {
 		enhance: enhance,
 		tokenizer: tokenizer,
 		normalizer: normalizer,
+		feContext:feContext,
 		// featureExtractorUB: featureExtractorUB,
 		// featureExtractorB: featureExtractorB,
 		// featureExtractorU: featureExtractorU,
