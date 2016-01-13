@@ -23,6 +23,20 @@ var SvmPerfBinaryRelevanceClassifier = limdu_classifiers.multilabel.BinaryReleva
 
 describe('Classifiers functions', function() {
 
+   it('feContext', function(callback) {
+   		var features = {}
+   		var sample = {'input':{
+   				'unproc': 'I accept you a salary of 60000',
+   				'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
+   		}}
+
+   		classifiers.feContext(sample, features, true, {}, function(err, results){
+ 			("REPEATED_ACCEPT" in features).should.be.true
+ 			callback()
+   		}) 
+       
+    })
+
 	// it('word2vec', function() {
 	// 	var features = []
 	// 	var output = classifiers.featureword2vec('the of', features)
