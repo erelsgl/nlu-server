@@ -34,7 +34,7 @@ process.on('message', function(message) {
 	    function (callbackwhilst) {
 
 			// var len = 5
-	       	index += (index < 20 ? 2 : 5)
+	       	index += (index < 10 ? 1 : 5)
 
 	       	var mytrain = train.slice(0, index)
 
