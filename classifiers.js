@@ -28,7 +28,7 @@ var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8'))
 
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
-var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-]+/});
+var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-\?]+/});
 // var tokenizer = new natural.WordTokenizer({'pattern':(/(\W+|\%)/)}); // WordTokenizer, TreebankWordTokenizer, WordPunctTokenizer
 // var ngrams = new natural.NGrams.ngrams()
 /*
@@ -593,7 +593,9 @@ function feContext(sample, features, train, featureOptions, callback) {
 
 	_.each(attrval[1], function(value, key, list){
 		if (values.indexOf(value[0])!=-1)
-			features['REPEATED_ACCEPT'] = 1
+			features['MENTIONED_VALUE'] = 1
+		else
+			features['UNMENTIONED_VALUE'] = 1
 	}, this)
 
 	console.log("DEBUGCONTEXT: " + JSON.stringify(features))
@@ -607,9 +609,15 @@ function feAsync(sample, features, train, featureOptions, callback) {
 	
 	if (_.isObject(sample)) 
 		if ("input" in sample)
+		{
 			sentence = sample.input.text
+			console.log(JSON.stringify(sample.input.context, null, 4))
+		}
 		else
+		{
 			sentence = sample.text
+			console.log(JSON.stringify(sample.context, null, 4))
+		}
 	else
 		sentence = sample
 
@@ -617,7 +625,7 @@ function feAsync(sample, features, train, featureOptions, callback) {
 	sentence = regexpNormalizer(sentence)
 
 	var words = tokenizer.tokenize(sentence);
-	
+
 	var featureSet = []
 	
 	if (featureOptions.unigrams)
@@ -626,83 +634,89 @@ function feAsync(sample, features, train, featureOptions, callback) {
 	if (featureOptions.bigrams)
 	   featureSet = featureSet.concat(natural.NGrams.ngrams(words, 2))
 
-	_.each(featureSet, function(feat, key, list){ features[feat] = 1 }, this)
+	_.each(featureSet, function(feat, key, list){ 
+		if ((!featureOptions.allow_stopwords) && (stopwords.indexOf(feat)==-1))
+			features[feat] = 1 
+			
+		if (featureOptions.allow_stopwords)
+			features[feat] = 1 
+	}, this)
 
 	callback(null, features)
 }
 
-function featureExtractorUBC(sentence, features) {
+// function featureExtractorUBC(sentence, features) {
 
-	if (_.isObject(sentence)) sentence = sentence['text']
+// 	if (_.isObject(sentence)) sentence = sentence['text']
 
-	sentence = sentence.toLowerCase().trim()
-	sentence = regexpNormalizer(sentence)
+// 	sentence = sentence.toLowerCase().trim()
+// 	sentence = regexpNormalizer(sentence)
 
-	var words = tokenizer.tokenize(sentence);
-	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
-	// var feature = natural.NGrams.ngrams(words, 1)
+// 	var words = tokenizer.tokenize(sentence);
+// 	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
+// 	// var feature = natural.NGrams.ngrams(words, 1)
 
-	_.each(feature, function(feat, key, list){ features[feat] = 1 }, this)
+// 	_.each(feature, function(feat, key, list){ features[feat] = 1 }, this)
 
-	return features;
-}
+// 	return features;
+// }
 
-function featureExtractorUBContext(sentence, features) {
+// function featureExtractorUBContext(sentence, features) {
 	
-	var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
+// 	var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
 
-	var context = sentence['context']
-	sentence = sentence['text']
+// 	var context = sentence['context']
+// 	sentence = sentence['text']
 
-	sentence = sentence.toLowerCase().trim()
+// 	sentence = sentence.toLowerCase().trim()
 
-	sentence = regexpNormalizer(sentence)
+// 	sentence = regexpNormalizer(sentence)
 
-	var attrval = rules.findData(sentence)
+// 	var attrval = rules.findData(sentence)
 
-	var attrs = attrval[0]
-	var values = attrval[1]
+// 	var attrs = attrval[0]
+// 	var values = attrval[1]
 
-	sentence_clean = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
-	sentence_clean = sentence_clean.replace(/<VALUE>/g,'')
-	sentence_clean = sentence_clean.replace(/<ATTRIBUTE>/g,'')
-	sentence_clean = sentence_clean.replace(/NIS/,'')
-	sentence_clean = sentence_clean.replace(/nis/,'')
-	sentence_clean = sentence_clean.replace(/track/,'')
-	sentence_clean = sentence_clean.replace(/USD/,'')
-	sentence_clean = sentence_clean.trim()
+// 	sentence_clean = rules.generatesentence({'input':sentence, 'found': rules.findData(sentence)})['generated']
+// 	sentence_clean = sentence_clean.replace(/<VALUE>/g,'')
+// 	sentence_clean = sentence_clean.replace(/<ATTRIBUTE>/g,'')
+// 	sentence_clean = sentence_clean.replace(/NIS/,'')
+// 	sentence_clean = sentence_clean.replace(/nis/,'')
+// 	sentence_clean = sentence_clean.replace(/track/,'')
+// 	sentence_clean = sentence_clean.replace(/USD/,'')
+// 	sentence_clean = sentence_clean.trim()
 
 
-	// var words = tokenizer.tokenize(sentence);
-	var words_clean = tokenizer.tokenize(sentence);
-	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
-	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
+// 	// var words = tokenizer.tokenize(sentence);
+// 	var words_clean = tokenizer.tokenize(sentence);
+// 	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
+// 	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
 
-	var feature_clean = _.flatten(natural.NGrams.ngrams(words_clean, 1))
+// 	var feature_clean = _.flatten(natural.NGrams.ngrams(words_clean, 1))
 
-	// _.each(stopwords, function(stopvalue, key, list){
-		// feature_clean = _.without(feature_clean, stopvalue);
-	// }, this)
+// 	// _.each(stopwords, function(stopvalue, key, list){
+// 		// feature_clean = _.without(feature_clean, stopvalue);
+// 	// }, this)
 
-	_.each(feature_clean, function(feat, key, list){ features[feat] = 1 }, this)
+// 	_.each(feature_clean, function(feat, key, list){ features[feat] = 1 }, this)
 
-	// if (attrs.length > 0)
-	// 	_.each(attrs, function(attr, key, list){ features[attr[0]] = 1 }, this)
+// 	// if (attrs.length > 0)
+// 	// 	_.each(attrs, function(attr, key, list){ features[attr[0]] = 1 }, this)
 
-	// if (values.length > 0)
-	// 	_.each(values, function(value, key, list){ features[value[0]] = 1 }, this)
+// 	// if (values.length > 0)
+// 	// 	_.each(values, function(value, key, list){ features[value[0]] = 1 }, this)
 
-	_.each(context, function(feat, key, list){ 
+// 	_.each(context, function(feat, key, list){ 
 
-		var obj = JSON.parse(feat)
-		features["CON_"+_.keys(obj)[0]] = 1 
-		features["CON_"+_.keys(obj)[0]+"_"+_.keys(_.values(obj)[0])[0]] = 1 
+// 		var obj = JSON.parse(feat)
+// 		features["CON_"+_.keys(obj)[0]] = 1 
+// 		features["CON_"+_.keys(obj)[0]+"_"+_.keys(_.values(obj)[0])[0]] = 1 
 
-	}, this)
+// 	}, this)
 
-	return features;
-	// callback()
-}
+// 	return features;
+// 	// callback()
+// }
 
 var SvmPerfKernelBinaryClassifier = classifiers.SvmPerf.bind(0, {
         learn_args: "-c 100 -t 2",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html
@@ -952,13 +966,13 @@ module.exports = {
 		DS_comp_exp_2_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':2, 'onlyroot': false, 'relation': undefined}),
 		DS_comp_exp_3_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': undefined}),
 		DS_comp_exp_3_undefined_root: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined}),
-		
 		DS_comp_exp_3_ref: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': ['ReverseEntailment','Equivalence','ForwardEntailment']}),
-		DS_vanilla_svm: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true, {'unigrams':true, 'bigrams':true}),
 		
-		DS_comp_unigrams_async: enhance(SvmLinearMulticlassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false}),
-		DS_comp_unigrams_async_context: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false}),
-		DS_comp_unigrams_bigrams_async: enhance(SvmLinearMulticlassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':true}),
+		DS_vanilla_svm: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true, {'unigrams':true, 'bigrams':true, 'allow_stopwords':true}),
+		
+		DS_comp_unigrams_async: enhance(SvmLinearMulticlassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
+		DS_comp_unigrams_async_context: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
+		DS_comp_unigrams_bigrams_async: enhance(SvmLinearMulticlassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':true, 'allow_stopwords':true}),
 
 //		DS_bigram_split_embed: enhance(SvmLinearMulticlassifier, feEmbedAverage, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false),
 //		DS_bigram_split_embed_unig: enhance(SvmLinearMulticlassifier, feEmbedAverageUnigram, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false),
