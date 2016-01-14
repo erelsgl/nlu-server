@@ -452,64 +452,58 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 			var sumvec = _.map(sumvec, function(value){ return value/embs.length })
 
 			_.each(sumvec, function(value, key, list){ 
-			features['w2v'+key] = value
+				features['w2v'+key] = value
 			}, this)
 		}
 
-		if (featureOptions.unigrams)	
-		 	_.each(unigrams, function(value, key, list){ 
-		 		features[value] = 1
-		 	}, this)
-
-    	    //console.log(_.keys(features).length)
 	    callback(null, features)
 	})	
 }	
 
-function feEmbedAverageUnigram(sample, features, train, featureOptions, callback) {
-	var sentence = ""
+// function feEmbedAverageUnigram(sample, features, train, featureOptions, callback) {
+// 	var sentence = ""
 	
-	if (_.isObject(sample)) 
-		if ("input" in sample)
-			sentence = sample.input.text
-		else
-			sentence = sample.text
+// 	if (_.isObject(sample)) 
+// 		if ("input" in sample)
+// 			sentence = sample.input.text
+// 		else
+// 			sentence = sample.text
 
-	sentence = sentence.toLowerCase().trim()
-	var words = tokenizer.tokenize(sentence);
-	var unigrams = _.flatten(natural.NGrams.ngrams(words, 1))
+// 	sentence = sentence.toLowerCase().trim()
+// 	var words = tokenizer.tokenize(sentence);
+// 	var unigrams = _.flatten(natural.NGrams.ngrams(words, 1))
 
-	var embs = []
-	async.eachSeries(unigrams, function(word, callback1){
+// 	var embs = []
+// 	async.eachSeries(unigrams, function(word, callback1){
 		
-		async_adapter.getembed(word, function(err, emb){
-			embs.push(emb)
-			callback1()
-		})
+// 		async_adapter.getembed(word, function(err, emb){
+// 			embs.push(emb)
+// 			callback1()
+// 		})
 
- 	}, function(err) {
+//  	}, function(err) {
 
- 		var sumvec = Array.apply(null, Array(300)).map(function () { return 0})
+//  		var sumvec = Array.apply(null, Array(300)).map(function () { return 0})
 
- 		_.each(embs, function(value, key, list){ 
-			sumvec = bars.vectorsum(sumvec, value)
-		}, this)
+//  		_.each(embs, function(value, key, list){ 
+// 			sumvec = bars.vectorsum(sumvec, value)
+// 		}, this)
 
-		if (embs.length > 0)
-			var sumvec = _.map(sumvec, function(value){ return value/embs.length })
+// 		if (embs.length > 0)
+// 			var sumvec = _.map(sumvec, function(value){ return value/embs.length })
 
-		_.each(sumvec, function(value, key, list){ 
-			features['w2v'+key] = value
-		}, this)
+// 		_.each(sumvec, function(value, key, list){ 
+// 			features['w2v'+key] = value
+// 		}, this)
 	
-		_.each(unigrams, function(value, key, list){ 
-			features[value] = 1
-		}, this)
+// 		_.each(unigrams, function(value, key, list){ 
+// 			features[value] = 1
+// 		}, this)
 
-    	    //console.log(_.keys(features).length)
-	    callback(null, features)
-	})	
-}	
+//     	    //console.log(_.keys(features).length)
+// 	    callback(null, features)
+// 	})	
+// }	
 
 function feEmbedAverage(sample, features, train, featureOptions, callback) {
 
@@ -609,7 +603,7 @@ function feContext(sample, features, train, featureOptions, callback) {
 
 	console.log(JSON.stringify(values, null, 4))
 	console.log(JSON.stringify(attrval, null, 4))
-	console.log("vaalues")
+	console.log("values")
 
 	_.each(attrval[1], function(value, key, list){
 		if (values.indexOf(value[0])!=-1)
@@ -898,26 +892,26 @@ var SagaeSegmenter =
 
 */
 
-function FilterIntents(input)
-{
-	if ((input.length > 1) && (input.indexOf("Offer") != -1))
-		return ['Offer']
-	else
-		return input
-}
+// function FilterIntents(input)
+// {
+// 	if ((input.length > 1) && (input.indexOf("Offer") != -1))
+// 		return ['Offer']
+// 	else
+// 		return input
+// }
 
-function featureExtractorLemma(sentence, features) {
-	var words = trainutils.sentenceStem(sentence)
-	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
-	ftrs.NGramsFromArray(2, 0, words, features);  // unigrams
-	return features;
-}
+// function featureExtractorLemma(sentence, features) {
+// 	var words = trainutils.sentenceStem(sentence)
+// 	ftrs.NGramsFromArray(1, 0, words, features);  // unigrams
+// 	ftrs.NGramsFromArray(2, 0, words, features);  // unigrams
+// 	return features;
+// }
 
-function featureExtractorWords(sentence, features) {
-	features = ftrs.call(ftrs.NGramsOfWords(1), sentence)
-	features = _.extend(features, ftrs.call(ftrs.NGramsOfWords(2), sentence))
-	return features;
-}
+// function featureExtractorWords(sentence, features) {
+// 	features = ftrs.call(ftrs.NGramsOfWords(1), sentence)
+// 	features = _.extend(features, ftrs.call(ftrs.NGramsOfWords(2), sentence))
+// 	return features;
+// }
 
 /*
  * BINARY CLASSIFIERS (used as basis to other classifiers):
@@ -975,24 +969,24 @@ module.exports = {
 		// IntentClass: enhance(SvmLinearMulticlassifier, featureExtractorUB, undefined, new ftrs.FeatureLookupTable(),undefined,Hierarchy.splitPartEqually, Hierarchy.retrieveIntent,  Hierarchy.splitPartEquallyIntent, true),
 //		DS_bigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		// DS_bigram_split: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
-		DS_comp_embed_d300_average: enhance(SvmLinearMulticlassifier, [feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 10, 'aggregate':'average', 'unigrams':false, 'allow_stopwords': true}),
-		DS_comp_embed_d100_average: enhance(SvmLinearMulticlassifier, [feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'unigrams':false, 'allow_stopwords': true}),
-		DS_comp_embed_d50_average: enhance(SvmLinearMulticlassifier, [feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 8, 'aggregate':'average', 'unigrams': false, 'allow_stopwords': true}),
-		DS_comp_embed_d25_average: enhance(SvmLinearMulticlassifier, [feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 7, 'aggregate':'average', 'unigrams': false, 'allow_stopwords': true}),
+		DS_comp_embed_d300_average: enhance(SvmLinearMulticlassifier, [feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 10, 'aggregate':'average', 'allow_stopwords': true}),
+		DS_comp_embed_d100_average: enhance(SvmLinearMulticlassifier, [feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true}),
+		DS_comp_embed_d50_average: enhance(SvmLinearMulticlassifier, [feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 8, 'aggregate':'average', 'allow_stopwords': true}),
+		DS_comp_embed_d25_average: enhance(SvmLinearMulticlassifier, [feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 7, 'aggregate':'average', 'allow_stopwords': true}),
 
-		DS_comp_embed_d100_sub_average: enhance(SvmLinearMulticlassifier, [feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 5, 'aggregate':'average', 'unigrams':false, 'allow_stopwords': true}),
-		DS_comp_embed_d100_dep_average: enhance(SvmLinearMulticlassifier, [feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 6, 'aggregate':'average', 'unigrams':false, 'allow_stopwords': true}),
-		DS_comp_embed_d100_average: enhance(SvmLinearMulticlassifier, [feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'unigrams':false, 'allow_stopwords': true}),
-		DS_comp_embed_d100_average_context: enhance(SvmLinearMulticlassifier, [feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'unigrams':false, 'allow_stopwords': true}),
+		DS_comp_embed_d100_sub_average: enhance(SvmLinearMulticlassifier, [feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 5, 'aggregate':'average', 'allow_stopwords': true}),
+		DS_comp_embed_d100_dep_average: enhance(SvmLinearMulticlassifier, [feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 6, 'aggregate':'average', 'allow_stopwords': true}),
+		DS_comp_embed_d100_average: enhance(SvmLinearMulticlassifier, [feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true}),
+		DS_comp_embed_d100_average_context: enhance(SvmLinearMulticlassifier, [feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true}),
 
-		DS_comp_exp_0_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':0, 'onlyroot': false, 'relation': undefined}),
-		DS_comp_exp_1_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':1, 'onlyroot': false, 'relation': undefined}),
-		DS_comp_exp_2_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':2, 'onlyroot': false, 'relation': undefined}),
-		DS_comp_exp_3_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': undefined}),
-		DS_comp_exp_3_undefined_context: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': undefined}),
-		DS_comp_exp_3_undefined_root: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined}),
-		DS_comp_exp_3_undefined_root_context: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined}),
-		DS_comp_exp_3_ref: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': ['ReverseEntailment','Equivalence','ForwardEntailment']}),
+		DS_comp_exp_0_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':0, 'onlyroot': false, 'relation': undefined, 'allow_offer': true}),
+		DS_comp_exp_1_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':1, 'onlyroot': false, 'relation': undefined, 'allow_offer': true}),
+		DS_comp_exp_2_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':2, 'onlyroot': false, 'relation': undefined, 'allow_offer': true}),
+		DS_comp_exp_3_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': undefined, 'allow_offer': true}),
+		DS_comp_exp_3_undefined_context: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': undefined, 'allow_offer': true}),
+		DS_comp_exp_3_undefined_root: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true}),
+		DS_comp_exp_3_undefined_root_context: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true}),
+		DS_comp_exp_3_ref: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': ['ReverseEntailment','Equivalence','ForwardEntailment'], 'allow_offer': true}),
 		
 		DS_vanilla_svm: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true, {'unigrams':true, 'bigrams':true, 'allow_stopwords':true}),
 		
