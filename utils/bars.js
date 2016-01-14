@@ -2429,6 +2429,12 @@ if ((label[0].indexOf("Reject")!=-1) && (label[2].indexOf("Without leased car")!
     label[2].push("With leased car")
   }
 
+// only Offer and Leased Car but no without or with
+if ((label[0].indexOf("Offer")!=-1) && (label[1].indexOf("Leased Car")!=-1) && ((label[2].indexOf("Without leased car")==-1)||(label[2].indexOf("With leased car")==-1)))
+{
+  label[2].push("With leased car")
+}
+
 if (((label[0].indexOf("Reject")!=-1)||(label[0].indexOf("Accept")!=-1)) && (label[1].indexOf("Leased Car")!=-1) && (label[2].indexOf("Without leased car")==-1) && (label[2].indexOf("With leased car")==-1))
   label[2].push("With leased car")
 
