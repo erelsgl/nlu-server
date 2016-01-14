@@ -54,6 +54,8 @@
 , {"source": "eleven", "target": "11"}
 , {"source": "twelve", "target": "12"}
 , {"source": "twenty", "target": "20"}
+, {"source": " q&a ", "target": " qa "}
+
 
 , {"source": "(\\w+)([\\!|\\?])", "target": "$1 $2"}
 
