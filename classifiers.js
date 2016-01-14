@@ -570,6 +570,9 @@ function feContext(sample, features, train, featureOptions, callback) {
 		context = sample.context
 		sentence = sample.unproc
 	}
+
+	if (context.length == 0)
+		features['NO_CONTEXT'] = 1
 		
 	console.log("DEBUGCONTEXT: sentence " + sentence + " context " + JSON.stringify(context))
 
@@ -593,10 +596,13 @@ function feContext(sample, features, train, featureOptions, callback) {
 
 	_.each(attrval[1], function(value, key, list){
 		if (values.indexOf(value[0])!=-1)
-			features['MENTIONED_VALUE'] = 1
+			features['OFFERED_VALUE'] = 1
 		else
-			features['UNMENTIONED_VALUE'] = 1
+			features['UNOFFERED_VALUE'] = 1
 	}, this)
+
+	// if (attrval[1].length == 0)
+	// 	features['UNMENTIONED_VALUE'] = 1
 
 	console.log("DEBUGCONTEXT: " + JSON.stringify(features))
 	
