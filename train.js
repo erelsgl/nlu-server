@@ -369,6 +369,8 @@ if (check_ds)
 	utterset["train"] = _.flatten(utterset["train"])
 
 	console.log(utterset["train"].length)
+
+	utterset["train"][0]['input']['text'] = "I want to success?"
 	
 
 	// var stats = trainAndTest.trainAndTest_batch(classifier.DS_bigram, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), 50)
@@ -381,7 +383,7 @@ if (check_ds)
 
 
 	//trainAndTest.trainAndTest_async(classifier.DS_bigram_split_embed, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
-	trainAndTest.trainAndTest_async(classifier.DS_comp_unigrams_async, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	trainAndTest.trainAndTest_async(classifier.DS_comp_unigrams_async_context, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		console.log("DONE")
 		console.log(JSON.stringify(results, null, 4))
 		process.exit(0)
