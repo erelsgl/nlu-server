@@ -37,12 +37,16 @@ describe('Classifiers functions', function() {
        
     })
 
-	// it('word2vec', function() {
-	// 	var features = []
-	// 	var output = classifiers.featureword2vec('the of', features)
-	// 	Object.keys(features).length.should.equal(300)
-	// 	features['w2v299'].should.equal((-0.0599376048847 + 0.0405294302343)/2)
-	// })
+	it('feEmbed', function(callback) {
+		var sample = {
+			'input':{'text': "I love the life"}
+		}
+
+		classifiers.feEmbed(sample, {}, false, {'embdeddb': 5, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
+			results.length.should.equal(100)
+
+		}) 
+	})
 
 	it('tokenizer', function() {
 		_.isEqual(classifiers.tokenizer.tokenize("i want to success ?"), ["i","want","to","success","?"]).should.equal(true)
