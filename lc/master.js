@@ -351,17 +351,19 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 if (process.argv[1] === __filename)
 {
-	var folds = 10
+	var folds = 5
 
-	// var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_exp']
-	// var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_exp']
-	//var classifiers = ['DS_comp_exp_0_undefined','DS_comp_exp_1_undefined','DS_comp_exp_2_undefined','DS_comp_exp_3_ref','DS_comp_exp_4_ref']
-	//var classifiers = ['DS_comp_unigrams_async', 'DS_comp_embed_d300_average', 'DS_comp_embed_d100_average', 'DS_comp_embed_d50_average', 'DS_comp_embed_d25_average']
-//	var classifiers = ['DS_comp_unigrams_bigrams_async', 'DS_vanilla_svm']
-//
-	// var classifiers = ['DS_comp_unigrams_async', 'DS_comp_embed_d100_average', 'DS_comp_embed_d100_dep_average', 'DS_comp_embed_d100_sub_average']
-	var classifiers = ['DS_comp_unigrams_async', 'DS_comp_unigrams_async_context']
-	// var classifiers = ['DS_comp_exp_3_undefined_root', 'DS_comp_exp_3_undefined', 'DS_comp_embed_d100_average']
+	// 	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_exp']
+	//	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_exp']
+	//	var classifiers = ['DS_comp_exp_0_undefined','DS_comp_exp_1_undefined','DS_comp_exp_2_undefined','DS_comp_exp_3_ref','DS_comp_exp_4_ref']
+	//	var classifiers = ['DS_comp_unigrams_async', 'DS_comp_embed_d300_average', 'DS_comp_embed_d100_average', 'DS_comp_embed_d50_average', 'DS_comp_embed_d25_average']
+	//	var classifiers = ['DS_comp_unigrams_bigrams_async', 'DS_vanilla_svm']
+
+	//	var classifiers = ['DS_comp_unigrams_async', 'DS_comp_embed_d100_average', 'DS_comp_embed_d100_dep_average', 'DS_comp_embed_d100_sub_average']
+	//	var classifiers = ['DS_comp_exp_3_undefined_root', 'DS_comp_exp_3_undefined', 'DS_comp_embed_d100_average']
+	var classifiers = ['DS_comp_exp_3_undefined_root_context', 'DS_comp_exp_3_undefined_context', 'DS_comp_embed_d100_average_context']
+
+	// var classifiers = ['DS_comp_unigrams_async', 'DS_comp_unigrams_async_context']
 
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
