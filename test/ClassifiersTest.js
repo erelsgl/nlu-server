@@ -44,24 +44,10 @@ describe('Classifiers functions', function() {
 	// 	features['w2v299'].should.equal((-0.0599376048847 + 0.0405294302343)/2)
 	// })
 
-	// it('featureExpansion', function() {
-	// 	// phrase:
-	// 	// 0 - everything
-	// 	// 1 - only unigram seed generated unigram paraphrase
-
-	// 	var out1 = classifiers.featureExpansion(["offer","propose","give"], '[1]', 0)
-	// 	var out2 = classifiers.featureExpansion(["offer","propose","give"], '[2]', 0)
-
-	// 	Object.keys(out2).length.should.be.above(Object.keys(out1).length)
-	// })
-	
-	it('correctly separate utterance to tokens', function() {
-		// console.log(classifiers.tokenizer.tokenize("I offer your a pension of 15%"))
-		// process.exit(0)
-
-		_.isEqual(classifiers.tokenizer.tokenize("I offer your a salary of 10000"), [ 'I', 'offer', 'your', 'a', 'salary', 'of', '10000' ]).should.equal(true)
-		// _.isEqual(classifiers.tokenizer.tokenize("I offer your a pension of 15%"), [ 'I', 'offer', 'your', 'a', 'pension', 'of', '15%' ]).should.equal(true)
+	it('tokenizer', function() {
+		_.isEqual(classifiers.tokenizer.tokenize("i want to success ?"), ["i","want","to","success","?"]).should.equal(true)
 	})
+	
 
 	//TODO in different domain currency witth have digits after decimal point.
 
