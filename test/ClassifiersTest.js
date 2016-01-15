@@ -11,6 +11,7 @@ var limdu_classifiers = require('limdu/classifiers');
 var ftrs = require('limdu/features');
 var natural = require('natural');
 var Hierarchy = require(__dirname+'/../Hierarchy');
+var async_adapter = require(__dirname+'/../utils/async_adapter');
 
 var SvmPerfBinaryClassifier = limdu_classifiers.SvmPerf.bind(0, {
 	learn_args: "-c 100 --i 1",   // see http://www.cs.cornell.edu/people/tj/svm_light/svm_perf.html 
@@ -37,16 +38,85 @@ describe('Classifiers functions', function() {
        
     })
 
-	it('feEmbed', function(callback) {
+	it('feEmbed5', function(callback) {
 		var sample = {
 			'input':{'text': "I love the life"}
 		}
-
-		classifiers.feEmbed(sample, {}, false, {'embdeddb': 5, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
-			results.length.should.equal(100)
-
-		}) 
+		
+		features = {}
+		classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
+			_.keys(features).length.should.equal(100)
+			features.w2v0.should.equal(0.30470749999999996)
+			callback()
+		}) 	
 	})
+
+	it('feEmbed5nostop', function(callback) {
+                var sample = {
+                        'input':{'text': "I love the life"}
+                }
+
+                features = {}
+                classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average', 'allow_stopwords': false}, function (err, results){
+                        _.keys(features).length.should.equal(100)
+			 async_adapter.getembed("love", 5, function(err, love){
+				async_adapter.getembed("life", 5, function(err, life){
+					features.w2v0.should.equal((love[0]+life[0])/2)
+					callback()
+	                        })
+	                })
+                })
+        })
+
+	it('feEmbed6', function(callback) {
+                var sample = {
+                        'input':{'text': "I love the life"}
+                }
+
+                features = {}
+                classifiers.feEmbed(sample, features, false, {'embdeddb': 6, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
+                        _.keys(features).length.should.equal(100)
+                        callback()
+                })
+        })
+
+	it('feEmbed7', function(callback) {
+                var sample = {
+                        'input':{'text': "I love the life"}
+                }
+
+                features = {}
+                classifiers.feEmbed(sample, features, false, {'embdeddb': 7, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
+                        _.keys(features).length.should.equal(25)
+                        callback()
+                })
+        })
+
+	it('feEmbed8', function(callback) {
+                var sample = {
+                        'input':{'text': "I love the life"}
+                }
+
+                features = {}
+                classifiers.feEmbed(sample, features, false, {'embdeddb': 8, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
+                        _.keys(features).length.should.equal(50)
+                        callback()
+                })
+        })
+
+	it('feEmbed9', function(callback) {
+                var sample = {
+                        'input':{'text': "I love the life"}
+                }
+
+                features = {}
+                classifiers.feEmbed(sample, features, false, {'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
+                        _.keys(features).length.should.equal(100)
+                        callback()
+                })
+        })
+
+	
 
 	it('tokenizer', function() {
 		_.isEqual(classifiers.tokenizer.tokenize("i want to success ?"), ["i","want","to","success","?"]).should.equal(true)
