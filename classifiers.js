@@ -31,13 +31,6 @@ var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split
 var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-\?]+/});
 // var tokenizer = new natural.WordTokenizer({'pattern':(/(\W+|\%)/)}); // WordTokenizer, TreebankWordTokenizer, WordPunctTokenizer
 // var ngrams = new natural.NGrams.ngrams()
-/*
- * ENHANCEMENTS:
- */
-
-/*
- * CONSTRUCTORS:
- */
 
 // var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, preProcessor, postProcessor, TestSplitLabel, multiplyFeaturesByIDF, featureExpansion, featureExpansionScale, featureExpansionPhrase, featureFine, expansionParam) {
 var enhance = function (classifierType, featureExtractor, inputSplitter, featureLookupTable, labelLookupTable, preProcessor, postProcessor, TestSplitLabel, multiplyFeaturesByIDF, featureOptions) {
@@ -51,7 +44,7 @@ var enhance = function (classifierType, featureExtractor, inputSplitter, feature
 		// featureExpansion: featureExpansion,
 		// featureExpansionScale: featureExpansionScale,
 		// featureExpansionPhrase: featureExpansionPhrase,
-		// featureFine: featureFine,
+		// featureFine: featureFine,feExpansion
 		// expansionParam: expansionParam,
 		// stopwords: JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8'))),
 		// spellChecker: [require('wordsworth').getInstance(), require('wordsworth').getInstance()],
@@ -297,7 +290,7 @@ function inputSplitter(text) {
 // 	return features;
 // }
 
- function featureExtractorU(sentence, features) {
+ /*function featureExtractorU(sentence, features) {
  	var corp = sentence.match(/\<\w*\.*\w*\>/g)
  	var sentence = sentence.replace(/\<\w*\.*\w*\>/g," ")
 
@@ -315,7 +308,7 @@ function inputSplitter(text) {
 
  	return features;
  }
-
+*/
 // function featureExtractorUB(sentence, features) {
 // 	var words = tokenizer.tokenize(sentence);
 // 	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2, '[start]', '[end]'))
@@ -347,18 +340,18 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 	var words = tokenizer.tokenize(sentence);
 	var unigrams = _.flatten(natural.NGrams.ngrams(words, 1))
 	
-	_.each(unigrams, function(unigram, key, list){ if (stopwords.indexOf(unigram)==-1) features[unigram] = 1 }, this)
+	// _.each(unigrams, function(unigram, key, list){ if (stopwords.indexOf(unigram)==-1) features[unigram] = 1 }, this)
 
 	if (train)
 	{	
 		async.waterfall([
 			function(callbackl) {
 
-//				 if (sample.output[0] == "Offer")
-//				 	{
-//				 	console.log("Offer no expansion")
-//				 	return callback(null, features)	
-//				 	}
+				 if (sample.output[0] == "Offer")
+				 	{
+				 	console.log("Offer no expansion")
+				 	return callback(null, features)	
+				 	}
 
 				var poses = {}
 				var roots = []
@@ -385,7 +378,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 					async_adapter.getppdb(unigram, poses[unigram], featureOptions.scale, featureOptions.relation,  function(err, results){
 						// console.log("DEBUG: to exp: "+unigram+" "+poses[unigram]+" EXPANDED "+results+" ERROR "+err)
 						// console.log("DEBUG: expansioned "+results)
-						results.splice(0, 3)
+						results.splice(0, 5)
 						_.each(results, function(expan, key, list){ 
 							features[expan[0].toLowerCase()] = 1
 						}, this)
@@ -411,7 +404,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 }
 
 function feEmbed(sample, features, train, featureOptions, callback) {
-	var sentence = ""
+	/*var sentence = ""
 	
 	if (_.isObject(sample)) 
 		if ("input" in sample)
@@ -420,8 +413,8 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 			sentence = sample.text
 	else
 		sentence = sample
-
-	sentence = sentence.toLowerCase().trim()
+*/
+/*	sentence = sentence.toLowerCase().trim()
 	var words = tokenizer.tokenize(sentence);
 	var unigrams = _.flatten(natural.NGrams.ngrams(words, 1))
 
@@ -429,8 +422,8 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 		unigrams = _.filter(unigrams, function(unigram){ return stopwords.indexOf(unigram)==-1 })
 
 	var embs = []
-
-	async.eachSeries(unigrams, function(word, callback1){
+*/
+	async.eachSeries(_.keys(features), function(word, callback1){
 		
 		async_adapter.getembed(word, featureOptions.embdeddb, function(err, emb){
 			embs.push(emb)
