@@ -347,18 +347,18 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 	var words = tokenizer.tokenize(sentence);
 	var unigrams = _.flatten(natural.NGrams.ngrams(words, 1))
 	
-	_.each(unigrams, function(unigram, key, list){ features[unigram] = 1 }, this)
+	_.each(unigrams, function(unigram, key, list){ if (stopwords.indexOf(unigram)==-1) features[unigram] = 1 }, this)
 
 	if (train)
 	{	
 		async.waterfall([
 			function(callbackl) {
 
-				// if (sample.output[0] == "Offer")
-				// 	{
-				// 	console.log("Offer no expansion")
-				// 	return callback(null, features)	
-				// 	}
+//				 if (sample.output[0] == "Offer")
+//				 	{
+//				 	console.log("Offer no expansion")
+//				 	return callback(null, features)	
+//				 	}
 
 				var poses = {}
 				var roots = []
@@ -385,6 +385,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 					async_adapter.getppdb(unigram, poses[unigram], featureOptions.scale, featureOptions.relation,  function(err, results){
 						// console.log("DEBUG: to exp: "+unigram+" "+poses[unigram]+" EXPANDED "+results+" ERROR "+err)
 						// console.log("DEBUG: expansioned "+results)
+						results.splice(0, 3)
 						_.each(results, function(expan, key, list){ 
 							features[expan[0].toLowerCase()] = 1
 						}, this)
@@ -424,18 +425,15 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 	var words = tokenizer.tokenize(sentence);
 	var unigrams = _.flatten(natural.NGrams.ngrams(words, 1))
 
+	if (!featureOptions.allow_stopwords)
+		unigrams = _.filter(unigrams, function(unigram){ return stopwords.indexOf(unigram)==-1 })
+
 	var embs = []
 
 	async.eachSeries(unigrams, function(word, callback1){
 		
 		async_adapter.getembed(word, featureOptions.embdeddb, function(err, emb){
-
-			if ((!featureOptions.allow_stopwords) && (stopwords.indexOf(word)==-1))
-				embs.push(emb)
-			
-			if (featureOptions.allow_stopwords)
-				embs.push(emb)
-
+			embs.push(emb)
 			callback1()
 		})
 
@@ -943,6 +941,7 @@ module.exports = {
 		tokenizer: tokenizer,
 		normalizer: normalizer,
 		feContext:feContext,
+		feEmbed:feEmbed,
 		// featureExtractorUB: featureExtractorUB,
 		// featureExtractorB: featureExtractorB,
 		// featureExtractorU: featureExtractorU,
