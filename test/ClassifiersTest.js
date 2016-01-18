@@ -121,8 +121,20 @@ describe('Classifiers functions', function() {
                         _.keys(features).length.should.equal(100)
                         callback()
                 })
-        })
+     	})
 
+
+	it('feExpansionNoTest', function(callback) {
+                var sample = { 'input':{'text': "I love the life"}}
+                features = {'love':1, 'life':1}
+                var params = {'scale':0, 'onlyroot': false, 'relation': undefined, 'allow_offer': true, 'best_results': undefined, 'expand_test': false}
+
+				classifiers.feExpansion(sample, features, false, params, function (err, results){
+					console.log(JSON.stringify(results, null, 4))
+						// _.keys(expand_test).length.should.equal(2)
+                        callback()
+                })
+     	})
 	
 
 	it('tokenizer', function() {
