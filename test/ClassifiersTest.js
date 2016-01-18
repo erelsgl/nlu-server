@@ -125,7 +125,9 @@ describe('Classifiers functions', function() {
 
 
 	it('feExpansionNoTest', function(callback) {
-                var sample = { 'input':{'text': "I love the life"}}
+                var sample = { 'input':{'text': "I love the life",
+					''
+			}}
                 features = {'love':1, 'life':1}
                 var params = {'scale':0, 'onlyroot': false, 'relation': undefined, 'allow_offer': true, 'best_results': undefined, 'expand_test': false}
 
