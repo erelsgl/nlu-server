@@ -68,8 +68,8 @@ process.on('message', function(message) {
 						'classifier': classifier,
 						'fold': fold,
 						'trainsize': mytrain.length,
-						'stats': stats1,
-						'uniqueid': stats['id']
+						'stats': stats1
+						// 'uniqueid': stats['id']
 					}
 
 					process.send(JSON.stringify(results))
