@@ -4,6 +4,7 @@
  * @since 2013-08
  */
 
+var async = require('async');
 var should = require('should');
 var classifiers = require('../classifiers');
 var _ = require('underscore');
@@ -155,7 +156,7 @@ describe('Classifiers functions', function() {
       	 		features = {}
         		var params = {'scale':0, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': undefined, 'expand_test': false}
    				classifiers.feExpansion(sample, features, true, params, function (err, results){
-					console.log(JSON.stringify(, null, 4))
+					_.keys(features).length.should.equal(6)
 					callback1(null)
         		})
     		},
