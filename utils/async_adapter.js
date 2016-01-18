@@ -54,6 +54,12 @@ function getppdb(string, pos, db, relation, callback)
 {	
 	var output = []
 
+	var POS = {
+		'VBZ': 'VB', 'VBP': 'VB', 'VBN': 'VB', 'VBG': 'VB', 'VBD': 'VB',
+		'JJR': 'JJ','JJS': 'JJ',
+		'NNS': 'NN','NNP': 'NN','NNPS': 'NN'
+		}	
+
 	client.select(db, function(err, response) {
 		if (err) callback(err)
 
@@ -84,6 +90,12 @@ function getppdb(string, pos, db, relation, callback)
 				}
 				else
 				{
+					if (splited[1] in POS)
+						splited[1] = POS[splited[1]]
+
+					if (pos in POS)
+						pos = POS[pos]
+
 					if (splited[1] == pos) 
 						if (_.isUndefined(relation))
 							output.push([splited[0], splited[1], parseFloat(splited[2]), parseFloat(splited[3])])
