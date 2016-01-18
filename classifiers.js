@@ -383,10 +383,8 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 						throw new Error(unigram + " is not found in "+poses)
 				
 					async_adapter.getppdb(unigram, poses[unigram], featureOptions.scale, featureOptions.relation,  function(err, results){
-						// console.log("DEBUG: to exp: "+unigram+" "+poses[unigram]+" EXPANDED "+results+" ERROR "+err)
-						// console.log("DEBUG: expansioned "+results)
 						if (!_.isUndefined(featureOptions.best_results))
-							results.splice(0, featureOptions.best_results)
+							results = results.slice(0, featureOptions.best_results)
 
 						_.each(results, function(expan, key, list){ 
 							features[expan[0].toLowerCase()] = 1
