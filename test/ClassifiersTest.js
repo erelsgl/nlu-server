@@ -129,7 +129,7 @@ describe('Classifiers functions', function() {
                 features = {'love':1, 'life':1}
                 var params = {'scale':0, 'onlyroot': false, 'relation': undefined, 'allow_offer': true, 'best_results': undefined, 'expand_test': false}
 
-				classifiers.feExpansion(sample, features, false, params, function (err, results){
+				classifiers.feExpansion(sample, features, true, params, function (err, results){
 					console.log(JSON.stringify(results, null, 4))
 						// _.keys(expand_test).length.should.equal(2)
                         callback()
