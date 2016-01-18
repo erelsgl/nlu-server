@@ -164,11 +164,21 @@ describe('Classifiers functions', function() {
           		features = {}
         		var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': 5, 'expand_test': false}
    				classifiers.feExpansion(sample, features, true, params, function (err, results){
-					_.keys(features).length.should.equal(7)
+					//console.log(features)
+					//{ love: 1, life: 1, like: 1, adore: 1 }
+					_.keys(features).length.should.equal(4)
 					callback1(null)
         		})
-    		}
-			], function (err, result) {
+    		},
+		function(callback1) {
+                        features = {}
+                        var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': 5, 'expand_test': false}
+                                classifiers.feExpansion(sample, features, true, params, function (err, results){
+                                        _.keys(features).length.should.equal(4)
+					//console.log(results)	
+					callback1(true)
+			})
+			}], function (err, result) {
     			callback()
 			});
     })
