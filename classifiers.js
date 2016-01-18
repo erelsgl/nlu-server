@@ -319,7 +319,6 @@ function inputSplitter(text) {
 
 
 //  if train then true
-	if (expand_test(train)
 function feExpansion(sample, features, train, featureOptions, callback) {
 
 // featureOptions.scale
@@ -328,23 +327,23 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 // featureOptions.expand_test
 // featureOptions.best_results
 
-	// var sentence = ""
+	 var sentence = ""
 	
-	/*if (_.isObject(sample)) 
+	if (_.isObject(sample)) 
 		if ("input" in sample)
 			sentence = sample.input.text
 		else
 			sentence = sample.text
 	else
 		sentence = sample
-*/
-	console.log(process.pid + " DEBUG: "+sentence+" train "+train)
+
+	console.log(process.pid + " DEBUG: train "+train)
 
 	sentence = sentence.toLowerCase().trim()
 	var words = tokenizer.tokenize(sentence);
 	var unigrams = _.flatten(natural.NGrams.ngrams(words, 1))
 	
-	// _.each(unigrams, function(unigram, key, list){ if (stopwords.indexOf(unigram)==-1) features[unigram] = 1 }, this)
+	_.each(unigrams, function(unigram, key, list){ if (stopwords.indexOf(unigram)==-1) features[unigram] = 1 }, this)
 
 	if (((!featureOptions.expand_test) && (train)) || (featureOptions.expand_test))
 	{	
@@ -377,9 +376,12 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 		    function(poses, roots, callbackll) {
 			async.forEachOfSeries(unigrams, function(unigram, dind, callback2){ 
 			// async.forEachOfSeries(_.keys(poses), function(unigram, dind, callback2){ 
-				if (((!featureOptions.onlyroot) && (unigram in poses) && (stopwords.indexOf(unigram)==-1))
-					|| ((featureOptions.onlyroot) && (unigram in poses) && (roots.indexOf(unigram)!=-1)))
+				if (((!featureOptions.onlyroot) && (stopwords.indexOf(unigram)==-1))
+					|| ((featureOptions.onlyroot) && (roots.indexOf(unigram)!=-1)))
 				{
+					if (!(unigram in poses))
+						throw new Error(unigram + " is not found in "+poses)
+				
 					async_adapter.getppdb(unigram, poses[unigram], featureOptions.scale, featureOptions.relation,  function(err, results){
 						// console.log("DEBUG: to exp: "+unigram+" "+poses[unigram]+" EXPANDED "+results+" ERROR "+err)
 						// console.log("DEBUG: expansioned "+results)
@@ -943,6 +945,7 @@ module.exports = {
 		normalizer: normalizer,
 		feContext:feContext,
 		feEmbed:feEmbed,
+		feExpansion:feExpansion,
 		// featureExtractorUB: featureExtractorUB,
 		// featureExtractorB: featureExtractorB,
 		// featureExtractorU: featureExtractorU,
