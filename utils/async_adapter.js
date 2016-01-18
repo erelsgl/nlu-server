@@ -78,7 +78,7 @@ function getppdb(string, pos, db, relation, callback)
 
 				if (splited[0].indexOf(" ")!=-1)
 				{
-				splited[0] = splited[0].replace(/ /g,',')
+//				splited[0] = splited[0].replace(/ /g,',')
 				if (_.isArray(relation))
 					{
 					if (relation.indexOf(splited[4])!=-1)
