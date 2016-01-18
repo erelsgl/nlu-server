@@ -125,30 +125,47 @@ describe('Classifiers functions', function() {
 
 
 	it('feExpansionNoTest', function(callback) {
-                var sample = { 'input':{'text': "I love the life",
-					'sentences':[
-						{
-							'basic-dependencies':[
-								{"dep": "ROOT", "dependentGloss": "love"},
-							],
-							'tokens':[
-								{'word': 'I','pos': 'ABC'},
-								{'word': 'love','pos': 'VB'},
-								{'word': 'the','pos': 'ABC'},
-								{'word': 'life','pos': 'NN'},
-							]
-						}
+        var sample = { 'input':{'text': "I love the life",
+			'sentences':[
+				{
+					'basic-dependencies':[
+						{"dep": "ROOT", "dependentGloss": "love"},
+					],
+					'tokens':[
+						{'word': 'I','pos': 'ABC'},
+						{'word': 'love','pos': 'VB'},
+						{'word': 'the','pos': 'ABC'},
+						{'word': 'life','pos': 'NN'},
 					]
+				}]
 			}}
-                features = {}
-                var params = {'scale':0, 'onlyroot': false, 'relation': undefined, 'allow_offer': true, 'best_results': undefined, 'expand_test': false}
-
-		classifiers.feExpansion(sample, features, true, params, function (err, results){
-			_.keys(features).length.should.equal(8)
-			features['live their lives'].should.equal(1)
-                        callback()
-                })
-     	})
+	        
+        
+		async.waterfall([
+   			function(callback1) {
+   				features = {}
+        		var params = {'scale':0, 'onlyroot': false, 'relation': undefined, 'allow_offer': true, 'best_results': undefined, 'expand_test': false}
+   				classifiers.feExpansion(sample, features, true, params, function (err, results){
+					_.keys(features).length.should.equal(8)
+					features['live their lives'].should.equal(1)
+					callback1(null)
+        		})
+    		},
+    		function(callback1) {
+      	 		features = {}
+        		var params = {'scale':0, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': undefined, 'expand_test': false}
+   				classifiers.feExpansion(sample, features, true, params, function (err, results){
+					console.log(JSON.stringify(, null, 4))
+					callback1(null)
+        		})
+    		},
+    		function(callback1) {
+          		callback1(null)
+    		}
+			], function (err, result) {
+    			callback()
+			});
+    })
 	
 
 	it('tokenizer', function() {
