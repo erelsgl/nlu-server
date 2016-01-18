@@ -161,7 +161,12 @@ describe('Classifiers functions', function() {
         		})
     		},
     		function(callback1) {
-          		callback1(null)
+          		features = {}
+        		var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': 5, 'expand_test': false}
+   				classifiers.feExpansion(sample, features, true, params, function (err, results){
+					_.keys(features).length.should.equal(7)
+					callback1(null)
+        		})
     		}
 			], function (err, result) {
     			callback()
