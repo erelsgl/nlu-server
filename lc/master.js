@@ -334,7 +334,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 			})
 
 			worker.on('message', function(message){
-				workerstats = JSON.parse(message)
+				var workerstats = JSON.parse(message)
 				console.log("DEBUGMASTER: "+message)
 				fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
 				extractGlobal(workerstats, stat)
