@@ -351,7 +351,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 if (process.argv[1] === __filename)
 {
-	var folds = 5
+	var folds = 10
 
 	// 	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_exp']
 	//	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_exp']
@@ -361,9 +361,9 @@ if (process.argv[1] === __filename)
 
 	//	var classifiers = ['DS_comp_unigrams_async', 'DS_comp_embed_d100_average', 'DS_comp_embed_d100_dep_average', 'DS_comp_embed_d100_sub_average']
 	//	var classifiers = ['DS_comp_exp_3_undefined_root', 'DS_comp_exp_3_undefined', 'DS_comp_embed_d100_average']
-	var classifiers = ['DS_comp_exp_3_undefined_root_context', 'DS_comp_exp_3_undefined_context', 'DS_comp_embed_d100_average_context']
+	//var classifiers = ['DS_comp_exp_3_undefined_root_context', 'DS_comp_exp_3_undefined_context', 'DS_comp_embed_d100_average_context']
 
-	// var classifiers = ['DS_comp_unigrams_async', 'DS_comp_unigrams_async_context']
+	 var classifiers = ['DS_comp_unigrams_async', 'DS_comp_unigrams_async_context']
 
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
@@ -375,7 +375,7 @@ if (process.argv[1] === __filename)
 	var utterset = bars.getsetcontext(data)
 	var dataset = utterset["train"].concat(utterset["test"])
 
-	// dataset = dataset.slice(0,20)
+	dataset = dataset.slice(0,100)
 
 	// clean graphs
 	var lc = __dirname + "/learning_curves"
