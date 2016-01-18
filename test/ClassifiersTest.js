@@ -126,7 +126,9 @@ describe('Classifiers functions', function() {
 
 
 	it('feExpansionNoTest', function(callback) {
-        var sample = { 'input':{'text': "I love the life",
+        var sample = { 
+        	'output': "{\"Reject\":{\"Salary\":\"10\"}}"
+        	'input':{'text': "I love the life",
 			'sentences':[
 				{
 					'basic-dependencies':[
@@ -139,13 +141,28 @@ describe('Classifiers functions', function() {
 						{'word': 'life','pos': 'NN'},
 					]
 				}]
-			}}
+			},
+			'output': "{\"Offer\":{\"Salary\":\"10\"}}"
+        	'input':{'text': "everything is great",
+			'sentences':[
+				{
+					'basic-dependencies':[
+						{"dep": "ROOT", "dependentGloss": "great"},
+					],
+					'tokens':[
+						{'word': 'is','pos': 'ABC'},
+						{'word': 'everything','pos': 'NN'},
+						{'word': 'great','pos': 'JJ'},
+					]
+				}]
+			}
+		}
 	        
         
 		async.waterfall([
    			function(callback1) {
    				features = {}
-        		var params = {'scale':0, 'onlyroot': false, 'relation': undefined, 'allow_offer': true, 'best_results': undefined, 'expand_test': false}
+        		var params = {'scale':0, 'onlyroot': false, 'relation': undefined, 'allow_offer': false, 'best_results': undefined, 'expand_test': false}
    				classifiers.feExpansion(sample, features, true, params, function (err, results){
 					_.keys(features).length.should.equal(8)
 					features['live their lives'].should.equal(1)
@@ -154,7 +171,7 @@ describe('Classifiers functions', function() {
     		},
     		function(callback1) {
       	 		features = {}
-        		var params = {'scale':0, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': undefined, 'expand_test': false}
+        		var params = {'scale':0, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': undefined, 'expand_test': false}
    				classifiers.feExpansion(sample, features, true, params, function (err, results){
 					_.keys(features).length.should.equal(6)
 					callback1(null)
@@ -162,7 +179,7 @@ describe('Classifiers functions', function() {
     		},
     		function(callback1) {
           		features = {}
-        		var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': 5, 'expand_test': false}
+        		var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test': false}
    				classifiers.feExpansion(sample, features, true, params, function (err, results){
 					//console.log(features)
 					//{ love: 1, life: 1, like: 1, adore: 1 }
@@ -171,11 +188,11 @@ describe('Classifiers functions', function() {
         		})
     		},
 		function(callback1) {
-                        features = {}
-                        var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': 5, 'expand_test': false}
-                                classifiers.feExpansion(sample, features, true, params, function (err, results){
-                                        _.keys(features).length.should.equal(4)
-					//console.log(results)	
+                features = {}
+                var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': 5, 'expand_test': false}
+                classifiers.feExpansion(sample, features, true, params, function (err, results){
+                    // _.keys(features).length.should.equal(4)
+					console.log(results)	
 					callback1(true)
 			})
 			}], function (err, result) {
