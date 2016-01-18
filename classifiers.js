@@ -319,21 +319,25 @@ function inputSplitter(text) {
 
 
 //  if train then true
+	if (expand_test(train)
 function feExpansion(sample, features, train, featureOptions, callback) {
 
 // featureOptions.scale
 // featureOptions.relation
+// featureOptions.allow_offer
+// featureOptions.expand_test
+// featureOptions.best_results
 
-	var sentence = ""
+	// var sentence = ""
 	
-	if (_.isObject(sample)) 
+	/*if (_.isObject(sample)) 
 		if ("input" in sample)
 			sentence = sample.input.text
 		else
 			sentence = sample.text
 	else
 		sentence = sample
-
+*/
 	console.log(process.pid + " DEBUG: "+sentence+" train "+train)
 
 	sentence = sentence.toLowerCase().trim()
@@ -342,16 +346,17 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 	
 	// _.each(unigrams, function(unigram, key, list){ if (stopwords.indexOf(unigram)==-1) features[unigram] = 1 }, this)
 
-	if (train)
+	if (((!featureOptions.expand_test) && (train)) || (featureOptions.expand_test))
 	{	
 		async.waterfall([
 			function(callbackl) {
 
-				 if (sample.output[0] == "Offer")
-				 	{
-				 	console.log("Offer no expansion")
-				 	return callback(null, features)	
-				 	}
+				 if (!featureOptions.allow_offer)
+				 	if (sample.output[0] == "Offer")
+				 		{
+				 		console.log("Offer no expansion")
+				 		return callback(null, features)	
+				 		}
 	
 				var poses = {}
 				var roots = []
@@ -378,7 +383,9 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 					async_adapter.getppdb(unigram, poses[unigram], featureOptions.scale, featureOptions.relation,  function(err, results){
 						// console.log("DEBUG: to exp: "+unigram+" "+poses[unigram]+" EXPANDED "+results+" ERROR "+err)
 						// console.log("DEBUG: expansioned "+results)
-						results.splice(0, 5)
+						if (!_.isUndefined(featureOptions.best_results))
+							results.splice(0, featureOptions.best_results)
+
 						_.each(results, function(expan, key, list){ 
 							features[expan[0].toLowerCase()] = 1
 						}, this)
@@ -972,16 +979,16 @@ module.exports = {
 		DS_comp_embed_d100_average: enhance(SvmLinearMulticlassifier, [feAsync, feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true, 'unigrams':true, 'bigrams':false}),
 		DS_comp_embed_d100_average_context: enhance(SvmLinearMulticlassifier, [feAsync, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true, 'unigrams':true, 'bigrams':false}),
 
-		DS_comp_exp_3_undefined_context_embed_d100_average: enhance(SvmLinearMulticlassifier, [feExpansion, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true}),
+		DS_comp_exp_3_undefined_context_embed_d100_average: enhance(SvmLinearMulticlassifier, [feExpansion, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true, 'best_results': undefined}),
 
-		DS_comp_exp_0_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':0, 'onlyroot': false, 'relation': undefined, 'allow_offer': true}),
-		DS_comp_exp_1_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':1, 'onlyroot': false, 'relation': undefined, 'allow_offer': true}),
-		DS_comp_exp_2_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':2, 'onlyroot': false, 'relation': undefined, 'allow_offer': true}),
-		DS_comp_exp_3_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': undefined, 'allow_offer': true}),
-		DS_comp_exp_3_undefined_context: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': undefined, 'allow_offer': true}),
-		DS_comp_exp_3_undefined_root: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true}),
-		DS_comp_exp_3_undefined_root_context: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true}),
-		DS_comp_exp_3_ref: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': ['ReverseEntailment','Equivalence','ForwardEntailment'], 'allow_offer': true}),
+		DS_comp_exp_0_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':0, 'onlyroot': false, 'relation': undefined, 'allow_offer': true, 'best_results': undefined}),
+		DS_comp_exp_1_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':1, 'onlyroot': false, 'relation': undefined, 'allow_offer': true, 'best_results': undefined}),
+		DS_comp_exp_2_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':2, 'onlyroot': false, 'relation': undefined, 'allow_offer': true, 'best_results': undefined}),
+		DS_comp_exp_3_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': undefined, 'allow_offer': true, 'best_results': undefined}),
+		DS_comp_exp_3_undefined_context: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': undefined, 'allow_offer': true, 'best_results': undefined}),
+		DS_comp_exp_3_undefined_root: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': undefined}),
+		DS_comp_exp_3_undefined_root_context: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': undefined}),
+		DS_comp_exp_3_ref: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': ['ReverseEntailment','Equivalence','ForwardEntailment'], 'allow_offer': true, 'best_results': undefined}),
 		
 		DS_vanilla_svm: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true, {'unigrams':true, 'bigrams':true, 'allow_stopwords':true}),
 		
