@@ -628,15 +628,9 @@ function feAsync(sample, features, train, featureOptions, callback) {
 	
 	if (_.isObject(sample)) 
 		if ("input" in sample)
-		{
 			sentence = sample.input.text
-			console.log(JSON.stringify(sample.input.context, null, 4))
-		}
 		else
-		{
 			sentence = sample.text
-			console.log(JSON.stringify(sample.context, null, 4))
-		}
 	else
 		sentence = sample
 
@@ -646,12 +640,14 @@ function feAsync(sample, features, train, featureOptions, callback) {
 	var words = tokenizer.tokenize(sentence);
 
 	var featureSet = []
-	
+
 	if (featureOptions.unigrams)
 	   featureSet = featureSet.concat(natural.NGrams.ngrams(words, 1))
 
 	if (featureOptions.bigrams)
 	   featureSet = featureSet.concat(natural.NGrams.ngrams(words, 2))
+
+	featureSet = _.map(featureSet, function(num){ return num.join(" ") });
 
 	_.each(featureSet, function(feat, key, list){ 
 		if ((!featureOptions.allow_stopwords) && (stopwords.indexOf(feat)==-1))
@@ -947,6 +943,7 @@ module.exports = {
 		feContext:feContext,
 		feEmbed:feEmbed,
 		feExpansion:feExpansion,
+		feAsync:feAsync,
 		// featureExtractorUB: featureExtractorUB,
 		// featureExtractorB: featureExtractorB,
 		// featureExtractorU: featureExtractorU,
