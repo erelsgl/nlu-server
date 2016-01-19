@@ -344,6 +344,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 	var unigrams = _.flatten(natural.NGrams.ngrams(words, 1))
 	
 	_.each(unigrams, function(unigram, key, list){ if (stopwords.indexOf(unigram)==-1) features[unigram] = 1 }, this)
+	//_.each(unigrams, function(unigram, key, list){ features[unigram] = 1 }, this)
 
 	if (((!featureOptions.expand_test) && (train)) || (featureOptions.expand_test))
 	{	
