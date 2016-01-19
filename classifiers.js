@@ -434,7 +434,7 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 	async.eachSeries(_.keys(features), function(word, callback1){
 		
 		async_adapter.getembed(word, featureOptions.embdeddb, function(err, emb){
-			delete features[word]
+		//	delete features[word]
 			embs.push(emb)
 			callback1()
 		})
@@ -443,6 +443,8 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 
 		if (embs.length > 0)		 		
 		{
+			features = {}			
+
 			var sumvec = Array.apply(null, Array(embs[0].length)).map(function () { return 0})
 
  			_.each(embs, function(value, key, list){ 
@@ -989,7 +991,7 @@ module.exports = {
 		DS_comp_exp_3_undefined: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': undefined, 'allow_offer': true, 'best_results': undefined}),
 		DS_comp_exp_3_undefined_context: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': undefined, 'allow_offer': true, 'best_results':5}),
 		DS_comp_exp_3_undefined_root: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': undefined}),
-		DS_comp_exp_3_undefined_root_context: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': undefined}),
+		DS_comp_exp_3_undefined_root_context: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': 5}),
 		DS_comp_exp_3_ref: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': ['ReverseEntailment','Equivalence','ForwardEntailment'], 'allow_offer': true, 'best_results': undefined}),
 		
 		DS_vanilla_svm: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true, {'unigrams':true, 'bigrams':true, 'allow_stopwords':true}),
