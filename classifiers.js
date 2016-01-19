@@ -434,7 +434,7 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 	async.eachSeries(_.keys(features), function(word, callback1){
 		
 		async_adapter.getembed(word, featureOptions.embdeddb, function(err, emb){
-		//	delete features[word]
+			delete features[word]
 			embs.push(emb)
 			callback1()
 		})
@@ -443,8 +443,6 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 
 		if (embs.length > 0)		 		
 		{
-			features = {}			
-
 			var sumvec = Array.apply(null, Array(embs[0].length)).map(function () { return 0})
 
  			_.each(embs, function(value, key, list){ 
