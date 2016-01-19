@@ -124,8 +124,50 @@ describe('Classifiers functions', function() {
                 })
      	})
 
+	it('feAsync', function(callback) {
 
-	it('feExpansionNoTest', function(callback) {
+		var sample = {'input': {'text': 'I love the nature'}}
+		
+		async.waterfall([
+   			function(callback1) {
+   				features = {}
+        		var params = { 'unigrams': false, 'bigrams': false, 'allow_stopwords': false }
+   				classifiers.feAsync(sample, features, true, params, function (err, results){
+					_.keys(features).length.should.equal(0)
+					callback1(null)
+        		})
+    		},
+    		function(callback1) {
+      	 		features = {}
+        		var params = { 'unigrams': true, 'bigrams': false, 'allow_stopwords': false }
+        		classifiers.feAsync(sample, features, true, params, function (err, results){
+					_.isEqual(features, {"love": 1, "nature": 1}).should.be.true
+					callback1(null)
+        		})
+    		},
+    		function(callback1) {
+          		features = {}
+        		var params = { 'unigrams': true, 'bigrams': false, 'allow_stopwords': true }
+        		classifiers.feAsync(sample, features, true, params, function (err, results){
+					_.isEqual(features, {"i":1, "love": 1, "the":1, "nature": 1}).should.be.true
+					callback1(null)
+        		})
+        	},
+        	function(callback1) {
+          		features = {}
+        		var params = { 'unigrams': true, 'bigrams': true, 'allow_stopwords': true }
+        		classifiers.feAsync(sample, features, true, params, function (err, results){
+					_.isEqual(features, {"i": 1,"love": 1,"the": 1,"nature": 1,"i love": 1,"love the": 1,"the nature": 1}).should.be.true					
+					callback1(null)
+        		})
+        	}
+    	], function (err, result) {
+    			callback()
+			});
+	})
+
+	it('feExpansion', function(callback) {
+        
         var sample = { 
         	'output': ["Reject"],
         	'input':{'text': "I love the life",
@@ -144,7 +186,7 @@ describe('Classifiers functions', function() {
 			}
 		}
 	
-	var sampleOffer = { 'output': ["Offer"],
+		var sampleOffer = { 'output': ["Offer"],
         	'input':{'text': "everything is great"}
 		}
 	         
@@ -176,22 +218,16 @@ describe('Classifiers functions', function() {
 					callback1(null)
         		})
     		},
-		function(callback1) {
-                        features = {}
-                        var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test': false}
-                                classifiers.feExpansion(sampleOffer, features, true, params, function (err, results){
-                                       _.keys(features)[0].should.equal("great")
-                                         callback1(null)
-                                })
-                },
-		function(callback1) {
-              //  features = {}
-               	//var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': 5, 'expand_test': false}
-               	//classifiers.feExpansion(sampleOffer, features, true, params, function (err, results){
-                    // _.keys(features).length.should.equal(4)
-		//			console.log(results)	
-					callback1(true)
-		//	})
+			function(callback1) {
+                features = {}
+                var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test': false}
+                classifiers.feExpansion(sampleOffer, features, true, params, function (err, results){
+                    _.keys(features)[0].should.equal("great")
+                    callback1(null)
+                })
+            },
+			function(callback1) {
+				callback1(true)
 			}], function (err, result) {
     			callback()
 			});
