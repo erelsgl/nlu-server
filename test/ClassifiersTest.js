@@ -51,56 +51,57 @@ describe('Classifiers functions', function() {
 					features.w2v0.should.equal(0.30470749999999996)
 					callback1()
 				}) 	
-    		},
-    		function(callback1) {
-      	 		var sample = {'input':{'text': "I love the life"}}
-                features = {'love':1,'life':1}
+    		}
+    		// ,
+    		// function(callback1) {
+      // 	 		var sample = {'input':{'text': "I love the life"}}
+      //           features = {'love':1,'life':1}
 
-                classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average', 'allow_stopwords': false}, function (err, results){
-                    _.keys(features).length.should.equal(100)
-			 		async_adapter.getembed("love", 5, function(err, love){
-						async_adapter.getembed("life", 5, function(err, life){
-							features.w2v0.should.equal((love[0]+life[0])/2)
-							callback1()
-	                    })
-	                })
-                })
-    		},
-    		function(callback1) {
-          		var sample = {'input':{'text': "I love the life"}}
-                features = {'love':1}
-                classifiers.feEmbed(sample, features, false, {'embdeddb': 6, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
-                    _.keys(features).length.should.equal(100)
-                    callback1()
-                })
-        	},
-        	function(callback1) {
-          		var sample = {'input':{'text': "I love the life"}}
-                features = {'love':1}
+      //           classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average', 'allow_stopwords': false}, function (err, results){
+      //               _.keys(features).length.should.equal(100)
+			 		// async_adapter.getembed("love", 5, function(err, love){
+						// async_adapter.getembed("life", 5, function(err, life){
+						// 	features.w2v0.should.equal((love[0]+life[0])/2)
+						// 	callback1()
+	     //                })
+	     //            })
+      //           })
+    		// },
+    		// function(callback1) {
+      //     		var sample = {'input':{'text': "I love the life"}}
+      //           features = {'love':1}
+      //           classifiers.feEmbed(sample, features, false, {'embdeddb': 6, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
+      //               _.keys(features).length.should.equal(100)
+      //               callback1()
+      //           })
+      //   	},
+      //   	function(callback1) {
+      //     		var sample = {'input':{'text': "I love the life"}}
+      //           features = {'love':1}
 
-                classifiers.feEmbed(sample, features, false, {'embdeddb': 7, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
-                    _.keys(features).length.should.equal(25)
-                    callback1()
-                })
-        	},
-        	function(callback1) {
-          		var sample = {'input':{'text': "I love the life"}}
-                features = {'love':1}
+      //           classifiers.feEmbed(sample, features, false, {'embdeddb': 7, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
+      //               _.keys(features).length.should.equal(25)
+      //               callback1()
+      //           })
+      //   	},
+      //   	function(callback1) {
+      //     		var sample = {'input':{'text': "I love the life"}}
+      //           features = {'love':1}
 
-                classifiers.feEmbed(sample, features, false, {'embdeddb': 8, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
-                    _.keys(features).length.should.equal(50)
-                    callback1()
-                })
-        	},
-        	function(callback1) {
-          		var sample = { 'input':{'text': "I love the life"} }
-                features = {'love':1}
+      //           classifiers.feEmbed(sample, features, false, {'embdeddb': 8, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
+      //               _.keys(features).length.should.equal(50)
+      //               callback1()
+      //           })
+      //   	},
+      //   	function(callback1) {
+      //     		var sample = { 'input':{'text': "I love the life"} }
+      //           features = {'love':1}
 
-                classifiers.feEmbed(sample, features, false, {'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
-                    _.keys(features).length.should.equal(100)
-                    callback1()
-                })
-        	}
+      //           classifiers.feEmbed(sample, features, false, {'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
+      //               _.keys(features).length.should.equal(100)
+      //               callback1()
+      //           })
+      //   	}
     	], function (err, result) {
     			callback()
 			});
