@@ -127,7 +127,7 @@ describe('Classifiers functions', function() {
 
 	it('feExpansionNoTest', function(callback) {
         var sample = { 
-        	'output': "{\"Reject\":{\"Salary\":\"10\"}}"
+        	'output': ["Reject"],
         	'input':{'text': "I love the life",
 			'sentences':[
 				{
@@ -141,24 +141,13 @@ describe('Classifiers functions', function() {
 						{'word': 'life','pos': 'NN'},
 					]
 				}]
-			},
-			'output': "{\"Offer\":{\"Salary\":\"10\"}}"
-        	'input':{'text': "everything is great",
-			'sentences':[
-				{
-					'basic-dependencies':[
-						{"dep": "ROOT", "dependentGloss": "great"},
-					],
-					'tokens':[
-						{'word': 'is','pos': 'ABC'},
-						{'word': 'everything','pos': 'NN'},
-						{'word': 'great','pos': 'JJ'},
-					]
-				}]
 			}
 		}
-	        
-        
+	
+	var sampleOffer = { 'output': ["Offer"],
+        	'input':{'text': "everything is great"}
+		}
+	         
 		async.waterfall([
    			function(callback1) {
    				features = {}
@@ -188,13 +177,21 @@ describe('Classifiers functions', function() {
         		})
     		},
 		function(callback1) {
-                features = {}
-                var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': 5, 'expand_test': false}
-                classifiers.feExpansion(sample, features, true, params, function (err, results){
+                        features = {}
+                        var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test': false}
+                                classifiers.feExpansion(sampleOffer, features, true, params, function (err, results){
+                                       _.keys(features)[0].should.equal("great")
+                                         callback1(null)
+                                })
+                },
+		function(callback1) {
+              //  features = {}
+               	//var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': 5, 'expand_test': false}
+               	//classifiers.feExpansion(sampleOffer, features, true, params, function (err, results){
                     // _.keys(features).length.should.equal(4)
-					console.log(results)	
+		//			console.log(results)	
 					callback1(true)
-			})
+		//	})
 			}], function (err, result) {
     			callback()
 			});
