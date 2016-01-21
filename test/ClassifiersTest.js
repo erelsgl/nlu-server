@@ -26,17 +26,74 @@ var SvmPerfBinaryRelevanceClassifier = limdu_classifiers.multilabel.BinaryReleva
 describe('Classifiers functions', function() {
 
    it('feContext', function(callback) {
-   		var features = {}
-   		var sample = {'input':{
-   				'unproc': 'I accept you a salary of 60000',
-   				'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
-   		}}
 
-   		classifiers.feContext(sample, features, true, {}, function(err, results){
- 			("REPEATED_ACCEPT" in features).should.be.true
- 			callback()
-   		}) 
-       
+   		async.waterfall([
+   			function(callback1) {
+   				var features = {}
+   				var sample = {'input':{
+   					'unproc': 'I accept you a salary of 60000 ',
+   					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
+   				}}
+				
+				classifiers.feContext(sample, features, true, {'offered':true, 'unoffered':true}, function(err, results){
+   					("OFFERED_VALUE" in features).should.be.true
+ 					callback1()
+   				}) 
+    		},
+    		function(callback1) {
+   				var features = {}
+   				var sample = {'input':{
+   					'unproc': 'I accept you a salary of 90000',
+   					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
+   				}}
+				
+				classifiers.feContext(sample, features, true, {'offered':true, 'unoffered':true}, function(err, results){
+   					("UNOFFERED_VALUE" in features).should.be.true
+ 					callback1()
+   				}) 
+    		},
+    		function(callback1) {
+   				var features = {}
+   				var sample = {'input':{
+   					'unproc': 'I accept you a salary of 60000 and 10% pension' ,
+   					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
+   				}}
+				
+				classifiers.feContext(sample, features, true, {'offered':true, 'unoffered':true}, function(err, results){
+					_.isEqual(features, {"OFFERED_VALUE": 1,"UNOFFERED_VALUE": 1}).should.be.true
+
+ 					callback1()
+   				}) 
+    		},
+    		function(callback1) {
+   				var features = {}
+   				var sample = {'input':{
+   					'unproc': 'I accept you a salary of 60000 and 10% pension' ,
+   					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
+   				}}
+				
+				classifiers.feContext(sample, features, true, {'offered':true, 'unoffered':false}, function(err, results){
+					_.isEqual(features, {"OFFERED_VALUE": 1}).should.be.true
+
+ 					callback1()
+   				}) 
+    		},
+    		function(callback1) {
+   				var features = {}
+   				var sample = {'input':{
+   					'unproc': 'I accept you a salary of 60000 and 10% pension' ,
+   					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
+   				}}
+				
+				classifiers.feContext(sample, features, true, {'offered':false, 'unoffered':true}, function(err, results){
+					_.isEqual(features, {"UNOFFERED_VALUE": 1}).should.be.true
+
+ 					callback1()
+   				}) 
+    		}], function (err, result) {
+    			callback()
+			});
+   	       
     })
 
    	it('feEmbed', function(callback) {
