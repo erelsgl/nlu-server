@@ -363,7 +363,8 @@ if (process.argv[1] === __filename)
 	//	var classifiers = ['DS_comp_exp_3_undefined_root', 'DS_comp_exp_3_undefined', 'DS_comp_embed_d100_average']
 	//var classifiers = ['DS_comp_exp_3_undefined_root_context', 'DS_comp_exp_3_undefined_context', 'DS_comp_embed_d100_average_context']
 	//var classifiers = ['DS_comp_unigrams_async_context', 'DS_comp_exp_3_undefined_context_embed_d100_average', 'DS_comp_embed_d100_average_context', 'DS_comp_exp_3_undefined_root_context']
-	var classifiers = ['DS_comp_unigrams_async_context', 'DS_comp_exp_3_undefined_root','DS_comp_exp_3_undefined_root_context_offer', 'DS_comp_exp_3_undefined_root_context', 'DS_comp_exp_3_undefined_root_context_test', 'DS_comp_exp_3_undefined_root_context_test_offer']
+	// var classifiers = ['DS_comp_unigrams_async_context', 'DS_comp_exp_3_undefined_root','DS_comp_exp_3_undefined_root_context_offer', 'DS_comp_exp_3_undefined_root_context', 'DS_comp_exp_3_undefined_root_context_test', 'DS_comp_exp_3_undefined_root_context_test_offer']
+	var classifiers = ['DS_comp_unigrams_async_context_both', 'DS_comp_unigrams_async_context_offered','DS_comp_unigrams_async_context_unoffered']
 
 	//var classifiers = ['DS_comp_unigrams_async', 'DS_comp_unigrams_async_context']
 
