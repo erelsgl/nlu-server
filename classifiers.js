@@ -607,17 +607,24 @@ function feContext(sample, features, train, featureOptions, callback) {
 			values.push(_.values(_.values(obj)[0])[0])
 	}, this)
 
+	console.log("DEBUGCONTEXT: values "+ values)
+
 	console.log(JSON.stringify(values, null, 4))
 	console.log(JSON.stringify(attrval, null, 4))
-	console.log("values")
-
+	
 	_.each(attrval[1], function(value, key, list){
+		console.log("DEBUGCONTEXT: check value "+ value[0])
+
 		if (values.indexOf(value[0])!=-1)
+		{
 			if (featureOptions.offered) 
 				features['OFFERED_VALUE'] = 1
+		}
 		else
+		{
 			if (featureOptions.unoffered)
 				features['UNOFFERED_VALUE'] = 1
+		}
 	}, this)
 
 	// if (attrval[1].length == 0)
