@@ -68,6 +68,7 @@ process.on('message', function(message) {
 						'classifier': classifier,
 						'fold': fold,
 						'trainsize': mytrain.length,
+						'trainsizeuttr': mytrainex.length,
 						'stats': stats1
 						// 'uniqueid': stats['id']
 					}
