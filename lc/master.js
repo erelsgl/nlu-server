@@ -86,7 +86,7 @@ function extractGlobal(workerstats, stat)
 	// var attributes = ["F1", "Accuracy", "macroF1"]
 	// var attributes = ["Accuracy"]
 	var attributes = Object.keys(workerstats['stats'])
-	var trainsize = workerstats["trainsize"]
+	var trainsize = workerstats["trainsize"] //+ "_" + workerstats["trainsizeuttr"]
 	var classifier = workerstats["classifier"]
 	var fold = workerstats["fold"]
 
@@ -96,10 +96,14 @@ function extractGlobal(workerstats, stat)
 			if (!(attr in stat)) stat[attr]={}
 			if (!(trainsize in stat[attr])) stat[attr][trainsize]={}
 			
+			if (!('dial' in stat[attr][trainsize])) 
+					stat[attr][trainsize]['dial'] = {}
+			
 			if (!(classifier in stat[attr][trainsize])) 
 					stat[attr][trainsize][classifier] = {}
 			
 			stat[attr][trainsize][classifier][fold] = workerstats['stats'][attr]
+			stat[attr][trainsize]["dial"][fold] = workerstats["trainsizeuttr"]
 		}
 	}, this)
 }
@@ -278,7 +282,7 @@ function plotlc(fold, parameter, stat)
 	fs.appendFileSync(plotfile, string)
     fs.writeFileSync(mapfile, string)
 
-    var command = gnuplot +" -e \"set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=2:"+(classifiers.length+1)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3\""
+    var command = gnuplot +" -e \"set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3, \'\' using 1:(NaN):x2tic(2) axes x2y1\""
     console.log(command)
     child_process.execSync(command)
 
@@ -351,7 +355,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 if (process.argv[1] === __filename)
 {
-	var folds = 10
+	var folds = 2
 
 	// 	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_exp']
 	//	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_exp']
@@ -364,9 +368,9 @@ if (process.argv[1] === __filename)
 	//var classifiers = ['DS_comp_exp_3_undefined_root_context', 'DS_comp_exp_3_undefined_context', 'DS_comp_embed_d100_average_context']
 	//var classifiers = ['DS_comp_unigrams_async_context', 'DS_comp_exp_3_undefined_context_embed_d100_average', 'DS_comp_embed_d100_average_context', 'DS_comp_exp_3_undefined_root_context']
 	// var classifiers = ['DS_comp_unigrams_async_context', 'DS_comp_exp_3_undefined_root','DS_comp_exp_3_undefined_root_context_offer', 'DS_comp_exp_3_undefined_root_context', 'DS_comp_exp_3_undefined_root_context_test', 'DS_comp_exp_3_undefined_root_context_test_offer']
-	var classifiers = ['DS_comp_unigrams_async_context_both', 'DS_comp_unigrams_async_context_offered','DS_comp_unigrams_async_context_unoffered', 'DS_comp_unigrams_async']
+//	var classifiers = ['DS_comp_unigrams_async_context_both', 'DS_comp_unigrams_async_context_offered','DS_comp_unigrams_async_context_unoffered', 'DS_comp_unigrams_async']
 
-	//var classifiers = ['DS_comp_unigrams_async', 'DS_comp_unigrams_async_context']
+	var classifiers = ['DS_comp_unigrams_async']
 
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
@@ -378,7 +382,7 @@ if (process.argv[1] === __filename)
 	var utterset = bars.getsetcontext(data)
 	var dataset = utterset["train"].concat(utterset["test"])
 
-	dataset = _.shuffle(dataset.slice(0,100))
+	dataset = _.shuffle(dataset.slice(0,10))
 
 	// clean graphs
 	var lc = __dirname + "/learning_curves"
