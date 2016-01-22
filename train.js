@@ -355,8 +355,15 @@ if (check_ds)
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
 	var utterset = bars.getsetcontext(data)
 
+	// var stats = {}
+
+	// _.each(data, function(value, key, list){
+	// 	stats[value['gameid']] = _.countBy(value['turns'], function(turn) { if (turn.role == "Employer") return 'match' });
+	// }, this)	
+
+	
 	//utterset["train"] = utterset["train"].slice(0,20)
-//	utterset["test"] = utterset["test"].slice(0,5)
+	//utterset["test"] = utterset["test"].slice(0,5)
 
 	console.log(utterset["train"].length)
 	console.log(_.flatten(utterset["train"]).length)
