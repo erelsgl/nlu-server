@@ -936,6 +936,13 @@ var SvmLinearMulticlassifier = classifiers.SvmLinear.bind(0, {
 	test_command: "liblinear_test"
 })
 
+var Boosting = classifiers.multilabel.Boosting.bind(0, {
+	learn_args: "1000", 
+	model_file_prefix: "trainedClassifiers/tempfiles/Boosting",
+	train_command: "tbb-train",
+	test_command: "tbb-predict"
+})
+
 /*EuclideanDistance
 	ChebyshevDistance
 	ManhattanDistance
@@ -1011,6 +1018,8 @@ module.exports = {
 		DS_vanilla_svm: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true, {'unigrams':true, 'bigrams':true, 'allow_stopwords':true}),
 		
 		DS_comp_unigrams_async: enhance(SvmLinearMulticlassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
+		DS_boost_comp_unigrams_async: enhance(Boosting, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
+
 		DS_comp_unigrams_async_context: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
 		DS_comp_unigrams_async_context_splitted: enhance(SvmLinearMulticlassifier, [feAsync, feContext, feSplitted], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
 		DS_comp_unigrams_bigrams_async: enhance(SvmLinearMulticlassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':true, 'allow_stopwords':true}),
