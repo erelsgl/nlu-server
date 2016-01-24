@@ -6,6 +6,7 @@ set grid xtics
 set key bottom right
 set key autotitle columnhead
 
+set ytics 0,0.1,1
 set xtics nomirror
 set x2tics
 set autoscale xfix
