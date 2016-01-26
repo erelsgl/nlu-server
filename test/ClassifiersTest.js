@@ -29,63 +29,58 @@ describe('Classifiers functions', function() {
 
    		async.waterfall([
    			function(callback1) {
-   				var features = {}
    				var sample = {'input':{
    					'unproc': 'I accept you a salary of 60000 ',
    					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
    				}}
 				
-				classifiers.feContext(sample, features, true, {'offered':true, 'unoffered':true}, function(err, results){
+				classifiers.feContext(sample, {}, true, {'offered':true, 'unoffered':true}, function(err, features){
    					("OFFERED_VALUE" in features).should.be.true
  					callback1()
    				}) 
     		},
     		function(callback1) {
-   				var features = {}
    				var sample = {'input':{
    					'unproc': 'I accept you a salary of 90000',
    					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
    				}}
 				
-				classifiers.feContext(sample, features, true, {'offered':true, 'unoffered':true}, function(err, results){
+				classifiers.feContext(sample, {}, true, {'offered':true, 'unoffered':true}, function(err, features){
    					("UNOFFERED_VALUE" in features).should.be.true
  					callback1()
    				}) 
     		},
     		function(callback1) {
-   				var features = {}
    				var sample = {'input':{
    					'unproc': 'I accept you a salary of 60000 and 10% pension' ,
    					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
    				}}
 				
-				classifiers.feContext(sample, features, true, {'offered':true, 'unoffered':true}, function(err, results){
+				classifiers.feContext(sample, {}, true, {'offered':true, 'unoffered':true}, function(err, features){
 					_.isEqual(features, {"OFFERED_VALUE": 1,"UNOFFERED_VALUE": 1}).should.be.true
 
  					callback1()
    				}) 
     		},
     		function(callback1) {
-   				var features = {}
    				var sample = {'input':{
    					'unproc': 'I accept you a salary of 60000 and 10% pension' ,
    					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
    				}}
 				
-				classifiers.feContext(sample, features, true, {'offered':true, 'unoffered':false}, function(err, results){
+				classifiers.feContext(sample, {}, true, {'offered':true, 'unoffered':false}, function(err, features){
 					_.isEqual(features, {"OFFERED_VALUE": 1}).should.be.true
 
  					callback1()
    				}) 
     		},
     		function(callback1) {
-   				var features = {}
    				var sample = {'input':{
    					'unproc': 'I accept you a salary of 60000 and 10% pension' ,
    					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
    				}}
 				
-				classifiers.feContext(sample, features, true, {'offered':false, 'unoffered':true}, function(err, results){
+				classifiers.feContext(sample, {}, true, {'offered':false, 'unoffered':true}, function(err, features){
 					_.isEqual(features, {"UNOFFERED_VALUE": 1}).should.be.true
 
  					callback1()
@@ -101,23 +96,23 @@ describe('Classifiers functions', function() {
 		async.waterfall([
    			function(callback1) {
 				var sample = ""
-				features = {'i':1, 'love':1, 'the':1, 'life':1}
+				var features = {'i':1, 'love':1, 'the':1, 'life':1}
 		
 				classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average'}, function (err, results){
-					_.keys(features).length.should.equal(100)
-					features.w2v0.should.equal(0.30470749999999996)
+					_.keys(results).length.should.equal(100)
+					results.w2v0.should.equal(0.30470749999999996)
 					callback1()
 				}) 	
     		} ,
     		function(callback1) {
      	 		var sample = ""
-      	        features = {'love':1,'life':1}
+      	        var features = {'love':1,'life':1}
                 
                 classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average'}, function (err, results){
-              	_.keys(features).length.should.equal(100)
+              	_.keys(results).length.should.equal(100)
 			 		async_adapter.getembed("love", 5, function(err, love){
 						async_adapter.getembed("life", 5, function(err, life){
-							features.w2v0.should.equal((love[0]+life[0])/2)
+							results.w2v0.should.equal((love[0]+life[0])/2)
 							callback1()
 	                    })
 	                 })
@@ -125,37 +120,37 @@ describe('Classifiers functions', function() {
     		 },
     		 function(callback1) {
            		var sample = ""
-                features = {'love':1}
+                var features = {'love':1}
                 
                 classifiers.feEmbed(sample, features, false, {'embdeddb': 6, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
-                    _.keys(features).length.should.equal(100)
+                    _.keys(results).length.should.equal(100)
                      callback1()
                 })
         	},
          	function(callback1) {
            		var sample = ""
-	            features = {'love':1}
+	            var features = {'love':1}
 
                 classifiers.feEmbed(sample, features, false, {'embdeddb': 7, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
-                   _.keys(features).length.should.equal(25)
+                   _.keys(results).length.should.equal(25)
                     callback1()
                 })
          	},
          	function(callback1) {
            		var sample = ""
-                features = {'love':1}
+                var features = {'love':1}
 
                 classifiers.feEmbed(sample, features, false, {'embdeddb': 8, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
-                	_.keys(features).length.should.equal(50)
+                	_.keys(results).length.should.equal(50)
                     callback1()
                 })
          	},
          	function(callback1) {
            		var sample = ""
-                features = {'love':1}
+                var features = {'love':1}
 
                 classifiers.feEmbed(sample, features, false, {'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
-                    _.keys(features).length.should.equal(100)
+                    _.keys(results).length.should.equal(100)
                     callback1()
                 })
          	}
@@ -170,33 +165,29 @@ describe('Classifiers functions', function() {
 		
 		async.waterfall([
    			function(callback1) {
-   				features = {}
         		var params = { 'unigrams': false, 'bigrams': false, 'allow_stopwords': false }
-   				classifiers.feAsync(sample, features, true, params, function (err, results){
+   				classifiers.feAsync(sample, {}, true, params, function (err, features){
 					_.keys(features).length.should.equal(0)
 					callback1(null)
         		})
     		},
     		function(callback1) {
-      	 		features = {}
         		var params = { 'unigrams': true, 'bigrams': false, 'allow_stopwords': false }
-        		classifiers.feAsync(sample, features, true, params, function (err, results){
+        		classifiers.feAsync(sample, {}, true, params, function (err, features){
 					_.isEqual(features, {"love": 1, "nature": 1}).should.be.true
 					callback1(null)
         		})
     		},
     		function(callback1) {
-          		features = {}
         		var params = { 'unigrams': true, 'bigrams': false, 'allow_stopwords': true }
-        		classifiers.feAsync(sample, features, true, params, function (err, results){
+        		classifiers.feAsync(sample, {}, true, params, function (err, features){
 					_.isEqual(features, {"i":1, "love": 1, "the":1, "nature": 1}).should.be.true
 					callback1(null)
         		})
         	},
         	function(callback1) {
-          		features = {}
         		var params = { 'unigrams': true, 'bigrams': true, 'allow_stopwords': true }
-        		classifiers.feAsync(sample, features, true, params, function (err, results){
+        		classifiers.feAsync(sample, {}, true, params, function (err, features){
 					_.isEqual(features, {"i": 1,"love": 1,"the": 1,"nature": 1,"i love": 1,"love the": 1,"the nature": 1}).should.be.true					
 					callback1(null)
         		})
@@ -232,44 +223,38 @@ describe('Classifiers functions', function() {
 	         
 		async.waterfall([
    			function(callback1) {
-   				features = {}
         		var params = {'scale':0, 'onlyroot': false, 'relation': undefined, 'allow_offer': false, 'best_results': undefined, 'expand_test': false}
-   				classifiers.feExpansion(sample, features, true, params, function (err, results){
-				_.isEqual(features, { love: 1,life: 1,enjoys: 1,liking: 1,prefers: 1,appreciates: 1,lifetime: 1,'live their lives': 1}).should.be.true
-				callback1(null)
+   				classifiers.feExpansion(sample, {}, true, params, function (err, features){
+					_.isEqual(features, { love: 1,life: 1,enjoys: 1,liking: 1,prefers: 1,appreciates: 1,lifetime: 1,'live their lives': 1}).should.be.true
+					callback1(null)
         		})
     		},
     		function(callback1) {
-      	 		features = {}
         		var params = {'scale':0, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': undefined, 'expand_test': false}
-   				classifiers.feExpansion(sample, features, true, params, function (err, results){
+   				classifiers.feExpansion(sample, {}, true, params, function (err, features){
 					_.isEqual(features, { love: 1,life: 1,enjoys: 1,liking: 1,prefers: 1,appreciates: 1 }).should.be.true
 					callback1(null)
         		})
     		},
     		function(callback1) {
-          		features = {}
         		var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test': false}
-   				classifiers.feExpansion(sample, features, true, params, function (err, results){
+   				classifiers.feExpansion(sample, {}, true, params, function (err, features){
 					_.isEqual(features, { love: 1, life: 1, like: 1, adore: 1 }).should.be.true
 					callback1(null)
         		})
     		},
 			function(callback1) {
-                features = {}
                 var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test': false}
-                classifiers.feExpansion(sampleOffer, features, true, params, function (err, results){
-			_.isEqual(features, { great: 1 }).should.be.true
+                classifiers.feExpansion(sampleOffer, {}, true, params, function (err, features){
+					_.isEqual(features, { great: 1 }).should.be.true
                     callback1(null)
                 })
             },
 
 		function(callback1) {
-                features = {}
                 var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test': true}
-                classifiers.feExpansion(sample, features, false, params, function (err, results){
-                        _.isEqual(features, { love: 1, life: 1, like: 1, adore: 1 }).should.be.true
-
+                classifiers.feExpansion(sample, {}, false, params, function (err, features){
+                	_.isEqual(features, { love: 1, life: 1, like: 1, adore: 1 }).should.be.true
                     callback1(null)
                 })
             },
