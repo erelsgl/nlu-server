@@ -27,7 +27,8 @@ var limdu = require("limdu");
 var ftrs = limdu.features;
 
 var check_single_multi = false
-var check_ds = true
+var check_ds = false
+var shuffling = true
 
 var check_word = false
 var multi_lab = false
@@ -328,6 +329,20 @@ if (check_cross_batch)
 	var stats = trainAndTest.cross_batch(classifier.DS_bigram, bars.copyobj(utterset["train"]), 2)
 
 	console.log(JSON.stringify(stats, null, 4))
+	process.exit(0)
+}
+
+
+if (shuffling)
+{
+        var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	data = _.shuffle(data)
+	data = _.shuffle(data)
+	data = _.shuffle(data)
+	data = _.shuffle(data)
+	data = _.shuffle(data)
+	data = _.shuffle(data)
+	console.log(JSON.stringify(data, null, 4))	               
 	process.exit(0)
 }
 
