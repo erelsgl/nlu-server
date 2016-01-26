@@ -327,7 +327,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 // featureOptions.expand_test
 // featureOptions.best_results
 
-	 var sentence = ""
+	var sentence = ""
 	
 	if (_.isObject(sample)) 
 		if ("input" in sample)
@@ -508,7 +508,7 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 // 	})	
 // }	
 
-function feEmbedAverage(sample, features, train, featureOptions, callback) {
+/*function feEmbedAverage(sample, features, train, featureOptions, callback) {
 
 	var sentence = ""
 	
@@ -550,7 +550,7 @@ function feEmbedAverage(sample, features, train, featureOptions, callback) {
     	    //console.log(_.keys(features).length)
 	    callback(null, features)
 	})	
-}
+}*/
 
 
 function feSplitted(sample, features, train, featureOptions, callback) {
