@@ -47,9 +47,9 @@ process.on('message', function(message) {
 				" classifier="+classifier+ " fold="+fold))
 
 		    	// stats = trainAndTest_hash(classifiers[classifier], mytrainex, mytestex, false)
-		    	trainAndTest.trainAndTest_async(classifiers[classifier], mytrainex, mytestex, function(err, stats){
+		    	trainAndTest.trainAndTest_async(classifiers[classifier], JSON.parse(JSON.stringify(mytrainex)), JSON.parse(JSON.stringify(mytestex)), function(err, stats){
 
-		    		var uniqueid = new Date().getTime()
+		    		//var uniqueid = new Date().getTime()
 
 			    	console.log(msg("DEBUG: worker "+process["pid"]+": traintime="+
 			    		stats['traintime']/1000 + " testtime="+ 
