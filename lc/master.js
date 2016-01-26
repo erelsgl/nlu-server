@@ -360,18 +360,21 @@ if (process.argv[1] === __filename)
 	// 	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_exp']
 	//	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_exp']
 	//	var classifiers = ['DS_comp_exp_0_undefined','DS_comp_exp_1_undefined','DS_comp_exp_2_undefined','DS_comp_exp_3_ref','DS_comp_exp_4_ref']
-	//	var classifiers = ['DS_comp_unigrams_async', 'DS_comp_embed_d300_average', 'DS_comp_embed_d100_average', 'DS_comp_embed_d50_average', 'DS_comp_embed_d25_average']
+//		var classifiers = [ 'DS_comp_embed_d300_average_unoffered', 'DS_comp_embed_d100_average_unoffered', 'DS_comp_embed_d50_average_unoffered', 'DS_comp_embed_d25_average_unoffered', 'DS_comp_unigrams_async_context_unoffered']
 	//	var classifiers = ['DS_comp_unigrams_bigrams_async', 'DS_vanilla_svm']
 
 	//	var classifiers = ['DS_comp_unigrams_async', 'DS_comp_embed_d100_average', 'DS_comp_embed_d100_dep_average', 'DS_comp_embed_d100_sub_average']
 	//	var classifiers = ['DS_comp_exp_3_undefined_root', 'DS_comp_exp_3_undefined', 'DS_comp_embed_d100_average']
 	//var classifiers = ['DS_comp_exp_3_undefined_root_context', 'DS_comp_exp_3_undefined_context', 'DS_comp_embed_d100_average_context']
 	//var classifiers = ['DS_comp_unigrams_async_context', 'DS_comp_exp_3_undefined_context_embed_d100_average', 'DS_comp_embed_d100_average_context', 'DS_comp_exp_3_undefined_root_context']
-	 var classifiers = ['DS_comp_unigrams_async_context', 'DS_comp_exp_3_undefined_root_context_test', 'DS_comp_exp_3_undefined_root_context_test_offer']
+//	 var classifiers = ['DS_comp_unigrams_async_context_unoffered', 'DS_comp_exp_3_undefined_root_context_test', 'DS_comp_exp_3_undefined_root_context']
+	//var classifiers = ['DS_comp_unigrams_async_context_unoffered', 'DS_comp_unigrams_async']
 	 //var classifiers = ['DS_comp_unigrams_async_context', 'DS_comp_exp_3_undefined_root','DS_comp_exp_3_undefined_root_context_offer', 'DS_comp_exp_3_undefined_root_context', 'DS_comp_exp_3_undefined_root_context_test', 'DS_comp_exp_3_undefined_root_context_test_offer']
 	//var classifiers = ['DS_comp_unigrams_async_context_both', 'DS_comp_unigrams_async_context_offered','DS_comp_unigrams_async_context_unoffered', 'DS_comp_unigrams_async']
 
-	//var classifiers = ['DS_comp_unigrams_async']
+//	var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_5_unoffered','DS_comp_exp_3_root_5_unoffered_test']
+	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_unigrams_async']
+	var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_embed_d300_average_unoffered']
 
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
@@ -383,7 +386,7 @@ if (process.argv[1] === __filename)
 	var utterset = bars.getsetcontext(data)
 	var dataset = utterset["train"].concat(utterset["test"])
 
-	dataset = _.shuffle(dataset.slice(0,100))
+	dataset = dataset.slice(0,100)
 	
 	console.log("Dataset "+ dataset.length)
 
