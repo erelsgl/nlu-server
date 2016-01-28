@@ -42,6 +42,10 @@ exports.readSingleJsonObjectSync = function(pathToLog) {
 exports.readJsonLogSync = function(pathToLog) {
   if (fs.existsSync(pathToLog)) {
     var json = "["+fs.readFileSync(pathToLog, 'utf8').replace(/[\n\r]+/g,",")+"]";
+    var json = json.replace(/\,\,/g,",");
+    var json = json.replace(/\[\,/g,"[");
+    var json = json.replace(/\,\]/g,"]");
+
     json = json.replace(/,,+/g,",").replace(/,\s*\]/,"]");
     return JSON.parse(json);
   } else {
