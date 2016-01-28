@@ -26,10 +26,10 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+var do_serialization_prod = true
 var check_single_multi = false
 var check_ds = false
-var shuffling = true
-
+var shuffling = false
 var check_word = false
 var multi_lab = false
 var mmm = false
@@ -81,6 +81,12 @@ function smart_normalizer(sentence) {
 	sentence = regexpNormalizer(sentence)
 	
 	return sentence
+}
+
+function createNewClassifier()
+{
+	var defaultClassifier = require(__dirname+'/classifiers').defaultClassifier
+	return new defaultClassifier()
 }
 
 function parse_filter(parse)
@@ -542,6 +548,23 @@ if (do_cross_validation) {
 	microAverage.calculateStats();
 	console.log("MICRO AVERAGE SUMMARY: "+microAverage.shortStats());
 } // do_cross_validation
+
+if (do_serialization_prod) {
+
+        var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+        var utterset = bars.getsetcontext(data)
+
+        utterset["test"] = _.flatten(utterset["test"])
+        utterset["train"] = _.flatten(utterset["train"])
+
+        var clas = createNewClassifier()
+
+        clas.trainBatchAsync(bars.copyobj(utterset["train"]).concat(bars.copyobj(utterset["test"])), function(err,results){
+            fs.writeFileSync("trainedClassifiers/Employer-usa/MostRecentClassifier.json", serialization.toString(clas, createNewClassifier, __dirname), 'utf8')
+            console.log("done")
+            process.exit()
+        })
+}
 
 if (do_serialization) {
 	verbosity=0;
