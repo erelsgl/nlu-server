@@ -1,7 +1,10 @@
 /* Utilities for creating beeps. Currently works on Chrome only. */
+//https://github.com/ejci/Chrome-Audio-EQ/issues/24
 
 if (window.audioContext || window.webkitAudioContext) {
+//if (window.audioContext) {
 	var audioContext = new(window.audioContext || window.webkitAudioContext);
+	//var audioContext = new(window.audioContext);
 }
 
 /**
@@ -13,9 +16,11 @@ function beep(type, millis) {
 		var oscillator = audioContext.createOscillator();
 		oscillator.type = type;   // 0-4 are valid sound types
 		oscillator.connect(audioContext.destination);
-		oscillator.noteOn(0);
+//		oscillator.noteOn(0);
+		oscillator.start(0);
 		setTimeout(function () {
-			oscillator.noteOff(0);
+//			oscillator.noteOff(0);
+			oscillator.stop(0);
 		}, millis /*milliseconds*/);
 	}
 }
