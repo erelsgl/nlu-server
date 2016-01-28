@@ -55,7 +55,8 @@ app.configure('development', function(){
 //
 // Step 2: Load the activeClassifiers and prepare the translators
 //
-var classifierNames = ["Candidate-usa", "Employer-usa"]
+var classifierNames = ["Employer-usa"]
+//var classifierNames = ["Candidate-usa"]
 //var classifierNames = ["husband-israel", "wife-israel", "Employer","Candidate", "Candidate-israel", "Employer-israel", "Candidate-usa", "Employer-usa", "Employer-egypt-translate", "Employer-egypt-generate", "Employer-egypt", "Candidate-egypt-generate-basic", "Candidate-egypt-generate-honor", "Employer-israel-translate", "Candidate-israel-generate"]
 //var classifierNames = ["husband-israel", "wife-israel", "Candidate-egypt-generate-basic"]
 //var classifierNames = ["husband-israel", "wife-israel"]
@@ -78,14 +79,14 @@ classifierNames.forEach(function(classifierName) {
 	activeClassifiers[classifierName] = serialization.fromString(
 		fs.readFileSync(pathToClassifier), __dirname);
 	activeClassifiers[classifierName].pathToRetrainedClassifier = pathToRetrainedClassifier;
-	activeClassifiers[classifierName].precisionrecall = limdu.utils.test(activeClassifiers[classifierName], activeClassifiers[classifierName].pastTrainingSamples).calculateStats();
-	activeClassifiers[classifierName].classes = activeClassifiers[classifierName].getAllClasses();
-	//activeClassifiers[classifierName].classes.sort();
-
-
+	//activeClassifiers[classifierName].precisionrecall = limdu.utils.test(activeClassifiers[classifierName], activeClassifiers[classifierName].pastTrainingSamples).calculateStats();
+	
+	// activeClassifiers[classifierName].classes = activeClassifiers[classifierName].getAllClasses();
+	activeClassifiers[classifierName].classes = JSON.parse(fs.readFileSync(__dirname+"/labels.json"))
+	
 	activeClassifiers[classifierName].classes = _.sortBy(activeClassifiers[classifierName].classes, function(label){
 
-		label = JSON.parse(label)
+		// label = JSON.parse(label)
 		if (_.isObject(label))
 		{
 			if (_.keys(label)[0]=="Offer")
