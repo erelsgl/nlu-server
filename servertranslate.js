@@ -55,7 +55,11 @@ app.configure('development', function(){
 //
 // Step 2: Load the activeClassifiers and prepare the translators
 //
-var classifierNames = ["Employer","Candidate", "Candidate-israel", "Employer-israel", "Candidate-usa", "Employer-usa", "Employer-egypt-translate", "Employer-egypt-generate", "Employer-egypt"]
+var classifierNames = ["Candidate-usa", "Employer-usa"]
+//var classifierNames = ["husband-israel", "wife-israel", "Employer","Candidate", "Candidate-israel", "Employer-israel", "Candidate-usa", "Employer-usa", "Employer-egypt-translate", "Employer-egypt-generate", "Employer-egypt", "Candidate-egypt-generate-basic", "Candidate-egypt-generate-honor", "Employer-israel-translate", "Candidate-israel-generate"]
+//var classifierNames = ["husband-israel", "wife-israel", "Candidate-egypt-generate-basic"]
+//var classifierNames = ["husband-israel", "wife-israel"]
+//var classifierNames = ["Employer-egypt", "Candidate-egypt"]
 
 var registeredPublicTranslators = {};
 var activePublicTranslators = {};
@@ -63,40 +67,47 @@ var activeClassifiers = {};
 var manualTranslations = {};
 var pendingAutomaticTranslations = {};
 classifierNames.forEach(function(classifierName) {
+	console.log(classifierName)
 	var startTime = new Date();
 	var pathToBaseClassifier = __dirname+"/trainedClassifiers/"+classifierName+"/MostRecentClassifier.json";
 	var pathToRetrainedClassifier = __dirname+"/trainedClassifiers/"+classifierName+"/RetrainedClassifier.json";
 	var pathToClassifier = (fs.existsSync(pathToRetrainedClassifier)?
 		pathToRetrainedClassifier:
 		pathToBaseClassifier);
-	
+
 	activeClassifiers[classifierName] = serialization.fromString(
 		fs.readFileSync(pathToClassifier), __dirname);
 	activeClassifiers[classifierName].pathToRetrainedClassifier = pathToRetrainedClassifier;
 	activeClassifiers[classifierName].precisionrecall = limdu.utils.test(activeClassifiers[classifierName], activeClassifiers[classifierName].pastTrainingSamples).calculateStats();
-
 	activeClassifiers[classifierName].classes = activeClassifiers[classifierName].getAllClasses();
-	// activeClassifiers[classifierName].classes.sort();
+	//activeClassifiers[classifierName].classes.sort();
 
-	activeClassifiers[classifierName].classes = _.sort(activeClassifiers[classifierName].classes, function(label){
+
+	activeClassifiers[classifierName].classes = _.sortBy(activeClassifiers[classifierName].classes, function(label){
+
+		label = JSON.parse(label)
 		if (_.isObject(label))
 		{
 			if (_.keys(label)[0]=="Offer")
 				return 10
+			if ((_.keys(label)[0]=="Query") && (_.values(label)[0]=="Offer"))
+				return 9
 			if ((_.values(label)[0]==true) || (_.values(label)[0]=="true"))
 				return 9
 			if (_.keys(label)[0]=="Accept")
 				return 8
 			if (_.keys(label)[0]=="Reject")
 				return 7
+			if (_.keys(label)[0]=="StartNewIssue")
+                                return 1
 			return 6
 		}
 		else
-		return 1
+		return 9
 	}).reverse()
 
-	console.log("Classes of classifier")
-	console.log(activeClassifiers[classifierName].classes)
+	console.log("Number of classes of classifier")
+	console.log(activeClassifiers[classifierName].classes.length)
 
 	if (!activeClassifiers[classifierName].classes)
 		throw new Error("Classes of classifier '"+classifierName+"' are null!");
@@ -126,7 +137,6 @@ if (process.argv[2]==='test') {
 //
 // Step 3: load additional approved translations from the manual translations file:
 //
-
 var lines = logger.readJsonLogSync(logger.cleanPathToLog("translations_manual.json"));
 lines.forEach(function(sample) {
 	if (sample.classifierName && manualTranslations[sample.classifierName])
@@ -140,7 +150,6 @@ lines.forEach(function(sample) {
 		if (!manualTranslations[sample.classifierName][sample.text])
 			pendingAutomaticTranslations[sample.classifierName][sample.text]=sample;
 });
-
 
 //
 // Step 4: define an HTTP server over the express application:
@@ -295,6 +304,13 @@ app.get("/stats", function(req,res) {
 	});
 });
 
+
+app.get("/test", function(req,res) {
+                res.write("OK");
+                res.end();
+                return;
+})
+
 // translation as a web service: 
 app.get("/get", function(req,res) {
 	if (!req.query||!req.query.request) {
@@ -307,8 +323,12 @@ app.get("/get", function(req,res) {
 	var id = "WEBSERVICE";
 	translate(request, id, /*requester_is_private_translator=*/false, function(classification) {
 		logger.writeEventLog("events", (request.forward? "translate>": "generate>")+id, classification);
-		res.write(JSON.stringify(classification));
-		res.end();
+//		res.write(JSON.stringify(classification));
+//		res.end();
+		res.write(JSON.stringify(classification), function(err)
+			{
+			res.end();
+			})
 	});
 });
 
@@ -378,7 +398,8 @@ function translate(request, requester, requester_is_private_translator, callback
 
 		if (request.forward) {   // forward translation = classification
 			var classification;
-			var pastManualTranslation = manualTranslations[request.classifierName][request.text];
+			//var pastManualTranslation = manualTranslations[request.classifierName][request.text];
+			var pastManualTranslation = null
 			if (!requester_is_private_translator && pastManualTranslation && pastManualTranslation.translations && pastManualTranslation.translations.length>0) {
 				classification = pastManualTranslation;
 				if (request.explain) {
@@ -430,6 +451,8 @@ function translate(request, requester, requester_is_private_translator, callback
 						for (var id in registeredPublicTranslators[request.classifierName])
 							registeredPublicTranslators[request.classifierName][id].emit('time_left', {text: request.text, timeSeconds: timeSeconds});
 						if (timeSeconds<=0) { // timeout - no public translator responded - send the automatic translation to the asker:
+//							if (classification.translations.length == 0)
+//								classification.translations.push("{\"Other\":true}")
 							logger.writeEventLog("events", "translate-timeout>"+requester, classification.translations);
 							callback(classification);
 							mapTextToTimer[request.text].stop();
@@ -483,11 +506,14 @@ io.sockets.on('connection', function (socket) {
 	// A public translator accepts translations from other users for correction (a "wizard-of-oz"):
 	socket.public_translator = false;
 	socket.on('register_as_public_translator', function(request) {
+		console.log("register_as_public_translator")
+		console.error(JSON.stringify(request));
 		if (!request || !request.classifierName || !activeClassifiers[request.classifierName]) {
 			console.error("classifierName not found! request="+JSON.stringify(request));
 			return;
 		}
 		var activeClassifier = activeClassifiers[request.classifierName];
+		console.log("Number of classes "+ activeClassifier.classes.length)
 
 		socket.public_translator = true;
 		if (request.source)  // limit the public translator to a specific source:
@@ -515,6 +541,7 @@ io.sockets.on('connection', function (socket) {
 	// Private translator corrects his own translations, without the help of a public translator:
 	socket.private_translator = false;
 	socket.on('register_as_private_translator', function(request) {
+		console.log(register_as_private_translator)
 		if (!request || !request.classifierName || !activeClassifiers[request.classifierName]) {
 			console.error("classifierName not found! request="+JSON.stringify(request));
 			return;
