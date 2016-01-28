@@ -5,7 +5,7 @@
 <link type="text/css" rel="stylesheet" href="main.css" />
 <meta charset='utf-8' />
 
-<title>Wizard-of-Oz interface</title>
+<title>_Wizard-of-Oz interface</title>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
@@ -56,8 +56,12 @@ $(document).ready(function() {
 
 	translationSocket.on('classes', function(classes) {
 		availableClasses = classes;
-		if (availableClasses.indexOf('Other')<0)
-			availableClasses.push('Other');
+		if (availableClasses.indexOf("Rephrse")<0)
+			availableClasses.push("Rephrase");
+		if (availableClasses.indexOf("Other")<0)
+			availableClasses.push("Other");
+		if (availableClasses.indexOf("Proceed")<0)
+			availableClasses.push("Proceed");
 	});
 	
 	function translationDataToString(translationData) {
@@ -119,7 +123,7 @@ $(document).ready(function() {
 			mapTextToTranslationForm[text]=[];
 		mapTextToTranslationForm[text].push(newForm);
 
-		if (!quiet_mode) beep(/*type=*/0, /*millis=*/100);
+		if (!quiet_mode) beep(/*type=*/'sine', /*millis=*/100);
 
 		setOptionsFromArray(
 				newForm.find(".classToAdd"), 
