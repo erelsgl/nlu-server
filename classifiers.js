@@ -87,12 +87,13 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 function preProcessor_onlyIntent(value)
 {
 	var initial = value
-
+	
 	if (_.isObject(value))
 	{
 		// it's from test and it's object
 		if ("text" in value)
 		{	
+			console.log("its test")
 			var sentence = rules.generatesentence({'input':value.text, 'found': rules.findData(value.text)})['generated']
 			sentence = sentence.replace(/<VALUE>/g,'').replace(/<ATTRIBUTE>/g,'').replace(/NIS/,'').replace(/nis/,'').replace(/track/,'').replace(/USD/,'').trim()
 			value.text = sentence
@@ -338,9 +339,16 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 		sentence = sample
 
 	if (!('input' in sample))
-		sample['input'] = sample
+	{	
+		var sampleTemp = {}
+		sampleTemp['input']= sample
+		sample=sampleTemp
+	}
+	
+	if (!('sentences' in sample['input']))
+		throw new Error("sentences not in the sample")
 
-	console.log(process.pid + " DEBUG: train "+train)
+	console.log(process.pid + " DEBUG: train: "+train + " options: "+JSON.stringify(featureOptions))
 
 	sentence = sentence.toLowerCase().trim()
 	var words = tokenizer.tokenize(sentence);
@@ -349,21 +357,36 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 	_.each(unigrams, function(unigram, key, list){ if (stopwords.indexOf(unigram)==-1) features[unigram] = 1 }, this)
 	//_.each(unigrams, function(unigram, key, list){ features[unigram] = 1 }, this)
 
-	if (((!featureOptions.expand_test) && (train)) || (featureOptions.expand_test))
-	{	
+//	if (((!featureOptions.expand_test) && (train)) || (featureOptions.expand_test))
+//	{	
 		async.waterfall([
+			function(callbackl1){
+			  if (((!featureOptions.expand_test) && (train)) || (featureOptions.expand_test))
+				{	
+				console.log("DEBUG: train"+train + " unigrams "+unigrams)
+				callbackl1(null)
+				}
+			 else
+				{	
+				console.log(process.pid + " DEBUG: callback classify noexpansion"+ train +" "+ _.keys(features))
+				callback(null, features)
+				}
+			},
 			function(callbackl) {
 
 				 if ((!featureOptions.allow_offer)&&(train))
-				 	if (sample.output[0] == "Offer")
+					{ 
+					if (sample.output[0] == "Offer")
 				 		{
 				 		console.log("Offer no expansion")
-				 		return callback(null, features)	
+				 		callback(null, features)	
 				 		}
+					}
 	
 				var poses = {}
 				var roots = []
-		
+	
+				console.log("DEBUG train" + train)	
 				_.each(sample['input']['sentences'], function(sentence, key, list){ 
 					_.each(sentence['tokens'], function(token, key, list){ 	
 						poses[token.word.toLowerCase()] = token.pos
@@ -374,7 +397,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 					}, this)	
 				}, this)
 
-				// console.log(JSON.stringify(poses, null, 4))
+			console.log("poses train" + train + " " + JSON.stringify(poses))
         		callbackl(null, poses, roots);
     		},
 		    function(poses, roots, callbackll) {
@@ -387,6 +410,9 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 						throw new Error(unigram + " is not found in "+poses)
 				
 					async_adapter.getppdb(unigram, poses[unigram], featureOptions.scale, featureOptions.relation,  function(err, results){
+						
+						console.log("getppdb train" + train + " "+JSON.stringify(unigram))			
+		
 						if (!_.isUndefined(featureOptions.best_results))
 							results = results.slice(0, featureOptions.best_results)
 
@@ -401,16 +427,16 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 			}, function(err){callbackll()})
 		}],
 		function (err, result) {
-			console.log(process.pid + " DEBUG EXP: "+unigrams+ " EXPANSIONED "+_.keys(features))
+			console.log(process.pid + " DEBUG EXP: "+unigrams+ " EXPANSIONED "+_.keys(features)+ " train"+train+" featureOptions"+JSON.stringify(featureOptions))
 	            return callback(null, features)
 	     });
 
-	}
-	else
-	{
-		console.log(process.pid + " DEBUG: callback classify " + _.keys(features))
-		return callback(null, features)	
-	}
+//	}
+//	else
+//	{
+//		console.log(process.pid + " DEBUG: callback classify noexpansion"+ train +" "+ _.keys(features))
+//		return callback(null, features)	
+//	}
 	
 }
 
@@ -1013,6 +1039,7 @@ module.exports = {
 		DS_comp_exp_3_undefined_root_context: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test':false, 'offered':false, 'unoffered':true}),
 		DS_comp_exp_3_undefined_root_context_test: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test':true, 'offered':false, 'unoffered':true}),
 		DS_comp_exp_3_undefined_root_context_test_offer: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': 5, 'expand_test':true}),
+		DS_comp_exp_3_undefined_root_context_offer: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': 5, 'expand_test':false}),
 
 		DS_comp_exp_3_ref: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': false, 'relation': ['ReverseEntailment','Equivalence','ForwardEntailment'], 'allow_offer': true, 'best_results': undefined}),
 		
