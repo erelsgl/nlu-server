@@ -35,7 +35,7 @@ describe('Classifiers functions', function() {
    				}}
 				
 				classifiers.feContext(sample, {}, true, {'offered':true, 'unoffered':true}, function(err, features){
-   					("OFFERED_VALUE" in features).should.be.true
+   					("OFFERED_VALUE" in features).should.equal(true)
  					callback1()
    				}) 
     		},
@@ -46,7 +46,7 @@ describe('Classifiers functions', function() {
    				}}
 				
 				classifiers.feContext(sample, {}, true, {'offered':true, 'unoffered':true}, function(err, features){
-   					("UNOFFERED_VALUE" in features).should.be.true
+   					("UNOFFERED_VALUE" in features).should.equal(true)
  					callback1()
    				}) 
     		},
@@ -57,7 +57,7 @@ describe('Classifiers functions', function() {
    				}}
 				
 				classifiers.feContext(sample, {}, true, {'offered':true, 'unoffered':true}, function(err, features){
-					_.isEqual(features, {"OFFERED_VALUE": 1,"UNOFFERED_VALUE": 1}).should.be.true
+					_.isEqual(features, {"OFFERED_VALUE": 1,"UNOFFERED_VALUE": 1}).should.equal(true)
 
  					callback1()
    				}) 
@@ -69,7 +69,7 @@ describe('Classifiers functions', function() {
    				}}
 				
 				classifiers.feContext(sample, {}, true, {'offered':true, 'unoffered':false}, function(err, features){
-					_.isEqual(features, {"OFFERED_VALUE": 1}).should.be.true
+					_.isEqual(features, {"OFFERED_VALUE": 1}).should.equal(true)
 
  					callback1()
    				}) 
@@ -81,7 +81,7 @@ describe('Classifiers functions', function() {
    				}}
 				
 				classifiers.feContext(sample, {}, true, {'offered':false, 'unoffered':true}, function(err, features){
-					_.isEqual(features, {"UNOFFERED_VALUE": 1}).should.be.true
+					_.isEqual(features, {"UNOFFERED_VALUE": 1}).should.equal(true)
 
  					callback1()
    				}) 
@@ -174,21 +174,21 @@ describe('Classifiers functions', function() {
     		function(callback1) {
         		var params = { 'unigrams': true, 'bigrams': false, 'allow_stopwords': false }
         		classifiers.feAsync(sample, {}, true, params, function (err, features){
-					_.isEqual(features, {"love": 1, "nature": 1}).should.be.true
+					_.isEqual(features, {"love": 1, "nature": 1}).should.equal(true)
 					callback1(null)
         		})
     		},
     		function(callback1) {
         		var params = { 'unigrams': true, 'bigrams': false, 'allow_stopwords': true }
         		classifiers.feAsync(sample, {}, true, params, function (err, features){
-					_.isEqual(features, {"i":1, "love": 1, "the":1, "nature": 1}).should.be.true
+					_.isEqual(features, {"i":1, "love": 1, "the":1, "nature": 1}).should.equal(true)
 					callback1(null)
         		})
         	},
         	function(callback1) {
         		var params = { 'unigrams': true, 'bigrams': true, 'allow_stopwords': true }
         		classifiers.feAsync(sample, {}, true, params, function (err, features){
-					_.isEqual(features, {"i": 1,"love": 1,"the": 1,"nature": 1,"i love": 1,"love the": 1,"the nature": 1}).should.be.true					
+					_.isEqual(features, {"i": 1,"love": 1,"the": 1,"nature": 1,"i love": 1,"love the": 1,"the nature": 1}).should.equal(true)					
 					callback1(null)
         		})
         	}
