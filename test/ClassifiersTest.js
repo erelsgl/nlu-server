@@ -217,6 +217,23 @@ describe('Classifiers functions', function() {
 			}
 		}
 	
+
+ var sampleTest = {
+                'text': "I love the life test",
+                'sentences':[
+                                {
+                                        'basic-dependencies':[
+                                                {"dep": "ROOT", "dependentGloss": "love"},
+                                        ],
+                                        'tokens':[
+                                                {'word': 'I','pos': 'ABC'},
+                                                {'word': 'love','pos': 'VB'},
+                                                {'word': 'the','pos': 'ABC'},
+                                                {'word': 'life','pos': 'NN'},
+                                        ]
+                                }]
+                        }
+
 		var sampleOffer = { 'output': ["Offer"],
         	'input':{'text': "everything is great"}
 		}
@@ -250,17 +267,23 @@ describe('Classifiers functions', function() {
                     callback1(null)
                 })
             },
-
 		function(callback1) {
+		var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test': true}
+			
+                classifiers.feExpansion(sampleTest, {}, false, params, function (err, features){
+			callback1(null)
+		
+		})
+
+	},
+	function(callback1) {
                 var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test': true}
                 classifiers.feExpansion(sample, {}, false, params, function (err, features){
-                	_.isEqual(features, { love: 1, life: 1, like: 1, adore: 1 }).should.be.true
+                        _.isEqual(features, { love: 1, life: 1, like: 1, adore: 1 }).should.be.true
                     callback1(null)
                 })
-            },
-			function(callback1) {
-				callback1(true)
-			}], function (err, result) {
+            }
+], function (err, result) {
     			callback()
 			});
     })
