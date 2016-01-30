@@ -354,8 +354,8 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 	var words = tokenizer.tokenize(sentence);
 	var unigrams = _.flatten(natural.NGrams.ngrams(words, 1))
 	
-	_.each(unigrams, function(unigram, key, list){ if (stopwords.indexOf(unigram)==-1) features[unigram] = 1 }, this)
-	//_.each(unigrams, function(unigram, key, list){ features[unigram] = 1 }, this)
+	// _.each(unigrams, function(unigram, key, list){ if (stopwords.indexOf(unigram)==-1) features[unigram] = 1 }, this)
+	_.each(unigrams, function(unigram, key, list){ features[unigram] = 1 }, this)
 
 //	if (((!featureOptions.expand_test) && (train)) || (featureOptions.expand_test))
 //	{	
@@ -698,6 +698,46 @@ function feAsync(sample, features, train, featureOptions, callback) {
 
 	callback(null, features)
 }
+
+function feSync(sample, features) {
+
+	var sentence = ""
+	
+	if (_.isObject(sample)) 
+		if ("input" in sample)
+			sentence = sample.input.text
+		else
+			sentence = sample.text
+	else
+		sentence = sample
+
+	sentence = sentence.toLowerCase().trim()
+	sentence = regexpNormalizer(sentence)
+
+	var words = tokenizer.tokenize(sentence);
+
+	var featureSet = []
+
+	// if (featureOptions.unigrams)
+	featureSet = featureSet.concat(natural.NGrams.ngrams(words, 1))
+
+	// if (featureOptions.bigrams)
+	// featureSet = featureSet.concat(natural.NGrams.ngrams(words, 2))
+
+	// because initially we get array of arrays 
+	featureSet = _.map(featureSet, function(num){ return num.join(" ") });
+
+	_.each(featureSet, function(feat, key, list){ 
+		if ((!featureOptions.allow_stopwords) && (stopwords.indexOf(feat)==-1))
+			features[feat] = 1 
+			
+		if (featureOptions.allow_stopwords)
+			features[feat] = 1 
+	}, this)
+
+	callback(null, features)
+}
+
 
 // function featureExtractorUBC(sentence, features) {
 
@@ -1046,6 +1086,7 @@ module.exports = {
 		DS_vanilla_svm: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true, {'unigrams':true, 'bigrams':true, 'allow_stopwords':true}),
 		
 		DS_comp_unigrams_async: enhance(SvmLinearMulticlassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
+		DS_comp_unigrams_sync: enhance(SvmLinearMulticlassifier, [feSync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
 		DS_boost_comp_unigrams_async: enhance(Boosting, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
 
 		DS_comp_unigrams_async_context: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
@@ -1067,6 +1108,6 @@ module.exports = {
 
 };
 
-module.exports.defaultClassifier = module.exports.DS_comp_unigrams_async
+module.exports.defaultClassifier = module.exports.DS_comp_unigrams_sync
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
