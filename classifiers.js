@@ -357,7 +357,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 	
 	//_.each(unigrams, function(unigram, key, list){ if (stopwords.indexOf(unigram)==-1) features[unigram] = 1 }, this)
 	// _.each(unigrams, function(unigram, key, list){ if (stopwords.indexOf(unigram)==-1) features[unigram] = 1 }, this)
-	_.each(unigrams, function(unigram, key, list){ features[unigram] = 1 }, this)
+	_.each(unigrams, function(unigram, key, list){ innerFeatures[unigram] = 1 }, this)
 
 //	if (((!featureOptions.expand_test) && (train)) || (featureOptions.expand_test))
 //	{	
@@ -371,7 +371,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 			 else
 				{	
 				console.log(process.pid + " DEBUG: callback classify noexpansion"+ train +" "+ _.keys(features))
-				callback(null, features)
+				callback(null, innerFeatures)
 				}
 			},
 			function(callbackl) {
@@ -381,7 +381,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 					if (sample.output[0] == "Offer")
 				 		{
 				 		console.log("Offer no expansion")
-				 		callback(null, features)	
+				 		callback(null, innerFeatures)	
 				 		}
 					}
 	
