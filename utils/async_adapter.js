@@ -68,7 +68,7 @@ function getppdb(string, pos, db, relation, callback)
 			if (err) callback(err)
 			
 			console.log("DEBUGPPDB: err " + err)
-			console.log("DEBUGPPDB: string to expansion " + string+ " POS "+pos + " relation "+ relation+ " db "+ db +" replies " + JSON.stringify(replies))
+			console.log("DEBUGPPDB: string to expansion: " + string+ " POS: "+pos + " relation: "+ relation+ " db: "+ db +" replies " + JSON.stringify(replies))
 
 			_.each(replies, function(value, key, list){ 
 
@@ -106,7 +106,7 @@ function getppdb(string, pos, db, relation, callback)
 			}, this)
 
 			output = _.sortBy(output, function(num){ return num[2] });
-			console.log("DEBUGPPDB: final output " + JSON.stringify(output))
+			console.log("DEBUGPPDB: string: " + string + " final output " + JSON.stringify(output))
 			callback(err, output)
         })
 	})	
