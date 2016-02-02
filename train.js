@@ -26,9 +26,9 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
-var do_serialization_prod = true
+var do_serialization_prod = false
 var check_single_multi = false
-var check_ds = false
+var check_ds = true
 var shuffling = false
 var check_word = false
 var multi_lab = false
@@ -393,9 +393,11 @@ if (check_ds)
 	console.log(utterset["test"].length)
 	console.log(_.flatten(utterset["test"]).length)
 
-	utterset["test"] = _.flatten(utterset["test"])
-	utterset["train"] = _.flatten(utterset["train"])
+	utterset["test"] = _.shuffle(_.flatten(utterset["test"]))
+	utterset["train"] = _.shuffle(_.flatten(utterset["train"]))
 	
+	
+
 	// _.each(utterset["train"], function(value, key, list){
 	// 	if (value.input.context.lenght == 0)
 	// 		console.log(JSON.stringify(value, null, 4))
@@ -410,7 +412,7 @@ if (check_ds)
 	// console.log(JSON.stringify(stats, null, 4))
 
 	//trainAndTest.trainAndTest_async(classifier.DS_bigram_split_embed, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
-	trainAndTest.trainAndTest_async(classifier.DS_boost_comp_unigrams_async, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	trainAndTest.trainAndTest_async(classifier.DS_comp_exp_3_root_5_unoffered, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		console.log("DONE")
 		console.log(JSON.stringify(results, null, 4))
 		process.exit(0)
