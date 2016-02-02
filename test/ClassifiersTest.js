@@ -243,7 +243,7 @@ describe('Classifiers functions', function() {
    			function(callback1) {
         		var params = {'scale':0, 'onlyroot': false, 'relation': undefined, 'allow_offer': false, 'best_results': undefined, 'expand_test': false}
    				classifiers.feExpansion(sample, {}, true, params, function (err, features){
-					_.isEqual(features, { i:1, love: 1,the:1, life: 1,enjoys: 1,liking: 1,prefers: 1,appreciates: 1,lifetime: 1,'live their lives': 1}).should.equal(true)
+					_.isEqual(features, { i:1, love: 1,the:1, life: 1,enjoys: 1,liking: 1,prefers: 1,appreciates: 1,lifetime: 1}).should.equal(true)
 					callback1(null)
         		})
     		},
@@ -257,14 +257,14 @@ describe('Classifiers functions', function() {
     		function(callback1) {
         		var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test': false}
    				classifiers.feExpansion(sample, {}, true, params, function (err, features){
-					_.isEqual(features, { i:1, love: 1, the:1,  life: 1, like: 1, adore: 1 }).should.equal(true)
+					_.isEqual(features, { i:1, love: 1, the:1,  life: 1, like: 1, adore: 1, adores:1, enjoy:1, liked:1 }).should.equal(true)
 					callback1(null)
         		})
     		},
 			function(callback1) {
                 var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test': false}
                 classifiers.feExpansion(sampleOffer, {}, true, params, function (err, features){
-					_.isEqual(features, { everything:1, is:1, great: 1 }).should.equal(true)
+			_.isEqual(features, { everything:1, is:1, great: 1 }).should.equal(true)
                     callback1(null)
                 })
             },
@@ -280,7 +280,7 @@ describe('Classifiers functions', function() {
 	function(callback1) {
                 var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test': true}
                 classifiers.feExpansion(sample, {}, false, params, function (err, features){
-                        _.isEqual(features, { i:1, love: 1,the:1,  life: 1, like: 1, adore: 1 }).should.equal(true)
+			_.isEqual(features, { i:1, love: 1,the:1,  life: 1, like: 1, adore: 1, adores:1, enjoy:1, liked:1 }).should.equal(true)
                     callback1(null)
                 })
             }
