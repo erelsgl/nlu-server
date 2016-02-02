@@ -329,7 +329,8 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 // featureOptions.best_results
 
 	var sentence = ""
-	
+	var innerFeatures = JSON.parse(JSON.stringify(features))
+
 	if (_.isObject(sample)) 
 		if ("input" in sample)
 			sentence = sample.input.text
@@ -426,7 +427,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 							results = results.slice(0, featureOptions.best_results)
 
 						_.each(results, function(expan, key, list){ 
-							features[expan.toLowerCase()] = 1
+							innerFeatures[expan.toLowerCase()] = 1
 						}, this)
 						callback2()
 					})
@@ -436,8 +437,8 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 			}, function(err){callbackll()})
 		}],
 		function (err, result) {
-			console.log(process.pid + " DEBUG EXP: "+unigrams+ " EXPANSIONED "+_.keys(features)+ " train"+train+" featureOptions"+JSON.stringify(featureOptions))
-			callback(null, features)
+			console.log(process.pid + " DEBUG EXP: "+unigrams+ " EXPANSIONED "+_.keys(innerFeatures)+ " train"+train+" featureOptions"+JSON.stringify(featureOptions))
+			callback(null, innerFeatures)
 	     });
 
 //	}
@@ -673,6 +674,7 @@ function feContext(sample, features, train, featureOptions, callback) {
 function feAsync(sample, features, train, featureOptions, callback) {
 
 	var sentence = ""
+	var innerFeatures = JSON.parse(JSON.stringify(features))
 	
 	if (_.isObject(sample)) 
 		if ("input" in sample)
@@ -699,18 +701,19 @@ function feAsync(sample, features, train, featureOptions, callback) {
 
 	_.each(featureSet, function(feat, key, list){ 
 		if ((!featureOptions.allow_stopwords) && (stopwords.indexOf(feat)==-1))
-			features[feat] = 1 
+			innerFeatures[feat] = 1 
 			
 		if (featureOptions.allow_stopwords)
-			features[feat] = 1 
+			innerFeatures[feat] = 1 
 	}, this)
 
-	callback(null, features)
+	callback(null, innerFeatures)
 }
 
 function feSync(sample, features) {
 
 	var sentence = ""
+	var innerFeatures = JSON.parse(JSON.stringify(features))
 	
 	if (_.isObject(sample)) 
 		if ("input" in sample)
@@ -738,13 +741,13 @@ function feSync(sample, features) {
 
 	_.each(featureSet, function(feat, key, list){ 
 		if ((!featureOptions.allow_stopwords) && (stopwords.indexOf(feat)==-1))
-			features[feat] = 1 
+			innerFeatures[feat] = 1 
 			
 		if (featureOptions.allow_stopwords)
-			features[feat] = 1 
+			innerFeatures[feat] = 1 
 	}, this)
 
-	callback(null, features)
+	callback(null, innerFeatures)
 }
 
 
