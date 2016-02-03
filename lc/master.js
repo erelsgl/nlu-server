@@ -152,13 +152,46 @@ function plotlcagrlenaverge(stat)
 function plotlcagrlen(fold, stat)
 {
 
-// 	{
-//     "DS_unigram": {
-//         "1": 0.5832531280076997,
-//         "2": 0.5554585152838428
-//     }
-// }
+// sort the hash 
 
+var statmod = {}
+
+if ('size' in stat)
+	statmod['size'] = stat['size']
+
+if ('dial' in stat)
+        statmod['dial'] = stat['dial']
+
+var stat_arr = _.sortBy(_.pairs(stat), function(num){ return num })
+stat = _.extend(statmod, _.object(stat_arr))
+
+/*{
+    "dial": {
+        "0": 33,
+        "1": 18,
+        "2": 18,
+        "3": 18,
+        "4": 18,
+        "5": 18,
+        "6": 18,
+        "7": 18,
+        "8": 18,
+        "9": 18
+    },
+    "DS_comp_unigrams_async_context_unoffered": {
+        "0": 0.496551724137931,
+        "1": 0.48427672955974843,
+        "2": 0.5401459854014599,
+        "3": 0.42953020134228187,
+        "4": 0.55,
+        "5": 0.4365079365079365,
+        "6": 0.47333333333333333,
+        "7": 0.3485714285714286,
+        "8": 0.41843971631205673,
+        "9": 0.47183098591549294
+    }
+}
+*/
 
 	var classifier_hash = {}
 
@@ -225,7 +258,7 @@ function plotlcagr(fold, stat)
 
 	var output = []
 	// go over all trainsizes
-						// value    // key
+	// value    // key
 	_.each(stat, function(class_folds, trainsize, list){
 		var avr = plotlcagrlen(fold, class_folds)
 
@@ -377,7 +410,10 @@ if (process.argv[1] === __filename)
 	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_unigrams_async']
 	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_embed_d300_average_unoffered']
 	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_5_unoffered']
-	var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_5_unoffered_yes_offer_yes_test','DS_composition']
+	var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_5_unoffered_yes_offer_yes_test','DS_composition', 'DS_comp_embed_d100_average_unoffered']
+//	var classifiers = ['DS_comp_unigrams_async_context_unoffered']
+	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_5_unoffered_yes_offer_yes_test']
+	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_composition']
 	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_3_unoffered_no_offer_yes_test','DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test','DS_comp_exp_3_root_3_unoffered_yes_offer_no_test','DS_comp_exp_3_root_3_unoffered_no_offer_no_test']
 
 	//var classifiers = ['DS_comp_exp_3_root_5_unoffered','DS_comp_exp_3_root_5_unoffered_test','DS_comp_unigrams_async_context_unoffered']
