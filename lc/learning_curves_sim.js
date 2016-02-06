@@ -13,7 +13,7 @@ var fs = require('fs');
 var classifier = require(__dirname+"/../classifiers.js")
 var partitions = require('limdu/utils/partitions');
 var trainAndTest_hash = require(__dirname+'/../utils/trainAndTest').trainAndTest_hash;
-var trainAndTest_batch = require(__dirname+'/../utils/trainAndTest').trainAndTest_batch;
+//var trainAndTest_batch = require(__dirname+'/../utils/trainAndTest').trainAndTest_batch;
 var cross_batch = require(__dirname+'/../utils/trainAndTest').cross_batch;
 var bars = require(__dirname+'/../utils/bars');
 var path = require("path")
@@ -195,11 +195,11 @@ function extractGlobal(parameters, classifiers, trainset, report, stat)
 
 function checkGnuPlot()
 	{
-		var result = execSync.run(gnuplot);
-		if (result !=0 ) {
-			console.log("gnuplot is not found")
-			return 0
-		}
+	//	var result = execSync.run(gnuplot);
+	//	if (result !=0 ) {
+	//		console.log("gnuplot is not found")
+	//		return 0
+	//	}
 	}
 
 function isProb(results)
@@ -273,7 +273,7 @@ function plot(fold, parameter, stat, classifiers)
 	var values = []
 	var linetype = fold
 
-	console.log(JSON.stringify(stat, null, 4))
+	console.log("stat="+JSON.stringify(stat, null, 4))
 
 	var header = "train\t" + Object.keys(classifiers).join("-fold"+fold+"\t")+"-fold"+fold+"\n";
 	fs.writeFileSync(__dirname + dirr + parameter+"fold"+fold, header, 'utf-8')
@@ -324,7 +324,8 @@ function plot(fold, parameter, stat, classifiers)
 		// var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
 		var foldcom = " for [i=2:"+ (_.size(classifiers) + 1)+"] \'" + __dirname + dirr + parameter + "fold"+fold+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+linetype+" ps 3"
 		// var com = gnuplot +" -p -e \"reset; set title \'"+stat['_sized']+"("+stat['_sizec']+")\'; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
-		var com = gnuplot +" -p -e \"reset; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+		//var com = gnuplot +" -p -e \"reset; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set term png truecolor size 1024,1024; set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; set key autotitle columnhead; plot "+foldcom +"\""
+		var com = gnuplot +" -p -e \"reset; set datafile missing '?'; "+(isProb(values) ? "set yrange [0:1];" : "") +" set grid ytics; set grid xtics; set key bottom right; set output \'"+ __dirname + dirr + parameter + "fold"+fold+".png\'; plot "+foldcom +"\""
 		// console.log(com)
 		result = execSync(com)
 	}
@@ -371,8 +372,8 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 				var classifier	= _.values(classifiers)[0]	
 
 				console.log("size of strandard " + mytrain.length + " in utterances "+ mytrainset.length)
-//    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
-    			var stats = trainAndTest_batch(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
+    			var stats = trainAndTest_hash(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
+//    			var stats = trainAndTest_batch(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
 
     			_.each(stats['labels'], function(value, label, list){
     				stats['labels'][label]['count'] = countLabel(mytrainset, label)
@@ -387,6 +388,9 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 	    	 	console.log(buffer_train.length+" size of the buffer train")
 
 	    	 	var stats2 = cross_batch(classifier, bars.copyobj(mytrainset), 2)
+
+	    	 	console.log("LC: stats2="+JSON.stringify(stats2))
+
 	    	 	var results = bars.simulateds(buffer_train, size_last_dial, stats2)
 	    	 	// var results = bars.simulateds(buffer_train, size_last_dial, _.keys(stats1).length > 0 ? stats1['stats']['labels']: stats['stats']['labels'])
 	    	 	// var results = bars.simulaterealds(buffer_train, size_last_dial, _.keys(stats1).length > 0 ? stats1['stats']['labels']: stats['stats']['labels'])
@@ -416,7 +420,7 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 		    	// console.log("Size of the single label train "+sim_train.length)
 		    	
 				// var stats1 = trainAndTest_hash(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
-		    	var stats1 = trainAndTest_batch(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
+		    	var stats1 = trainAndTest_hash(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
 
 		    	_.each(stats1['labels'], function(value, label, list){
     				stats1['labels'][label]['count'] = countLabel(sim_train, label)
@@ -453,12 +457,13 @@ function learning_curves(classifiers, dataset, parameters, step, step0, limit, n
 
 	    		difflist = _.sortBy(difflist, function(num){ return num[1] })
 
-	    		console.log(JSON.stringify(difflist, null, 4))
-	    		console.log(JSON.stringify(diffcom, null, 4))
+	    		console.log("difflist="+JSON.stringify(difflist, null, 4))
+	    		console.log("diffcom="+JSON.stringify(diffcom, null, 4))
 
 	    		extractGlobal(parameters, classifiers, mytrain, report, stat)
                            
                 _.each(parameters, function(parameter, key, list){
+					console.log("PLOT "+parameter)
 					plot(fold, parameter, stat, classifiers)
 					plot('average', parameter, stat, classifiers)
 				})
@@ -484,8 +489,8 @@ if (process.argv[1] === __filename)
 	}, this)
 
 	var classifiers  = {
-			DS : classifier.DS_bigram,
-			DS_sim : classifier.DS_bigram
+			DS : classifier.DS_comp_unigrams_sync,
+			DS_sim : classifier.DS_comp_unigrams_sync
 		}
 	
 	var parameters = [
