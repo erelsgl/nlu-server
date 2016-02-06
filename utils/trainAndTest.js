@@ -515,9 +515,10 @@ trainAndTest_batch is created solely for short text classification
 module.exports.cross_batch = function(classifierType, dataset, folds) {
 	var labels = {}
 	partitions.partitions(dataset, folds, function(trainSet, testSet, index) {
-		var stats = module.exports.trainAndTest_batch(classifierType, trainSet, testSet)
+		var stats = module.exports.trainAndTest_hash(classifierType, trainSet, testSet)
+		console.log("cross_batch: stats="+JSON.stringify(stats))
 
-		_.each(stats['labels'], function(performance, label, list){
+		_.each(stats["stats"]['labels'], function(performance, label, list){
 			if (!(label in labels))
 				labels[label] = {}
 			_.each(performance, function(value, perf, list){
