@@ -3824,11 +3824,16 @@ function filterlabels(labels)
 
 function distribute(params) {
 
+  console.log("params:"+JSON.stringify(params))
+  
   var totalscore = _.reduce(params, function(memo, num){ return memo + num["score"]; }, 0);
+  console.log("totalscore:"+JSON.stringify(totalscore))
 
   _.each(params, function(value, param, list){
     params[param]["ratio"] = params[param]["score"]/totalscore
   }, this) 
+  console.log("params ratio:"+JSON.stringify(params))
+
 
   var dist = []
   _.each(params, function(value, key, list){
@@ -3838,13 +3843,14 @@ function distribute(params) {
   dist = _.shuffle(dist)
 
   var probs = _.sortBy(dist, function(num){ return num[1] })
-  if (probs.length < 5)
-    console.log(JSON.stringify(probs, null, 4))
 
   var r = Math.random()
   var i = 0
   var acc = 0
-  while ((acc += probs[i][1]) <= r)
+  
+console.log("probs: "+JSON.stringify(probs))
+
+while ((acc += probs[i][1]) <= r)
       i++;
 
   return probs[i][0];
@@ -3852,7 +3858,8 @@ function distribute(params) {
 
 function simulateds(dataset, size, params)
 {
-
+  
+  console.log("simulateds: params = "+JSON.stringify(params) + " size = " + size)
   dataset = _.flatten(dataset)
 
   _.each(params, function(value, param, list){
