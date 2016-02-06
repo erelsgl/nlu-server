@@ -710,7 +710,10 @@ function feAsync(sample, features, train, featureOptions, callback) {
 	callback(null, innerFeatures)
 }
 
-function feSync(sample, features) {
+function feSync(sample, features, train, featureOptions) {
+
+
+	console.log(sample)
 
 	var sentence = ""
 	var innerFeatures = JSON.parse(JSON.stringify(features))
@@ -747,7 +750,7 @@ function feSync(sample, features) {
 			innerFeatures[feat] = 1 
 	}, this)
 
-	callback(null, innerFeatures)
+	return innerFeatures
 }
 
 
