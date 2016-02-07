@@ -637,6 +637,19 @@ function feContext(sample, features, train, featureOptions, callback) {
 	var intents = []
 	var values = []
 
+	if (featureOptions.previous_intent)
+	{
+		var IntentsOrig = ['Offer','Accept','Reject','Quit','Greet','Query']
+		var IntentsContext = _.map(context, function(num){ return _.keys(JSON.parse(num))[0]; });
+
+		_.each(['Offer','Accept','Reject','Quit','Greet','Query'], function(lab, key, list){
+			if (IntentsContext.indexOf(lab) == -1)
+				features['PREV_NO_'+lab] = 1
+			else
+				features['PREV_YES_'+lab] = 1
+		}, this)
+	}
+
 	_.each(context, function(feat, key, list){ 
 		var obj = JSON.parse(feat)
 		if (_.keys(obj)[0] == "Offer")
