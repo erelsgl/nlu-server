@@ -28,17 +28,28 @@ describe('Classifiers functions', function() {
    it('feContext', function(callback) {
 
    		async.waterfall([
-   			function(callback1) {
+   		function(callback1) {
    				var sample = {'input':{
    					'unproc': 'I accept you a salary of 60000 ',
    					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
    				}}
 				
-				classifiers.feContext(sample, {}, true, {'offered':true, 'unoffered':true}, function(err, features){
+				classifiers.feContext(sample, {}, true, {'offered':true, 'unoffered':true, 'previous_intent':false}, function(err, features){
    					("OFFERED_VALUE" in features).should.equal(true)
  					callback1()
    				}) 
     		},
+		function(callback1) {
+                                var sample = {'input':{
+                                        'unproc': 'I accept you a salary of 60000 ',
+                                        'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}','{\"Accept\":\"Salary\"}']
+                                }}
+
+                                classifiers.feContext(sample, {}, true, {'offered':false, 'unoffered':false, 'previous_intent':true}, function(err, features){
+                            _.isEqual(features, { PREV_YES_Offer: 1, PREV_YES_Accept: 1, PREV_NO_Reject: 1, PREV_NO_Quit: 1, PREV_NO_Greet: 1, PREV_NO_Query: 1 }).should.equal(true)
+					callback1()
+                                })
+                },
     		function(callback1) {
    				var sample = {'input':{
    					'unproc': 'I accept you a salary of 90000',
