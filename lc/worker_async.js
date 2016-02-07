@@ -69,9 +69,12 @@ process.on('message', function(message) {
 
 			    	var stats1 = {}
 			    	_.each(stats['stats'], function(value, key, list){ 
-			    		if ((key.indexOf("macro") != -1) || (key.indexOf("Accuracy") != -1 ) || (key.indexOf("micro") != -1))
+			    		if ((key.indexOf("Precision") != -1) || (key.indexOf("Recall") != -1 ) || (key.indexOf("F1") != -1) || (key.indexOf("Accuracy") != -1))
 			    			stats1[key] = value
 			    	}, this)
+
+				console.log("STATS="+JSON.stringify(stats1, null, 4))
+
 
 					var results = {
 						'classifier': classifier,
