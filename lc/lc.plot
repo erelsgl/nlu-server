@@ -1,6 +1,5 @@
 set datafile missing '?'
 set yrange [0:1]
-set term png truecolor size 3000,3000  noenhanced
 set grid ytics
 set grid xtics
 set key bottom right
