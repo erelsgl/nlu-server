@@ -172,6 +172,7 @@ module.exports.test_hash = function( classifier, testSet1, verbosity) {
 		sentence_hash.output = testSet[i].output
 		sentence_hash.classified = actualClasses
 		sentence_hash.explanation = currentStats.addCasesHash(expectedClasses, actualClasses, (verbosity>2));
+		currentStats.addIntentHash(expectedClasses, actualClasses, true)
 
 		// sentence_hash['expected'] = expectedClasses
 		// sentence_hash['id'] = id
@@ -179,9 +180,7 @@ module.exports.test_hash = function( classifier, testSet1, verbosity) {
 
 		data_stats.push(sentence_hash);
 	}
-	
-		currentStats.calculateStats()
-		
+		currentStats.calculateStats()		
 		var testEnd = new Date().getTime()
 	
 	return {
