@@ -296,7 +296,15 @@ function getstringlc(output)
 	return _.map(output, function(value){ return value.join("\t") }).join("\n")
 }
 
-//  fold can be 'average'
+function cleanFolder(dir)
+{
+	var graph_files = fs.readdirSync(dir)
+
+	_.each(graph_files, function(value, key, list){ 
+		fs.unlinkSync(dir+"/"+value)
+	}, this)
+}
+
 function plotlc(fold, parameter, stat)
 {
 
@@ -422,7 +430,8 @@ if (process.argv[1] === __filename)
 	
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
-
+	cleanFolder(__dirname + "/learning_curves")
+	
 	// var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
 	// var utterset = bars.getsetnocontext(dataset)
 	
@@ -431,17 +440,8 @@ if (process.argv[1] === __filename)
 	var dataset = utterset["train"].concat(utterset["test"])
 
 	dataset = dataset.slice(0,100)
-	
+
 	console.log("Dataset "+ dataset.length)
-
-	// clean graphs
-	var lc = __dirname + "/learning_curves"
-	var graph_files = fs.readdirSync(lc)
-
-	_.each(graph_files, function(value, key, list){ 
-		fs.unlinkSync(lc+"/"+value)
-	}, this)
-
 	console.log("DEBUG: master: dataset size "+ dataset.length)
 
 	learning_curves(classifiers, folds, dataset, function(){
@@ -451,10 +451,13 @@ if (process.argv[1] === __filename)
 }
 
 module.exports = {
+	plotlc:plotlc,
 	plotlcagr: plotlcagr,
 	getstringlc:getstringlc,
 	plotlcagrlen:plotlcagrlen,
 	plotlcagrlenaverge:plotlcagrlenaverge,
+	extractGlobal:extractGlobal,
+	cleanFolder:cleanFolder
 } 
 
 // {
