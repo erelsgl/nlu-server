@@ -650,6 +650,26 @@ function feContext(sample, features, train, featureOptions, callback) {
 		}, this)
 	}
 
+	// if (featureOptions.car)
+	// {
+	// 	var offer_car = false
+	// 	if (sentence.indexOf("car")!=-1)
+	// 	{
+	// 		_.each(context, function(value, key, list){
+	// 			var lab = JSON.parse(value)
+	// 			if (_.keys(lab)[0]=="Offer")
+	// 			{
+	// 				if (_.keys(_.values(lab)[0])[0] == "Leased Car")
+	// 					features['CON_OFFER_CAR'] = 1
+	// 				else
+	// 					features['CON_OFFER_NO_CAR'] = 1
+	// 			}
+	// 			else
+	// 				features['CON_OFFER_NO_CAR'] = 1
+	// 		}, this)
+	// 	}
+	// }
+
 	_.each(context, function(feat, key, list){ 
 		var obj = JSON.parse(feat)
 		if (_.keys(obj)[0] == "Offer")
@@ -1127,8 +1147,10 @@ module.exports = {
 
 		DS_comp_unigrams_async_context_both: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true, 'previous_intent':false}),
 		DS_comp_unigrams_async_context_offered: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':false, 'previous_intent':false}),
-		DS_comp_unigrams_async_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false}),
+		DS_comp_unigrams_async_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false,'car':true}),
 		DS_comp_unigrams_async_context_unoffered_prev: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':true}),
+
+		DS_comp_unigrams_sync_sim: enhance(SvmLinearMulticlassifier, [feSync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
 
 		DS_composition: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true})
 //		DS_bigram_split_embed: enhance(SvmLinearMulticlassifier, feEmbedAverage, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false),
