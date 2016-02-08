@@ -28,6 +28,28 @@ describe('Classifiers functions', function() {
    it('feContext', function(callback) {
 
    		async.waterfall([
+		function(callback1) {
+                                var sample = {'input':{
+                                        'unproc': 'I accept you a salary of 60000 ',
+                                        'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
+                                }}
+
+                                classifiers.feContext(sample, {}, true, {'previous_intent':false, 'car': true}, function(err, features){
+                                        _.isEqual(features,{ CON_OFFER_NO_CAR: 1 }).should.equal(true)
+                                        callback1()
+                                })
+                },
+		function(callback1) {
+                                var sample = {'input':{
+                                        'unproc': 'I accept you a salary of 60000 ',
+                                        'context': ['{\"Offer\":{\"Leased Car\":\"60,000 USD\"}}']
+                                }}
+
+                                classifiers.feContext(sample, {}, true, {'previous_intent':false, 'car': true}, function(err, features){
+                                        _.isEqual(features,{ CON_OFFER_CAR: 1 }).should.equal(true)
+					callback1()
+                                })
+                },
    		function(callback1) {
    				var sample = {'input':{
    					'unproc': 'I accept you a salary of 60000 ',
