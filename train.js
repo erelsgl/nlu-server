@@ -412,10 +412,21 @@ if (check_ds)
 	// console.log(JSON.stringify(stats, null, 4))
 
 	//trainAndTest.trainAndTest_async(classifier.DS_bigram_split_embed, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
-	trainAndTest.trainAndTest_async(classifier.DS_comp_exp_3_root_5_unoffered, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	trainAndTest.trainAndTest_async(classifier.DS_comp_unigrams_async_context_unoffered, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		console.log("DONE")
 		console.log(JSON.stringify(results, null, 4))
+		// process.exit(0)
+
+		_.each(results['data'], function(val, key, list){
+			if (('FP' in val.explanation) || ('FN' in val.explanation))
+			{
+				delete val.input.sentences
+				console.log(JSON.stringify(val, null, 4))
+			}
+		}, this)
+
 		process.exit(0)
+
 		// _.each(results.data, function(value, key, list){
 		// 	if (!_.isEqual(results.data[key].explanation, stats.data[key].explanation))
 		// 	{
