@@ -277,7 +277,18 @@ function getFound(sentence)
 			datacopy[1].push(value)
 	}, this)
 
-	return datacopy
+
+// check for leased car
+if (sentence.indexOf("car")!=-1)
+ // {
+	datacopy[0].push(["Leased Car","",[],[]])
+	// if (sentence.indexOf("not"))
+		// datacopy.push(["Leased Car","",[],[]])
+
+// }
+
+
+	return datacopy 
 }
 
 // retrieves coordinates of the phrase
@@ -439,6 +450,7 @@ function uniqueValues(data)
 	return lab
 }
 
+// need description
 function getFilter(data)
 {
 	var toelim = []
