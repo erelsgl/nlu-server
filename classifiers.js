@@ -1147,10 +1147,15 @@ module.exports = {
 
 		DS_comp_unigrams_async_context_both: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true, 'previous_intent':false}),
 		DS_comp_unigrams_async_context_offered: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':false, 'previous_intent':false}),
+		
 		DS_comp_unigrams_async_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false,'car':true}),
+		DS_comp_unigrams_async_context_unoffered_sim: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false,'car':true}),
+
+		// DS_comp_unigrams_sync_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feContextSync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false,'car':true}),
+		
 		DS_comp_unigrams_async_context_unoffered_prev: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':true}),
 
-		DS_comp_unigrams_sync_sim: enhance(SvmLinearMulticlassifier, [feSync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
+		// DS_comp_unigrams_sync_sim: enhance(SvmLinearMulticlassifier, [feSync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
 
 		DS_composition: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true})
 //		DS_bigram_split_embed: enhance(SvmLinearMulticlassifier, feEmbedAverage, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false),
