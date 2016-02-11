@@ -36,6 +36,8 @@ describe('Util test', function() {
 		filtered[1][0][0].should.equal("10%")
 		filtered[1][1][0].should.equal("With leased car")
 
+		console.log(JSON.stringify(filtered))
+
 		var data = rules.getFound("let us compromise without a leased car")
         var filtered = rules.getFilter(data)
         filtered[0][0][0].should.equal("Leased Car")
@@ -45,7 +47,15 @@ describe('Util test', function() {
         var filtered = rules.getFilter(data)
         filtered[0][0][0].should.equal("Pension Fund")
         filtered[1][0][0].should.equal("10%")
-    })
+   
+	console.log("check")
+	var data = rules.getFound("we do not have company cars")
+        var filtered = rules.getFilter(data)
+        console.log(filtered)
+ 	process.exit(0)
+	//filtered[0][0][0].should.equal("Pension Fund")
+        //filtered[1][0][0].should.equal("10%")
+ })
 
 	it('check filter', function() {
 		var fil = rules.filterValues(['Salary', 'Pension Fund', 'car'])
