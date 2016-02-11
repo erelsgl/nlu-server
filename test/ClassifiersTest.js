@@ -25,6 +25,33 @@ var SvmPerfBinaryRelevanceClassifier = limdu_classifiers.multilabel.BinaryReleva
 
 describe('Classifiers functions', function() {
 
+  it('feNeg', function(callback) {
+    var sample = { 
+        'output': ["Reject"],
+        'input':{'text': "I love the life",
+      'sentences':[
+        {
+          'basic-dependencies':[
+            {
+              "dep": "ROOT", 
+              "dependentGloss": "love",
+              "dependent": "3"
+            },
+            {
+              "dep": "neg", 
+              "governor": "3"
+            }
+          ]
+        }]
+      }
+    }
+
+    classifiers.feNeg(sample, {'love':1, 'life':1}, true, {}, function(err, features){
+      _.isEqual(features, {"life": 1,"love-": 1}).should.equal(true)
+      callback()
+    })    
+   })
+
    it('feContext', function(callback) {
 
    		async.waterfall([
