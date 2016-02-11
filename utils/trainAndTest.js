@@ -512,13 +512,32 @@ module.exports.trainAndTest_hash = function(
 trainAndTest_batch is created solely for short text classification
 */
 
+
+module.exports.cross_batch_async = function(classifierType, dataset, callback) {
+
+	console.log("cross_batch: start "+dataset.length)
+
+	var position = Math.round(dataset.length*0.5)
+	var test = dataset.splice(position)
+
+	module.exports.trainAndTest_async(classifierType, dataset, test, function(err, results){
+
+		console.log("cross_batch: size of train="+dataset.length+ " size of test="+test.length)
+		console.log("cross_batch:"+ JSON.stringify(results['stats']['intents']))
+
+		callback(null, results['stats']['intents'])
+
+	})
+}
+
 module.exports.cross_batch = function(classifierType, dataset, folds) {
 	var labels = {}
 	partitions.partitions(dataset, folds, function(trainSet, testSet, index) {
+		console.log("cross_batch: size of train="+trainSet.length+ " size of test="+testSet.length)
 		var stats = module.exports.trainAndTest_hash(classifierType, trainSet, testSet)
-		console.log("cross_batch: stats="+JSON.stringify(stats))
+		console.log("cross_batch: fold " + index + " stats=" + JSON.stringify(stats['stats']['intents']))
 
-		_.each(stats["stats"]['labels'], function(performance, label, list){
+		_.each(stats['stats']['intents'], function(performance, label, list){
 			if (!(label in labels))
 				labels[label] = {}
 			_.each(performance, function(value, perf, list){
@@ -534,6 +553,7 @@ module.exports.cross_batch = function(classifierType, dataset, folds) {
 		}, this)
 	})	
 
+	console.log("cross_batch: aggregated "+JSON.stringify(labels))
 	_.each(labels, function(performance, label, list){
 		_.each(performance, function(value, perf, list){
 			labels[label][perf] = distance.average(value)
