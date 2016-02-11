@@ -3841,6 +3841,7 @@ function distribute(params) {
   }, this)
 
   dist = _.shuffle(dist)
+  dist = _.shuffle(dist)
 
   var probs = _.sortBy(dist, function(num){ return num[1] })
 
@@ -3861,36 +3862,65 @@ function simulateds(dataset, size, params)
   
   console.log("simulateds: params = "+JSON.stringify(params) + " size = " + size)
   dataset = _.flatten(dataset)
+  var report = {}
 
+// add score to each intent
   _.each(params, function(value, param, list){
-    var F1 = ( value["F1"] == 0 || _.isNaN(value["F1"]) || value["F1"]==-1 ) ? 1 : value["F1"]
+    // var F1 = ( value["F1"] == 0 || _.isNaN(value["F1"]) || value["F1"]==-1 ) ? 1 : value["F1"]
     // var FN = ( value["FN"] == 0 ) ? 1 : value["FN"]
     // params[param]["score"] = (value["TP"]+value["FN"])/F1
 
+    var F1 = value["F1"]
     params[param]["score"] = 1/F1
-    // params[param]["score"] = FN
-    if (F1 > 0.5) params[param]["score"] = 2
-    // if (value["F1"] == -1) params[param]["score"] = 1/0.1
+
+    if (F1 == 0) params[param]["score"] = 10
+    if (F1 >= 0.5) params[param]["score"] = 2
+    
+    if (_.isNaN(F1) || _.isUndefined(F1) || _.isNull(F1)) params[param]["score"] = 1/0.1
   }, this)
+
+  console.log("DEBUGSIM: probabilities " +JSON.stringify(params, null, 4))
 
   var sim_dataset = []
 
   while (sim_dataset.length < size) {
     
     var label = distribute(params)
+
+    if (!(label in report))
+      report[label] = 0
+
+    report[label] += 1
     // var elem_index = _.findIndex(dataset, function(utterance){ return ((utterance.output.length == 1) && (utterance.output.indexOf(label)!=-1)); });
-    var elem_index = _.findIndex(dataset, function(utterance){ return (utterance.output.indexOf(label)!=-1); });
+   
+    // var dataset_copy = JSON.parse(JSON.stringify(dataset))
+    // dataset_copy = _.map(dataset_copy, function(num){ 
+      // if (num.output.length == 0) return false
+        // else
+
+
+          // });
+
+    var elem_index = _.findIndex(dataset, function(utterance){ 
+        if (utterance.output.length == 0)
+          return false
+        else
+          return _.keys(JSON.parse(utterance.output[0]))[0] == label });
     
     if (elem_index == -1)
+      // if there is no such a label delete it from the param
       delete params[label]
     else
     {
+      // push to the simulated dataset
       sim_dataset.push(dataset[elem_index])
+      // delete it from the buffer set
       dataset.splice(elem_index, 1);
     }
   }
-
-  return {"simulated":sim_dataset, "dataset":dataset}
+  
+  // return generated-simulated and filtered set
+  return {"simulated":sim_dataset, "dataset":dataset, "report":report}
 }
 
 function getdist(dialogue)
