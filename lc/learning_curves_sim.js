@@ -7,21 +7,21 @@
 	@author Vasily Konovalov
  */
 
-
 var _ = require('underscore')._;
 var fs = require('fs');
 var classifiers = require(__dirname+"/../classifiers.js")
 var partitions = require('limdu/utils/partitions');
-var trainAndTest_hash = require(__dirname+'/../utils/trainAndTest').trainAndTest_hash;
+var trainAndTest = require(__dirname+'/../utils/trainAndTest');
 //var trainAndTest_batch = require(__dirname+'/../utils/trainAndTest').trainAndTest_batch;
-var cross_batch = require(__dirname+'/../utils/trainAndTest').cross_batch;
+var cross_batch_async = require(__dirname+'/../utils/trainAndTest').cross_batch_async;
 var bars = require(__dirname+'/../utils/bars');
 var master = require(__dirname+'/master');
 var path = require("path")
+var async = require('async')
 
-
-// var gnuplot = __dirname + '/gnuplot'
 var gnuplot = 'gnuplot'
+// var gnuplot = __dirname + '/gnuplot'
+
 /* @params classifiers - classifier for learning curves
    @params dataset - dataset for evaluation, 20% is takes for evaluation
    @params parameters - parameters we are interested in 
@@ -105,167 +105,129 @@ function checkGnuPlot()
 	//	}
 	}
 
-function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds) 
+function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds, callback) 
 {
-		checkGnuPlot
-
-		if (dataset.length == 0)
-			throw new Error("Dataset is empty");
+	var stat = {}
+	var stat1 = {}
+	var mytrain = []
 		
-		stat = {}
-		stat1 = {}
-		labels = {}
-		glob_stats = {}
-		
-		var mytrain = []
+	glob_stats = {}
 
-		partitions.partitions_consistent(dataset, numOfFolds, function(train, test, fold) {
-			
-			var index = 4
-			var testset = (bars.isDialogue(test) ? _.flatten(test) : test)
-			var sim_train = _.flatten(train.slice(0, index-1))
-			var buffer_train = _.flatten(train.slice(index+1))
-			// var buffer_train = train.slice(index+1)
+	async.timesSeries(numOfFolds, function(fold, callback_fold){
 
-			// fs.writeFileSync(__dirname + dirr + "fold" + fold, "TEST \n"+JSON.stringify(test, null, 4)+"\n TRAIN \n"+JSON.stringify(train, null, 4), 'utf-8')
+		console.log("FOLD "+fold)
+		var index = 4
 
-			while ((index <= train.length) && buffer_train.length > 100)
-			// while (index <= train.length)
-	  		{
-			  	var report = []
+		var data = partitions.partitions_consistent_by_fold(dataset, numOfFolds, fold)
 
-				var mytrain = train.slice(0, index)
-			  	
-			  	index += (index < limit ? step0 : step)
-			  	var mytrainset = (bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)
+		var testset = (bars.isDialogue(data['test']) ? _.flatten(data['test']) : data['test'])
+		var sim_train = _.flatten(data['train'].slice(0, index-1))
+		var buffer_train = _.flatten(data['train'].slice(index+1))
 
-			  	// for simulated
+		console.log("DEBUGSIM: aggregated stats START "+JSON.stringify(_.countBy(sim_train, function(num) { 
+						if (num.output.length == 0) 
+							return -1
+						else
+							return _.keys(JSON.parse(num.output[0]))[0] })
+					))
 
-				console.log("fold"+fold)
+		async.whilst(
 
-				var classifier	= _.values(classifierList)[0]	
+			function () { return ((index <= data['train'].length) && buffer_train.length > 100) },
+    		function (callback_while) {
 
-				console.log("classifier " + classifier + " size of strandard " + mytrain.length + " in utterances "+ mytrainset.length)
-    			var stats = trainAndTest_hash(classifiers[classifier], bars.copyobj(mytrainset), bars.copyobj(testset), 5)
-//    			var stats = trainAndTest_batch(classifier, bars.copyobj(mytrainset), bars.copyobj(testset), 5)
+			console.log("INDEX "+index)
 
-    			_.each(stats['labels'], function(value, label, list){
-    				stats['labels'][label]['count'] = countLabel(mytrainset, label)
-    			}, this)
-	    		
-	    		// console.log(JSON.stringify(stats['stats']['confusion'], null, 4))
-	    		// report.push(_.pick(stats['stats'], parameters))		    		
-	 			extractGlobal(classifier, mytrain, fold, stats['stats'], glob_stats)
+    		var mytrain = data['train'].slice(0, index)
+    		    	
+    		if (index<10)
+       		{
+           		index += 1
+       		} 
+    		else if (index<20)
+			{
+               	index += 2
+           	}
+       		else index += 5
 
-	    	 	var size_last_dial = _.flatten(mytrain[mytrain.length-1]).length
+           	var mytrainset = (bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)
 
-	    	 	console.log(size_last_dial+" size of the last dialogue")
-	    	 	console.log(buffer_train.length+" size of the buffer train")
+	    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), bars.copyobj(testset), function(err, stats){
+		    		
+				extractGlobal(_.values(classifierList)[0], mytrain, fold, stats['stats'], glob_stats)
 
-	    	 	var stats2 = cross_batch(classifiers[classifier], bars.copyobj(mytrainset), 2)
+			 	var size_last_dial = _.flatten(mytrain[mytrain.length-1]).length
 
-	    	 	console.log("LC: stats2="+JSON.stringify(stats2))
+			 	// console.log(size_last_dial+" size of the last dialogue")
+		    	// console.log(buffer_train.length+" size of the buffer train")
 
-	    	 	var results = bars.simulateds(buffer_train, size_last_dial, stats2)
-	    	 	// var results = bars.simulateds(buffer_train, size_last_dial, _.keys(stats1).length > 0 ? stats1['stats']['labels']: stats['stats']['labels'])
-	    	 	// var results = bars.simulaterealds(buffer_train, size_last_dial, _.keys(stats1).length > 0 ? stats1['stats']['labels']: stats['stats']['labels'])
+		    	cross_batch_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), function(err, stats2){
+								
+					var results = bars.simulateds(buffer_train, size_last_dial, stats2)
 
-	    	 	console.log(results["simulated"].length+" size of the simulated train")
-	    	 	console.log(results["dataset"].length+" size of the buffer train after simulation")
+					console.log("DEBUGSIM: size of strandard " + mytrain.length + " in utterances "+ mytrainset.length)
+					console.log("DEBUGSIM: stats after 2 folds cross validation on buffer train")
+					console.log(JSON.stringify(stats2, null, 4))
+		    		console.log("DEBUGSIM:"+results["simulated"].length+" size of the simulated train")
+		    	 	console.log("DEBUGSIM:"+buffer_train.length+" size of the buffer train before simulation")
+		    	 	console.log("DEBUGSIM:"+results["dataset"].length+" size of the buffer train after simulation")
+		    	 	console.log("DEBUGSIM:"+JSON.stringify(results["report"]))
+		    	 	console.log("DEBUGSIM: size of aggregated simulated before plus "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
+		    	 	// console.log("DEBUGSIM: aggregated stats "+JSON.stringify(_.countBy(sim_train, function(num) { return _.keys(JSON.parse(num.output[0]))[0] })))
 
-	    	 	console.log("size of sim "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
+					console.log("DEBUGSIM: aggregated stats "+JSON.stringify(_.countBy(sim_train, function(num) { 
+						if (num.output.length == 0) 
+							return -1
+						else
+							return _.keys(JSON.parse(num.output[0]))[0] })
+					))
 
-				buffer_train = results["dataset"]
 
-				console.log(JSON.stringify(results["simulated"], null, 4))
+					console.log("DEBUGSIM: simulated dataset")
+					console.log(JSON.stringify(results["simulated"], null, 4))
+					
+					buffer_train = results["dataset"]
+			    	sim_train = sim_train.concat(results["simulated"])
 
-		    	sim_train = sim_train.concat(results["simulated"])
+			    	console.log("DEBUGSIM: size of aggregated simulated after plus "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
 
-		    	console.log(sim_train.length+" "+mytrainset.length)
+	    			trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train), bars.copyobj(testset), function(err, stats1){
 
-		    	// single label sentences for training
+			    		extractGlobal(_.values(classifierList)[1], mytrain, fold, stats1['stats'], glob_stats)	
+			    		console.log("DEBUGGLOB:")
+						console.log(JSON.stringify(glob_stats, null, 4))
 
-		    	// var sim_train = []
-		    	// _.each(mytrainset, function(value, key, list){
-		    	// 	if (value.output.length==1)
-		    	// 		sim_train.push(value)
-		    	// }, this)
+						_.each(glob_stats, function(data, param, list){
+							master.plotlc(fold, param, glob_stats)
+							console.log("DEBUGLC: param "+param+" fold "+fold+" build")
+							master.plotlc('average', param, glob_stats)
+						})
 
-		    	// console.log("Size of the origin train "+mytrainset.length)
-		    	// console.log("Size of the single label train "+sim_train.length)
-		    	
-				// var stats1 = trdainAndTest_hash(classifier, bars.copyobj(sim_train), bars.copyobj(testset), 5)
-		    	
-
-			var stats1 = trainAndTest_hash(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train), bars.copyobj(testset), 5)
-
-		    	_.each(stats1['labels'], function(value, label, list){
-    				stats1['labels'][label]['count'] = countLabel(sim_train, label)
-    			}, this)
-	    			    		
-	    		// report.push(_.pick(stats1['stats'], parameters))		    		
-
-	    		var labcom = {}
-
-	    		_.each(stats['labels'], function(performance, label, list){
-	    			labcom[label] = {}
-	    			labcom[label]['original'] = performance
-	    			if (label in stats1['labels'])
-	    				labcom[label]['simulated'] = stats1['labels'][label]
-	    		}, this)
-
-	    		var diffcom = {}
-	    		var difflist = []
-
-	    		_.each(labcom, function(valuee, label, list){
-	    			if ('simulated' in valuee)
-	    			{
-	    				if (valuee['original']['F1']!=valuee['simulated']['F1'])
-	    				{
-	    					diffcom[label] = valuee
-
-	    					var origF1 = (valuee['original']['F1'] == -1 ) ? 0 : valuee['original']['F1']
-	    					var simF1 = (valuee['simulated']['F1'] == -1 ) ? 0 : valuee['simulated']['F1']
-	    					difflist.push([label, simF1-origF1, valuee['simulated']['count'] - valuee['original']['count']])
-	    				}
-
-	    			}
-	    		}, this)
-
-	    		difflist = _.sortBy(difflist, function(num){ return num[1] })
-
-	    		console.log("difflist="+JSON.stringify(difflist, null, 4))
-	    		console.log("diffcom="+JSON.stringify(diffcom, null, 4))
-
-	 			// extractGlobal(parameters, classifiers, mytrain, report, stat)
-	 			extractGlobal(_.values(classifierList)[1], mytrain, fold, stats1['stats'], glob_stats)
-                	
-				console.log("DEBUGGLOB")
-				console.log(JSON.stringify(glob_stats, null, 4))
-				
-				_.each(glob_stats, function(data, param, list){
-					master.plotlc(fold, param, glob_stats)
-					console.log("DEBUGLC: param "+param+" fold "+fold+" build")
-					master.plotlc('average', param, glob_stats)
+						callback_while();
+			    	})
 				})
-
-			} //while (index < train.length)
-
-				// _.each(labels, function(value, label, list){
-		    		// plot('average', label, labels, {"Precision":true, "Recall":true, "F1":true})
-				// })
-
-			}); //fold
-
+			})
+    	},
+    		function (err, n) {
+        		callback_fold()
+    		});    	
+      	}, function() {
+  			callback()
+		})
 }
 
 if (process.argv[1] === __filename)
 {
 	master.cleanFolder(__dirname + "/learning_curves")
 
-	var classifierList  = [ 'DS_comp_unigrams_sync', 'DS_comp_unigrams_sync_sim']
-	var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
-	var utterset = bars.getsetcontext(dataset)
+	var classifierList  = [ 'DS_comp_unigrams_async_context_unoffered', 'DS_comp_unigrams_async_context_unoffered_sim']
+
+	// var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
+	// var utterset = bars.getsetcontext(dataset)
+	// var dataset = utterset["train"].concat(utterset["test"])
+
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
+	var utterset = bars.getsetcontext(data)
 	var dataset = utterset["train"].concat(utterset["test"])
 
 	// dataset = dataset.slice(0,10)
@@ -275,14 +237,3 @@ if (process.argv[1] === __filename)
 		process.exit(0)
 	})
 }
-
-module.exports = {
-	learning_curves: learning_curves, 
-	extractGlobal: extractGlobal,
-	getAverage: getAverage,
-	filternan:filternan,
-	onlyNumbers:onlyNumbers,
-	isProb:isProb,
-	thereisdata:thereisdata
-}
-
