@@ -365,24 +365,20 @@ if (stat_sig)
 	
 	async.timesSeries(25, function(n, callback){
 
-			trainAndTest.trainAndTest_async(classifier.DS_comp_exp_3_root_5_unoffered_yes_offer_yes_test, train, dataset[n]), function(err, stats1){
-				res['1'].push(stats1.average_macroF1)
+		trainAndTest.trainAndTest_async(classifier.DS_comp_exp_3_root_5_unoffered_yes_offer_yes_test, train, dataset[n]), function(err, stats1){
+			res['1'].push(stats1.average_macroF1)
 
-				trainAndTest.trainAndTest_async(classifier.DS_comp_unigrams_async_context_unoffered, train, dataset[n]), function(err, stats2){
-					res['2'].push(stats2.average_macroF1)
+			trainAndTest.trainAndTest_async(classifier.DS_comp_unigrams_async_context_unoffered, train, dataset[n]), function(err, stats2){
+				res['2'].push(stats2.average_macroF1)
 
-					callback()
+				callback()
 
-				})
 			})
-    
+		})
     }, function(err, users) {
     	console.log(JSON.stringify(res, null, 4))
 	})
 }
-
-
-
 
 if (check_ds)
 {
