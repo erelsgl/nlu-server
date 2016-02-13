@@ -31,9 +31,6 @@ describe('Classifiers functions', function() {
     var data = classifiers.getRule({'tokens':[{'word':'there'},{'word':'will'},{'word':'be'},{'word':'no'},{'word':'agreement'},{'word':'for'},{'word':'car'}]})
     _.isEqual(data.labels,[["Leased Car"],["No agreement"]]).should.equal(true)
     
-    console.log(JSON.stringify(data, null, 4))
-    process.exit(0)
-
     var data = classifiers.getRule({'tokens':[{'word':'with'},{'word':'leased'},{'word':'car'},{'word':'pension'},{'word':'fund'},{'word':'10%'}]})
     _.isEqual(data.labels,[["Pension Fund","Leased Car"],["10%","With leased car"]]).should.equal(true)
 
