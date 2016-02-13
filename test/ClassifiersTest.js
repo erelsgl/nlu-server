@@ -25,6 +25,37 @@ var SvmPerfBinaryRelevanceClassifier = limdu_classifiers.multilabel.BinaryReleva
 
 describe('Classifiers functions', function() {
 
+
+  it('getRule', function() {  
+
+    var data = classifiers.getRule({'tokens':[{'word':'there'},{'word':'will'},{'word':'be'},{'word':'no'},{'word':'agreement'},{'word':'for'},{'word':'car'}]})
+    _.isEqual(data.labels,[["Leased Car"],["No agreement"]]).should.equal(true)
+    
+    console.log(JSON.stringify(data, null, 4))
+    process.exit(0)
+
+    var data = classifiers.getRule({'tokens':[{'word':'with'},{'word':'leased'},{'word':'car'},{'word':'pension'},{'word':'fund'},{'word':'10%'}]})
+    _.isEqual(data.labels,[["Pension Fund","Leased Car"],["10%","With leased car"]]).should.equal(true)
+
+    var data = classifiers.getRule({'tokens':[{'word':'let'},{'word':'us'},{'word':'compromise'},{'word':'without'},{'word':'a'},{'word':'leased'},{'word':'car'}]})
+    _.isEqual(data.labels,[["Leased Car"],["Without leased car"]]).should.equal(true)
+
+    var data = classifiers.getRule({'tokens':[{'word':'with'},{'word':'a'},{'word':'pension'},{'word':'fund'},{'word':'10%'}]})
+    _.isEqual(data.labels,[["Pension Fund"],["10%"]]).should.equal(true)
+
+// !!!!!!!!!!!!!!
+    var data = classifiers.getRule({'tokens':[{'word':'you'},{'word':'offer'},{'word':'me'},{'word':'a'},{'word':'leased'},{'word':'car'}]})
+    _.isEqual(data.labels,[["Leased Car"],[]]).should.equal(true)
+
+    var data = classifiers.getRule({'tokens':[{'word':'I'},{'word':'need'},{'word':'you'},{'word':'to'},{'word':'work'},{'word':'10'},{'word':'hours'},{'word':'because'},{'word':'there'},{'word':'job'}]})
+    _.isEqual(data.labels,[["Working Hours","Job Description"],["10 hours"]]).should.equal(true)
+
+    var data = classifiers.getRule({'tokens':[{'word':'I'},{'word':'offering'},{'word':'a'},{'word':'job'},{'word':':'},{'word':'programmer'},
+      {'word':'10'},{'word':'hours'},{'word':'a'},{'word':'day'},{'word':','}, {'word':'60000'},{'word':'no'},{'word':'car'},{'word':'fast'},{'word':'promotion'},{'word':'track'}]})
+    _.isEqual(data.labels,[["Salary","Promotion Possibilities","Working Hours","Job Description","Leased Car"],["60,000 USD","Fast promotion track","10 hours","Programmer"]]).should.equal(true)
+
+  })
+
   it('feNeg', function(callback) {
     var sample = { 
         'output': ["Reject"],
@@ -34,7 +65,7 @@ describe('Classifiers functions', function() {
           'basic-dependencies':[
             {
               "dep": "ROOT", 
-              "dependentGloss": "love",
+              "dependentGloss": 'love',
               "dependent": "3"
             },
             {
@@ -52,45 +83,42 @@ describe('Classifiers functions', function() {
     })    
    })
 
-   it('feContext', function(callback) {
+  it('feContext', function(callback) {
+    async.waterfall([
+		 /* function(callback1) {
+        
+        var sample = {
+                      'input':{
+                        'sentences':[{'tokens':[{'word':'I'},{'word':'accept'},{'word':'you'},
+                                   {'word':'a'},{'word':'salary'},{'word':'of'},{'word':'60000'}]}],
+                        'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
+                    }}
 
-   		async.waterfall([
+                    classifiers.feContext(sample, {}, true, {'previous_intent':false, 'car': true}, function(err, features){
+                      console.log(JSON.stringify(, null, 4))
+                      _.isEqual(features,{ CON_OFFER_NO_CAR: 1 }).should.equal(true)
+                      callback1()
+                    })
+                },*/
+		/*  function(callback1) {
+          
+        var sample = {'input':{
+                        'sentences':[{'tokens':[{'word':'I'},{'word':'accept'},{'word':'you'},
+                                     {'word':'a'},{'word':'salary'},{'word':'of'},{'word':'60000'}]}],
+                        'context': ['{\"Offer\":{\"Leased Car\":\"60,000 USD\"}}']
+                      }}
+
+                      classifiers.feContext(sample, {}, true, {'previous_intent':false, 'car': true}, function(err, features){
+                        _.isEqual(features,{ CON_OFFER_CAR: 1 }).should.equal(true)
+					              callback1()
+                      })
+                  },*/
+   		
+      /* */
 		function(callback1) {
                                 var sample = {'input':{
-                                        'unproc': 'I accept you a salary of 60000 ',
-                                        'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
-                                }}
-
-                                classifiers.feContext(sample, {}, true, {'previous_intent':false, 'car': true}, function(err, features){
-                                        _.isEqual(features,{ CON_OFFER_NO_CAR: 1 }).should.equal(true)
-                                        callback1()
-                                })
-                },
-		function(callback1) {
-                                var sample = {'input':{
-                                        'unproc': 'I accept you a salary of 60000 ',
-                                        'context': ['{\"Offer\":{\"Leased Car\":\"60,000 USD\"}}']
-                                }}
-
-                                classifiers.feContext(sample, {}, true, {'previous_intent':false, 'car': true}, function(err, features){
-                                        _.isEqual(features,{ CON_OFFER_CAR: 1 }).should.equal(true)
-					callback1()
-                                })
-                },
-   		function(callback1) {
-   				var sample = {'input':{
-   					'unproc': 'I accept you a salary of 60000 ',
-   					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
-   				}}
-				
-				classifiers.feContext(sample, {}, true, {'offered':true, 'unoffered':true, 'previous_intent':false}, function(err, features){
-   					("OFFERED_VALUE" in features).should.equal(true)
- 					callback1()
-   				}) 
-    		},
-		function(callback1) {
-                                var sample = {'input':{
-                                        'unproc': 'I accept you a salary of 60000 ',
+                                                       'sentences':[{'tokens':[{'word':'I'},{'word':'accept'},{'word':'you'},
+                                     {'word':'a'},{'word':'salary'},{'word':'of'},{'word':'60000'}]}],
                                         'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}','{\"Accept\":\"Salary\"}']
                                 }}
 
@@ -101,7 +129,8 @@ describe('Classifiers functions', function() {
                 },
     		function(callback1) {
    				var sample = {'input':{
-   					'unproc': 'I accept you a salary of 90000',
+ 'sentences':[{'tokens':[{'word':'I'},{'word':'accept'},{'word':'you'},
+                                     {'word':'a'},{'word':'salary'},{'word':'of'},{'word':'90000'}]}],
    					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
    				}}
 				
@@ -112,7 +141,8 @@ describe('Classifiers functions', function() {
     		},
     		function(callback1) {
    				var sample = {'input':{
-   					'unproc': 'I accept you a salary of 60000 and 10% pension' ,
+ 'sentences':[{'tokens':[{'word':'I'},{'word':'accept'},{'word':'you'},
+                        {'word':'a'},{'word':'salary'},{'word':'of'},{'word':'60000'},{'word':'and'},{'word':'10%'},{'word':'pension'}]}],
    					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
    				}}
 				
@@ -124,7 +154,9 @@ describe('Classifiers functions', function() {
     		},
     		function(callback1) {
    				var sample = {'input':{
-   					'unproc': 'I accept you a salary of 60000 and 10% pension' ,
+'sentences':[{'tokens':[{'word':'I'},{'word':'accept'},{'word':'you'},
+                        {'word':'a'},{'word':'salary'},{'word':'of'},{'word':'60000'},{'word':'and'},{'word':'10%'},{'word':'pension'}]}],
+ 
    					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
    				}}
 				
@@ -136,7 +168,9 @@ describe('Classifiers functions', function() {
     		},
     		function(callback1) {
    				var sample = {'input':{
-   					'unproc': 'I accept you a salary of 60000 and 10% pension' ,
+'sentences':[{'tokens':[{'word':'I'},{'word':'accept'},{'word':'you'},
+                        {'word':'a'},{'word':'salary'},{'word':'of'},{'word':'60000'},{'word':'and'},{'word':'10%'},{'word':'pension'}]}],
+ 
    					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
    				}}
 				
@@ -221,37 +255,45 @@ describe('Classifiers functions', function() {
 
 	it('feAsync', function(callback) {
 
-		var sample = {'input': {'text': 'I love the nature'}}
+		var sample = {'input': {
+      'text': 'I love the nature',
+      'sentences':[{
+        'tokens':[{'word':'I'},{'word':'love'},{'word':'the'},{'word':'nature'}]
+      }]
+  }}
 		
 		async.waterfall([
-   			function(callback1) {
+   			/*function(callback1) {
         		var params = { 'unigrams': false, 'bigrams': false, 'allow_stopwords': false }
    				classifiers.feAsync(sample, {}, true, params, function (err, features){
 					_.keys(features).length.should.equal(0)
 					callback1(null)
         		})
-    		},
-    		function(callback1) {
-        		var params = { 'unigrams': true, 'bigrams': false, 'allow_stopwords': false }
+    		},*/
+    		/*function(callback1) {
+            // var params = { 'unigrams': true, 'bigrams': false, 'allow_stopwords': false }
+        		var params = { 'unigrams': true}
         		classifiers.feAsync(sample, {}, true, params, function (err, features){
 					_.isEqual(features, {"love": 1, "nature": 1}).should.equal(true)
 					callback1(null)
         		})
-    		},
+    		},*/
     		function(callback1) {
-        		var params = { 'unigrams': true, 'bigrams': false, 'allow_stopwords': true }
+            // var params = { 'unigrams': true, 'bigrams': false, 'allow_stopwords': true }
+        		var params = {}
         		classifiers.feAsync(sample, {}, true, params, function (err, features){
-					_.isEqual(features, {"i":1, "love": 1, "the":1, "nature": 1}).should.equal(true)
-					callback1(null)
+                console.log(JSON.stringify(features, null, 4))
+					     _.isEqual(features, {"i":1, "love": 1, "the":1, "nature": 1}).should.equal(true)
+					   callback1(null)
         		})
-        	},
+        	}/*,
         	function(callback1) {
         		var params = { 'unigrams': true, 'bigrams': true, 'allow_stopwords': true }
         		classifiers.feAsync(sample, {}, true, params, function (err, features){
 					_.isEqual(features, {"i": 1,"love": 1,"the": 1,"nature": 1,"i love": 1,"love the": 1,"the nature": 1}).should.equal(true)					
 					callback1(null)
         		})
-        	}
+        	}*/
     	], function (err, result) {
     			callback()
 			});
