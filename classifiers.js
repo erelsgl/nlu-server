@@ -84,9 +84,118 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 // and only single labeled or null output
 
 // shoud be prepared for train(input and output) and test(input)
+
+// sentence is a hash and not an array
+function getRule(sentence)
+{
+	var RuleValues = {
+		  'Salary': [['60000','60,000 USD'],['90000','90,000 USD'],['120000','120,000 USD']],
+		  'Pension Fund': ['0%','10%','15%','20%'],
+		  'Promotion Possibilities': [['fast','Fast promotion track'],['slow','Slow promotion track']],
+		  'Working Hours': [['8','8 hours'],['9','9 hours'],['10','10 hours']],
+		  'Job Description': [['QA','QA'],['Programmer','Programmer'],['Team','Team Manager'],['Project','Project Manager']]
+		  // 'Job Description': ['QA','Programmer','Team Manager','Project Manager'],
+		  // 'Leased Car': ['Without leased car', 'With leased car', 'No agreement']
+		  // 'Leased Car': [['without','Without leased car'], ['with', 'With leased car'], ['agreement','No agreement']]
+		}
+
+	var arAttrVal = ['salary','pension','fund','promotion','possibilities','working','hours','hour',
+					'job','description','60000','90000','120000','usd','fast','slow','track','8','9','10',
+					'qa','programmer','team','project','manager','car','leased','with','without','agreement']
+
+	var ar_values = []
+	var ar_attrs = []
+
+	var cleaned = JSON.parse(JSON.stringify(sentence))
+	var unigrams = _.map(sentence['tokens'], function(token){ return token.word.toLowerCase() });
+
+	_.each(RuleValues, function(values, attr, list){
+
+		if (_.intersection(unigrams, attr.toLowerCase().split(" ")).length != 0)
+			ar_attrs.push(attr)
+		
+		_.each(values, function(value, key, list){
+			var temp = []
+			if (!_.isArray(value))
+				{
+					temp.push(value)
+					temp.push(value)
+				}
+			else
+				temp=value
+
+			if (_.intersection(unigrams, temp[0].toLowerCase().split(" ")).length != 0)
+			{
+				ar_attrs.push(attr)
+				ar_values.push(temp[1])
+			}
+
+		}, this)
+		
+	}, this)
+
+	if (unigrams.indexOf("car")!=-1)
+	{
+		ar_attrs.push("Leased Car")
+		
+		if (unigrams.indexOf("without")!=-1)
+			ar_values.push('Without leased car')
+		
+		if (unigrams.indexOf("with")!=-1)
+			ar_values.push('With leased car')
+
+		if (unigrams.indexOf("agreement")!=-1)
+			ar_values.push('No agreement')
+	}
+
+	cleaned['tokens'] = []
+	_.each(sentence['tokens'], function(token, key, list){
+		if (arAttrVal.indexOf(token.word.toLowerCase())==-1)
+			cleaned['tokens'].push(token)
+	}, this)
+
+	return {
+		'labels':[_.unique(ar_attrs), _.unique(ar_values)],
+		'cleaned': cleaned
+	}
+}
+
+
 function preProcessor_onlyIntent(value)
 {
 	var initial = value
+
+	if ("input" in value)
+	{
+		if (value.input.sentences.length > 1)
+		{
+			console.log(process.pid + "DEBUG: the train instance is filtered due to multiple sentences "+initial.output)
+			return undefined
+		}
+
+		// clean all the attr and values stuff from the sentence
+		value.input.sentences = getRule(value.input.sentences[0]).cleaned
+	}
+
+	if ("output" in value)
+	{
+		value.output = _.map(value.output, Hierarchy.splitPartEquallyIntent);
+		value.output = _.unique(_.flatten(value.output))
+
+		if (value.output.length > 1)
+			{
+			console.log(process.pid + "DEBUG: the train instance is filtered "+initial.output)
+			return undefined
+		}
+		else
+			return value
+	}
+	else
+		return value
+
+
+
+	/*var initial = value
 	
 	if (_.isObject(value))
 	{
@@ -137,7 +246,7 @@ function preProcessor_onlyIntent(value)
 		sentence_clean = sentence_clean.replace(/<VALUE>/g,'').replace(/<ATTRIBUTE>/g,'').replace(/NIS/,'').replace(/nis/,'').replace(/track/,'').replace(/USD/,'').trim()
 		return sentence_clean
 	}
-
+*/
 }
 
 function postProcessor(sample,classes)
@@ -638,6 +747,7 @@ function feNeg(sample, features, train, featureOptions, callback) {
 
 		if (res!=-1)
 			{
+				console.log("DEBUGNEG:"+root.dependentGloss+" is negated")
 				delete features[root.dependentGloss]
 				features[root.dependentGloss+"-"] = 1
 			}
@@ -659,25 +769,20 @@ function feContext(sample, features, train, featureOptions, callback) {
 	var sentence = ""
 
 	if ('input' in sample)
-	{
-		context = sample['input']['context']
-		sentence = sample['input']['unproc']
-	}
-	else
-	{
-		context = sample.context
-		sentence = sample.unproc
-	}
+		sample = sample.input
+		
+	context = sample['context']
 
 	if (context.length == 0)
 		features['NO_CONTEXT'] = 1
 		
 	console.log("DEBUGCONTEXT: sentence " + sentence + " context " + JSON.stringify(context))
 
-	var attrval = rules.findData(sentence)
-
+	// var attrval = rules.findData(sentence)
 	// attrval[0] - attrs
 	// attrval[1] - values
+
+	var attrval = getRule(sample.sentences[0]).labels
 
 	var intents = []
 	var values = []
@@ -727,9 +832,9 @@ function feContext(sample, features, train, featureOptions, callback) {
 	console.log(JSON.stringify(attrval, null, 4))
 	
 	_.each(attrval[1], function(value, key, list){
-		console.log("DEBUGCONTEXT: check value "+ value[0])
+		console.log("DEBUGCONTEXT: check value "+ value)
 
-		if (values.indexOf(value[0])!=-1)
+		if (values.indexOf(value)!=-1)
 		{
 			if (featureOptions.offered) 
 				features['OFFERED_VALUE'] = 1
@@ -752,85 +857,29 @@ function feContext(sample, features, train, featureOptions, callback) {
 function feAsync(sample, features, train, featureOptions, callback) {
 
 	var sentence = ""
-	var innerFeatures = JSON.parse(JSON.stringify(features))
 	
-	if (_.isObject(sample)) 
-		if ("input" in sample)
-			sentence = sample.input.text
-		else
-			sentence = sample.text
-	else
-		sentence = sample
+	if ("input" in sample)
+		sample = sample.input
 
-	sentence = sentence.toLowerCase().trim()
-	sentence = regexpNormalizer(sentence)
+	sample.sentences[0] = getRule(sample.sentences[0])
 
-	var words = tokenizer.tokenize(sentence);
-
-	var featureSet = []
-
-	if (featureOptions.unigrams)
-	   featureSet = featureSet.concat(natural.NGrams.ngrams(words, 1))
+	// sentence = sentence.toLowerCase().trim()
+	// sentence = regexpNormalizer(sentence)
+	// var words = tokenizer.tokenize(sentence);
 
 	if (featureOptions.bigrams)
-	   featureSet = featureSet.concat(natural.NGrams.ngrams(words, 2))
+	   throw new Error("this version doesn't support bigrams")
 
-	featureSet = _.map(featureSet, function(num){ return num.join(" ") });
+	if (sample['sentences'].length>1)
+		throw new Error("feAsync: more than one sentence "+sample['sentences'].length)
 
-	_.each(featureSet, function(feat, key, list){ 
-		if ((!featureOptions.allow_stopwords) && (stopwords.indexOf(feat)==-1))
-			innerFeatures[feat] = 1 
-			
-		if (featureOptions.allow_stopwords)
-			innerFeatures[feat] = 1 
-	}, this)
-
-	callback(null, innerFeatures)
+	async.eachSeries(sample['sentences'][0]['tokens'], function(token, callback_local) {
+    	features[token.word.toLowerCase()] = 1
+    	callback_local()
+ 	}, function(err){
+ 		callback(null, features)
+	})
 }
-
-function feSync(sample, features, train, featureOptions) {
-
-
-	console.log(sample)
-
-	var sentence = ""
-	var innerFeatures = JSON.parse(JSON.stringify(features))
-	
-	if (_.isObject(sample)) 
-		if ("input" in sample)
-			sentence = sample.input.text
-		else
-			sentence = sample.text
-	else
-		sentence = sample
-
-	sentence = sentence.toLowerCase().trim()
-	sentence = regexpNormalizer(sentence)
-
-	var words = tokenizer.tokenize(sentence);
-
-	var featureSet = []
-
-	// if (featureOptions.unigrams)
-	featureSet = featureSet.concat(natural.NGrams.ngrams(words, 1))
-
-	// if (featureOptions.bigrams)
-	// featureSet = featureSet.concat(natural.NGrams.ngrams(words, 2))
-
-	// because initially we get array of arrays 
-	featureSet = _.map(featureSet, function(num){ return num.join(" ") });
-
-	_.each(featureSet, function(feat, key, list){ 
-		if ((!featureOptions.allow_stopwords) && (stopwords.indexOf(feat)==-1))
-			innerFeatures[feat] = 1 
-			
-		if (featureOptions.allow_stopwords)
-			innerFeatures[feat] = 1 
-	}, this)
-
-	return innerFeatures
-}
-
 
 // function featureExtractorUBC(sentence, features) {
 
@@ -1124,6 +1173,7 @@ module.exports = {
 		feExpansion:feExpansion,
 		feAsync:feAsync,
 		feNeg:feNeg,
+		getRule:getRule,
 		// featureExtractorUB: featureExtractorUB,
 		// featureExtractorB: featureExtractorB,
 		// featureExtractorU: featureExtractorU,
@@ -1184,7 +1234,7 @@ module.exports = {
 		DS_vanilla_svm: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true, {'unigrams':true, 'bigrams':true, 'allow_stopwords':true}),
 		
 		DS_comp_unigrams_async: enhance(SvmLinearMulticlassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
-		DS_comp_unigrams_sync: enhance(SvmLinearMulticlassifier, [feSync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
+		// DS_comp_unigrams_sync: enhance(SvmLinearMulticlassifier, [feSync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
 		DS_boost_comp_unigrams_async: enhance(Boosting, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
 
 		DS_comp_unigrams_async_context: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true}),
@@ -1196,7 +1246,7 @@ module.exports = {
 		
 		DS_comp_unigrams_async_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false,'car':true}),
 		DS_comp_unigrams_async_context_unoffered_neg: enhance(SvmLinearMulticlassifier, [feAsync, feContext,feNeg], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false,'car':true}),
-		DS_comp_unigrams_async_context_unoffered_sim: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false,'car':true}),
+		DS_comp_unigrams_async_context_unoffered_sim_neg: enhance(SvmLinearMulticlassifier, [feAsync, feContext, feNeg], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false,'car':true}),
 
 		// DS_comp_unigrams_sync_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feContextSync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false,'car':true}),
 		
@@ -1216,6 +1266,6 @@ module.exports = {
 
 };
 
-module.exports.defaultClassifier = module.exports.DS_comp_unigrams_sync
+module.exports.defaultClassifier = module.exports.DS_comp_unigrams_async_context_unoffered
 
 if (!module.exports.defaultClassifier) throw new Error("Default classifier is null");
