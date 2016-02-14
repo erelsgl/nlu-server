@@ -27,7 +27,28 @@ describe('Classifiers functions', function() {
 
 
   it('getRule', function() {  
-    var data = classifiers.getRule({'tokens':[{'lemma':'I'},{'lemma':'have'},{'lemma':'a'},{'lemma':'salary'},{'lemma':'of'},{'lemma':'60k'}]})
+
+    var data = {
+        'tokens':[{'word':'I','lemma':'I','pos':'A'},{'lemma':'have','word':'have','pos':'A'},{'lemma':'a','word':'a','pos':'A'},
+                  {'word':'salary','lemma':'salary','pos':'A'},{'lemma':'of','word':'of','pos':'A'},{'lemma':'60,000','word':'60,000','pos':'A'}],
+        'basic-dependencies':[{'dependentGloss':'I'},{'dependentGloss':'have'},{'dependentGloss':'a'},{'dependentGloss':'salary'},
+                            {'dependentGloss':'of'},{'dependentGloss':'60,000'}]
+
+                }
+    var results = classifiers.getRule(data)
+
+    console.log(JSON.stringify(data, null, 4))
+    process.exit(0)
+
+
+    var data = classifiers.getRule({'tokens':[{'lemma':'I'},{'lemma':'have'},{'lemma':'a'},
+      {'lemma':'salary'},{'lemma':'of'},{'lemma':'60,000'}]})
+
+    _.isEqual(data.cleaned,{"tokens": [{"lemma": "I"},{"lemma": "have"},{"lemma": "a"},{"lemma": "of"}]}).should.be.true
+
+    var data = classifiers.getRule({'tokens':[{'lemma':'I','word':'I'},{'lemma':'have','word':'have'},{'lemma':'a','word':'a'},
+      {'lemma':'salary','word':'salary'},{'lemma':'of','word':'of'},{'lemma':'60k','word':'60k'}]})
+
     _.isEqual(data.labels,[["Salary"],["60,000 USD"]]).should.equal(true)
 
     var data = classifiers.getRule({'tokens':[{'lemma':'I'},{'lemma':'have'},{'lemma':'a'},{'lemma':'salary'},{'lemma':'of'},{'lemma':'60,000'}]})
@@ -62,7 +83,7 @@ describe('Classifiers functions', function() {
     var sample = { 
         'output': ["Reject"],
         'input':{'text': "I love the life",
-      'sentences':[
+      'sentences':
         {
           'basic-dependencies':[
             {
@@ -75,7 +96,7 @@ describe('Classifiers functions', function() {
               "governor": "3"
             }
           ]
-        }]
+        }
       }
     }
 
@@ -117,7 +138,7 @@ describe('Classifiers functions', function() {
                   },*/
    		
       /* */
-		function(callback1) {
+		/*function(callback1) {
                                 var sample = {'input':{
                                                        'sentences':{'tokens':[{'word':'I'},{'word':'accept'},{'word':'you'},
                                      {'word':'a'},{'word':'salary'},{'word':'of'},{'word':'60000'}]},
@@ -125,26 +146,35 @@ describe('Classifiers functions', function() {
                                 }}
 
                                 classifiers.feContext(sample, {}, true, {'offered':false, 'unoffered':false, 'previous_intent':true}, function(err, features){
+                            
                             _.isEqual(features, { PREV_YES_Offer: 1, PREV_YES_Accept: 1, PREV_NO_Reject: 1, PREV_NO_Quit: 1, PREV_NO_Greet: 1, PREV_NO_Query: 1 }).should.equal(true)
+                            
 					callback1()
                                 })
-                },
+                },*/
     		function(callback1) {
    				var sample = {'input':{
- 'sentences':{'tokens':[{'word':'I'},{'word':'accept'},{'word':'you'},
-                                     {'word':'a'},{'word':'salary'},{'word':'of'},{'word':'90000'}]},
+              'sentences':{'tokens':[{'word':'I','lemma':'I','pos':'A'},{'word':'accept','lemma':'accept','pos':'A'},{'word':'you','lemma':'you','pos':'A'},
+                        {'word':'a','lemma':'a','pos':'A'},{'word':'salary','lemma':'salary','pos':'A'},{'word':'of','lemma':'of','pos':'A'},{'word':'90000','lemma':'90000','pos':'A'}],
+              'basic-dependencies':[{'dependentGloss':'I'},{'dependentGloss':'accept'},{'dependentGloss':'you'},
+                                    {'dependentGloss':'a'},{'dependentGloss':'salary'},{'dependentGloss':'of'},{'dependentGloss':'90000'}]},
    					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
    				}}
 				
 				classifiers.feContext(sample, {}, true, {'offered':true, 'unoffered':true}, function(err, features){
    					("UNOFFERED_VALUE" in features).should.equal(true)
- 					callback1()
+            callback1()
    				}) 
     		},
     		function(callback1) {
    				var sample = {'input':{
- 'sentences':{'tokens':[{'word':'I'},{'word':'accept'},{'word':'you'},
-                        {'word':'a'},{'word':'salary'},{'word':'of'},{'word':'60000'},{'word':'and'},{'word':'10%'},{'word':'pension'}]},
+ 'sentences':{'tokens':[{'word':'I','lemma':'I','pos':'A'},{'word':'accept','lemma':'accept','pos':'A'},{'word':'you','lemma':'you','pos':'A'},
+                        {'word':'a','lemma':'a','pos':'A'},{'word':'salary','word':'salary','pos':'A'},{'word':'of','lemma':'of','pos':'A'},
+                        {'word':'60000','lemma':'60000','pos':'A'},{'word':'and','lemma':'and','pos':'A'},{'word':'10%','lemma':'10%','pos':'A'},{'word':'pension','lemma':'pension','pos':'A'}],
+
+                'basic-dependencies':[{'dependentGloss':'I'},{'dependentGloss':'accept'},{'dependentGloss':'you'},{'dependentGloss':'a'},
+                  {'dependentGloss':'salary'},{'dependentGloss':'of'},{'dependentGloss':'60000'},{'dependentGloss':'and'},{'dependentGloss':'and'},
+                  {'dependentGloss':'10%'},{'dependentGloss':'pension'}]},
    					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
    				}}
 				
@@ -153,7 +183,7 @@ describe('Classifiers functions', function() {
 
  					callback1()
    				}) 
-    		},
+    		}/*,
     		function(callback1) {
    				var sample = {'input':{
 'sentences':{'tokens':[{'word':'I'},{'word':'accept'},{'word':'you'},
@@ -181,7 +211,7 @@ describe('Classifiers functions', function() {
 
  					callback1()
    				}) 
-    		}], function (err, result) {
+    		}*/], function (err, result) {
     			callback()
 			});
    	       
