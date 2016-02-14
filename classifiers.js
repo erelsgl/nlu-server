@@ -88,9 +88,21 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 // sentence is a hash and not an array
 function getRule(sentence)
 {
+	if (!('tokens' in sentence))
+		throw new Error("DEBUGRULE: for some reason tokens is not in the sentence")
+
+	// fix % sign
+	_.each(sentence['tokens'], function(token, key, list){
+		if (token.lemma=='%')
+			sentence['tokens'][key-1].lemma = sentence['tokens'][key-1].lemma + "%"
+	}, this)
+
+	console.log("DEBUGRULE: after % fix")
+	console.log(JSON.stringify(sentence, null, 4))
+
 	var RuleValues = {
 		  'Salary': [['60000','60,000 USD'],['90000','90,000 USD'],['120000','120,000 USD']],
-		  'Pension Fund': ['0%','10%','15%','20%'],
+		  'Pension Fund': [['0%','0%'],['10%','10%'],['15%','15%'],['20%','20%']],
 		  'Promotion Possibilities': [['fast','Fast promotion track'],['slow','Slow promotion track']],
 		  'Working Hours': [['8','8 hours'],['9','9 hours'],['10','10 hours']],
 		  'Job Description': [['QA','QA'],['Programmer','Programmer'],['Team','Team Manager'],['Project','Project Manager']]
@@ -107,10 +119,19 @@ function getRule(sentence)
 	var ar_attrs = []
 
 	var cleaned = JSON.parse(JSON.stringify(sentence))
-	var unigrams = _.map(sentence['tokens'], function(token){ return token.word.toLowerCase() });
+	var unigrams = _.map(sentence['tokens'], function(token){ return token.lemma.toLowerCase()});
 
+	// check the salary
+	var unigrams = _.map(unigrams, function(unigram){ return unigram.replace(/[,.]/g,'')});	
+	var unigrams = _.map(unigrams, function(unigram){ return unigram.replace(/0k/g,'0000')});	
+	var unigrams = _.map(unigrams, function(unigram){ if (unigram == "90") return 90000 
+														else if (unigram=="60") return 60000
+														else if (unigram=="120") return 120000
+															else return unigram});
+	
 	_.each(RuleValues, function(values, attr, list){
 
+		// the biggest intersection
 		if (_.intersection(unigrams, attr.toLowerCase().split(" ")).length != 0)
 			ar_attrs.push(attr)
 		
@@ -150,7 +171,7 @@ function getRule(sentence)
 
 	cleaned['tokens'] = []
 	_.each(sentence['tokens'], function(token, key, list){
-		if (arAttrVal.indexOf(token.word.toLowerCase())==-1)
+		if (arAttrVal.indexOf(token.lemma.toLowerCase())==-1)
 			cleaned['tokens'].push(token)
 	}, this)
 
@@ -249,6 +270,26 @@ function preProcessor_onlyIntent(value)
 */
 }
 
+
+function postProcessor(sample,classes)
+{
+	console.log("DEBUGPOST: classes "+classes)
+	console.log(JSON.stringify(sample, null, 4))
+
+	if (!_.isArray(classes))
+		classes = [classes]
+
+	if (classes.length > 1)
+		console.log("DEBUGPOST: more than one intent "+ classes)
+
+	var attrval = getRule(sample.sentences).labels
+
+	console.log("DEBUGPOST: labels "+JSON.stringify(attrval))
+
+	return bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([classes, attrval[0], attrval[1]])))
+}
+
+/*
 function postProcessor(sample,classes)
 {
 
@@ -288,7 +329,7 @@ function postProcessor(sample,classes)
 
 	return labels
 }
-
+*/
 function normalizer1(sentence) {
   	var truth = require("./research/rule-based/truth_utils.js")
   	var truth_filename =  "../truth_teller/sentence_to_truthteller.txt"
@@ -776,13 +817,13 @@ function feContext(sample, features, train, featureOptions, callback) {
 	if (context.length == 0)
 		features['NO_CONTEXT'] = 1
 		
-	console.log("DEBUGCONTEXT: sentence " + sentence + " context " + JSON.stringify(context))
+	console.log("DEBUGCONTEXT: context " + JSON.stringify(context))
 
 	// var attrval = rules.findData(sentence)
 	// attrval[0] - attrs
 	// attrval[1] - values
 
-	var attrval = getRule(sample.sentences[0]).labels
+	var attrval = getRule(sample.sentences).labels
 
 	var intents = []
 	var values = []
@@ -861,7 +902,11 @@ function feAsync(sample, features, train, featureOptions, callback) {
 	if ("input" in sample)
 		sample = sample.input
 
-	sample.sentences[0] = getRule(sample.sentences[0])
+	console.log("DEBUGASYNC:")
+	console.log(JSON.stringify(sample, null, 4))
+
+	// clean the parse tree from attr and values 
+	sample.sentences = getRule(sample.sentences).cleaned
 
 	// sentence = sentence.toLowerCase().trim()
 	// sentence = regexpNormalizer(sentence)
@@ -873,7 +918,7 @@ function feAsync(sample, features, train, featureOptions, callback) {
 	if (sample['sentences'].length>1)
 		throw new Error("feAsync: more than one sentence "+sample['sentences'].length)
 
-	async.eachSeries(sample['sentences'][0]['tokens'], function(token, callback_local) {
+	async.eachSeries(sample['sentences']['tokens'], function(token, callback_local) {
     	features[token.word.toLowerCase()] = 1
     	callback_local()
  	}, function(err){
