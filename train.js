@@ -26,8 +26,8 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
-var stat_sig = true
-var check_ds = false
+var stat_sig = false
+var check_ds = true
 var do_serialization_prod = false
 var check_single_multi = false
 var shuffling = false
@@ -353,7 +353,7 @@ if (shuffling)
 	process.exit(0)
 }
 
-if (stat_sig)
+/*if (stat_sig)
 {
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
 	var utterset = bars.getsetcontext(data)
@@ -379,7 +379,7 @@ if (stat_sig)
     	console.log(JSON.stringify(res, null, 4))
 	})
 }
-
+*/
 if (check_ds)
 {
 
@@ -449,21 +449,21 @@ if (check_ds)
 		// console.log(JSON.stringify(results['stats'], null, 4))
 		// process.exit(0)
 
-		_.each(results['data'], function(val, key, list){
-			// if (('FP' in val.explanation) && ('FN' in val.explanation))
-			if ('FP' in val.explanation)
-			{
-				// if (val.explanation.FP.indexOf("{\"Reject\":true}")!=-1)
-					if (val.explanation.FP.indexOf("{\"Reject\":{\"Leased Car\":\"With leased car\"}}")!=-1)
-							console.log(JSON.stringify(val, null, 4))
+		// _.each(results['data'], function(val, key, list){
+		// 	// if (('FP' in val.explanation) && ('FN' in val.explanation))
+		// 	if ('FP' in val.explanation)
+		// 	{
+		// 		// if (val.explanation.FP.indexOf("{\"Reject\":true}")!=-1)
+		// 			if (val.explanation.FP.indexOf("{\"Reject\":{\"Leased Car\":\"With leased car\"}}")!=-1)
+		// 					console.log(JSON.stringify(val, null, 4))
 
 				
-				// delete val.input.sentences
-				// console.log(JSON.stringify(val, null, 4))
-			}
-		}, this)
+		// 		// delete val.input.sentences
+		// 		// console.log(JSON.stringify(val, null, 4))
+		// 	}
+		// }, this)
 
-		console.log(JSON.stringify(results['stats'], null, 4))
+		console.log(JSON.stringify(results, null, 4))
 
 		process.exit(0)
 
