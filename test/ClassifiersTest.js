@@ -340,13 +340,16 @@ describe('Classifiers functions', function() {
 			'sentences':
 				{
 					'basic-dependencies':[
-						{"dep": "ROOT", "dependentGloss": "love"},
+            {"dep": "ROOT", "dependentGloss": "love"},
+            {"dependentGloss": "I"},
+            {"dependentGloss": "the"},
+						{"dependentGloss": "life"}
 					],
 					'tokens':[
-						{'word': 'I','pos': 'ABC'},
-						{'word': 'love','pos': 'VB'},
-						{'word': 'the','pos': 'ABC'},
-						{'word': 'life','pos': 'NN'},
+						{'word': 'I','pos': 'ABC', 'lemma':'I'},
+						{'word': 'love','pos': 'VB','lemma':'love'},
+						{'word': 'the','pos': 'ABC','lemma':'the'},
+						{'word': 'life','pos': 'NN','lemma':'life'},
 					]
 				}
 			}
