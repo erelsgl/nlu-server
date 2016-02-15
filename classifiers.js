@@ -636,10 +636,13 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 	var sentence = ""
 	var innerFeatures = JSON.parse(JSON.stringify(features))
 
-	if ("input" in sample)
-		sample = sample.input
+	if (!("input" in sample))
+		{
+		var temp = JSON.parse(JSON.stringify(sample))
+		var sample ={'input':temp}
 		
-	if (!('sentences' in sample))
+		}
+	if (!('sentences' in sample['input']))
 		throw new Error("sentences not in the sample")
 
 	console.log(process.pid + " DEBUG: train: "+train + " options: "+JSON.stringify(featureOptions))
@@ -677,12 +680,12 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 	
 				console.log("DEBUG train" + train)	
 				
-				_.each(sample['sentences']['tokens'], function(token, key, list){ 
+				_.each(sample['input']['sentences']['tokens'], function(token, key, list){ 
 					// _.each(sentence['tokens'], function(token, key, list){ 	
 					poses[token.word.toLowerCase()] = token.pos
 				}, this)	
 				
-				_.each(sample['sentences']['basic-dependencies'], function(dep, key, list){ 	
+				_.each(sample['input']['sentences']['basic-dependencies'], function(dep, key, list){ 	
 					if (dep.dep == "ROOT")
 						roots.push(dep.dependentGloss.toLowerCase())
 				}, this)	
@@ -727,7 +730,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 			}, function(err){callbackll()})
 		}],
 		function (err, result) {
-			console.log(process.pid + " DEBUG EXP: "+unigrams+ " EXPANSIONED "+_.keys(innerFeatures)+ " train"+train+" featureOptions"+JSON.stringify(featureOptions))
+			console.log(process.pid + " DEBUG EXP: EXPANSIONED "+_.keys(innerFeatures)+ " train"+train+" featureOptions"+JSON.stringify(featureOptions))
 			callback(null, innerFeatures)
 	     });
 
@@ -1082,7 +1085,14 @@ function feAsync(sam, features, train, featureOptions, callback) {
 	if ("input" in sample)
 		sample = sample.input
 
+	if (!('sentences' in sample))
+	   throw new Error("for some reason sentences not in sample")
+
+	if (!('tokens' in sample['sentences']))
+	   throw new Error("for some reason tokens not in sample"+JSON.stringify(sample))
+
 	console.log("DEBUGASYNC:")
+
 	console.log(JSON.stringify(sample, null, 4))
 
 	// clean the parse tree from attr and values 
