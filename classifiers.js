@@ -86,21 +86,38 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 // shoud be prepared for train(input and output) and test(input)
 
 // sentence is a hash and not an array
-function getRule(sentence)
+function getRule(sen)
 {
-	if (!('tokens' in sentence))
+	if (!('tokens' in sen))
 		throw new Error("DEBUGRULE: for some reason tokens is not in the sentence")
 
-	// fix % sign
+	if (!('basic-dependencies' in sen))
+		throw new Error("DEBUGRULE: for some reason basic-dependencies is not in the sentence")
+
+	var sentence = JSON.parse(JSON.stringify(sen))
+
+	// first fix % sign
 	_.each(sentence['tokens'], function(token, key, list){
 		if (token.lemma=='%')
 			sentence['tokens'][key-1].lemma = sentence['tokens'][key-1].lemma + "%"
+	}, this)
+
+	// filter punct symbols
+	var temp = JSON.parse(JSON.stringify(sentence['tokens']))	
+	var dependentGloss = _.map(sentence['basic-dependencies'], function(num){ return num.dependentGloss });
+
+	sentence['tokens'] = []
+
+	_.each(temp, function(token, key, list){
+		if ((dependentGloss.indexOf(token.word)!=-1) && (token.pos!='.')&&(token.pos!=',')&&(token.lemma!='%'))
+			sentence['tokens'].push(token)
 	}, this)
 
 	console.log("DEBUGRULE: after % fix")
 	console.log(JSON.stringify(sentence, null, 4))
 
 	var RuleValues = {
+
 		  'Salary': [['60000','60,000 USD'],['90000','90,000 USD'],['120000','120,000 USD']],
 		  'Pension Fund': [['0%','0%'],['10%','10%'],['15%','15%'],['20%','20%']],
 		  'Promotion Possibilities': [['fast','Fast promotion track'],['slow','Slow promotion track']],
@@ -118,16 +135,18 @@ function getRule(sentence)
 	var ar_values = []
 	var ar_attrs = []
 
-	var cleaned = JSON.parse(JSON.stringify(sentence))
-	var unigrams = _.map(sentence['tokens'], function(token){ return token.lemma.toLowerCase()});
-
 	// check the salary
-	var unigrams = _.map(unigrams, function(unigram){ return unigram.replace(/[,.]/g,'')});	
-	var unigrams = _.map(unigrams, function(unigram){ return unigram.replace(/0k/g,'0000')});	
-	var unigrams = _.map(unigrams, function(unigram){ if (unigram == "90") return 90000 
-														else if (unigram=="60") return 60000
-														else if (unigram=="120") return 120000
+	sentence['tokens'] = _.map(sentence['tokens'], function(unigram){ unigram.lemma = unigram.lemma.replace(/[,.]/g,''); return unigram });	
+	sentence['tokens'] = _.map(sentence['tokens'], function(unigram){ unigram.lemma = unigram.lemma.replace(/0k/g,'0000'); return unigram });	
+	sentence['tokens'] = _.map(sentence['tokens'], function(unigram){ if (unigram.lemma == "90") {unigram.lemma = "90000"; return unigram}
+														else if (unigram.lemma=="60") {unigram.lemma = "60000"; return unigram}
+														else if (unigram.lemma=="120") {unigram.lemma = "120000"; return unigram}
 															else return unigram});
+
+	var cleaned = JSON.parse(JSON.stringify(sentence))
+
+	var unigrams = _.map(sentence['tokens'], function(token){ return token.lemma.toLowerCase()});
+	// var words = _.map(sentence['tokens'], function(token){ return token.word.toLowerCase()});
 	
 	_.each(RuleValues, function(values, attr, list){
 
@@ -273,8 +292,8 @@ function preProcessor_onlyIntent(value)
 
 function postProcessor(sample,classes)
 {
-	console.log("DEBUGPOST: classes "+classes)
-	console.log(JSON.stringify(sample, null, 4))
+	
+	// console.log(JSON.stringify(sample, null, 4))
 
 	if (!_.isArray(classes))
 		classes = [classes]
@@ -284,6 +303,11 @@ function postProcessor(sample,classes)
 
 	var attrval = getRule(sample.sentences).labels
 
+	console.log("DEBUGPOST: classes before check "+classes+classes.length)
+	if ((attrval[1].length > 0) && (classes.length==0))
+		classes.push("Offer")
+
+	console.log("DEBUGPOST: classes after check"+classes+classes.length)
 	console.log("DEBUGPOST: labels "+JSON.stringify(attrval))
 
 	return bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([classes, attrval[0], attrval[1]])))
@@ -754,9 +778,12 @@ function feSplitted(sample, features, train, featureOptions, callback) {
 	callback(null, features)
 }
 
-function feNeg(sample, features, train, featureOptions, callback) {
+/*function feNeg(sample, features, train, featureOptions, callback) {
 
 	var sentence = ""
+	if ('input' in sample)
+		sample = sample.input
+	
 
 	if (_.isObject(sample)) 
 		if ("input" in sample)
@@ -800,6 +827,39 @@ function feNeg(sample, features, train, featureOptions, callback) {
     
 	})
 }
+*/
+
+function feNeg(sample, features, train, featureOptions, callback) {
+
+	var sentence = ""
+
+	if ('input' in sample)
+		sample = sample.input
+	
+	if (!('sentences' in sample))
+		throw new Error("sentences not in the sample")
+
+	if (!('basic-dependencies' in sample['sentences']))
+		throw new Error("basic-dependencies not in the sample")
+
+
+	var root = _.find(sample['sentences']['basic-dependencies'], function(n){
+		return (n.dep == "ROOT")
+	});
+
+	var res = _.findIndex(sample['sentences']['basic-dependencies'], function(n){
+		return (n.dep=="neg" && n.governor == root.dependent)
+	});
+
+	if (res!=-1)
+	{
+		console.log("DEBUGNEG:"+root.dependentGloss+" is negated")
+		delete features[root.dependentGloss]
+		features[root.dependentGloss+"-"] = 1
+	}
+
+	callback(null, features)
+}
 
 function feContext(sample, features, train, featureOptions, callback) {
 	// offered
@@ -827,6 +887,8 @@ function feContext(sample, features, train, featureOptions, callback) {
 
 	var intents = []
 	var values = []
+
+	console.log("DEBUGCONTEXT: labels of the sample "+attrval)
 
 	if (featureOptions.previous_intent)
 	{
@@ -895,9 +957,10 @@ function feContext(sample, features, train, featureOptions, callback) {
 	callback(null, features)
 }
 
-function feAsync(sample, features, train, featureOptions, callback) {
+function feAsync(sam, features, train, featureOptions, callback) {
 
 	var sentence = ""
+	var sample = JSON.parse(JSON.stringify(sam))
 	
 	if ("input" in sample)
 		sample = sample.input
@@ -907,6 +970,9 @@ function feAsync(sample, features, train, featureOptions, callback) {
 
 	// clean the parse tree from attr and values 
 	sample.sentences = getRule(sample.sentences).cleaned
+
+	console.log(JSON.stringify("CLEANED", null, 4))
+	console.log(JSON.stringify(sample.sentences, null, 4))
 
 	// sentence = sentence.toLowerCase().trim()
 	// sentence = regexpNormalizer(sentence)
