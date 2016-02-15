@@ -747,8 +747,8 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 function feEmbed(sample, features, train, featureOptions, callback) {
 	/*var sentence = ""
 	
+
 	if (_.isObject(sample)) 
-		if ("input" in sample)
 			sentence = sample.input.text
 		else
 			sentence = sample.text
@@ -762,6 +762,11 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 	if (!featureOptions.allow_stopwords)
 		unigrams = _.filter(unigrams, function(unigram){ return stopwords.indexOf(unigram)==-1 })
 */
+	
+
+	// if ("input" in sample)
+		
+
 	var embs = []
 
 	async.eachSeries(_.keys(features), function(word, callback1){
@@ -1091,6 +1096,9 @@ function feAsync(sam, features, train, featureOptions, callback) {
 	if (!('tokens' in sample['sentences']))
 	   throw new Error("for some reason tokens not in sample"+JSON.stringify(sample))
 
+	if (_.isArray(sample['sentences']))
+	   throw new Error("feAsync is only for object sentences")
+
 	console.log("DEBUGASYNC:")
 
 	console.log(JSON.stringify(sample, null, 4))
@@ -1115,6 +1123,46 @@ function feAsync(sam, features, train, featureOptions, callback) {
     	features[token.word.toLowerCase()] = 1
     	callback_local()
  	}, function(err){
+ 		callback(null, features)
+	})
+}
+
+function feAsyncSeq(sam, features, train, featureOptions, callback) {
+
+	var sentence = ""
+	var sample = JSON.parse(JSON.stringify(sam))
+	
+	if ("input" in sample)
+		sample = sample.input
+
+	if (!('sentences' in sample))
+	   throw new Error("for some reason sentences not in sample")
+
+	if (!('tokens' in sample['sentences']))
+	   throw new Error("for some reason tokens not in sample"+JSON.stringify(sample))
+
+	if (!_.isArray(sample['sentences']))
+	   throw new Error("feAsyncSeq is only for array of sentences")
+
+	console.log("DEBUGASYNC:")
+
+	async.eachSeries(sample['sentences'], function(sentence, callback_sen) {
+		// don't clean in case of composition classification
+		// sentence = getRule(sentence).cleaned
+
+		console.log(JSON.stringify("CLEANED", null, 4))
+		console.log(JSON.stringify(sentence, null, 4))
+
+		if (featureOptions.bigrams)
+		   throw new Error("this version doesn't support bigrams")
+
+		async.eachSeries(sentence['tokens'], function(token, callback_local) {
+	    	features[token.word.toLowerCase()] = 1
+    		callback_local()
+ 		}, function(err){
+ 			callback_sen(null)
+		})
+	},function(err){
  		callback(null, features)
 	})
 }
