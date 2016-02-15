@@ -639,7 +639,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 	if ("input" in sample)
 		sample = sample.input
 		
-	if (!('sentences' in sample['input']))
+	if (!('sentences' in sample))
 		throw new Error("sentences not in the sample")
 
 	console.log(process.pid + " DEBUG: train: "+train + " options: "+JSON.stringify(featureOptions))
