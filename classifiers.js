@@ -494,7 +494,7 @@ function inputSplitter(text) {
 
 
 //  if train then true
-function feExpansion(sample, features, train, featureOptions, callback) {
+/*function feExpansion(sample, features, train, featureOptions, callback) {
 
 // featureOptions.scale
 // featureOptions.relation
@@ -622,6 +622,123 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 //		return callback(null, features)	
 //	}
 	
+}
+*/
+
+function feExpansion(sample, features, train, featureOptions, callback) {
+
+// featureOptions.scale
+// featureOptions.relation
+// featureOptions.allow_offer
+// featureOptions.expand_test
+// featureOptions.best_results
+
+	var sentence = ""
+	var innerFeatures = JSON.parse(JSON.stringify(features))
+
+	if ("input" in sample)
+		sample = sample.input
+		
+	if (!('sentences' in sample['input']))
+		throw new Error("sentences not in the sample")
+
+	console.log(process.pid + " DEBUG: train: "+train + " options: "+JSON.stringify(featureOptions))
+
+	feAsync(sample, {}, train, {}, function(err, featuresAsync){
+
+		innerFeatures = _.extend(innerFeatures, featuresAsync)
+
+		async.waterfall([
+			function(callbackl1){
+			  if (((!featureOptions.expand_test) && (train)) || (featureOptions.expand_test))
+				{	
+				console.log("DEBUG: train"+train + " unigrams "+unigrams)
+				callbackl1(null)
+				}
+			 else
+				{	
+				console.log(process.pid + " DEBUG: callback classify noexpansion"+ train +" "+ _.keys(features))
+				callback(null, innerFeatures)
+				}
+			},
+			function(callbackl) {
+
+				 if ((!featureOptions.allow_offer)&&(train))
+					{ 
+					if (sample.output[0] == "Offer")
+				 		{
+				 		console.log("Offer no expansion")
+				 		callback(null, innerFeatures)	
+				 		}
+					}
+	
+				var poses = {}
+				var roots = []
+	
+				console.log("DEBUG train" + train)	
+				
+				_.each(sample['sentences']['tokens'], function(token, key, list){ 
+					// _.each(sentence['tokens'], function(token, key, list){ 	
+					poses[token.word.toLowerCase()] = token.pos
+				}, this)	
+				
+				_.each(sample['sentences']['basic-dependencies'], function(dep, key, list){ 	
+					if (dep.dep == "ROOT")
+						roots.push(dep.dependentGloss.toLowerCase())
+				}, this)	
+				// }, this)
+
+			console.log("poses train" + train + " " + JSON.stringify(poses))
+        		callbackl(null, poses, roots);
+    		},
+		    function(poses, roots, callbackll) {
+
+			async.forEachOfSeries(poses, function(pos, unigram, callback2){ 
+			// async.forEachOfSeries(_.keys(poses), function(unigram, dind, callback2){ 
+				if (((!featureOptions.onlyroot) && (stopwords.indexOf(unigram)==-1))
+					|| ((featureOptions.onlyroot) && (roots.indexOf(unigram)!=-1)))
+				{
+					// if (!(unigram in poses))
+						// throw new Error(unigram + " is not found in "+poses)
+				
+					async_adapter.getppdb(unigram, pos, featureOptions.scale, featureOptions.relation,  function(err, results){
+						
+						console.log("getppdb train" + train + " "+JSON.stringify(unigram))			
+		
+						// get rid of phrases
+						console.log(process.pid + " DEBUG EXP: results with phrases "+results.length)
+						results = _.filter(results, function(num){ return num[0].indexOf(" ") == -1 })
+						console.log(process.pid + " DEBUG EXP: results without phrases "+results.length)
+
+						results = _.map(results, function(num){ return num[0] });
+						results = _.uniq(results)	
+		
+						if (!_.isUndefined(featureOptions.best_results))
+							results = results.slice(0, featureOptions.best_results)
+
+						_.each(results, function(expan, key, list){ 
+							innerFeatures[expan.toLowerCase()] = 1
+						}, this)
+						callback2()
+					})
+				}
+				else
+				callback2()
+			}, function(err){callbackll()})
+		}],
+		function (err, result) {
+			console.log(process.pid + " DEBUG EXP: "+unigrams+ " EXPANSIONED "+_.keys(innerFeatures)+ " train"+train+" featureOptions"+JSON.stringify(featureOptions))
+			callback(null, innerFeatures)
+	     });
+
+//	}
+//	else
+//	{
+//		console.log(process.pid + " DEBUG: callback classify noexpansion"+ train +" "+ _.keys(features))
+//		return callback(null, features)	
+//	}
+	
+	})
 }
 
 function feEmbed(sample, features, train, featureOptions, callback) {
