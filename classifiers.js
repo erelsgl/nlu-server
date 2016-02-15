@@ -652,7 +652,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 			function(callbackl1){
 			  if (((!featureOptions.expand_test) && (train)) || (featureOptions.expand_test))
 				{	
-				console.log("DEBUG: train"+train + " unigrams "+unigrams)
+				console.log("DEBUG: train"+train)
 				callbackl1(null)
 				}
 			 else
