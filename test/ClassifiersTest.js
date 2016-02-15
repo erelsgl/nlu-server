@@ -335,8 +335,9 @@ describe('Classifiers functions', function() {
         
         var sample = { 
         	'output': ["Reject"],
-        	'input':{'text': "I love the life",
-			'sentences':[
+        	'input':{
+            // 'text': "I love the life",
+			'sentences':
 				{
 					'basic-dependencies':[
 						{"dep": "ROOT", "dependentGloss": "love"},
@@ -347,14 +348,14 @@ describe('Classifiers functions', function() {
 						{'word': 'the','pos': 'ABC'},
 						{'word': 'life','pos': 'NN'},
 					]
-				}]
+				}
 			}
 		}
 	
 
  var sampleTest = {
-                'text': "I love the life test",
-                'sentences':[
+                // 'text': "I love the life test",
+                'sentences':
                                 {
                                         'basic-dependencies':[
                                                 {"dep": "ROOT", "dependentGloss": "love"},
@@ -365,7 +366,7 @@ describe('Classifiers functions', function() {
                                                 {'word': 'the','pos': 'ABC'},
                                                 {'word': 'life','pos': 'NN'},
                                         ]
-                                }]
+                                }
                         }
 
 		var sampleOffer = { 'output': ["Offer"],
