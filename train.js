@@ -442,9 +442,9 @@ if (check_ds)
 	//trainAndTest.trainAndTest_async(classifier.DS_bigram_split_embed, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 	
 
+// DS_comp_unigrams_async_context_unoffered_neg
 
-
-	trainAndTest.trainAndTest_async(classifier.DS_comp_unigrams_async_context_unoffered, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	trainAndTest.trainAndTest_async(classifier.DS_comp_unigrams_async_context_unoffered_neg, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		console.log("DONEDONE")
 		// console.log(JSON.stringify(results['stats'], null, 4))
 		// process.exit(0)
