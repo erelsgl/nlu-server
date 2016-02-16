@@ -31,50 +31,43 @@ describe('Classifiers functions', function() {
     var data = {
         'tokens':[{'word':'I','lemma':'I','pos':'A'},{'lemma':'have','word':'have','pos':'A'},{'lemma':'a','word':'a','pos':'A'},
                   {'word':'salary','lemma':'salary','pos':'A'},{'lemma':'of','word':'of','pos':'A'},{'lemma':'60,000','word':'60,000','pos':'A'}]
-        // 'basic-dependencies':[{'dependentGloss':'I'},{'dependentGloss':'have'},{'dependentGloss':'a'},{'dependentGloss':'salary'},
-                            // {'dependentGloss':'of'},{'dependentGloss':'60,000'}]
-
                 }
+
     var results = classifiers.getRule(data)
+	_.isEqual(results.labels,  [['Salary'],['60,000 USD']]).should.equal(true)
 
-    console.log(JSON.stringify(data, null, 4))
-    process.exit(0)
+    var data = classifiers.getRule({'tokens':[{'lemma':'I','pos':'A'},{'lemma':'have','pos':'A'},{'lemma':'a','pos':'A'},
+      {'lemma':'salary','pos':'A'},{'lemma':'of','pos':'A'},{'lemma':'60,000','pos':'A'}]})
 
+    _.isEqual(data.cleaned,{"tokens": [{"lemma": "I",'pos':'A'},{"lemma": "have",'pos':'A'},{"lemma": "a",'pos':'A'},{"lemma": "of",'pos':'A'}]}).should.equal(true)
 
-    var data = classifiers.getRule({'tokens':[{'lemma':'I'},{'lemma':'have'},{'lemma':'a'},
-      {'lemma':'salary'},{'lemma':'of'},{'lemma':'60,000'}]})
-
-    _.isEqual(data.cleaned,{"tokens": [{"lemma": "I"},{"lemma": "have"},{"lemma": "a"},{"lemma": "of"}]}).should.be.true
-
-    var data = classifiers.getRule({'tokens':[{'lemma':'I','word':'I'},{'lemma':'have','word':'have'},{'lemma':'a','word':'a'},
-      {'lemma':'salary','word':'salary'},{'lemma':'of','word':'of'},{'lemma':'60k','word':'60k'}]})
+    var data = classifiers.getRule({'tokens':[{'lemma':'I','pos':'A'},{'lemma':'have','pos':'A'},{'lemma':'a','pos':'A'},{'lemma':'salary','pos':'A'},{'lemma':'of','pos':'A'},{'lemma':'60k','pos':'A'}]})
 
     _.isEqual(data.labels,[["Salary"],["60,000 USD"]]).should.equal(true)
 
-    var data = classifiers.getRule({'tokens':[{'lemma':'I'},{'lemma':'have'},{'lemma':'a'},{'lemma':'salary'},{'lemma':'of'},{'lemma':'60,000'}]})
+    var data = classifiers.getRule({'tokens':[{'lemma':'I','pos':'A'},{'lemma':'have','pos':'A'},{'lemma':'a','pos':'A'},{'lemma':'salary','pos':'A'},{'lemma':'of','pos':'A'},{'lemma':'60,000','pos':'A'}]})
     _.isEqual(data.labels,[["Salary"],["60,000 USD"]]).should.equal(true)
 
-    var data = classifiers.getRule({'tokens':[{'lemma':'there'},{'lemma':'will'},{'lemma':'be'},{'lemma':'no'},{'lemma':'agreement'},{'lemma':'for'},{'lemma':'car'}]})
+    var data = classifiers.getRule({'tokens':[{'lemma':'there','pos':'A'},{'lemma':'will','pos':'A'},{'lemma':'be','pos':'A'},{'lemma':'no','pos':'A'},{'lemma':'agreement','pos':'A'},{'lemma':'for','pos':'A'},{'lemma':'car','pos':'A'}]})
     _.isEqual(data.labels,[["Leased Car"],["No agreement"]]).should.equal(true)
     
-    var data = classifiers.getRule({'tokens':[{'lemma':'with'},{'lemma':'leased'},{'lemma':'car'},{'lemma':'pension'},{'lemma':'fund'},{'lemma':'10'},{'lemma':'%'}]})
+    var data = classifiers.getRule({'tokens':[{'lemma':'with','pos':'A'},{'lemma':'leased','pos':'A'},{'lemma':'car','pos':'A'},{'lemma':'pension','pos':'A'},{'lemma':'fund','pos':'A'},{'lemma':'10','pos':'A'},{'lemma':'%','pos':'A'}]})
 
     _.isEqual(data.labels,[["Pension Fund","Leased Car"],["10%","With leased car"]]).should.equal(true)
 
-    var data = classifiers.getRule({'tokens':[{'lemma':'let'},{'lemma':'us'},{'lemma':'compromise'},{'lemma':'without'},{'lemma':'a'},{'lemma':'leased'},{'lemma':'car'}]})
+    var data = classifiers.getRule({'tokens':[{'lemma':'let','pos':'A'},{'lemma':'us','pos':'A'},{'lemma':'compromise','pos':'A'},{'lemma':'without','pos':'A'},{'lemma':'a','pos':'A'},{'lemma':'leased','pos':'A'},{'lemma':'car','pos':'A'}]})
     _.isEqual(data.labels,[["Leased Car"],["Without leased car"]]).should.equal(true)
 
-    var data = classifiers.getRule({'tokens':[{'lemma':'with'},{'lemma':'a'},{'lemma':'pension'},{'lemma':'fund'},{'lemma':'10%'}]})
+    var data = classifiers.getRule({'tokens':[{'lemma':'with','pos':'A'},{'lemma':'a','pos':'A'},{'lemma':'pension','pos':'A'},{'lemma':'fund','pos':'A'},{'lemma':'10%','pos':'A'}]})
     _.isEqual(data.labels,[["Pension Fund"],["10%"]]).should.equal(true)
 // !!!!!!!!!!!!!!
-    var data = classifiers.getRule({'tokens':[{'lemma':'you'},{'lemma':'offer'},{'lemma':'me'},{'lemma':'a'},{'lemma':'leased'},{'lemma':'car'}]})
+    var data = classifiers.getRule({'tokens':[{'lemma':'you','pos':'A'},{'lemma':'offer','pos':'A'},{'lemma':'me','pos':'A'},{'lemma':'a','pos':'A'},{'lemma':'leased','pos':'A'},{'lemma':'car','pos':'A'}]})
     _.isEqual(data.labels,[["Leased Car"],[]]).should.equal(true)
 
-    var data = classifiers.getRule({'tokens':[{'lemma':'I'},{'lemma':'need'},{'lemma':'you'},{'lemma':'to'},{'lemma':'work'},{'lemma':'10'},{'lemma':'hours'},{'lemma':'because'},{'lemma':'there'},{'lemma':'job'}]})
+    var data = classifiers.getRule({'tokens':[{'lemma':'I','pos':'A'},{'lemma':'need','pos':'A'},{'lemma':'you','pos':'A'},{'lemma':'to','pos':'A'},{'lemma':'work','pos':'A'},{'lemma':'10','pos':'A'},{'lemma':'hours','pos':'A'},{'lemma':'because','pos':'A'},{'lemma':'there','pos':'A'},{'lemma':'job','pos':'A'}]})
     _.isEqual(data.labels,[["Working Hours","Job Description"],["10 hours"]]).should.equal(true)
 
-    var data = classifiers.getRule({'tokens':[{'lemma':'I'},{'lemma':'offering'},{'lemma':'a'},{'lemma':'job'},{'lemma':':'},{'lemma':'programmer'},
-      {'lemma':'10'},{'lemma':'hours'},{'lemma':'a'},{'lemma':'day'},{'lemma':','}, {'lemma':'60000'},{'lemma':'no'},{'lemma':'car'},{'lemma':'fast'},{'lemma':'promotion'},{'lemma':'track'}]})
+    var data = classifiers.getRule({'tokens':[{'lemma':'I','pos':'A'},{'lemma':'offering','pos':'A'},{'lemma':'a','pos':'A'},{'lemma':'job','pos':'A'},{'lemma':':','pos':'A'},{'lemma':'programmer','pos':'A'}, {'lemma':'10','pos':'A'},{'lemma':'hours','pos':'A'},{'lemma':'a','pos':'A'},{'lemma':'day','pos':'A'},{'lemma':',','pos':'A'}, {'lemma':'60000','pos':'A'},{'lemma':'no','pos':'A'},{'lemma':'car','pos':'A'},{'lemma':'fast','pos':'A'},{'lemma':'promotion','pos':'A'},{'lemma':'track','pos':'A'}]})
     _.isEqual(data.labels,[["Salary","Promotion Possibilities","Working Hours","Job Description","Leased Car"],["60,000 USD","Fast promotion track","10 hours","Programmer"]]).should.equal(true)
 
   })
@@ -108,50 +101,6 @@ describe('Classifiers functions', function() {
 
   it('feContext', function(callback) {
     async.waterfall([
-		 /* function(callback1) {
-        
-        var sample = {
-                      'input':{
-                        'sentences':[{'tokens':[{'word':'I'},{'word':'accept'},{'word':'you'},
-                                   {'word':'a'},{'word':'salary'},{'word':'of'},{'word':'60000'}]}],
-                        'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
-                    }}
-
-                    classifiers.feContext(sample, {}, true, {'previous_intent':false, 'car': true}, function(err, features){
-                      console.log(JSON.stringify(, null, 4))
-                      _.isEqual(features,{ CON_OFFER_NO_CAR: 1 }).should.equal(true)
-                      callback1()
-                    })
-                },*/
-		/*  function(callback1) {
-          
-        var sample = {'input':{
-                        'sentences':[{'tokens':[{'word':'I'},{'word':'accept'},{'word':'you'},
-                                     {'word':'a'},{'word':'salary'},{'word':'of'},{'word':'60000'}]}],
-                        'context': ['{\"Offer\":{\"Leased Car\":\"60,000 USD\"}}']
-                      }}
-
-                      classifiers.feContext(sample, {}, true, {'previous_intent':false, 'car': true}, function(err, features){
-                        _.isEqual(features,{ CON_OFFER_CAR: 1 }).should.equal(true)
-					              callback1()
-                      })
-                  },*/
-   		
-      /* */
-		/*function(callback1) {
-                                var sample = {'input':{
-                                                       'sentences':{'tokens':[{'word':'I'},{'word':'accept'},{'word':'you'},
-                                     {'word':'a'},{'word':'salary'},{'word':'of'},{'word':'60000'}]},
-                                        'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}','{\"Accept\":\"Salary\"}']
-                                }}
-
-                                classifiers.feContext(sample, {}, true, {'offered':false, 'unoffered':false, 'previous_intent':true}, function(err, features){
-                            
-                            _.isEqual(features, { PREV_YES_Offer: 1, PREV_YES_Accept: 1, PREV_NO_Reject: 1, PREV_NO_Quit: 1, PREV_NO_Greet: 1, PREV_NO_Query: 1 }).should.equal(true)
-                            
-					callback1()
-                                })
-                },*/
     		function(callback1) {
    				var sample = {'input':{
               'sentences':{'tokens':[{'word':'I','lemma':'I','pos':'A'},{'word':'accept','lemma':'accept','pos':'A'},{'word':'you','lemma':'you','pos':'A'},
@@ -167,7 +116,7 @@ describe('Classifiers functions', function() {
             callback1()
    				}) 
     		},
-    		function(callback1) {
+/*    		function(callback1) {
    				var sample = {'input':{
  'sentences':{'tokens':[{'word':'I','lemma':'I','pos':'A'},{'word':'accept','lemma':'accept','pos':'A'},{'word':'you','lemma':'you','pos':'A'},
                         {'word':'a','lemma':'a','pos':'A'},{'word':'salary','lemma':'salary','pos':'A'},{'word':'of','lemma':'of','pos':'A'},
@@ -176,7 +125,7 @@ describe('Classifiers functions', function() {
                 // 'basic-dependencies':[{'dependentGloss':'I'},{'dependentGloss':'accept'},{'dependentGloss':'you'},{'dependentGloss':'a'},
                   // {'dependentGloss':'salary'},{'dependentGloss':'of'},{'dependentGloss':'60000'},{'dependentGloss':'and'},{'dependentGloss':'and'},
                   // {'dependentGloss':'10%'},{'dependentGloss':'pension'}]
-                },
+                /*},
    					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
    				}}
 				
@@ -185,7 +134,7 @@ describe('Classifiers functions', function() {
 
  					callback1()
    				}) 
-    		}/*,
+    		},/*
     		function(callback1) {
    				var sample = {'input':{
 'sentences':{'tokens':[{'word':'I'},{'word':'accept'},{'word':'you'},
@@ -199,11 +148,11 @@ describe('Classifiers functions', function() {
 
  					callback1()
    				}) 
-    		},
+    		},*/
     		function(callback1) {
    				var sample = {'input':{
-'sentences':{'tokens':[{'word':'I'},{'word':'accept'},{'word':'you'},
-                        {'word':'a'},{'word':'salary'},{'word':'of'},{'word':'60000'},{'word':'and'},{'word':'10%'},{'word':'pension'}]},
+'sentences':{'tokens':[{'lemma':'I','pos':'A'},{'lemma':'accept','pos':'A'},{'lemma':'you','pos':'A'},
+                        {'lemma':'a','pos':'A'},{'lemma':'salary','pos':'A'},{'lemma':'of','pos':'A'},{'lemma':'60000','pos':'A'},{'lemma':'and','pos':'A'},{'lemma':'10%','pos':'A'},{'lemma':'pension','pos':'A'}]},
  
    					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
    				}}
@@ -213,7 +162,7 @@ describe('Classifiers functions', function() {
 
  					callback1()
    				}) 
-    		}*/], function (err, result) {
+    		}], function (err, result) {
     			callback()
 			});
    	       
