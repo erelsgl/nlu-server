@@ -1,3 +1,4 @@
+set terminal png nocrop enhanced size 1000,1000
 set datafile missing '?'
 set yrange [0:1]
 set grid ytics
