@@ -7,7 +7,7 @@
 var should = require('should')
 var bars = require('../utils/bars')
 var _ = require('underscore')._;
-var __ = require('lodash');
+//var __ = require('lodash');
 var fs = require('fs');
 
 var rules = require("../research/rule-based/rules.js")
@@ -20,29 +20,25 @@ describe('Bars utilities', function() {
 	it('pipeline', function() {
 
 		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Offer"], ['Leased Car'], ['Without leased car']])))
-		labels[0].should.equal("{\"Offer\":{\"Leased Car\":\"Without leased car\"}}")
+		_.isEqual(labels,["{\"Offer\":{\"Leased Car\":\"Without leased car\"}}"]).should.equal(true)
 
-		console.log(JSON.stringify(labels, null, 4))
-		process.exit(0)
-		
 		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([[], [], []])))
 		labels.length.should.equal(0)
 
 		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Reject"], [], []])))
-		// console.log(JSON.stringify(labels, null, 4))
-		labels[0].should.equal("{\"Reject\":true}")
-		// var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Query"], [''], ['Salary']])))
+		_.isEqual(labels, ["{\"Reject\":true}"]).should.equal(true)
+
 		var labels = bars.resolve_emptiness_rule([["Query"], [], ['Salary']])
 		labels[1][0].should.equal("Offer")
 
 		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Query"], ['Salary'], []])))
-		labels[0].should.equal("{\"Query\":{\"Offer\":\"Salary\"}}")
+		_.isEqual(labels,["{\"Query\":{\"Offer\":\"Salary\"}}"]).should.equal(true)
 
 		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Query"], [], []])))
-		labels[0].should.equal("{\"Query\":\"Offer\"}")
+		_.isEqual(labels,["{\"Query\":\"Offer\"}"])
 
 		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Reject"], ["Leased Car"], ["Without leased car"]])))
-		labels[0].should.equal("{\"Reject\":{\"Leased Car\":\"With leased car\"}}")
+		_.isEqual(labels,["{\"Reject\":{\"Leased Car\":\"With leased car\"}}"])
 	})
 
 	it('coverfilter', function() {
