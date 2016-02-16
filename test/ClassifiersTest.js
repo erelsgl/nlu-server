@@ -28,6 +28,14 @@ describe('Classifiers functions', function() {
 
   it('getRule', function() {  
 
+    var data = {'tokens':[{'word':'120,000','lemma':'120,000','pos':'A'},{'lemma':'USD','word':'USD','pos':'A'},{'lemma':'no','word':'no','pos':'A'},
+                  {'word':'car','lemma':'car','pos':'A'}],
+            'basic-dependencies':[{'dep':'neg','governorGloss':'car'}]
+                }
+
+    var results = classifiers.getRule(data)
+    _.isEqual(results.labels,  [['Salary','Leased Car'],['120,000 USD','Without leased car']]).should.equal(true)
+
     var data = {
         'tokens':[{'word':'I','lemma':'I','pos':'A'},{'lemma':'have','word':'have','pos':'A'},{'lemma':'a','word':'a','pos':'A'},
                   {'word':'salary','lemma':'salary','pos':'A'},{'lemma':'of','word':'of','pos':'A'},{'lemma':'60,000','word':'60,000','pos':'A'}]
