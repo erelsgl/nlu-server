@@ -12,7 +12,7 @@ var Hierarchy = require('../../Hierarchy');
 var splitJson = Hierarchy.splitJson
 var bars = require('../../utils/bars')
 var rules = require('../rule-based/rules')
-var wordnet = new natural.WordNet();
+//var wordnet = new natural.WordNet();
 
 var Tagger = require("../../node_modules/node-stanford-postagger/postagger").Tagger;
 var tagger = new Tagger({
