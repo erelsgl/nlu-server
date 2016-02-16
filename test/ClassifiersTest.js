@@ -30,9 +30,9 @@ describe('Classifiers functions', function() {
 
     var data = {
         'tokens':[{'word':'I','lemma':'I','pos':'A'},{'lemma':'have','word':'have','pos':'A'},{'lemma':'a','word':'a','pos':'A'},
-                  {'word':'salary','lemma':'salary','pos':'A'},{'lemma':'of','word':'of','pos':'A'},{'lemma':'60,000','word':'60,000','pos':'A'}],
-        'basic-dependencies':[{'dependentGloss':'I'},{'dependentGloss':'have'},{'dependentGloss':'a'},{'dependentGloss':'salary'},
-                            {'dependentGloss':'of'},{'dependentGloss':'60,000'}]
+                  {'word':'salary','lemma':'salary','pos':'A'},{'lemma':'of','word':'of','pos':'A'},{'lemma':'60,000','word':'60,000','pos':'A'}]
+        // 'basic-dependencies':[{'dependentGloss':'I'},{'dependentGloss':'have'},{'dependentGloss':'a'},{'dependentGloss':'salary'},
+                            // {'dependentGloss':'of'},{'dependentGloss':'60,000'}]
 
                 }
     var results = classifiers.getRule(data)
@@ -155,9 +155,10 @@ describe('Classifiers functions', function() {
     		function(callback1) {
    				var sample = {'input':{
               'sentences':{'tokens':[{'word':'I','lemma':'I','pos':'A'},{'word':'accept','lemma':'accept','pos':'A'},{'word':'you','lemma':'you','pos':'A'},
-                        {'word':'a','lemma':'a','pos':'A'},{'word':'salary','lemma':'salary','pos':'A'},{'word':'of','lemma':'of','pos':'A'},{'word':'90000','lemma':'90000','pos':'A'}],
-              'basic-dependencies':[{'dependentGloss':'I'},{'dependentGloss':'accept'},{'dependentGloss':'you'},
-                                    {'dependentGloss':'a'},{'dependentGloss':'salary'},{'dependentGloss':'of'},{'dependentGloss':'90000'}]},
+                        {'word':'a','lemma':'a','pos':'A'},{'word':'salary','lemma':'salary','pos':'A'},{'word':'of','lemma':'of','pos':'A'},{'word':'90000','lemma':'90000','pos':'A'}]
+              // 'basic-dependencies':[{'dependentGloss':'I'},{'dependentGloss':'accept'},{'dependentGloss':'you'},
+                                    // {'dependentGloss':'a'},{'dependentGloss':'salary'},{'dependentGloss':'of'},{'dependentGloss':'90000'}]
+                                  },
    					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
    				}}
 				
@@ -169,12 +170,13 @@ describe('Classifiers functions', function() {
     		function(callback1) {
    				var sample = {'input':{
  'sentences':{'tokens':[{'word':'I','lemma':'I','pos':'A'},{'word':'accept','lemma':'accept','pos':'A'},{'word':'you','lemma':'you','pos':'A'},
-                        {'word':'a','lemma':'a','pos':'A'},{'word':'salary','word':'salary','pos':'A'},{'word':'of','lemma':'of','pos':'A'},
+                        {'word':'a','lemma':'a','pos':'A'},{'word':'salary','lemma':'salary','pos':'A'},{'word':'of','lemma':'of','pos':'A'},
                         {'word':'60000','lemma':'60000','pos':'A'},{'word':'and','lemma':'and','pos':'A'},{'word':'10%','lemma':'10%','pos':'A'},{'word':'pension','lemma':'pension','pos':'A'}],
 
-                'basic-dependencies':[{'dependentGloss':'I'},{'dependentGloss':'accept'},{'dependentGloss':'you'},{'dependentGloss':'a'},
-                  {'dependentGloss':'salary'},{'dependentGloss':'of'},{'dependentGloss':'60000'},{'dependentGloss':'and'},{'dependentGloss':'and'},
-                  {'dependentGloss':'10%'},{'dependentGloss':'pension'}]},
+                // 'basic-dependencies':[{'dependentGloss':'I'},{'dependentGloss':'accept'},{'dependentGloss':'you'},{'dependentGloss':'a'},
+                  // {'dependentGloss':'salary'},{'dependentGloss':'of'},{'dependentGloss':'60000'},{'dependentGloss':'and'},{'dependentGloss':'and'},
+                  // {'dependentGloss':'10%'},{'dependentGloss':'pension'}]
+                },
    					'context': ['{\"Offer\":{\"Salary\":\"60,000 USD\"}}']
    				}}
 				
@@ -290,27 +292,13 @@ describe('Classifiers functions', function() {
 		var sample = {'input': {
       'text': 'I love the nature',
       'sentences':{
-        'tokens':[{'word':'I'},{'word':'love'},{'word':'the'},{'word':'nature'}]
+        'tokens':[{'word':'I','lemma':'I','pos':'A'},{'word':'love','lemma':'love','pos':'A'},
+        {'word':'the','lemma':'the','pos':'A'},{'word':'nature','lemma':'nature','pos':'A'}]
       }
   }}
 		
 		async.waterfall([
-   			/*function(callback1) {
-        		var params = { 'unigrams': false, 'bigrams': false, 'allow_stopwords': false }
-   				classifiers.feAsync(sample, {}, true, params, function (err, features){
-					_.keys(features).length.should.equal(0)
-					callback1(null)
-        		})
-    		},*/
-    		/*function(callback1) {
-            // var params = { 'unigrams': true, 'bigrams': false, 'allow_stopwords': false }
-        		var params = { 'unigrams': true}
-        		classifiers.feAsync(sample, {}, true, params, function (err, features){
-					_.isEqual(features, {"love": 1, "nature": 1}).should.equal(true)
-					callback1(null)
-        		})
-    		},*/
-    		function(callback1) {
+   			function(callback1) {
             // var params = { 'unigrams': true, 'bigrams': false, 'allow_stopwords': true }
         		var params = {}
         		classifiers.feAsync(sample, {}, true, params, function (err, features){
@@ -318,14 +306,7 @@ describe('Classifiers functions', function() {
 					     _.isEqual(features, {"i":1, "love": 1, "the":1, "nature": 1}).should.equal(true)
 					   callback1(null)
         		})
-        	}/*,
-        	function(callback1) {
-        		var params = { 'unigrams': true, 'bigrams': true, 'allow_stopwords': true }
-        		classifiers.feAsync(sample, {}, true, params, function (err, features){
-					_.isEqual(features, {"i": 1,"love": 1,"the": 1,"nature": 1,"i love": 1,"love the": 1,"the nature": 1}).should.equal(true)					
-					callback1(null)
-        		})
-        	}*/
+        	}
     	], function (err, result) {
     			callback()
 			});
