@@ -86,6 +86,7 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 // shoud be prepared for train(input and output) and test(input)
 
 // sentence is a hash and not an array
+// lemma and pos are required
 function getRule(sen)
 {
 	if (!('tokens' in sen))
@@ -104,6 +105,13 @@ function getRule(sen)
 	sentence['tokens'] = []
 
 	_.each(temp, function(token, key, list){
+
+		if (!('pos' in token))
+			throw new Error('DEBUGRULE: pos is not in the token')
+		
+		if (!('lemma' in token))
+			throw new Error('DEBUGRULE: lemma is not in the token')
+
 		if ((token.pos!='.')&&(token.pos!=',')&&(token.lemma!='%'))
 			sentence['tokens'].push(token)
 	}, this)
