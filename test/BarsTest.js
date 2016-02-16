@@ -18,6 +18,12 @@ describe('Bars utilities', function() {
 
 
 	it('pipeline', function() {
+
+		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Offer"], ['Leased Car'], ['Without leased car']])))
+		labels[0].should.equal("{\"Offer\":{\"Leased Car\":\"Without leased car\"}}")
+
+		console.log(JSON.stringify(labels, null, 4))
+		process.exit(0)
 		
 		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([[], [], []])))
 		labels.length.should.equal(0)
