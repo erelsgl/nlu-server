@@ -91,9 +91,6 @@ function getRule(sen)
 	if (!('tokens' in sen))
 		throw new Error("DEBUGRULE: for some reason tokens is not in the sentence")
 
-	if (!('basic-dependencies' in sen))
-		throw new Error("DEBUGRULE: for some reason basic-dependencies is not in the sentence")
-
 	var sentence = JSON.parse(JSON.stringify(sen))
 
 	// first fix % sign
@@ -104,14 +101,15 @@ function getRule(sen)
 
 	// filter punct symbols
 	var temp = JSON.parse(JSON.stringify(sentence['tokens']))	
-	var dependentGloss = _.map(sentence['basic-dependencies'], function(num){ return num.dependentGloss });
-
 	sentence['tokens'] = []
 
 	_.each(temp, function(token, key, list){
-		if ((dependentGloss.indexOf(token.word)!=-1) && (token.pos!='.')&&(token.pos!=',')&&(token.lemma!='%'))
+		if ((token.pos!='.')&&(token.pos!=',')&&(token.lemma!='%'))
 			sentence['tokens'].push(token)
 	}, this)
+
+//	if (sentence['tokens'].length == 0)
+//		throw new Error("DEBUGRULE: for some reason tokens is empty")
 
 	console.log("DEBUGRULE: after % fix")
 	console.log(JSON.stringify(sentence, null, 4))
@@ -1532,7 +1530,7 @@ module.exports = {
 		
 		DS_comp_unigrams_async_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false,'car':true}),
 		DS_comp_unigrams_async_context_unoffered_neg: enhance(SvmLinearMulticlassifier, [feAsync, feContext,feNeg], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false,'car':true}),
-		DS_comp_unigrams_async_context_unoffered_sim_neg: enhance(SvmLinearMulticlassifier, [feAsync, feContext, feNeg], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false,'car':true}),
+		DS_comp_unigrams_async_context_unoffered_sim: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false,'car':true}),
 
 		// DS_comp_unigrams_sync_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feContextSync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false,'car':true}),
 		
