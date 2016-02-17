@@ -175,6 +175,9 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 		    	 	console.log("DEBUGSIM: size of aggregated simulated before plus "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
 		    	 	// console.log("DEBUGSIM: aggregated stats "+JSON.stringify(_.countBy(sim_train, function(num) { return _.keys(JSON.parse(num.output[0]))[0] })))
 
+					buffer_train = results["dataset"]
+			    	sim_train = sim_train.concat(results["simulated"])
+
 					console.log("DEBUGSIM: aggregated stats "+JSON.stringify(_.countBy(sim_train, function(num) { 
 						if (num.output.length == 0) 
 							return -1
@@ -182,16 +185,21 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 							return _.keys(JSON.parse(num.output[0]))[0] })
 					))
 
+					var temp = JSON.parse(JSON.stringify(results["simulated"]))
+					temp = _.map(temp, function(num){ delete num['input']['sentences']; return num });
 
-					console.log("DEBUGSIM: simulated dataset")
-					console.log(JSON.stringify(results["simulated"], null, 4))
+					console.log("DEBUGSIM: simulated dataset temp")
+					console.log(JSON.stringify(temp, null, 4))
 					
-					buffer_train = results["dataset"]
-			    	sim_train = sim_train.concat(results["simulated"])
-
 			    	console.log("DEBUGSIM: size of aggregated simulated after plus "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
 
 	    			trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train), bars.copyobj(testset), function(err, stats1){
+
+						console.log("DEBUGSIM: simulated results")
+						console.log(JSON.stringify(stats1['stats'], null, 4))
+
+						console.log("DEBUGSIM: simulated data")
+						console.log(JSON.stringify(stats1['data'], null, 4))
 
 			    		extractGlobal(_.values(classifierList)[1], mytrain, fold, stats1['stats'], glob_stats)	
 			    		console.log("DEBUGGLOB:")
