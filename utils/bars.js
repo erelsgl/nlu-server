@@ -3666,7 +3666,13 @@ function getsetcontext(dataset)
         turn['outputhash'] = turn.output
         turn['output'] = hashtoar(turn.output)
 
-        processed_dialogue.push(turn)
+        // eliminate car issue
+        var CarIndexV = _.findIndex(turn['output'], function(lab){ return _.values(JSON.parse(lab))[0]=='Leased Car'});
+        var CarIndex = _.findIndex(turn['output'], function(lab){ return _.keys(_.values(JSON.parse(lab))[0])[0]=='Leased Car'});
+
+        if ((CarIndex==-1) &&(CarIndexV==-1))
+          processed_dialogue.push(turn)
+
         context = []
       }
     }, this)
