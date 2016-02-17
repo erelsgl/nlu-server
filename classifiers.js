@@ -93,11 +93,26 @@ function getRule(sen)
 		throw new Error("DEBUGRULE: for some reason tokens is not in the sentence")
 
 	var sentence = JSON.parse(JSON.stringify(sen))
-
+ 
 	// first fix % sign
 	_.each(sentence['tokens'], function(token, key, list){
 		if (token.lemma=='%')
+		{
 			sentence['tokens'][key-1].lemma = sentence['tokens'][key-1].lemma + "%"
+			sentence['tokens'][key-1].word = sentence['tokens'][key-1].word + "%"
+		}
+
+		if ((token.lemma == 'agreement') && (sentence['tokens'][key-1]["lemma"] == "no"))
+		{
+			sentence['tokens'][key-1].lemma = "no agreement"
+			sentence['tokens'][key-1].word = "no agreement"
+		}
+
+		if ((token.lemma == 'car') && (sentence['tokens'][key-1]["lemma"] == "no"))
+		{
+			sentence['tokens'][key-1].lemma = "no car"
+			sentence['tokens'][key-1].word = "no car"
+		}
 	}, this)
 
 	// filter punct symbols
@@ -119,8 +134,8 @@ function getRule(sen)
 //	if (sentence['tokens'].length == 0)
 //		throw new Error("DEBUGRULE: for some reason tokens is empty")
 
-	console.log("DEBUGRULE: after % fix")
-	console.log(JSON.stringify(sentence, null, 4))
+	// console.log("DEBUGRULE: after % fix")
+	// console.log(JSON.stringify(sentence, null, 4))
 
 	var RuleValues = {
 
@@ -136,7 +151,8 @@ function getRule(sen)
 
 	var arAttrVal = ['salary','pension','fund','promotion','possibilities','working','hours','hour',
 					'job','description','60000','90000','120000','usd','fast','slow','track','8','9','10',
-					'qa','programmer','team','project','manager','car','leased','with','without','agreement']
+					'qa','programmer','team','project','manager','car','leased','with','without','agreement',
+					'0%','10%','15%','20%', 'no agreement', 'no car']
 
 	var ar_values = []
 	var ar_attrs = []
@@ -159,7 +175,7 @@ function getRule(sen)
 		// the biggest intersection
 		if (_.intersection(unigrams, attr.toLowerCase().split(" ")).length != 0)
 			ar_attrs.push(attr)
-		
+		getRule
 		_.each(values, function(value, key, list){
 			var temp = []
 			if (!_.isArray(value))
@@ -185,25 +201,25 @@ function getRule(sen)
 		ar_attrs.push("Leased Car")
 		var found = false
 
-		if (unigrams.indexOf("without")!=-1)
-		{
-			ar_values.push('Without leased car')
-			found = true
-		}
-		
-		if (unigrams.indexOf("with")!=-1)
-		{
-			ar_values.push('With leased car')
-			found = true
-		}
-		
-
 		if (unigrams.indexOf("agreement")!=-1)
 		{
 			ar_values.push('No agreement')
 			found = true
 		}
 
+		if (!found && unigrams.indexOf("without")!=-1)
+		{
+			ar_values.push('Without leased car')
+			found = true
+		}
+		
+		if (!found && unigrams.indexOf("with")!=-1)
+		{
+			ar_values.push('With leased car')
+			found = true
+		}
+		
+		
 		if (!found)
 			if ('basic-dependencies' in sentence)
 			{
@@ -240,7 +256,9 @@ function preProcessor_onlyIntent(value)
 		}
 
 		// clean all the attr and values stuff from the sentence
-		value.input.sentences = getRule(value.input.sentences[0]).cleaned
+		// every fe... clean by itself
+		//	value.input.sentences = getRule(value.input.sentences[0]).cleaned
+		value.input.sentences = value.input.sentences[0]
 	}
 
 	if ("output" in value)
@@ -331,7 +349,10 @@ function postProcessor(sample,classes)
 
 	console.log("DEBUGPOST: classes before check "+classes+classes.length)
 	if ((attrval[1].length > 0) && (classes.length==0))
+	{
+		console.log("DEBUGPOST: Offer was added as default intent")
 		classes.push("Offer")
+	}
 
 	console.log("DEBUGPOST: classes after check"+classes+classes.length)
 	console.log("DEBUGPOST: labels "+JSON.stringify(attrval))
@@ -1025,19 +1046,22 @@ function feContext(sample, features, train, featureOptions, callback) {
 	// offered
 	// unoffered
 	// both
-	
-	var context = {}
-	var sentence = ""
 
 	if ('input' in sample)
 		sample = sample.input
+
+	if (!('context' in sample))
+		throw new Error("Hey guys where is a context "+ JSON.stringify(sample))
 		
-	context = sample['context']
+	var context = sample['context']
 
 	if (context.length == 0)
 		features['NO_CONTEXT'] = 1
-		
-	console.log("DEBUGCONTEXT: context " + JSON.stringify(context))
+	
+	console.log("DEBUGCONTEXT: tokens : ")	
+	console.log(JSON.stringify(sample.sentences.tokens, null, 4))
+	console.log("DEBUGCONTEXT: text : "+ sample.text)	
+	console.log("DEBUGCONTEXT: context " + JSON.stringify(context) + " train "+train+" featureOptions "+JSON.stringify(featureOptions))
 
 	// var attrval = rules.findData(sentence)
 	// attrval[0] - attrs
@@ -1048,7 +1072,7 @@ function feContext(sample, features, train, featureOptions, callback) {
 	var intents = []
 	var values = []
 
-	console.log("DEBUGCONTEXT: labels of the sample "+attrval)
+	console.log("DEBUGCONTEXT: labels of the sample "+JSON.stringify(attrval))
 
 	/*if (featureOptions.previous_intent)
 	{
@@ -1089,7 +1113,7 @@ function feContext(sample, features, train, featureOptions, callback) {
 			values.push(_.values(_.values(obj)[0])[0])
 	}, this)
 
-	console.log("DEBUGCONTEXT: values "+ values)
+	console.log("DEBUGCONTEXT: values of the context "+ values)
 
 	console.log(JSON.stringify(values, null, 4))
 	console.log(JSON.stringify(attrval, null, 4))
@@ -1100,17 +1124,19 @@ function feContext(sample, features, train, featureOptions, callback) {
 		if (values.indexOf(value)!=-1)
 		{
 			if (featureOptions.offered) 
-				features['OFFERED_VALUE'] = 1
+				features['OFFEREDVALUE'] = 1
 		}
 		else
 		{
 			if (featureOptions.unoffered)
-				features['UNOFFERED_VALUE'] = 1
+				features['UNOFFEREDVALUE'] = 1
 		}
 	}, this)
 
 	// if (attrval[1].length == 0)
 	// 	features['UNMENTIONED_VALUE'] = 1
+
+	// features['END'] = 1
 
 	console.log("DEBUGCONTEXT: " + JSON.stringify(features))
 	
@@ -1141,8 +1167,8 @@ function feAsync(sam, features, train, featureOptions, callback) {
 	// clean the parse tree from attr and values 
 	sample.sentences = getRule(sample.sentences).cleaned
 
-	console.log(JSON.stringify("CLEANED", null, 4))
-	console.log(JSON.stringify(sample.sentences, null, 4))
+	// console.log(JSON.stringify("CLEANED", null, 4))
+	// console.log(JSON.stringify(sample.sentences, null, 4))
 
 	// sentence = sentence.toLowerCase().trim()
 	// sentence = regexpNormalizer(sentence)
@@ -1565,7 +1591,7 @@ module.exports = {
 		DS_comp_unigrams_async_context_both: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true, 'previous_intent':false}),
 		DS_comp_unigrams_async_context_offered: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':false, 'previous_intent':false}),
 		
-		DS_comp_unigrams_async_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
+		DS_comp_unigrams_async_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
 		DS_comp_unigrams_async_context_unoffered_sim: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
 
 		// DS_comp_unigrams_sync_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feContextSync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false,'car':true}),
