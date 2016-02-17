@@ -26,6 +26,7 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+var count_reject = false
 var stat_sig = false
 var check_ds = true
 var do_serialization_prod = false
@@ -380,8 +381,49 @@ if (shuffling)
 	})
 }
 */
+
+if (count_reject)
+{
+
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var utterset = bars.getsetcontext(data)
+	
+	utterset["test"] = _.shuffle(_.flatten(utterset["test"]))
+	utterset["train"] = _.shuffle(_.flatten(utterset["train"]))
+
+	var data = utterset["test"].concat(utterset["train"])
+
+	console.log(JSON.stringify(data.length, null, 4))
+	
+	var labels = {}
+
+	_.each(data, function(value, key, list){
+
+		if (value.output.length == 1)
+		{
+			var label = JSON.parse(value.output[0])
+			var intent = _.keys(label)[0]
+			var attr = _.keys(_.values(label)[0])[0]
+			if ((intent== "Reject") || (attr=="Leased Car"))
+			{
+				if (!(JSON.stringify(label) in labels))
+					labels[JSON.stringify(label)] = []
+
+				labels[JSON.stringify(label)].push(value.input.text)
+			}
+
+		}
+
+	}, this)
+
+	console.log(JSON.stringify(labels, null, 4))
+	process.exit(0)
+}
+
+
 if (check_ds)
 {
+
 
 // 70
 // 966
@@ -423,7 +465,19 @@ if (check_ds)
 
 	utterset["test"] = _.shuffle(_.flatten(utterset["test"]))
 	utterset["train"] = _.shuffle(_.flatten(utterset["train"]))
-	
+
+	/*var count = 0
+	_.each(utterset["test"].concat(utterset["train"]), function(value, key, list){
+		if (value.output.indexOf("{\"Offer\":{\"Pension Fund\":\"No agreement\"}}")!=-1)
+		{
+			console.log(JSON.stringify(value, null, 4))
+			count +=1
+		}
+	}, this)
+
+	console.log(JSON.stringify(count, null, 4))
+	process.exit(0)
+	*/
 	
 
 	// _.each(utterset["train"], function(value, key, list){
@@ -444,7 +498,7 @@ if (check_ds)
 
 // DS_comp_unigrams_async_context_unoffered_neg
 
-	trainAndTest.trainAndTest_async(classifier.DS_comp_unigrams_async_context_unoffered_neg, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	trainAndTest.trainAndTest_async(classifier.DS_comp_unigrams_async_context_unoffered, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		console.log("DONEDONE")
 		// console.log(JSON.stringify(results['stats'], null, 4))
 		// process.exit(0)
