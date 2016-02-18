@@ -3876,13 +3876,16 @@ function simulateds(dataset, size, params)
     // var FN = ( value["FN"] == 0 ) ? 1 : value["FN"]
     // params[param]["score"] = (value["TP"]+value["FN"])/F1
 
-    var F1 = value["F1"]
-    params[param]["score"] = 1/F1
 
-    if (F1 == 0) params[param]["score"] = 10
-    if (F1 >= 0.5) params[param]["score"] = 2
+    params[param]["score"] = 1/value["F1"]
+
+    if (value["F1"] == 0) params[param]["score"] = 10
+    if (value["F1"] >= 0.5) params[param]["score"] = 2
     
-    if (_.isNaN(F1) || _.isUndefined(F1) || _.isNull(F1)) params[param]["score"] = 1/0.1
+    if (_.isNaN(value["F1"]) || _.isUndefined(value["F1"]) || _.isNull(value["F1"])) params[param]["score"] = 1/0.1
+
+    if (value["FN"]!=0) params[param]["score"] *= value["FN"]
+
   }, this)
 
   console.log("DEBUGSIM: probabilities " +JSON.stringify(params, null, 4))
