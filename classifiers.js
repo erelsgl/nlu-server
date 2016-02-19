@@ -694,6 +694,10 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 
 	console.log(process.pid + " DEBUG: train: "+train + " options: "+JSON.stringify(featureOptions))
 
+	var cleaned = getRule(sample.sentences).cleaned
+	var cleaned_tokens = _.map(cleaned.tokens, function(num){ return num.word; });
+
+
 	feAsync(sample, {}, train, {}, function(err, featuresAsync){
 
 		innerFeatures = _.extend(innerFeatures, featuresAsync)
@@ -746,7 +750,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 			async.forEachOfSeries(poses, function(pos, unigram, callback2){ 
 			// async.forEachOfSeries(_.keys(poses), function(unigram, dind, callback2){ 
 				if (((!featureOptions.onlyroot) && (stopwords.indexOf(unigram)==-1))
-					|| ((featureOptions.onlyroot) && (roots.indexOf(unigram)!=-1)))
+					|| ((featureOptions.onlyroot) && (roots.indexOf(unigram)!=-1) && (cleaned_tokens,indexOf(unigram)!=-1)))
 				{
 					// if (!(unigram in poses))
 						// throw new Error(unigram + " is not found in "+poses)
