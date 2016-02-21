@@ -345,6 +345,15 @@ function postProcessor(sample,classes)
 	if (classes.length > 1)
 		console.log("DEBUGPOST: more than one intent "+ classes)
 
+	feContext(sample, {}, false, {'offered': true, 'unoffered':true}, function(err, feat){
+		if ('UNOFFEREDVALUE')
+		{
+			var index = classes.indexOf("Accept");
+			if (index !== -1) 
+    			classes[index] = "Offer"
+		}
+	})
+
 	var attrval = getRule(sample.sentences).labels
 
 	console.log("DEBUGPOST: classes before check "+classes+classes.length)
