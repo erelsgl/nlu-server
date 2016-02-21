@@ -10,45 +10,53 @@ var _ = require('underscore');
 
 var stat = {
         "15": {
-                "TC": { "0": 500, 
-			"1": 401 },
-                "TCBOC": { "0": 410, 
-			   "1": 611 }
-        },
+            "TC":      { "0": 500, 
+			             "1": 401 },
+            "TCBOC":   { "0": 410, 
+			             "1": 611 }
+                },
         "30": {
-		"TCBOC": { "1": 31, 
-                           "0": 30 },
+		      "TCBOC": { "1": 31, 
+                         "0": 30 },
                 "TC": { "0": 21, 
-			"1": 20 }
+			            "1": 20 }
         }
     }
 
+var statempty = {
+        "15": {
+            "TC":      { "1": 401 },
+            "TCBOC":   { "0": 410, 
+                         "1": 611 }
+                },
+        "30": {
+              "TCBOC": { "1": 31, 
+                         "0": 30 },
+                "TC": { "0": 21, 
+                        "1": 20 }
+        }
+    }
+
+
 describe('ClusterTest', function() {
 
-/*        it('trainlen', function() {
-        var train = [
-                [{'input':11, 'output':12},{'input':21, 'output':22}],
-                [{'input':31, 'output':12}]
-                ]
-                
-                var trainop = master.trainlen(train, 1)
-                trainop.length.should.equal(2)
+        it('emptyplot', function() {
+        
+            var output = master.plotlcagr('average'/*fold*/, statempty)
+            _.isEqual(output[1], ["15", 401, 510.5]).should.equal(true)
 
-                var trainop = master.trainlen(train, 2)
-                trainop.length.should.equal(3)
+            var output = master.plotlcagr(0/*fold*/, statempty)
+            _.isNaN(output[1][1]).should.equal(true)
+
         })
-*/
 
         it('plotlcagr', function() {
                 var output = master.plotlcagr(0/*fold*/, stat)
-
-	
                 _.isEqual(output, [     ["size","TC","TCBOC"],
                                         [ '15', 500, 410 ],
                                         [ '30', 21, 30 ] ]).should.equal(true)
 
                 var output = master.plotlcagr('average'/*fold*/, stat)
-		
                 _.isEqual(output, [     ["size","TC","TCBOC"],
                                         [ '15', 450.5, 510.5 ],
                                         [ '30', 20.5, 30.5 ] ]).should.equal(true)
