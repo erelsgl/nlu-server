@@ -1060,8 +1060,8 @@ function feContext(sample, features, train, featureOptions, callback) {
 		
 	var context = sample['context']
 
-	if (context.length == 0)
-		features['NO_CONTEXT'] = 1
+//	if (context.length == 0)
+//		features['NO_CONTEXT'] = 1
 	
 	console.log("DEBUGCONTEXT: text : "+ sample.text)	
 	console.log("DEBUGCONTEXT: context " + JSON.stringify(context) + " train "+train+" featureOptions "+JSON.stringify(featureOptions))
@@ -1181,9 +1181,9 @@ function feAsync(sam, features, train, featureOptions, callback) {
 
 	async.eachSeries(sample['sentences']['tokens'], function(token, callback_local) {
     	features[token.word.toLowerCase()] = 1
-    	console.log("DEBUGASYNC:"+JSON.stringify(features, null, 4))
     	callback_local()
  	}, function(err){
+	        console.log("DEBUGASYNC:"+JSON.stringify(features, null, 4))
  		callback(null, features)
 	})
 }
