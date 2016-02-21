@@ -157,15 +157,15 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 				console.log("DEBUGSIM: standard results")
                 console.log(JSON.stringify(stats['stats']['intents'], null, 4))
 
-				console.log(JSON.stringify(stats['data'], null, 4))
+//				console.log(JSON.stringify(stats['data'], null, 4))
 				console.log("DEBUGSIM: FP of Accepts")
 
 
 				_.each(stats['data'], function(value, key, list){
 					if ('FP' in value.explanation)
 					{
-						console.log(JSON.stringify(value['explanation'], null, 4))
-						if (_.keys(value['explanation']['FP'][0])[0]=="Accept")
+						//console.log(JSON.stringify(value['explanation'], null, 4))
+						if (_.keys(JSON.parse(value['explanation']['FP'][0]))[0]=="Accept")
 							{
 								console.log(JSON.stringify(value.input.text, null, 4))
 								console.log(JSON.stringify(value.explanation, null, 4))
@@ -225,8 +225,8 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 						console.log("DEBUGSIM: simulated results")
 						console.log(JSON.stringify(stats1['stats']['intents'], null, 4))
 
-						console.log("DEBUGSIM: simulated data")
-						console.log(JSON.stringify(stats1['data'], null, 4))
+				//		console.log("DEBUGSIM: simulated data")
+				//		console.log(JSON.stringify(stats1['data'], null, 4))
 
 			    		extractGlobal(_.values(classifierList)[1], mytrain, fold, stats1['stats'], glob_stats)	
 			    		console.log("DEBUGGLOB:")
