@@ -213,6 +213,7 @@ module.exports.test_async = function(classifier, testSet, callback) {
 			{
 				if (_.keys(JSON.parse(record['explanation']['FP'][0]))[0]=="Accept")
 					{
+						console.log("FP of Accept")
 						console.log(JSON.stringify(record.input.text, null, 4))
 						console.log(JSON.stringify(record.explanation, null, 4))
 					}			
