@@ -1063,8 +1063,6 @@ function feContext(sample, features, train, featureOptions, callback) {
 	if (context.length == 0)
 		features['NO_CONTEXT'] = 1
 	
-	console.log("DEBUGCONTEXT: tokens : ")	
-	console.log(JSON.stringify(sample.sentences.tokens, null, 4))
 	console.log("DEBUGCONTEXT: text : "+ sample.text)	
 	console.log("DEBUGCONTEXT: context " + JSON.stringify(context) + " train "+train+" featureOptions "+JSON.stringify(featureOptions))
 
@@ -1165,10 +1163,6 @@ function feAsync(sam, features, train, featureOptions, callback) {
 	if (_.isArray(sample['sentences']))
 	   throw new Error("feAsync is only for object sentences")
 
-	console.log("DEBUGASYNC:")
-
-	console.log(JSON.stringify(sample, null, 4))
-
 	// clean the parse tree from attr and values 
 	sample.sentences = getRule(sample.sentences).cleaned
 
@@ -1187,6 +1181,7 @@ function feAsync(sam, features, train, featureOptions, callback) {
 
 	async.eachSeries(sample['sentences']['tokens'], function(token, callback_local) {
     	features[token.word.toLowerCase()] = 1
+    	console.log("DEBUGASYNC:"+JSON.stringify(features, null, 4))
     	callback_local()
  	}, function(err){
  		callback(null, features)
