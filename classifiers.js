@@ -346,11 +346,14 @@ function postProcessor(sample,classes)
 		console.log("DEBUGPOST: more than one intent "+ classes)
 
 	feContext(sample, {}, false, {'offered': true, 'unoffered':true}, function(err, feat){
-		if ('UNOFFEREDVALUE')
+		console.log("DEBUGPOST: features to find uniffered "+feat)
+		if ('UNOFFEREDVALUE' in feat)
 		{
+			console.log("DEBUGPOST: unoffered is inside")
 			var index = classes.indexOf("Accept");
 			if (index !== -1) 
     			classes[index] = "Offer"
+			console.log("DEBUGPOST: classes "+classes)
 		}
 	})
 
