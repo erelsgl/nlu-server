@@ -161,7 +161,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 				console.log("DEBUGSIM: FP of Accepts")
 
 
-				_.each(stats['data'], function(value, key, list){
+				/*_.each(stats['data'], function(value, key, list){
 					if ('FP' in value.explanation)
 					{
 						//console.log(JSON.stringify(value['explanation'], null, 4))
@@ -172,7 +172,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 							}	
 					}
 				}, this)
-
+*/
 	    		
 				extractGlobal(_.values(classifierList)[0], mytrain, fold, stats['stats'], glob_stats)
 
