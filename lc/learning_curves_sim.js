@@ -153,7 +153,10 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
            	var mytrainset = (bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)
 
 	    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), bars.copyobj(testset), function(err, stats){
-		    		
+
+				console.log("DEBUGSIM: standard results")
+                                console.log(JSON.stringify(stats['stats']['intents'], null, 4))
+	    		
 				extractGlobal(_.values(classifierList)[0], mytrain, fold, stats['stats'], glob_stats)
 
 			 	var size_last_dial = _.flatten(mytrain[mytrain.length-1]).length
@@ -203,7 +206,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 	    			trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train), bars.copyobj(testset), function(err, stats1){
 
 						console.log("DEBUGSIM: simulated results")
-						console.log(JSON.stringify(stats1['stats'], null, 4))
+						console.log(JSON.stringify(stats1['stats']['intents'], null, 4))
 
 						console.log("DEBUGSIM: simulated data")
 						console.log(JSON.stringify(stats1['data'], null, 4))
