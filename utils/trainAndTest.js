@@ -206,6 +206,9 @@ module.exports.test_async = function(classifier, testSet, callback) {
 			record.output = testRecord.output
 			record.classified = classes
 			record.explanation = currentStats.addCasesHash(testRecord.output, classes, true)
+
+			console.log("TEST:"+JSON.stringify(record.explanation, null, 4))
+
 			currentStats.addIntentHash(testRecord.output, classes, true)
 	
 			console.log(record.explanation)			
