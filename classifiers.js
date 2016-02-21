@@ -1036,11 +1036,11 @@ function feNeg(sample, features, train, featureOptions, callback) {
 		delete features[sample['sentences']['basic-dependencies'][res]['dependentGloss']]
 		features[root.dependentGloss+"-"] = 1
 
-		features['ROOT_IS_NEGATED'] = 1
+		// features['ROOT_IS_NEGATED'] = 1
 	}
 	else
 	{
-		features['ROOT_IS_POSITIVE'] = 1
+		// features['ROOT_IS_POSITIVE'] = 1
 	}
 
 
@@ -1060,10 +1060,10 @@ function feContext(sample, features, train, featureOptions, callback) {
 		
 	var context = sample['context']
 
-	_.each(sample['sentences']['basic-dependencies'], function(dep, key, list){ 	
+	/*_.each(sample['sentences']['basic-dependencies'], function(dep, key, list){ 	
 		if (dep.dep == "ROOT")
 			features[dep.dependentGloss.toLowerCase()+"_ROOT"] = 1
-	}, this)	
+	}, this)	*/
 
 //	if (context.length == 0)
 //		features['NO_CONTEXT'] = 1
@@ -1596,8 +1596,8 @@ module.exports = {
 		DS_comp_unigrams_async_context_both: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true, 'previous_intent':false}),
 		DS_comp_unigrams_async_context_offered: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':false, 'previous_intent':false}),
 		
-		DS_comp_unigrams_async_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
-		DS_comp_unigrams_async_context_unoffered_sim: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
+		DS_comp_unigrams_async_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
+		DS_comp_unigrams_async_context_unoffered_sim: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
 
 		// DS_comp_unigrams_sync_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feContextSync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'previous_intent':false,'car':true}),
 		
