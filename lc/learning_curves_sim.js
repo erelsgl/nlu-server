@@ -158,7 +158,18 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
                 console.log(JSON.stringify(stats['stats']['intents'], null, 4))
 
 				console.log("DEBUGSIM: FP of Accepts")
-				console.log(JSON.stringify(stats['data'], null, 4))
+
+				_.each(stats['data'], function(value, key, list){
+					if ('FP' in value.explanation)
+					{
+						if (_.keys(value.explanation[0])[0]=="Accept")
+							{
+								console.log(JSON.stringify(value.input.text, null, 4))
+								console.log(JSON.stringify(value.explanation, null, 4))
+							}	
+					}
+				}, this)
+
 	    		
 				extractGlobal(_.values(classifierList)[0], mytrain, fold, stats['stats'], glob_stats)
 
@@ -259,3 +270,4 @@ if (process.argv[1] === __filename)
 		process.exit(0)
 	})
 }
+
