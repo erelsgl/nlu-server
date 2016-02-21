@@ -150,7 +150,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
            	}
        		else index += 5
 
-           	var mytrainset = (bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)
+           	var mytrainset = JSON.parse(JSON.stringify((bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)))
 
 	    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), bars.copyobj(testset), function(err, stats){
 
