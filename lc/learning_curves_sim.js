@@ -157,12 +157,14 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 				console.log("DEBUGSIM: standard results")
                 console.log(JSON.stringify(stats['stats']['intents'], null, 4))
 
+				console.log(JSON.stringify(stats['data'], null, 4))
 				console.log("DEBUGSIM: FP of Accepts")
+
 
 				_.each(stats['data'], function(value, key, list){
 					if ('FP' in value.explanation)
 					{
-						
+						console.log(JSON.stringify(value['explanation'], null, 4))
 						if (_.keys(value['explanation']['FP'][0])[0]=="Accept")
 							{
 								console.log(JSON.stringify(value.input.text, null, 4))
