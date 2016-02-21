@@ -162,7 +162,8 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 				_.each(stats['data'], function(value, key, list){
 					if ('FP' in value.explanation)
 					{
-						if (_.keys(value.explanation[0])[0]=="Accept")
+						
+						if (_.keys(value['explanation']['FP'][0])[0]=="Accept")
 							{
 								console.log(JSON.stringify(value.input.text, null, 4))
 								console.log(JSON.stringify(value.explanation, null, 4))
