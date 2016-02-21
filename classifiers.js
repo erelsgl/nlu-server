@@ -1060,6 +1060,11 @@ function feContext(sample, features, train, featureOptions, callback) {
 		
 	var context = sample['context']
 
+	_.each(sample['sentences']['basic-dependencies'], function(dep, key, list){ 	
+		if (dep.dep == "ROOT")
+			features[dep.dependentGloss.toLowerCase()+"_ROOT"] = 1
+	}, this)	
+
 //	if (context.length == 0)
 //		features['NO_CONTEXT'] = 1
 	
@@ -1073,7 +1078,7 @@ function feContext(sample, features, train, featureOptions, callback) {
 	var attrval = getRule(sample.sentences).labels
 
 	var intents = []
-	var values = []
+	var values = [] 
 
 	console.log("DEBUGCONTEXT: labels of the sample "+JSON.stringify(attrval))
 
