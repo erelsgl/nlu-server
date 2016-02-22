@@ -1031,16 +1031,39 @@ function feNeg(sample, features, train, featureOptions, callback) {
 	if (!('basic-dependencies' in sample['sentences']))
 		throw new Error("basic-dependencies not in the sample")
 
+	if (!('tokens' in sample['sentences']))
+		throw new Error("tokens not in the sample")
 
-	var root = _.find(sample['sentences']['basic-dependencies'], function(n){
-		return (n.dep == "ROOT")
-	});
+	var samplecopy = JSON.parse(JSON.stringify(sample))
+	var word_lemma = {}
 
-	var res = _.findIndex(sample['sentences']['basic-dependencies'], function(n){
-		return (n.dep=="neg" && n.governor == root.dependent)
-	});
+	_.each(samplecopy['sentences']['tokens'], function(token, key, list){
+		word_lemma[token.word.toLowerCase()] = token.lemma.toLowerCase()
+	}, this)
 
-	if (res!=-1)
+	_.each(samplecopy['sentences']['basic-dependencies'], function(dep, key, list){
+		if (dep.dep=="neg")
+		{
+			var lem = word_lemma[dep.governorGloss.toLowerCase()]
+			if (lem in features)
+			{
+				delete features[lem]
+				features[lem+"-"] = 1		
+			}
+		}
+
+	}, this)
+
+
+	// var root = _.find(sample['sentences']['basic-dependencies'], function(n){
+		// return (n.dep == "ROOT")
+	// });
+
+	// var res = _.findIndex(sample['sentences']['basic-dependencies'], function(n){
+		// return (n.dep=="neg" && n.governor == root.dependent)
+	// });
+
+	/*if (res!=-1)
 	{
 		console.log("DEBUGNEG:"+root.dependentGloss+" is negated")
 		delete features[root.dependentGloss]
@@ -1054,7 +1077,7 @@ function feNeg(sample, features, train, featureOptions, callback) {
 	{
 		// features['ROOT_IS_POSITIVE'] = 1
 	}
-
+*/
 
 	callback(null, features)
 }
@@ -1165,8 +1188,8 @@ function feContext(sample, features, train, featureOptions, callback) {
 
 function feAsync(sam, features, train, featureOptions, callback) {
 
-	var sentence = ""
 	var sample = JSON.parse(JSON.stringify(sam))
+	var filtr = ["PRP","IN","CC","DT"]
 	
 	if ("input" in sample)
 		sample = sample.input
@@ -1197,8 +1220,14 @@ function feAsync(sam, features, train, featureOptions, callback) {
 		throw new Error("feAsync: more than one sentence "+sample['sentences'].length)
 
 	async.eachSeries(sample['sentences']['tokens'], function(token, callback_local) {
-    	features[token.word.toLowerCase()] = 1
-    	callback_local()
+		if (filtr.indexOf(token.pos)==-1)
+		{
+    		features[token.lemma.toLowerCase()] = 1
+    		callback_local()
+    	}
+    	else
+    		callback_local()
+
  	}, function(err){
 	        console.log("DEBUGASYNC:"+JSON.stringify(features, null, 4))
  		callback(null, features)
