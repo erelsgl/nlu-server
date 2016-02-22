@@ -300,16 +300,29 @@ describe('Classifiers functions', function() {
       }
   }}
 		
+    var sample1 = {'input': {
+      'text': 'She loves me',
+      'sentences':{
+        'tokens':[{'word':'She','lemma':'she','pos':'PRP'},{'word':'loves','lemma':'love','pos':'VB'},{'word':'me','lemma':'me','pos':'CC'}]
+      }
+  }}
+    
 		async.waterfall([
    			function(callback1) {
             // var params = { 'unigrams': true, 'bigrams': false, 'allow_stopwords': true }
-        		var params = {}
-        		classifiers.feAsync(sample, {}, true, params, function (err, features){
-                console.log(JSON.stringify(features, null, 4))
+        		
+        		classifiers.feAsync(sample, {}, true, {}, function (err, features){
+                
 					     _.isEqual(features, {"i":1, "love": 1, "the":1, "nature": 1}).should.equal(true)
 					   callback1(null)
         		})
-        	}
+        	},
+          function(callback1) {
+            classifiers.feAsync(sample1, {}, true, {}, function (err, features){
+                _.isEqual(features, {"love": 1}).should.equal(true)
+                callback1(null)
+                })
+          }
     	], function (err, result) {
     			callback()
 			});
