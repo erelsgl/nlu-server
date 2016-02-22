@@ -85,12 +85,14 @@ describe('ClusterTest', function() {
                 })
 
         it('plotlcagrlenaverge', function() {
-                var stat = { "1": 3, "3": 6, "8": 3 }
-                master.plotlcagrlenaverge(stat).should.be.equal(4)
+            var stat = { "1": 3, "3": 6, "8": 3 }
+            master.plotlcagrlenaverge(stat).should.be.equal(4)
 
-                var stat = { "1": 3, "3": null, "8": 3 }
-                master.plotlcagrlenaverge(stat).should.be.equal(2)
+            var stat = { "1": 3, "3": null, "8": 3 }
+            master.plotlcagrlenaverge(stat).should.be.equal(2)
 
+            var stat = { "1": null, "3": null, "8": null }
+            _.isNaN(master.plotlcagrlenaverge(stat)).should.equal(true)
         })
 
 /*        it('hmcalc', function() {
