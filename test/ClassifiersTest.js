@@ -134,21 +134,27 @@ describe('Classifiers functions', function() {
         {
           'basic-dependencies':[
             {
-              "dep": "ROOT", 
-              "dependentGloss": 'love',
-              "dependent": "3"
+              "dep": "neg", 
+              "governorGloss": "pains"
+        
+            }
+          ],
+          'tokens':[
+            {
+              'word':'pains',
+              'lemma':'pain'
             },
             {
-              "dep": "neg", 
-              "governor": "3"
+              'word':'loves',
+              'lemma':'love'
             }
           ]
         }
       }
     }
 
-    classifiers.feNeg(sample, {'love':1, 'life':1}, true, {}, function(err, features){
-      _.isEqual(features, {"life": 1,"love-": 1}).should.equal(true)
+    classifiers.feNeg(sample, {'love':1, 'pain':1}, true, {}, function(err, features){
+      _.isEqual(features, {"love": 1, "pain-":1}).should.equal(true)
       callback()
     })    
    })
