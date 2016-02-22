@@ -202,10 +202,13 @@ stat = _.extend(statmod, _.object(stat_arr))
 
 		_.each(stat, function(folds, clas, list){
 			if (!(clas in classifier_hash))
-				classifier_hash[clas] = []
+				classifier_hash[clas] = undefined
+			else
+				throw new Error("for some reason "+clas+" is already defined")
 
 			if (fold in folds)
-				classifier_hash[clas].push(folds[fold])
+				// classifier_hash[clas].push(folds[fold])
+				classifier_hash[clas] = folds[fold]
 			else if (fold == "average")
 
 				/*
@@ -215,14 +218,16 @@ stat = _.extend(statmod, _.object(stat_arr))
 				PrecisionRecall should always return a undefined value
 				*/
 
-				classifier_hash[clas].push(plotlcagrlenaverge(folds))
+				// classifier_hash[clas].push(plotlcagrlenaverge(folds))
+				classifier_hash[clas] = plotlcagrlenaverge(folds)
 			else 
-				throw new Error("for some reason we don't have stats for this fold")
+				// throw new Error("for some reason we don't have stats for this fold")
 				// classifier_hash[clas].push(undefined)
+				classifier_hash[clas] = undefined
 			
 		}, this)
 
-	_.each(classifier_hash, function(value, key, list){ 
+	/*_.each(classifier_hash, function(value, key, list){ 
 
 		if (value.length > 1)
 			console.log("DEBUGMASTER: classifier_hash has more than one value")
@@ -235,7 +240,7 @@ stat = _.extend(statmod, _.object(stat_arr))
 
 		classifier_hash[key] = distance.average(value)
 	}, this)
-
+*/
 // 	{
 //     "DS_unigram": [
 //         0.5693558216457713
