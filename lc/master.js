@@ -137,7 +137,13 @@ function plot(fold, parameter, stat, baseline, sota)
 
 function plotlcagrlenaverge(stat)
 {
-	return distance.average(_.values(stat))
+	var values = _.values(stat)
+	values = _.map(values, function(num){ if (_.isNaN(num) || _.isUndefined(num) || _.isNull(num))
+											return 0 
+										else
+											return num}, this)
+
+	return distance.average(values)
 }
 
 // "DS_unigram": {
@@ -153,14 +159,13 @@ function plotlcagrlen(fold, stat)
 {
 
 // sort the hash 
-
 var statmod = {}
 
 if ('size' in stat)
 	statmod['size'] = stat['size']
 
 if ('dial' in stat)
-        statmod['dial'] = stat['dial']
+    statmod['dial'] = stat['dial']
 
 var stat_arr = _.sortBy(_.pairs(stat), function(num){ return num })
 stat = _.extend(statmod, _.object(stat_arr))
@@ -201,19 +206,20 @@ stat = _.extend(statmod, _.object(stat_arr))
 
 			if (fold in folds)
 				classifier_hash[clas].push(folds[fold])
-			else
-			{
-				if (fold == "average")
-					classifier_hash[clas].push(plotlcagrlenaverge(folds))
-			}
+			else if (fold == "average")
 
-			if (classifier_hash[clas].length > 1)
-				console.log("IHA it's an array")
+				/*
+				here "average" is calculated
+				what if some folds doesn't have a value when it's undefined like F1
+				then in any case we should devide by the number of real folds
+				PrecisionRecall should always return a undefined value
+				*/
 
+				classifier_hash[clas].push(plotlcagrlenaverge(folds))
+			else 
+				classifier_hash[clas].push(undefined)
+			
 		}, this)
-
-	// console.log(JSON.stringify(classifier_hash, null, 4))
-	// console.log("------------------------------------")
 
 	_.each(classifier_hash, function(value, key, list){ 
 		classifier_hash[key] = distance.average(value)
