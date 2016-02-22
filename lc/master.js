@@ -138,6 +138,12 @@ function plot(fold, parameter, stat, baseline, sota)
 function plotlcagrlenaverge(stat)
 {
 	var values = _.values(stat)
+
+	var uniq = _.uniq(values)
+
+	if ((uniq.length == 1) && ((_.isNaN(uniq[0]) || _.isUndefined(uniq[0]) || _.isNull(uniq[0]))))
+		return NaN
+	
 	values = _.map(values, function(num){ if (_.isNaN(num) || _.isUndefined(num) || _.isNull(num))
 											return 0 
 										else
