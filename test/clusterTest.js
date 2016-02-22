@@ -66,17 +66,18 @@ describe('ClusterTest', function() {
         it('plotlcagrlen', function() {
 
                 var stat = {
-	               	"dial": { "0": 5,
-				  "1": 7,
-				  "2": 9,
-				  "3": 11
-				
-					},
-		        "TC": { "0": 1, 
-				"1": 2, 
-				"2": 3, 
-				"3": 4 }
-                }
+	               	"dial": {   "0": 5,
+				                "1": 7,
+				                "2": 9,
+				                "3": 11
+							},
+		              "TC": { 
+                                "0": 1, 
+				                "1": 2, 
+				                "2": 3, 
+				                "3": 4 
+                            }
+                        }
 
                 _.isEqual(master.plotlcagrlen(2, stat), { dial: 9, TC: 3 }).should.equal(true)
                 _.isEqual(master.plotlcagrlen('average', stat), { dial: 8, TC: 2.5 }).should.equal(true)
