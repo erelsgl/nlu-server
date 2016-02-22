@@ -217,11 +217,22 @@ stat = _.extend(statmod, _.object(stat_arr))
 
 				classifier_hash[clas].push(plotlcagrlenaverge(folds))
 			else 
-				classifier_hash[clas].push(undefined)
+				throw new Error("for some reason we don't have stats for this fold")
+				// classifier_hash[clas].push(undefined)
 			
 		}, this)
 
 	_.each(classifier_hash, function(value, key, list){ 
+
+		if (value.length > 1)
+			console.log("DEBUGMASTER: classifier_hash has more than one value")
+	
+		value = _.map(value, function(num){ if (_.isNaN(num) || _.isUndefined(num) || _.isNull(num))
+											return 0 
+										else
+											return num})
+
+
 		classifier_hash[key] = distance.average(value)
 	}, this)
 
