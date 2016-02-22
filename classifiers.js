@@ -127,7 +127,7 @@ function getRule(sen)
 		if (!('lemma' in token))
 			throw new Error('DEBUGRULE: lemma is not in the token')
 
-		if ((token.pos!='.')&&(token.pos!=',')&&(token.lemma!='%')&&(token.lemma!='$'))
+		if ((token.lemma!='.')&&(token.lemma!=',')&&(token.lemma!='%')&&(token.lemma!='$'))
 			sentence['tokens'].push(token)
 	}, this)
 
@@ -338,6 +338,8 @@ function postProcessor(sample,classes)
 {
 	
 	// console.log(JSON.stringify(sample, null, 4))
+	if (!('context' in sample))
+		throw new Error("context is not in the sampe "+ sample)
 
 	if (!_.isArray(classes))
 		classes = [classes]
@@ -356,6 +358,14 @@ function postProcessor(sample,classes)
 			console.log("DEBUGPOST: classes "+classes)
 		}
 	})
+
+	// no accept:true after reject
+	if (_.keys(JSON.parse(sample['context'][0]))[0] == "Reject")
+	{
+		var index = classes.indexOf("Accept");
+		if (index !== -1) 
+    		classes[index] = "NoIntent"
+	}
 
 	var attrval = getRule(sample.sentences).labels
 
