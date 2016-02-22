@@ -46,7 +46,7 @@ describe('ClusterTest', function() {
             _.isEqual(output[1], ["15", 401, 510.5]).should.equal(true)
 
             var output = master.plotlcagr(0/*fold*/, statempty)
-            _.isNaN(output[1][1]).should.equal(true)
+            _.isUndefined(output[1][1]).should.equal(true)
 
         })
 
