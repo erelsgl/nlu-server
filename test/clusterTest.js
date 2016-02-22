@@ -87,6 +87,9 @@ describe('ClusterTest', function() {
                 var stat = { "1": 3, "3": 6, "8": 3 }
                 master.plotlcagrlenaverge(stat).should.be.equal(4)
 
+                var stat = { "1": 3, "3": null, "8": 3 }
+                master.plotlcagrlenaverge(stat).should.be.equal(2)
+
         })
 
 /*        it('hmcalc', function() {
