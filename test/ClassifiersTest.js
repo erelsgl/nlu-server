@@ -172,7 +172,7 @@ describe('Classifiers functions', function() {
    				}}
 				
 				classifiers.feContext(sample, {}, true, {'offered':true, 'unoffered':true}, function(err, features){
-   					("UNOFFERED_VALUE" in features).should.equal(true)
+          _.isEqual(features, {'UNOFFEREDVALUE':1}).should.equal(true)
             callback1()
    				}) 
     		},
@@ -218,7 +218,7 @@ describe('Classifiers functions', function() {
    				}}
 				
 				classifiers.feContext(sample, {}, true, {'offered':false, 'unoffered':true}, function(err, features){
-					_.isEqual(features, {"UNOFFERED_VALUE": 1}).should.equal(true)
+					_.isEqual(features, {"UNOFFEREDVALUE": 1}).should.equal(true)
 
  					callback1()
    				}) 
