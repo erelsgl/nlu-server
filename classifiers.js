@@ -1201,7 +1201,7 @@ function feContext(sample, features, train, featureOptions, callback) {
 function feAsync(sam, features, train, featureOptions, callback) {
 
 	var sample = JSON.parse(JSON.stringify(sam))
-	var filtr = ["PRP","IN","CC","DT","PRP$"]
+	var filtr = ["PRP","IN","CC","DT","PRP$","TO"]
 	
 	if ("input" in sample)
 		sample = sample.input
