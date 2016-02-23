@@ -360,7 +360,6 @@ function postProcessor(sample,classes)
 	})
 
 	// no accept:true after reject
-	console.log(JSON.stringify(sample['context'], null, 4))
 	if (sample['context'].length > 0)
 	{
 		if (_.keys(JSON.parse(sample['context'][0]))[0] == "Reject")
