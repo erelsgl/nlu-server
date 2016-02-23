@@ -217,6 +217,14 @@ module.exports.test_async = function(classifier, testSet, callback) {
 						console.log(JSON.stringify(record.input.text, null, 4))
 						console.log(JSON.stringify(record.explanation, null, 4))
 					}			
+				
+				if (_.keys(JSON.parse(record['explanation']['FP'][0]))[0]=="Reject")
+                                        {
+                                                console.log("FP of Reject")
+                                                console.log(JSON.stringify(record.input.text, null, 4))
+                                                console.log(JSON.stringify(record.explanation, null, 4))
+                                        }
+
 			}
 					
 			currentStats.addIntentHash(testRecord.output, classes, true)
