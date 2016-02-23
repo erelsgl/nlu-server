@@ -1176,11 +1176,13 @@ function feContext(sample, features, train, featureOptions, callback) {
 
 		if (values.indexOf(value)!=-1)
 		{
+			console.log("DEBUGCONTEXT: value "+ value + " is in the context")
 			if (featureOptions.offered) 
 				features['OFFEREDVALUE'] = 1
 		}
 		else
 		{
+			console.log("DEBUGCONTEXT: value "+ value + " is not in the context")
 			if (featureOptions.unoffered)
 				features['UNOFFEREDVALUE'] = 1
 		}
@@ -1199,7 +1201,7 @@ function feContext(sample, features, train, featureOptions, callback) {
 function feAsync(sam, features, train, featureOptions, callback) {
 
 	var sample = JSON.parse(JSON.stringify(sam))
-	var filtr = ["PRP","IN","CC","DT"]
+	var filtr = ["PRP","IN","CC","DT","PRP$"]
 	
 	if ("input" in sample)
 		sample = sample.input
@@ -1244,7 +1246,7 @@ function feAsync(sam, features, train, featureOptions, callback) {
 	})
 }
 
-function feAsyncSeq(sam, features, train, featureOptions, callback) {
+/*function feAsyncSeq(sam, features, train, featureOptions, callback) {
 
 	var sentence = ""
 	var sample = JSON.parse(JSON.stringify(sam))
@@ -1283,7 +1285,7 @@ function feAsyncSeq(sam, features, train, featureOptions, callback) {
  		callback(null, features)
 	})
 }
-
+*/
 // function featureExtractorUBC(sentence, features) {
 
 // 	if (_.isObject(sentence)) sentence = sentence['text']
