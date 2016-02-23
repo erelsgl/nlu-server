@@ -360,11 +360,14 @@ function postProcessor(sample,classes)
 	})
 
 	// no accept:true after reject
-	if (_.keys(JSON.parse(sample['context'][0]))[0] == "Reject")
+	if (sample['context'].length>0)
 	{
-		var index = classes.indexOf("Accept");
-		if (index !== -1) 
-    		classes[index] = "NoIntent"
+		if (_.keys(JSON.parse(sample['context'][0]))[0] == "Reject")
+		{
+			var index = classes.indexOf("Accept");
+			if (index !== -1) 
+	    		classes[index] = "NoIntent"
+		}
 	}
 
 	var attrval = getRule(sample.sentences).labels
