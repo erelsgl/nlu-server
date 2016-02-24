@@ -417,12 +417,12 @@ describe('Classifiers functions', function() {
         		})
     		},
         function(callback1) {
-            var params = {'scale':0, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test': false}
+            var params = {'scale':0, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': 5, 'expand_test': true}
           classifiers.feExpansion(sampleNeg, {}, true, params, function (err, features){
-              console.log(JSON.stringify(features, null, 4))
-              process.exit(0)
-          // _.isEqual(features, { i:1, love: 1, the:1, life: 1,enjoys: 1,liking: 1,prefers: 1,appreciates: 1 }).should.equal(true)
-          // callback1(null)
+          
+
+	 _.isEqual(features, {"i": 1,"love": 1,"the": 1,"life": 1,"enjoys-": 1,"liking-": 1,"prefers-": 1,"appreciates-": 1}).should.equal(true)
+          callback1(null)
             })
         },
     		function(callback1) {
