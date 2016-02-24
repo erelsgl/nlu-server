@@ -127,6 +127,9 @@ function getRule(sen)
 		if (!('lemma' in token))
 			throw new Error('DEBUGRULE: lemma is not in the token')
 
+		if (!('word' in token))
+			throw new Error('DEBUGRULE: word is not in the token')
+
 		if ((token.lemma!='.')&&(token.lemma!=',')&&(token.lemma!='%')&&(token.lemma!='$'))
 			sentence['tokens'].push(token)
 	}, this)
@@ -152,7 +155,7 @@ function getRule(sen)
 	var arAttrVal = ['salary','pension','fund','promotion','possibilities','working','hours','hour',
 					'job','description','60000','90000','120000','usd','fast','slow','track','8','9','10',
 					'qa','programmer','team','project','manager','car','leased','with','without','agreement',
-					'0%','10%','15%','20%', 'no agreement', 'no car']
+					'0%','10%','15%','20%', 'no agreement', 'no car','position']
 
 	var ar_values = []
 	var ar_attrs = []
@@ -758,12 +761,20 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 				
 				_.each(sample['input']['sentences']['tokens'], function(token, key, list){ 
 					// _.each(sentence['tokens'], function(token, key, list){ 	
-					poses[token.word.toLowerCase()] = token.pos
+					poses[token.word.toLowerCase()] = {
+														'pos':token.pos,
+														'lemma': token.lemma,
+														'neg': false
+														}
 				}, this)	
 				
 				_.each(sample['input']['sentences']['basic-dependencies'], function(dep, key, list){ 	
+
 					if (dep.dep == "ROOT")
 						roots.push(dep.dependentGloss.toLowerCase())
+
+					if (dep.dep == "neg")
+						poses[dep.governorGloss.toLowerCase()]["neg"] = true
 				}, this)	
 				// }, this)
 
@@ -774,13 +785,13 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 
 			async.forEachOfSeries(poses, function(pos, unigram, callback2){ 
 			// async.forEachOfSeries(_.keys(poses), function(unigram, dind, callback2){ 
-				if (((!featureOptions.onlyroot) && (stopwords.indexOf(unigram)==-1))
-					|| ((featureOptions.onlyroot) && (roots.indexOf(unigram)!=-1) && (cleaned_tokens.indexOf(unigram)!=-1)))
+				if (((!featureOptions.onlyroot) && (stopwords.indexOf(unigram.word)==-1))
+					|| ((featureOptions.onlyroot) && (roots.indexOf(unigram.word)!=-1) && (cleaned_tokens.indexOf(unigram.word)!=-1)))
 				{
 					// if (!(unigram in poses))
 						// throw new Error(unigram + " is not found in "+poses)
 				
-					async_adapter.getppdb(unigram, pos, featureOptions.scale, featureOptions.relation,  function(err, results){
+					async_adapter.getppdb(unigram.lemma, pos, featureOptions.scale, featureOptions.relation,  function(err, results){
 						
 						console.log("getppdb train" + train + " "+JSON.stringify(unigram))			
 		
@@ -796,7 +807,8 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 							results = results.slice(0, featureOptions.best_results)
 
 						_.each(results, function(expan, key, list){ 
-							innerFeatures[expan.toLowerCase()] = 1
+
+							innerFeatures[expan.toLowerCase()+ unigram.neg?"-":""] = 1
 						}, this)
 						callback2()
 					})
