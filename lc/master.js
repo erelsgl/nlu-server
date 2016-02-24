@@ -91,8 +91,8 @@ function extractGlobal(workerstats, stat)
 	var fold = workerstats["fold"]
 
 	_.each(attributes, function(attr, key, list){ 
-		if (!_.isNull(workerstats['stats'][attr]))
-		{
+	//	if (!_.isNull(workerstats['stats'][attr]))
+	//	{
 			if (!(attr in stat)) stat[attr]={}
 			if (!(trainsize in stat[attr])) stat[attr][trainsize]={}
 			
@@ -104,7 +104,7 @@ function extractGlobal(workerstats, stat)
 			
 			stat[attr][trainsize][classifier][fold] = workerstats['stats'][attr]
 			stat[attr][trainsize]["dial"][fold] = workerstats["trainsizeuttr"]
-		}
+	//	}
 	}, this)
 }
 
@@ -321,7 +321,11 @@ function plotlcagr(fold, stat)
 
 function getstringlc(output)
 {
-	return _.map(output, function(value){ return value.join("\t") }).join("\n")
+	return _.map(output, function(value){ 
+
+		value = _.map(value, function(num){ return (_.isNaN(num)||_.isNull(num))? "null":num })
+
+		return value.join("\t") }).join("\n")
 }
 
 function cleanFolder(dir)
@@ -335,6 +339,8 @@ function cleanFolder(dir)
 
 function plotlc(fold, parameter, stat)
 {
+	
+	console.log(JSON.stringify(stat, null, 4))
 
 	fs.appendFileSync(plotfile, fold)
 	fs.appendFileSync(plotfile, JSON.stringify(parameter, null, 4))
@@ -344,7 +350,13 @@ function plotlc(fold, parameter, stat)
 
 	var classifiers = output[0].slice(1)
 
+	console.log("OUTPUTDATA:")
+	console.log(JSON.stringify(output, null, 4))
+
 	var string = getstringlc(output)
+	
+	console.log("OUTPUTSTRING:")
+	console.log(JSON.stringify(string, null, 4))
 
 	var mapfile = __dirname+"/learning_curves/"+fold+"_"+parameter
 
@@ -443,7 +455,8 @@ if (process.argv[1] === __filename)
 	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_unigrams_async']
 	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_unigrams_async_context_unoffered_prev']
 	//var classifiers = ['DS_composition','DS_comp_embed_d100_average_unoffered','DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test']
-	var classifiers = ['DS_comp_embed_d100_average_unoffered','DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test']
+	var classifiers = ['DS_comp_unigrams_async_context_unoffered']
+	//var classifiers = ['DS_comp_embed_d100_average_unoffered','DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test']
 	//var classifiers = ['DS_comp_embed_d100_average_unoffered','DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test']
 	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_embed_d300_average_unoffered']
 
