@@ -41,10 +41,7 @@ var statempty = {
 describe('ClusterTest', function() {
 
         it('getstringlc', function() {  
-
-            console.log(JSON.stringify("re", null, 4))
-            var str = master.getstringlc([[null, null , 5]])
-            console.log(JSON.stringify(str, null, 4))
+            master.getstringlc([[null, null , 5]]).should.equal("null\tnull\t5")
         })
 
         it('emptyplot', function() {
