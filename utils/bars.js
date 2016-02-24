@@ -3855,6 +3855,7 @@ function distribute(params) {
   var probs = _.sortBy(dist, function(num){ return num[1] })
 
   var r = Math.random()
+  var r = Math.random()
   var i = 0
   var acc = 0
   
@@ -3890,6 +3891,9 @@ function simulateds(dataset, size, params)
     if (value["FN"]!=0) params[param]["score"] *= value["FN"]
 
   }, this)
+
+params["Accept"]["score"]*=3
+params["Reject"]["score"]*=3
 
   console.log("DEBUGSIM: probabilities " +JSON.stringify(params, null, 4))
 
