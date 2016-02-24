@@ -382,6 +382,24 @@ describe('Classifiers functions', function() {
         	'input':{'text': "everything is great",
 			'sentences':[]},
 		}
+
+    var sampleNeg = {
+                // 'text': "I love the life test",
+                'sentences':
+                                {
+                                        'basic-dependencies':[
+                                                {"dep": "ROOT", "dependentGloss": "loves"},
+                                                {"dep": "neg", "governorGloss": "loves"}
+                                        ],
+                                        'tokens':[
+                                                {'word': 'I','pos': 'ABC','lemma':'I'},
+                                                {'word': 'loves','pos': 'VB','lemma':'love'},
+                                                {'word': 'the','pos': 'ABC','lemma':'the'},
+                                                {'word': 'life','pos': 'NN','lemma':'life'},
+                                        ]
+                                }
+                        }
+
 	         
 		async.waterfall([
    			function(callback1) {
@@ -398,6 +416,15 @@ describe('Classifiers functions', function() {
 					callback1(null)
         		})
     		},
+        function(callback1) {
+            var params = {'scale':0, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test': false}
+          classifiers.feExpansion(sampleNeg, {}, true, params, function (err, features){
+              console.log(JSON.stringify(features, null, 4))
+              process.exit(0)
+          // _.isEqual(features, { i:1, love: 1, the:1, life: 1,enjoys: 1,liking: 1,prefers: 1,appreciates: 1 }).should.equal(true)
+          // callback1(null)
+            })
+        },
     		function(callback1) {
         		var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results': 5, 'expand_test': false}
    				classifiers.feExpansion(sample, {}, true, params, function (err, features){
