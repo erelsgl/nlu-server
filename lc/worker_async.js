@@ -73,8 +73,7 @@ process.on('message', function(message) {
 			    			stats1[key] = value
 			    	}, this)
 
-				console.log("STATS="+JSON.stringify(stats1, null, 4))
-
+				console.log("STATS: fold:"+fold+" trainsize:"+mytrain.length+" classifier:"+classifier+" "+JSON.stringify(stats1, null, 4))
 
 					var results = {
 						'classifier': classifier,
