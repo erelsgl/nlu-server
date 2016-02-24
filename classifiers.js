@@ -783,33 +783,39 @@ function feExpansion(sample, features, train, featureOptions, callback) {
     		},
 		    function(poses, roots, callbackll) {
 
-			async.forEachOfSeries(poses, function(pos, unigram, callback2){ 
+			async.forEachOfSeries(poses, function(token, unigram, callback2){ 
 			// async.forEachOfSeries(_.keys(poses), function(unigram, dind, callback2){ 
-				if (((!featureOptions.onlyroot) && (stopwords.indexOf(unigram.word)==-1))
-					|| ((featureOptions.onlyroot) && (roots.indexOf(unigram.word)!=-1) && (cleaned_tokens.indexOf(unigram.word)!=-1)))
+				if (((!featureOptions.onlyroot) && (stopwords.indexOf(unigram)==-1))
+					|| ((featureOptions.onlyroot) && (roots.indexOf(unigram)!=-1) && (cleaned_tokens.indexOf(unigram)!=-1)))
 				{
 					// if (!(unigram in poses))
 						// throw new Error(unigram + " is not found in "+poses)
 				
-					async_adapter.getppdb(unigram.lemma, pos, featureOptions.scale, featureOptions.relation,  function(err, results){
+					console.log("DEBUG EXP: ready to expand train" + train + " "+JSON.stringify(token))			
+
+					async_adapter.getppdb(token.lemma, token.pos, featureOptions.scale, featureOptions.relation,  function(err, results){
 						
-						console.log("getppdb train" + train + " "+JSON.stringify(unigram))			
 		
 						// get rid of phrases
-						console.log(process.pid + " DEBUG EXP: results with phrases "+results.length)
+						console.log("DEBUG EXP: results with phrases "+results.length)
 						results = _.filter(results, function(num){ return num[0].indexOf(" ") == -1 })
-						console.log(process.pid + " DEBUG EXP: results without phrases "+results.length)
+						console.log("DEBUG EXP: results without phrases "+results.length)
 
 						results = _.map(results, function(num){ return num[0] });
 						results = _.uniq(results)	
 		
 						if (!_.isUndefined(featureOptions.best_results))
 							results = results.slice(0, featureOptions.best_results)
+		
+						console.log("DEBUGEXP: results to add: "+results)
 
 						_.each(results, function(expan, key, list){ 
-
-							innerFeatures[expan.toLowerCase()+ unigram.neg?"-":""] = 1
+						if (token.neg) expan+="-"
+						
+							innerFeatures[expan.toLowerCase()] = 1
 						}, this)
+						console.log("DEBUGEXP: permanent features "+JSON.stringify(innerFeatures))
+			
 						callback2()
 					})
 				}
@@ -818,7 +824,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 			}, function(err){callbackll()})
 		}],
 		function (err, result) {
-			console.log(process.pid + " DEBUG EXP: "+sample.input.text)
+//			console.log(process.pid + " DEBUG EXP: "+sample.input.text)
 			console.log(process.pid + " DEBUG EXP: EXPANSIONED "+_.keys(innerFeatures)+ " train"+train+" featureOptions"+JSON.stringify(featureOptions))
 			callback(null, innerFeatures)
 	     });
