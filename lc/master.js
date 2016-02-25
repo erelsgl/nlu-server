@@ -459,8 +459,8 @@ if (process.argv[1] === __filename)
 	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_unigrams_async']
 	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_unigrams_async_context_unoffered_prev']
 	//var classifiers = ['DS_composition','DS_comp_embed_d100_average_unoffered','DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test']
-	var classifiers = ['DS_comp_unigrams_async_context_unoffered']
-	//var classifiers = ['DS_comp_embed_d100_average_unoffered','DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test']
+	// var classifiers = ['DS_comp_unigrams_async_context_unoffered']
+	var classifiers = ['DS_comp_embed_d100_average_unoffered','DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_5_unoffered_yes_offer_yes_test']
 	//var classifiers = ['DS_comp_embed_d100_average_unoffered','DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test']
 	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_embed_d300_average_unoffered']
 
