@@ -786,8 +786,12 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 			async.forEachOfSeries(poses, function(token, unigram, callback2){ 
 			// async.forEachOfSeries(_.keys(poses), function(unigram, dind, callback2){ 
 				if (((!featureOptions.onlyroot) && (stopwords.indexOf(unigram)==-1))
-					|| ((featureOptions.onlyroot) && (roots.indexOf(unigram)!=-1) && (cleaned_tokens.indexOf(unigram)!=-1)))
+					|| ((featureOptions.onlyroot) && (roots.indexOf(unigram)!=-1) && (token.pos.toLowerCase(),indexOf("vb")!=-1) && (cleaned_tokens.indexOf(unigram)!=-1)))
 				{
+
+					// we any case we are taking lemma and verb so take VB pos tag
+					if (featureOptions.onlyroot)
+						token.pos = "VB"
 					// if (!(unigram in poses))
 						// throw new Error(unigram + " is not found in "+poses)
 				
