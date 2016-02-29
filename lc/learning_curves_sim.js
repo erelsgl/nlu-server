@@ -116,7 +116,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 	async.timesSeries(numOfFolds, function(fold, callback_fold){
 
 		console.log("FOLD "+fold)
-		var index = 4
+		var index = 2
 
 		var data = partitions.partitions_consistent_by_fold(dataset, numOfFolds, fold)
 
@@ -148,14 +148,14 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 			{
                	index += 2
            	}
-       		else index += 5
+       		else index += 10
 
            	var mytrainset = JSON.parse(JSON.stringify((bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)))
 
 	    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), bars.copyobj(testset), function(err, stats){
 
 				console.log("DEBUGSIM: standard results")
-                console.log(JSON.stringify(stats['stats']['intents'], null, 4))
+                console.log(JSON.stringify(stats['stats'], null, 4))
 
 //				console.log(JSON.stringify(stats['data'], null, 4))
 //				console.log("DEBUGSIM: FP of Accepts")
@@ -223,7 +223,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 	    			trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train), bars.copyobj(testset), function(err, stats1){
 
 						console.log("DEBUGSIM: simulated results")
-						console.log(JSON.stringify(stats1['stats']['intents'], null, 4))
+						console.log(JSON.stringify(stats1['stats'], null, 4))
 
 				//		console.log("DEBUGSIM: simulated data")
 				//		console.log(JSON.stringify(stats1['data'], null, 4))
@@ -260,11 +260,13 @@ if (process.argv[1] === __filename)
 	// var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
 	// var utterset = bars.getsetcontext(dataset)
 	// var dataset = utterset["train"].concat(utterset["test"])
+	
+	
 
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
 	var utterset = bars.getsetcontext(data)
 	var dataset = utterset["train"].concat(utterset["test"])
-	//dataset = _.shuffle(dataset)
+	dataset = _.shuffle(dataset)
 
 	// dataset = dataset.slice(0,10)
 
