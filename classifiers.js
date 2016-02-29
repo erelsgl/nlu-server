@@ -783,14 +783,17 @@ function feExpansion(sample, features, train, featureOptions, callback) {
     		},
 		    function(poses, roots, callbackll) {
 
+			var allowedpos = ["vb","vbd","vbg","vbn","vbp","vbz","uh","wp","wdt"]
+
 			async.forEachOfSeries(poses, function(token, unigram, callback2){ 
 			// async.forEachOfSeries(_.keys(poses), function(unigram, dind, callback2){ 
 				if (((!featureOptions.onlyroot) && (stopwords.indexOf(unigram)==-1))
-					|| ((featureOptions.onlyroot) && (roots.indexOf(unigram)!=-1) && (token.pos.toLowerCase(),indexOf("vb")!=-1) && (cleaned_tokens.indexOf(unigram)!=-1)))
+					|| ((featureOptions.onlyroot) && (roots.indexOf(unigram)!=-1) && (allowedpos.indexOf(token.pos.toLowerCase())!=-1) && (cleaned_tokens.indexOf(unigram)!=-1)))
 				{
 
-					// we any case we are taking lemma and verb so take VB pos tag
-					if (featureOptions.onlyroot)
+				// we any case we are taking lemma and verb so take VB pos tag
+					
+					if ((featureOptions.onlyroot) && (token.pos.toLowerCase().indexOf("vb")!=-1))
 						token.pos = "VB"
 					// if (!(unigram in poses))
 						// throw new Error(unigram + " is not found in "+poses)
@@ -1227,6 +1230,7 @@ function feAsync(sam, features, train, featureOptions, callback) {
 
 	var sample = JSON.parse(JSON.stringify(sam))
 	var filtr = ["PRP","IN","CC","DT","PRP$","TO"]
+	var lemfil = ['be']
 	
 	if ("input" in sample)
 		sample = sample.input
@@ -1257,7 +1261,7 @@ function feAsync(sam, features, train, featureOptions, callback) {
 		throw new Error("feAsync: more than one sentence "+sample['sentences'].length)
 
 	async.eachSeries(sample['sentences']['tokens'], function(token, callback_local) {
-		if (filtr.indexOf(token.pos)==-1)
+		if ((filtr.indexOf(token.pos)==-1) && (lemfil.indexOf(token.lemma)==-1))
 		{
     		features[token.lemma.toLowerCase()] = 1
     		callback_local()
@@ -1631,7 +1635,7 @@ module.exports = {
 //		DS_bigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		// DS_bigram_split: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
 		DS_comp_embed_d300_average_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 10, 'aggregate':'average', 'allow_stopwords': true, 'unigrams':true, 'bigrams':false, 'offered':false, 'unoffered':true}),
-		DS_comp_embed_d100_average_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true, 'unigrams':true, 'bigrams':false, 'offered':false, 'unoffered':true}),
+		DS_comp_embed_d100_average_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true, 'unigrams':true, 'bigrams':false, 'offered':true, 'unoffered':true}),
 		DS_comp_embed_d50_average_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 8, 'aggregate':'average', 'allow_stopwords': true, 'unigrams':true, 'bigrams':false, 'offered':false, 'unoffered':true}),
 		DS_comp_embed_d25_average_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 7, 'aggregate':'average', 'allow_stopwords': true,'unigrams':true, 'bigrams':false,'offered':false, 'unoffered':true }),
 
@@ -1649,7 +1653,7 @@ module.exports = {
 		DS_comp_exp_3_root_3_unoffered_no_offer_yes_test: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results':3, 'offered':false, 'unoffered':true, 'expand_test':true}),
 		DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':3, 'offered':false, 'unoffered':true, 'expand_test':true}),
 		DS_comp_exp_3_root_7_unoffered_yes_offer_yes_test: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':7, 'offered':false, 'unoffered':true, 'expand_test':true}),
-		DS_comp_exp_3_root_5_unoffered_yes_offer_yes_test: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':5, 'offered':false, 'unoffered':true, 'expand_test':true}),
+		DS_comp_exp_3_root_5_unoffered_yes_offer_yes_test: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':5, 'offered':true, 'unoffered':true, 'expand_test':true}),
 		DS_comp_exp_3_root_3_unoffered_yes_offer_no_test: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':3, 'offered':false, 'unoffered':true, 'expand_test':false}),
 		DS_comp_exp_3_root_3_unoffered_no_offer_no_test: enhance(SvmLinearMulticlassifier, [feExpansion, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results':3, 'offered':false, 'unoffered':true, 'expand_test':false}),
 		DS_comp_exp_3_undefined_root: enhance(SvmLinearMulticlassifier, [feExpansion], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': undefined}),
