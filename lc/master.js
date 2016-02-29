@@ -139,17 +139,31 @@ function plotlcagrlenaverge(stat)
 {
 	var values = _.values(stat)
 
-	var uniq = _.uniq(values)
+//	var uniq = _.uniq(values)
 
-	if ((uniq.length == 1) && ((_.isNaN(uniq[0]) || _.isUndefined(uniq[0]) || _.isNull(uniq[0]))))
-		return NaN
+//	if ((uniq.length == 1) && ((_.isNaN(uniq[0]) || _.isUndefined(uniq[0]) || _.isNull(uniq[0]))))
+//		return NaN
 	
-	values = _.map(values, function(num){ if (_.isNaN(num) || _.isUndefined(num) || _.isNull(num))
-											return 0 
-										else
-											return num}, this)
+//	values = _.map(values, function(num){ if (_.isNaN(num) || _.isUndefined(num) || _.isNull(num))
+//											return 0 
+//										else
+//
+//											return num}, this)
 
-	return distance.average(values)
+	if (isVectorNumber(values)) 
+		return distance.average(values)
+	else
+		return null
+}
+
+
+function isVectorNumber(a) {
+  var n;
+  for (n=0; n < a.length; n++) {
+   if (isNaN(parseFloat(a[n])) || !isFinite(a[n]))
+    return false
+  }
+  return true
 }
 
 // "DS_unigram": {
@@ -440,7 +454,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 if (process.argv[1] === __filename)
 {
-	var folds = 10
+	var folds = 5
 
 	// 	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_exp']
 	//	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_exp']
