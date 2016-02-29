@@ -3892,9 +3892,15 @@ function simulateds(dataset, size, params)
 
   }, this)
 
-params["Accept"]["score"]*=3
-params["Reject"]["score"]*=3
-
+/*var params = {
+	'Accept':{'score':0.4},
+	'Reject':{'score':0.4},
+	'Offer':{'score':0.01},
+	'Greet':{'score':0.1},
+	'Query':{'score':0.1},
+	'Quit':{'score':0.1}
+}
+*/
   console.log("DEBUGSIM: probabilities " +JSON.stringify(params, null, 4))
 
   var sim_dataset = []
@@ -3914,6 +3920,7 @@ params["Reject"]["score"]*=3
       // if (num.output.length == 0) return false
         // else
 
+	dataset = _.shuffle(dataset)
 
           // });
 
