@@ -873,8 +873,25 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 
 	async.eachSeries(_.keys(features), function(word, callback1){
 		
+		var negated = false
+
+		if (featureOptions.minus_neg && word.indexOf(-)!=-1)
+		{
+			console.log("DEBUGEMB: word: "+word+" is negated")
+			word = word.replace(/-/g, '')
+			negated = true
+		}
+
 		async_adapter.getembed(word, featureOptions.embdeddb, function(err, emb){
 			delete features[word]
+
+			if (negated)
+			{
+				emb =_.map(emb, function(num){ return num * (-1); });
+				console.log("DEBUGEMB: word: "+word+" vector is reversed")
+				negated = false
+			}
+
 			embs.push(emb)
 			callback1()
 		})
@@ -1635,7 +1652,8 @@ module.exports = {
 //		DS_bigram: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, undefined, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, true),
 		// DS_bigram_split: enhance(SvmLinearBinaryRelevanceClassifier, featureExtractorUBC, inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true),
 		DS_comp_embed_d300_average_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 10, 'aggregate':'average', 'allow_stopwords': true, 'unigrams':true, 'bigrams':false, 'offered':false, 'unoffered':true}),
-		DS_comp_embed_d100_average_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true, 'unigrams':true, 'bigrams':false, 'offered':true, 'unoffered':true}),
+		DS_comp_embed_d100_average_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true, 'unigrams':true, 'bigrams':false, 'offered':true, 'unoffered':true, 'minus_neg':false}),
+		DS_comp_embed_d100_average_unoffered_neg: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true, 'unigrams':true, 'bigrams':false, 'offered':true, 'unoffered':true, 'minus_neg':true}),
 		DS_comp_embed_d50_average_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 8, 'aggregate':'average', 'allow_stopwords': true, 'unigrams':true, 'bigrams':false, 'offered':false, 'unoffered':true}),
 		DS_comp_embed_d25_average_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'embdeddb': 7, 'aggregate':'average', 'allow_stopwords': true,'unigrams':true, 'bigrams':false,'offered':false, 'unoffered':true }),
 
