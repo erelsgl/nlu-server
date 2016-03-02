@@ -874,8 +874,9 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 	async.eachSeries(_.keys(features), function(word, callback1){
 		
 		var negated = false
+		console.log("DEBUGEMB: word: "+word+" features "+featureOptions.minus_neg)
 
-		if (featureOptions.minus_neg && word.indexOf(-)!=-1)
+		if (featureOptions.minus_neg && word.indexOf("-")!=-1)
 		{
 			console.log("DEBUGEMB: word: "+word+" is negated")
 			word = word.replace(/-/g, '')
