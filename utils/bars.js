@@ -3892,15 +3892,15 @@ function simulateds(dataset, size, params)
 
   }, this)
 
-/*var params = {
+var params = {
 	'Accept':{'score':0.4},
 	'Reject':{'score':0.4},
-	'Offer':{'score':0.01},
+	'Offer':{'score':0.1},
 	'Greet':{'score':0.1},
-	'Query':{'score':0.1},
+	'Query':{'score':0.2},
 	'Quit':{'score':0.1}
 }
-*/
+
   console.log("DEBUGSIM: probabilities " +JSON.stringify(params, null, 4))
 
   var sim_dataset = []
