@@ -3673,7 +3673,7 @@ function getsetcontext(dataset)
         var CarIndexV = _.findIndex(turn['output'], function(lab){ return _.values(JSON.parse(lab))[0]=='Leased Car'});
         var CarIndex = _.findIndex(turn['output'], function(lab){ return _.keys(_.values(JSON.parse(lab))[0])[0]=='Leased Car'});
 
-        if ((CarIndex==-1) &&(CarIndexV==-1) && (QuitIndex==-1))
+        // if ((CarIndex==-1) &&(CarIndexV==-1) && (QuitIndex==-1))
           processed_dialogue.push(turn)
 
         context = []
@@ -3867,7 +3867,7 @@ while ((acc += probs[i][1]) <= r)
   return probs[i][0];
 }
 
-function simulateds(dataset, size, params)
+/*function simulateds(dataset, size, params)
 {
   
   console.log("simulateds: params = "+JSON.stringify(params) + " size = " + size)
@@ -3921,6 +3921,80 @@ var params = {
         // else
 
 	dataset = _.shuffle(dataset)
+
+          // });
+
+    var elem_index = _.findIndex(dataset, function(utterance){ 
+        if (utterance.output.length == 0)
+          return false
+        else
+          return _.keys(JSON.parse(utterance.output[0]))[0] == label });
+    
+    if (elem_index == -1)
+      // if there is no such a label delete it from the param
+      delete params[label]
+    else
+    {
+      // push to the simulated dataset
+      sim_dataset.push(dataset[elem_index])
+      // delete it from the buffer set
+      dataset.splice(elem_index, 1);
+    }
+  }
+  
+  // return generated-simulated and filtered set
+  return {"simulated":sim_dataset, "dataset":dataset, "report":report}
+}
+*/
+
+function returndist(dataset)
+{
+  var intents = []
+  _.each(dataset, function(value, key, list){
+      intents = intents.concat(_.map(value.output, function(num){ return _.keys(JSON.parse(num))[0] }))
+  }, this)
+  
+  // console.log(JSON.stringify(intents, null, 4))
+
+  return _.countBy(intents, function(num) { return num })
+}
+
+function simulateds(dataset, size, golddist)
+{
+  
+  dataset = _.flatten(dataset)
+  var dist = returndist(dataset)
+
+  console.log("DEBUGSIM: gold distribution "+JSON.stringify(dist))  
+
+  var params = {}
+  var report = {}
+
+  //  take it as is
+  _.each(dist, function(value, key, list){
+    params[key] = {'score':value}
+  }, this)
+
+  console.log("DEBUGSIM: distribution "+JSON.stringify(params))  
+  
+  var sim_dataset = []
+
+  while (sim_dataset.length < size) {
+    
+    var label = distribute(params)
+
+    if (!(label in report))
+      report[label] = 0
+
+    report[label] += 1
+    // var elem_index = _.findIndex(dataset, function(utterance){ return ((utterance.output.length == 1) && (utterance.output.indexOf(label)!=-1)); });
+   
+    // var dataset_copy = JSON.parse(JSON.stringify(dataset))
+    // dataset_copy = _.map(dataset_copy, function(num){ 
+      // if (num.output.length == 0) return false
+        // else
+
+    dataset = _.shuffle(dataset)
 
           // });
 
