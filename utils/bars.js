@@ -3834,8 +3834,6 @@ function filterlabels(labels)
 function distribute(rep) {
 
   var params = JSON.parse(JSON.stringify(rep))
-
-  console.log("params:"+JSON.stringify(params))
   
   var totalscore = _.reduce(params, function(memo, num){ return memo + num["score"]; }, 0);
   console.log("totalscore:"+JSON.stringify(totalscore))
@@ -3843,9 +3841,7 @@ function distribute(rep) {
   _.each(params, function(value, param, list){
     params[param]["ratio"] = params[param]["score"]/totalscore
   }, this) 
-  console.log("params ratio:"+JSON.stringify(params))
-
-
+  
   var dist = []
   _.each(params, function(value, key, list){
     dist.push([key, value["ratio"]])
