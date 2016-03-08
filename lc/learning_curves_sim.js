@@ -213,7 +213,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 			    	sim_train = sim_train.concat(results["simulated"])
 
 			    	console.log("DEBUGSIM: aggregated output distribution "+JSON.stringify(_.countBy(sim_train, function(num) { 
-			    		
+
 						if (num.output.length == 0) 
 							return -1
 						else
@@ -279,6 +279,10 @@ if (process.argv[1] === __filename)
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
 	var utterset = bars.getsetcontext(data)
 	var dataset = utterset["train"].concat(utterset["test"])
+
+	// filter dataset
+
+	dataset = _.filter(dataset, function(item){ return item.output.length == 1 })
 
 	// dataset = _.shuffle(dataset)
 	// dataset = dataset.slice(0,10)
