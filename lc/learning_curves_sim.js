@@ -116,20 +116,32 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 	async.timesSeries(numOfFolds, function(fold, callback_fold){
 
 		console.log("FOLD "+fold)
-		var index = 2
+		var index = 1
 
 		var data = partitions.partitions_consistent_by_fold(dataset, numOfFolds, fold)
 
 		var testset = (bars.isDialogue(data['test']) ? _.flatten(data['test']) : data['test'])
-		var sim_train = _.flatten(data['train'].slice(0, index-1))
-		var buffer_train = _.flatten(data['train'].slice(index+1))
+		
+		console.log("DEBUGSIM: size of the train before resizing "+data['train'].length)
+		var gold = data['train'].splice(0,5)
+		console.log("DEBUGSIM: size of the gold "+gold.length)
+		console.log("DEBUGSIM: size of the train after resizing "+data['train'].length)
 
-		console.log("DEBUGSIM: aggregated stats START "+JSON.stringify(_.countBy(sim_train, function(num) { 
-						if (num.output.length == 0) 
-							return -1
-						else
-							return _.keys(JSON.parse(num.output[0]))[0] })
-					))
+		// var sim_train = _.flatten(data['train'].slice(0, index-1))
+		// var sim_train = _.flatten(data['train'].slice(0, index))
+
+		var sim_train = []
+		
+		// I think it's not important to do so
+		var buffer_train = _.flatten(data['train'])
+		// var buffer_train = _.flatten(data['train'].slice(index+1))
+
+		// console.log("DEBUGSIM: aggregated stats START "+JSON.stringify(_.countBy(sim_train, function(num) { 
+		// 				if (num.output.length == 0) 
+		// 					return -1
+		// 				else
+		// 					return _.keys(JSON.parse(num.output[0]))[0] })
+		// 			))
 
 		async.whilst(
 
@@ -176,24 +188,25 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 	    		
 				extractGlobal(_.values(classifierList)[0], mytrain, fold, stats['stats'], glob_stats)
 
-			 	var size_last_dial = _.flatten(mytrain[mytrain.length-1]).length
+			 	// var size_last_dial = _.flatten(mytrain[mytrain.length-1]).length
+			 	
 
 			 	// console.log(size_last_dial+" size of the last dialogue")
 		    	// console.log(buffer_train.length+" size of the buffer train")
 
-		    	cross_batch_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), function(err, stats2){
+		    	// cross_batch_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), function(err, stats2){
 								
-					var results = bars.simulateds(buffer_train, size_last_dial, stats2)
+					var results = bars.simulateds(buffer_train, mytrainset.length, gold)
 
 					console.log("DEBUGSIM: size of strandard " + mytrain.length + " in utterances "+ mytrainset.length)
 					console.log("DEBUGSIM: stats after 2 folds cross validation on buffer train")
-					console.log(JSON.stringify(stats2, null, 4))
+					
 		    		console.log("DEBUGSIM:"+results["simulated"].length+" size of the simulated train")
 		    	 	console.log("DEBUGSIM:"+buffer_train.length+" size of the buffer train before simulation")
 		    	 	console.log("DEBUGSIM:"+results["dataset"].length+" size of the buffer train after simulation")
 		    	 	console.log("DEBUGSIM:"+JSON.stringify(results["report"]))
 		    	 	console.log("DEBUGSIM: size of aggregated simulated before plus "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
-		    	 	// console.log("DEBUGSIM: aggregated stats "+JSON.stringify(_.countBy(sim_train, function(num) { return _.keys(JSON.parse(num.output[0]))[0] })))
+		    	 	console.log("DEBUGSIM: aggregated stats "+JSON.stringify(_.countBy(sim_train, function(num) { return _.keys(JSON.parse(num.output[0]))[0] })))
 
 					buffer_train = results["dataset"]
 			    	sim_train = sim_train.concat(results["simulated"])
@@ -240,7 +253,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 
 						callback_while();
 			    	})
-				})
+				// })
 			})
     	},
     		function (err, n) {
@@ -260,14 +273,12 @@ if (process.argv[1] === __filename)
 	// var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
 	// var utterset = bars.getsetcontext(dataset)
 	// var dataset = utterset["train"].concat(utterset["test"])
-	
-	
 
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
 	var utterset = bars.getsetcontext(data)
 	var dataset = utterset["train"].concat(utterset["test"])
-//	dataset = _.shuffle(dataset)
 
+	// dataset = _.shuffle(dataset)
 	// dataset = dataset.slice(0,10)
 
 	learning_curves(classifierList, dataset, 1/*step*/, 1/*step0*/, 30/*limit*/,  3/*numOfFolds*/, function(){
