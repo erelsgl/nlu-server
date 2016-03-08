@@ -3831,7 +3831,9 @@ function filterlabels(labels)
     return labels_output
 }
 
-function distribute(params) {
+function distribute(rep) {
+
+  var params = JSON.parse(JSON.stringify(rep))
 
   console.log("params:"+JSON.stringify(params))
   
