@@ -463,8 +463,20 @@ if (check_ds)
 	console.log(utterset["test"].length)
 	console.log(_.flatten(utterset["test"]).length)
 
-	utterset["test"] = _.shuffle(_.flatten(utterset["test"]))
-	utterset["train"] = _.shuffle(_.flatten(utterset["train"]))
+	utterset["test"] = _.flatten(utterset["test"])
+	utterset["train"] = _.flatten(utterset["train"])
+
+	// concat tokens for primitive classification
+
+	_.each(utterset["test"], function(utterance, key, list){
+		var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
+		utterset["test"][key]['input']['sentences'] = [{'tokens': tokens}]
+	}, this)
+
+	_.each(utterset["train"], function(utterance, key, list){
+		var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
+		utterset["train"][key]['input']['sentences'] = [{'tokens': tokens}]
+	}, this)
 
 	/*var count = 0
 	_.each(utterset["test"].concat(utterset["train"]), function(value, key, list){
@@ -500,8 +512,11 @@ if (check_ds)
 
 
 	// trainAndTest.trainAndTest_async(classifier.DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
-	trainAndTest.trainAndTest_async(classifier.DS_comp_exp_3_root_5_unoffered_yes_offer_yes_test, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
-		console.log("DONEDONE")
+	
+
+	// trainAndTest.trainAndTest_async(classifier.DS_comp_exp_3_root_5_unoffered_yes_offer_yes_test, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	trainAndTest.trainAndTest_async(classifier.DS_primitive, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+		
 		// console.log(JSON.stringify(results['stats'], null, 4))
 		// process.exit(0)
 
@@ -519,7 +534,7 @@ if (check_ds)
 		// 	}
 		// }, this)
 
-		console.log(JSON.stringify(results, null, 4))
+		console.log(JSON.stringify(results['stats'], null, 4))
 
 		process.exit(0)
 
