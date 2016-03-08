@@ -145,7 +145,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 
 		async.whilst(
 
-			function () { return ((index <= data['train'].length) && buffer_train.length > 100) },
+			function () { return ((index <= data['train'].length) && buffer_train.length > 3) },
     		function (callback_while) {
 
 			console.log("INDEX "+index)
@@ -282,6 +282,8 @@ if (process.argv[1] === __filename)
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
 	var utterset = bars.getsetcontext(data)
 	var dataset = utterset["train"].concat(utterset["test"])
+
+	dataset = _.filter(dataset, function(num){ return num.length > 15 });
 
 	// dataset = _.shuffle(dataset)
 	// dataset = dataset.slice(0,10)
