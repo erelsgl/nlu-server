@@ -3850,12 +3850,11 @@ function distribute(params) {
   }, this)
 
   dist = _.shuffle(dist)
-  dist = _.shuffle(dist)
+//  dist = _.shuffle(dist)
 
   var probs = _.sortBy(dist, function(num){ return num[1] })
 
-  var r = Math.random()
-  var r = Math.random()
+  var r = _.random(0,99)/100
   var i = 0
   var acc = 0
   
