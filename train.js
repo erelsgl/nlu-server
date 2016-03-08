@@ -26,9 +26,10 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+var check_stats = true
 var count_reject = false
 var stat_sig = false
-var check_ds = true
+var check_ds = false
 var do_serialization_prod = false
 var check_single_multi = false
 var shuffling = false
@@ -118,6 +119,23 @@ function walkSync(dir, filelist) {
   return filelist;
 }
 
+if (check_stats)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var utterset = bars.getsetcontext(data)
+	var dataset = utterset["train"].concat(utterset["test"])
+
+	var length = []
+	
+	_.each(dataset, function(value, key, list){
+		length.push(value.length)
+	}, this)
+
+	length = _.sortBy(length, function(num){ return num });
+
+	console.log(JSON.stringify(length, null, 4))
+	process.exit(0)
+}
 
 if (binary_seg)
 {
