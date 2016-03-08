@@ -3673,6 +3673,7 @@ function getsetcontext(dataset)
         var CarIndexV = _.findIndex(turn['output'], function(lab){ return _.values(JSON.parse(lab))[0]=='Leased Car'});
         var CarIndex = _.findIndex(turn['output'], function(lab){ return _.keys(_.values(JSON.parse(lab))[0])[0]=='Leased Car'});
 
+        if (QuitIndex==-1)
         // if ((CarIndex==-1) &&(CarIndexV==-1) && (QuitIndex==-1))
           processed_dialogue.push(turn)
 
@@ -3968,8 +3969,9 @@ function simulateds(dataset, size, golddist)
   var report = {}
 
   //  take it as is
+
   _.each(dist, function(value, key, list){
-    params[key] = {'score':value}
+    params[key] = {'score':  Math.pow(value, 0.5);}
   }, this)
 
   console.log("DEBUGSIM: distribution "+JSON.stringify(params))  
