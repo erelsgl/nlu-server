@@ -210,12 +210,12 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 		    	 	console.log("DEBUGSIM:"+results["dataset"].length+" size of the buffer train after simulation with utterances")
 		    	 	console.log("DEBUGSIM: intent dist of added part to simulation "+JSON.stringify(results["report"]))
 		    	 	console.log("DEBUGSIM: size of aggregated simulated before plus "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
-		    	 	console.log("DEBUGSIM: intent distribution of simulated dataset "+JSON.stringify(_.countBy(sim_train, function(num) { return _.keys(JSON.parse(num.output[0]))[0] })))
+		    	 	console.log("DEBUGSIM: intent distribution of simulated dataset before concatenation "+JSON.stringify(_.countBy(sim_train, function(num) { return _.keys(JSON.parse(num.output[0]))[0] })))
 
 					buffer_train = results["dataset"]
 			    	sim_train = sim_train.concat(results["simulated"])
 
-			    	console.log("DEBUGSIM: aggregated output distribution "+JSON.stringify(_.countBy(sim_train, function(num) { 
+			    	console.log("DEBUGSIM: intent dist of simulated dataset after concatenation "+JSON.stringify(_.countBy(sim_train, function(num) { 
 
 						if (num.output.length == 0) 
 							return -1
@@ -223,7 +223,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 							return _.keys(JSON.parse(num.output[0]))[0] })
 					))
 
-					console.log("DEBUGSIM: standard output distribution "+JSON.stringify(_.countBy(mytrainset, function(num) { 
+					console.log("DEBUGSIM: intent dist of untouched dataset "+JSON.stringify(_.countBy(mytrainset, function(num) { 
 						if (num.output.length == 0) 
 							return -1
 						else
