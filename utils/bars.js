@@ -3971,7 +3971,7 @@ function simulateds(dataset, size, golddist)
   //  take it as is
 
   _.each(dist, function(value, key, list){
-    params[key] = {'score':  Math.pow(value, 0.5);}
+    params[key] = {'score':  Math.pow(value, 0.5)}
   }, this)
 
   console.log("DEBUGSIM: distribution "+JSON.stringify(params))  
