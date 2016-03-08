@@ -164,6 +164,9 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 
            	var mytrainset = JSON.parse(JSON.stringify((bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)))
 
+           	// filter train to contain only single label utterances
+           	var mytrainset = _.filter(mytrainset, function(num){ return num.output.length == 1 })
+
 	    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), bars.copyobj(testset), function(err, stats){
 
 				console.log("DEBUGSIM: standard results")
@@ -279,10 +282,6 @@ if (process.argv[1] === __filename)
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
 	var utterset = bars.getsetcontext(data)
 	var dataset = utterset["train"].concat(utterset["test"])
-
-	// filter dataset
-
-	dataset = _.filter(dataset, function(item){ return item.output.length == 1 })
 
 	// dataset = _.shuffle(dataset)
 	// dataset = dataset.slice(0,10)
