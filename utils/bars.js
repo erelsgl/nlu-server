@@ -3836,7 +3836,7 @@ function distribute(rep) {
   var params = JSON.parse(JSON.stringify(rep))
   
   var totalscore = _.reduce(params, function(memo, num){ return memo + num["score"]; }, 0);
-  console.log("totalscore:"+JSON.stringify(totalscore))
+  //console.log("totalscore:"+JSON.stringify(totalscore))
 
   _.each(params, function(value, param, list){
     params[param]["ratio"] = params[param]["score"]/totalscore
@@ -3856,7 +3856,7 @@ function distribute(rep) {
   var i = 0
   var acc = 0
   
-console.log("probs: "+JSON.stringify(probs))
+//console.log("probs: "+JSON.stringify(probs))
 
 while ((acc += probs[i][1]) <= r)
       i++;
