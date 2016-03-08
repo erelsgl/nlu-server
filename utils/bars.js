@@ -20,6 +20,8 @@ var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
 var Hierarchy = require(__dirname+'/../Hierarchy');
 var distance = require(__dirname+'/distance');
 
+const walker = require('walker-sample');
+
 // var limdu = require("limdu");
 // var ftrs = limdu.features
 
@@ -3834,24 +3836,23 @@ function filterlabels(labels)
 
 function distribute(rep) {
 
+  var table = walker(rep)
+  return table()
+
   var params = JSON.parse(JSON.stringify(rep))
   
-  var totalscore = _.reduce(params, function(memo, num){ return memo + num["score"]; }, 0);
+  var totalscore = _.reduce(params, function(memo, num){ return memo + num[0]; }, 0);
   //console.log("totalscore:"+JSON.stringify(totalscore))
 
+  var dist = []
   _.each(params, function(value, param, list){
-    params[param]["ratio"] = params[param]["score"]/totalscore
+    dist.push([value[0]/totalscore, value[1]])
   }, this) 
   
-  var dist = []
-  _.each(params, function(value, key, list){
-    dist.push([key, value["ratio"]])
-  }, this)
-
   dist = _.shuffle(dist)
 //  dist = _.shuffle(dist)
 
-  var probs = _.sortBy(dist, function(num){ return num[1] })
+  var probs = _.sortBy(dist, function(num){ return num[0] })
 
   var r = _.random(0,99)/100
   var i = 0
@@ -3859,10 +3860,10 @@ function distribute(rep) {
   
 //console.log("probs: "+JSON.stringify(probs))
 
-while ((acc += probs[i][1]) <= r)
+while ((acc += probs[i][0]) <= r)
       i++;
 
-  return probs[i][0];
+  return probs[i][1];
 }
 
 /*function simulateds(dataset, size, params)
@@ -3965,13 +3966,15 @@ function simulateds(dataset, size, golddist)
 
   console.log("DEBUGSIM: gold distribution "+JSON.stringify(dist))  
 
-  var params = {}
+  var params = []
   var report = {}
 
   //  take it as is
 
   _.each(dist, function(value, key, list){
-    params[key] = {'score':  Math.pow(value, 0.5)}
+
+    // params[key] = {'score':  Math.pow(value, 0.5)}
+    params.push([Math.pow(value, 0.5), key])
   }, this)
 
   console.log("DEBUGSIM: distribution "+JSON.stringify(params))  
