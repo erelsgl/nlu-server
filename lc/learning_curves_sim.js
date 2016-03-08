@@ -196,22 +196,24 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 
 		    	// cross_batch_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), function(err, stats2){
 								
-					var results = bars.simulateds(buffer_train, mytrainset.length, gold)
+					var results = bars.simulateds(buffer_train, mytrainset.length - sim_train.length, gold)
 
-					console.log("DEBUGSIM: size of strandard " + mytrain.length + " in utterances "+ mytrainset.length)
-					console.log("DEBUGSIM: stats after 2 folds cross validation on buffer train")
+					console.log("DEBUGSIM: size of strandard train" + mytrain.length + " in utterances "+ mytrainset.length)
+					console.log("DEBUGSIM: "+(mytrainset.length - sim_train.length)+ " utterances needed to be simulated")
+					// console.log("DEBUGSIM: stats after 2 folds cross validation on buffer train")
 					
 		    		console.log("DEBUGSIM:"+results["simulated"].length+" size of the simulated train")
-		    	 	console.log("DEBUGSIM:"+buffer_train.length+" size of the buffer train before simulation")
-		    	 	console.log("DEBUGSIM:"+results["dataset"].length+" size of the buffer train after simulation")
-		    	 	console.log("DEBUGSIM:"+JSON.stringify(results["report"]))
+		    	 	console.log("DEBUGSIM:"+buffer_train.length+" size of the buffer train before simulation with utterances")
+		    	 	console.log("DEBUGSIM:"+results["dataset"].length+" size of the buffer train after simulation with utterances")
+		    	 	console.log("DEBUGSIM: intent dist of added part to simulation "+JSON.stringify(results["report"]))
 		    	 	console.log("DEBUGSIM: size of aggregated simulated before plus "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
-		    	 	console.log("DEBUGSIM: aggregated stats "+JSON.stringify(_.countBy(sim_train, function(num) { return _.keys(JSON.parse(num.output[0]))[0] })))
+		    	 	console.log("DEBUGSIM: intent distribution of simulated dataset "+JSON.stringify(_.countBy(sim_train, function(num) { return _.keys(JSON.parse(num.output[0]))[0] })))
 
 					buffer_train = results["dataset"]
 			    	sim_train = sim_train.concat(results["simulated"])
 
-					console.log("DEBUGSIM: aggregated output distribution "+JSON.stringify(_.countBy(sim_train, function(num) { 
+			    	console.log("DEBUGSIM: aggregated output distribution "+JSON.stringify(_.countBy(sim_train, function(num) { 
+			    		
 						if (num.output.length == 0) 
 							return -1
 						else
