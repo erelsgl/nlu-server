@@ -181,7 +181,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 	    	// trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), bars.copyobj(testset), function(err, stats){
 
 		    	console.log("DEBUGSIM:"+results1["simulated"].length+" size of the simulated train")
-				console.log("DEBUGSIM: Simualte dist for the first run:"+JSON.stringify(getDist(sim_train1)))
+				console.log("DEBUGSIM: Simualte dist for the first run:"+JSON.stringify(bars.getDist(sim_train1)))
 				console.log("DEBUGSIM: Results for the first run")
                 console.log(JSON.stringify(stats['stats'], null, 4))
 
@@ -210,7 +210,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 	    			trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train), bars.copyobj(testset), function(err, stats1){
 
 		    			console.log("DEBUGSIM:"+results["simulated"].length+" size of the simulated train")
-						console.log("DEBUGSIM: Simualte dist for the second run:"+JSON.stringify(getDist(sim_train)))
+						console.log("DEBUGSIM: Simualte dist for the second run:"+JSON.stringify(bars.getDist(sim_train)))
 						console.log("DEBUGSIM: Results for the second run")
                 
 						console.log(JSON.stringify(stats1['stats'], null, 4))
