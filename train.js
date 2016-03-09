@@ -122,18 +122,19 @@ function walkSync(dir, filelist) {
 if (check_stats)
 {
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
-	var utterset = bars.getsetcontext(data)
-	var dataset = utterset["train"].concat(utterset["test"])
+	// var utterset = bars.getsetcontext(data)
+	// var dataset = utterset["train"].concat(utterset["test"])
 
-	var length = []
-	
-	_.each(dataset, function(value, key, list){
-		length.push(value.length)
+	var stats = []
+
+	_.each(data, function(value, key, list){
+		var turns =  _.filter(value.turns, function(num){ return num.role == "Candidate"; });
+		stats.push([turns.length, value.utilityWithoutDiscount, value.assignmentId])
 	}, this)
 
-	length = _.sortBy(length, function(num){ return num });
+	stats = _.sortBy(stats, function(num){ return num[0] });
 
-	console.log(JSON.stringify(length, null, 4))
+	console.log(JSON.stringify(stats, null, 4))
 	process.exit(0)
 }
 
