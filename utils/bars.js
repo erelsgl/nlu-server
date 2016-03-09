@@ -3646,6 +3646,14 @@ function loadds(folder)
   return dataset
 }
 
+function getDist(dataset)
+{
+  return _.countBy(dataset, function(num) { if (num.output.length == 0) 
+                                                return -1
+                                              else
+                                                return _.keys(JSON.parse(num.output[0]))[0] })
+}
+
 function getsetcontext(dataset)
 {
   var utteranceset = {'train':[], 'test':[]}
@@ -4210,5 +4218,6 @@ extractdatasetallturns:extractdatasetallturns,
 generate_labels:generate_labels,
 getdist:getdist,
 distdistance:distdistance,
-coverfilter:coverfilter
+coverfilter:coverfilter,
+getDist:getDist
 }
