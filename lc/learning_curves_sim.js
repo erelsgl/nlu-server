@@ -131,9 +131,11 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 		// var sim_train = _.flatten(data['train'].slice(0, index))
 
 		var sim_train = []
+		var sim_train1 = []
 		
 		// I think it's not important to do so
 		var buffer_train = _.flatten(data['train'])
+		var buffer_train1 = _.flatten(data['train'])
 		// var buffer_train = _.flatten(data['train'].slice(index+1))
 
 		// console.log("DEBUGSIM: aggregated stats START "+JSON.stringify(_.countBy(sim_train, function(num) { 
@@ -167,7 +169,13 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
            	// filter train to contain only single label utterances
            	var mytrainset = _.filter(mytrainset, function(num){ return num.output.length == 1 })
 
-	    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), bars.copyobj(testset), function(err, stats){
+			var results1 = bars.simulateds(buffer_train1, mytrainset.length - sim_train1.length, gold, 0.5)
+			buffer_train1 = results1["dataset"]
+			sim_train1 = sim_train1.concat(results1["simulated"])
+
+	    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train1), bars.copyobj(testset), function(err, stats){
+	    	
+	    	// trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), bars.copyobj(testset), function(err, stats){
 
 				console.log("DEBUGSIM: standard results")
                 console.log(JSON.stringify(stats['stats'], null, 4))
@@ -199,43 +207,42 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 
 		    	// cross_batch_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), function(err, stats2){
 								
-					var results = bars.simulateds(buffer_train, mytrainset.length - sim_train.length, gold)
+					var results = bars.simulateds(buffer_train, mytrainset.length - sim_train.length, gold, 0.125)
 
-					console.log("DEBUGSIM: size of strandard train" + mytrain.length + " in utterances "+ mytrainset.length)
-					console.log("DEBUGSIM: "+(mytrainset.length - sim_train.length)+ " utterances needed to be simulated")
-					// console.log("DEBUGSIM: stats after 2 folds cross validation on buffer train")
+					// console.log("DEBUGSIM: size of strandard train" + mytrain.length + " in utterances "+ mytrainset.length)
+					// console.log("DEBUGSIM: "+(mytrainset.length - sim_train.length)+ " utterances needed to be simulated")
 					
-		    		console.log("DEBUGSIM:"+results["simulated"].length+" size of the simulated train")
-		    	 	console.log("DEBUGSIM:"+buffer_train.length+" size of the buffer train before simulation with utterances")
-		    	 	console.log("DEBUGSIM:"+results["dataset"].length+" size of the buffer train after simulation with utterances")
-		    	 	console.log("DEBUGSIM: intent dist of added part to simulation "+JSON.stringify(results["report"]))
-		    	 	console.log("DEBUGSIM: size of aggregated simulated before plus "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
-		    	 	console.log("DEBUGSIM: intent distribution of simulated dataset before concatenation "+JSON.stringify(_.countBy(sim_train, function(num) { return _.keys(JSON.parse(num.output[0]))[0] })))
+		    		// console.log("DEBUGSIM:"+results["simulated"].length+" size of the simulated train")
+		    	 	// console.log("DEBUGSIM:"+buffer_train.length+" size of the buffer train before simulation with utterances")
+		    	 	// console.log("DEBUGSIM:"+results["dataset"].length+" size of the buffer train after simulation with utterances")
+		    	 	// console.log("DEBUGSIM: intent dist of added part to simulation "+JSON.stringify(results["report"]))
+		    	 	// console.log("DEBUGSIM: size of aggregated simulated before plus "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
+		    	 	// console.log("DEBUGSIM: intent distribution of simulated dataset before concatenation "+JSON.stringify(_.countBy(sim_train, function(num) { return _.keys(JSON.parse(num.output[0]))[0] })))
 
 					buffer_train = results["dataset"]
 			    	sim_train = sim_train.concat(results["simulated"])
 
-			    	console.log("DEBUGSIM: intent dist of simulated dataset after concatenation "+JSON.stringify(_.countBy(sim_train, function(num) { 
+			    	/*console.log("DEBUGSIM: intent dist of simulated dataset after concatenation "+JSON.stringify(_.countBy(sim_train, function(num) { 
 
 						if (num.output.length == 0) 
 							return -1
 						else
 							return _.keys(JSON.parse(num.output[0]))[0] })
-					))
+					))*/
 
-					console.log("DEBUGSIM: intent dist of untouched dataset "+JSON.stringify(_.countBy(mytrainset, function(num) { 
+/*					console.log("DEBUGSIM: intent dist of untouched dataset "+JSON.stringify(_.countBy(mytrainset, function(num) { 
 						if (num.output.length == 0) 
 							return -1
 						else
 							return _.keys(JSON.parse(num.output[0]))[0] })
 					))
-
-					var temp = JSON.parse(JSON.stringify(results["simulated"]))
+*/
+	/*				var temp = JSON.parse(JSON.stringify(results["simulated"]))
 					temp = _.map(temp, function(num){ delete num['input']['sentences']; return num });
 
 					console.log("DEBUGSIM: simulated dataset temp")
 					console.log(JSON.stringify(temp, null, 4))
-					
+	*/				
 			    	console.log("DEBUGSIM: size of aggregated simulated after plus "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
 
 	    			trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train), bars.copyobj(testset), function(err, stats1){
