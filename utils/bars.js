@@ -3668,6 +3668,8 @@ function getsetcontext(dataset)
         turn['outputhash'] = turn.output
         turn['output'] = hashtoar(turn.output)
 
+        var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
+
         // eliminate quit
         var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
 
@@ -3675,7 +3677,7 @@ function getsetcontext(dataset)
         var CarIndexV = _.findIndex(turn['output'], function(lab){ return _.values(JSON.parse(lab))[0]=='Leased Car'});
         var CarIndex = _.findIndex(turn['output'], function(lab){ return _.keys(_.values(JSON.parse(lab))[0])[0]=='Leased Car'});
 
-        if (QuitIndex==-1)
+        if ((QuitIndex==-1) && (GreetIndex==-1))
         // if ((CarIndex==-1) &&(CarIndexV==-1) && (QuitIndex==-1))
           processed_dialogue.push(turn)
 
@@ -3958,7 +3960,7 @@ function returndist(dataset)
   return _.countBy(intents, function(num) { return num })
 }
 
-function simulateds(dataset, size, golddist)
+function simulateds(dataset, size, golddist, power)
 {
   
   dataset = _.flatten(dataset)
@@ -3974,7 +3976,7 @@ function simulateds(dataset, size, golddist)
   _.each(dist, function(value, key, list){
 
     // params[key] = {'score':  Math.pow(value, 0.5)}
-    params.push([Math.pow(value, 0.5), key])
+    params.push([Math.pow(value, power), key])
   }, this)
 
   console.log("DEBUGSIM: distribution "+JSON.stringify(params))  
