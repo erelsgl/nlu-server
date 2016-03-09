@@ -242,7 +242,7 @@ if (process.argv[1] === __filename)
 {
 	master.cleanFolder(__dirname + "/learning_curves")
 
-	var classifierList  = [ 'DS_comp_unigrams_async_context_unoffered_0.5', 'DS_comp_unigrams_async_context_unoffered_0.125']
+	var classifierList  = [ 'DS_comp_unigrams_async_context_unoffered_05', 'DS_comp_unigrams_async_context_unoffered_0125']
 
 	// var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
 	// var utterset = bars.getsetcontext(dataset)
