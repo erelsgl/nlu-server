@@ -169,20 +169,21 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
            	// filter train to contain only single label utterances
            	var mytrainset = _.filter(mytrainset, function(num){ return num.output.length == 1 })
 
+           	console.log("DEBUGSIM: size of the strandard train" + mytrain.length + " in utterances "+ mytrainset.length)
+
 			var results1 = bars.simulateds(buffer_train1, mytrainset.length - sim_train1.length, gold, 0.5)
 			buffer_train1 = results1["dataset"]
 			sim_train1 = sim_train1.concat(results1["simulated"])
+
 
 	    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train1), bars.copyobj(testset), function(err, stats){
 	    	
 	    	// trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), bars.copyobj(testset), function(err, stats){
 
-				console.log("DEBUGSIM: standard results")
+		    	console.log("DEBUGSIM:"+results1["simulated"].length+" size of the simulated train")
+				console.log("DEBUGSIM: Simualte dist for the first run:"+JSON.stringify(getDist(sim_train1)))
+				console.log("DEBUGSIM: Results for the first run")
                 console.log(JSON.stringify(stats['stats'], null, 4))
-
-//				console.log(JSON.stringify(stats['data'], null, 4))
-//				console.log("DEBUGSIM: FP of Accepts")
-
 
 				/*_.each(stats['data'], function(value, key, list){
 					if ('FP' in value.explanation)
@@ -198,60 +199,21 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 */
 	    		
 				extractGlobal(_.values(classifierList)[0], mytrain, fold, stats['stats'], glob_stats)
-
-			 	// var size_last_dial = _.flatten(mytrain[mytrain.length-1]).length
 			 	
-
-			 	// console.log(size_last_dial+" size of the last dialogue")
-		    	// console.log(buffer_train.length+" size of the buffer train")
-
-		    	// cross_batch_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), function(err, stats2){
-								
-					var results = bars.simulateds(buffer_train, mytrainset.length - sim_train.length, gold, 0.125)
-
-					// console.log("DEBUGSIM: size of strandard train" + mytrain.length + " in utterances "+ mytrainset.length)
-					// console.log("DEBUGSIM: "+(mytrainset.length - sim_train.length)+ " utterances needed to be simulated")
+				var results = bars.simulateds(buffer_train, mytrainset.length - sim_train.length, gold, 0.125)
 					
-		    		// console.log("DEBUGSIM:"+results["simulated"].length+" size of the simulated train")
-		    	 	// console.log("DEBUGSIM:"+buffer_train.length+" size of the buffer train before simulation with utterances")
-		    	 	// console.log("DEBUGSIM:"+results["dataset"].length+" size of the buffer train after simulation with utterances")
-		    	 	// console.log("DEBUGSIM: intent dist of added part to simulation "+JSON.stringify(results["report"]))
-		    	 	// console.log("DEBUGSIM: size of aggregated simulated before plus "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
-		    	 	// console.log("DEBUGSIM: intent distribution of simulated dataset before concatenation "+JSON.stringify(_.countBy(sim_train, function(num) { return _.keys(JSON.parse(num.output[0]))[0] })))
-
 					buffer_train = results["dataset"]
 			    	sim_train = sim_train.concat(results["simulated"])
-
-			    	/*console.log("DEBUGSIM: intent dist of simulated dataset after concatenation "+JSON.stringify(_.countBy(sim_train, function(num) { 
-
-						if (num.output.length == 0) 
-							return -1
-						else
-							return _.keys(JSON.parse(num.output[0]))[0] })
-					))*/
-
-/*					console.log("DEBUGSIM: intent dist of untouched dataset "+JSON.stringify(_.countBy(mytrainset, function(num) { 
-						if (num.output.length == 0) 
-							return -1
-						else
-							return _.keys(JSON.parse(num.output[0]))[0] })
-					))
-*/
-	/*				var temp = JSON.parse(JSON.stringify(results["simulated"]))
-					temp = _.map(temp, function(num){ delete num['input']['sentences']; return num });
-
-					console.log("DEBUGSIM: simulated dataset temp")
-					console.log(JSON.stringify(temp, null, 4))
-	*/				
+	
 			    	console.log("DEBUGSIM: size of aggregated simulated after plus "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
 
 	    			trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train), bars.copyobj(testset), function(err, stats1){
 
-						console.log("DEBUGSIM: simulated results")
+		    			console.log("DEBUGSIM:"+results["simulated"].length+" size of the simulated train")
+						console.log("DEBUGSIM: Simualte dist for the second run:"+JSON.stringify(getDist(sim_train)))
+						console.log("DEBUGSIM: Results for the second run")
+                
 						console.log(JSON.stringify(stats1['stats'], null, 4))
-
-				//		console.log("DEBUGSIM: simulated data")
-				//		console.log(JSON.stringify(stats1['data'], null, 4))
 
 			    		extractGlobal(_.values(classifierList)[1], mytrain, fold, stats1['stats'], glob_stats)	
 			    		console.log("DEBUGGLOB:")
@@ -280,7 +242,7 @@ if (process.argv[1] === __filename)
 {
 	master.cleanFolder(__dirname + "/learning_curves")
 
-	var classifierList  = [ 'DS_comp_unigrams_async_context_unoffered', 'DS_comp_unigrams_async_context_unoffered_sim']
+	var classifierList  = [ 'DS_comp_unigrams_async_context_unoffered_0.5', 'DS_comp_unigrams_async_context_unoffered_0.125']
 
 	// var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
 	// var utterset = bars.getsetcontext(dataset)
