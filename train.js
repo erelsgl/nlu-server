@@ -26,10 +26,10 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
-var check_stats = true
+var check_stats = false
 var count_reject = false
 var stat_sig = false
-var check_ds = false
+var check_ds = true
 var do_serialization_prod = false
 var check_single_multi = false
 var shuffling = false
