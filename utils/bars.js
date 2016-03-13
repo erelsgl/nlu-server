@@ -3968,11 +3968,18 @@ function returndist(dataset)
   return _.countBy(intents, function(num) { return num })
 }
 
-function simulateds(dataset, size, golddist, power)
+function simulateds(dials, size, golddist, power)
 {
   
-  dataset = _.flatten(dataset)
+  var dataset = _.flatten(dials)
   var dist = returndist(dataset)
+
+  var ints = ['Query','Greet','Offer','Accept','Reject','Quit']
+	
+  _.each(ints, function(intent, key, list){
+	if (!(intent in dist))
+		dist[intent] = 5
+  }, this)		
 
   console.log("DEBUGSIM: gold distribution "+JSON.stringify(dist))  
 
