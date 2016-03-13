@@ -1267,13 +1267,26 @@ function feAsyncPrimitive(sam, features, train, featureOptions, callback) {
 	if (featureOptions.bigrams)
 	   throw new Error("this version doesn't support bigrams")
 
-	async.eachSeries(sample['sentences']['tokens'], function(token, callback_local) {
+	var words = []
+	_.each(sample['sentences']['tokens'], function(token, key, list){
+		words.push(token.word.toLowerCase())
+	}, this)
+
+	var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
+
+	_.each(feature, function(value, key, list){
+		features[value] = 1
+	}, this)
+
+	callback(null, features)
+
+	/*async.eachSeries(sample['sentences']['tokens'], function(token, callback_local) {
 		features[token.lemma.toLowerCase()] = 1
     	callback_local()
  	}, function(err){
 	        console.log("DEBUGASYNCPRIMITIVE:"+JSON.stringify(features, null, 4))
  		callback(null, features)
-	})
+	})*/
 
 }
 
