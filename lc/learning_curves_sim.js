@@ -156,11 +156,11 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
     		    	
     		if (index<10)
        		{
-           		index += 1
+           		index += 3
        		} 
     		else if (index<20)
 			{
-               	index += 2
+               	index += 3
            	}
        		else index += 10
 
@@ -262,4 +262,3 @@ if (process.argv[1] === __filename)
 		process.exit(0)
 	})
 }
-
