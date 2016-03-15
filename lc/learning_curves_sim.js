@@ -159,7 +159,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
     		    	
     		if (index<10)
        		{
-           		index += 1
+           		index += 2
        		} 
     		else if (index<20)
 			{
