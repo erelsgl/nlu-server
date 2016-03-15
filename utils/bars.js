@@ -3648,10 +3648,16 @@ function loadds(folder)
 
 function getDist(dataset)
 {
-  return _.countBy(dataset, function(num) { if (num.output.length == 0) 
+  
+  var dial = _.countBy(dataset, function(num) { if (num.output.length == 0) 
                                                 return -1
                                               else
                                                 return _.keys(JSON.parse(num.output[0]))[0] })
+
+  var diallist = _.pairs(dial) 
+  diallist = _.sortBy(diallist, function(num){ return num[0] })
+
+  return _.object(diallist)
 }
 
 function getsetcontext(dataset)
