@@ -110,6 +110,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 	var stat = {}
 	var stat1 = {}
 	var mytrain = []
+	var cont = 0
 		
 	glob_stats = {}
 
@@ -214,6 +215,14 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 						console.log("DEBUGSIM: Results for the second run")
                 
 						console.log(JSON.stringify(stats1['stats'], null, 4))
+
+						if ((stats1['stats']['Accept_F1']+0.05)<cont)
+						{
+							console.log(JSON.stringify(stats1, null, 4))
+							process.exit(0)
+						}
+
+						cont = stats1['stats']['Accept_F1']
 
 			    		extractGlobal(_.values(classifierList)[1], mytrain, fold, stats1['stats'], glob_stats)	
 			    		console.log("DEBUGGLOB:")
