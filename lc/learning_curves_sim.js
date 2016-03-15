@@ -156,11 +156,11 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
     		    	
     		if (index<10)
        		{
-           		index += 3
+           		index += 1
        		} 
     		else if (index<20)
 			{
-               	index += 3
+               	index += 2
            	}
        		else index += 10
 
@@ -200,7 +200,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 	    		
 				extractGlobal(_.values(classifierList)[0], mytrain, fold, stats['stats'], glob_stats)
 			 	
-				var results = bars.simulateds(buffer_train, mytrainset.length - sim_train.length, gold, 0.125)
+				var results = bars.simulateds(buffer_train, mytrainset.length - sim_train.length, gold, 0.0625)
 					
 					buffer_train = results["dataset"]
 			    	sim_train = sim_train.concat(results["simulated"])
