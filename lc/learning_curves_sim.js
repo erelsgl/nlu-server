@@ -219,6 +219,10 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 						if ((stats1['stats']['Accept_F1']+0.05)<cont)
 						{
 							console.log(JSON.stringify(stats1, null, 4))
+
+							console.log("previouvs value: "+cont)
+							console.log("current value: "+stats1['stats']['Accept_F1'])
+
 							process.exit(0)
 						}
 
