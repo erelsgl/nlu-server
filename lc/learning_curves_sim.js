@@ -119,7 +119,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 	async.timesSeries(numOfFolds, function(fold, callback_fold){
 
 		console.log("FOLD "+fold)
-		var index = 1
+		var index = 2
 
 		var data = partitions.partitions_consistent_by_fold(dataset, numOfFolds, fold)
 
