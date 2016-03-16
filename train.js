@@ -26,10 +26,11 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+var check_dist = true
 var check_stats = false
 var count_reject = false
 var stat_sig = false
-var check_ds = true
+var check_ds = false
 var do_serialization_prod = false
 var check_single_multi = false
 var shuffling = false
@@ -439,6 +440,28 @@ if (count_reject)
 	process.exit(0)
 }
 
+
+if (check_dist)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var utterset = bars.getsetcontext(data)
+
+	var dataset = _.flatten(utterset["test"]).concat(_.flatten(utterset["train"]))
+
+	var globallabels = []
+
+	_.each(dataset, function(value, key, list){
+
+		var labels = _.map(value.output, function(num){ return _.keys(JSON.parse(num))[0] })
+		labels = _.sortBy(labels, function(num){ return num })
+		globallabels.push(labels)
+
+	}, this)
+
+	var coun = _.countBy(globallabels, function(num) { return num })
+	console.log(JSON.stringify(coun, null, 4))
+	process.exit(0)
+}
 
 if (check_ds)
 {
