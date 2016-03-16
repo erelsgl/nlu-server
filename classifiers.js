@@ -155,7 +155,7 @@ function getRule(sen)
 	var arAttrVal = ['salary','pension','fund','promotion','possibilities','working','hours','hour',
 					'job','description','60000','90000','120000','usd','fast','slow','track','8','9','10',
 					'qa','programmer','team','project','manager','car','leased','with','without','agreement',
-					'0%','10%','15%','20%', 'no agreement', 'no car','position']
+					'0%','10%','15%','20%', 'no agreement', 'no car','position','workday']
 
 	var ar_values = []
 	var ar_attrs = []
@@ -1109,11 +1109,16 @@ function feNeg(sample, features, train, featureOptions, callback) {
 		}
 
 	}, this)
+	callback(null, features)
 
+}
 
 function feSentiment(sample, features, train, featureOptions, callback) {
 
 	var sentence = ""
+
+	//var sens = ['SENTIMENT_Neutral', 'SENTIMENT_Negative', 'SENTIMENT_Positive']
+	var sens = [ 'SENTIMENT_Negative', 'SENTIMENT_Positive']
 
 	if ('input' in sample)
 		sample = sample.input
@@ -1127,7 +1132,24 @@ function feSentiment(sample, features, train, featureOptions, callback) {
 	if (!('tokens' in sample['sentences']))
 		throw new Error("tokens not in the sample")
 
-	features['SENTIMENT_'+sample['sentences']['sentiment']]=1
+	var sen = sample['sentences']['sentiment']
+	
+	if (sen == "Verypositive") sen = "Positive"
+	if (sen == "Verynegative") sen = "Negative"
+
+	features['SENTIMENT_'+sen]=1
+
+	_.each(sens, function(sen, key, list){
+		if (!(sen in features))
+			features["NON_"+sen] = 1
+	}, this)
+
+	if ('SENTIMENT_Neutral' in features)
+	{ 
+		delete features['SENTIMENT_Neutral']
+		delete features['NON_SENTIMENT_Positive']
+		delete features['NON_SENTIMENT_Negative']
+	}
 
 	callback(null, features)
 }
@@ -1736,7 +1758,7 @@ module.exports = {
 		DS_comp_unigrams_async_context_both: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true, 'previous_intent':false}),
 		DS_comp_unigrams_async_context_offered: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':false, 'previous_intent':false}),
 		
-		DS_comp_unigrams_async_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext, feSentiment], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
+		DS_comp_unigrams_async_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
 		DS_comp_unigrams_async_context_unoffered_05: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
 		DS_comp_unigrams_async_context_unoffered_0125: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
 
