@@ -486,7 +486,7 @@ if (check_ds)
 	utterset["train"] = _.flatten(utterset["train"])
 
 	// concat tokens for primitive classification
-
+/*
 	_.each(utterset["test"], function(utterance, key, list){
 		var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
 		utterset["test"][key]['input']['sentences'] = [{'tokens': tokens}]
@@ -497,6 +497,7 @@ if (check_ds)
 		utterset["train"][key]['input']['sentences'] = [{'tokens': tokens}]
 	}, this)
 
+*/
 	/*var count = 0
 	_.each(utterset["test"].concat(utterset["train"]), function(value, key, list){
 		if (value.output.indexOf("{\"Offer\":{\"Pension Fund\":\"No agreement\"}}")!=-1)
@@ -533,11 +534,11 @@ if (check_ds)
 	// trainAndTest.trainAndTest_async(classifier.DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 	
 
-	// trainAndTest.trainAndTest_async(classifier.DS_comp_exp_3_root_5_unoffered_yes_offer_yes_test, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
-	trainAndTest.trainAndTest_async(classifier.DS_primitive, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	 trainAndTest.trainAndTest_async(classifier.DS_comp_unigrams_async_context_unoffered, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+//	trainAndTest.trainAndTest_async(classifier.DS_primitive, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		
-		// console.log(JSON.stringify(results['stats'], null, 4))
-		// process.exit(0)
+		 console.log(JSON.stringify(results['stats'], null, 4))
+		 process.exit(0)
 
 		// _.each(results['data'], function(val, key, list){
 		// 	// if (('FP' in val.explanation) && ('FN' in val.explanation))
