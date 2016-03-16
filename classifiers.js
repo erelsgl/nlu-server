@@ -1109,11 +1109,16 @@ function feNeg(sample, features, train, featureOptions, callback) {
 		}
 
 	}, this)
+	callback(null, features)
 
+}
 
 function feSentiment(sample, features, train, featureOptions, callback) {
 
 	var sentence = ""
+
+	//var sens = ['SENTIMENT_Neutral', 'SENTIMENT_Negative', 'SENTIMENT_Positive']
+	var sens = [ 'SENTIMENT_Negative', 'SENTIMENT_Positive']
 
 	if ('input' in sample)
 		sample = sample.input
@@ -1127,7 +1132,24 @@ function feSentiment(sample, features, train, featureOptions, callback) {
 	if (!('tokens' in sample['sentences']))
 		throw new Error("tokens not in the sample")
 
-	features['SENTIMENT_'+sample['sentences']['sentiment']]=1
+	var sen = sample['sentences']['sentiment']
+	
+	if (sen == "Verypositive") sen = "Positive"
+	if (sen == "Verynegative") sen = "Negative"
+
+	features['SENTIMENT_'+sen]=1
+
+	_.each(sens, function(sen, key, list){
+		if (!(sen in features))
+			features["NON_"+sen] = 1
+	}, this)
+
+	if ('SENTIMENT_Neutral' in features)
+	{ 
+		delete features['SENTIMENT_Neutral']
+		delete features['NON_SENTIMENT_Positive']
+		delete features['NON_SENTIMENT_Negative']
+	}
 
 	callback(null, features)
 }
