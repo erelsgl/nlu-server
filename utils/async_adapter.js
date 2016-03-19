@@ -188,6 +188,9 @@ function synset2lemmas(synsets)
 
 function getwordnet(string, pos, callbackg)
 {
+
+	console.log("DEBUGWORDNET: string:"+string+" pos:"+pos)
+
 	var POS = {
 
 		'n': ['NN', 'NNS', 'NNP', 'NNPS', 'noun'],
@@ -198,10 +201,7 @@ function getwordnet(string, pos, callbackg)
 	}
 
 	if (_.flatten(_.toArray(POS)).indexOf(pos) == -1)
-	{
-		console.log("err")
-		process.exit(0)
-	}
+		callbackg(null, [])
 
 	var wnpos = ""
 
@@ -210,44 +210,38 @@ function getwordnet(string, pos, callbackg)
 			wnpos = wnp
 	}, this)
 
+	console.log("DEBUGWORDNET: string:"+string+" pos:"+wnpos)
+
 	var wordnet = new WordNet()
 
 	var synonyms = []
 	var antonyms = []
 
 	wordnet.lookup(string, function(results) {
+
+		results = _.filter(results, function(num){ return !_.isNull(num) });
 		
+		console.log("DEBUGWORDNET: "+string+" "+JSON.stringify(results, null, 4))
+
+		results = _.filter(results, function(num){ return num.pos ==  wnpos });
+
 		async.eachSeries(results, function(synset, callbackloc) {
-
-			if (synset.pos == wnpos)
-			{
-
-				// console.log("synset:"+JSON.stringify(synset, null, 4))
 
 				synonyms = synonyms.concat(synset.synonyms)
 
+				synset.ptrs = _.filter(synset.ptrs, function(num){ return num.pointerSymbol ==  "!" });
+
 				async.eachSeries(synset.ptrs, function(subsynset, callbacklocloc) {
 
-					// console.log("TOCHECK:"+JSON.stringify(subsynset, null, 4))
-
-					if (subsynset.pointerSymbol == "!")
-					{
 						wordnet.get(subsynset.synsetOffset, subsynset.pos, function(anton) {
 							antonyms = antonyms.concat(anton.synonyms)
    							callbacklocloc(null)
 						});
-					}
-					else
-   						callbacklocloc(null)
 					
 				}, function(err){
 					callbackloc(null)
 
 				})
-			}
-			else
-				callbackloc(null)
-
 
 		 	}, function(err){
 
@@ -256,6 +250,10 @@ function getwordnet(string, pos, callbackg)
 		 		var feat = synonyms.concat(antonyms)
 
 		 		var feat = _.unique(_.filter(feat, function(num){ return (num.indexOf("_")==-1) }))
+
+		 		var feat = _.map(feat, function(num){ return [num, 100] })
+
+		 		wordnet.close()
 
 		 		callbackg(null, feat)
 		})
