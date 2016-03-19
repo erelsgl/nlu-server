@@ -764,7 +764,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 					// _.each(sentence['tokens'], function(token, key, list){ 	
 					poses[token.word.toLowerCase()] = {
 														'pos':token.pos,
-														'lemma': token.lemma,
+														'lemma': token.lemma.toLowerCase(),
 														'neg': false
 														}
 				}, this)	
@@ -779,6 +779,8 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 				}, this)	
 				// }, this)
 
+			console.log("DEBUG EXP: roots: " + roots)
+			
 			console.log("poses train" + train + " " + JSON.stringify(poses))
         		callbackl(null, poses, roots);
     		},
@@ -813,16 +815,17 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 						results = _.map(results, function(num){ return num[0] });
 						results = _.uniq(results)	
 		
-						if (!_.isUndefined(featureOptions.best_results))
-							results = results.slice(0, featureOptions.best_results)
+						// if (!_.isUndefined(featureOptions.best_results))
+							// results = results.slice(0, featureOptions.best_results)
 		
 						console.log("DEBUGEXP: results to add: "+results)
 
 						_.each(results, function(expan, key, list){ 
-						if (token.neg) expan+="-"
 						
-							innerFeatures[expan.toLowerCase()] = 1
-						}, this)
+							if (token.neg) expan+="-"
+								innerFeatures[expan.toLowerCase()] = 1
+							}, this)
+
 						console.log("DEBUGEXP: permanent features "+JSON.stringify(innerFeatures))
 			
 						callback2()
