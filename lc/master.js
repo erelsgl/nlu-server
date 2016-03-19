@@ -478,10 +478,10 @@ if (process.argv[1] === __filename)
 	//var classifiers = ['DS_comp_embed_d100_average_unoffered','DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test']
 	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_embed_d300_average_unoffered']
 
-    // var classifiers = ['DS_comp_embed_d100_average_unoffered','DS_comp_embed_d100_average_unoffered_neg']
-    var classifiers  = [ 	{'classifier':'DS_comp_unigrams_async_context_unoffered_05', 'power': 0.5},
-							{'classifier':'DS_comp_unigrams_async_context_unoffered_0125', 'power': 0.125}
-						]
+     var classifiers = ['DS_comp_unigrams_async_context_unoffered_wordnet','DS_comp_unigrams_async_context_unoffered']
+//    var classifiers  = [ 	{'classifier':'DS_comp_unigrams_async_context_unoffered_05', 'power': 0.5},
+//							{'classifier':'DS_comp_unigrams_async_context_unoffered_0125', 'power': 0.125}
+//						]
 
 	
 	fs.writeFileSync(statusfile, "")
@@ -495,9 +495,9 @@ if (process.argv[1] === __filename)
 	var utterset = bars.getsetcontext(data)
 	var dataset = utterset["train"].concat(utterset["test"])
 
-	dataset = _.filter(dataset, function(num){ return num.length > 15 });
+	// dataset = _.filter(dataset, function(num){ return num.length > 15 });
 
-	// dataset = dataset.slice(0,100)
+	dataset = dataset.slice(0,100)
 
 	console.log("Dataset "+ dataset.length)
 	console.log("DEBUG: master: dataset size "+ dataset.length)

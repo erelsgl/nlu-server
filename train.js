@@ -26,10 +26,12 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+var check_dist = false
 var check_stats = false
 var count_reject = false
 var stat_sig = false
-var check_ds = true
+var check_ds = false
+var check_reject = true
 var do_serialization_prod = false
 var check_single_multi = false
 var shuffling = false
@@ -401,6 +403,33 @@ if (shuffling)
 }
 */
 
+if (check_reject)
+{
+
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var utterset = bars.getsetcontext(data)
+	
+	utterset["test"] = _.shuffle(_.flatten(utterset["test"]))
+	utterset["train"] = _.shuffle(_.flatten(utterset["train"]))
+
+	var data = utterset["test"].concat(utterset["train"])
+
+	var sens = []
+
+	_.each(data, function(value, key, list){
+
+		if (value.output.length == 1)
+		{
+			if (_.keys(JSON.parse(value.output))=="Reject")
+				sens.push(value.input.text)
+		}
+
+	}, this)
+
+	console.log(JSON.stringify(sens, null, 4))
+	process.exit(0)
+}
+
 if (count_reject)
 {
 
@@ -439,6 +468,30 @@ if (count_reject)
 	process.exit(0)
 }
 
+
+if (check_dist)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var utterset = bars.getsetcontext(data)
+
+	var dataset = _.flatten(utterset["test"]).concat(_.flatten(utterset["train"]))
+
+	var globallabels = []
+
+	_.each(dataset, function(value, key, list){
+
+		var labels = _.map(value.output, function(num){ return _.keys(JSON.parse(num))[0] })
+
+		labels = _.uniq(labels)
+		labels = _.sortBy(labels, function(num){ return num })
+		globallabels.push(labels)
+
+	}, this)
+
+	var coun = _.countBy(globallabels, function(num) { return num })
+	console.log(JSON.stringify(coun, null, 4))
+	process.exit(0)
+}
 
 if (check_ds)
 {
@@ -537,7 +590,7 @@ if (check_ds)
 	 trainAndTest.trainAndTest_async(classifier.DS_comp_unigrams_async_context_unoffered, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 //	trainAndTest.trainAndTest_async(classifier.DS_primitive, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		
-		 console.log(JSON.stringify(results['stats'], null, 4))
+		 console.log(JSON.stringify(results, null, 4))
 		 process.exit(0)
 
 		// _.each(results['data'], function(val, key, list){
