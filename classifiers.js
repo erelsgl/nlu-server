@@ -800,7 +800,8 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 				
 					console.log("DEBUG EXP: ready to expand train" + train + " "+JSON.stringify(token))			
 
-					async_adapter.getppdb(token.lemma, token.pos, featureOptions.scale, featureOptions.relation,  function(err, results){
+					// async_adapter.getppdb(token.lemma, token.pos, featureOptions.scale, featureOptions.relation,  function(err, results){
+					async_adapter.getwordnet(token.lemma, token.pos, function(err, results){
 						
 		
 						// get rid of phrases
@@ -1759,6 +1760,7 @@ module.exports = {
 		DS_comp_unigrams_async_context_offered: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':false, 'previous_intent':false}),
 		
 		DS_comp_unigrams_async_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
+		DS_comp_unigrams_async_context_unoffered_wordnet: enhance(SvmLinearMulticlassifier, [feAsync, feExpansion, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
 		DS_comp_unigrams_async_context_unoffered_05: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
 		DS_comp_unigrams_async_context_unoffered_0125: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
 
