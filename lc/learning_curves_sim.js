@@ -269,7 +269,7 @@ if (process.argv[1] === __filename)
 	var utterset = bars.getsetcontext(data)
 	var dataset = utterset["train"].concat(utterset["test"])
 
-	dataset = _.filter(dataset, function(num){ return num.length > 15 });
+	dataset = _.filter(dataset, function(num){ return num.length > 10 });
 
 	// dataset = _.shuffle(dataset)
 	// dataset = dataset.slice(0,10)
