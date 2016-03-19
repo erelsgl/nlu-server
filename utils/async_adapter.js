@@ -3,15 +3,12 @@ var client = new Redis(6379);
 var async = require('async');
 var _ = require('underscore')._;
 var os = require("os");
-var hostname = os.hostname();
-//var wordNet = require('wordnet-magic')
+var WordNet = require('node-wordnet')
 
-// if (hostname == "te-srv4.cs.biu.ac.il")
-	// var wn = wordNet("/mnt/ramdisk/wordnet/dict/sqlite-31.db", true)
-// else
-	// var wn = wordNet()
-
-var NodeCache = require( "node-cache" );
+// var hostname = os.hostname();
+// var wordNet = require('wordnet-magic')
+// var wn = wordNet()
+// var NodeCache = require( "node-cache" );
 
 //var wordnetcache = new NodeCache({'useClones': false});
 //var wordnetcachecounter = 0
@@ -189,7 +186,86 @@ function synset2lemmas(synsets)
 	return lemmas
 }
 
-function getwordnet(string, pos, relation, callbackg)
+function getwordnet(string, pos, callbackg)
+{
+	var POS = {
+
+		'n': ['NN', 'NNS', 'NNP', 'NNPS', 'noun'],
+		'a': ['JJ', 'JJR', 'JJS', 'adj'],
+		// 's': ['JJ', 'JJR', 'JJS', 'adj'],
+		'r': ['RB', 'RBR', 'RBS','WRB', 'adv'],
+		'v': ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'verb']
+	}
+
+	if (_.flatten(_.toArray(POS)).indexOf(pos) == -1)
+	{
+		console.log("err")
+		process.exit(0)
+	}
+
+	var wnpos = ""
+
+	_.each(POS, function(poslist, wnp, list){ 
+		if (poslist.indexOf(pos) != -1)
+			wnpos = wnp
+	}, this)
+
+	var wordnet = new WordNet()
+
+	var synonyms = []
+	var antonyms = []
+
+	wordnet.lookup(string, function(results) {
+		
+		async.eachSeries(results, function(synset, callbackloc) {
+
+			if (synset.pos == wnpos)
+			{
+
+				// console.log("synset:"+JSON.stringify(synset, null, 4))
+
+				synonyms = synonyms.concat(synset.synonyms)
+
+				async.eachSeries(synset.ptrs, function(subsynset, callbacklocloc) {
+
+					// console.log("TOCHECK:"+JSON.stringify(subsynset, null, 4))
+
+					if (subsynset.pointerSymbol == "!")
+					{
+						wordnet.get(subsynset.synsetOffset, subsynset.pos, function(anton) {
+							antonyms = antonyms.concat(anton.synonyms)
+   							callbacklocloc(null)
+						});
+					}
+					else
+   						callbacklocloc(null)
+					
+				}, function(err){
+					callbackloc(null)
+
+				})
+			}
+			else
+				callbackloc(null)
+
+
+		 	}, function(err){
+
+		 		antonyms = _.map(antonyms, function(num){ return num + "-" });
+
+		 		var feat = synonyms.concat(antonyms)
+
+		 		var feat = _.unique(_.filter(feat, function(num){ return (num.indexOf("_")==-1) }))
+
+		 		callbackg(null, feat)
+		})
+
+	})
+}
+
+
+
+/*function getwordnet(string, pos, relation, callbackg)
 {
 	if (_.isArray(relation))
 	{
@@ -238,7 +314,7 @@ function getwordnet(string, pos, relation, callbackg)
 		});
 	}
 
-	if (relation == "hypernym")
+/*	if (relation == "hypernym")
 	{
 		var output = []
 		word.getSynsets(function(err, synsets){
@@ -252,8 +328,7 @@ function getwordnet(string, pos, relation, callbackg)
     		})
         })
 	}
-}
-	
+*/
 
 
 	// var output = []
