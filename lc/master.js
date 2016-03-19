@@ -495,9 +495,9 @@ if (process.argv[1] === __filename)
 	var utterset = bars.getsetcontext(data)
 	var dataset = utterset["train"].concat(utterset["test"])
 
-	dataset = _.filter(dataset, function(num){ return num.length > 15 });
+	// dataset = _.filter(dataset, function(num){ return num.length > 15 });
 
-	// dataset = dataset.slice(0,100)
+	dataset = dataset.slice(0,100)
 
 	console.log("Dataset "+ dataset.length)
 	console.log("DEBUG: master: dataset size "+ dataset.length)
