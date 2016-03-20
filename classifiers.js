@@ -962,7 +962,15 @@ function feWordnet(sample, features, train, featureOptions, callback) {
 
 						_.each(results, function(expan, key, list){ 
 						
-							if (token.neg) expan+="-"
+							// reverse antonyms and synonyms
+							if (token.neg) 
+							{
+								if (expan.indexOf("-"))
+									expan = expan.substr(0,expan.indexOf("-"))
+								else
+									expan += "-"									
+							}
+
 								innerFeatures[expan.toLowerCase()] = 1
 							}, this)
 
