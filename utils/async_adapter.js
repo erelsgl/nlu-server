@@ -250,17 +250,18 @@ function getwordnet(string, pos, callbackg)
 
 		 	}, function(err){
 
-		 		antonyms = _.map(antonyms, function(num){ return num + "-" });
+		 		// antonyms = _.map(antonyms, function(num){ return num + "-" });
 
-		 		var feat = synonyms.concat(antonyms)
+		 		// var feat = synonyms.concat(antonyms)
 
-		 		var feat = _.unique(_.filter(feat, function(num){ return (num.indexOf("_")==-1) }))
-
-		 		var feat = _.map(feat, function(num){ return [num, 100] })
+		 		// var feat = _.map(feat, function(num){ return [num, 100] })
 
 		 		wordnet.close()
 
-		 		callbackg(null, feat)
+		 		callbackg(null, {
+		 			'synonyms':_.unique(_.filter(synonyms, function(num){ return (num.indexOf("_")==-1) })),
+		 			'antonyms':_.unique(_.filter(antonyms, function(num){ return (num.indexOf("_")==-1) }))
+		 		})
 		})
 
 	})
