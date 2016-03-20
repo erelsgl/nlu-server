@@ -201,7 +201,12 @@ function getwordnet(string, pos, callbackg)
 	}
 
 	if (_.flatten(_.toArray(POS)).indexOf(pos) == -1)
+		{
+		console.log("DEBUGWORDNET: no pos")
 		callbackg(null, [])
+		}
+	else
+	{
 
 	var wnpos = ""
 
@@ -260,7 +265,7 @@ function getwordnet(string, pos, callbackg)
 
 	})
 }
-
+}
 
 
 /*function getwordnet(string, pos, relation, callbackg)

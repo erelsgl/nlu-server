@@ -872,18 +872,18 @@ function feWordnet(sample, features, train, featureOptions, callback) {
 	var cleaned_tokens = _.map(cleaned.tokens, function(num){ return num.word; });
 
 	async.waterfall([
-		function(callbackl1){
+	//	function(callbackl1){
 			// if (((!featureOptions.expand_test) && (train)) || (featureOptions.expand_test))
 				// {	
 				// console.log("DEBUG: train"+train)
-				callbackl1(null)
+	//			callbackl1(null)
 				// }
 			 // else
 				// {	
 				// console.log(process.pid + " DEBUG: callback classify noexpansion"+ train +" "+ _.keys(features))
 				// callback(null, innerFeatures)
 				// }
-			},
+	//		},
 			function(callbackl) {
 
 				/* if ((!featureOptions.allow_offer)&&(train))
@@ -927,26 +927,31 @@ function feWordnet(sample, features, train, featureOptions, callback) {
 
 			var allowedpos = ["vb","vbd","vbg","vbn","vbp","vbz","uh","wp","wdt"]
 
-			async.forEachOfSeries(poses, function(token, unigram, callback2){ 
+			var poses = _.filter(poses, function(num){ return num.root==true });
+	                console.log("DEBUGWORD: poses after filtering"+JSON.stringify(poses))
+
+			async.eachSeries(poses, function(token, callback5){ 
 			// async.forEachOfSeries(_.keys(poses), function(unigram, dind, callback2){ 
 				// if (((!featureOptions.onlyroot) && (stopwords.indexOf(unigram)==-1))
 					// || ((featureOptions.onlyroot) && (roots.indexOf(unigram)!=-1) && (allowedpos.indexOf(token.pos.toLowerCase())!=-1) && (cleaned_tokens.indexOf(unigram)!=-1)))
-					if (token.root == true)
-				{
+			//		if (token.root == false) callback2()
+				//{
 
 				// we any case we are taking lemma and verb so take VB pos tag
 					
-					if ((featureOptions.onlyroot) && (token.pos.toLowerCase().indexOf("vb")!=-1))
-						token.pos = "VB"
+				//	if ((featureOptions.onlyroot) && (token.pos.toLowerCase().indexOf("vb")!=-1))
+				//		token.pos = "VB"
 					// if (!(unigram in poses))
 						// throw new Error(unigram + " is not found in "+poses)
 				
-					console.log("DEBUG EXP: ready to expand train" + train + " "+JSON.stringify(token))			
+					console.log("DEBUGWORD: ready to expand train" + train + " "+JSON.stringify(token))			
 
 					// async_adapter.getppdb(token.lemma, token.pos, featureOptions.scale, featureOptions.relation,  function(err, results){
 					async_adapter.getwordnet(token.lemma, token.pos, function(err, results){
 						
-		
+						if (results.length == 0) callback5(null)	
+						else
+						{
 						// get rid of phrases
 						// console.log("DEBUG EXP: results with phrases "+results.length)
 						// results = _.filter(results, function(num){ return num[0].indexOf(" ") == -1 })
@@ -958,7 +963,7 @@ function feWordnet(sample, features, train, featureOptions, callback) {
 						// if (!_.isUndefined(featureOptions.best_results))
 							// results = results.slice(0, featureOptions.best_results)
 		
-						console.log("DEBUGEXP: results to add: "+results)
+						console.log("DEBUGWORD: results to add: "+token.lemma+": "+results)
 
 						_.each(results, function(expan, key, list){ 
 						
@@ -974,15 +979,18 @@ function feWordnet(sample, features, train, featureOptions, callback) {
 								innerFeatures[expan.toLowerCase()] = 1
 							}, this)
 
-						console.log("DEBUGEXP: permanent features "+JSON.stringify(innerFeatures))
+						console.log("DEBUGWORD: permanent features: "+token.lemma+": "+JSON.stringify(innerFeatures))
 			
-						callback2()
+						callback5(null)
+						}
 					})
-				}
-				else
-				callback2()
+				//}
+				//else
+				//callback2()
 
-			}, function(err){callbackll()})
+			}, function(err){
+				console.log("DEBUGWORDERR:"+err)
+				callbackll()})
 		}],
 		function (err, result) {
 //			console.log(process.pid + " DEBUG EXP: "+sample.input.text)
