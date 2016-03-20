@@ -193,11 +193,11 @@ function getwordnet(string, pos, callbackg)
 
 	var POS = {
 
-		'n': ['NN', 'NNS', 'NNP', 'NNPS', 'noun'],
-		'a': ['JJ', 'JJR', 'JJS', 'adj'],
+		'n': ['NN', 'NNS', 'NNP', 'NNPS', 'noun','nn', 'nns', 'nnp', 'nnps'],
+		'a': ['JJ', 'JJR', 'JJS', 'adj', 'jj', 'jjr', 'jjs'],
 		// 's': ['JJ', 'JJR', 'JJS', 'adj'],
-		'r': ['RB', 'RBR', 'RBS','WRB', 'adv'],
-		'v': ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'verb']
+		'r': ['RB', 'RBR', 'RBS','WRB', 'adv', 'rb', 'rbr', 'rbs','wrb'],
+		'v': ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'verb','vb', 'vbd', 'vbg', 'vbn', 'vbp', 'vbz']
 	}
 
 	if (_.flatten(_.toArray(POS)).indexOf(pos) == -1)
