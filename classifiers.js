@@ -128,10 +128,10 @@ function getRule(sen)
 		if (!('lemma' in token))
 			throw new Error('DEBUGRULE: lemma is not in the token')
 
-		if (!('word' in token))
-			throw new Error('DEBUGRULE: word is not in the token')
+		// if (!('word' in token))
+			// throw new Error('DEBUGRULE: word is not in the token')
 
-		if ((token.lemma!='.')&&(token.lemma!=',')&&(token.lemma!='%')&&(token.lemma!='$'))
+		if ((token.lemma!='.')&&(token.lemma!=',')&&(token.lemma!='%')&&(token.lemma!='$')&&(token.lemma!=':'))
 			sentence['tokens'].push(token)
 	}, this)
 
@@ -162,13 +162,13 @@ function getRule(sen)
 	var ar_attrs = []
 
 	// check the salary
-/*	sentence['tokens'] = _.map(sentence['tokens'], function(unigram){ unigram.lemma = unigram.lemma.replace(/[,.]/g,''); return unigram });	
+	sentence['tokens'] = _.map(sentence['tokens'], function(unigram){ unigram.lemma = unigram.lemma.replace(/[,.]/g,''); return unigram });	
 	sentence['tokens'] = _.map(sentence['tokens'], function(unigram){ unigram.lemma = unigram.lemma.replace(/0k/g,'0000'); return unigram });	
 	sentence['tokens'] = _.map(sentence['tokens'], function(unigram){ if (unigram.lemma == "90") {unigram.lemma = "90000"; return unigram}
 														else if (unigram.lemma=="60") {unigram.lemma = "60000"; return unigram}
 														else if (unigram.lemma=="120") {unigram.lemma = "120000"; return unigram}
 															else return unigram});
-*/
+
 	var cleaned = JSON.parse(JSON.stringify(sentence))
 
 	var unigrams = _.map(sentence['tokens'], function(token){ return token.lemma.toLowerCase()});
@@ -179,7 +179,7 @@ function getRule(sen)
 		// the biggest intersection
 		if (_.intersection(unigrams, attr.toLowerCase().split(" ")).length != 0)
 			ar_attrs.push(attr)
-		getRule
+		
 		_.each(values, function(value, key, list){
 			var temp = []
 			if (!_.isArray(value))
@@ -854,6 +854,12 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 
 function feWordnet(sample, features, train, featureOptions, callback) {
 
+	if (!("synonyms" in featureOptions))
+		throw new Error("synonyms not in the featureOptions")
+
+	if (!("antonyms" in featureOptions))
+		throw new Error("antonyms not in the featureOptions")
+
 	var sentence = ""
 	var innerFeatures = JSON.parse(JSON.stringify(features))
 
@@ -949,28 +955,28 @@ function feWordnet(sample, features, train, featureOptions, callback) {
 					// async_adapter.getppdb(token.lemma, token.pos, featureOptions.scale, featureOptions.relation,  function(err, results){
 					async_adapter.getwordnet(token.lemma, token.pos, function(err, results){
 						
-						if (results.length == 0) callback5(null)	
-						else
-						{
+						// if (results.length == 0) callback5(null)	
+						// else
+						// {
 						// get rid of phrases
 						// console.log("DEBUG EXP: results with phrases "+results.length)
 						// results = _.filter(results, function(num){ return num[0].indexOf(" ") == -1 })
 						// console.log("DEBUG EXP: results without phrases "+results.length)
 
-						results = _.map(results, function(num){ return num[0] });
-						results = _.uniq(results)	
+						// results = _.map(results, function(num){ return num[0] });
+						// results = _.uniq(results)	
 		
 						// if (!_.isUndefined(featureOptions.best_results))
 							// results = results.slice(0, featureOptions.best_results)
 		
 						console.log("DEBUGWORD: results to add: "+token.lemma+": "+results)
 
-						_.each(results, function(expan, key, list){ 
+/*						_.each(results, function(expan, key, list){ 
 						
 							// reverse antonyms and synonyms
 							if (token.neg) 
 							{
-								if (expan.indexOf("-"))
+								if (expan.indexOf("-")!=-1)
 									expan = expan.substr(0,expan.indexOf("-"))
 								else
 									expan += "-"									
@@ -978,11 +984,27 @@ function feWordnet(sample, features, train, featureOptions, callback) {
 
 								innerFeatures[expan.toLowerCase()] = 1
 							}, this)
+*/
+						if (featureOptions.synonyms)
+						{
+							_.each(results["synonyms"], function(value, key, list){
+								if (token.neg) value += "-"
+								innerFeatures[value.toLowerCase()] = 1
+							}, this)
+						}
+
+						if (featureOptions.antonyms)
+						{
+							_.each(results["antonyms"], function(value, key, list){
+								if (!token.neg) value += "-"
+								innerFeatures[value.toLowerCase()] = 1
+							}, this)
+						}
 
 						console.log("DEBUGWORD: permanent features: "+token.lemma+": "+JSON.stringify(innerFeatures))
 			
 						callback5(null)
-						}
+						// }
 					})
 				//}
 				//else
@@ -1924,11 +1946,13 @@ module.exports = {
 		DS_comp_unigrams_async_context_both: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true, 'previous_intent':false}),
 		DS_comp_unigrams_async_context_offered: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, true, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':false, 'previous_intent':false}),
 		
-		DS_comp_unigrams_async_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext, feSentiment], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
-		DS_comp_unigrams_async_context_unoffered_05: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext, feSentiment], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
-		DS_comp_unigrams_async_context_unoffered_0125: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext, feSentiment], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
+		// DS_comp_unigrams_async_context_unoffered_05: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext, feSentiment], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
+		// DS_comp_unigrams_async_context_unoffered_0125: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext, feSentiment], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
 		DS_comp_unigrams_async_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
-		DS_comp_unigrams_async_context_unoffered_wordnet: enhance(SvmLinearMulticlassifier, [feAsync, feWordnet, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true, 'expand_test': true, 'onlyroot': false, 'allow_offer': true, 'best_results': undefined}),
+	
+		DS_comp_unigrams_async_context_unoffered_wordnet_syn: enhance(SvmLinearMulticlassifier, [feAsync, feWordnet, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true, 'synonyms': true, 'antonyms': false}),
+		DS_comp_unigrams_async_context_unoffered_wordnet_ant: enhance(SvmLinearMulticlassifier, [feAsync, feWordnet, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true, 'synonyms': false, 'antonyms': true}),
+		DS_comp_unigrams_async_context_unoffered_wordnet_ant_syn: enhance(SvmLinearMulticlassifier, [feAsync, feWordnet, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true, 'synonyms': true, 'antonyms': true}),
 
 		DS_primitive: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncPrimitive], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, false/*tf-idf*/, {'unigrams':true}),
 
