@@ -4134,6 +4134,16 @@ function simulaterealds(dataset, size, params)
 }
 
 
+function flattendataset(dataset)
+{
+  _.each(dataset, function(utterance, key, list){
+    var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
+    dataset[key]['input']['sentences'] = [{'tokens': tokens}]
+  }, this)
+  return dataset
+}
+
+
 module.exports = {
   simulaterealds:simulaterealds,
   simulateds:simulateds,
@@ -4238,5 +4248,6 @@ generate_labels:generate_labels,
 getdist:getdist,
 distdistance:distdistance,
 coverfilter:coverfilter,
-getDist:getDist
+getDist:getDist,
+flattendataset:flattendataset
 }
