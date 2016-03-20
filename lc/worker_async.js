@@ -56,6 +56,14 @@ process.on('message', function(message) {
 				" classifier="+classifier+ " fold="+fold))
 
 		    	// stats = trainAndTest_hash(classifiers[classifier], mytrainex, mytestex, false)
+
+		    	if (classifier == "DS_primitive")
+		    	{
+		    		console.log("DEBUGWORKER: It's old fashion classifier, flatten the dataset")
+		    		mytrainex = bars.flattendataset(mytrainex)
+		    		mytestex = bars.flattendataset(mytestex)
+		    	}
+
 		    	trainAndTest.trainAndTest_async(classifiers[classifier], JSON.parse(JSON.stringify(mytrainex)), JSON.parse(JSON.stringify(mytestex)), function(err, stats){
 
 		    		//var uniqueid = new Date().getTime()
