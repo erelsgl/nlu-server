@@ -366,16 +366,15 @@ describe('Classifiers functions', function() {
             // var params = { 'unigrams': true, 'bigrams': false, 'allow_stopwords': true }
         		
         		classifiers.feAsync(sample, {}, true, {}, function (err, features){
-                
-					     _.isEqual(features, {"i":1, "love": 1, "the":1, "nature": 1}).should.equal(true)
-					   callback1(null)
+              _.isEqual(features, {"i":1, "love": 1, "the":1, "nature": 1}).should.equal(true)
+					    callback1(null)
         		})
         	},
           function(callback1) {
             classifiers.feAsync(sample1, {}, true, {}, function (err, features){
-                _.isEqual(features, {"love": 1}).should.equal(true)
-                callback1(null)
-                })
+              _.isEqual(features, {"she": 1,"love": 1,"me": 1}).should.equal(true)
+              callback1(null)
+            })
           }
     	], function (err, result) {
     			callback()
