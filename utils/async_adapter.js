@@ -221,7 +221,7 @@ function getwordnet(string, pos, callbackg)
 
 		results = _.filter(results, function(num){ return !_.isNull(num) });
 		
-		console.log("DEBUGWORDNET: "+string+" "+JSON.stringify(results, null, 4))
+		// console.log("DEBUGWORDNET: "+string+" "+JSON.stringify(results, null, 4))
 
 		results = _.filter(results, function(num){ return num.pos ==  wnpos });
 
