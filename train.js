@@ -587,7 +587,7 @@ if (check_ds)
 	// trainAndTest.trainAndTest_async(classifier.DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 	
 
-	 trainAndTest.trainAndTest_async(classifier.DS_comp_unigrams_async_context_unoffered, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	 trainAndTest.trainAndTest_async(classifier.DS_comp_unigrams_async_context_unoffered_wordnet, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 //	trainAndTest.trainAndTest_async(classifier.DS_primitive, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		
 		 console.log(JSON.stringify(results, null, 4))
