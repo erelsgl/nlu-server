@@ -482,7 +482,9 @@ if (process.argv[1] === __filename)
      					'DS_comp_unigrams_async_context_unoffered_wordnet_syn',
      					'DS_comp_unigrams_async_context_unoffered_wordnet_ant',
      					'DS_comp_unigrams_async_context_unoffered_wordnet_ant_syn',
-     					'DS_comp_unigrams_async_context_unoffered'
+     					'DS_comp_unigrams_async_context_unoffered',
+					'DS_comp_embed_d100_average_unoffered',
+					'DS_primitive'
      					]
 //    var classifiers  = [ 	{'classifier':'DS_comp_unigrams_async_context_unoffered_05', 'power': 0.5},
 //							{'classifier':'DS_comp_unigrams_async_context_unoffered_0125', 'power': 0.125}
