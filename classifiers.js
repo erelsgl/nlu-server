@@ -705,9 +705,10 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 
 // featureOptions.scale
 // featureOptions.relation
-// featureOptions.allow_offer
-// featureOptions.expand_test
-// featureOptions.best_results
+	
+	if (!('allow_offer' in featureOptions)) throw new Error("allow_offer is not in the featureOptions")
+	if (!('expand_test' in featureOptions)) throw new Error("expand_test is not in the featureOptions")
+	if (!('best_results' in featureOptions)) throw new Error("best_results is not in the featureOptions")
 
 	var sentence = ""
 	var innerFeatures = JSON.parse(JSON.stringify(features))
@@ -1769,7 +1770,7 @@ module.exports = {
 		DS_comp_unigrams_async_context_unoffered_05: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext, feSentiment], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
 		DS_comp_unigrams_async_context_unoffered_0125: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext, feSentiment], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
 		DS_comp_unigrams_async_context_unoffered: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
-		DS_comp_unigrams_async_context_unoffered_wordnet: enhance(SvmLinearMulticlassifier, [feAsync, feExpansion, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
+		DS_comp_unigrams_async_context_unoffered_wordnet: enhance(SvmLinearMulticlassifier, [feAsync, feExpansion, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true, 'onlyroot': false, 'allow_offer': true, 'best_results': undefined}}),
 
 		DS_primitive: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncPrimitive], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, false/*tf-idf*/, {'unigrams':true}),
 
