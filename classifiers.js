@@ -933,8 +933,8 @@ function feWordnet(sample, features, train, featureOptions, callback) {
 
 			var allowedpos = ["vb","vbd","vbg","vbn","vbp","vbz","uh","wp","wdt"]
 
-			var poses = _.filter(poses, function(num){ return num.root==true });
-	                console.log("DEBUGWORD: poses after filtering"+JSON.stringify(poses))
+			var poses = _.filter(poses, function(num){ return ((num.root==true) && (allowedpos.indexOf(num.pos)!=-1)) });
+	        console.log("DEBUGWORD: poses after root and pos filtering"+JSON.stringify(poses))
 
 			async.eachSeries(poses, function(token, callback5){ 
 			// async.forEachOfSeries(_.keys(poses), function(unigram, dind, callback2){ 
