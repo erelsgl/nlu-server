@@ -454,7 +454,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 if (process.argv[1] === __filename)
 {
-	var folds = 5
+	var folds = 10
 
 	// 	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_exp']
 	//	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_exp']
@@ -478,7 +478,7 @@ if (process.argv[1] === __filename)
 	//var classifiers = ['DS_comp_embed_d100_average_unoffered','DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test']
 	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_embed_d300_average_unoffered']
 
-     var classifiers = ['DS_comp_unigrams_async_context_unoffered_wordnet','DS_comp_unigrams_async_context_unoffered']
+     var classifiers = ['DS_primitive','DS_comp_unigrams_async_context_unoffered_wordnet','DS_comp_unigrams_async_context_unoffered']
 //    var classifiers  = [ 	{'classifier':'DS_comp_unigrams_async_context_unoffered_05', 'power': 0.5},
 //							{'classifier':'DS_comp_unigrams_async_context_unoffered_0125', 'power': 0.125}
 //						]
