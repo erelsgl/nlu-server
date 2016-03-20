@@ -25,6 +25,37 @@ var SvmPerfBinaryRelevanceClassifier = limdu_classifiers.multilabel.BinaryReleva
 
 describe('Classifiers functions', function() {
 
+  it('feWordnet', function(callback) {
+     var sample = { 
+          'output': ["Reject"],
+          'input':{
+            // 'text': "I love the life",
+      'sentences':
+        {
+          'basic-dependencies':[
+            {"dep": "ROOT", "dependentGloss": "love"},
+            {"dependentGloss": "I"},
+            {"dependentGloss": "the"},
+            {"dependentGloss": "life"}
+          ],
+          'tokens':[
+            {'word': 'I','pos': 'ABC', 'lemma':'I'},
+            {'word': 'love','pos': 'VB','lemma':'love'},
+            {'word': 'the','pos': 'ABC','lemma':'the'},
+            {'word': 'life','pos': 'NN','lemma':'life'},
+          ]
+        }
+      }
+    }
+
+    classifiers.feWordnet(sample, {}, true, {}, function (err, features){
+      // _.isEqual(features, { i:1, love: 1,the:1, life: 1,enjoys: 1,liking: 1,prefers: 1,appreciates: 1,lifetime: 1}).should.equal(true)
+          // callback1(null)
+        console.log(JSON.stringify(features, null, 4))
+        callback(null)
+    })
+
+  })
 
   it('getRule', function() {  
 
