@@ -34,6 +34,7 @@ describe('Classifiers functions', function() {
         {
           'basic-dependencies':[
             {"dep": "ROOT", "dependentGloss": "love"},
+            {"dep": "neg", "governorGloss": "love"},
             {"dependentGloss": "I"},
             {"dependentGloss": "the"},
             {"dependentGloss": "life"}
@@ -48,13 +49,28 @@ describe('Classifiers functions', function() {
       }
     }
 
-    classifiers.feWordnet(sample, {}, true, {}, function (err, features){
-      // _.isEqual(features, { i:1, love: 1,the:1, life: 1,enjoys: 1,liking: 1,prefers: 1,appreciates: 1,lifetime: 1}).should.equal(true)
-          // callback1(null)
-        console.log(JSON.stringify(features, null, 4))
-        callback(null)
+    async.waterfall([
+      function(callback1) {
+        classifiers.feWordnet(sample, {}, true, {'synonyms':true, 'antonyms':true}, function (err, features){
+          _.isEqual(features,{"love-": 1,"know-": 1,"screw-": 1,"fuck-": 1,"jazz-": 1,"eff-": 1,"hump-": 1,"bed-": 1,"bang-": 1,"bonk-": 1,"enjoy-": 1,"hate": 1,"detest": 1}).should.equal(true)
+          callback1(null)
+        })
+      },
+      function(callback1) {
+        classifiers.feWordnet(sample, {}, true, {'synonyms':true, 'antonyms':false}, function (err, features){
+          _.isEqual(features,{"love-": 1,"know-": 1,"screw-": 1,"fuck-": 1,"jazz-": 1,"eff-": 1,"hump-": 1,"bed-": 1,"bang-": 1,"bonk-": 1,"enjoy-": 1}).should.equal(true)
+          callback1(null)
+        })
+      },
+      function(callback1) {
+        classifiers.feWordnet(sample, {}, true, {'synonyms':false, 'antonyms':true}, function (err, features){
+          _.isEqual(features,{"hate": 1,"detest": 1}).should.equal(true)
+          callback1(null)
+        })
+      }],
+    function (err, result) {
+      callback()
     })
-
   })
 
   it('getRule', function() {  
@@ -94,6 +110,7 @@ describe('Classifiers functions', function() {
     var results = classifiers.getRule(data)
 
     results["cleaned"]["tokens"].length.should.equal(0)
+
     _.isEqual(results.labels,  [['Salary','Leased Car'],['120,000 USD','Without leased car']]).should.equal(true)
 
     var data = {'tokens':[{'word':'I','lemma':'I','pos':'A'},{'lemma':'have','word':'have','pos':'A'},{'lemma':'a','word':'a','pos':'A'},
@@ -152,7 +169,7 @@ describe('Classifiers functions', function() {
 
     var data = classifiers.getRule({'tokens':[{'lemma':'I','pos':'A'},{'lemma':'offering','pos':'A'},{'lemma':'a','pos':'A'},{'lemma':'job','pos':'A'},{'lemma':':','pos':'A'},{'lemma':'programmer','pos':'A'}, {'lemma':'10','pos':'A'},{'lemma':'hours','pos':'A'},{'lemma':'a','pos':'A'},{'lemma':'day','pos':'A'},{'lemma':',','pos':'A'}, {'lemma':'60000','pos':'A'},{'lemma':'no','pos':'A'},{'lemma':'car','pos':'A'},{'lemma':'fast','pos':'A'},{'lemma':'promotion','pos':'A'},{'lemma':'track','pos':'A'}]})
     
-    data["cleaned"]["tokens"].length.should.equal(7)
+    data["cleaned"]["tokens"].length.should.equal(5)
     _.isEqual(data.labels,[["Salary","Promotion Possibilities","Working Hours","Job Description","Leased Car"],["60,000 USD","Fast promotion track","10 hours","Programmer"]]).should.equal(true)
 
   })
