@@ -283,7 +283,7 @@ describe('Classifiers functions', function() {
 				var sample = ""
 				var features = {'i':1, 'love':1, 'the':1, 'life':1}
 		
-				classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average'}, function (err, results){
+				classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average', 'root':false, 'unigrams':false}, function (err, results){
 					_.keys(results).length.should.equal(100)
 					results.w2v0.should.equal(0.30470749999999996)
 					callback1()
@@ -293,7 +293,7 @@ describe('Classifiers functions', function() {
      	 		var sample = ""
       	        var features = {'love':1,'life':1}
                 
-                classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average'}, function (err, results){
+                classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average', 'root':false, 'unigrams':false}, function (err, results){
               	_.keys(results).length.should.equal(100)
 			 		async_adapter.getembed("love", 5, function(err, love){
 						async_adapter.getembed("life", 5, function(err, life){
@@ -307,7 +307,7 @@ describe('Classifiers functions', function() {
            		var sample = ""
                 var features = {'love':1}
                 
-                classifiers.feEmbed(sample, features, false, {'embdeddb': 6, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
+                classifiers.feEmbed(sample, features, false, {'embdeddb': 6, 'aggregate':'average', 'root':false, 'unigrams':false, 'allow_stopwords': true}, function (err, results){
                     _.keys(results).length.should.equal(100)
                      callback1()
                 })
@@ -316,7 +316,7 @@ describe('Classifiers functions', function() {
            		var sample = ""
 	            var features = {'love':1}
 
-                classifiers.feEmbed(sample, features, false, {'embdeddb': 7, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
+                classifiers.feEmbed(sample, features, false, {'embdeddb': 7, 'aggregate':'average', 'root':false, 'unigrams':false, 'allow_stopwords': true}, function (err, results){
                    _.keys(results).length.should.equal(25)
                     callback1()
                 })
@@ -325,7 +325,7 @@ describe('Classifiers functions', function() {
            		var sample = ""
                 var features = {'love':1}
 
-                classifiers.feEmbed(sample, features, false, {'embdeddb': 8, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
+                classifiers.feEmbed(sample, features, false, {'embdeddb': 8, 'aggregate':'average', 'root':false, 'unigrams':false, 'allow_stopwords': true}, function (err, results){
                 	_.keys(results).length.should.equal(50)
                     callback1()
                 })
@@ -334,7 +334,7 @@ describe('Classifiers functions', function() {
            		var sample = ""
                 var features = {'love':1}
 
-                classifiers.feEmbed(sample, features, false, {'embdeddb': 9, 'aggregate':'average', 'allow_stopwords': true}, function (err, results){
+                classifiers.feEmbed(sample, features, false, {'embdeddb': 9, 'aggregate':'average', 'root':false, 'unigrams':false, 'allow_stopwords': true}, function (err, results){
                     _.keys(results).length.should.equal(100)
                     callback1()
                 })
