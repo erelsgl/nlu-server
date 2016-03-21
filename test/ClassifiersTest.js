@@ -306,6 +306,7 @@ describe('Classifiers functions', function() {
         var features = {'i':1, 'love':1, 'the':1, 'life':1}
     
         classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average', 'root':false, 'unigrams':true}, function (err, results){
+          ("love" in results).should.equal(true)
           _.keys(results).length.should.equal(104)
           callback1()
         })  
@@ -314,14 +315,17 @@ describe('Classifiers functions', function() {
         var features = {'i':1, 'love':1, 'the':1, 'life':1}
     
         classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average', 'root':true, 'unigrams':false}, function (err, results){
+	  _.has(results, 'ROOT_love').should.equal(true)
+	  _.has(results, 'love').should.equal(false)
           _.keys(results).length.should.equal(101)
           callback1()
         })  
         },
         function(callback1) {
         var features = {'i':1, 'love':1, 'the':1, 'life':1}
-    
         classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average', 'root':true, 'unigrams':true}, function (err, results){
+	  _.has(results, 'ROOT_love').should.equal(true)
+          _.has(results, 'love').should.equal(true)
           _.keys(results).length.should.equal(105)
           callback1()
         })  
