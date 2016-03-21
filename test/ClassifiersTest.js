@@ -306,10 +306,7 @@ describe('Classifiers functions', function() {
         var features = {'i':1, 'love':1, 'the':1, 'life':1}
     
         classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average', 'root':false, 'unigrams':true}, function (err, results){
-          // _.keys(results).length.should.equal(100)
-          // results.w2v0.should.equal(0.30470749999999996)
-          console.log(JSON.stringify(results, null, 4))
-          process.exit(0)
+          _.keys(results).length.should.equal(104)
           callback1()
         })  
         },
