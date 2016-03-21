@@ -1033,15 +1033,18 @@ function feWordnet(sample, features, train, featureOptions, callback) {
 
 function feEmbed(sample, features, train, featureOptions, callback) {
 
-	if (!("input" in sample))
+	if (featureOptions.unigrams || featureOptions.root)
 	{
-		var temp = JSON.parse(JSON.stringify(sample))
-		var sample ={'input':temp}	
+		if (!("input" in sample))
+		{
+			var temp = JSON.parse(JSON.stringify(sample))
+			var sample ={'input':temp}	
+		}
 	}
 
 	if (!('unigrams' in featureOptions)) throw new Error("unigrams is not in the featureOptions")
 	if (!('root' in featureOptions)) throw new Error("root is not in the featureOptions")
-	if (!('sentences' in sample['input'])) throw new Error("sentences not in the sample")
+	// if (!('sentences' in sample['input'])) throw new Error("sentences not in the sample")
 
 	var embFeatures = {}
 	var embs = []
