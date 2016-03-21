@@ -1032,33 +1032,35 @@ function feWordnet(sample, features, train, featureOptions, callback) {
 
 
 function feEmbed(sample, features, train, featureOptions, callback) {
-	/*var sentence = ""
-	
 
-	if (_.isObject(sample)) 
-			sentence = sample.input.text
-		else
-			sentence = sample.text
-	else
-		sentence = sample
-*/
-/*	sentence = sentence.toLowerCase().trim()
-	var words = tokenizer.tokenize(sentence);
-	var unigrams = _.flatten(natural.NGrams.ngrams(words, 1))
+	if (!("input" in sample))
+	{
+		var temp = JSON.parse(JSON.stringify(sample))
+		var sample ={'input':temp}	
+	}
 
-	if (!featureOptions.allow_stopwords)
-		unigrams = _.filter(unigrams, function(unigram){ return stopwords.indexOf(unigram)==-1 })
-*/
-	
+	if (!('unigrams' in featureOptions)) throw new Error("unigrams is not in the featureOptions")
+	if (!('root' in featureOptions)) throw new Error("root is not in the featureOptions")
+	if (!('sentences' in sample['input'])) throw new Error("sentences not in the sample")
 
-	// if ("input" in sample)
-		
-
+	var embFeatures = {}
 	var embs = []
+	var roots = []
+
+	if (featureOptions['root'] == true)
+	{
+		_.each(sample['input']['sentences']['basic-dependencies'], function(dep, key, list){
+			if (dep.dep == "ROOT")
+				embFeatures["ROOT_"+dep.dependentGloss.toLowerCase()] = 1
+		}, this)	
+	}
 
 	async.eachSeries(_.keys(features), function(word, callback1){
 		
-		var negated = false
+		if (featureOptions['unigrams'] == true)
+			embFeatures[word] = 1
+
+		/*var negated = false
 		console.log("DEBUGEMB: word: "+word+" features "+featureOptions.minus_neg)
 
 		if (featureOptions.minus_neg && word.indexOf("-")!=-1)
@@ -1066,17 +1068,17 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 			console.log("DEBUGEMB: word: "+word+" is negated")
 			word = word.replace(/-/g, '')
 			negated = true
-		}
+		}*/
 
 		async_adapter.getembed(word, featureOptions.embdeddb, function(err, emb){
-			delete features[word]
+			// delete features[word]
 
-			if (negated)
+			/*if (negated)
 			{
 				emb =_.map(emb, function(num){ return num * (-1); });
 				console.log("DEBUGEMB: word: "+word+" vector is reversed")
 				negated = false
-			}
+			}*/
 
 			embs.push(emb)
 			callback1()
@@ -1095,11 +1097,11 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 			var sumvec = _.map(sumvec, function(value){ return value/embs.length })
 
 			_.each(sumvec, function(value, key, list){ 
-				features['w2v'+key] = value
+				embFeatures['w2v'+key] = value
 			}, this)
 		}
 
-	    callback(null, features)
+	    callback(null, embFeatures)
 	})	
 }	
 
