@@ -30,7 +30,8 @@ var check_dist = false
 var check_stats = false
 var count_reject = false
 var stat_sig = false
-var check_ds = true
+var check_ds = false
+var check_init = true
 var check_reject = false
 var do_serialization_prod = false
 var check_single_multi = false
@@ -492,6 +493,35 @@ if (check_dist)
 	console.log(JSON.stringify(coun, null, 4))
 	process.exit(0)
 }
+
+if (check_init)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var utterset = bars.getsetcontext(data)
+
+	var num_of_dials = data.length
+	console.log(num_of_dials)
+
+	var dataset = _.flatten(utterset["test"]).concat(_.flatten(utterset["train"]))
+	var int_stat = []
+
+	_.each(dataset, function(value, key, list){
+		var intents = _.map(value.output, function(num){ return _.keys(JSON.parse(num))[0] })
+		int_stat = int_stat.concat(intents)
+	}, this)
+
+	int_stat = _.countBy(int_stat, function(num) { return num })
+	console.log(JSON.stringify(int_stat, null, 4))
+
+	_.each(int_stat, function(value, key, list){
+		int_stat[key ] = value/num_of_dials
+	}, this)
+
+	console.log(JSON.stringify(int_stat, null, 4))
+	process.exit(0)
+
+}
+
 
 if (check_ds)
 {
