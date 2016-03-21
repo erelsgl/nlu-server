@@ -310,6 +310,22 @@ describe('Classifiers functions', function() {
           callback1()
         })  
         },
+        function(callback1) {
+        var features = {'i':1, 'love':1, 'the':1, 'life':1}
+    
+        classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average', 'root':true, 'unigrams':false}, function (err, results){
+          _.keys(results).length.should.equal(101)
+          callback1()
+        })  
+        },
+        function(callback1) {
+        var features = {'i':1, 'love':1, 'the':1, 'life':1}
+    
+        classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average', 'root':true, 'unigrams':true}, function (err, results){
+          _.keys(results).length.should.equal(105)
+          callback1()
+        })  
+        },
    			function(callback1) {
 				var sample = ""
 				var features = {'i':1, 'love':1, 'the':1, 'life':1}
