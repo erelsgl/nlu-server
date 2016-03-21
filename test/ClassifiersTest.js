@@ -278,7 +278,41 @@ describe('Classifiers functions', function() {
 
    	it('feEmbed', function(callback) {
 
+      var sample = { 
+          'output': ["Reject"],
+          'input':{
+            // 'text': "I love the life",
+            'sentences':
+              {
+                'basic-dependencies':[
+                  {"dep": "ROOT", "dependentGloss": "love"},
+                  {"dep": "neg", "governorGloss": "love"},
+                  {"dependentGloss": "I"},
+                  {"dependentGloss": "the"},
+                  {"dependentGloss": "life"}
+                ],
+                'tokens':[
+                  {'word': 'I','pos': 'ABC', 'lemma':'I'},
+                  {'word': 'love','pos': 'VB','lemma':'love'},
+                  {'word': 'the','pos': 'ABC','lemma':'the'},
+                  {'word': 'life','pos': 'NN','lemma':'life'},
+                ]
+              }
+          }
+      }
+
 		async.waterfall([
+        function(callback1) {
+        var features = {'i':1, 'love':1, 'the':1, 'life':1}
+    
+        classifiers.feEmbed(sample, features, false, {'embdeddb': 5, 'aggregate':'average', 'root':false, 'unigrams':true}, function (err, results){
+          // _.keys(results).length.should.equal(100)
+          // results.w2v0.should.equal(0.30470749999999996)
+          console.log(JSON.stringify(results, null, 4))
+          process.exit(0)
+          callback1()
+        })  
+        },
    			function(callback1) {
 				var sample = ""
 				var features = {'i':1, 'love':1, 'the':1, 'life':1}
