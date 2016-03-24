@@ -20,6 +20,7 @@ var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
 var Hierarchy = require(__dirname+'/../Hierarchy');
 var distance = require(__dirname+'/distance');
 var async_adapter = require(__dirname+'/async_adapter');
+var async = require('async');
 
 const walker = require('walker-sample');
 
@@ -4186,11 +4187,23 @@ _.each(sentence['tokens'], function(value, key, list){
   return sentence
 }
 
+function oppositeintent(label)
+{
+  var intent = _.keys(label)[0]
+  if (["Accept","Reject"].indexOf(intent) == -1)
+    throw new Error("error in oppositeintent")
+
+  if (intent == "Accept") return { "Reject":_.values(label)[0] }
+  if (intent == "Reject") return { "Accept":_.values(label)[0] }
+}
+
 function generateopposite(dataset, callback)
 {
   var orig = JSON.parse(JSON.stringify(dataset))
 
-  _.each(dataset, function(value, key, list){
+  async.eachSeries(dataset, function(value, callback_local) {
+  // _.each(dataset, function(value, key, list){
+
     if ((value["input"]["sentences"].length==1) && (value["output"].length == 1))
     {
       var intent = _.keys(JSON.parse(value["output"][0]))[0]
@@ -4199,7 +4212,7 @@ function generateopposite(dataset, callback)
 
       if (roottoken.negation || ["Accept", "Reject"].indexOf(intent)==-1)
       {
-        callback(null, results)
+        callback_local(null)
       }
       else
       {
@@ -4207,13 +4220,30 @@ function generateopposite(dataset, callback)
 
         async_adapter.getwordnet(roottoken.lemma, roottoken.pos, function(err, results){   
 
+          if (results["antonyms"].length>=3 && results["synonyms"].length>=3)
+          {
+            _.each(results["antonyms"].slice(0,5), function(ant, key, list){
 
-          
-          callback(null, results)
-          
+                console.log("in process: "+ant)
+                value["input"]["sentences"][0] = replaceroot(value["input"]["sentences"][0],ant[0])
+                value["output"] = [JSON.stringify(oppositeintent(JSON.parse(value["output"][0])))]
+
+                orig.push(JSON.parse(JSON.stringify(value)))
+              
+            }, this)
+
+            callback_local(null)
+          }
+          else
+            callback_local(null)
         })
       }
     }  
+    else
+      callback_local(null)
+
+  }, function (err){
+    callback(null, orig)
   })
 }
 
@@ -4325,5 +4355,6 @@ getDist:getDist,
 flattendataset:flattendataset,
 generateopposite: generateopposite,
 getroot:getroot,
-replaceroot:replaceroot
+replaceroot:replaceroot,
+oppositeintent:oppositeintent
 }
