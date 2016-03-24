@@ -1,9 +1,10 @@
 var Redis = require('ioredis');
-var client = new Redis(6379);
 var async = require('async');
 var _ = require('underscore')._;
 var os = require("os");
 var WordNet = require('node-wordnet')
+var fs = require('fs')
+var wordCount = fs.readFileSync(__dirname + "/20k.txt", 'UTF-8').split("\n")
 
 // var hostname = os.hostname();
 // var wordNet = require('wordnet-magic')
@@ -17,6 +18,7 @@ var WordNet = require('node-wordnet')
 
 function getembedall(db, callback)
 {
+	var client = new Redis(6379);
 	client.select(db, function(err, response) {
 		if (err) callback(err)
 
@@ -28,6 +30,7 @@ function getembedall(db, callback)
 
 function getembed(string, db, callback)
 {
+	var client = new Redis(6379);
 	client.select(db, function(err, response) {
 		if (err) callback(err)
 
@@ -50,7 +53,8 @@ function getembed(string, db, callback)
 function getppdb(string, pos, db, relation, callback)
 {	
 	var output = []
-
+	var client = new Redis(6379);
+	
 	var POS = {
 		'VBZ': 'VB', 'VBP': 'VB', 'VBN': 'VB', 'VBG': 'VB', 'VBD': 'VB',
 		'JJR': 'JJ','JJS': 'JJ',
@@ -188,7 +192,6 @@ function synset2lemmas(synsets)
 
 function getwordnet(string, pos, callbackg)
 {
-
 	console.log("DEBUGWORDNET: string:"+string+" pos:"+pos)
 
 	var POS = {
@@ -203,7 +206,7 @@ function getwordnet(string, pos, callbackg)
 	if (_.flatten(_.toArray(POS)).indexOf(pos) == -1)
 		{
 		console.log("DEBUGWORDNET: no pos")
-		callbackg(null, [])
+		callbackg(null, {'synonyms':[], 'antonyms':[]})
 		}
 	else
 	{
@@ -216,7 +219,6 @@ function getwordnet(string, pos, callbackg)
 	}, this)
 
 	console.log("DEBUGWORDNET: string:"+string+" pos:"+wnpos)
-
 	var wordnet = new WordNet()
 
 	var synonyms = []
@@ -225,8 +227,6 @@ function getwordnet(string, pos, callbackg)
 	wordnet.lookup(string, function(results) {
 
 		results = _.filter(results, function(num){ return !_.isNull(num) });
-		
-		// console.log("DEBUGWORDNET: "+string+" "+JSON.stringify(results, null, 4))
 
 		results = _.filter(results, function(num){ return num.pos ==  wnpos });
 
@@ -250,17 +250,17 @@ function getwordnet(string, pos, callbackg)
 
 		 	}, function(err){
 
-		 		// antonyms = _.map(antonyms, function(num){ return num + "-" });
+		 		synonyms = _.map(_.unique(synonyms), function(num){ return [num, wordCount.indexOf(num)] });
+		 		antonyms = _.map(_.unique(antonyms), function(num){ return [num, wordCount.indexOf(num)] });
 
-		 		// var feat = synonyms.concat(antonyms)
-
-		 		// var feat = _.map(feat, function(num){ return [num, 100] })
+		 		synonyms = _.sortBy(synonyms, function(num){ return num[1] }).reverse()
+		 		antonyms = _.sortBy(antonyms, function(num){ return num[1] }).reverse()
 
 		 		wordnet.close()
 
 		 		callbackg(null, {
-		 			'synonyms':_.unique(_.filter(synonyms, function(num){ return (num.indexOf("_")==-1) })),
-		 			'antonyms':_.unique(_.filter(antonyms, function(num){ return (num.indexOf("_")==-1) }))
+		 			'synonyms':_.filter(synonyms, function(num){ return (num[0].indexOf("_")==-1) }),
+		 			'antonyms':_.filter(antonyms, function(num){ return (num[0].indexOf("_")==-1) })
 		 		})
 		})
 
@@ -505,6 +505,8 @@ function getred(params, db, callback)
 {
 
 	// var client = redis.createClient(6379)
+	var client = new Redis(6379);
+
 
 // previouse dataset was 15
 // 13 - 1098401 - context emb
