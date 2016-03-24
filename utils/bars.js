@@ -19,6 +19,7 @@ var fs = require('fs');
 var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
 var Hierarchy = require(__dirname+'/../Hierarchy');
 var distance = require(__dirname+'/distance');
+var async_adapter = require(__dirname+'/async_adapter');
 
 const walker = require('walker-sample');
 
@@ -4143,6 +4144,78 @@ function flattendataset(dataset)
   return dataset
 }
 
+function getroot(sentence)
+{
+ 
+  var rootword = _.where(sentence['basic-dependencies'], {"dep": "ROOT"})[0]["dependentGloss"]
+  var roottoken = _.where(sentence['tokens'], {"word": rootword}, this)[0]
+  var negation = _.where(sentence['basic-dependencies'], {"dep": "neg", "governorGloss":rootword })  
+
+return {
+    'word': roottoken.word, 
+    'lemma': roottoken.lemma,
+    'pos': roottoken.pos,
+    'negation': negation.length != 0
+        }
+}
+
+function replaceroot(sentence, lemma)
+{
+  var rootwordindex = -1
+  var rootword = ""
+
+  _.each(sentence['basic-dependencies'], function(value, key, list){
+  if (value.dep == "ROOT")
+    {
+      rootwordindex = key
+      rootword = value["dependentGloss"]
+      sentence['basic-dependencies'][key]['dependentGloss'] = lemma
+    }
+  }, this)
+
+  var tokenindex = -1
+
+_.each(sentence['tokens'], function(value, key, list){
+  if (value.word == rootword)
+    {
+      sentence['tokens'][key]['word'] = lemma
+      sentence['tokens'][key]['lemma'] = lemma
+    }  
+  }, this)
+  
+  return sentence
+}
+
+function generateopposite(dataset, callback)
+{
+  var orig = JSON.parse(JSON.stringify(dataset))
+
+  _.each(dataset, function(value, key, list){
+    if ((value["input"]["sentences"].length==1) && (value["output"].length == 1))
+    {
+      var intent = _.keys(JSON.parse(value["output"][0]))[0]
+
+      var roottoken = getroot(value["input"]["sentences"][0])
+
+      if (roottoken.negation || ["Accept", "Reject"].indexOf(intent)==-1)
+      {
+        callback(null, results)
+      }
+      else
+      {
+        console.log("READY TO GENERATE: "+JSON.stringify(roottoken)+" intent: "+intent)
+
+        async_adapter.getwordnet(roottoken.lemma, roottoken.pos, function(err, results){   
+
+
+          
+          callback(null, results)
+          
+        })
+      }
+    }  
+  })
+}
 
 module.exports = {
   simulaterealds:simulaterealds,
@@ -4249,5 +4322,8 @@ getdist:getdist,
 distdistance:distdistance,
 coverfilter:coverfilter,
 getDist:getDist,
-flattendataset:flattendataset
+flattendataset:flattendataset,
+generateopposite: generateopposite,
+getroot:getroot,
+replaceroot:replaceroot
 }
