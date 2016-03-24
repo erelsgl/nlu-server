@@ -98,7 +98,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 
 		async.whilst(
 
-			function () { return ((index <= data['train'].length) && buffer_train.length > 3) },
+			function () { return (index <= data['train'].length)  },
     		function (callback_while) {
 
 			console.log("INDEX "+index)
@@ -107,7 +107,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
     		    	
     		if (index<10)
        		{
-           		index += 2
+           		index += 1
        		} 
     		else if (index<20)
 			{
@@ -120,17 +120,19 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
            	// filter train to contain only single label utterances
            	// var mytrainset = _.filter(mytrainset, function(num){ return num.output.length == 1 })
 
-           	console.log("DEBUGSIM: size of the strandard train" + mytrain.length + " in utterances "+ mytrainset.length)
-
 	    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), bars.copyobj(testset), function(err, stats1){
 
 			    extractGlobal(_.values(classifierList)[0], mytrain, fold, stats1['stats'], glob_stats)
+			    console.log(JSON.stringify(stats1['stats'], null, 4))
 
 			    bars.generateopposite(JSON.parse(JSON.stringify(mytrainset)), function(err, sim_train1){
+
+			    	console.log("DEBUGGEN: size of the strandard train" + mytrainset.length + " and generated "+ sim_train1.length)
 
 			    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train1), bars.copyobj(testset), function(err, stats2){
 
 					    extractGlobal(_.values(classifierList)[1], mytrain, fold, stats2['stats'], glob_stats)
+					    console.log(JSON.stringify(stats2['stats'], null, 4))
 
 			    		_.each(glob_stats, function(data, param, list){
 							master.plotlc(fold, param, glob_stats)
@@ -155,7 +157,7 @@ if (process.argv[1] === __filename)
 {
 	master.cleanFolder(__dirname + "/learning_curves")
 
-	var classifierList  = [ 'DS_comp_unigrams_async_context_unoffered_05', 'DS_comp_unigrams_async_context_unoffered_0125']
+	var classifierList  = [ 'DS_comp_unigrams_async_context_unoffered', 'DS_comp_unigrams_async_context_unoffered_generated']
 
 
 	// var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
