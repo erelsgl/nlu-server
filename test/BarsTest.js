@@ -10,12 +10,76 @@ var _ = require('underscore')._;
 //var __ = require('lodash');
 var fs = require('fs');
 
-var rules = require("../research/rule-based/rules.js")
-var ppdb = require("../research/ppdb/utils.js")
+// var rules = require("../research/rule-based/rules.js")
+// var ppdb = require("../research/ppdb/utils.js")
 
 
 describe('Bars utilities', function() {
 
+	it('replaceroot', function() {
+		var sen = {	"basic-dependencies": 	[
+											{"dep":"ROOT","dependentGloss": "accept"}
+											],
+								"tokens": 	[
+											{"word": "accept","lemma": "accept","pos": "VB"},
+											{"word": "loved","lemma": "love","pos": "VB"}
+											]}								
+		
+		var res = bars.replaceroot(sen, "reject")
+		res['basic-dependencies'][0]['dependentGloss'].should.equal("reject")
+		res['tokens'][0]['word'].should.equal("reject")
+		res['tokens'][0]['lemma'].should.equal("reject")
+	})
+	
+	it('getroot', function() {
+		var sen = {	"basic-dependencies": 	[
+											{"dep":"ROOT","dependentGloss": "accept"}
+											],
+								"tokens": 	[
+											{"word": "accept","lemma": "accept","pos": "VB"},
+											{"word": "loved","lemma": "love","pos": "VB"}
+											]}								
+		
+		var sen_neg = {	"basic-dependencies": 	[
+											{"dep":"ROOT","dependentGloss": "accept"},
+											{"dep":"neg","governorGloss": "accept"}
+											],
+								"tokens": 	[
+											{"word": "accept","lemma": "accept","pos": "VB"},
+											{"word": "loved","lemma": "love","pos": "VB"}
+											]}								
+		
+		bars.getroot(sen)["negation"].should.equal(false)
+		bars.getroot(sen_neg)["negation"].should.equal(true)
+	})
+
+
+	it('generateopposite', function(callback) {
+
+		var dataset = [{
+					"output":["\{\"Accept\":true\}"],
+					"input":{"sentences":[{
+								"basic-dependencies": [
+										{
+										"dep":"ROOT",
+										"dependentGloss": "accept"
+										}
+									],
+								"tokens": [
+									{
+										"word": "accept",
+										"lemma": "accept",
+										"pos": "VB"
+									}
+								]
+				}]}}]
+
+		bars.generateopposite(dataset, function(err, res){
+
+			console.log(JSON.stringify(res, null, 4))
+
+		})
+    })  
 
 	it('pipeline', function() {
 
