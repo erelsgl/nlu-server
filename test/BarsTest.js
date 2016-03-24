@@ -16,6 +16,12 @@ var fs = require('fs');
 
 describe('Bars utilities', function() {
 
+	it('oppositeintent', function() {
+		_.isEqual(bars.oppositeintent({"Accept":true}), {"Reject":true}).should.equal(true)
+		_.isEqual(bars.oppositeintent({"Reject":{"Salary":"10"}}), {"Accept":{"Salary":"10"}}).should.equal(true)
+		_.isEqual(bars.oppositeintent({"Reject":{"Salary":"10"}}), {"Accept":true}).should.equal(false)
+	})
+
 	it('replaceroot', function() {
 		var sen = {	"basic-dependencies": 	[
 											{"dep":"ROOT","dependentGloss": "accept"}
@@ -58,26 +64,21 @@ describe('Bars utilities', function() {
 
 		var dataset = [{
 					"output":["\{\"Accept\":true\}"],
-					"input":{"sentences":[{
+					"input":{"sentences":[
+							{
 								"basic-dependencies": [
-										{
-										"dep":"ROOT",
-										"dependentGloss": "accept"
-										}
+										{"dep":"ROOT","dependentGloss": "accept"}
 									],
-								"tokens": [
-									{
-										"word": "accept",
-										"lemma": "accept",
-										"pos": "VB"
-									}
-								]
+								"tokens": 	[
+											{"word": "accept","lemma": "accept","pos": "VB"},
+											{"word": "love","lemma": "love","pos": "VB"}
+											]
 				}]}}]
 
 		bars.generateopposite(dataset, function(err, res){
-
-			console.log(JSON.stringify(res, null, 4))
-
+			res.length.should.equal(4)
+			callback()
+			// console.log(JSON.stringify(res, null, 4))
 		})
     })  
 
