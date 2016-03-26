@@ -55,8 +55,18 @@ describe('Bars utilities', function() {
 											{"word": "loved","lemma": "love","pos": "VB"}
 											]}								
 		
+		var sen_neg_xcomp = {	"basic-dependencies": 	[
+											{"dep":"ROOT","dependentGloss": "have"},
+											{"dep":"xcomp","governorGloss": "have", "dependentGloss":"accept"}
+											],
+								"tokens": 	[
+											{"word": "accept","lemma": "accept","pos": "VB"},
+											{"word": "have","lemma": "have","pos": "VB"}
+											]}								
+		
 		bars.getroot(sen)["negation"].should.equal(false)
 		bars.getroot(sen_neg)["negation"].should.equal(true)
+		bars.getroot(sen_neg_xcomp)["lemma"].should.equal("accept")
 	})
 
 
