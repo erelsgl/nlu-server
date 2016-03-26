@@ -125,7 +125,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 			    extractGlobal(_.values(classifierList)[0], mytrain, fold, stats1['stats'], glob_stats)
 			    console.log(JSON.stringify(stats1['stats'], null, 4))
 
-			    bars.generateopposite(JSON.parse(JSON.stringify(mytrainset)), function(err, sim_train1){
+			    bars.generateoppositeversion2(JSON.parse(JSON.stringify(mytrainset)), function(err, sim_train1){
 
 			    	console.log("DEBUGGEN: size of the strandard train" + mytrainset.length + " and generated "+ sim_train1.length)
 
