@@ -4210,7 +4210,7 @@ function generateopposite(dataset, callback)
 
       var roottoken = getroot(value["input"]["sentences"][0])
 
-      if (roottoken.negation || ["Accept", "Reject"].indexOf(intent)==-1)
+      if (roottoken.negation || ["Accept"].indexOf(intent)==-1 || ["vb","vbd","vbg","vbn","vbp","vbz"].indexOf(roottoken.pos.toLowerCase())==-1 )
       {
         callback_local(null)
       }
@@ -4224,12 +4224,14 @@ function generateopposite(dataset, callback)
           {
             _.each(results["antonyms"].slice(0,5), function(ant, key, list){
 
+		if (ant[1]>0)
+		{
                 console.log("in process: "+ant)
                 value["input"]["sentences"][0] = replaceroot(value["input"]["sentences"][0],ant[0])
                 value["output"] = [JSON.stringify(oppositeintent(JSON.parse(value["output"][0])))]
 
                 orig.push(JSON.parse(JSON.stringify(value)))
-              
+              	}
             }, this)
 
             callback_local(null)
