@@ -4149,12 +4149,16 @@ function getroot(sentence)
 {
  
   var rootword = _.where(sentence['basic-dependencies'], {"dep": "ROOT"})[0]["dependentGloss"]
+  var rootxcomp = _.where(sentence['basic-dependencies'], {"dep": "xcomp","governorGloss": rootword})
   var roottoken = _.where(sentence['tokens'], {"word": rootword}, this)[0]
   var negation = _.where(sentence['basic-dependencies'], {"dep": "neg", "governorGloss":rootword })  
 
+  if (rootxcomp.length != 0)
+    var xcomptoken = _.where(sentence['tokens'], {"word": rootxcomp[0]["dependentGloss"]}, this)[0]
+
 return {
-    'word': roottoken.word, 
-    'lemma': roottoken.lemma,
+    'word': (rootxcomp.length == 0 )?roottoken.word:xcomptoken.word, 
+    'lemma': (rootxcomp.length == 0 )?roottoken.lemma:xcomptoken.lemma,
     'pos': roottoken.pos,
     'negation': negation.length != 0
         }
@@ -4197,11 +4201,112 @@ function oppositeintent(label)
   if (intent == "Reject") return { "Accept":_.values(label)[0] }
 }
 
-function generateopposite(dataset, callback)
+function generateoppositeversion2(dataset, callback)
 {
+  
   var orig = JSON.parse(JSON.stringify(dataset))
+  
+  var settogen = {
+    "Accept":[],
+    "Reject":[]
+  }
+
+  _.each(dataset, function(value, key, list){
+
+    // console.log(JSON.stringify(value, null, 4))
+
+    if ((value["input"]["sentences"].length==1) && (value["output"].length == 1))
+    {
+      var intent = _.keys(JSON.parse(value["output"][0]))[0]
+
+      var roottoken = getroot(value["input"]["sentences"][0])
+
+      if (!((roottoken.negation || ["Accept","Reject"].indexOf(intent)==-1 || ["vb","vbd",/*"vbg",*/"vbn","vbp"/*,"vbz"*/].indexOf(roottoken.pos.toLowerCase())==-1 )))
+      {
+        var marker = roottoken.lemma + "_"  + roottoken.pos + "_" + roottoken.negation
+        // var marker = roottoken.lemma + "_"  + roottoken.negation
+        settogen[intent].push({
+          "text": value["input"]["text"],
+          "root": roottoken,
+          "marker": marker,
+          "sentence": value["input"]["sentences"]
+        })
+
+        // if (marker == "be_false")
+          // console.log(JSON.stringify(value, null, 4))
+      }
+    }
+  }, this)
+
+  var countOpAccept = _.pairs(_.countBy(settogen["Accept"], function(num) { return num.marker }))
+  countOpAccept = _.sortBy(countOpAccept, function(num){ return num[1] }).reverse()
+  // console.log(JSON.stringify(countOpAccept, null, 4))
+  countOpAccept = countOpAccept.slice(0,5)
+
+  var countOpReject = _.pairs(_.countBy(settogen["Reject"], function(num) { return num.marker }))
+  countOpReject = _.sortBy(countOpReject, function(num){ return num[1] }).reverse()
+  // console.log(JSON.stringify(countOpReject, null, 4))
+  countOpReject = countOpReject.slice(0,5)
+
+  // console.log(JSON.stringify(countOpAccept, null, 4))
+  // console.log(JSON.stringify(countOpReject, null, 4))
+
+  var markers = []
+
+  markers = markers.concat(_.map(countOpAccept, function(num){ return num[0] }))
+  markers = markers.concat(_.map(countOpReject, function(num){ return num[0] }))
 
   async.eachSeries(dataset, function(value, callback_local) {
+  // _.each(dataset, function(value, key, list){
+
+    if ((value["input"]["sentences"].length==1) && (value["output"].length == 1))
+    {
+      var intent = _.keys(JSON.parse(value["output"][0]))[0]
+
+      var roottoken = getroot(value["input"]["sentences"][0])
+
+      var marker = roottoken.lemma + "_"  + roottoken.pos + "_" + roottoken.negation
+
+      if (roottoken.negation || markers. indexOf(marker) == -1 ||  ["Accept"].indexOf(intent) == -1 || ["vb","vbd","vbg","vbn","vbp","vbz"].indexOf(roottoken.pos.toLowerCase())==-1 )
+      {
+        callback_local(null)
+      }
+      else
+      {
+        console.log("READY TO GENERATE: "+JSON.stringify(roottoken)+" intent: "+intent)
+
+        async_adapter.getwordnet(roottoken.lemma, roottoken.pos, function(err, results){   
+
+          if (results["antonyms"].length>=3 && results["synonyms"].length>=3)
+          {
+            _.each(results["antonyms"].slice(0,5), function(ant, key, list){
+
+              if (ant[1]>0)
+              {
+                  console.log("in process: "+ant)
+                  value["input"]["sentences"][0] = replaceroot(value["input"]["sentences"][0],ant[0])
+                  value["output"] = [JSON.stringify(oppositeintent(JSON.parse(value["output"][0])))]
+
+                  orig.push(JSON.parse(JSON.stringify(value)))
+              }
+            }, this)
+
+            callback_local(null)
+          }
+          else
+            callback_local(null)
+        })
+      }
+    }  
+    else
+      callback_local(null)
+
+  }, function (err){
+    callback(null, orig)
+  })
+}
+
+ /* async.eachSeries(dataset, function(value, callback_local) {
   // _.each(dataset, function(value, key, list){
 
     if ((value["input"]["sentences"].length==1) && (value["output"].length == 1))
@@ -4248,6 +4353,61 @@ function generateopposite(dataset, callback)
     callback(null, orig)
   })
 }
+*/
+
+function generateopposite(dataset, callback)
+{
+  var orig = JSON.parse(JSON.stringify(dataset))
+
+  async.eachSeries(dataset, function(value, callback_local) {
+  // _.each(dataset, function(value, key, list){
+
+    if ((value["input"]["sentences"].length==1) && (value["output"].length == 1))
+    {
+      var intent = _.keys(JSON.parse(value["output"][0]))[0]
+
+      var roottoken = getroot(value["input"]["sentences"][0])
+
+      if (roottoken.negation || ["Accept"].indexOf(intent)==-1 || ["vb","vbd","vbg","vbn","vbp","vbz"].indexOf(roottoken.pos.toLowerCase())==-1 )
+      {
+        callback_local(null)
+      }
+      else
+      {
+        console.log("READY TO GENERATE: "+JSON.stringify(roottoken)+" intent: "+intent)
+
+        async_adapter.getwordnet(roottoken.lemma, roottoken.pos, function(err, results){   
+
+          if (results["antonyms"].length>=3 && results["synonyms"].length>=3)
+          {
+            _.each(results["antonyms"].slice(0,5), function(ant, key, list){
+
+    if (ant[1]>0)
+    {
+                console.log("in process: "+ant)
+                value["input"]["sentences"][0] = replaceroot(value["input"]["sentences"][0],ant[0])
+                value["output"] = [JSON.stringify(oppositeintent(JSON.parse(value["output"][0])))]
+
+                orig.push(JSON.parse(JSON.stringify(value)))
+                }
+            }, this)
+
+            callback_local(null)
+          }
+          else
+            callback_local(null)
+        })
+      }
+    }  
+    else
+      callback_local(null)
+
+  }, function (err){
+    callback(null, orig)
+  })
+}
+
+
 
 module.exports = {
   simulaterealds:simulaterealds,
@@ -4358,5 +4518,6 @@ flattendataset:flattendataset,
 generateopposite: generateopposite,
 getroot:getroot,
 replaceroot:replaceroot,
-oppositeintent:oppositeintent
+oppositeintent:oppositeintent,
+generateoppositeversion2:generateoppositeversion2
 }
