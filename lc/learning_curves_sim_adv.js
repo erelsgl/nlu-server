@@ -123,6 +123,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 	    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), bars.copyobj(testset), function(err, stats1){
 
 			    extractGlobal(_.values(classifierList)[0], mytrain, fold, stats1['stats'], glob_stats)
+			    console.log(_.values(classifierList)[0])
 			    console.log(JSON.stringify(stats1['stats'], null, 4))
 
 			    bars.generateoppositeversion2(JSON.parse(JSON.stringify(mytrainset)), function(err, sim_train1){
@@ -132,6 +133,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 			    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train1), bars.copyobj(testset), function(err, stats2){
 
 					    extractGlobal(_.values(classifierList)[1], mytrain, fold, stats2['stats'], glob_stats)
+			    		    console.log(_.values(classifierList)[1])
 					    console.log(JSON.stringify(stats2['stats'], null, 4))
 
 			    		_.each(glob_stats, function(data, param, list){
@@ -172,7 +174,7 @@ if (process.argv[1] === __filename)
 	// dataset = _.shuffle(dataset)
 //	dataset = dataset.slice(0,10)
 
-	learning_curves(classifierList, dataset, 1/*step*/, 1/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
+	learning_curves(classifierList, dataset, 1/*step*/, 1/*step0*/, 30/*limit*/,  3/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
