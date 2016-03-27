@@ -88,6 +88,7 @@ function extractGlobal(workerstats, stat)
 	var attributes = Object.keys(workerstats['stats'])
 	var trainsize = workerstats["trainsize"] //+ "_" + workerstats["trainsizeuttr"]
 	var classifier = workerstats["classifier"]
+	var classifiers = workerstats["classifiers"]
 	var fold = workerstats["fold"]
 
 	_.each(attributes, function(attr, key, list){ 
@@ -101,6 +102,10 @@ function extractGlobal(workerstats, stat)
 			
 			if (!(classifier in stat[attr][trainsize])) 
 					stat[attr][trainsize][classifier] = {}
+			
+			_.each(classifiers, function(cls, key, list){
+				stat[attr][trainsize][cls][fold] = null
+			}, this)
 			
 			stat[attr][trainsize][classifier][fold] = workerstats['stats'][attr]
 			stat[attr][trainsize]["dial"][fold] = workerstats["trainsizeuttr"]
