@@ -4248,8 +4248,8 @@ function generateoppositeversion2(dataset, callback)
   // console.log(JSON.stringify(countOpReject, null, 4))
   countOpReject = countOpReject.slice(0,5)
 
-  // console.log(JSON.stringify(countOpAccept, null, 4))
-  // console.log(JSON.stringify(countOpReject, null, 4))
+  console.log("DEBUGGEN:"+JSON.stringify(countOpAccept, null, 4))
+  console.log("DEBUGGEN:"+JSON.stringify(countOpReject, null, 4))
 
   var markers = []
 
@@ -4267,34 +4267,42 @@ function generateoppositeversion2(dataset, callback)
 
       var marker = roottoken.lemma + "_"  + roottoken.pos + "_" + roottoken.negation
 
-      if (roottoken.negation || markers. indexOf(marker) == -1 ||  ["Accept"].indexOf(intent) == -1 || ["vb","vbd","vbg","vbn","vbp","vbz"].indexOf(roottoken.pos.toLowerCase())==-1 )
+      if (roottoken.negation || markers. indexOf(marker) == -1 ||  ["Accept","Reject"].indexOf(intent) == -1 || ["vb","vbd","vbg","vbn","vbp","vbz"].indexOf(roottoken.pos.toLowerCase())==-1 )
       {
         callback_local(null)
       }
       else
       {
-        console.log("READY TO GENERATE: "+JSON.stringify(roottoken)+" intent: "+intent)
+        console.log("DEBUGGEN: "+JSON.stringify(roottoken)+" intent: "+intent)
 
         async_adapter.getwordnet(roottoken.lemma, roottoken.pos, function(err, results){   
 
+        console.log("DEBUGGEN: num of parts "+results["antonyms"].length + " "+results["synonyms"].length)
           if (results["antonyms"].length>=3 && results["synonyms"].length>=3)
           {
-            _.each(results["antonyms"].slice(0,5), function(ant, key, list){
+            //_.each(results["antonyms"].slice(0,5), function(ant, key, list){
+
+		var ant = _.sample(results["antonyms"].slice(0,5))
+		
+        	console.log("DEBUGGEN: chosen ant "+JSON.stringify(ant))
 
               if (ant[1]>0)
               {
-                  console.log("in process: "+ant)
+                  console.log("DEBUGGEN: add to corpus "+ant)
                   value["input"]["sentences"][0] = replaceroot(value["input"]["sentences"][0],ant[0])
                   value["output"] = [JSON.stringify(oppositeintent(JSON.parse(value["output"][0])))]
 
                   orig.push(JSON.parse(JSON.stringify(value)))
               }
-            }, this)
+            //}, this)
 
             callback_local(null)
           }
           else
+		{
+	
             callback_local(null)
+		}
         })
       }
     }  
@@ -4368,7 +4376,7 @@ function generateopposite(dataset, callback)
 
       var roottoken = getroot(value["input"]["sentences"][0])
 
-      if (roottoken.negation || ["Accept"].indexOf(intent)==-1 || ["vb","vbd","vbg","vbn","vbp","vbz"].indexOf(roottoken.pos.toLowerCase())==-1 )
+      if (roottoken.negation || ["Accept","Reject"].indexOf(intent)==-1 || ["vb","vbd","vbg","vbn","vbp","vbz"].indexOf(roottoken.pos.toLowerCase())==-1 )
       {
         callback_local(null)
       }
