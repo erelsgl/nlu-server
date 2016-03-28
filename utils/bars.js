@@ -4376,7 +4376,7 @@ function generateopposite(dataset, callback)
 
       var roottoken = getroot(value["input"]["sentences"][0])
 
-      if (roottoken.negation || ["Accept","Reject"].indexOf(intent)==-1 || ["vb","vbd","vbg","vbn","vbp","vbz"].indexOf(roottoken.pos.toLowerCase())==-1 )
+      if (roottoken.negation || ["Accept"].indexOf(intent)==-1 || ["vb","vbd","vbg","vbn","vbp","vbz"].indexOf(roottoken.pos.toLowerCase())==-1 )
       {
         callback_local(null)
       }
