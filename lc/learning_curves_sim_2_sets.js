@@ -57,80 +57,91 @@ function checkGnuPlot()
 
 function learning_curves(classifierList, step, step0, limit, numOfFolds, callback) 
 {
-	var index = 0
+	
 	glob_stats = {}
-	var fold = 1
+	
 
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
 	var utterset1 = bars.getsetcontext(data)
-	var train1 = utterset1["train"].concat(utterset1["test"])
-//	var train1 = _.shuffle(train1)
-	
-	var testset = _.flatten(train1.splice(0,train1.length/2))
-	console.log("DEBUGLC: size of test "+ testset.length + " in utterances "+ _.flatten(testset).length)
+	var train1or = utterset1["train"].concat(utterset1["test"])
 	
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_new.json"))
 	var utterset2 = bars.getsetcontext(data)
 	var train2 = utterset2["train"].concat(utterset2["test"])
-//	var train2 = _.shuffle(train2)
+	
+	//	var train1 = _.shuffle(train1)	
+	//	var train2 = _.shuffle(train2)
 
-	async.whilst(
+	async.timesSeries(numOfFolds, function(fold, callback_fold){
 
-	function () { return (index <= train1.length && index <= train2.length)  },
-    	function (callback_while) {
-	    	
-		if (index<10)
-		{
-	   		index += 1
-		} 
-		else if (index<20)
-		{
-	       	index += 2
-	    }
-	    else index += 10
+		console.log(JSON.stringify(train1or.length, null, 4))
 
-    	var mytrain1 = train1.slice(0, index)
-    	var mytrain2 = train2.slice(0, index)
+		var index = 0
+		console.log("DEBUGLC: FOLD "+fold)
 
-	    var mytrainset1 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain1) ? _.flatten(mytrain1) : mytrain1)))
-	    var mytrainset2 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain2) ? _.flatten(mytrain2) : mytrain2)))
+		var datasplitted = partitions.partitions_consistent_by_fold(train1or, numOfFolds, fold)
+		var train1 = datasplitted['train']
+		var testset = _.flatten(datasplitted['test'])
 
-   		// filter train to contain only single label utterances
-   		// var mytrainset = _.filter(mytrainset, function(num){ return num.output.length == 1 })
+		async.whilst(
 
-	    trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset1), bars.copyobj(testset), function(err, stats1){
+		function () { return (index <= train1.length && index <= train2.length)  },
+	    	function (callback_while) {
+		    	
+			if (index<10)
+			{
+		   		index += 1
+			} 
+			else if (index<20)
+			{
+		       	index += 2
+		    }
+		    else index += 10
 
-		    extractGlobal(_.values(classifierList)[0], mytrainset1, fold, stats1['stats'], glob_stats, classifierList)
-		    console.log(_.values(classifierList)[0])
-		    console.log(JSON.stringify(stats1['stats'], null, 4))
+	    	var mytrain1 = train1.slice(0, index)
+	    	var mytrain2 = train2.slice(0, index)
 
-//			    bars.generateoppositeversion2(JSON.parse(JSON.stringify(mytrainset2)), function(err, sim_train){
-			    var sim_train = bars.copyobj(mytrainset2)
+		    var mytrainset1 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain1) ? _.flatten(mytrain1) : mytrain1)))
+		    var mytrainset2 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain2) ? _.flatten(mytrain2) : mytrain2)))
 
-			    	console.log("DEBUGLC: size of standard "+ mytrainset2.length + "size of generated "+ sim_train.length)
+	   		// filter train to contain only single label utterances
+	   		// var mytrainset = _.filter(mytrainset, function(num){ return num.output.length == 1 })
 
-			    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train), bars.copyobj(testset), function(err, stats2){
+		    trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset1), bars.copyobj(testset), function(err, stats1){
 
-				    extractGlobal(_.values(classifierList)[1], mytrainset2, fold, stats2['stats'], glob_stats, classifierList)
-			    		
-			    	    console.log(_.values(classifierList)[1])
-				    console.log(JSON.stringify(stats2['stats'], null, 4))
+			    extractGlobal(_.values(classifierList)[0], mytrainset1, fold, stats1['stats'], glob_stats, classifierList)
+			    console.log(_.values(classifierList)[0])
+			    console.log(JSON.stringify(stats1['stats'], null, 4))
 
-			    		_.each(glob_stats, function(data, param, list){
-							master.plotlc(fold, param, glob_stats)
-							console.log("DEBUGLC: param "+param+" fold "+fold+" build")
-							master.plotlc('average', param, glob_stats)
-						})
+	//			    bars.generateoppositeversion2(JSON.parse(JSON.stringify(mytrainset2)), function(err, sim_train){
+				    var sim_train = bars.copyobj(mytrainset2)
 
-						callback_while();
-			    	})
-//			    })
-			})
-    	},
-    		function (err, n) {
-    			console.log("done")
-    	});    	
-      	
+				    	console.log("DEBUGLC: size of standard "+ mytrainset2.length + "size of generated "+ sim_train.length)
+
+				    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train), bars.copyobj(testset), function(err, stats2){
+
+					    extractGlobal(_.values(classifierList)[1], mytrainset2, fold, stats2['stats'], glob_stats, classifierList)
+				    		
+				    	    console.log(_.values(classifierList)[1])
+					    console.log(JSON.stringify(stats2['stats'], null, 4))
+
+				    		_.each(glob_stats, function(data, param, list){
+								master.plotlc(fold, param, glob_stats)
+								console.log("DEBUGLC: param "+param+" fold "+fold+" build")
+								master.plotlc('average', param, glob_stats)
+							})
+
+							callback_while();
+				    	})
+	//			    })
+				})
+	    },
+	    function (err, n) {
+	    	callback_fold(null)
+	    });    	
+    }, function() {
+  			callback()
+		})
 }
 
 if (process.argv[1] === __filename)
