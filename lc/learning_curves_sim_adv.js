@@ -174,7 +174,7 @@ if (process.argv[1] === __filename)
 	// dataset = _.shuffle(dataset)
 //	dataset = dataset.slice(0,10)
 
-	learning_curves(classifierList, dataset, 1/*step*/, 1/*step0*/, 30/*limit*/,  3/*numOfFolds*/, function(){
+	learning_curves(classifierList, dataset, 1/*step*/, 1/*step0*/, 30/*limit*/,  2/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
