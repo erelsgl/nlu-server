@@ -91,6 +91,10 @@ function extractGlobal(workerstats, stat)
 	var classifiers = workerstats["classifiers"]
 	var fold = workerstats["fold"]
 
+	console.log(workerstats)
+	
+	console.log("clas:"+classifiers)
+
 	_.each(attributes, function(attr, key, list){ 
 	//	if (!_.isNull(workerstats['stats'][attr]))
 	//	{
@@ -100,11 +104,14 @@ function extractGlobal(workerstats, stat)
 			if (!('dial' in stat[attr][trainsize])) 
 					stat[attr][trainsize]['dial'] = {}
 			
-			if (!(classifier in stat[attr][trainsize])) 
-					stat[attr][trainsize][classifier] = {}
-			
 			_.each(classifiers, function(cls, key, list){
-				stat[attr][trainsize][cls][fold] = null
+
+				if (!(cls in stat[attr][trainsize]))
+                                        stat[attr][trainsize][cls] = {}
+					
+				if (!(fold in stat[attr][trainsize][cls]))
+					stat[attr][trainsize][cls][fold] = null
+
 			}, this)
 			
 			stat[attr][trainsize][classifier][fold] = workerstats['stats'][attr]
