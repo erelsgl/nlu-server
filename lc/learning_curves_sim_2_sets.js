@@ -23,7 +23,7 @@ var gnuplot = 'gnuplot'
 
 // function extractGlobal(parameters, classifiers, trainset, report, stat)
 function extractGlobal(classifier, mytrain, fold, stats, glob_stats, classifiers)
-	{
+{
 		var stats_prep = {}
 
 		_.each(stats, function(value, key, list){
@@ -57,24 +57,26 @@ function checkGnuPlot()
 
 function learning_curves(classifierList, step, step0, limit, numOfFolds, callback) 
 {
-	var index = 1
+	var index = 0
 	glob_stats = {}
 	var fold = 1
 
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
 	var utterset1 = bars.getsetcontext(data)
 	var train1 = utterset1["train"].concat(utterset1["test"])
-
+//	var train1 = _.shuffle(train1)
+	
 	var testset = _.flatten(train1.splice(0,train1.length/2))
 	console.log("DEBUGLC: size of test "+ testset.length + " in utterances "+ _.flatten(testset).length)
 	
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_new.json"))
 	var utterset2 = bars.getsetcontext(data)
 	var train2 = utterset2["train"].concat(utterset2["test"])
+//	var train2 = _.shuffle(train2)
 
 	async.whilst(
 
-		function () { return (index <= train1.length && index <= train2.length)  },
+	function () { return (index <= train1.length && index <= train2.length)  },
     	function (callback_while) {
 	    	
 		if (index<10)
@@ -98,20 +100,21 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 
 	    trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset1), bars.copyobj(testset), function(err, stats1){
 
-		    extractGlobal(_.values(classifierList)[0], mytrainset1, fold, stats1['stats'], glob_stats)
+		    extractGlobal(_.values(classifierList)[0], mytrainset1, fold, stats1['stats'], glob_stats, classifierList)
 		    console.log(_.values(classifierList)[0])
 		    console.log(JSON.stringify(stats1['stats'], null, 4))
 
-			    bars.generateoppositeversion2(JSON.parse(JSON.stringify(mytrainset2)), function(err, sim_train){
+//			    bars.generateoppositeversion2(JSON.parse(JSON.stringify(mytrainset2)), function(err, sim_train){
+			    var sim_train = bars.copyobj(mytrainset2)
 
 			    	console.log("DEBUGLC: size of standard "+ mytrainset2.length + "size of generated "+ sim_train.length)
 
 			    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train), bars.copyobj(testset), function(err, stats2){
 
-					    extractGlobal(_.values(classifierList)[1], mytrainset2, fold, stats2['stats'], glob_stats, classifierList)
+				    extractGlobal(_.values(classifierList)[1], mytrainset2, fold, stats2['stats'], glob_stats, classifierList)
 			    		
-			    		console.log(_.values(classifierList)[1])
-					    console.log(JSON.stringify(stats2['stats'], null, 4))
+			    	    console.log(_.values(classifierList)[1])
+				    console.log(JSON.stringify(stats2['stats'], null, 4))
 
 			    		_.each(glob_stats, function(data, param, list){
 							master.plotlc(fold, param, glob_stats)
@@ -121,7 +124,7 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 
 						callback_while();
 			    	})
-			    })
+//			    })
 			})
     	},
     		function (err, n) {
