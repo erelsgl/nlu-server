@@ -69,12 +69,13 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 	var utterset2 = bars.getsetcontext(data)
 	var train2 = utterset2["train"].concat(utterset2["test"])
 	
+	console.log("DEBUGLC: train2.length "+ train2.length)
+	console.log("DEBUGLC: train1or.length "+ train1or.length)
+	
 	//	var train1 = _.shuffle(train1)	
 	//	var train2 = _.shuffle(train2)
 
 	async.timesSeries(numOfFolds, function(fold, callback_fold){
-
-		console.log(JSON.stringify(train1or.length, null, 4))
 
 		var index = 0
 		console.log("DEBUGLC: FOLD "+fold)
@@ -100,6 +101,10 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 
 	    	var mytrain1 = train1.slice(0, index)
 	    	var mytrain2 = train2.slice(0, index)
+
+		console.log("DEBUGLC: mytrain1.length: "+ mytrain1.length)
+		console.log("DEBUGLC: mytrain2.length: "+ mytrain2.length)
+		console.log("DEBUGLC: testset.length: "+ testset.length)
 
 		    var mytrainset1 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain1) ? _.flatten(mytrain1) : mytrain1)))
 		    var mytrainset2 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain2) ? _.flatten(mytrain2) : mytrain2)))
@@ -150,7 +155,7 @@ if (process.argv[1] === __filename)
 
 	var classifierList  = [ 'DS_comp_unigrams_async_context_unoffered', 'DS_comp_unigrams_async_context_unoffered_generated']
 
-	learning_curves(classifierList, 1/*step*/, 1/*step0*/, 30/*limit*/,  3/*numOfFolds*/, function(){
+	learning_curves(classifierList, 1/*step*/, 1/*step0*/, 30/*limit*/,  10/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
