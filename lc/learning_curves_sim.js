@@ -74,7 +74,7 @@ classifiers
 */
 
 // function extractGlobal(parameters, classifiers, trainset, report, stat)
-function extractGlobal(classifier, mytrain, fold, stats, glob_stats)
+function extractGlobal(classifier, mytrain, fold, stats, glob_stats, classifierList)
 	{
 		var stats_prep = {}
 
@@ -85,6 +85,7 @@ function extractGlobal(classifier, mytrain, fold, stats, glob_stats)
 
 		
 		var results = {
+			'classifiers': classifierList,
 			'classifier': classifier,
 			'fold': fold,
 			'trainsize': mytrain.length,
@@ -118,7 +119,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 
 	async.timesSeries(numOfFolds, function(fold, callback_fold){
 
-		console.log("FOLD "+fold)
+		console.log("DEBUGSIM: FOLD "+fold)
 		var index = 2
 
 		var data = partitions.partitions_consistent_by_fold(dataset, numOfFolds, fold)
@@ -126,6 +127,8 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 		var testset = (bars.isDialogue(data['test']) ? _.flatten(data['test']) : data['test'])
 		
 		console.log("DEBUGSIM: size of the train before resizing "+data['train'].length)
+
+		// base the dst on the first 5 dialogues
 		var gold = data['train'].splice(0,5)
 		console.log("DEBUGSIM: size of the gold "+gold.length)
 		console.log("DEBUGSIM: size of the train after resizing "+data['train'].length)
@@ -151,21 +154,20 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 		async.whilst(
 
 			function () { return ((index <= data['train'].length) && buffer_train.length > 3) },
-    		function (callback_while) {
+	    		function (callback_while) {
 
-			console.log("INDEX "+index)
-
-    		var mytrain = data['train'].slice(0, index)
+				console.log("DEBUGSIM: INDEX "+index)
+		    		var mytrain = data['train'].slice(0, index)
     		    	
-    		if (index<10)
-       		{
-           		index += 2
-       		} 
-    		else if (index<20)
-			{
-               	index += 2
-           	}
-       		else index += 10
+		    		if (index<10)
+       				{
+		           		index += 2
+		       		} 
+ 		   		else if (index<20)
+				{
+			               	index += 2
+		           	}
+		       		else index += 10
 
            	var mytrainset = JSON.parse(JSON.stringify((bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)))
 
@@ -174,7 +176,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 
            	console.log("DEBUGSIM: size of the strandard train" + mytrain.length + " in utterances "+ mytrainset.length)
 
-			var results1 = bars.simulateds(buffer_train1, mytrainset.length - sim_train1.length, gold, 0.5)
+			var results1 = bars.simulateds(buffer_train1, mytrainset.length - sim_train1.length, gold, 1)
 			buffer_train1 = results1["dataset"]
 			sim_train1 = sim_train1.concat(results1["simulated"])
 
@@ -184,28 +186,16 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 	    	// trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), bars.copyobj(testset), function(err, stats){
 
 		    	console.log("DEBUGSIM:"+results1["simulated"].length+" size of the simulated train")
-				console.log("DEBUGSIMDIST: Simualte dist for the first run:"+JSON.stringify(bars.getDist(sim_train1)))
-				console.log("DEBUGSIM: Results for the first run")
-                console.log(JSON.stringify(stats['stats'], null, 4))
+			console.log("DEBUGSIMDIST: Simualte dist for the first run:"+JSON.stringify(bars.getDist(sim_train1)))
+			console.log("DEBUGSIM: Results for the first run")
+                	console.log(JSON.stringify(stats['stats'], null, 4))
 
-				/*_.each(stats['data'], function(value, key, list){
-					if ('FP' in value.explanation)
-					{
-						//console.log(JSON.stringify(value['explanation'], null, 4))
-						if (_.keys(JSON.parse(value['explanation']['FP'][0]))[0]=="Accept")
-							{
-								console.log(JSON.stringify(value.input.text, null, 4))
-								console.log(JSON.stringify(value.explanation, null, 4))
-							}	
-					}
-				}, this)
-*/
 	    		
-				extractGlobal(_.values(classifierList)[0], mytrain, fold, stats['stats'], glob_stats)
+				extractGlobal(_.values(classifierList)[0], mytrain, fold, stats['stats'], glob_stats, classifierList)
 			 	
 				var results = bars.simulateds(buffer_train, mytrainset.length - sim_train.length, gold, 0.0625)
 					
-					buffer_train = results["dataset"]
+				buffer_train = results["dataset"]
 			    	sim_train = sim_train.concat(results["simulated"])
 	
 			    	console.log("DEBUGSIM: size of aggregated simulated after plus "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
@@ -213,26 +203,14 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 	    			trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train), bars.copyobj(testset), function(err, stats1){
 
 		    			console.log("DEBUGSIM:"+results["simulated"].length+" size of the simulated train")
-						console.log("DEBUGSIMDIST: Simualte dist for the second run:"+JSON.stringify(bars.getDist(sim_train)))
-						console.log("DEBUGSIM: Results for the second run")
-                
-						console.log(JSON.stringify(stats1['stats'], null, 4))
+					console.log("DEBUGSIMDIST: Simualte dist for the second run:"+JSON.stringify(bars.getDist(sim_train)))
+					console.log("DEBUGSIM: Results for the second run")
+                			console.log(JSON.stringify(stats1['stats'], null, 4))
 
-						/*if ((stats1['stats']['Accept_F1']+0.05)<cont)
-						{
-							console.log(JSON.stringify(statp['stats'], null, 4))
-							console.log(JSON.stringify(stats1['stats'], null, 4))
+					cont = stats1['stats']['Accept_F1']
+					statp = JSON.parse(JSON.stringify(stats1))
 
-							console.log("previouvs value: "+cont)
-							console.log("current value: "+stats1['stats']['Accept_F1'])
-
-							process.exit(0)
-						}*/
-
-						cont = stats1['stats']['Accept_F1']
-						statp = JSON.parse(JSON.stringify(stats1))
-
-			    		extractGlobal(_.values(classifierList)[1], mytrain, fold, stats1['stats'], glob_stats)	
+			    		extractGlobal(_.values(classifierList)[1], mytrain, fold, stats1['stats'], glob_stats, classifierList)	
 			    		console.log("DEBUGGLOB:")
 						console.log(JSON.stringify(glob_stats, null, 4))
 
@@ -259,7 +237,7 @@ if (process.argv[1] === __filename)
 {
 	master.cleanFolder(__dirname + "/learning_curves")
 
-	var classifierList  = [ 'DS_comp_unigrams_async_context_unoffered_05', 'DS_comp_unigrams_async_context_unoffered_0125']
+	var classifierList  = [ 'DS_comp_unigrams_async_05', 'DS_comp_unigrams_async_0125']
 
 	// var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
 	// var utterset = bars.getsetcontext(dataset)
@@ -274,7 +252,7 @@ if (process.argv[1] === __filename)
 	// dataset = _.shuffle(dataset)
 	// dataset = dataset.slice(0,10)
 
-	learning_curves(classifierList, dataset, 1/*step*/, 1/*step0*/, 30/*limit*/,  3/*numOfFolds*/, function(){
+	learning_curves(classifierList, dataset, 1/*step*/, 1/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
