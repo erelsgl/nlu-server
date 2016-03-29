@@ -1,4 +1,4 @@
-set terminal png nocrop enhanced size 1000,1000
+set terminal png nocrop noenhanced size 1000,1000
 set datafile missing "null"
 set yrange [0:1]
 set grid ytics
@@ -8,10 +8,5 @@ set key autotitle columnhead
 
 set ytics 0,0.1,1
 set xtics nomirror
-set x2tics
 set autoscale xfix
-set autoscale x2fix
 set xlabel 'Number of dialogues'
-set x2label 'Number of utterances'
-
-
