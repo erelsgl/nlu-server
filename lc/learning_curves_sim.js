@@ -108,12 +108,12 @@ function checkGnuPlot()
 
 function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds, callback) 
 {
-	var stat = {}
 	var stat1 = {}
+	var stat2 = {}
+	var stat3 = {}
 	var statp = {}
 	var mytrain = []
 	var cont = 0
-
 		
 	glob_stats = {}
 
@@ -133,96 +133,82 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 		console.log("DEBUGSIM: size of the gold "+gold.length)
 		console.log("DEBUGSIM: size of the train after resizing "+data['train'].length)
 
-		// var sim_train = _.flatten(data['train'].slice(0, index-1))
-		// var sim_train = _.flatten(data['train'].slice(0, index))
-
-		var sim_train = []
 		var sim_train1 = []
+		var sim_train2 = []
+		var sim_train3 = []
 		
 		// I think it's not important to do so
-		var buffer_train = _.flatten(data['train'])
 		var buffer_train1 = _.flatten(data['train'])
-		// var buffer_train = _.flatten(data['train'].slice(index+1))
-
-		// console.log("DEBUGSIM: aggregated stats START "+JSON.stringify(_.countBy(sim_train, function(num) { 
-		// 				if (num.output.length == 0) 
-		// 					return -1
-		// 				else
-		// 					return _.keys(JSON.parse(num.output[0]))[0] })
-		// 			))
-
+		var buffer_train2 = _.flatten(data['train'])
+		var buffer_train3 = _.flatten(data['train'])
+		
 		async.whilst(
 
 			function () { return ((index <= data['train'].length) && buffer_train.length > 3) },
-	    		function (callback_while) {
+	    	function (callback_while) {
 
 				console.log("DEBUGSIM: INDEX "+index)
-		    		var mytrain = data['train'].slice(0, index)
+		    	var mytrain = data['train'].slice(0, index)
     		    	
-		    		if (index<10)
+		    	if (index<10)
        				{
 		           		index += 2
 		       		} 
  		   		else if (index<20)
-				{
-			               	index += 2
+					{
+			           	index += 2
 		           	}
 		       		else index += 10
 
-           	var mytrainset = JSON.parse(JSON.stringify((bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)))
+           		var mytrainset = JSON.parse(JSON.stringify((bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)))
 
-           	// filter train to contain only single label utterances
-           	var mytrainset = _.filter(mytrainset, function(num){ return num.output.length == 1 })
+           		console.log("DEBUGSIM: size of the strandard train" + mytrain.length + " in utterances "+ mytrainset.length)
 
-           	console.log("DEBUGSIM: size of the strandard train" + mytrain.length + " in utterances "+ mytrainset.length)
+				var results1 = bars.simulateds(buffer_train1, mytrainset.length - sim_train1.length, gold, 1)
+				buffer_train1 = results1["dataset"]
+				sim_train1 = sim_train1.concat(results1["simulated"])
 
-			var results1 = bars.simulateds(buffer_train1, mytrainset.length - sim_train1.length, gold, 1)
-			buffer_train1 = results1["dataset"]
-			sim_train1 = sim_train1.concat(results1["simulated"])
-
-
-	    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train1), bars.copyobj(testset), function(err, stats){
-	    	
-	    	// trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), bars.copyobj(testset), function(err, stats){
-
-		    	console.log("DEBUGSIM:"+results1["simulated"].length+" size of the simulated train")
-			console.log("DEBUGSIMDIST: Simualte dist for the first run:"+JSON.stringify(bars.getDist(sim_train1)))
-			console.log("DEBUGSIM: Results for the first run")
-                	console.log(JSON.stringify(stats['stats'], null, 4))
-
-	    		
-				extractGlobal(_.values(classifierList)[0], mytrain, fold, stats['stats'], glob_stats, classifierList)
+	    		trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(sim_train1), bars.copyobj(testset), function(err, stats1){
+	    		  
+			    	console.log("DEBUGSIM:"+results1["simulated"].length+" size of the simulated train")
+					console.log("DEBUGSIMDIST: Simualte dist for the first run:"+JSON.stringify(bars.getDist(sim_train1)))
+					console.log("DEBUGSIM: Results for the first run "+ JSON.stringify(stats1['stats'], null, 4))
+		    		
+					extractGlobal(_.values(classifierList)[0], mytrain, fold, stats1['stats'], glob_stats, classifierList)
 			 	
-				var results = bars.simulateds(buffer_train, mytrainset.length - sim_train.length, gold, 0.0625)
-					
-				buffer_train = results["dataset"]
-			    	sim_train = sim_train.concat(results["simulated"])
+					var results2 = bars.simulateds(buffer_train2, mytrainset.length - sim_train2.length, gold, 0.5)
+					buffer_train2 = results2["dataset"]
+			    	sim_train2 = sim_train2.concat(results2["simulated"])
 	
-			    	console.log("DEBUGSIM: size of aggregated simulated after plus "+ sim_train.length + " in utterances "+_.flatten(sim_train).length)
+			    	console.log("DEBUGSIM: size of aggregated simulated after plus "+ sim_train2.length + " in utterances "+_.flatten(sim_train2).length)
 
-	    			trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train), bars.copyobj(testset), function(err, stats1){
+	    			trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train2), bars.copyobj(testset), function(err, stats2){
 
-		    			console.log("DEBUGSIM:"+results["simulated"].length+" size of the simulated train")
-					console.log("DEBUGSIMDIST: Simualte dist for the second run:"+JSON.stringify(bars.getDist(sim_train)))
-					console.log("DEBUGSIM: Results for the second run")
-                			console.log(JSON.stringify(stats1['stats'], null, 4))
+		    			console.log("DEBUGSIM:"+results2["simulated"].length+" size of the simulated train")
+						console.log("DEBUGSIMDIST: Simualte dist for the second run:"+JSON.stringify(bars.getDist(sim_train2)))
+						console.log("DEBUGSIM: Results for the second run "+ JSON.stringify(stats2['stats'], null, 4))
 
-					cont = stats1['stats']['Accept_F1']
-					statp = JSON.parse(JSON.stringify(stats1))
+			    		extractGlobal(_.values(classifierList)[1], sim_train2, fold, stats2['stats'], glob_stats, classifierList)	
+					    		
+			    		var results3 = bars.simulateds(buffer_train3, mytrainset.length - sim_train3.length, gold, 0.0625)
+						buffer_train3 = results3["dataset"]
+				    	sim_train3 = sim_train3.concat(results3["simulated"])
 
-			    		extractGlobal(_.values(classifierList)[1], mytrain, fold, stats1['stats'], glob_stats, classifierList)	
-			    		console.log("DEBUGGLOB:")
-						console.log(JSON.stringify(glob_stats, null, 4))
+				    	console.log("DEBUGSIM: size of aggregated simulated after plus "+ sim_train3.length + " in utterances "+_.flatten(sim_train3).length)
+	
+				    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[2]], bars.copyobj(sim_train3), bars.copyobj(testset), function(err, stats3){
 
-						_.each(glob_stats, function(data, param, list){
-							master.plotlc(fold, param, glob_stats)
-							console.log("DEBUGLC: param "+param+" fold "+fold+" build")
-							master.plotlc('average', param, glob_stats)
+				    		extractGlobal(_.values(classifierList)[2], sim_train3, fold, stats3['stats'], glob_stats, classifierList)
+
+							_.each(glob_stats, function(data, param, list){
+								master.plotlc(fold, param, glob_stats)
+								console.log("DEBUGLC: param "+param+" fold "+fold+" build")
+								master.plotlc('average', param, glob_stats)
+							})
 						})
 
 						callback_while();
 			    	})
-				// })
 			})
     	},
     		function (err, n) {
@@ -237,7 +223,7 @@ if (process.argv[1] === __filename)
 {
 	master.cleanFolder(__dirname + "/learning_curves")
 
-	var classifierList  = [ 'DS_comp_unigrams_async_05', 'DS_comp_unigrams_async_0125']
+	var classifierList  = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_05', 'DS_comp_unigrams_async_00625']
 
 	// var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
 	// var utterset = bars.getsetcontext(dataset)
@@ -248,6 +234,8 @@ if (process.argv[1] === __filename)
 	var dataset = utterset["train"].concat(utterset["test"])
 
 	dataset = _.filter(dataset, function(num){ return num.length > 10 });
+
+	console.log("size of dataset: "+dataset.length)
 
 	// dataset = _.shuffle(dataset)
 	// dataset = dataset.slice(0,10)
