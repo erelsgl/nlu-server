@@ -22,7 +22,7 @@ var async = require('async')
 var gnuplot = 'gnuplot'
 
 // function extractGlobal(parameters, classifiers, trainset, report, stat)
-function extractGlobal(classifier, mytrain, fold, stats, glob_stats)
+function extractGlobal(classifier, mytrain, fold, stats, glob_stats, classifiers)
 	{
 		var stats_prep = {}
 
@@ -37,7 +37,8 @@ function extractGlobal(classifier, mytrain, fold, stats, glob_stats)
 			'fold': fold,
 			'trainsize': mytrain.length,
 			'trainsizeuttr': _.flatten(mytrain).length,
-			'stats': stats_prep
+			'stats': stats_prep,
+	                'classifiers': classifiers
 		}
 
 		master.extractGlobal(results, glob_stats)
@@ -67,7 +68,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 	async.timesSeries(numOfFolds, function(fold, callback_fold){
 
 		console.log("FOLD "+fold)
-		var index = 2
+		var index = 1
 
 		var data = partitions.partitions_consistent_by_fold(dataset, numOfFolds, fold)
 
@@ -122,7 +123,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 
 	    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset), bars.copyobj(testset), function(err, stats1){
 
-			    extractGlobal(_.values(classifierList)[0], mytrain, fold, stats1['stats'], glob_stats)
+			    extractGlobal(_.values(classifierList)[0], mytrain, fold, stats1['stats'], glob_stats, classifierList)
 			    console.log(_.values(classifierList)[0])
 			    console.log(JSON.stringify(stats1['stats'], null, 4))
 
@@ -132,7 +133,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 
 			    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train1), bars.copyobj(testset), function(err, stats2){
 
-					    extractGlobal(_.values(classifierList)[1], mytrain, fold, stats2['stats'], glob_stats)
+					    extractGlobal(_.values(classifierList)[1], mytrain, fold, stats2['stats'], glob_stats, classifierList)
 			    		    console.log(_.values(classifierList)[1])
 					    console.log(JSON.stringify(stats2['stats'], null, 4))
 
@@ -174,7 +175,7 @@ if (process.argv[1] === __filename)
 	// dataset = _.shuffle(dataset)
 //	dataset = dataset.slice(0,10)
 
-	learning_curves(classifierList, dataset, 1/*step*/, 1/*step0*/, 30/*limit*/,  2/*numOfFolds*/, function(){
+	learning_curves(classifierList, dataset, 1/*step*/, 1/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
