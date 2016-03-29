@@ -57,9 +57,7 @@ function checkGnuPlot()
 
 function learning_curves(classifierList, step, step0, limit, numOfFolds, callback) 
 {
-	
 	glob_stats = {}
-	
 
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
 	var utterset1 = bars.getsetcontext(data)
@@ -80,30 +78,34 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 		var index = 0
 		console.log("DEBUGLC: FOLD "+fold)
 
-		var datasplitted = partitions.partitions_consistent_by_fold(train1or, numOfFolds, fold)
-		var train1 = datasplitted['train']
-		var testset = _.flatten(datasplitted['test'])
+		var datasplitted = partitions.partitions_consistent_by_fold(JSON.parse(JSON.stringify(train1or)), numOfFolds, fold)
+		var train1 = datasplitted['test']
+		var testset = _.flatten(datasplitted['train'])
 
 		async.whilst(
 
 		function () { return (index <= train1.length && index <= train2.length)  },
 	    	function (callback_while) {
 		    	
-			if (index<10)
+			if (index<=10)
 			{
 		   		index += 1
 			} 
 			else if (index<20)
 			{
-		       	index += 2
+			       	index += 2
 		    }
 		    else index += 10
 
 	    	var mytrain1 = train1.slice(0, index)
 	    	var mytrain2 = train2.slice(0, index)
 
-		console.log("DEBUGLC: mytrain1.length: "+ mytrain1.length)
-		console.log("DEBUGLC: mytrain2.length: "+ mytrain2.length)
+		console.log("DEBUGLC: train1.length: "+ train1.length)
+		console.log("DEBUGLC: train2.length: "+ train2.length)
+
+		console.log("DEBUGLC: mytrain1.length: "+ mytrain1.length + " " + _.flatten(mytrain1).length)
+		console.log("DEBUGLC: mytrain2.length: "+ mytrain2.length + " " + _.flatten(mytrain2).length)
+
 		console.log("DEBUGLC: testset.length: "+ testset.length)
 
 		    var mytrainset1 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain1) ? _.flatten(mytrain1) : mytrain1)))
@@ -153,7 +155,7 @@ if (process.argv[1] === __filename)
 {
 	master.cleanFolder(__dirname + "/learning_curves")
 
-	var classifierList  = [ 'DS_comp_unigrams_async_context_unoffered', 'DS_comp_unigrams_async_context_unoffered_generated']
+	var classifierList  = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_biased']
 
 	learning_curves(classifierList, 1/*step*/, 1/*step0*/, 30/*limit*/,  10/*numOfFolds*/, function(){
 		console.log()
