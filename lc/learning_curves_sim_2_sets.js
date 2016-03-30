@@ -109,10 +109,11 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 		console.log("DEBUGLC: testset.length: "+ testset.length)
 
 		    var mytrainset1 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain1) ? _.flatten(mytrain1) : mytrain1)))
-		    var mytrainset2 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain2) ? _.flatten(mytrain2) : mytrain2)))
 
 	   		// filter train to contain only single label utterances
-	   		// var mytrainset = _.filter(mytrainset, function(num){ return num.output.length == 1 })
+		    console.log("DEBUGLC: size of mytrainset1 before filtering: "+ mytrainset1.length)
+	   	    mytrainset1 = _.filter(mytrainset1, function(num){ return num.output.length == 1 })
+		    console.log("DEBUGLC: size of mytrainset1 after filtering: "+ mytrainset1.length)
 
 		    trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset1), bars.copyobj(testset), function(err, stats1){
 
@@ -121,11 +122,13 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 			    console.log(JSON.stringify(stats1['stats'], null, 4))
 
 	//			    bars.generateoppositeversion2(JSON.parse(JSON.stringify(mytrainset2)), function(err, sim_train){
-				    var sim_train = bars.copyobj(mytrainset2)
 
-				    	console.log("DEBUGLC: size of standard "+ mytrainset2.length + "size of generated "+ sim_train.length)
+		    			var mytrainset2 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain2) ? _.flatten(mytrain2) : mytrain2)))
+		    			console.log("DEBUGLC: size of mytrainset2 before filtering: "+ mytrainset2.length)
+	   	    			mytrainset2 = _.filter(mytrainset2, function(num){ return num.output.length == 1 })
+					console.log("DEBUGLC: size of mytrainset2 after filtering: "+ mytrainset2.length)
 
-				    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(sim_train), bars.copyobj(testset), function(err, stats2){
+				    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(mytrainset2), bars.copyobj(testset), function(err, stats2){
 
 					    extractGlobal(_.values(classifierList)[1], mytrainset2, fold, stats2['stats'], glob_stats, classifierList)
 				    		
