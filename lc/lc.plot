@@ -8,5 +8,6 @@ set key autotitle columnhead
 
 set ytics 0,0.1,1
 set xtics nomirror
+set xtics rotate by -90
 set autoscale xfix
 set xlabel 'Number of dialogues'
