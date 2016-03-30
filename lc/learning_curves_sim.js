@@ -111,6 +111,8 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 	var stat1 = {}
 	var stat2 = {}
 	var stat3 = {}
+	var stat4 = {}
+
 	var statp = {}
 	var mytrain = []
 	var cont = 0
@@ -136,11 +138,13 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 		var sim_train1 = []
 		var sim_train2 = []
 		var sim_train3 = []
+		var sim_train4 = []
 		
 		// I think it's not important to do so
 		var buffer_train1 = _.flatten(JSON.parse(JSON.stringify(data['train'])))
 		var buffer_train2 = _.flatten(JSON.parse(JSON.stringify(data['train'])))
 		var buffer_train3 = _.flatten(JSON.parse(JSON.stringify(data['train'])))
+		var buffer_train4 = _.flatten(JSON.parse(JSON.stringify(data['train'])))
 		
 		async.whilst(
 
@@ -195,32 +199,42 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 			    		extractGlobal(_.values(classifierList)[1], mytrain, fold, stats2['stats'], glob_stats, classifierList)	
 					    		
 
-					console.log("DEBUGSIM: before results3")
+						console.log("DEBUGSIM: before results3")
 			    		var results3 = bars.simulateds(buffer_train3, mytrainset.length - sim_train3.length, gold, 0.03125)
-					console.log("DEBUGSIM: after results3")
+						console.log("DEBUGSIM: after results3")
 						buffer_train3 = results3["dataset"]
 				    	sim_train3 = sim_train3.concat(results3["simulated"])
 
 				    	console.log("DEBUGSIM: size of aggregated simulated after plus "+ sim_train3.length + " in utterances "+_.flatten(sim_train3).length)
 	
 				    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[2]], bars.copyobj(sim_train3), bars.copyobj(testset), function(err, stats3){
-                                                console.log("DEBUGSIMDIST: Simualte dist for the third run:"+JSON.stringify(bars.getDist(sim_train3)))
-                                                
-						console.log("DEBUGSIMDIST: Simualte dist 1st:"+JSON.stringify(bars.getDist(sim_train1)))
-						console.log("DEBUGSIMDIST: Simualte dist 2st:"+JSON.stringify(bars.getDist(sim_train2)))
-						console.log("DEBUGSIMDIST: Simualte dist 3st:"+JSON.stringify(bars.getDist(sim_train3)))
+                        console.log("DEBUGSIMDIST: Simualte dist for the third run:"+JSON.stringify(bars.getDist(sim_train3)))
+                               
+				    	extractGlobal(_.values(classifierList)[2], mytrain, fold, stats3['stats'], glob_stats, classifierList)
 
-				    		extractGlobal(_.values(classifierList)[2], mytrain, fold, stats3['stats'], glob_stats, classifierList)
+				    	var results4 = bars.simulateds(buffer_train4, mytrainset.length - sim_train4.length, gold, 2/3)
+						buffer_train4 = results4["dataset"]
+				    	sim_train4 = sim_train4.concat(results4["simulated"])
+				 
+				    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[3]], bars.copyobj(sim_train4), bars.copyobj(testset), function(err, stats4){
+                        
+                        	console.log("DEBUGSIMDIST: Simualte dist 1st:"+JSON.stringify(bars.getDist(sim_train1)))
+							console.log("DEBUGSIMDIST: Simualte dist 2st:"+JSON.stringify(bars.getDist(sim_train2)))
+							console.log("DEBUGSIMDIST: Simualte dist 3st:"+JSON.stringify(bars.getDist(sim_train3)))
+							console.log("DEBUGSIMDIST: Simualte dist 4st:"+JSON.stringify(bars.getDist(sim_train4)))
+
+				    		extractGlobal(_.values(classifierList)[2], mytrain, fold, stats4['stats'], glob_stats, classifierList)
 
 							_.each(glob_stats, function(data, param, list){
 								master.plotlc(fold, param, glob_stats)
 								console.log("DEBUGLC: param "+param+" fold "+fold+" build")
 								master.plotlc('average', param, glob_stats)
 							})
-						})
 
-						callback_while();
-			    	})
+							callback_while();
+						})
+					})
+				})
 			})
     	},
     		function (err, n) {
@@ -235,7 +249,7 @@ if (process.argv[1] === __filename)
 {
 	master.cleanFolder(__dirname + "/learning_curves")
 
-	var classifierList  = [ 'DS_comp_unigrams_async_1', 'DS_comp_unigrams_async_05', 'DS_comp_unigrams_async_00625']
+	var classifierList  = [ 'DS_comp_unigrams_async_1', 'DS_comp_unigrams_async_05', 'DS_comp_unigrams_async_00625', 'DS_comp_unigrams_async_066']
 
 	// var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
 	// var utterset = bars.getsetcontext(dataset)
