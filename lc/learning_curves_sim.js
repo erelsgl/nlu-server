@@ -138,13 +138,13 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 		var sim_train3 = []
 		
 		// I think it's not important to do so
-		var buffer_train1 = _.flatten(data['train'])
-		var buffer_train2 = _.flatten(data['train'])
-		var buffer_train3 = _.flatten(data['train'])
+		var buffer_train1 = _.flatten(JSON.parse(JSON.stringify(data['train'])))
+		var buffer_train2 = _.flatten(JSON.parse(JSON.stringify(data['train'])))
+		var buffer_train3 = _.flatten(JSON.parse(JSON.stringify(data['train'])))
 		
 		async.whilst(
 
-			function () { return ((index <= data['train'].length) && buffer_train.length > 3) },
+			function () { return (index <= data['train'].length && index <= 15 ) },
 	    	function (callback_while) {
 
 				console.log("DEBUGSIM: INDEX "+index)
@@ -164,7 +164,9 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 
            		console.log("DEBUGSIM: size of the strandard train" + mytrain.length + " in utterances "+ mytrainset.length)
 
+				console.log("DEBUGSIM: before results1")
 				var results1 = bars.simulateds(buffer_train1, mytrainset.length - sim_train1.length, gold, 1)
+				console.log("DEBUGSIM: after results1")
 				buffer_train1 = results1["dataset"]
 				sim_train1 = sim_train1.concat(results1["simulated"])
 
@@ -176,7 +178,9 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 		    		
 					extractGlobal(_.values(classifierList)[0], mytrain, fold, stats1['stats'], glob_stats, classifierList)
 			 	
+					console.log("DEBUGSIM: before results2")
 					var results2 = bars.simulateds(buffer_train2, mytrainset.length - sim_train2.length, gold, 0.5)
+					console.log("DEBUGSIM: after results2")
 					buffer_train2 = results2["dataset"]
 			    	sim_train2 = sim_train2.concat(results2["simulated"])
 	
@@ -188,17 +192,25 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 						console.log("DEBUGSIMDIST: Simualte dist for the second run:"+JSON.stringify(bars.getDist(sim_train2)))
 						console.log("DEBUGSIM: Results for the second run "+ JSON.stringify(stats2['stats'], null, 4))
 
-			    		extractGlobal(_.values(classifierList)[1], sim_train2, fold, stats2['stats'], glob_stats, classifierList)	
+			    		extractGlobal(_.values(classifierList)[1], mytrain, fold, stats2['stats'], glob_stats, classifierList)	
 					    		
-			    		var results3 = bars.simulateds(buffer_train3, mytrainset.length - sim_train3.length, gold, 0.0625)
+
+					console.log("DEBUGSIM: before results3")
+			    		var results3 = bars.simulateds(buffer_train3, mytrainset.length - sim_train3.length, gold, 0.03125)
+					console.log("DEBUGSIM: after results3")
 						buffer_train3 = results3["dataset"]
 				    	sim_train3 = sim_train3.concat(results3["simulated"])
 
 				    	console.log("DEBUGSIM: size of aggregated simulated after plus "+ sim_train3.length + " in utterances "+_.flatten(sim_train3).length)
 	
 				    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[2]], bars.copyobj(sim_train3), bars.copyobj(testset), function(err, stats3){
+                                                console.log("DEBUGSIMDIST: Simualte dist for the third run:"+JSON.stringify(bars.getDist(sim_train3)))
+                                                
+						console.log("DEBUGSIMDIST: Simualte dist 1st:"+JSON.stringify(bars.getDist(sim_train1)))
+						console.log("DEBUGSIMDIST: Simualte dist 2st:"+JSON.stringify(bars.getDist(sim_train2)))
+						console.log("DEBUGSIMDIST: Simualte dist 3st:"+JSON.stringify(bars.getDist(sim_train3)))
 
-				    		extractGlobal(_.values(classifierList)[2], sim_train3, fold, stats3['stats'], glob_stats, classifierList)
+				    		extractGlobal(_.values(classifierList)[2], mytrain, fold, stats3['stats'], glob_stats, classifierList)
 
 							_.each(glob_stats, function(data, param, list){
 								master.plotlc(fold, param, glob_stats)
@@ -223,7 +235,7 @@ if (process.argv[1] === __filename)
 {
 	master.cleanFolder(__dirname + "/learning_curves")
 
-	var classifierList  = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_05', 'DS_comp_unigrams_async_00625']
+	var classifierList  = [ 'DS_comp_unigrams_async_1', 'DS_comp_unigrams_async_05', 'DS_comp_unigrams_async_00625']
 
 	// var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
 	// var utterset = bars.getsetcontext(dataset)
@@ -233,14 +245,14 @@ if (process.argv[1] === __filename)
 	var utterset = bars.getsetcontext(data)
 	var dataset = utterset["train"].concat(utterset["test"])
 
-	dataset = _.filter(dataset, function(num){ return num.length > 10 });
+	//dataset = _.filter(dataset, function(num){ return num.length > 10 });
 
 	console.log("size of dataset: "+dataset.length)
 
 	// dataset = _.shuffle(dataset)
 	// dataset = dataset.slice(0,10)
 
-	learning_curves(classifierList, dataset, 1/*step*/, 1/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
+	learning_curves(classifierList, dataset, 1/*step*/, 1/*step0*/, 30/*limit*/,  2/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})
