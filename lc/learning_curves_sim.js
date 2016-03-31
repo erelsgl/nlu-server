@@ -212,7 +212,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
                                
 				    	extractGlobal(_.values(classifierList)[2], mytrain, fold, stats3['stats'], glob_stats, classifierList)
 
-				    	var results4 = bars.simulateds(buffer_train4, mytrainset.length - sim_train4.length, gold, 2/3)
+				    	var results4 = bars.simulateds(buffer_train4, mytrainset.length - sim_train4.length, gold, 0)
 						buffer_train4 = results4["dataset"]
 				    	sim_train4 = sim_train4.concat(results4["simulated"])
 				 
@@ -249,7 +249,7 @@ if (process.argv[1] === __filename)
 {
 	master.cleanFolder(__dirname + "/learning_curves")
 
-	var classifierList  = [ 'DS_comp_unigrams_async_1', 'DS_comp_unigrams_async_05', 'DS_comp_unigrams_async_00625', 'DS_comp_unigrams_async_066']
+	var classifierList  = [ 'DS_comp_unigrams_async_1', 'DS_comp_unigrams_async_05', 'DS_comp_unigrams_async_00625', 'DS_comp_unigrams_async_0']
 
 	// var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
 	// var utterset = bars.getsetcontext(dataset)
