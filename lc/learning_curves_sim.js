@@ -223,7 +223,7 @@ function learning_curves(classifierList, dataset, step, step0, limit, numOfFolds
 							console.log("DEBUGSIMDIST: Simualte dist 3st:"+JSON.stringify(bars.getDist(sim_train3)))
 							console.log("DEBUGSIMDIST: Simualte dist 4st:"+JSON.stringify(bars.getDist(sim_train4)))
 
-				    		extractGlobal(_.values(classifierList)[2], mytrain, fold, stats4['stats'], glob_stats, classifierList)
+				    		extractGlobal(_.values(classifierList)[3], mytrain, fold, stats4['stats'], glob_stats, classifierList)
 
 							_.each(glob_stats, function(data, param, list){
 								master.plotlc(fold, param, glob_stats)
