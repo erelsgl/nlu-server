@@ -120,7 +120,7 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 		    var overmytrainset1 = bars.oversample(mytrainset1)
 
 		    console.log("DEBUGLC: size of mytrainset1 after oversampling: "+ overmytrainset1.length)
-		    console.log("DEBUGLC: dist after over: "+ console.log(JSON.stringify(bars.getDist(overmytrainset1), null, 4)))
+		    console.log("DEBUGLC: dist after over: "+ JSON.stringify(bars.getDist(overmytrainset1), null, 4))
 
 		    trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(overmytrainset1), bars.copyobj(testset), function(err, stats1){
 
