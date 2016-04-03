@@ -4046,6 +4046,76 @@ function oversample(turns)
   return turns
 }
 
+function undersample(turns)
+{
+
+  // add only by simple-label utterances
+  // relates only to ['Offer', 'Accept', 'Reject']
+  // - it doesn't count for context
+  // add all the stuff as separated dialogue per intent
+
+  var single_label_utt = {}
+  var tocount = ['Offer', 'Accept', 'Reject']
+  var stats = {}
+
+  _.each(turns, function(turn, key, list){
+    _.each(turn['output'], function(label, key, list){
+
+        var intent = _.keys(JSON.parse(label))[0]
+        if (!(intent in stats))
+          stats[intent] = 0
+
+          stats[intent] += 1
+
+      }, this)
+
+      if (turn['output'].length == 1)
+      {
+        var intent = _.keys(JSON.parse(turn['output'][0]))[0]
+        if (!(intent in single_label_utt))
+          single_label_utt[intent] = []
+
+        single_label_utt[intent].push(turn)
+      }
+
+    }, this)
+
+  var min = _.values(stats)
+  min = _.without(min, 0)
+  min = _.sortBy(min, function(num){ return num })[0]
+
+  console.log("DEBUGOVER: min="+min)
+
+  console.log("DEBUGOVER: "+JSON.stringify(tocount, null, 4))
+  console.log("DEBUGOVER: stats: "+JSON.stringify(stats, null, 4))
+
+  console.log("DEBUGOVER: single_label_utt")
+  _.each(single_label_utt, function(lis, key, list){
+  console.log("DEBUGOVER: "+key+" "+lis.length)
+  }, this)
+
+  var res = []
+
+  _.each(single_label_utt, function(value, key, list){
+    if (tocount.indexOf(key)==-1)
+    res = res.concat(value)
+  }, this)
+
+  console.log("DEBUGOVER: "+JSON.stringify(res, null, 4))
+
+  _.each(tocount, function(lab, key, list){
+    if (min <= stats[lab]) 
+    {
+    console.log("DEBUGOVER: intent: "+lab)
+    console.log("DEBUGOVER: size: "+single_label_utt[lab].length)
+    res = res.concat(single_label_utt[lab].splice(0,min))
+    }
+  }, this)
+
+  return res
+}
+
+
 function setsize(dataset, size)
 {
   var cur_size = dataset.length
@@ -4609,5 +4679,6 @@ replaceroot:replaceroot,
 oppositeintent:oppositeintent,
 generateoppositeversion2:generateoppositeversion2,
 setsize:setsize,
-oversample:oversample
+oversample:oversample,
+undersample:undersample
 }
