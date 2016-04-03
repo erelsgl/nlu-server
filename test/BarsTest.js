@@ -71,21 +71,17 @@ describe('Bars utilities', function() {
 
 	it('oversample', function() {
 		var dataset = [
-			[
-				{'input':"1", 'output':["\{\"Offer\":true\}"]},
-				{'input':"1", 'output':["\{\"Offer\":true\}"]},
-			],[
-				{'input':"2", 'output':["\{\"Accept\":true\}"]},
-				{'input':"3", 'output':["\{\"Reject\":true\}"]}
-				
-			]
+			{'input':"1", 'output':["\{\"Offer\":true\}"]},
+			{'input':"1", 'output':["\{\"Offer\":true\}"]},
+			{'input':"2", 'output':["\{\"Accept\":true\}"]},
+			{'input':"3", 'output':["\{\"Reject\":true\}"]}
 		]
 
 		var dat = bars.oversample(dataset)
-		// console.log(JSON.stringify(dat, null, 4))
+		console.log(JSON.stringify(dat, null, 4))
 
-		_.isEqual(dat[dat.length-2][0]["input"], "2").should.equal(true)
-		_.isEqual(dat[dat.length-1][0]["input"], "3").should.equal(true)
+		_.isEqual(dat[dat.length-2]["input"], "2").should.equal(true)
+		_.isEqual(dat[dat.length-1]["input"], "3").should.equal(true)
 	})
 
 	it('setsize', function() {
