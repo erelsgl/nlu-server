@@ -4104,7 +4104,7 @@ function undersample(turns)
   console.log("DEBUGOVER: "+JSON.stringify(res, null, 4))
 
   _.each(tocount, function(lab, key, list){
-    if (min <= stats[lab]) 
+    if ((min <= stats[lab]) && (lab in single_label_utt)) 
     {
     console.log("DEBUGOVER: intent: "+lab)
     console.log("DEBUGOVER: size: "+single_label_utt[lab].length)
