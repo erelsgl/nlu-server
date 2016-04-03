@@ -3984,7 +3984,7 @@ function returndist(dataset)
 }
 
 
-function oversample(dials)
+function oversample(turns)
 {
 
   // add only by simple-label utterances
@@ -3996,9 +3996,8 @@ function oversample(dials)
   var tocount = ['Offer', 'Accept', 'Reject']
   var stats = {}
 
-  _.each(dials, function(turns, key, list){
-    _.each(turns, function(turn, key, list){
-      _.each(turn['output'], function(label, key, list){
+  _.each(turns, function(turn, key, list){
+    _.each(turn['output'], function(label, key, list){
 
         var intent = _.keys(JSON.parse(label))[0]
         if (!(intent in stats))
@@ -4018,7 +4017,6 @@ function oversample(dials)
       }
 
     }, this)
-  }, this)
 
   var max = 0
   _.each(tocount, function(lab, key, list){
@@ -4034,10 +4032,10 @@ function oversample(dials)
 
   _.each(tocount, function(lab, key, list){
     if (max > stats[lab])
-      dials.push(setsize(single_label_utt[lab], max - stats[lab] ))
+      turns = turns.concat(setsize(single_label_utt[lab], max - stats[lab] ))
   }, this)
 
-  return dials
+  return turns
 }
 
 function setsize(dataset, size)
