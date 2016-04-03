@@ -4027,12 +4027,20 @@ function oversample(turns)
   console.log("DEBUGOVER: max="+max)
 
   console.log("DEBUGOVER: "+JSON.stringify(tocount, null, 4))
-  console.log("DEBUGOVER: "+JSON.stringify(stats, null, 4))
+  console.log("DEBUGOVER: stats: "+JSON.stringify(stats, null, 4))
 
+  console.log("DEBUGOVER: single_label_utt")
+  _.each(single_label_utt, function(lis, key, list){
+	console.log("DEBUGOVER: "+key+" "+lis.length)
+  }, this)
 
   _.each(tocount, function(lab, key, list){
-    if (max > stats[lab])
-      turns = turns.concat(setsize(single_label_utt[lab], max - stats[lab] ))
+    if ((max > stats[lab]) && (lab in single_label_utt))
+	{
+	console.log("DEBUGOVER: intent: "+lab)
+	console.log("DEBUGOVER: size: "+single_label_utt[lab].length)
+	turns = turns.concat(setsize(single_label_utt[lab], max - stats[lab] ))
+	}
   }, this)
 
   return turns
