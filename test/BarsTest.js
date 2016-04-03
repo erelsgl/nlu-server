@@ -69,17 +69,50 @@ describe('Bars utilities', function() {
 		bars.getroot(sen_neg_xcomp)["lemma"].should.equal("accept")
 	})
 
+	it('undersample', function() {
+		var dataset = [
+			{'input':"1", 'output':["\{\"Offer\":true\}"]},
+			{'input':"1", 'output':["\{\"Offer\":true\}"]},
+			{'input':"2", 'output':["\{\"Accept\":true\}"]}
+		]
+
+		var dat = bars.undersample(dataset)
+
+		_.isEqual(dat[0]["input"], "1").should.equal(true)
+		_.isEqual(dat[1]["input"], "2").should.equal(true)
+
+		var dataset = [
+			{'input':"1", 'output':["\{\"Offer\":true\}"]},
+			{'input':"1", 'output':["\{\"Offer\":true\}"]},
+			{'input':"2", 'output':["\{\"Accept\":true\}"]},
+			{'input':"2", 'output':["\{\"Accept\":true\}"]},
+			{'input':"1", 'output':["\{\"Offer\":true\}"]},
+			{'input':"3", 'output':["\{\"Reject\":true\}"]},
+			{'input':"4", 'output':["\{\"Query\":true\}"]},
+		]
+
+		var dat = bars.undersample(dataset)
+
+		_.isEqual(dat[0]["input"], "4").should.equal(true)
+		_.isEqual(dat[1]["input"], "1").should.equal(true)
+		_.isEqual(dat[2]["input"], "2").should.equal(true)
+		_.isEqual(dat[3]["input"], "3").should.equal(true)
+
+	})
+
 	it('oversample', function() {
 		var dataset = [
 			{'input':"1", 'output':["\{\"Offer\":true\}"]},
 			{'input':"1", 'output':["\{\"Offer\":true\}"]},
 			{'input':"2", 'output':["\{\"Accept\":true\}"]},
-			{'input':"3", 'output':["\{\"Reject\":true\}"]}
+			{'input':"3", 'output':["\{\"Reject\":true\}"]},
+			{'input':"4", 'output':["\{\"Query\":true\}"]}
 		]
 
 		var dat = bars.oversample(dataset)
 		console.log(JSON.stringify(dat, null, 4))
 
+		_.isEqual(dat.length, 7).should.equal(true)
 		_.isEqual(dat[dat.length-2]["input"], "2").should.equal(true)
 		_.isEqual(dat[dat.length-1]["input"], "3").should.equal(true)
 	})
