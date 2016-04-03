@@ -3861,20 +3861,22 @@ function filterlabels(labels)
 function distribute(rep) {
 
   var table = walker(rep)
+
+  // table()
+  // Reject  
+
   return table()
 
-  var params = JSON.parse(JSON.stringify(rep))
+  /*var params = JSON.parse(JSON.stringify(rep))
   
   var totalscore = _.reduce(params, function(memo, num){ return memo + num[0]; }, 0);
-  //console.log("totalscore:"+JSON.stringify(totalscore))
-
+  
   var dist = []
   _.each(params, function(value, param, list){
     dist.push([value[0]/totalscore, value[1]])
   }, this) 
   
   dist = _.shuffle(dist)
-//  dist = _.shuffle(dist)
 
   var probs = _.sortBy(dist, function(num){ return num[0] })
 
@@ -3882,12 +3884,11 @@ function distribute(rep) {
   var i = 0
   var acc = 0
   
-//console.log("probs: "+JSON.stringify(probs))
-
 while ((acc += probs[i][0]) <= r)
       i++;
 
   return probs[i][1];
+  */  
 }
 
 /*function simulateds(dataset, size, params)
@@ -3982,11 +3983,85 @@ function returndist(dataset)
   return _.countBy(intents, function(num) { return num })
 }
 
+
+function oversample(dials)
+{
+
+  // add only by simple-label utterances
+  // relates only to ['Offer', 'Accept', 'Reject']
+  // - it doesn't count for context
+  // add all the stuff as separated dialogue per intent
+
+  var single_label_utt = {}
+  var tocount = ['Offer', 'Accept', 'Reject']
+  var stats = {}
+
+  _.each(dials, function(turns, key, list){
+    _.each(turns, function(turn, key, list){
+      _.each(turn['output'], function(label, key, list){
+
+        var intent = _.keys(JSON.parse(label))[0]
+        if (!(intent in stats))
+          stats[intent] = 0
+
+          stats[intent] += 1
+
+      }, this)
+
+      if (turn['output'].length == 1)
+      {
+        var intent = _.keys(JSON.parse(turn['output'][0]))[0]
+        if (!(intent in single_label_utt))
+          single_label_utt[intent] = []
+
+        single_label_utt[intent].push(turn)
+      }
+
+    }, this)
+  }, this)
+
+  var max = 0
+  _.each(tocount, function(lab, key, list){
+    if ((stats[lab]) > max)
+      max = stats[lab]
+  }, this)
+
+  console.log("DEBUGOVER: max="+max)
+
+  console.log("DEBUGOVER: "+JSON.stringify(tocount, null, 4))
+  console.log("DEBUGOVER: "+JSON.stringify(stats, null, 4))
+
+
+  _.each(tocount, function(lab, key, list){
+    if (max > stats[lab])
+      dials.push(setsize(single_label_utt[lab], max - stats[lab] ))
+  }, this)
+
+  return dials
+}
+
+function setsize(dataset, size)
+{
+  var cur_size = dataset.length
+  var final_set = []
+  if (size > cur_size)
+    {
+    _(Math.ceil(size/cur_size)).times(function(n){ 
+      final_set = final_set.concat(dataset)
+    });
+    }
+  else
+    final_set = JSON.parse(JSON.stringify(dataset))
+
+  return final_set.splice(0,size)
+}
+
 function simulateds(dials, size, golddist, power)
 {
   
   var dataset = _.flatten(dials)
   var dist = returndist(dataset)
+  // { "Offer": 650, "Reject": 127, "Accept": 91 }
 
   var ints = ['Query','Greet','Offer','Accept','Reject','Quit']
 	
@@ -4000,13 +4075,12 @@ function simulateds(dials, size, golddist, power)
   var params = []
   var report = {}
 
-  //  take it as is
-
   _.each(dist, function(value, key, list){
-
-    // params[key] = {'score':  Math.pow(value, 0.5)}
     params.push([Math.pow(value, power), key])
   }, this)
+
+// params
+// [[650,"Offer"],[127,"Reject"],[91,"Accept"],[5,"Query"],[5,"Greet"],[5,"Quit"]]
 
   console.log("DEBUGSIM: distribution "+JSON.stringify(params))  
   
@@ -4527,5 +4601,7 @@ generateopposite: generateopposite,
 getroot:getroot,
 replaceroot:replaceroot,
 oppositeintent:oppositeintent,
-generateoppositeversion2:generateoppositeversion2
+generateoppositeversion2:generateoppositeversion2,
+setsize:setsize,
+oversample:oversample
 }
