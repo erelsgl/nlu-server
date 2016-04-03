@@ -69,6 +69,31 @@ describe('Bars utilities', function() {
 		bars.getroot(sen_neg_xcomp)["lemma"].should.equal("accept")
 	})
 
+	it('oversample', function() {
+		var dataset = [
+			[
+				{'input':"1", 'output':["\{\"Offer\":true\}"]},
+				{'input':"1", 'output':["\{\"Offer\":true\}"]},
+			],[
+				{'input':"2", 'output':["\{\"Accept\":true\}"]},
+				{'input':"3", 'output':["\{\"Reject\":true\}"]}
+				
+			]
+		]
+
+		var dat = bars.oversample(dataset)
+		// console.log(JSON.stringify(dat, null, 4))
+
+		_.isEqual(dat[dat.length-2][0]["input"], "2").should.equal(true)
+		_.isEqual(dat[dat.length-1][0]["input"], "3").should.equal(true)
+	})
+
+	it('setsize', function() {
+		_.isEqual(bars.setsize([1,2,3], 9), [1,2,3,1,2,3,1,2,3]).should.equal(true)
+		_.isEqual(bars.setsize([1,2,3], 5), [1,2,3,1,2]).should.equal(true)
+		_.isEqual(bars.setsize([1,2,3], 3), [1,2,3]).should.equal(true)
+		_.isEqual(bars.setsize([1,2,3], 2), [1,2]).should.equal(true)
+	})
 
 	it('generateopposite', function(callback) {
 
