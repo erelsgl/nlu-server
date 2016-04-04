@@ -105,22 +105,22 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 	    	// var mytrain1 = train1.slice(0, index)
 	    	// var mytrain2 = train2.slice(0, index)
 
-			var mytrainset1 = JSON.parse(JSON.stringify(_.flatten(train1).slice(0,index))))
-			var mytrainset2 = JSON.parse(JSON.stringify(_.flatten(train1).slice(0,index))))
-			var mytrainset3 = JSON.parse(JSON.stringify(_.flatten(train2).slice(0,index))))
+			var mytrainset1 = JSON.parse(JSON.stringify(_.flatten(train1).slice(0,index)))
+			var mytrainset2 = JSON.parse(JSON.stringify(_.flatten(train1).slice(0,index)))
+			var mytrainset3 = JSON.parse(JSON.stringify(_.flatten(train2).slice(0,index)))
 
 
-			console.log("DEBUGLC: train1.length: "+ train1.length)
-			console.log("DEBUGLC: train2.length: "+ train2.length)
+//			console.log("DEBUGLC: train1.length: "+ train1.length)
+//			console.log("DEBUGLC: train2.length: "+ train2.length)
 
-			console.log("DEBUGLC: mytrain1.length: "+ mytrain1.length + " " + _.flatten(mytrain1).length)
-			console.log("DEBUGLC: mytrain2.length: "+ mytrain2.length + " " + _.flatten(mytrain2).length)
+			//console.log("DEBUGLC: mytrain1.length: "+ mytrain1.length + " " + _.flatten(mytrain1).length)
+//			console.log("DEBUGLC: mytrain2.length: "+ mytrain2.length + " " + _.flatten(mytrain2).length)
 
 			console.log("DEBUGLC: testset.length: "+ testset.length)
 
 		    // var mytrainset1 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain1) ? _.flatten(mytrain1) : mytrain1)))
 
-		    trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(overmytrainset1), bars.copyobj(testset), function(err, stats1){
+		    trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset1), bars.copyobj(testset), function(err, stats1){
 
 		    	extractGlobal(_.values(classifierList)[0], mytrainset1, fold, stats1['stats'], glob_stats, classifierList)
 	   	    	// mytrainset1 = _.filter(mytrainset1, function(num){ return num.output.length == 1 })
