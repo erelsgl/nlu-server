@@ -82,11 +82,14 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 		var train1 = datasplitted['test']
 		var testset = _.flatten(datasplitted['train'])
 
+
+
 		async.whilst(
 
-		function () { return (index <= train1.length && index <= train2.length)  },
+		// function () { return (index <= train1.length && index <= train2.length)  },
+		function () { return (index <= _.flatten(train1).length && index <= _.flatten(train2).length)  },
 	    	function (callback_while) {
-		    	
+/*		    	
 			if (index<=10)
 			{
 		   		index += 1
@@ -96,51 +99,50 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 			       	index += 2
 		    }
 		    else index += 10
+*/
+			index += 10
 
-	    	var mytrain1 = train1.slice(0, index)
-	    	var mytrain2 = train2.slice(0, index)
+	    	// var mytrain1 = train1.slice(0, index)
+	    	// var mytrain2 = train2.slice(0, index)
 
-		console.log("DEBUGLC: train1.length: "+ train1.length)
-		console.log("DEBUGLC: train2.length: "+ train2.length)
+			var mytrainset1 = JSON.parse(JSON.stringify(_.flatten(train1).slice(0,index))))
+			var mytrainset2 = JSON.parse(JSON.stringify(_.flatten(train1).slice(0,index))))
+			var mytrainset3 = JSON.parse(JSON.stringify(_.flatten(train2).slice(0,index))))
 
-		console.log("DEBUGLC: mytrain1.length: "+ mytrain1.length + " " + _.flatten(mytrain1).length)
-		console.log("DEBUGLC: mytrain2.length: "+ mytrain2.length + " " + _.flatten(mytrain2).length)
 
-		console.log("DEBUGLC: testset.length: "+ testset.length)
+			console.log("DEBUGLC: train1.length: "+ train1.length)
+			console.log("DEBUGLC: train2.length: "+ train2.length)
 
-		    var mytrainset1 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain1) ? _.flatten(mytrain1) : mytrain1)))
+			console.log("DEBUGLC: mytrain1.length: "+ mytrain1.length + " " + _.flatten(mytrain1).length)
+			console.log("DEBUGLC: mytrain2.length: "+ mytrain2.length + " " + _.flatten(mytrain2).length)
 
-	   		// filter train to contain only single label utterances
-		    // console.log("DEBUGLC: size of mytrainset1 before filtering: "+ mytrainset1.length)
-	   	    // mytrainset1 = _.filter(mytrainset1, function(num){ return num.output.length == 1 })
-		    // console.log("DEBUGLC: size of mytrainset1 after filtering: "+ mytrainset1.length)
-		    console.log("DEBUGLC: size of mytrainset1 before oversampling: "+ mytrainset1.length)
-		    console.log("DEBUGLC: dist before over: "+ console.log(JSON.stringify(bars.getDist(mytrainset1), null, 4)))
-		 
-		    var overmytrainset1 = bars.oversample(mytrainset1)
+			console.log("DEBUGLC: testset.length: "+ testset.length)
 
-		    console.log("DEBUGLC: size of mytrainset1 after oversampling: "+ overmytrainset1.length)
-		    console.log("DEBUGLC: dist after over: "+ JSON.stringify(bars.getDist(overmytrainset1), null, 4))
+		    // var mytrainset1 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain1) ? _.flatten(mytrain1) : mytrain1)))
 
 		    trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(overmytrainset1), bars.copyobj(testset), function(err, stats1){
 
-			    extractGlobal(_.values(classifierList)[0], mytrainset1, fold, stats1['stats'], glob_stats, classifierList)
-			    console.log(_.values(classifierList)[0])
-			    console.log(JSON.stringify(stats1['stats'], null, 4))
+		    	extractGlobal(_.values(classifierList)[0], mytrainset1, fold, stats1['stats'], glob_stats, classifierList)
+	   	    	// mytrainset1 = _.filter(mytrainset1, function(num){ return num.output.length == 1 })
+		    
+		    	console.log("DEBUGLC: size of mytrainset1 before oversampling: "+ mytrainset1.length)
+		    	console.log("DEBUGLC: dist before over: "+ console.log(JSON.stringify(bars.getDist(mytrainset1), null, 4)))
+		 
+		    	var overmytrainset1 = bars.oversample(bars.copyobj(mytrainset2))
 
-	//			    bars.generateoppositeversion2(JSON.parse(JSON.stringify(mytrainset2)), function(err, sim_train){
+		    	console.log("DEBUGLC: size of mytrainset1 after oversampling: "+ overmytrainset1.length)
+		    	console.log("DEBUGLC: dist after over: "+ JSON.stringify(bars.getDist(overmytrainset1), null, 4))
 
-		    			var mytrainset2 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain2) ? _.flatten(mytrain2) : mytrain2)))
-		    			// console.log("DEBUGLC: size of mytrainset2 before filtering: "+ mytrainset2.length)
-	   	    			// mytrainset2 = _.filter(mytrainset2, function(num){ return num.output.length == 1 })
-						// console.log("DEBUGLC: size of mytrainset2 after filtering: "+ mytrainset2.length)
+		    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(overmytrainset1), bars.copyobj(testset), function(err, stats2){
 
-				    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(mytrainset2), bars.copyobj(testset), function(err, stats2){
+			    	extractGlobal(_.values(classifierList)[1], mytrainset1, fold, stats2['stats'], glob_stats, classifierList)
+			    	
+	    			// var mytrainset2 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain2) ? _.flatten(mytrain2) : mytrain2)))
+	    			// mytrainset2 = _.filter(mytrainset2, function(num){ return num.output.length == 1 })
+	
+				    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[2]], bars.copyobj(mytrainset3), bars.copyobj(testset), function(err, stats3){
 
-					    extractGlobal(_.values(classifierList)[1], mytrainset2, fold, stats2['stats'], glob_stats, classifierList)
-				    		
-				    	console.log(_.values(classifierList)[1])
-					    console.log(JSON.stringify(stats2['stats'], null, 4))
+						    extractGlobal(_.values(classifierList)[2], mytrainset3, fold, stats3['stats'], glob_stats, classifierList)
 
 				    		_.each(glob_stats, function(data, param, list){
 								master.plotlc(fold, param, glob_stats)
@@ -150,7 +152,7 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 
 							callback_while();
 				    	})
-	//			    })
+				    })
 				})
 	    },
 	    function (err, n) {
@@ -165,7 +167,7 @@ if (process.argv[1] === __filename)
 {
 	master.cleanFolder(__dirname + "/learning_curves")
 
-	var classifierList  = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_biased']
+	var classifierList  = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_oversample', 'DS_comp_unigrams_async_biased']
 
 	learning_curves(classifierList, 1/*step*/, 1/*step0*/, 30/*limit*/,  10/*numOfFolds*/, function(){
 		console.log()
