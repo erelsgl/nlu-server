@@ -109,14 +109,12 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 			var mytrainset2 = JSON.parse(JSON.stringify(_.flatten(train1).slice(0,index)))
 			var mytrainset3 = JSON.parse(JSON.stringify(_.flatten(train2).slice(0,index)))
 
-
-//			console.log("DEBUGLC: train1.length: "+ train1.length)
-//			console.log("DEBUGLC: train2.length: "+ train2.length)
-
-			//console.log("DEBUGLC: mytrain1.length: "+ mytrain1.length + " " + _.flatten(mytrain1).length)
-//			console.log("DEBUGLC: mytrain2.length: "+ mytrain2.length + " " + _.flatten(mytrain2).length)
-
+			console.log("DEBUGLC: train1.length: "+ train1.length)
+			console.log("DEBUGLC: train2.length: "+ train2.length)
 			console.log("DEBUGLC: testset.length: "+ testset.length)
+
+			console.log("DEBUGLC: classifier: "+ _.values(classifierList)[0])
+			console.log("DEBUGLC: size of mytrainset1: "+ mytrainset1.length)
 
 		    // var mytrainset1 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain1) ? _.flatten(mytrain1) : mytrain1)))
 
@@ -126,20 +124,21 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 	   	    	// mytrainset1 = _.filter(mytrainset1, function(num){ return num.output.length == 1 })
 		    
 		    	console.log("DEBUGLC: size of mytrainset1 before oversampling: "+ mytrainset1.length)
-		    	console.log("DEBUGLC: dist before over: "+ console.log(JSON.stringify(bars.getDist(mytrainset1), null, 4)))
+		    	console.log("DEBUGLC: dist of mytrainset1 before over: "+ console.log(JSON.stringify(bars.getDist(mytrainset1), null, 4)))
 		 
 		    	var overmytrainset1 = bars.oversample(bars.copyobj(mytrainset2))
 
 		    	console.log("DEBUGLC: size of mytrainset1 after oversampling: "+ overmytrainset1.length)
 		    	console.log("DEBUGLC: dist after over: "+ JSON.stringify(bars.getDist(overmytrainset1), null, 4))
+		    	console.log("DEBUGLC: classifier: "+ _.values(classifierList)[1])
 
 		    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(overmytrainset1), bars.copyobj(testset), function(err, stats2){
 
 			    	extractGlobal(_.values(classifierList)[1], mytrainset1, fold, stats2['stats'], glob_stats, classifierList)
 			    	
-	    			// var mytrainset2 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain2) ? _.flatten(mytrain2) : mytrain2)))
 	    			// mytrainset2 = _.filter(mytrainset2, function(num){ return num.output.length == 1 })
-	
+						console.log("DEBUGLC: classifier: "+ _.values(classifierList)[2])
+						console.log("DEBUGLC: size of mytrainset3: "+ mytrainset3.length)
 				    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[2]], bars.copyobj(mytrainset3), bars.copyobj(testset), function(err, stats3){
 
 						    extractGlobal(_.values(classifierList)[2], mytrainset3, fold, stats3['stats'], glob_stats, classifierList)
