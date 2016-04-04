@@ -4026,12 +4026,12 @@ function oversample(turns)
 
   console.log("DEBUGOVER: max="+max)
 
-  console.log("DEBUGOVER: "+JSON.stringify(tocount, null, 4))
-  console.log("DEBUGOVER: stats: "+JSON.stringify(stats, null, 4))
+  console.log("DEBUGOVER: intents to consider: "+JSON.stringify(tocount, null, 4))
+  console.log("DEBUGOVER: stats of all intent's occurences: "+JSON.stringify(stats, null, 4))
 
-  console.log("DEBUGOVER: single_label_utt")
+  console.log("DEBUGOVER: single_label_utt that were collected: ")
   _.each(single_label_utt, function(lis, key, list){
-	console.log("DEBUGOVER: "+key+" "+lis.length)
+	 console.log("DEBUGOVER: "+key+" "+lis.length)
   }, this)
 
   _.each(tocount, function(lab, key, list){
@@ -4084,14 +4084,14 @@ function undersample(turns)
   min = _.without(min, 0)
   min = _.sortBy(min, function(num){ return num })[0]
 
-  console.log("DEBUGOVER: min="+min)
+  console.log("DEBUGUNDER: min="+min)
 
-  console.log("DEBUGOVER: "+JSON.stringify(tocount, null, 4))
-  console.log("DEBUGOVER: stats: "+JSON.stringify(stats, null, 4))
+  console.log("DEBUGUNDER: intents to consider: "+JSON.stringify(tocount, null, 4))
+  console.log("DEBUGUNDER: stats count all occurences: "+JSON.stringify(stats, null, 4))
 
-  console.log("DEBUGOVER: single_label_utt")
+  console.log("DEBUGUNDER: single_label_utt that were collected")
   _.each(single_label_utt, function(lis, key, list){
-  console.log("DEBUGOVER: "+key+" "+lis.length)
+  console.log("DEBUGUNDER: "+key+" "+lis.length)
   }, this)
 
   var res = []
@@ -4101,13 +4101,13 @@ function undersample(turns)
     res = res.concat(value)
   }, this)
 
-  console.log("DEBUGOVER: "+JSON.stringify(res, null, 4))
+  console.log("DEBUGUNDER: "+JSON.stringify(res, null, 4))
 
   _.each(tocount, function(lab, key, list){
     if ((min <= stats[lab]) && (lab in single_label_utt)) 
     {
-    console.log("DEBUGOVER: intent: "+lab)
-    console.log("DEBUGOVER: size: "+single_label_utt[lab].length)
+    console.log("DEBUGUNDER: intent: "+lab)
+    console.log("DEBUGUNDER: size: "+single_label_utt[lab].length)
     res = res.concat(single_label_utt[lab].splice(0,min))
     }
   }, this)
