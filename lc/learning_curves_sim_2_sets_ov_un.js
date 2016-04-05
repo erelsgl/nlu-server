@@ -75,7 +75,7 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 
 	async.timesSeries(numOfFolds, function(fold, callback_fold){
 
-		var index = 0
+		var index = 10
 		console.log("DEBUGLC: FOLD "+fold)
 
 		var datasplitted = partitions.partitions_consistent_by_fold(JSON.parse(JSON.stringify(train1or)), numOfFolds, fold)
@@ -100,7 +100,6 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 		    }
 		    else index += 10
 */
-			index += 10
 
 	    	// var mytrain1 = train1.slice(0, index)
 	    	// var mytrain2 = train2.slice(0, index)
@@ -148,7 +147,7 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 								console.log("DEBUGLC: param "+param+" fold "+fold+" build")
 								master.plotlc('average', param, glob_stats)
 							})
-
+							index += 10
 							callback_while();
 				    	})
 				    })
