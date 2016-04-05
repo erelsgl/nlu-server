@@ -4118,8 +4118,17 @@ function undersample(turns)
 
 function setsize(dataset, size)
 {
-  var cur_size = dataset.length
+  // random variante
+
   var final_set = []
+  _(size).times(function(n){ 
+    final_set.push(_.sample(dataset, 1))
+  });
+
+  return final_set
+  
+  /*var cur_size = dataset.length
+  
   if (size > cur_size)
     {
     _(Math.ceil(size/cur_size)).times(function(n){ 
@@ -4129,7 +4138,7 @@ function setsize(dataset, size)
   else
     final_set = JSON.parse(JSON.stringify(dataset))
 
-  return final_set.splice(0,size)
+  return final_set.splice(0,size)*/
 }
 
 function simulateds(dials, size, golddist, power)
