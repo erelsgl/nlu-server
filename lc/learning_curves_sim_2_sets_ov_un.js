@@ -82,8 +82,6 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 		var train1 = datasplitted['test']
 		var testset = _.flatten(datasplitted['train'])
 
-
-
 		async.whilst(
 
 		// function () { return (index <= train1.length && index <= train2.length)  },
