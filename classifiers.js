@@ -1510,7 +1510,7 @@ function feAsync(sam, features, train, featureOptions, callback) {
 		sample = sample.input
 
 	if (!('sentences' in sample))
-	   throw new Error("for some reason sentences not in sample")
+	   throw new Error("for some reason sentences not in sample "+JSON.stringify(sample))
 
 	if (!('tokens' in sample['sentences']))
 	   throw new Error("for some reason tokens not in sample"+JSON.stringify(sample))
