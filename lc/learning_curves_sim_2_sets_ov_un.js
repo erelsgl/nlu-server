@@ -63,7 +63,8 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 	var utterset1 = bars.getsetcontext(data)
 	var train1or = utterset1["train"].concat(utterset1["test"])
 	
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_new.json"))
+//	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_new.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version1.json"))
 	var utterset2 = bars.getsetcontext(data)
 	var train2 = utterset2["train"].concat(utterset2["test"])
 	
@@ -165,7 +166,7 @@ if (process.argv[1] === __filename)
 
 	var classifierList  = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_oversample', 'DS_comp_unigrams_async_biased']
 
-	learning_curves(classifierList, 1/*step*/, 1/*step0*/, 30/*limit*/,  10/*numOfFolds*/, function(){
+	learning_curves(classifierList, 1/*step*/, 1/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
 		console.log()
 		process.exit(0)
 	})

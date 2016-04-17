@@ -3651,7 +3651,11 @@ function loadds(folder)
 function getDist(dataset)
 {
   
-  var dial = _.countBy(dataset, function(num) { if (num.output.length == 0) 
+  var dial = _.countBy(dataset, function(num) { 
+
+					     if (!('output' in num))
+						throw new Error(JSON.stringify(num) + " is without output")
+					     if (num.output.length == 0) 
                                                 return -1
                                               else
                                                 return _.keys(JSON.parse(num.output[0]))[0] })
@@ -4125,7 +4129,7 @@ function setsize(dataset, size)
 
   var final_set = []
   _(size).times(function(n){ 
-    final_set.push(_.sample(dataset, 1))
+    final_set.push(_.sample(dataset, 1)[0])
   });
 
   return final_set
