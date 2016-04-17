@@ -3671,7 +3671,7 @@ function getsetcontext(dataset)
     var processed_dialogue = []
     _.each(dialogue['turns'], function(turn, key, list){
 
-      if (turn.role == "Candidate")
+      if ((turn.role == "Candidate") && ('output' in turn))
         context = hashtoar(turn.output)
 
       if (turn.role == "Employer")
@@ -3686,10 +3686,9 @@ function getsetcontext(dataset)
 
         var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
 
-        // eliminate quit
         var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
         
-	var QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Query'});
+	      var QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Query'});
 	
 //	var AcceptIndex = _.findIndex(turn['output'], function(lab){ return lab=='{\"Accept\":true}'});
 
@@ -3706,6 +3705,10 @@ function getsetcontext(dataset)
         context = []
       }
     }, this)
+
+    if (!("set" in dialogue))
+      dialogue["set"] = "train"
+    
     utteranceset[dialogue.set].push(processed_dialogue)
   }, this)
   return utteranceset
