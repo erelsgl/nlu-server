@@ -3666,7 +3666,7 @@ function getDist(dataset)
   return _.object(diallist)
 }
 
-function removerephrases(dataset)
+/*function removerephrases(dataset)
 {
   var newset = []
 
@@ -3693,7 +3693,60 @@ function removerephrases(dataset)
   
   }, this)
 }
+*/
 
+function singlelabeldst(dataset)
+{
+  var src_dist = {}
+  _.each(dataset, function(value, key, list){
+    var intents = _.unique(_.keys(value.outputhash))
+
+    if (intents.length == 1)
+    {
+      if (!(intents[0] in src_dist))
+        src_dist[intents[0]] = 0
+
+        src_dist[intents[0]] += 1
+    }
+  }, this)
+
+  return src_dist
+}
+
+
+function undersampledst(src, dst)
+{
+  // check the src distrobution
+  var src_dist = singlelabeldst(src)
+  
+  console.log("UNDER: src dist: "+JSON.stringify(src_dist, null, 4))
+
+  var dst_map = {}
+  _.each(dst, function(value, key, list){
+    var intents = _.unique(_.keys(value.outputhash))
+
+    if (intents.length == 1)
+    {
+      if (!(intents[0] in dst_map))
+        dst_map[intents[0]] = []
+
+      dst_map[intents[0]].push(key)
+    }
+  }, this)
+
+  console.log("UNDER: dst map: "+JSON.stringify(dst_map, null, 4))
+
+  _.each(src_dist, function(value, intent, list){
+    while (dst_map[intent].length > src_dist[intent])
+    {
+      var index = _.sample(dst_map[intent]);
+      dst_map[intent] = _.without( dst_map[intent], index);
+      dst.splice(index, 1)
+    }
+  }, this)
+
+  return dst
+}
 
 function getsetcontext(dataset)
 {
@@ -3713,7 +3766,7 @@ function getsetcontext(dataset)
         context = hashtoar(turn.output)
 
         if ("data" in turn)
-          if (turn.date.indexOf("rephrase")!=-1)
+          if (turn.data.indexOf("rephrase")!=-1)
             skip = true
       }
 
@@ -4735,5 +4788,7 @@ oppositeintent:oppositeintent,
 generateoppositeversion2:generateoppositeversion2,
 setsize:setsize,
 oversample:oversample,
-undersample:undersample
+undersample:undersample,
+undersampledst:undersampledst,
+singlelabeldst:singlelabeldst
 }
