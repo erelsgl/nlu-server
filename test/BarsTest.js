@@ -16,6 +16,39 @@ var fs = require('fs');
 
 describe('Bars utilities', function() {
 
+	it('singlelabeldst', function() {
+		var dataset = [
+				{'outputhash':{'Accept':{},'Reject':{}}},
+				{'outputhash':{'Accept':{}}},
+				{'outputhash':{'Offer':{}}},
+				{'outputhash':{'Offer':{},'Accept':{}}},
+				{'outputhash':{'Offer':{},'Reject':{}}}
+			]
+
+		var dist = bars.singlelabeldst(dataset)
+		_.isEqual(dist, {"Accept": 1,"Offer": 1}).should.equal(true)
+		})
+
+
+	it('undersampledst', function() {
+
+		var src = [
+			{'outputhash':{'Accept':{}}},
+			{'outputhash':{'O':{}}},
+			{'outputhash':{'O':{}}}
+			]
+
+		var dst = [
+			{'outputhash':{'Accept':{},'Reject':{}}, 'input': 'dst'},
+			{'outputhash':{'Accept':{}}, 'input': 'dst'},
+			{'outputhash':{'Accept':{}}, 'input': 'dst'},
+			{'outputhash':{'O':{}}, 'input': 'dst'}
+			]
+
+		var new_dst = bars.undersampledst(src, dst)
+		console.log(JSON.stringify(new_dst, null, 4))
+	})
+
 	it('oppositeintent', function() {
 		_.isEqual(bars.oppositeintent({"Accept":true}), {"Reject":true}).should.equal(true)
 		_.isEqual(bars.oppositeintent({"Reject":{"Salary":"10"}}), {"Accept":{"Salary":"10"}}).should.equal(true)
