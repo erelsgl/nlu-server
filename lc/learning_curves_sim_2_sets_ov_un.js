@@ -64,7 +64,7 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 	var train1or = utterset1["train"].concat(utterset1["test"])
 	
 //	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_new.json"))
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version1.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version3.json"))
 	var utterset2 = bars.getsetcontext(data)
 	var train2 = utterset2["train"].concat(utterset2["test"])
 	
