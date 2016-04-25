@@ -3666,19 +3666,58 @@ function getDist(dataset)
   return _.object(diallist)
 }
 
+function removerephrases(dataset)
+{
+  var newset = []
+
+  var cont = {
+    'Accept': true,
+    'Reject': true,
+    'Query': true,
+  }
+
+  _.each(dataset, function(value, key, list){
+  
+    if (_.keys(value.outputhash).length == 1)
+      {
+        var intent = _.keys(value.outputhash)[0]
+
+        if ((_.keys(cont).indexOf(intent)!=-1) && (cont[intent]==false))
+        {}
+        else
+
+
+        if (_.keys(cont).indexOf(intent)!=-1)
+          cont[intent] = false
+      }
+  
+  }, this)
+}
+
+
 function getsetcontext(dataset)
 {
   var utteranceset = {'train':[], 'test':[]}
   var context = []
+  var skip = false
 
   _.each(dataset, function(dialogue, key, list){
     var processed_dialogue = []
     _.each(dialogue['turns'], function(turn, key, list){
 
+      if ((turn.role == "Candidate") && (skip))
+        skip = false
+
       if ((turn.role == "Candidate") && ('output' in turn))
+      {
         context = hashtoar(turn.output)
 
-      if (turn.role == "Employer")
+        if ("data" in turn)
+          if (turn.date.indexOf("rephrase")!=-1)
+            skip = true
+      }
+
+      if ((turn.role == "Employer") && (!skip))
       {
         var record = {}
         // record['input'] = {}
@@ -3700,7 +3739,7 @@ function getsetcontext(dataset)
 //        var CarIndexV = _.findIndex(turn['output'], function(lab){ return _.values(JSON.parse(lab))[0]=='Leased Car'});
   //      var CarIndex = _.findIndex(turn['output'], function(lab){ return _.keys(_.values(JSON.parse(lab))[0])[0]=='Leased Car'});
 
-        if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
+        // if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
 // && (AcceptIndex==-1))
 // && (CarIndex==-1)&& (CarIndexV==-1))
         // if ((CarIndex==-1) &&(CarIndexV==-1) && (QuitIndex==-1))
