@@ -3767,7 +3767,7 @@ function getsetcontext(dataset)
 
         if ("data" in turn)
           if (turn.data.indexOf("rephrase")!=-1)
-            skip = true
+            // skip = true
       }
 
       if ((turn.role == "Employer") && (!skip))
