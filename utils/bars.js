@@ -3758,19 +3758,22 @@ function getsetcontext(dataset)
     var processed_dialogue = []
     _.each(dialogue['turns'], function(turn, key, list){
 
-      if ((turn.role == "Candidate") && (skip))
+      if ((turn.role == "Candidate") && (skip==true))
         skip = false
-
-      if ((turn.role == "Candidate") && ('output' in turn))
+      
+      if (turn.role == "Candidate")
       {
-        context = hashtoar(turn.output)
+        
+        if ('output' in turn)
+          context = hashtoar(turn.output)
 
         if ("data" in turn)
           if (turn.data.indexOf("rephrase")!=-1)
-            // skip = true
+            // skip = false
+            skip = true
       }
 
-      if ((turn.role == "Employer") && (!skip))
+      if ((turn.role == "Employer") && (skip==false))
       {
         var record = {}
         // record['input'] = {}
