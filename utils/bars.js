@@ -3796,6 +3796,7 @@ function getsetcontext(dataset)
   //      var CarIndex = _.findIndex(turn['output'], function(lab){ return _.keys(_.values(JSON.parse(lab))[0])[0]=='Leased Car'});
 
         // if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
+        if ((QuitIndex==-1) && (GreetIndex==-1))
 // && (AcceptIndex==-1))
 // && (CarIndex==-1)&& (CarIndexV==-1))
         // if ((CarIndex==-1) &&(CarIndexV==-1) && (QuitIndex==-1))
