@@ -67,7 +67,9 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version3.json"))
 	var utterset2 = bars.getsetcontext(data)
 	var train2 = utterset2["train"].concat(utterset2["test"])
-	
+
+	train2 = undersampledst(train1or, train2)
+
 	console.log("DEBUGLC: train2.length "+ train2.length)
 	console.log("DEBUGLC: train1or.length "+ train1or.length)
 	
