@@ -3648,6 +3648,24 @@ function loadds(folder)
   return dataset
 }
 
+function getExm(dataset)
+{
+  var intents = []
+
+  _.each(dataset, function(value, key, list){   
+    var inte = _.keys(value.outputhash)
+      if (inte.length==1)
+      {
+        if (!(inte in intents))
+          intents[inte] = []
+
+          intents[inte].push(value.input.text)
+      }
+    }, this)
+  
+  return intents
+}
+
 function getDist(dataset)
 {
   var stats = []
@@ -3763,8 +3781,8 @@ function getsetcontext(dataset)
 
         if ("data" in turn)
           if (turn.data.indexOf("rephrase")!=-1)
-            skip = false
-            // skip = true
+            // skip = false
+            skip = true
       }
 
       if ((turn.role == "Employer") && (skip==false))
@@ -4788,5 +4806,6 @@ setsize:setsize,
 oversample:oversample,
 undersample:undersample,
 undersampledst:undersampledst,
-singlelabeldst:singlelabeldst
+singlelabeldst:singlelabeldst,
+getExm:getExm
 }
