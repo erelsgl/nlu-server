@@ -121,8 +121,8 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 			console.log("DEBUGDIST1:"+JSON.stringify(bars.getDist(mytrainset1), null, 4))
 			console.log("DEBUGDIST2:"+JSON.stringify(bars.getDist(mytrainset3), null, 4))
 
-			console.log("DEBUGEXP1:"+bars.getExm(mytrainset1))
-			console.log("DEBUGEXP2:"+bars.getExm(mytrainset3))
+			console.log("DEBUGEXP1:"+JSON.stringify(bars.getExm(mytrainset1)['Reject'], null, 4))
+			console.log("DEBUGEXP2:"+JSON.stringify(bars.getExm(mytrainset3)['Reject'], null, 4))
 
 		    // var mytrainset1 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain1) ? _.flatten(mytrain1) : mytrain1)))
 
