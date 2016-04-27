@@ -62,13 +62,15 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
 	var utterset1 = bars.getsetcontext(data)
 	var train1or = utterset1["train"].concat(utterset1["test"])
+        train1or = _.filter(_.flatten(train1or), function(num){ return num.output.length == 1 })
 	
 //	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_new.json"))
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version3.json"))
 	var utterset2 = bars.getsetcontext(data)
 	var train2 = utterset2["train"].concat(utterset2["test"])
+        train2 = _.filter(_.flatten(train2), function(num){ return num.output.length == 1 })
 
-	train2 = undersampledst(train1or, train2)
+	//train2 = undersampledst(train1or, train2)
 
 	console.log("DEBUGLC: train2.length "+ train2.length)
 	console.log("DEBUGLC: train1or.length "+ train1or.length)
@@ -113,16 +115,19 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 			console.log("DEBUGLC: train2.length: "+ train2.length)
 			console.log("DEBUGLC: testset.length: "+ testset.length)
 
-			console.log("DEBUGLC: classifier: "+ _.values(classifierList)[0])
 			console.log("DEBUGLC: size of mytrainset1: "+ mytrainset1.length)
+			console.log("DEBUGLC: size of mytrainset3: "+ mytrainset3.length)
 
-			console.log("DEBUGDIST1:"+bars.getDist(mytrainset1))
-			console.log("DEBUGDIST2:"+bars.getDist(mytrainset3))
+			console.log("DEBUGDIST1:"+JSON.stringify(bars.getDist(mytrainset1), null, 4))
+			console.log("DEBUGDIST2:"+JSON.stringify(bars.getDist(mytrainset3), null, 4))
 
 		    // var mytrainset1 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain1) ? _.flatten(mytrain1) : mytrain1)))
 
+			console.log("DEBUGLC: classifier: "+ _.values(classifierList)[0])
+
 		    trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset1), bars.copyobj(testset), function(err, stats1){
 
+			console.log("STATS1:"+JSON.stringify(stats1, null, 4))
 		    	extractGlobal(_.values(classifierList)[0], mytrainset1, fold, stats1['stats'], glob_stats, classifierList)
 	   	    	// mytrainset1 = _.filter(mytrainset1, function(num){ return num.output.length == 1 })
 		    
@@ -143,18 +148,18 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 	    				
 
 						console.log("DEBUGLC: classifier: "+ _.values(classifierList)[2])
-						console.log("DEBUGLC: size of mytrainset3: "+ mytrainset3.length)
 
 				    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[2]], bars.copyobj(mytrainset3), bars.copyobj(testset), function(err, stats3){
+						console.log("STATS3:"+JSON.stringify(stats3, null, 4))
 
-						    extractGlobal(_.values(classifierList)[2], mytrainset3, fold, stats3['stats'], glob_stats, classifierList)
+		  			    extractGlobal(_.values(classifierList)[2], mytrainset3, fold, stats3['stats'], glob_stats, classifierList)
 
 				    		_.each(glob_stats, function(data, param, list){
 								master.plotlc(fold, param, glob_stats)
-								console.log("DEBUGLC: param "+param+" fold "+fold+" build")
+//								console.log("DEBUGLC: param "+param+" fold "+fold+" build")
 								master.plotlc('average', param, glob_stats)
 							})
-							index += 30
+							index += 20
 							callback_while();
 				    	})
 				    // })
