@@ -116,6 +116,9 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 			console.log("DEBUGLC: classifier: "+ _.values(classifierList)[0])
 			console.log("DEBUGLC: size of mytrainset1: "+ mytrainset1.length)
 
+			console.log("DEBUGDIST1:"+bars.getDist(mytrainset1))
+			console.log("DEBUGDIST2:"+bars.getDist(mytrainset3))
+
 		    // var mytrainset1 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain1) ? _.flatten(mytrain1) : mytrain1)))
 
 		    trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset1), bars.copyobj(testset), function(err, stats1){
@@ -123,22 +126,25 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 		    	extractGlobal(_.values(classifierList)[0], mytrainset1, fold, stats1['stats'], glob_stats, classifierList)
 	   	    	// mytrainset1 = _.filter(mytrainset1, function(num){ return num.output.length == 1 })
 		    
-		    	console.log("DEBUGLC: size of mytrainset1 before oversampling: "+ mytrainset1.length)
-		    	console.log("DEBUGLC: dist of mytrainset1 before over: "+ console.log(JSON.stringify(bars.getDist(mytrainset1), null, 4)))
+		    	// console.log("DEBUGLC: size of mytrainset1 before oversampling: "+ mytrainset1.length)
+		    	// console.log("DEBUGLC: dist of mytrainset1 before over: "+ console.log(JSON.stringify(bars.getDist(mytrainset1), null, 4)))
 		 
-		    	var overmytrainset1 = bars.oversample(bars.copyobj(mytrainset2))
+		    	// var overmytrainset1 = bars.oversample(bars.copyobj(mytrainset2))
 
-		    	console.log("DEBUGLC: size of mytrainset1 after oversampling: "+ overmytrainset1.length)
-		    	console.log("DEBUGLC: dist after over: "+ JSON.stringify(bars.getDist(overmytrainset1), null, 4))
-		    	console.log("DEBUGLC: classifier: "+ _.values(classifierList)[1])
+		    	// console.log("DEBUGLC: size of mytrainset1 after oversampling: "+ overmytrainset1.length)
+		    	// console.log("DEBUGLC: dist after over: "+ JSON.stringify(bars.getDist(overmytrainset1), null, 4))
+		    	// console.log("DEBUGLC: classifier: "+ _.values(classifierList)[1])
 
-		    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(overmytrainset1), bars.copyobj(testset), function(err, stats2){
+		    	// trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(overmytrainset1), bars.copyobj(testset), function(err, stats2){
 
-			    	extractGlobal(_.values(classifierList)[1], mytrainset1, fold, stats2['stats'], glob_stats, classifierList)
+			    	// extractGlobal(_.values(classifierList)[1], mytrainset1, fold, stats2['stats'], glob_stats, classifierList)
 			    	
 	    			// mytrainset2 = _.filter(mytrainset2, function(num){ return num.output.length == 1 })
+	    				
+
 						console.log("DEBUGLC: classifier: "+ _.values(classifierList)[2])
 						console.log("DEBUGLC: size of mytrainset3: "+ mytrainset3.length)
+
 				    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[2]], bars.copyobj(mytrainset3), bars.copyobj(testset), function(err, stats3){
 
 						    extractGlobal(_.values(classifierList)[2], mytrainset3, fold, stats3['stats'], glob_stats, classifierList)
@@ -148,10 +154,10 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 								console.log("DEBUGLC: param "+param+" fold "+fold+" build")
 								master.plotlc('average', param, glob_stats)
 							})
-							index += 10
+							index += 30
 							callback_while();
 				    	})
-				    })
+				    // })
 				})
 	    },
 	    function (err, n) {
