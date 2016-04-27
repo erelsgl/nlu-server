@@ -3650,20 +3650,14 @@ function loadds(folder)
 
 function getDist(dataset)
 {
+  var stats = []
+
+  _.each(dataset, function(value, key, list){   
+    if (_.keys(value.outputhash).length==1)
+      stats = stats.concat(_.keys(value.outputhash))
+    }, this)
   
-  var dial = _.countBy(dataset, function(num) { 
-
-					     if (!('output' in num))
-						throw new Error(JSON.stringify(num) + " is without output")
-					     if (num.output.length == 0) 
-                                                return -1
-                                              else
-                                                return _.keys(JSON.parse(num.output[0]))[0] })
-
-  var diallist = _.pairs(dial) 
-  diallist = _.sortBy(diallist, function(num){ return num[0] })
-
-  return _.object(diallist)
+  return _.countBy(stats, function(num) { return num }) 
 }
 
 /*function removerephrases(dataset)
@@ -3769,8 +3763,8 @@ function getsetcontext(dataset)
 
         if ("data" in turn)
           if (turn.data.indexOf("rephrase")!=-1)
-            // skip = false
-            skip = true
+            skip = false
+            // skip = true
       }
 
       if ((turn.role == "Employer") && (skip==false))
