@@ -4636,6 +4636,15 @@ function generateoppositeversion2(dataset, callback)
   })
 }
 */
+function mean_variance(dataset)
+{
+  var result = { 'mean':0, 'variance':0 }
+
+  result['mean'] = _.reduce(dataset, function(memo, num){ return memo + num; }, 0) / dataset.length
+  result['variance'] = _.reduce(dataset, function(memo, num){ return memo + Math.pow(num - result['mean'], 2) }, 0) / dataset.length
+
+  return result
+}
 
 function generateopposite(dataset, callback)
 {
@@ -4807,5 +4816,6 @@ oversample:oversample,
 undersample:undersample,
 undersampledst:undersampledst,
 singlelabeldst:singlelabeldst,
-getExm:getExm
+getExm:getExm,
+mean_variance:mean_variance
 }
