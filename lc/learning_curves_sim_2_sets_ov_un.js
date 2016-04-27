@@ -119,6 +119,9 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 			console.log("DEBUGDIST1:"+bars.getDist(mytrainset1))
 			console.log("DEBUGDIST2:"+bars.getDist(mytrainset3))
 
+			console.log("DEBUGEXP1:"+bars.getExm(mytrainset1))
+			console.log("DEBUGEXP2:"+bars.getExm(mytrainset3))
+
 		    // var mytrainset1 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain1) ? _.flatten(mytrain1) : mytrain1)))
 
 		    trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset1), bars.copyobj(testset), function(err, stats1){
