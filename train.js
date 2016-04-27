@@ -26,13 +26,18 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
-var check_dist = false
+var check_reject = false
+var check_biased = false
+var check_single = false
+var check_bar = false
+var check_init = true
+
 var check_stats = false
 var count_reject = false
 var stat_sig = false
 var check_ds = false
-var check_init = true
-var check_reject = false
+var check_false = false
+var check_roots = false
 var do_serialization_prod = false
 var check_single_multi = false
 var shuffling = false
@@ -122,7 +127,16 @@ function walkSync(dir, filelist) {
   return filelist;
 }
 
-if (check_stats)
+
+/*if (check_bar)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var dataset = bars.getsetcontext(data)
+	bars.generateoppositeversion2(_.flatten(dataset["train"]).concat(_.flatten(dataset["test"])))
+	process.exit(0)
+}
+*/
+/*if (check_stats)
 {
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
 	// var utterset = bars.getsetcontext(data)
@@ -140,15 +154,15 @@ if (check_stats)
 	console.log(JSON.stringify(stats, null, 4))
 	process.exit(0)
 }
-
-if (binary_seg)
+*/
+/*if (binary_seg)
 {
 	var dataset = bars.loadds("../negochat_private/dialogues")
 	var utterset = bars.getsetnocontext(dataset)
 	var stats = trainAndTest.trainAndTest_hash(classifier.BinarySegmentation, utterset["train"], utterset["test"], 5)
 }
-
-if (mmm)
+*/
+/*if (mmm)
 {
 
 	var single = []
@@ -164,7 +178,7 @@ if (mmm)
 			console.log(JSON.stringify(value, null, 4))
 	}, this)
 }
-
+*/
 if (check_word)
 {
 	var wordembs = {}
@@ -404,7 +418,137 @@ if (shuffling)
 }
 */
 
+if (check_roots)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var utterset = bars.getsetcontext(data)
+	
+	utterset["test"] = _.shuffle(_.flatten(utterset["test"]))
+	utterset["train"] = _.shuffle(_.flatten(utterset["train"]))
+
+	var data = utterset["test"].concat(utterset["train"])
+
+	var res = {'Accept':[], 'Reject':[]}
+
+	async.eachSeries(data, function(value, callbackl){ 
+	// _.each(data, function(value, key, list){
+
+		if (value.output.length == 1)
+		{
+			var intent = _.keys(JSON.parse(value.output[0]))[0]
+
+			if (["Accept","Reject"].indexOf(intent)!=-1)
+			{
+			    var root = _.where(value["input"]["sentences"][0]['basic-dependencies'], {"dep": "ROOT"})[0]["dependentGloss"]
+
+			    var negate = _.where(value["input"]["sentences"][0]['basic-dependencies'], {"dep": "neg", "governorGloss":root})
+
+      			var roottoken = _.where(value["input"]["sentences"][0]['tokens'], {"word": root}, this)[0]
+
+
+
+      			if (["vb","vbd","vbg","vbn","vbp","vbz"].indexOf(roottoken.pos.toLowerCase())!=-1)
+      			{
+
+	      			async_adapter.getwordnet(roottoken.lemma, roottoken.pos, function(err, results){
+	      				
+	      				if ((results['antonyms'].length > 3) && (results['synonyms'].length > 3))
+	      				{
+							res[intent].push({
+				    			'word': roottoken.word, 
+				    			'lemma': roottoken.lemma, 
+				    			'pos': roottoken.pos,
+				    			'negated': negate.length > 0,
+				    			//'antonyms': results['antonyms'],
+				    			//'synonyms': results['synonyms'],
+				    			'text': value.input.text
+							})
+							callbackl()
+	     				}
+	     				else
+	     					callbackl()
+	      			})
+	      		}
+	      		else
+	      			callbackl()
+			}
+			else
+				callbackl()
+		}
+		else
+			callbackl()
+	
+	}, 
+		function(err){
+				
+					console.log(JSON.stringify(res, null, 4))
+					process.exit(0)
+				}) 
+}
+
 if (check_reject)
+{
+
+	var inte = "Reject"
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version3.json"))
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var utterset = bars.getsetcontext(data)	
+	var data = utterset["test"].concat(utterset["train"])
+	var sum = 0
+
+	_.each(data, function(dialogue, key, list){
+		var rej = 0
+		_.each(dialogue, function(turn, key, list){
+			if (_.keys(turn.outputhash).indexOf(inte)!=-1)
+				rej += 1
+		}, this)
+		sum += rej
+
+		console.log(rej)
+				
+	}, this)
+	
+	console.log(data.length)
+	console.log(JSON.stringify(sum, null, 4))
+	
+	var multi = 0
+	var single = 0
+
+	_.each(_.flatten(data), function(turn, key, list){
+		if (_.keys(turn.outputhash).indexOf(inte)!=-1)
+			if (_.keys(turn.outputhash).length == 1)
+				single += 1
+			else
+				multi += 1
+	}, this)
+
+	console.log("multi: "+multi)
+	console.log("single: "+single)
+
+	var attr = []
+	var content = []
+
+	_.each(_.flatten(data), function(turn, key, list){
+		if (_.keys(turn.outputhash).indexOf(inte)!=-1)
+			if (_.isObject(turn.outputhash[inte]))
+				attr.push(_.keys(turn.outputhash[inte]))
+			else
+				attr.push(turn.outputhash[inte])
+
+		if (_.keys(turn.outputhash).indexOf(inte)!=-1)
+			if (_.keys(turn.outputhash).length == 1)
+				content.push(turn.input.text)
+
+	}, this)
+
+	var attr = _.countBy(_.flatten(attr), function(num) { return num })
+
+	console.log(JSON.stringify(attr, null, 4))
+	console.log(JSON.stringify(content, null, 4))
+
+}
+
+/*if (check_reject)
 {
 
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
@@ -430,7 +574,14 @@ if (check_reject)
 	console.log(JSON.stringify(sens, null, 4))
 	process.exit(0)
 }
+*/
 
+
+/* "{\"Offer\":{\"Leased Car\":\"Without leased car\"}}": [
+        "no company car",
+        "So we can agree on without leased car",
+        "no car",
+*/
 if (count_reject)
 {
 
@@ -469,63 +620,178 @@ if (count_reject)
 	process.exit(0)
 }
 
-
-if (check_dist)
+if (check_biased)
 {
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_new.json"))
-	var utterset = bars.getsetcontext(data)
+	// example when rephrase wasn't successful
+	var rephrase_total = 0
+	var rephrase_success = 0
+	var rephrase_unsec_examples = []
 
-	var dataset = _.flatten(utterset["test"]).concat(_.flatten(utterset["train"]))
+	var offer_resquest = 0
+	var offer_response = 0
 
-	var globallabels = []
+	var query_resquest = 0
+	var query_response = 0
 
-	_.each(dataset, function(value, key, list){
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version3.json"))
+	_.each(data, function(dialogue, key, list){
+		_.each(dialogue['turns'], function(turn, key, list){
 
-		var labels = _.map(value.output, function(num){ return _.keys(JSON.parse(num))[0] })
+			
+			/*if (turn.role == "Candidate" && "output" in turn)
+				if (_.keys(turn.output)[0] == "Query")
+				{
+					offer_resquest += 1
+					
+					if (_.keys(dialogue['turns'][key+1]["output"])[0] == "Offer")
+						offer_response += 1
+			}
 
-		labels = _.uniq(labels)
-		labels = _.sortBy(labels, function(num){ return num })
-		globallabels.push(labels)
+			if (turn.role == "Candidate" && "data" in turn)
+				if (turn.data.indexOf("I have very specific preferences about"))
+				{
+					query_resquest += 1
+					
+					if (dialogue['turns'].length > (key + 1))
+						if (_.keys(dialogue['turns'][key+1]["output"])[0] == "Query")
+							query_response += 1
+			}*/
 
+			if (turn.role == "Candidate" && "data" in turn)
+				if (turn.data.indexOf("rephrase")!=-1)
+				{
+					rephrase_total += 1
+
+					if (_.keys(dialogue['turns'][key-1]["output"]).length == 1)
+						if (dialogue['turns'].length > (key + 1))
+							if ("output" in dialogue['turns'][key + 1])
+								if (_.keys(dialogue['turns'][key-1]["output"])[0] == _.keys(dialogue['turns'][key+1]["output"])[0])
+									{
+										rephrase_success += 1
+									}
+								else
+									{
+										var prev = {
+												'input': dialogue['turns'][key-1]["input"]["text"],
+												'output': dialogue['turns'][key-1]["output"]
+													}	
+
+										var next = {
+												'input': dialogue['turns'][key+1]["input"]["text"],
+												'output': dialogue['turns'][key+1]["output"]
+													}
+
+										rephrase_unsec_examples.push([prev, next])
+									}
+				}
+		}, this)
 	}, this)
 
-	var coun = _.countBy(globallabels, function(num) { return num })
-	console.log(JSON.stringify(coun, null, 4))
+	console.log("Rephrase: "+rephrase_success/rephrase_total)
+	console.log("Offer: "+offer_response/offer_resquest)
+	console.log("Query: "+query_response/query_resquest)
+
+	console.log(JSON.stringify(rephrase_unsec_examples, null, 4))
+
 	process.exit(0)
 }
 
 if (check_init)
 {
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_new.json"))
+	var result = {
+					'Offer': {'count':0},
+					'Accept':{'count':0},
+				  	'Reject':{'count':0},
+ 					'Query': {'count':0},
+				  	'Greet': {'count':0},
+				  	'Quit': {'count':0}
+				}
+
+	
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version3.json"))
 	var utterset = bars.getsetcontext(data)
 
 	var num_of_dials = data.length
 	console.log(num_of_dials)
 
-	var dataset = _.flatten(utterset["test"]).concat(_.flatten(utterset["train"]))
+	var dialogues = utterset["test"].concat(utterset["train"])
+	if (_.keys(utterset).length > 2)
+	{
+		throw new Error(_.keys(utterset))
+		process.exit(0)
+	}
+		
 	var int_stat = []
+	var globallabels = []
 
-	_.each(dataset, function(value, key, list){
-		var intents = _.map(value.output, function(num){ return _.keys(JSON.parse(num))[0] })
-		int_stat = int_stat.concat(intents)
+	_.each(_.flatten(dialogues), function(value, key, list){		
+		
+		if (_.keys(value.outputhash).length==1)
+				globallabels = globallabels.concat(_.keys(value.outputhash))
+			
 	}, this)
 
-	int_stat = _.countBy(int_stat, function(num) { return num })
-	console.log(JSON.stringify(int_stat, null, 4))
+	console.log(JSON.stringify(_.countBy(globallabels, function(num) { return num })))
 
-	_.each(int_stat, function(value, key, list){
-		int_stat[key ] = value/num_of_dials
+	_.each(dialogues, function(dial, key, list){
+		var temp = []
+		_.each(dial, function(utters, key, list){
+			// var intents = _.map(utters.output, function(num){ return _.keys(JSON.parse(num))[0] })
+			if (_.keys(utters.outputhash).length==1)
+				temp = temp.concat(_.keys(utters.outputhash))
+			
+		}, this)
+		int_stat.push(temp)
 	}, this)
 
-	console.log(JSON.stringify(int_stat, null, 4))
-	process.exit(0)
+	_.each(int_stat, function(intents, key, list){
+		int_stat[key] = _.countBy(intents, function(num) { return num })
+	}, this)
+
+	_.each(int_stat, function(dial, key, list){
+		_.each(dial, function(value, intent, list){
+			result[intent]["count"] += value
+		}, this)
+	}, this)
+
+	var count_sum = _.reduce(_.flatten(_.values(result)), function(memo, num){ return memo + num["count"]; }, 0);
+
+	_.each(result, function(value, intent, list){
+		result[intent]["ration"] = value["count"] / count_sum
+	}, this)
+
+	_.each(result, function(value, key, list){
+		result[key]['sample_mean'] = value['count']/dialogues.length
+	}, this)
+
+	_.each(["Offer", "Accept", "Reject"], function(intent, key, list){
+		var buff = 0
+		_.each(int_stat, function(value, key, list){
+			if (!(intent in value))
+				value[intent] = 0
+
+			buff += Math.pow(value[intent] - result[intent]["sample_mean"],2)
+		}, this)
+		result[intent]["sample_variance"] = buff/dialogues.length
+	}, this)
+
+	var leng = []
+	_.each(dialogues, function(dial, key, list){
+		leng.push(_.filter(dial, function(num){ return _.keys(num.outputhash).length == 1; }).length)
+	}, this)
+
+	
+	console.log(JSON.stringify(result, null, 4))
+	console.log("Length: "+ JSON.stringify(leng, null, 4))
+	console.log("mean_variance: "+ JSON.stringify(bars.mean_variance(leng), null, 4))
+
+		process.exit(0)
 
 }
 
-
 if (check_ds)
 {
-
 
 // 70
 // 966
@@ -828,10 +1094,3 @@ if (do_serialization) {
 			, 'utf8');
 	});
 } // do_serialization
-
-
-
-// })
-
-
-// f.run();

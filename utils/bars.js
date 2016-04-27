@@ -3650,7 +3650,7 @@ function loadds(folder)
 
 function getExm(dataset)
 {
-  var intents = {}
+  var intents = []
 
   _.each(dataset, function(value, key, list){   
     var inte = _.keys(value.outputhash)
@@ -3659,7 +3659,7 @@ function getExm(dataset)
         if (!(inte in intents))
           intents[inte] = []
 
-        intents[inte].push(value.input.text)
+          intents[inte].push(value.input.text)
       }
     }, this)
   
