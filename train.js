@@ -472,7 +472,7 @@ if (count_reject)
 
 if (check_dist)
 {
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_new.json"))
 	var utterset = bars.getsetcontext(data)
 
 	var dataset = _.flatten(utterset["test"]).concat(_.flatten(utterset["train"]))
@@ -496,7 +496,7 @@ if (check_dist)
 
 if (check_init)
 {
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_new.json"))
 	var utterset = bars.getsetcontext(data)
 
 	var num_of_dials = data.length

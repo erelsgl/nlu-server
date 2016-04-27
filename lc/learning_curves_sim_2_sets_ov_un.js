@@ -87,6 +87,10 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 		var train1 = datasplitted['test']
 		var testset = _.flatten(datasplitted['train'])
 
+		console.log("Total length train1: "+ _.filter(_.flatten(train1), function(num){ return _.keys(num.outputhash).length == 1 }).length)
+		console.log("Total length train2: "+ _.filter(_.flatten(train2), function(num){ return _.keys(num.outputhash).length == 1 }).length)
+
+
 		async.whilst(
 
 		// function () { return (index <= train1.length && index <= train2.length)  },
@@ -130,7 +134,8 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 
 		    trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[0]], bars.copyobj(mytrainset1), bars.copyobj(testset), function(err, stats1){
 
-			console.log("STATS1:"+JSON.stringify(stats1, null, 4))
+			console.log("DEBUGSTATS1:"+JSON.stringify(stats1, null, 4))
+
 		    	extractGlobal(_.values(classifierList)[0], mytrainset1, fold, stats1['stats'], glob_stats, classifierList)
 	   	    	// mytrainset1 = _.filter(mytrainset1, function(num){ return num.output.length == 1 })
 		    
@@ -153,7 +158,7 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 						console.log("DEBUGLC: classifier: "+ _.values(classifierList)[2])
 
 				    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[2]], bars.copyobj(mytrainset3), bars.copyobj(testset), function(err, stats3){
-						console.log("STATS3:"+JSON.stringify(stats3, null, 4))
+						console.log("DEBUGSTATS3:"+JSON.stringify(stats3, null, 4))
 
 		  			    extractGlobal(_.values(classifierList)[2], mytrainset3, fold, stats3['stats'], glob_stats, classifierList)
 
