@@ -3762,16 +3762,16 @@ function undersampledst(src, dst)
 
 function getsetcontext(dataset)
 {
-  var utteranceset = {'train':[], 'test':[]}
+  var utteranceset = {'train':[], 'test':[], 'unable':[]}
   var context = []
-  var skip = false
+ // var skip = false
 
   _.each(dataset, function(dialogue, key, list){
     var processed_dialogue = []
     _.each(dialogue['turns'], function(turn, key, list){
 
-      if ((turn.role == "Candidate") && (skip==true))
-        skip = false
+ //     if ((turn.role == "Candidate") && (skip==true))
+//        skip = false
       
       if (turn.role == "Candidate")
       {
@@ -3779,13 +3779,14 @@ function getsetcontext(dataset)
         if ('output' in turn)
           context = hashtoar(turn.output)
 
-        if ("data" in turn)
-          if (turn.data.indexOf("rephrase")!=-1)
-            // skip = false
-            skip = true
+      //  if ("data" in turn)
+        //  if (turn.data.indexOf("rephrase")!=-1)
+  //          skip = false
+            //skip = true
       }
 
-      if ((turn.role == "Employer") && (skip==false))
+      if (turn.role == "Employer")
+//      if ((turn.role == "Employer") && (skip==false))
       {
         var record = {}
         // record['input'] = {}
@@ -3799,7 +3800,7 @@ function getsetcontext(dataset)
 
         var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
         
-	      var QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Query'});
+        var QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Query'});
 	
 //	var AcceptIndex = _.findIndex(turn['output'], function(lab){ return lab=='{\"Accept\":true}'});
 
@@ -3808,7 +3809,7 @@ function getsetcontext(dataset)
   //      var CarIndex = _.findIndex(turn['output'], function(lab){ return _.keys(_.values(JSON.parse(lab))[0])[0]=='Leased Car'});
 
         // if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
-        if ((QuitIndex==-1) && (GreetIndex==-1))
+        if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
 // && (AcceptIndex==-1))
 // && (CarIndex==-1)&& (CarIndexV==-1))
         // if ((CarIndex==-1) &&(CarIndexV==-1) && (QuitIndex==-1))
