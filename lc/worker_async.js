@@ -36,7 +36,7 @@ process.on('message', function(message) {
 			// var len = 5
 //	       	index += (index < 20 ? 3 : 5)
 		
-		if (index<10)
+/*		if (index<10)
 		{
 			index += 1
 		} else if (index<20)
@@ -44,6 +44,10 @@ process.on('message', function(message) {
 			index += 2
 		}
 		else index += 5
+*/
+//biased
+
+		index += 20
 
 	       	var mytrain = train.slice(0, index)
 
