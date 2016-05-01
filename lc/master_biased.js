@@ -414,7 +414,7 @@ function learning_curves(classifiers, folds, dataset, callback)
     var train1or = utterset1["train"].concat(utterset1["test"])
     // train1or = _.filter(_.flatten(train1or), function(num){ return num.output.length == 1 })
 
-    var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version3.json"))
+    var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version4.json"))
     var utterset2 = bars.getsetcontext(data)
     var train2 = utterset2["train"].concat(utterset2["test"])
     train2 = _.flatten(train2)
@@ -435,8 +435,8 @@ function learning_curves(classifiers, folds, dataset, callback)
 			
 			var data = partitions.partitions_consistent_by_fold(train1or, folds, fold)
 
-			console.log("DEBUG: fold "+ fold + " train size "+data.train.length)
-            console.log("DEBUG: fold "+ fold + " test size "+data.test.length)   
+			console.log("DEBUGMASTER: fold "+ fold + " train size "+data.train.length)
+	                console.log("DEBUGMASTER: fold "+ fold + " test size "+data.test.length)   
 			
 			var train = []
 			if (classifier == "DS_comp_unigrams_async")
@@ -444,17 +444,23 @@ function learning_curves(classifiers, folds, dataset, callback)
 			else
 				train = _.flatten(JSON.parse(JSON.stringify(train2)))
 
+			var max = _.min([_.flatten(data.train).length, _.flatten(train2).length])
+			max = max - max % 10			
+
+	                console.log("DEBUGMASTER: max: "+ max)   
+			
 			worker.send({ 
 						'train': JSON.stringify(train), 
-						'test': JSON.stringify(data['test']) 
+						'test': JSON.stringify(data['test']),
+						'max': JSON.stringify(max)
 						})
 			thr += 1	
 
 			worker.on('disconnect', function(){
-			  	console.log("DEBUG: master: finished")
+			  	console.log("DEBUGMASTER: finished")
 			  	if (Object.keys(cluster.workers).length == 1)
 			  	{
-					console.log("DEBUG: all workers are disconnected")
+					console.log("DEBUGMASTER: all workers are disconnected")
 			  		_.each(stat, function(data, param, list){
 						// update the graph for current fold per parameter
 						_(folds).times(function(fold){
@@ -473,7 +479,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 				var workerstats = JSON.parse(message)
 				workerstats['classifiers'] = classifiers
 
-				console.log("DEBUGMASTER: on: "+message)
+				console.log("DEBUGMASTER: on message: "+message)
 				fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
 				extractGlobal(workerstats, stat)
 			})
