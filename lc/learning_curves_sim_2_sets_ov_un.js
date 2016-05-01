@@ -65,10 +65,16 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
         train1or = _.filter(_.flatten(train1or), function(num){ return num.output.length == 1 })
 	
 //	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_new.json"))
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version3.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version4.json"))
 	var utterset2 = bars.getsetcontext(data)
 	var train2 = utterset2["train"].concat(utterset2["test"])
         train2 = _.filter(_.flatten(train2), function(num){ return num.output.length == 1 })
+
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version3.json"))
+        var utterset3 = bars.getsetcontext(data)
+        var train3 = utterset3["train"].concat(utterset3["test"])
+        train3 = _.filter(_.flatten(train3), function(num){ return num.output.length == 1 })
+
 
 	//train2 = undersampledst(train1or, train2)
 
@@ -89,6 +95,7 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 
 		console.log("Total length train1: "+ _.filter(_.flatten(train1), function(num){ return _.keys(num.outputhash).length == 1 }).length)
 		console.log("Total length train2: "+ _.filter(_.flatten(train2), function(num){ return _.keys(num.outputhash).length == 1 }).length)
+		console.log("Total length train3: "+ _.filter(_.flatten(train3), function(num){ return _.keys(num.outputhash).length == 1 }).length)
 
 
 		async.whilst(
@@ -112,21 +119,30 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 	    	// var mytrain2 = train2.slice(0, index)
 
 			var mytrainset1 = JSON.parse(JSON.stringify(_.flatten(train1).slice(0,index)))
-			var mytrainset2 = JSON.parse(JSON.stringify(_.flatten(train1).slice(0,index)))
-			var mytrainset3 = JSON.parse(JSON.stringify(_.flatten(train2).slice(0,index)))
+			var mytrainset2 = JSON.parse(JSON.stringify(_.flatten(train2).slice(0,index)))
+			var mytrainset3 = JSON.parse(JSON.stringify(_.flatten(train3).slice(0,index)))
 
 			console.log("DEBUGLC: train1.length: "+ train1.length)
 			console.log("DEBUGLC: train2.length: "+ train2.length)
+			console.log("DEBUGLC: train3.length: "+ train3.length)
 			console.log("DEBUGLC: testset.length: "+ testset.length)
 
 			console.log("DEBUGLC: size of mytrainset1: "+ mytrainset1.length)
+			console.log("DEBUGLC: size of mytrainset2: "+ mytrainset2.length)
 			console.log("DEBUGLC: size of mytrainset3: "+ mytrainset3.length)
 
 			console.log("DEBUGDIST1:"+JSON.stringify(bars.getDist(mytrainset1), null, 4))
-			console.log("DEBUGDIST2:"+JSON.stringify(bars.getDist(mytrainset3), null, 4))
+			console.log("DEBUGDIST2:"+JSON.stringify(bars.getDist(mytrainset2), null, 4))
+			console.log("DEBUGDIST3:"+JSON.stringify(bars.getDist(mytrainset3), null, 4))
 
-			console.log("DEBUGEXP1:"+JSON.stringify(bars.getExm(mytrainset1)['Reject'], null, 4))
-			console.log("DEBUGEXP2:"+JSON.stringify(bars.getExm(mytrainset3)['Reject'], null, 4))
+			console.log("DEBUGEXP1_ACCEPT:"+JSON.stringify(bars.getExm(mytrainset1)['Accept'], null, 4))
+			console.log("DEBUGEXP2_ACCEPT:"+JSON.stringify(bars.getExm(mytrainset2)['Accept'], null, 4))
+			console.log("DEBUGEXP3_ACCEPT:"+JSON.stringify(bars.getExm(mytrainset3)['Accept'], null, 4))
+
+                        console.log("DEBUGEXP1_REJECT:"+JSON.stringify(bars.getExm(mytrainset1)['Reject'], null, 4))
+                        console.log("DEBUGEXP2_REJECT:"+JSON.stringify(bars.getExm(mytrainset2)['Reject'], null, 4))
+                        console.log("DEBUGEXP3_REJECT:"+JSON.stringify(bars.getExm(mytrainset3)['Reject'], null, 4))
+
 
 		    // var mytrainset1 = JSON.parse(JSON.stringify((bars.isDialogue(mytrain1) ? _.flatten(mytrain1) : mytrain1)))
 
@@ -148,17 +164,17 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 		    	// console.log("DEBUGLC: dist after over: "+ JSON.stringify(bars.getDist(overmytrainset1), null, 4))
 		    	// console.log("DEBUGLC: classifier: "+ _.values(classifierList)[1])
 
-		    	// trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(overmytrainset1), bars.copyobj(testset), function(err, stats2){
+		    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[1]], bars.copyobj(mytrainset2), bars.copyobj(testset), function(err, stats2){
 
-			    	// extractGlobal(_.values(classifierList)[1], mytrainset1, fold, stats2['stats'], glob_stats, classifierList)
+			    	extractGlobal(_.values(classifierList)[1], mytrainset2, fold, stats2['stats'], glob_stats, classifierList)
 			    	
 	    			// mytrainset2 = _.filter(mytrainset2, function(num){ return num.output.length == 1 })
 	    				
 
-						console.log("DEBUGLC: classifier: "+ _.values(classifierList)[2])
+//						console.log("DEBUGLC: classifier: "+ _.values(classifierList)[2])
 
 				    	trainAndTest.trainAndTest_async(classifiers[_.values(classifierList)[2]], bars.copyobj(mytrainset3), bars.copyobj(testset), function(err, stats3){
-						console.log("DEBUGSTATS3:"+JSON.stringify(stats3, null, 4))
+//						console.log("DEBUGSTATS3:"+JSON.stringify(stats3, null, 4))
 
 		  			    extractGlobal(_.values(classifierList)[2], mytrainset3, fold, stats3['stats'], glob_stats, classifierList)
 
@@ -170,7 +186,7 @@ function learning_curves(classifierList, step, step0, limit, numOfFolds, callbac
 							index += 20
 							callback_while();
 				    	})
-				    // })
+				    })
 				})
 	    },
 	    function (err, n) {
@@ -185,7 +201,7 @@ if (process.argv[1] === __filename)
 {
 	master.cleanFolder(__dirname + "/learning_curves")
 
-	var classifierList  = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_oversample', 'DS_comp_unigrams_async_biased']
+	var classifierList  = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_biased', 'DS_comp_unigrams_async_biased_old']
 
 	learning_curves(classifierList, 1/*step*/, 1/*step0*/, 30/*limit*/,  5/*numOfFolds*/, function(){
 		console.log()
