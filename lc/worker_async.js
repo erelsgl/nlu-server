@@ -23,14 +23,16 @@ process.on('message', function(message) {
 	
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
+	var max  = JSON.parse(message['max'])
 
 	console.log(msg("DEBUG: worker "+process.pid+": train is array:"+_.isArray(train) + " and its size "+train.length))
 	console.log(msg("DEBUG: worker "+process.pid+": test is array:"+_.isArray(test) + " and its size "+test.length))
+	console.log(msg("DEBUG: max "+max))
 
 	var index = 0
 
 	async.whilst(
-	    function () { return index <= train.length },
+	    function () { return index <= max },
 	    function (callbackwhilst) {
 
 			// var len = 5
@@ -47,7 +49,7 @@ process.on('message', function(message) {
 */
 //biased
 
-		index += 20
+		index += 10
 
 	       	var mytrain = train.slice(0, index)
 
