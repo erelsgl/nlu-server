@@ -91,9 +91,8 @@ function extractGlobal(workerstats, stat)
 	var classifiers = workerstats["classifiers"]
 	var fold = workerstats["fold"]
 
-	console.log(workerstats)
-	
-	console.log("clas:"+classifiers)
+	console.log("DEBUGMASTER: workerstats: "+JSON.stringify(workerstats, null, 4))
+	console.log("DEBUGMASTER: clas:"+classifiers)
 
 	_.each(attributes, function(attr, key, list){ 
 	//	if (!_.isNull(workerstats['stats'][attr]))
@@ -113,6 +112,8 @@ function extractGlobal(workerstats, stat)
 					stat[attr][trainsize][cls][fold] = null
 
 			}, this)
+	
+			console.log("DEBUGMASTER: stat: "+JSON.stringify(stat, null, 4))
 			
 			stat[attr][trainsize][classifier][fold] = workerstats['stats'][attr]
 			stat[attr][trainsize]["dial"][fold] = workerstats["trainsizeuttr"]
@@ -470,7 +471,9 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 			worker.on('message', function(message){
 				var workerstats = JSON.parse(message)
-				console.log("DEBUGMASTER: "+message)
+				workerstats['classifiers'] = classifiers
+
+				console.log("DEBUGMASTER: on: "+message)
 				fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
 				extractGlobal(workerstats, stat)
 			})
@@ -546,8 +549,8 @@ if (process.argv[1] === __filename)
 
 	var folds = 5
 
-	console.log("Dataset "+ dataset.length)
-	console.log("DEBUG: master: dataset size "+ dataset.length)
+	//console.log("Dataset "+ dataset.length)
+//	console.log("DEBUG: master: dataset size "+ dataset.length)
 
 	learning_curves([], folds, [], function(){
 		console.log()
