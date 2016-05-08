@@ -26,12 +26,16 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+var check_version4 = false
+var check_version7 = false
+var check_init = false
+var check_intent_issue = false
 var check_reject = false
+var check_context = true
+
 var check_biased = false
 var check_single = false
 var check_bar = false
-var check_init = true
-
 var check_stats = false
 var count_reject = false
 var stat_sig = false
@@ -179,6 +183,17 @@ function walkSync(dir, filelist) {
 	}, this)
 }
 */
+
+if (check_context)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7.json"))
+	var utterset = bars.getsetcontext(data)
+	var dataset = utterset["train"].concat(utterset["test"])
+	console.log(JSON.stringify(dataset, null, 4))
+	process.exit(0)
+}
+
+
 if (check_word)
 {
 	var wordembs = {}
@@ -377,6 +392,213 @@ if (check_cross_batch)
 }
 
 
+if (check_intent_issue)
+{
+	var intents = {}
+
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version3.json"))
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var utterset = bars.getsetcontext(data)
+	var data = utterset["test"].concat(utterset["train"])
+
+	_.each(data, function(dial, key, list){
+		_.each(dial, function(value, key, list){
+			_.each(value.output, function(inte, key, list){
+				var js = JSON.parse(inte)
+				var intent = _.keys(js)[0]
+				if (_.isObject(_.values(js)[0]))
+				{
+					var issue = _.keys(_.values(js)[0])[0]
+
+					if (!(intent in intents))
+						intents[intent] = {}
+
+					if (!(issue in intents[intent]))
+						intents[intent][issue] = 0
+
+					intents[intent][issue] += 1
+				}
+			}, this)
+		}, this)
+	}, this)
+
+	_.each(intents, function(value, key, list){
+		var valar = _.pairs(value)
+		valar = _.sortBy(valar, function(num){ return num[1] }).reverse()
+		intents[key] = _.object(valar) 
+	}, this)
+
+	console.log(JSON.stringify(intents, null, 4))
+	process.exit(0)
+
+
+}
+
+if (check_version4)
+{
+	var recovery = {}
+	var intents = {}
+	// var rectypes = ['AskRepeat', 'AskRephrase' ,'Reprompt' ,'Notify', 'Yield', 'MoveOn', 'Help', 'YouCanSay', 'TerseYouCanSay']
+	var rectypes = ['AskRepeat', 'AskRephrase' ,'Reprompt' ,'Notify', 'Yield', 'Help', 'YouCanSay', 'TerseYouCanSay']
+	var previntents = []
+	var rectype = undefined
+
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version6.json"))
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version4.json"))
+	// var data = _.filter(data, function(num){ return num['set'] != 'unable'; });
+
+	console.log("Length: "+data.length)
+
+	_.each(data, function(dialogue, key, list){
+		_.each(dialogue['turns'], function(turn, key, list){
+			if ((turn.role == "Candidate") && (rectypes.indexOf(turn.data) !=-1) && (_.isUndefined(rectype)))
+			{
+				if (!(turn.data in recovery))
+					recovery[turn.data] = {'total': 0, 'correct':0}
+				
+				recovery[turn.data]['total'] += 1
+
+				previntents = _.sortBy(_.keys(dialogue['turns'][key-1]['output']), function(num){ return num })
+
+				if (previntents.length == 0)
+						{
+							// console.log(JSON.stringify(dialogue['turns'][key-1], null, 4))
+							// console.log(JSON.stringify(dialogue['turns'][key], null, 4))
+							// process.exit(0)
+						}
+
+				_.each(previntents, function(value, key, list){
+					if (!(value in intents))
+						intents[value] = {'total': 0, 'correct':0}
+				
+					intents[value]['total'] += 1
+				}, this)
+
+				rectype = turn.data
+			}
+
+			if ((turn.role == "Employer") && (!_.isUndefined(rectype)))
+			{
+				var curintents = _.sortBy(_.keys(turn['output']), function(num){ return num })
+
+				// console.log(JSON.stringify(previntents, null, 4))
+				// console.log(JSON.stringify(curintents, null, 4))
+				// console.log("---")
+
+				var intersec = _.sortBy(_.intersection(curintents, previntents), function(num){ return num })
+
+				if (_.isEqual(intersec, previntents) == true) 
+				{
+					recovery[rectype]["correct"] += 1
+
+					_.each(previntents, function(value, key, list){
+						intents[value]['correct'] += 1
+					}, this)					
+				}
+						
+				rectype = undefined
+				previntents = []
+			}
+
+		}, this)
+	}, this)
+	console.log(JSON.stringify(recovery, null, 4))
+	console.log(JSON.stringify(intents, null, 4))
+	process.exit(0)
+}
+
+
+if (check_version7)
+{
+	var strategy = {
+					'Accept': {'total': 0, 'correct': 0}, 
+					'Reject': {'total': 0, 'correct': 0},
+					}
+
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7.json"))
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version4.json"))
+	// var data = _.filter(data, function(num){ return num['set'] != 'unable'; });
+
+	// console.log("Length: "+data.length)
+	var truein = []
+
+	_.each(data, function(dialogue, key, list){
+
+		var iss = 	{
+					'Salary': '',
+					'Pension Fund': '',
+					'Job Description': '',
+					'Leased Car': '',
+					'Promotion Possibilities': '',
+					'Working Hours':''
+					}
+
+		_.each(dialogue['turns'], function(turn, key, list){
+			
+			if ((turn.role == "Candidate") && ('data' in turn))
+			{
+				if (turn.data.indexOf(":")!=-1)
+				{
+					var intent = turn.data.split(":")[1];
+					var issue = turn.data.split(":")[0];
+
+					strategy[intent]['total'] = strategy[intent]['total'] + 1
+					iss[issue] = intent
+
+					console.log("intent: "+ intent + " issue: "+issue)
+					console.log("strategies:"+JSON.stringify(strategy))
+					console.log("iss:"+JSON.stringify(iss))
+				}
+			}
+
+			if ((turn.role == "Candidate") && ("output" in turn))
+			{
+				truein = _.map(bars.turnoutput(turn.output), function(num){ return num[1] })
+				console.log("CT: with output issues: "+truein + " output: "+JSON.stringify(turn.output))
+			}
+				
+			if (turn.role == "Employer")
+			{
+				var curintents = bars.turnoutput(turn.output)
+
+				console.log("ET: "+JSON.stringify(curintents) + " output "+JSON.stringify(turn.output))
+				
+				_.each(curintents, function(value, key, list){
+					if (value[1]!=true)
+					{
+						console.log("ET: intent: " + value[0] + " issue: " + value[1])
+						if (iss[value[1]] == value[0])
+						{
+							strategy[value[0]]['correct'] += 1
+							iss[value[1]] = ""
+						}
+					}
+					else
+					{
+						console.log("ET: TRUE: " + truein)
+
+						_.each(truein, function(value1, key, list){
+							if (iss[value1] == value[0])
+								strategy[value[0]]['correct'] += 1
+								
+							iss[value1] = ""	
+
+						}, this)
+					}
+
+				}, this)
+
+				console.log("ET: END: strategy: "+JSON.stringify(strategy))
+				console.log("ET: END: issue : "+JSON.stringify(iss))
+			}
+
+		}, this)
+	}, this)
+	// console.log(JSON.stringify(recovery, null, 4))
+	console.log(JSON.stringify(strategy, null, 4))
+	process.exit(0)
+}
+
 if (shuffling)
 {
         var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
@@ -489,12 +711,15 @@ if (check_roots)
 if (check_reject)
 {
 
-	var inte = "Reject"
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version3.json"))
-	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var inte = "Accept"
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version3.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
 	var utterset = bars.getsetcontext(data)	
 	var data = utterset["test"].concat(utterset["train"])
 	var sum = 0
+
+	console.log(JSON.stringify(data.length, null, 4))
+	process.exit(0)
 
 	_.each(data, function(dialogue, key, list){
 		var rej = 0
@@ -505,6 +730,8 @@ if (check_reject)
 		sum += rej
 
 		console.log(rej)
+
+		if (rej == 5) console.log(dialogue)
 				
 	}, this)
 	
@@ -706,25 +933,25 @@ if (check_init)
 				  	'Greet': {'count':0},
 				  	'Quit': {'count':0}
 				}
-
 	
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
-	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version3.json"))
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version6.json"))
 	var utterset = bars.getsetcontext(data)
 
 	var num_of_dials = data.length
 	console.log(num_of_dials)
 
 	var dialogues = utterset["test"].concat(utterset["train"])
-	if (_.keys(utterset).length > 2)
-	{
-		throw new Error(_.keys(utterset))
-		process.exit(0)
-	}
+	// if (_.keys(utterset).length > 2)
+	// {
+		// throw new Error(_.keys(utterset))
+		// process.exit(0)
+	// }
 		
 	var int_stat = []
 	var globallabels = []
 
+	// filter
 	_.each(_.flatten(dialogues), function(value, key, list){		
 		
 		if (_.keys(value.outputhash).length==1)
@@ -749,6 +976,8 @@ if (check_init)
 		int_stat[key] = _.countBy(intents, function(num) { return num })
 	}, this)
 
+	console.log(JSON.stringify(int_stat, null, 4))
+
 	_.each(int_stat, function(dial, key, list){
 		_.each(dial, function(value, intent, list){
 			result[intent]["count"] += value
@@ -761,33 +990,21 @@ if (check_init)
 		result[intent]["ration"] = value["count"] / count_sum
 	}, this)
 
-	_.each(result, function(value, key, list){
-		result[key]['sample_mean'] = value['count']/dialogues.length
-	}, this)
-
-	_.each(["Offer", "Accept", "Reject"], function(intent, key, list){
-		var buff = 0
-		_.each(int_stat, function(value, key, list){
-			if (!(intent in value))
-				value[intent] = 0
-
-			buff += Math.pow(value[intent] - result[intent]["sample_mean"],2)
-		}, this)
-		result[intent]["sample_variance"] = buff/dialogues.length
-	}, this)
+	_.each(["Offer", "Accept", "Reject", "Query"], function(intent, key, list){
+		var intent_list = _.pluck(int_stat, intent);
+		result[intent] = _.extend(result[intent], bars.mean_variance(intent_list));
+	})
 
 	var leng = []
 	_.each(dialogues, function(dial, key, list){
 		leng.push(_.filter(dial, function(num){ return _.keys(num.outputhash).length == 1; }).length)
 	}, this)
-
 	
 	console.log(JSON.stringify(result, null, 4))
 	console.log("Length: "+ JSON.stringify(leng, null, 4))
 	console.log("mean_variance: "+ JSON.stringify(bars.mean_variance(leng), null, 4))
 
-		process.exit(0)
-
+	process.exit(0)
 }
 
 if (check_ds)
@@ -1094,3 +1311,6 @@ if (do_serialization) {
 			, 'utf8');
 	});
 } // do_serialization
+
+
+JSON.stringify()
