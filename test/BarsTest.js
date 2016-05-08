@@ -16,6 +16,17 @@ var fs = require('fs');
 
 describe('Bars utilities', function() {
 
+	it('turnoutput', function() {
+		var output = { "Offer": { "Job Description": "Project Manager" }}
+		_.isEqual(bars.turnoutput(output), [["Offer","Job Description"]]).should.equal(true)
+
+		var output = { "Accept": true, "Offer": {"Working Hours": "10 hours"}}
+		_.isEqual(bars.turnoutput(output), [["Accept",true], ["Offer","Working Hours"]]).should.equal(true)
+
+		var output = { "Accept": {"Salary": "60,000 USD", "Working Hours": "10 hours" }}
+		_.isEqual(bars.turnoutput(output), [["Accept","Salary"], ["Accept","Working Hours"]]).should.equal(true)
+	})
+	
 	it('singlelabeldst', function() {
 		var dataset = [
 				{'outputhash':{'Accept':{},'Reject':{}}},
@@ -27,8 +38,7 @@ describe('Bars utilities', function() {
 
 		var dist = bars.singlelabeldst(dataset)
 		_.isEqual(dist, {"Accept": 1,"Offer": 1}).should.equal(true)
-		})
-
+	})
 
 	it('undersampledst', function() {
 
