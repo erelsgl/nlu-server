@@ -25,14 +25,13 @@ process.on('message', function(message) {
 	var test  = JSON.parse(message['test'])
 	var max  = JSON.parse(message['max'])
 
-	console.log(msg("DEBUG: worker "+process.pid+": train is array:"+_.isArray(train) + " and its size "+train.length))
-	console.log(msg("DEBUG: worker "+process.pid+": test is array:"+_.isArray(test) + " and its size "+test.length))
+	console.log(msg("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length))
 	console.log(msg("DEBUG: max "+max))
 
 	var index = 0
 
 	async.whilst(
-	    function () { return index <= max },
+	    function () { return index < max },
 	    function (callbackwhilst) {
 
 			// var len = 5
@@ -54,7 +53,7 @@ process.on('message', function(message) {
 	       	var mytrain = train.slice(0, index)
 
 	       	var mytrainex = (bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)
-			var mytestex  = (bars.isDialogue(test) ? _.flatten(test) : test)
+		var mytestex  = (bars.isDialogue(test) ? _.flatten(test) : test)
 
 			console.log(msg("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+mytrainex.length+
@@ -63,13 +62,13 @@ process.on('message', function(message) {
 
 		    	// stats = trainAndTest_hash(classifiers[classifier], mytrainex, mytestex, false)
 
-		    	if (classifier == "DS_primitive")
+/*		    	if (classifier == "DS_primitive")
 		    	{
 		    		console.log("DEBUGWORKER: It's old fashion classifier, flatten the dataset")
 		    		mytrainex = bars.flattendataset(mytrainex)
 		    		mytestex = bars.flattendataset(mytestex)
 		    	}
-
+*/
 		    	trainAndTest.trainAndTest_async(classifiers[classifier], JSON.parse(JSON.stringify(mytrainex)), JSON.parse(JSON.stringify(mytestex)), function(err, stats){
 
 		    		//var uniqueid = new Date().getTime()
