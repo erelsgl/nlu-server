@@ -3760,33 +3760,38 @@ function undersampledst(src, dst)
   return dst
 }
 
+function turnoutput(output)
+{
+  var converted = []
+  var out = _.pairs(output)
+  _.each(out, function(value, key, list){
+    if (_.isObject(value[1]))
+    {
+      _.each(_.keys(value[1]), function(value1, key1, list){
+        converted.push([value[0], value1])
+      }, this)
+    }
+    else
+        converted.push([value[0], value[1]])
+  }, this)
+return converted
+}
+
 function getsetcontext(dataset)
 {
   var utteranceset = {'train':[], 'test':[], 'unable':[]}
   var context = []
- // var skip = false
-
+ 
   _.each(dataset, function(dialogue, key, list){
     var processed_dialogue = []
     _.each(dialogue['turns'], function(turn, key, list){
 
- //     if ((turn.role == "Candidate") && (skip==true))
-//        skip = false
       
-      if (turn.role == "Candidate")
-      {
-        
-        if ('output' in turn)
-          context = hashtoar(turn.output)
+      if ((turn.role == "Candidate") && (('output' in turn)))
+        context = hashtoar(turn.output)
 
-      //  if ("data" in turn)
-        //  if (turn.data.indexOf("rephrase")!=-1)
-  //          skip = false
-            //skip = true
-      }
-
+ 
       if (turn.role == "Employer")
-//      if ((turn.role == "Employer") && (skip==false))
       {
         var record = {}
         // record['input'] = {}
@@ -3802,20 +3807,21 @@ function getsetcontext(dataset)
         
         var QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Query'});
 	
-//	var AcceptIndex = _.findIndex(turn['output'], function(lab){ return lab=='{\"Accept\":true}'});
+        //	var AcceptIndex = _.findIndex(turn['output'], function(lab){ return lab=='{\"Accept\":true}'});
 
         // eliminate car issue
 //        var CarIndexV = _.findIndex(turn['output'], function(lab){ return _.values(JSON.parse(lab))[0]=='Leased Car'});
   //      var CarIndex = _.findIndex(turn['output'], function(lab){ return _.keys(_.values(JSON.parse(lab))[0])[0]=='Leased Car'});
 
         // if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
-        if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
-// && (AcceptIndex==-1))
-// && (CarIndex==-1)&& (CarIndexV==-1))
+        // if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
+        // && (AcceptIndex==-1))
+        // && (CarIndex==-1)&& (CarIndexV==-1))
         // if ((CarIndex==-1) &&(CarIndexV==-1) && (QuitIndex==-1))
-          processed_dialogue.push(turn)
+          if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
+            processed_dialogue.push(turn)
 
-        context = []
+        // context = []
       }
     }, this)
 
@@ -4639,6 +4645,10 @@ function generateoppositeversion2(dataset, callback)
 */
 function mean_variance(dataset)
 {
+
+  dataset = _.map(dataset, function(num){ if (_.isUndefined(num) || _.isNaN(num) || _.isNull(num)) {return 0 }
+                                            else return num });
+
   var result = { 'mean':0, 'variance':0 }
 
   result['mean'] = _.reduce(dataset, function(memo, num){ return memo + num; }, 0) / dataset.length
@@ -4818,5 +4828,6 @@ undersample:undersample,
 undersampledst:undersampledst,
 singlelabeldst:singlelabeldst,
 getExm:getExm,
-mean_variance:mean_variance
+mean_variance:mean_variance,
+turnoutput:turnoutput
 }
