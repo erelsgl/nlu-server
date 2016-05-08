@@ -1,0 +1,11 @@
+size	dial	DS_comp_unigrams_async	DS_comp_unigrams_async_biased	DS_comp_unigrams_async_over	DS_comp_unigrams_async_under
+10	10	null	null	null	null
+20	20	null	null	null	null
+30	30	null	null	null	null
+40	40	null	null	null	null
+50	50	null	0.475	null	null
+60	60	null	0.475	null	null
+70	70	null	0.46835443037974683	null	1
+80	80	null	0.46835443037974683	null	1
+90	90	null	0.46835443037974683	null	1
+100	100	1	0.46835443037974683	1	0.6451612903225806
