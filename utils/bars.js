@@ -3767,12 +3767,21 @@ function turnoutput(output)
   _.each(out, function(value, key, list){
     if (_.isObject(value[1]))
     {
-      _.each(_.keys(value[1]), function(value1, key1, list){
-        converted.push([value[0], value1])
-      }, this)
+      if (value[0]=="Query")
+      {
+        converted.push(["Query", _.values(value[1])[0]])
+      }
+      else
+      {
+        _.each(_.keys(value[1]), function(value1, key1, list){
+          converted.push([value[0], value1])
+        }, this)
+      }
     }
     else
+    {
         converted.push([value[0], value[1]])
+    }
   }, this)
 return converted
 }
@@ -3818,7 +3827,8 @@ function getsetcontext(dataset)
         // && (AcceptIndex==-1))
         // && (CarIndex==-1)&& (CarIndexV==-1))
         // if ((CarIndex==-1) &&(CarIndexV==-1) && (QuitIndex==-1))
-          if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
+          // if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
+          // if ((QuitIndex==-1) && (GreetIndex==-1))
             processed_dialogue.push(turn)
 
         // context = []
