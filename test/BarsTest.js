@@ -25,6 +25,11 @@ describe('Bars utilities', function() {
 
 		var output = { "Accept": {"Salary": "60,000 USD", "Working Hours": "10 hours" }}
 		_.isEqual(bars.turnoutput(output), [["Accept","Salary"], ["Accept","Working Hours"]]).should.equal(true)
+
+		var output = { "Query": {"Offer": "Salary"}}
+		_.isEqual(bars.turnoutput(output), [["Query","Salary"]]).should.equal(true)
+	
+		// _.isEqual(bars.turnoutput(output), [["Accept","Salary"], ["Accept","Working Hours"]]).should.equal(true)
 	})
 	
 	it('singlelabeldst', function() {
