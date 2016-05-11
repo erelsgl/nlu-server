@@ -407,12 +407,18 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var stat = {}
 	var thr = 0
 
-	var	classifiers = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_biased']
+//	var classifiers = [ 'DS_comp_unigrams_async','DS_comp_unigrams_async_over','DS_comp_unigrams_async_under','DS_comp_unigrams_async_biased']
+	var classifiers = [ 'unbiased','oversampled','undersampled','biased']
+//	var classifiers = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_biased']
 
 	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
     var utterset1 = bars.getsetcontext(data1)
     var train1 = utterset1["train"].concat(utterset1["test"])
+	_.each(train1, function(value, key, list){
+		train1[key] = _.filter(value, function(num){ return num.output.length == 1 })
+	}, this)
 	console.log("DEBUG: train1.length "+train1.length)
+
 //    train1or = _.shuffle(train1or)
 
     // train1or = _.filter(_.flatten(train1or), function(num){ return num.output.length == 1 })
@@ -420,10 +426,14 @@ function learning_curves(classifiers, folds, dataset, callback)
     var data2 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7.json"))
     var utterset2 = bars.getsetcontext(data2)
     var train2 = utterset2["train"].concat(utterset2["test"])
-	console.log("DEBUG: train2.length "+train2.length)
+    console.log("DEBUG: train2.length "+train2.length)
+    train2 = train2.slice(0,30)
+_.each(train2, function(value, key, list){
+	train2[key] = _.filter(value, function(num){ return num.output.length == 1 })
+}, this)
+    console.log("DEBUG: train2.length "+train2.length)
     // train2 = _.filter(_.flatten(train2), function(num){ return num.output.length == 1 })
 //    train2 = _.sortBy(train2, function(num){ return num.length })
-  //  train2 = train2.slice(0,15)
 
 
 	cluster.setupMaster({
@@ -449,22 +459,22 @@ function learning_curves(classifiers, folds, dataset, callback)
 			//data.train = data.train.slice(0,15)
 			
 
+			var train2sam = _.flatten(_.sample(JSON.parse(JSON.stringify(train2)), 10))
 
 			var train = []
-			if (classifier == "DS_comp_unigrams_async")
-				train = _.flatten(JSON.parse(JSON.stringify(data.test)))
-				//train = (JSON.parse(JSON.stringify(data.train)))
+			if (classifier == "biased")
+				train = train2sam
 			else
-				train = _.flatten(_.sample(JSON.parse(JSON.stringify(train2)), 10))
-				//train = (JSON.parse(JSON.stringify(train2)))
+				train = _.flatten(JSON.parse(JSON.stringify(data.test)))
 
-			var max = _.min([_.flatten(data.test).length, _.flatten(train2).length])
+			var max = _.min([_.flatten(data.test).length, _.flatten(train2sam).length])
 			max = max - max % 10			
 			
-			console.log("DEBUGMASTER: fold "+ fold + " train size "+train.length + " test size " + data.train.length + " max: "+max)
+			console.log("DEBUGMASTER: train1.len="+_.flatten(data.test).length+ " train2.len="+ _.flatten(train2sam).length + " max="+max)
+			console.log("DEBUGMASTER: class="+classifier+ " fold="+ fold + " train1.len="+train.length + " test.len=" + data.train.length + " max: "+max)
 
-			worker.send({ 		'train': JSON.stringify(_.flatten(train)), 
-						'test': JSON.stringify(_.flatten(data.train)),
+			worker.send({ 		'train': JSON.stringify(train), 
+						'test': JSON.stringify(data.train),
 						'max': JSON.stringify(max)
 						})
 			thr += 1	
