@@ -23,9 +23,10 @@ process.on('message', function(message) {
 	
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
-	var max  = JSON.parse(message['max'])
+	//var max  = JSON.parse(message['max'])
+	var max  = 100
 
-	console.log(msg("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length))
+	console.log(msg("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max))
 	console.log(msg("DEBUG: max "+max))
 
 	var index = 0
@@ -69,7 +70,18 @@ process.on('message', function(message) {
 		    		mytestex = bars.flattendataset(mytestex)
 		    	}
 */
-		    	trainAndTest.trainAndTest_async(classifiers[classifier], JSON.parse(JSON.stringify(mytrainex)), JSON.parse(JSON.stringify(mytestex)), function(err, stats){
+			var realmytrainex = []
+
+			if (classifier=="oversampled") {
+				var realmytrainex = bars.oversample(mytrainex)
+			} else if (classifier=="undersampled") {
+				var realmytrainex = bars.undersample(mytrainex)
+				
+			} else {
+				var realmytrainex = bars.copyobj(mytrainex)
+				}
+	
+		    	trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
 
 		    		//var uniqueid = new Date().getTime()
 

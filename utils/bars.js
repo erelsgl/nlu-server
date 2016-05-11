@@ -3829,6 +3829,9 @@ function getsetcontext(dataset)
         // if ((CarIndex==-1) &&(CarIndexV==-1) && (QuitIndex==-1))
           // if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
           // if ((QuitIndex==-1) && (GreetIndex==-1))
+          
+	if ((QuitIndex==-1) && (GreetIndex==-1))
+//          if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
             processed_dialogue.push(turn)
 
         // context = []
