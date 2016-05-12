@@ -28,10 +28,18 @@ var ftrs = limdu.features;
 
 var check_version4 = false
 var check_version7 = false
+
+// check the Ido's approach, we sample the strategy uniformly, then just see the reaction in intents
+// prefereably to do so in rations
+var check_version7_1 = false
+
+// simple template to check performance on test and train even with simple multi-label binary relevance SVM
+var check_ds = true
+
 var check_init = false
 var check_intent_issue = false
 var check_reject = false
-var check_context = true
+var check_context = false
 
 var check_biased = false
 var check_single = false
@@ -39,15 +47,15 @@ var check_bar = false
 var check_stats = false
 var count_reject = false
 var stat_sig = false
-var check_ds = false
+
 var check_false = false
 var check_roots = false
 var do_serialization_prod = false
 var check_single_multi = false
-var shuffling = false
+// var shuffling = false
 var check_word = false
-var multi_lab = false
-var mmm = false
+// var multi_lab = false
+// var mmm = false
 var check_cross_batch = false
 var check_ds_context = false
 var binary_seg = false
@@ -228,7 +236,7 @@ if (check_word)
 	})
 }
 
-if (multi_lab)
+/*if (multi_lab)
 {
 	var dataset = bars.loadds("../negochat_private/dialogues")
 	var utterset = bars.getsetcontext(dataset)
@@ -301,7 +309,7 @@ if (multi_lab)
 	console.log(JSON.stringify("multireject "+multireject, null, 4))
 	console.log(JSON.stringify("multihash "+multihash, null, 4))
 }
-
+*/
 if (check_single_multi)
 {
 
@@ -443,9 +451,9 @@ if (check_version4)
 	var previntents = []
 	var rectype = undefined
 
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version6.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7.json"))
 	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version4.json"))
-	// var data = _.filter(data, function(num){ return num['set'] != 'unable'; });
+	var data = _.filter(data, function(num){ return num['set'] != 'unable'; });
 
 	console.log("Length: "+data.length)
 
@@ -507,6 +515,86 @@ if (check_version4)
 	process.exit(0)
 }
 
+
+// let's assume we sample a strategy
+// the question is if we sampled the good startegy for specific issue. what intent we will get in return
+if (check_version7_1)
+{
+	var strategy = {
+					'Accept': {}, 
+					'Reject': {}
+					}
+
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7.json"))
+
+	_.each(data, function(dialogue, key, list){
+
+		var iss = 	{
+					'Salary': '',
+					'Pension Fund': '',
+					'Job Description': '',
+					'Leased Car': '',
+					'Promotion Possibilities': '',
+					'Working Hours':''
+					}
+
+		_.each(dialogue['turns'], function(turn, key, list){
+			
+			if ((turn.role == "Candidate") && ('data' in turn))
+			{
+				if (turn.data.indexOf(":")!=-1)
+				{
+					var intent = turn.data.split(":")[1];
+					var issue = turn.data.split(":")[0];
+
+					iss[issue] = intent
+
+					/*console.log("intent: "+ intent + " issue: "+issue)
+					console.log("strategies:"+JSON.stringify(strategy))
+					console.log("iss:"+JSON.stringify(iss))*/
+				}
+			}
+
+			/*if ((turn.role == "Candidate") && ("output" in turn))
+			{
+				// previously mentioned issues by Candidate
+				truein = _.map(bars.turnoutput(turn.output), function(num){ return num[1] })
+				console.log("CT: with output issues: "+truein + " output: "+JSON.stringify(turn.output))
+			}*/
+				
+			if (turn.role == "Employer")
+			{
+				var curintents = bars.turnoutput(turn.output)
+				// [['Accept', 'Salary'], ['Reject', 'Job']]
+				
+				console.log("ET: "+JSON.stringify(curintents) + " output "+JSON.stringify(turn.output))
+						
+				_.each(curintents, function(value, key, list){
+
+					// 
+					if (["true", true, "Offer"].indexOf(value[1])==-1)
+					{
+						console.log("each:" +value+ " in startegy: "+iss[value[1]])
+
+						if (iss[value[1]]!='')
+						{
+							var intent = value[0]
+							if (!(intent in strategy[iss[value[1]]]))
+								strategy[iss[value[1]]][intent] = 0
+
+							strategy[iss[value[1]]][intent] += 1
+							
+							iss[value[1]] = ""
+						}
+					}
+				}, this)
+			}
+		}, this)
+	}, this)
+	
+	console.log(JSON.stringify(strategy, null, 4))
+	process.exit(0)
+}
 
 if (check_version7)
 {
@@ -599,7 +687,7 @@ if (check_version7)
 	process.exit(0)
 }
 
-if (shuffling)
+/*if (shuffling)
 {
         var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
 	data = _.shuffle(data)
@@ -611,7 +699,7 @@ if (shuffling)
 	console.log(JSON.stringify(data, null, 4))	               
 	process.exit(0)
 }
-
+*/
 /*if (stat_sig)
 {
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
@@ -935,7 +1023,7 @@ if (check_init)
 				}
 	
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
-	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version6.json"))
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7.json"))
 	var utterset = bars.getsetcontext(data)
 
 	var num_of_dials = data.length
@@ -997,7 +1085,10 @@ if (check_init)
 
 	var leng = []
 	_.each(dialogues, function(dial, key, list){
-		leng.push(_.filter(dial, function(num){ return _.keys(num.outputhash).length == 1; }).length)
+		var dials = _.filter(dial, function(num){ return _.keys(num.outputhash).length == 1; })
+
+		leng.push(dials.length)
+
 	}, this)
 	
 	console.log(JSON.stringify(result, null, 4))
@@ -1100,11 +1191,11 @@ if (check_ds)
 	// trainAndTest.trainAndTest_async(classifier.DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 	
 
-	 trainAndTest.trainAndTest_async(classifier.DS_comp_unigrams_async_context_unoffered_wordnet, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
-//	trainAndTest.trainAndTest_async(classifier.DS_primitive, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	 // trainAndTest.trainAndTest_async(classifier.DS_comp_unigrams_async_context_unoffered_wordnet, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	trainAndTest.trainAndTest_async(classifier.DS_primitive, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		
-		 console.log(JSON.stringify(results, null, 4))
-		 process.exit(0)
+		 // console.log(JSON.stringify(results, null, 4))
+		 // process.exit(0)
 
 		// _.each(results['data'], function(val, key, list){
 		// 	// if (('FP' in val.explanation) && ('FN' in val.explanation))
@@ -1311,6 +1402,3 @@ if (do_serialization) {
 			, 'utf8');
 	});
 } // do_serialization
-
-
-JSON.stringify()
