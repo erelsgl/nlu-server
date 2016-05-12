@@ -1119,7 +1119,7 @@ if (check_ds)
 
 //	var dataset = bars.loadds("../negochat_private/dialogues")
 //
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json.clean"))
 	var utterset = bars.getsetcontext(data)
 
 	// var stats = {}
@@ -1132,16 +1132,17 @@ if (check_ds)
 	//utterset["train"] = utterset["train"].slice(0,20)
 	//utterset["test"] = utterset["test"].slice(0,5)
 
-	console.log(utterset["train"].length)
-	console.log(_.flatten(utterset["train"]).length)
-	console.log("----")
+	console.log("Train in dials:"+utterset["train"].length)
+	console.log("Test in dials:"+utterset["test"].length)
 	
-	console.log(utterset["test"].length)
-	console.log(_.flatten(utterset["test"]).length)
-
 	utterset["test"] = _.flatten(utterset["test"])
 	utterset["train"] = _.flatten(utterset["train"])
 
+	// utterset["train"] = _.filter(utterset["train"], function(num){ return num.output.length <= 1 });
+
+	console.log("Train in utts:"+utterset["train"].length)
+	console.log("Test in utts:"+utterset["test"].length)
+	
 	// concat tokens for primitive classification
 /*
 	_.each(utterset["test"], function(utterance, key, list){
@@ -1155,6 +1156,12 @@ if (check_ds)
 	}, this)
 
 */
+	_.each(utterset["train"], function(utterance, key, list){
+		var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
+		utterset["train"][key]['input']['sentences'] = [{'tokens': tokens}]
+	}, this)
+
+
 	/*var count = 0
 	_.each(utterset["test"].concat(utterset["train"]), function(value, key, list){
 		if (value.output.indexOf("{\"Offer\":{\"Pension Fund\":\"No agreement\"}}")!=-1)
@@ -1185,18 +1192,22 @@ if (check_ds)
 	//trainAndTest.trainAndTest_async(classifier.DS_bigram_split_embed, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 	
 
-// DS_comp_unigrams_async_context_unoffered_neg
-
-
-	// trainAndTest.trainAndTest_async(classifier.DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 	
-
-	 // trainAndTest.trainAndTest_async(classifier.DS_comp_unigrams_async_context_unoffered_wordnet, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+/*	trainAndTest.trainAndTest_async(classifier.unbiased, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+		console.log(JSON.stringify(results, null, 4))
+		process.exit(0)
+	}, this)
+*/
 	trainAndTest.trainAndTest_async(classifier.DS_primitive, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
-		
-		 // console.log(JSON.stringify(results, null, 4))
-		 // process.exit(0)
+		console.log(JSON.stringify(results, null, 4))
+		process.exit(0)
+	}, this)
 
+		// var stats = trainAndTest.trainAndTest_hash(classifier.DS_primitive, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]))
+		// console.log(JSON.stringify(stats, null, 4))
+		// process.exit(0)
+
+		
 		// _.each(results['data'], function(val, key, list){
 		// 	// if (('FP' in val.explanation) && ('FN' in val.explanation))
 		// 	if ('FP' in val.explanation)
@@ -1211,9 +1222,7 @@ if (check_ds)
 		// 	}
 		// }, this)
 
-		console.log(JSON.stringify(results['stats'], null, 4))
-
-		process.exit(0)
+		
 
 		// _.each(results.data, function(value, key, list){
 		// 	if (!_.isEqual(results.data[key].explanation, stats.data[key].explanation))
@@ -1224,7 +1233,7 @@ if (check_ds)
 		// 		console.log(JSON.stringify(results.data[key], null, 4))
 		// 	}
 		// }, this)
-	})
+	// })
 	
 
 
