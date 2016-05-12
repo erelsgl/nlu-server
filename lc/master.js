@@ -407,7 +407,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var thr = 0
 
 	cluster.setupMaster({
-  	exec: __dirname + '/worker_async.js',
+  	exec: __dirname + '/worker_async_std.js',
   	// exec: __dirname + '/worker.js',
 	// args: [JSON.stringify({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len})],
 	// silent: false
@@ -451,6 +451,8 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 			worker.on('message', function(message){
 				var workerstats = JSON.parse(message)
+				workerstats['classifiers'] = classifiers
+
 				console.log("DEBUGMASTER: "+message)
 				fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
 				extractGlobal(workerstats, stat)
@@ -502,10 +504,8 @@ if (process.argv[1] === __filename)
     */ 				
     var classifiers = [
     				
-				"DS_comp_embed_d100_avr_root_false_uni_false",
-				"DS_comp_embed_d100_avr_root_false_uni_true",
-				"DS_comp_embed_d100_avr_root_true_uni_true",
-				"DS_comp_embed_d100_avr_root_true_uni_false"
+				"DS_Composite_wise",
+				"DS_Component_wise"
 				
 				]
 
