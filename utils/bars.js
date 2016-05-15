@@ -3786,21 +3786,28 @@ function turnoutput(output)
 return converted
 }
 
-function getsetcontext(dataset)
+function getsetcontext(dataset, rephrase)
 {
+  var rectypes = ['AskRepeat', 'AskRephrase' ,'Reprompt' ,'Notify', 'Yield', 'Help', 'YouCanSay', 'TerseYouCanSay']
   var utteranceset = {'train':[], 'test':[], 'unable':[]}
   var context = []
+  var addrepr = true
  
   _.each(dataset, function(dialogue, key, list){
     var processed_dialogue = []
     _.each(dialogue['turns'], function(turn, key, list){
 
-      
+      if ((turn.role == "Candidate") && (('data' in turn)))
+        if (rectypes.idnexOf(turn.data)!=-1)
+          if (rephrase == false)
+            addrepr = false
+
       if ((turn.role == "Candidate") && (('output' in turn)))
         context = hashtoar(turn.output)
-
  
-      if (turn.role == "Employer")
+      if (turn.role == "Employer") 
+      {
+      if  (addrepr)
       {
         var record = {}
         // record['input'] = {}
@@ -3816,25 +3823,21 @@ function getsetcontext(dataset)
         
         var QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Query'});
 	
-        //	var AcceptIndex = _.findIndex(turn['output'], function(lab){ return lab=='{\"Accept\":true}'});
+    /*   	var AcceptIndex = _.findIndex(turn['output'], function(lab){ return lab=='{\"Accept\":true}'});
 
         // eliminate car issue
-//        var CarIndexV = _.findIndex(turn['output'], function(lab){ return _.values(JSON.parse(lab))[0]=='Leased Car'});
-  //      var CarIndex = _.findIndex(turn['output'], function(lab){ return _.keys(_.values(JSON.parse(lab))[0])[0]=='Leased Car'});
-
-        // if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
-        // if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
-        // && (AcceptIndex==-1))
-        // && (CarIndex==-1)&& (CarIndexV==-1))
-        // if ((CarIndex==-1) &&(CarIndexV==-1) && (QuitIndex==-1))
-          // if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
-          // if ((QuitIndex==-1) && (GreetIndex==-1))
+         var CarIndexV = _.findIndex(turn['output'], function(lab){ return _.values(JSON.parse(lab))[0]=='Leased Car'});
+         var CarIndex = _.findIndex(turn['output'], function(lab){ return _.keys(_.values(JSON.parse(lab))[0])[0]=='Leased Car'});
+*/
           
-	if ((QuitIndex==-1) && (GreetIndex==-1))
-//          if ((QuitIndex==-1) && (GreetIndex==-1) && (QueryIndex==-1))
+	       if ((QuitIndex==-1) && (GreetIndex==-1))
+
             processed_dialogue.push(turn)
 
         // context = []
+        }
+        else
+          addrepr = true
       }
     }, this)
 
