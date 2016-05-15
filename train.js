@@ -26,6 +26,9 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+var check_intent_issue_dst = false
+
+// check rephrase strategies
 var check_version4 = false
 var check_version7 = false
 
@@ -36,7 +39,9 @@ var check_version7_1 = false
 // simple template to check performance on test and train even with simple multi-label binary relevance SVM
 var check_ds = true
 
+// check distirbution of intents 
 var check_init = false
+
 var check_intent_issue = false
 var check_reject = false
 var check_context = false
@@ -310,6 +315,50 @@ if (check_word)
 	console.log(JSON.stringify("multihash "+multihash, null, 4))
 }
 */
+if (check_intent_issue_dst)
+{
+	var result = {
+				"Accept": {},
+				"Reject": {},
+				"Query": {}
+				}
+
+	
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7.json"))
+	var utterset = bars.getsetcontext(data)
+	var dialogues = utterset["test"].concat(utterset["train"])
+	dialogues = dialogues.slice(0,30)
+
+	console.log(dialogues.length)
+
+	_.each(dialogues, function(dialogue, key, list){
+		_.each(dialogue, function(utterance, key, list){
+			var intents = bars.turnoutput(utterance.outputhash)
+			console.log(JSON.stringify(intents, null, 4))
+			_.each(intents, function(intent, key, list){	
+				if (["Accept","Reject","Query"].indexOf(intent[0])!=-1)
+					{
+						if (!(intent[1] in result[intent[0]]))
+							result[intent[0]][intent[1]] = 0
+
+						result[intent[0]][intent[1]] += 1
+					}
+			}, this)
+		}, this)
+	}, this)
+
+	_.each(result, function(res, intent, list){
+		var sum = _.reduce(_.values(res), function(memo, num){ return memo + num; }, 0);
+		_.each(res, function(value, key, list){
+			result[intent][key] =value/sum
+		}, this)
+	}, this)
+
+	console.log(JSON.stringify(result, null, 4))
+	process.exit(0)
+}
+
 if (check_single_multi)
 {
 
@@ -591,9 +640,22 @@ if (check_version7_1)
 			}
 		}, this)
 	}, this)
-	
+
+	_.each(strategy, function(intents, str, list){
+		var overall = 0
+		_.each(intents, function(count, intent, list){
+			overall += count
+			strategy[str][intent] = {'count': count, 'ratio':0}
+		}, this)
+
+		_.each(intents, function(has, intent, list){
+			strategy[str][intent]['ratio'] = has["count"]/overall
+		}, this)
+	}, this)
+
 	console.log(JSON.stringify(strategy, null, 4))
-	process.exit(0)
+
+
 }
 
 if (check_version7)
@@ -806,8 +868,8 @@ if (check_reject)
 	var data = utterset["test"].concat(utterset["train"])
 	var sum = 0
 
-	console.log(JSON.stringify(data.length, null, 4))
-	process.exit(0)
+	// console.log(JSON.stringify(data.length, null, 4))
+	// process.exit(0)
 
 	_.each(data, function(dialogue, key, list){
 		var rej = 0
@@ -1022,8 +1084,8 @@ if (check_init)
 				  	'Quit': {'count':0}
 				}
 	
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
-	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7.json"))
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7.json"))
 	var utterset = bars.getsetcontext(data)
 
 	var num_of_dials = data.length
@@ -1042,7 +1104,7 @@ if (check_init)
 	// filter
 	_.each(_.flatten(dialogues), function(value, key, list){		
 		
-		if (_.keys(value.outputhash).length==1)
+		// if (_.keys(value.outputhash).length==1)
 				globallabels = globallabels.concat(_.keys(value.outputhash))
 			
 	}, this)
@@ -1053,7 +1115,7 @@ if (check_init)
 		var temp = []
 		_.each(dial, function(utters, key, list){
 			// var intents = _.map(utters.output, function(num){ return _.keys(JSON.parse(num))[0] })
-			if (_.keys(utters.outputhash).length==1)
+			// if (_.keys(utters.outputhash).length==1)
 				temp = temp.concat(_.keys(utters.outputhash))
 			
 		}, this)
@@ -1198,7 +1260,7 @@ if (check_ds)
 		process.exit(0)
 	}, this)
 */
-	trainAndTest.trainAndTest_async(classifier.DS_primitive, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	trainAndTest.trainAndTest_async(classifier.DS_Composite_wise, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		console.log(JSON.stringify(results, null, 4))
 		process.exit(0)
 	}, this)
