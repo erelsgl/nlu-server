@@ -37,10 +37,10 @@ var check_version7 = false
 var check_version7_1 = false
 
 // simple template to check performance on test and train even with simple multi-label binary relevance SVM
-var check_ds = true
+var check_ds = false
 
 // check distirbution of intents 
-var check_init = false
+var check_init = true
 
 var check_intent_issue = false
 var check_reject = false
@@ -1086,7 +1086,7 @@ if (check_init)
 	
 	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7.json"))
-	var utterset = bars.getsetcontext(data)
+	var utterset = bars.getsetcontext(data, true)
 
 	var num_of_dials = data.length
 	console.log(num_of_dials)
