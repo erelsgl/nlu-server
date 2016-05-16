@@ -391,7 +391,7 @@ function plotlc(fold, parameter, stat)
 	fs.appendFileSync(plotfile, string)
     fs.writeFileSync(mapfile, string)
 
-    var command = gnuplot +" -e \"set ylabel '"+ylabel+"'; set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt i ps 3\""
+    var command = gnuplot +" -e \"set ylabel '"+ylabel+"' font ',20'; set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt i ps 3\""
 //    var command = gnuplot +" -e \"set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3\""//, \'\' using 1:(NaN):x2tic(2) axes x2y1\"" 
     console.log(command)
 
@@ -409,13 +409,15 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var thr = 0
 
 //	var classifiers = [ 'DS_comp_unigrams_async','DS_comp_unigrams_async_over','DS_comp_unigrams_async_under','DS_comp_unigrams_async_biased']
-	var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased']
+var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased']
+//	var classifiers = [ 'NLU_Unbiased','NLU_Biased']
 //	var classifiers = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_biased']
 
 	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
-    var utterset1 = bars.getsetcontext(data1)
+    var utterset1 = bars.getsetcontext(data1, true)
     var train1 = utterset1["train"].concat(utterset1["test"])
-    train1 = _.shuffle(train1)
+//    train1 = _.shuffle(train1)
+//
 /*	_.each(train1, function(value, key, list){
 		train1[key] = _.filter(value, function(num){ return num.output.length == 1 })
 	}, this)
@@ -425,8 +427,11 @@ function learning_curves(classifiers, folds, dataset, callback)
     // train1or = _.filter(_.flatten(train1or), function(num){ return num.output.length == 1 })
 
     var data2 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7.json"))
-    var utterset2 = bars.getsetcontext(data2)
+    var utterset2 = bars.getsetcontext(data2, /*rephrase*/true)
     var train2 = utterset2["train"].concat(utterset2["test"])
+
+	
+
     console.log("DEBUG: train2.length "+train2.length)
     train2 = train2.slice(0,30)
 /*_.each(train2, function(value, key, list){
