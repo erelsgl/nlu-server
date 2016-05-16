@@ -409,7 +409,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var thr = 0
 
 //	var classifiers = [ 'DS_comp_unigrams_async','DS_comp_unigrams_async_over','DS_comp_unigrams_async_under','DS_comp_unigrams_async_biased']
-var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased','NLU_Biased_no_rephrase']
+	var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased','NLU_Biased_no_rephrase']
 //	var classifiers = [ 'NLU_Unbiased','NLU_Biased']
 //	var classifiers = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_biased']
 
@@ -430,18 +430,15 @@ var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Bia
     var data2 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7.json"))
     var utterset2 = bars.getsetcontext(data2, /*rephrase*/true)
     var train2 = utterset2["train"].concat(utterset2["test"])
-
-	
-
     console.log("DEBUG: train2.length "+train2.length)
     train2 = train2.slice(0,30)
-/*_.each(train2, function(value, key, list){
-	train2[key] = _.filter(value, function(num){ return num.output.length == 1 })
-}, this)
-  */  console.log("DEBUG: train2.length "+train2.length)
-    // train2 = _.filter(_.flatten(train2), function(num){ return num.output.length == 1 })
-//    train2 = _.sortBy(train2, function(num){ return num.length })
+	console.log("DEBUG: train2.length "+train2.length)
 
+  	var data3 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7.json"))
+    var utterset3 = bars.getsetcontext(data3, /*rephrase*/false)
+    var train3 = utterset3["train"].concat(utterset3["test"])
+    console.log("DEBUG: train3.length "+train3.length)
+    train3 = train3.slice(0,30)
 
 	cluster.setupMaster({
   	exec: __dirname + '/worker_async.js',
@@ -468,13 +465,18 @@ var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Bia
 
 			var train2sam = _.flatten(_.sample(JSON.parse(JSON.stringify(train2)), 10))
 
+			var train3sam = _.flatten(_.sample(JSON.parse(JSON.stringify(train3)), 10))
+
 			var train = []
 			if (classifier == "NLU_Biased")
 				train = train2sam
+			else if (classifier == "NLU_Biased_no_rephrase")
+				train = train3sam
 			else
 				train = _.flatten(JSON.parse(JSON.stringify(data.test)))
 
-			var max = _.min([_.flatten(data.test).length, _.flatten(train2sam).length])
+			var max = _.min([_.flatten(data.test).length, _.flatten(train3sam).length])
+			// var max = _.min([_.flatten(data.test).length, _.flatten(train2sam).length])
 			max = max - max % 10			
 			
 			console.log("DEBUGMASTER: train1.len="+_.flatten(data.test).length+ " train2.len="+ _.flatten(train2sam).length + " max="+max)
