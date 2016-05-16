@@ -23,8 +23,8 @@ process.on('message', function(message) {
 	
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
-	var max  = JSON.parse(message['max'])
-//	var max  = 100
+//	var max  = JSON.parse(message['max'])
+	var max = 100
 
 	console.log(msg("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max))
 	console.log(msg("DEBUG: max "+max))
