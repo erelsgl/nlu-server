@@ -3798,7 +3798,7 @@ function getsetcontext(dataset, rephrase)
     _.each(dialogue['turns'], function(turn, key, list){
 
       if ((turn.role == "Candidate") && (('data' in turn)))
-        if (rectypes.idnexOf(turn.data)!=-1)
+        if (rectypes.indexOf(turn.data)!=-1)
           if (rephrase == false)
             addrepr = false
 
