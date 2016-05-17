@@ -409,7 +409,8 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var thr = 0
 
 //	var classifiers = [ 'DS_comp_unigrams_async','DS_comp_unigrams_async_over','DS_comp_unigrams_async_under','DS_comp_unigrams_async_biased']
-	var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased','NLU_Biased_no_rephrase']
+//	var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased','NLU_Biased_no_rephrase']
+	var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased_with_rephrase','NLU_Biased_no_rephrase']
 //	var classifiers = [ 'NLU_Unbiased','NLU_Biased']
 //	var classifiers = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_biased']
 
@@ -468,7 +469,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 			var train3sam = _.flatten(_.sample(JSON.parse(JSON.stringify(train3)), 10))
 
 			var train = []
-			if (classifier == "NLU_Biased")
+			if (classifier == "NLU_Biased_with_rephrase")
 				train = train2sam
 			else if (classifier == "NLU_Biased_no_rephrase")
 				train = train3sam
