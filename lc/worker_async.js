@@ -23,8 +23,8 @@ process.on('message', function(message) {
 	
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
-//	var max  = JSON.parse(message['max'])
-	var max = 100
+	var max  = JSON.parse(message['max'])
+	var max = 80
 
 	console.log(msg("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max))
 	console.log(msg("DEBUG: max "+max))
@@ -73,9 +73,9 @@ process.on('message', function(message) {
 			var realmytrainex = []
 
 			if (classifier=="NLU_Oversampled") {
-				var realmytrainex = bars.oversample(mytrainex)
+				var realmytrainex = bars.oversample(bars.copyobj(mytrainex))
 			} else if (classifier=="NLU_Undersampled") {
-				var realmytrainex = bars.undersample(mytrainex)
+				var realmytrainex = bars.undersample(bars.copyobj(mytrainex))
 				
 			} else {
 				var realmytrainex = bars.copyobj(mytrainex)
