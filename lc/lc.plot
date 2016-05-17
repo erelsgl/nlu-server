@@ -13,4 +13,4 @@ set xtics nomirror
 #set xtics rotate by -90
 set autoscale xfix
 #set xlabel 'Utterances'
-set xlabel 'Dialogues' font ",20"
+set xlabel 'Utterances' font ",20"
