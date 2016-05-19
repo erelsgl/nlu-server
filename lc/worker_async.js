@@ -10,7 +10,7 @@ var clc = require('cli-color')
 var bars = require(__dirname+'/../utils/bars');
 
 var fold = process.env["fold"]
-var folds = process.env["folds"]
+// var folds = process.env["folds"]
 var classifier = process.env["classifier"]
 var thread = process.env["thread"]
 var msg = clc.xterm(thread)
