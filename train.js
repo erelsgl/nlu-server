@@ -26,6 +26,8 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+// check the ration of single vs all utterances
+var check_ration_all = true
 
 // number of human utterances
 var check_human = false
@@ -41,7 +43,7 @@ var check_version7 = false
 var check_version7_1 = false
 
 // simple template to check performance on test and train even with simple multi-label binary relevance SVM
-var check_ds = true
+var check_ds = false
 
 // check distirbution of intents 
 var check_init = false
@@ -493,6 +495,20 @@ if (check_intent_issue)
 	process.exit(0)
 
 
+}
+
+if (check_ration_all)
+{
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7.json"))
+	var utterset = bars.getsetcontext(data)
+	var dataset = _.flatten(utterset["train"].concat(utterset["test"]))
+
+	var all = dataset.length
+	var single =  _.filter(dataset, function(num){ return _.keys(num.outputhash).length <= 1 });
+
+	console.log(single.length/all)
+	process.exit(0)
 }
 
 if (check_version4)
@@ -1245,7 +1261,7 @@ if (check_ds)
 	}, this)
 
 */
-	/*_.each(utterset["train"], function(utterance, key, list){
+	_.each(utterset["train"], function(utterance, key, list){
 		var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
 		utterset["train"][key]['input']['sentences'] = [{'tokens': tokens}]
 	}, this)
@@ -1261,7 +1277,7 @@ if (check_ds)
 
 	_.each(utterset["test"], function(utterance, key, list){
 		utterset["test"][key]['output'] = _.unique(_.keys(utterance.outputhash))
-	}, this)*/
+	}, this)
 
 	/*var count = 0
 	_.each(utterset["test"].concat(utterset["train"]), function(value, key, list){
