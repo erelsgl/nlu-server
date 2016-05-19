@@ -417,6 +417,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
     var utterset1 = bars.getsetcontext(data1, true)
     var train1 = utterset1["train"].concat(utterset1["test"])
+    train1 = bars.processdataset(train1)
 
 //    train1 = _.shuffle(train1)
 //
@@ -431,15 +432,17 @@ function learning_curves(classifiers, folds, dataset, callback)
     var data2 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7.json"))
     var utterset2 = bars.getsetcontext(data2, /*rephrase*/true)
     var train2 = utterset2["train"].concat(utterset2["test"])
+    train2 = bars.processdataset(train2)
     console.log("DEBUG: train2.length "+train2.length)
-    train2 = train2.slice(0,30)
-	console.log("DEBUG: train2.length "+train2.length)
+    // train2 = train2.slice(0,30)
+	// console.log("DEBUG: train2.length "+train2.length)
 
   	var data3 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7.json"))
     var utterset3 = bars.getsetcontext(data3, /*rephrase*/false)
     var train3 = utterset3["train"].concat(utterset3["test"])
+    train3 = bars.processdataset(train3)
     console.log("DEBUG: train3.length "+train3.length)
-    train3 = train3.slice(0,30)
+    // train3 = train3.slice(0,30)
 
 	cluster.setupMaster({
   	exec: __dirname + '/worker_async.js',
