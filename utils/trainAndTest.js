@@ -209,7 +209,7 @@ module.exports.test_async = function(classifier, testSet, callback) {
 
 			console.log("TEST:"+JSON.stringify(record.explanation, null, 4))
 
-			if ('FP' in record.explanation)
+/*			if ('FP' in record.explanation)
 			{
 				if (_.keys(JSON.parse(record['explanation']['FP'][0]))[0]=="Accept")
 					{
@@ -219,15 +219,14 @@ module.exports.test_async = function(classifier, testSet, callback) {
 					}			
 				
 				if (_.keys(JSON.parse(record['explanation']['FP'][0]))[0]=="Reject")
-                                        {
-                                                console.log("FP of Reject")
-                                                console.log(JSON.stringify(record.input.text, null, 4))
-                                                console.log(JSON.stringify(record.explanation, null, 4))
-                                        }
-
+                    {
+                        console.log("FP of Reject")
+                        console.log(JSON.stringify(record.input.text, null, 4))
+                        console.log(JSON.stringify(record.explanation, null, 4))
+                    }
 			}
-					
-			currentStats.addIntentHash(testRecord.output, classes, true)
+*/					
+			// currentStats.addIntentHash(testRecord.output, classes, true)
 	
 			console.log(record.explanation)
 
