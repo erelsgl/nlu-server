@@ -91,7 +91,7 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 function getRule(sen)
 {
 	if (!('tokens' in sen))
-		throw new Error("DEBUGRULE: for some reason tokens is not in the sentence")
+		throw new Error("DEBUGRULE: for some reason tokens is not in the sentence " + JSON.stringify(sen, null, 4))
 
 	var sentence = JSON.parse(JSON.stringify(sen))
  
@@ -1483,6 +1483,46 @@ function feAsyncPrimitive(sam, features, train, featureOptions, callback) {
 	callback(null, features)
 }
 
+
+function feAsyncPrimitiveClean(sam, features, train, featureOptions, callback) {
+
+
+	var sample = JSON.parse(JSON.stringify(sam))
+	if ("input" in sample)
+		sample = sample.input
+
+	if (!('sentences' in sample))
+	   throw new Error("for some reason sentences not in sample")
+
+	if (_.isArray(sample['sentences']))
+		sample['sentences'] = sample['sentences'][0]
+
+	sample.sentences = getRule(sample.sentences).cleaned
+
+	if (!_.isArray(sample['sentences']))
+		sample['sentences'] = [sample['sentences']]
+
+	var tokens = _.compact(_.flatten(_.pluck(sample['sentences'], 'tokens')))
+
+	console.log("TOKENSAFTERCLEAN:"+JSON.stringify(tokens, null, 4))
+
+	var words = []
+	_.each(tokens, function(token, key, list){
+		words.push(token.word.toLowerCase())
+	}, this)
+
+	// var feature = natural.NGrams.ngrams(words, 1).concat(natural.NGrams.ngrams(words, 2))
+	var feature = natural.NGrams.ngrams(words, 1)
+
+	_.each(feature, function(value, key, list){
+		features[value] = 1
+	}, this)
+
+	console.log("feAsyncPrimitive: train: "+train+" FEATURES: "+JSON.stringify(features, null, 4))
+	callback(null, features)
+}
+
+
 function feAsync(sam, features, train, featureOptions, callback) {
 
 	var sample = JSON.parse(JSON.stringify(sam))
@@ -1947,12 +1987,22 @@ module.exports = {
 		DS_comp_unigrams_async_biased_old: enhance(SvmLinearMulticlassifier, [feAsync, /*feNeg, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
 		//DS_comp_unigrams_async_biased: enhance(SvmLinearMulticlassifier, [feAsync, /*feNeg, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
 		
-		NLU_Biased_no_rephrase: enhance(SvmLinearMulticlassifier, [feAsync,  feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
+		/*NLU_Biased_no_rephrase: enhance(SvmLinearMulticlassifier, [feAsync,  feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
 		NLU_Biased_with_rephrase: enhance(SvmLinearMulticlassifier, [feAsync,  feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
 		NLU_Biased: enhance(SvmLinearMulticlassifier, [feAsync,  feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
 		NLU_Unbiased: enhance(SvmLinearMulticlassifier, [feAsync,  feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
 		NLU_Oversampled: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
 		NLU_Undersampled: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
+*/
+		DS_Prim_Clean: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncPrimitiveClean], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, false/*tf-idf*/, {'unigrams':true}),
+		
+		NLU_Biased_no_rephrase: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncPrimitiveClean], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, false/*tf-idf*/, {'unigrams':true}),
+		NLU_Biased_with_rephrase: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncPrimitiveClean], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, false/*tf-idf*/, {'unigrams':true}),
+		NLU_Biased: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncPrimitiveClean], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, false/*tf-idf*/, {'unigrams':true}),
+		NLU_Unbiased: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncPrimitiveClean], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, false/*tf-idf*/, {'unigrams':true}),
+		NLU_Oversampled: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncPrimitiveClean], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, false/*tf-idf*/, {'unigrams':true}),
+		NLU_Undersampled: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncPrimitiveClean], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, false/*tf-idf*/, {'unigrams':true}),
+		
 		DS_Composite_wise: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncPrimitive], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, false/*tf-idf*/, {'unigrams':true}),
 		DS_Component_wise: enhance(SvmLinearMulticlassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, postProcessor, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
 		
