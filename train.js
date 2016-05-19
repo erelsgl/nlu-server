@@ -26,6 +26,10 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+
+// number of human utterances
+var check_human = false
+
 var check_intent_issue_dst = false
 
 // check rephrase strategies
@@ -37,10 +41,10 @@ var check_version7 = false
 var check_version7_1 = false
 
 // simple template to check performance on test and train even with simple multi-label binary relevance SVM
-var check_ds = false
+var check_ds = true
 
 // check distirbution of intents 
-var check_init = true
+var check_init = false
 
 var check_intent_issue = false
 var check_reject = false
@@ -1073,6 +1077,26 @@ if (check_biased)
 	process.exit(0)
 }
 
+if (check_human)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7.json"))
+	var utterset = bars.getsetcontext(data, false)
+    var train = utterset["train"].concat(utterset["test"])
+
+	var utt = _.flatten(train)
+
+	var count = 0
+	_.each(utt, function(value, key, list){
+		if (value.role == "Employer")
+			count += 1
+	}, this)
+
+	console.log(count)
+	console.log(utt.length)
+
+	process.exit(0)
+}
+
 if (check_init)
 {
 	var result = {
@@ -1084,14 +1108,17 @@ if (check_init)
 				  	'Quit': {'count':0}
 				}
 	
-	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7.json"))
 	var utterset = bars.getsetcontext(data, true)
-
-	var num_of_dials = data.length
-	console.log(num_of_dials)
-
 	var dialogues = utterset["test"].concat(utterset["train"])
+
+	
+	console.log(dialogues.length)
+
+	
+	// dialogues = dialogues.slice(0,30)
+
 	// if (_.keys(utterset).length > 2)
 	// {
 		// throw new Error(_.keys(utterset))
@@ -1105,7 +1132,7 @@ if (check_init)
 	_.each(_.flatten(dialogues), function(value, key, list){		
 		
 		// if (_.keys(value.outputhash).length==1)
-				globallabels = globallabels.concat(_.keys(value.outputhash))
+			globallabels = globallabels.concat(_.keys(value.outputhash))
 			
 	}, this)
 
@@ -1218,11 +1245,23 @@ if (check_ds)
 	}, this)
 
 */
-	_.each(utterset["train"], function(utterance, key, list){
+	/*_.each(utterset["train"], function(utterance, key, list){
 		var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
 		utterset["train"][key]['input']['sentences'] = [{'tokens': tokens}]
 	}, this)
 
+	_.each(utterset["test"], function(utterance, key, list){
+		var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
+		utterset["test"][key]['input']['sentences'] = [{'tokens': tokens}]
+	}, this)
+
+	_.each(utterset["train"], function(utterance, key, list){
+		utterset["train"][key]['output'] = _.unique(_.keys(utterance.outputhash))
+	}, this)
+
+	_.each(utterset["test"], function(utterance, key, list){
+		utterset["test"][key]['output'] = _.unique(_.keys(utterance.outputhash))
+	}, this)*/
 
 	/*var count = 0
 	_.each(utterset["test"].concat(utterset["train"]), function(value, key, list){
@@ -1260,7 +1299,7 @@ if (check_ds)
 		process.exit(0)
 	}, this)
 */
-	trainAndTest.trainAndTest_async(classifier.DS_Composite_wise, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	trainAndTest.trainAndTest_async(classifier.DS_Prim_Clean, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		console.log(JSON.stringify(results, null, 4))
 		process.exit(0)
 	}, this)
