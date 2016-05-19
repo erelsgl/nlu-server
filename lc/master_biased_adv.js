@@ -91,8 +91,8 @@ function extractGlobal(workerstats, stat)
 	var classifiers = workerstats["classifiers"]
 	var fold = workerstats["fold"]
 
-	console.log("DEBUGMASTER: workerstats: "+JSON.stringify(workerstats, null, 4))
-	console.log("DEBUGMASTER: clas:"+classifiers)
+//	console.log("DEBUGMASTER: workerstats: "+JSON.stringify(workerstats, null, 4))
+//	console.log("DEBUGMASTER: clas:"+classifiers)
 
 	_.each(attributes, function(attr, key, list){ 
 	//	if (!_.isNull(workerstats['stats'][attr]))
@@ -113,7 +113,7 @@ function extractGlobal(workerstats, stat)
 
 			}, this)
 	
-			console.log("DEBUGMASTER: stat: "+JSON.stringify(stat, null, 4))
+//			console.log("DEBUGMASTER: stat: "+JSON.stringify(stat, null, 4))
 			
 			stat[attr][trainsize][classifier][fold] = workerstats['stats'][attr]
 			stat[attr][trainsize]["dial"][fold] = workerstats["trainsizeuttr"]
@@ -410,7 +410,8 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 //	var classifiers = [ 'DS_comp_unigrams_async','DS_comp_unigrams_async_over','DS_comp_unigrams_async_under','DS_comp_unigrams_async_biased']
 //	var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased','NLU_Biased_no_rephrase']
-	var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased_with_rephrase','NLU_Biased_no_rephrase']
+//	var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased_with_rephrase','NLU_Biased_no_rephrase']
+	var classifiers = [ 'NLU_Unbiased','NLU_Biased_with_rephrase','NLU_Biased_no_rephrase']
 //	var classifiers = [ 'NLU_Unbiased','NLU_Biased']
 //	var classifiers = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_biased']
 
@@ -493,7 +494,8 @@ function learning_curves(classifiers, folds, dataset, callback)
 			thr += 1	
 
 			worker.on('disconnect', function(){
-			  	console.log("DEBUGMASTER: finished")
+			  	console.log("DEBUGMASTER: finished: number of clusters: " + Object.keys(cluster.workers).length)
+//			  	console.log("DEBUGMASTER: finished: number of clusters: " + console.log(JSON.stringify(cluster.workers, null, 4)))
 			  	if (Object.keys(cluster.workers).length == 1)
 			  	{
 					console.log("DEBUGMASTER: all workers are disconnected")
@@ -507,7 +509,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 						plotlc('average', param, stat)
 				
 					})
-					console.log(JSON.stringify(stat, null, 4))
+				//	console.log(JSON.stringify(stat, null, 4))
 			  	}
 			})
 

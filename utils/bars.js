@@ -3842,7 +3842,7 @@ function getsetcontext(dataset, rephrase)
          var CarIndex = _.findIndex(turn['output'], function(lab){ return _.keys(_.values(JSON.parse(lab))[0])[0]=='Leased Car'});
 */
           
-	       if ((QuitIndex==-1) && (GreetIndex==-1))
+       if ((QuitIndex==-1) && (GreetIndex==-1))
 
             processed_dialogue.push(turn)
 

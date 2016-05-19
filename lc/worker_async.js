@@ -80,6 +80,10 @@ process.on('message', function(message) {
 			} else {
 				var realmytrainex = bars.copyobj(mytrainex)
 				}
+
+		
+//		        var realmytrainex = _.filter(mytrainex, function(num){ return _.keys(num.outputhash).length <= 1 })
+			//var mytrainex = bars.copyobj(realmytrainex)
 	
 		    	trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
 
