@@ -3786,6 +3786,18 @@ function turnoutput(output)
 return converted
 }
 
+function processdataset(dataset)
+{
+  _.each(dataset, function(dialogue, dialogue_key, list){
+    _.each(dialogue, function(utterance, utterance_key, list){
+        var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
+        dataset[dialogue_key][utterance_key]['input']['sentences'] = [{'tokens': tokens}]
+        dataset[dialogue_key][utterance_key]['output'] = _.unique(_.keys(utterance.outputhash))
+    })
+  })
+  return dataset
+}
+
 function getsetcontext(dataset, rephrase)
 {
   var rectypes = ['AskRepeat', 'AskRephrase' ,'Reprompt' ,'Notify', 'Yield', 'Help', 'YouCanSay', 'TerseYouCanSay']
@@ -4845,5 +4857,6 @@ undersampledst:undersampledst,
 singlelabeldst:singlelabeldst,
 getExm:getExm,
 mean_variance:mean_variance,
-turnoutput:turnoutput
+turnoutput:turnoutput,
+processdataset:processdataset
 }
