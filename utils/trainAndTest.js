@@ -226,7 +226,7 @@ module.exports.test_async = function(classifier, testSet, callback) {
                     }
 			}
 */					
-			// currentStats.addIntentHash(testRecord.output, classes, true)
+			currentStats.addIntentHash(testRecord.output, classes, true)
 	
 			console.log(record.explanation)
 
