@@ -452,77 +452,82 @@ function learning_curves(classifiers, folds, dataset, callback)
 	// silent: false
 	});
 
-	_.each(classifiers, function(classifier, key, list){ 
-		_(folds).times(function(fold){
-		
-			// worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
-			var worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'thread': thr})
+	async.timesSeries(2, function(n, next){
+
+		_.each(classifiers, function(classifier, key, list){ 
+			_(folds).times(function(fold){
 			
-			var data = partitions.partitions_consistent_by_fold(train1, folds, fold)
-
-	
-			console.log("DEBUGMASTER: fold "+ fold + " train size "+data.train.length + " test size " + data.test.length)
-			
-	
-			//data.train = _.sortBy(data.train, function(num){ return num.length }).reverse()
-			//data.train = data.train.slice(0,15)
-			
-
-			var train2sam = _.flatten(_.sample(JSON.parse(JSON.stringify(train2)), 10))
-
-			var train3sam = _.flatten(_.sample(JSON.parse(JSON.stringify(train3)), 10))
-
-			var train = []
-			if (classifier == "NLU_Biased_with_rephrase")
-				train = train2sam
-			else if (classifier == "NLU_Biased_no_rephrase")
-				train = train3sam
-			else
-				train = _.flatten(JSON.parse(JSON.stringify(data.test)))
-
-			var max = _.min([_.flatten(data.test).length, _.flatten(train3sam).length])
-			// var max = _.min([_.flatten(data.test).length, _.flatten(train2sam).length])
-			max = max - max % 10			
-			
-			console.log("DEBUGMASTER: train1.len="+_.flatten(data.test).length+ " train2.len="+ _.flatten(train2sam).length + " max="+max)
-			console.log("DEBUGMASTER: class="+classifier+ " fold="+ fold + " train1.len="+train.length + " test.len=" + data.train.length + " max: "+max)
-
-			worker.send({ 		'train': JSON.stringify(train), 
-						'test': JSON.stringify(data.train),
-						'max': JSON.stringify(max)
-						})
-			thr += 1	
-
-			worker.on('disconnect', function(){
-			  	console.log("DEBUGMASTER: finished: number of clusters: " + Object.keys(cluster.workers).length)
-//			  	console.log("DEBUGMASTER: finished: number of clusters: " + console.log(JSON.stringify(cluster.workers, null, 4)))
-			  	if (Object.keys(cluster.workers).length == 1)
-			  	{
-					console.log("DEBUGMASTER: all workers are disconnected")
-			  		_.each(stat, function(data, param, list){
-						// update the graph for current fold per parameter
-						_(folds).times(function(fold){
-							plotlc(fold, param, stat)
-							console.log("DEBUG: param "+param+" fold "+fold+" build")
-						})
-						// build average per parameters
-						plotlc('average', param, stat)
+				// worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
+				var worker = cluster.fork({'fold': fold+n*folds, 'classifier':classifier, 'thread': thr})
+				// var worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'thread': thr})
 				
-					})
-				//	console.log(JSON.stringify(stat, null, 4))
-			  	}
-			})
+				var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
+		
+				console.log("DEBUGMASTER: fold "+ fold + " train size "+data.train.length + " test size " + data.test.length)
 
-			worker.on('message', function(message){
-				var workerstats = JSON.parse(message)
-				workerstats['classifiers'] = classifiers
+				//data.train = _.sortBy(data.train, function(num){ return num.length }).reverse()
+				//data.train = data.train.slice(0,15)
+				
+				var train2sam = _.flatten(_.sample(bars.copyobj(train2), 10))
 
-				console.log("DEBUGMASTER: on message: "+message)
-				fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
-				extractGlobal(workerstats, stat)
+				var train3sam = _.flatten(_.sample(bars.copyobj(train3), 10))
+
+				var train = []
+				if (classifier == "NLU_Biased_with_rephrase")
+					train = train2sam
+				else if (classifier == "NLU_Biased_no_rephrase")
+					train = train3sam
+				else
+					train = _.flatten(bars.copyobj(data.test))
+
+				var max = _.min([_.flatten(data.test).length, _.flatten(train3sam).length])
+				// var max = _.min([_.flatten(data.test).length, _.flatten(train2sam).length])
+				max = max - max % 10			
+				
+				console.log("DEBUGMASTER: train1.len="+_.flatten(data.test).length+ " train2.len="+ _.flatten(train2sam).length + " max="+max)
+				console.log("DEBUGMASTER: class="+classifier+ " fold="+ fold + " train1.len="+train.length + " test.len=" + data.train.length + " max: "+max)
+
+				worker.send({ 		
+							'train': JSON.stringify(train), 
+							'test': JSON.stringify(data.train),
+							'max': JSON.stringify(max)
+							})
+				thr += 1	
+
+				worker.on('disconnect', function(){
+				  	console.log("DEBUGMASTER: finished: number of clusters: " + Object.keys(cluster.workers).length)
+	//			  	console.log("DEBUGMASTER: finished: number of clusters: " + console.log(JSON.stringify(cluster.workers, null, 4)))
+				  	if (Object.keys(cluster.workers).length == 1)
+				  	{
+						console.log("DEBUGMASTER: all workers are disconnected")
+				  		_.each(stat, function(data, param, list){
+							// update the graph for current fold per parameter
+							_(folds).times(function(fold){
+								plotlc(fold, param, stat)
+								console.log("DEBUG: param "+param+" fold "+fold+" build")
+							})
+							// build average per parameters
+							plotlc('average', param, stat)
+					
+						})
+					//	console.log(JSON.stringify(stat, null, 4))
+					next()
+				  	}
+				})
+
+				worker.on('message', function(message){
+					var workerstats = JSON.parse(message)
+					workerstats['classifiers'] = classifiers
+
+					console.log("DEBUGMASTER: on message: "+message)
+					fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
+					extractGlobal(workerstats, stat)
+				})
 			})
-		})
-	}, this)
+		}, this)
+	}, function(){
+		plotlc('average', param, stat)
+	})
 }
 
 // function isInt(value) {
