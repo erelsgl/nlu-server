@@ -228,7 +228,7 @@ module.exports.test_async = function(classifier, testSet, callback) {
 */					
 			currentStats.addIntentHash(testRecord.output, classes, true)
 	
-			console.log(record.explanation)
+			console.log("DEBUGCLASSIFY: "+JSON.stringify(record.explanation, null, 4))
 
 			data_stats.push(record)
 			callback1()
