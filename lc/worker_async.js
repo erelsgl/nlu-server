@@ -8,12 +8,21 @@ var classifiers = require(__dirname+"/../classifiers.js")
 var trainAndTest = require(__dirname+'/../utils/trainAndTest');
 var clc = require('cli-color')
 var bars = require(__dirname+'/../utils/bars');
+var log_file = fs.createWriteStream("/tmp/logs/" + process.pid, {flags : 'w'});
+var util = require('util');
 
 var fold = process.env["fold"]
 // var folds = process.env["folds"]
 var classifier = process.env["classifier"]
 var thread = process.env["thread"]
 var msg = clc.xterm(thread)
+
+var log_stdout = process.stdout;
+
+console.log = function(d) { 
+  log_file.write(util.format(d) + '\n');
+  log_stdout.write(util.format(d) + '\n');
+};
 
 if (cluster.isWorker)
 	console.log(msg("DEBUG: worker "+ process.pid+": started"))
@@ -24,7 +33,11 @@ process.on('message', function(message) {
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
 	var max  = JSON.parse(message['max'])
-	var max = 80
+	var max = 70
+
+	console.log("DEBUGWORKER: train.length before filter = "+train.length)
+        train = _.filter(train, function(num){ return _.keys(num.outputhash).length <= 1 })
+        console.log("DEBUGWORKER: train.length after filter = "+train.length)
 
 	console.log(msg("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max))
 	console.log(msg("DEBUG: max "+max))
@@ -81,8 +94,10 @@ process.on('message', function(message) {
 				var realmytrainex = bars.copyobj(mytrainex)
 				}
 		
-				//var realmytrainex = _.filter(mytrainex, function(num){ return _.keys(num.outputhash).length <= 1 })
-				//var mytrainex = bars.copyobj(realmytrainex)
+	//		console.log("DEBUGWORKER: mytrainex.length before filter = "+mytrainex.length)
+	//		var realmytrainex = _.filter(mytrainex, function(num){ return _.keys(num.outputhash).length <= 1 })
+	//		console.log("DEBUGWORKER: mytrainex.length after filter = "+realmytrainex.length)
+	//		var mytrainex = bars.copyobj(realmytrainex)
 	
 		    	trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
 
@@ -107,7 +122,7 @@ process.on('message', function(message) {
 						'classifier': classifier,
 						'fold': fold,
 						'trainsize': mytrain.length,
-						'trainsizeuttr': mytrainex.length,
+						'trainsizeuttr': realmytrainex.length,
 						'stats': stats1
 						// 'uniqueid': stats['id']
 					}
