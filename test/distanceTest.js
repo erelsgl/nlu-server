@@ -10,6 +10,10 @@ var distance = require('../utils/distance');
 var _ = require("underscore")._;
 
 describe('kNN common test', function() {
+	
+	it('stddv', function(){
+		distance.stddv([600,470,170,430,300]).should.equal(147.32277488562318)
+	})
 
 	it('average', function(){
 		distance.average([2, 5, 5]).should.equal(4)
