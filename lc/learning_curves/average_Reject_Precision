@@ -2,9 +2,7 @@ size	dial	NLU_Biased_no_rephrase	NLU_Biased_with_rephrase	NLU_Unbiased
 10	10	null	null	null
 20	20	null	null	null
 30	30	null	null	null
-40	40	null	null	null
-50	50	null	null	null
-60	60	null	null	null
-70	70	null	null	null
-74	74	null	null	null
-80	80	null	null	null
+40	40	0.6326586693437357	0.611429173859986	null
+50	50	0.6391816651323615	0.624785699080057	null
+60	60	0.6682959496151578	0.6378006146732338	0.6222843080904511
+70	70	0.670113825632657	0.6462244820909926	0.6463425466621773
