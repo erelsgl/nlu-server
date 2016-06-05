@@ -3786,13 +3786,16 @@ function turnoutput(output)
 return converted
 }
 
-function processdataset(dataset)
+function processdataset(dataset, type ) /*either train or test*/
 {
+  if (_.isUndefined(type) || type=="") throw new error("processdataset")
+
   _.each(dataset, function(dialogue, dialogue_key, list){
     _.each(dialogue, function(utterance, utterance_key, list){
          var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
-         dataset[dialogue_key][utterance_key]['input']['sentences'] = [{'tokens': tokens}]
-        dataset[dialogue_key][utterance_key]['output'] = _.unique(_.keys(utterance.outputhash))
+          if (type == "train")
+          dataset[dialogue_key][utterance_key]['input']['sentences'] = [{'tokens': tokens}]
+          dataset[dialogue_key][utterance_key]['output'] = _.unique(_.keys(utterance.outputhash))
     })
   })
   return dataset

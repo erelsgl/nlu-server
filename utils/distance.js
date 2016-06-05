@@ -46,6 +46,19 @@ function average(a) {
     return output/a.length
 }
 
+function stddv(a) {
+  if (!isVectorNumber(a))
+    throw new Error("Vectors should be consist of numbers " + JSON.stringify(a))
+
+  var mean = average(a)
+  var sum = 0
+  for (n=0; n < a.length; n++) {
+    sum += Math.pow(a[n]-mean, 2);
+  }
+  return Math.pow(sum/a.length, 1/2);
+}
+
+
 function dot_distance(a, b) {
   if (!isVectorNumber(a) || !isVectorNumber(b))
     throw new Error("Vectors should be consist of numbers " + JSON.stringify(a) + " " +JSON.stringify(b))
@@ -194,5 +207,6 @@ module.exports = {
   BalMult:BalMult,
   average:average,
   vec_minus: vec_minus,
-  isVectorNumber:isVectorNumber
+  isVectorNumber:isVectorNumber,
+  stddv:stddv
 }
