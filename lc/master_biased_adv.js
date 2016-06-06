@@ -454,7 +454,7 @@ function learning_curves(classifiers, folds, dataset, callback)
     // train3 = train3.slice(0,30)
 
 	cluster.setupMaster({
-  	exec: __dirname + '/worker_async.js',
+  	exec: __dirname + '/worker_async_adv.js',
   	// exec: __dirname + '/worker.js',
 	// args: [JSON.stringify({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len})],
 	// silent: false
