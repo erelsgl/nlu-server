@@ -1,4 +1,3 @@
-var async = require('async');
 var cluster = require('cluster');
 var fs = require('fs');
 var _ = require('underscore')._;
@@ -92,8 +91,8 @@ function extractGlobal(workerstats, stat)
 	var classifiers = workerstats["classifiers"]
 	var fold = workerstats["fold"]
 
-//	console.log("DEBUGMASTER: workerstats: "+JSON.stringify(workerstats, null, 4))
-//	console.log("DEBUGMASTER: clas:"+classifiers)
+	console.log("DEBUGMASTER: workerstats: "+JSON.stringify(workerstats, null, 4))
+	console.log("DEBUGMASTER: clas:"+classifiers)
 
 	_.each(attributes, function(attr, key, list){ 
 	//	if (!_.isNull(workerstats['stats'][attr]))
@@ -114,7 +113,7 @@ function extractGlobal(workerstats, stat)
 
 			}, this)
 	
-//			console.log("DEBUGMASTER: stat: "+JSON.stringify(stat, null, 4))
+			console.log("DEBUGMASTER: stat: "+JSON.stringify(stat, null, 4))
 			
 			stat[attr][trainsize][classifier][fold] = workerstats['stats'][attr]
 			stat[attr][trainsize]["dial"][fold] = workerstats["trainsizeuttr"]
@@ -167,10 +166,7 @@ function plotlcagrlenaverge(stat)
 	if (isVectorNumber(values)) 
 		return distance.average(values)
 	else
-		{
-		console.log("DEBUGMASTER: plotlcagrlenaverge: "+JSON.stringify(stat))
 		return null
-		}
 }
 
 
@@ -396,7 +392,8 @@ function plotlc(fold, parameter, stat)
     fs.writeFileSync(mapfile, string)
 
     var command = gnuplot +" -e \"set ylabel '"+ylabel+"' font ',20'; set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt i ps 3\""
-//    var command = gnuplot +" -e \"set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3\""//, \'\' using 1:(NaN):x2tic(2) axes x2y1\"" 
+
+//  var command = gnuplot +" -e \"set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3\""//, \'\' using 1:(NaN):x2tic(2) axes x2y1\"" 
     console.log(command)
 
 	try {
@@ -410,144 +407,65 @@ function plotlc(fold, parameter, stat)
 function learning_curves(classifiers, folds, dataset, callback)
 {
 	var stat = {}
-	var thr = 0
-	var maxfolds = 0
-	var id_fold = {}
 
-//	var classifiers = [ 'DS_comp_unigrams_async','DS_comp_unigrams_async_over','DS_comp_unigrams_async_under','DS_comp_unigrams_async_biased']
-//	var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased','NLU_Biased_no_rephrase']
-	var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased_with_rephrase','NLU_Biased_no_rephrase']
-//	var classifiers = [ 'NLU_Unbiased','NLU_Biased_with_rephrase','NLU_Biased_no_rephrase']
-//	var classifiers = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_biased']
+	//	var classifiers = [ 'DS_comp_unigrams_async','DS_comp_unigrams_async_over','DS_comp_unigrams_async_under','DS_comp_unigrams_async_biased']
+	var classifiers = [ 'NLU_Baseline']
 
-   /*var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
+	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
     var utterset1 = bars.getsetcontext(data1, true)
     var train1 = utterset1["train"].concat(utterset1["test"])
-    train1 = bars.processdataset(train1)
-*/
-//    train1 = _.shuffle(train1)
-//
-/*	_.each(train1, function(value, key, list){
-		train1[key] = _.filter(value, function(num){ return num.output.length == 1 })
-	}, this)
-	console.log("DEBUG: train1.length "+train1.length)
-*/
-
-    // train1or = _.filter(_.flatten(train1or), function(num){ return num.output.length == 1 })
-
-/*    var data2 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7.json"))
-    var utterset2 = bars.getsetcontext(data2, true)
-    var train2 = utterset2["train"].concat(utterset2["test"])
-    train2 = bars.processdataset(train2)
-    console.log("DEBUG: train2.length "+train2.length)
-*/
-    // train2 = train2.slice(0,30)
-	// console.log("DEBUG: train2.length "+train2.length)
-
-/*  	var data3 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7.json"))
-    var utterset3 = bars.getsetcontext(data3, false)
-    var train3 = utterset3["train"].concat(utterset3["test"])
-    train3 = bars.processdataset(train3)
-    console.log("DEBUG: train3.length "+train3.length)
-*/
-    // train3 = train3.slice(0,30)
 
 	cluster.setupMaster({
-  	exec: __dirname + '/worker_async_adv.js',
+  	exec: __dirname + '/worker_async_exp.js',
   	// exec: __dirname + '/worker.js',
 	// args: [JSON.stringify({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len})],
 	// silent: false
 	});
 
-	async.timesSeries(10, function(n, next){
-
-		var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
-		var utterset1 = bars.getsetcontext(data1, true)
-		var train1 = utterset1["train"].concat(utterset1["test"])
-		// only intents
-//		train1 = bars.processdataset(train1)
-
-		var data2 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7.json"))
-		var utterset2 = bars.getsetcontext(data2, /*rephrase*/true)
-		var train2 = utterset2["train"].concat(utterset2["test"])
-		// only intents
-//		train2 = bars.processdataset(train2)
-		console.log("DEBUG: train2.length "+train2.length)
-
-		var data3 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7.json"))
-		var utterset3 = bars.getsetcontext(data3, /*rephrase*/false)
-		var train3 = utterset3["train"].concat(utterset3["test"])
-		// only intents
-//		train3 = bars.processdataset(train3)
-		console.log("DEBUG: train3.length "+train3.length)
-
-		_.each(classifiers, function(classifier, key, list){ 
-			_(folds).times(function(fold){
-			
-				// worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
-				var worker = cluster.fork({'fold': fold+n*folds, 'classifier':classifier, 'thread': thr})
-				
-				var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
+	_.each(classifiers, function(classifier, key, list){ 
+		_(folds).times(function(fold){
 		
-				console.log("DEBUGMASTER: fold "+ (fold+n*folds) + " train size "+data.train.length + " test size " + data.test.length)
+			// worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
+			var worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier})
+			
+			var data = partitions.partitions_consistent_by_fold(train1, folds, fold)
 
-				var train2sam = _.flatten(_.sample(bars.copyobj(train2), 10))
+			console.log("DEBUGMASTER: fold "+ fold + " train size "+data.train.length + " test size " + data.test.length)
 
-				var train3sam = _.flatten(_.sample(bars.copyobj(train3), 10))
-
-				var train = []
-				if (classifier == "NLU_Biased_with_rephrase")
-					train = train2sam
-				else if (classifier == "NLU_Biased_no_rephrase")
-					train = train3sam
-				else
-					train = _.flatten(bars.copyobj(data.test))
-
-				var max = _.min([_.flatten(data.test).length, _.flatten(train3sam).length])
-				// var max = _.min([_.flatten(data.test).length, _.flatten(train2sam).length])
-				max = max - max % 10			
+			worker.send({ 		
+						'train': JSON.stringify(data.test), 
+						'test': JSON.stringify(data.train)
+						})
+			
+			worker.on('disconnect', function(){
+			  	console.log("DEBUGMASTER: finished")
+			  	if (Object.keys(cluster.workers).length == 1)
+			  	{
+					console.log("DEBUGMASTER: all workers are disconnected")
+			  		_.each(stat, function(data, param, list){
+						// update the graph for current fold per parameter
+						_(folds).times(function(fold){
+							plotlc(fold, param, stat)
+							console.log("DEBUG: param "+param+" fold "+fold+" build")
+						})
+						// build average per parameters
+						plotlc('average', param, stat)
 				
-				console.log("DEBUGMASTER: train1.len="+_.flatten(data.test).length+ " train2.len="+ _.flatten(train2sam).length + " max="+max)
-				console.log("DEBUGMASTER: class="+classifier+ " fold="+ fold + " train1.len="+train.length + " test.len=" + data.train.length + " max: "+max)
-				
-				data.train = _.flatten(data.train)
-
-				worker.send({ 		
-							'train': JSON.stringify(bars.processdataset(train, 'train')), 
-							'test': JSON.stringify(bars.processdataset(data.train, 'test')),
-							'max': JSON.stringify(max)
-							})
-				thr += 1	
-
-				worker.on('disconnect', function(){
-				  	console.log("DEBUGMASTER: finished: number of clusters: " + Object.keys(cluster.workers).length)
-				  	if (Object.keys(cluster.workers).length == 1)
-					next()
-				})
-
-				worker.on('message', function(message){
-					var workerstats = JSON.parse(message)
-					workerstats['classifiers'] = classifiers
-					console.log("DEBUGMASTER: on message: "+message)
-					fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
-					extractGlobal(workerstats, stat)
-				})
+					})
+					console.log(JSON.stringify(stat, null, 4))
+			  	}
 			})
-		}, this)
-	}, function(){
-		_.each(stat, function(data, param, list){
-			plotlc('average', param, stat)
+
+			worker.on('message', function(message){
+				var workerstats = JSON.parse(message)
+				workerstats['classifiers'] = classifiers
+				console.log("DEBUGMASTER: on message: "+message)
+				// fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
+				extractGlobal(workerstats, stat)
+			})
 		})
-
-		console.log(JSON.stringify(stat, null, 4))
-	})
+	}, this)
 }
-
-// function isInt(value) {
-  // return !isNaN(value) && 
-         // parseInt(Number(value)) == value && 
-         // !isNaN(parseInt(value, 10));
-// }
 
 if (process.argv[1] === __filename)
 {
@@ -597,8 +515,8 @@ if (process.argv[1] === __filename)
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
 	cleanFolder(__dirname + "/learning_curves")
-	cleanFolder("/tmp/logs")
-	
+    cleanFolder("/tmp/logs")
+
 	// var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
 	// var utterset = bars.getsetnocontext(dataset)
 	
