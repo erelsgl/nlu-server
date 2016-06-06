@@ -416,9 +416,8 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 //	var classifiers = [ 'DS_comp_unigrams_async','DS_comp_unigrams_async_over','DS_comp_unigrams_async_under','DS_comp_unigrams_async_biased']
 //	var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased','NLU_Biased_no_rephrase']
-//	var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased_with_rephrase','NLU_Biased_no_rephrase']
-	var classifiers = [ 'NLU_Unbiased','NLU_Biased_with_rephrase','NLU_Biased_no_rephrase']
-//	var classifiers = [ 'NLU_Unbiased','NLU_Biased']
+	var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased_with_rephrase','NLU_Biased_no_rephrase']
+//	var classifiers = [ 'NLU_Unbiased','NLU_Biased_with_rephrase','NLU_Biased_no_rephrase']
 //	var classifiers = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_biased']
 
    /*var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
@@ -466,20 +465,20 @@ function learning_curves(classifiers, folds, dataset, callback)
 		var utterset1 = bars.getsetcontext(data1, true)
 		var train1 = utterset1["train"].concat(utterset1["test"])
 		// only intents
-		train1 = bars.processdataset(train1)
+//		train1 = bars.processdataset(train1)
 
 		var data2 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7.json"))
 		var utterset2 = bars.getsetcontext(data2, /*rephrase*/true)
 		var train2 = utterset2["train"].concat(utterset2["test"])
 		// only intents
-		train2 = bars.processdataset(train2)
+//		train2 = bars.processdataset(train2)
 		console.log("DEBUG: train2.length "+train2.length)
 
 		var data3 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7.json"))
 		var utterset3 = bars.getsetcontext(data3, /*rephrase*/false)
 		var train3 = utterset3["train"].concat(utterset3["test"])
 		// only intents
-		train3 = bars.processdataset(train3)
+//		train3 = bars.processdataset(train3)
 		console.log("DEBUG: train3.length "+train3.length)
 
 		_.each(classifiers, function(classifier, key, list){ 
@@ -510,10 +509,12 @@ function learning_curves(classifiers, folds, dataset, callback)
 				
 				console.log("DEBUGMASTER: train1.len="+_.flatten(data.test).length+ " train2.len="+ _.flatten(train2sam).length + " max="+max)
 				console.log("DEBUGMASTER: class="+classifier+ " fold="+ fold + " train1.len="+train.length + " test.len=" + data.train.length + " max: "+max)
+				
+				data.train = _.flatten(data.train)
 
 				worker.send({ 		
-							'train': JSON.stringify(train), 
-							'test': JSON.stringify(data.train),
+							'train': JSON.stringify(bars.processdataset(train, 'train')), 
+							'test': JSON.stringify(bars.processdataset(data.train, 'test')),
 							'max': JSON.stringify(max)
 							})
 				thr += 1	
