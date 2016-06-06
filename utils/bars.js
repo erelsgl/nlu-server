@@ -3786,7 +3786,7 @@ function turnoutput(output)
 return converted
 }
 
-function processdataset(dataset, type ) /*either train or test*/
+/*function processdataset(dataset, type ) 
 {
   if (_.isUndefined(type) || type=="") throw new error("processdataset")
 
@@ -3800,6 +3800,26 @@ function processdataset(dataset, type ) /*either train or test*/
   })
   return dataset
 }
+
+*/
+function processdataset(dataset, type ) 
+{
+// should be executed after flattenation
+
+  if (_.isUndefined(type) || type=="") throw new error("processdataset")
+
+//_.each(dataset, function(dialogue, dialogue_key, list){
+    _.each(dataset, function(utterance, utterance_key, list){
+	
+         var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
+          if (type == "train")
+          dataset[utterance_key]['input']['sentences'] = [{'tokens': tokens}]
+          dataset[utterance_key]['output'] = _.unique(_.keys(utterance.outputhash))
+    })
+//  })
+  return dataset
+}
+
 
 function getsetcontext(dataset, rephrase)
 {
@@ -4146,23 +4166,22 @@ function oversample(turns)
   // add all the stuff as separated dialogue per intent
 
   var single_label_utt = {}
-  var tocount = ['Offer', 'Accept', 'Reject']
+  var tocount = ['Offer', 'Accept', 'Reject','Query']
   var stats = {}
 
   _.each(turns, function(turn, key, list){
     _.each(turn['output'], function(label, key, list){
-
-        var intent = _.keys(JSON.parse(label))[0]
+//      var intent = _.keys(JSON.parse(label))[0]
+        var intent = label
         if (!(intent in stats))
           stats[intent] = 0
-
-          stats[intent] += 1
-
+        stats[intent] += 1
       }, this)
 
       if (turn['output'].length == 1)
       {
-        var intent = _.keys(JSON.parse(turn['output'][0]))[0]
+        //var intent = _.keys(JSON.parse(turn['output'][0]))[0]
+        var intent = turn['output'][0]
         if (!(intent in single_label_utt))
           single_label_utt[intent] = []
 
@@ -4208,13 +4227,14 @@ function undersample(turns)
   // add all the stuff as separated dialogue per intent
 
   var single_label_utt = {}
-  var tocount = ['Offer', 'Accept', 'Reject']
+  var tocount = ['Offer', 'Accept', 'Reject', 'Query']
   var stats = {}
 
   _.each(turns, function(turn, key, list){
     _.each(turn['output'], function(label, key, list){
 
-        var intent = _.keys(JSON.parse(label))[0]
+        //var intent = _.keys(JSON.parse(label))[0]
+        var intent = label
         if (!(intent in stats))
           stats[intent] = 0
 
@@ -4224,7 +4244,8 @@ function undersample(turns)
 
       if (turn['output'].length == 1)
       {
-        var intent = _.keys(JSON.parse(turn['output'][0]))[0]
+        //var intent = _.keys(JSON.parse(turn['output'][0]))[0]
+        var intent = turn['output'][0]
         if (!(intent in single_label_utt))
           single_label_utt[intent] = []
 
