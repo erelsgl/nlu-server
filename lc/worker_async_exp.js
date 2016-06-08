@@ -31,24 +31,30 @@ process.on('message', function(message) {
 	
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
-	// var max  = JSON.parse(message['max'])
-	// var max = 70
 
-	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max)
-	console.vlog("DEBUG: max "+max)
+	var train =  bars.processdatasettrain(_.flatten(train))
+        var test  = bars.processdatasettest(_.flatten(test))
+
+	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
 
 	var index = 0
 
 	async.whilst(
-	    function () { return index < max },
+	    //function () { return index < train.length },
+	    function () { return index < 50 },
 	    function (callbackwhilst) {
 
-		index += 1
+		index += 5
 		
 	    var mytrain = train.slice(0, index)
+	    var mytrainex = JSON.parse(JSON.stringify(mytrain))
+	    var mytestex = JSON.parse(JSON.stringify(test))
 
-	    var mytrainex = (bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)
-		var mytestex  = (bars.isDialogue(test) ? _.flatten(test) : test)
+//	    var mytrainex = (bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)
+//		var mytestex  = (bars.isDialogue(test) ? _.flatten(test) : test)
+
+//          var mytrainex =  bars.processdatasettrain(_.flatten(mytrain))
+  //        var mytestex  = bars.processdatasettest(_.flatten(test))
 
 		console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 			" train_dialogue="+mytrain.length+" train_turns="+mytrainex.length+
