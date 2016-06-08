@@ -4304,14 +4304,18 @@ function expanbal(turns, callbackg)
 
         if (!(intent in single_label_utt))
           single_label_utt[intent] = []
-  
-        classifiers.feExpansion(turn, {}, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':3, 'expand_test':false}, function (err, features){
-          var turn_copy = copyobj(turn_copy)
-          delete turn_copy['input']['sentences']
-          turn_copy['input']['features'] = features
-          single_label_utt[intent].push(turn_copy)
-          callbackl()
+
+      classifiers.feAsync(turn, {}, true, {}, function (err, asfeatures){  
+        classifiers.feNeg(turn, asfeatures,  true, {}, function (err, negasfeatures){  
+          classifiers.feExpansion(turn, negasfeatures, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':3, 'expand_test':false}, function (err, features){
+            var turn_copy = copyobj(turn_copy)
+            delete turn_copy['input']['sentences']
+            turn_copy['input']['features'] = features
+            single_label_utt[intent].push(turn_copy)
+            callbackl()
+          })
         })
+      })
       }
     else
     callbackl();
