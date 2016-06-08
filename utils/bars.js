@@ -21,6 +21,7 @@ var Hierarchy = require(__dirname+'/../Hierarchy');
 var distance = require(__dirname+'/distance');
 var async_adapter = require(__dirname+'/async_adapter');
 var async = require('async');
+var classifiers = require(__dirname+'/../classifiers');
 
 const walker = require('walker-sample');
 
@@ -4280,6 +4281,72 @@ function oversample(turns)
   return turns
 }
 
+function expanbal(turns, callbackg)
+{
+
+  // treat only by simple-label utterances
+  // relates only to ['Offer', 'Accept', 'Reject']
+  // - it doesn't count for context
+
+  var single_label_utt = {}
+  var tocount = ['Offer', 'Accept', 'Reject','Query']
+  var stats = {}
+
+  async.forEachOf(turns, function (turn, key, callbackl) {
+
+    if (turn['output'].length == 1)
+      {
+        var intent = turn['output'][0]
+
+        if (!(intent in stats))
+          stats[intent] = 0
+        stats[intent] += 1
+
+        if (!(intent in single_label_utt))
+          single_label_utt[intent] = []
+  
+        classifiers.feExpansion(turn, {}, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':3, 'expand_test':false}, function (err, features){
+          var turn_copy = copyobj(turn_copy)
+          delete turn_copy['input']['sentences']
+          turn_copy['input']['features'] = features
+          single_label_utt[intent].push(turn_copy)
+          callbackl()
+        })
+      }
+    else
+    callbackl();
+
+  }, function (err) {
+
+    var max = 0
+    _.each(tocount, function(lab, key, list){
+      if ((stats[lab]) > max)
+      max = stats[lab]
+    }, this)
+
+    console.log("DEBUGEXPBAL: max="+max)
+    console.log("DEBUGEXPBAL: intents to consider: "+JSON.stringify(tocount, null, 4))
+    console.log("DEBUGEXPBAL: stats of all intent's occurences: "+JSON.stringify(stats, null, 4))
+    console.log("DEBUGEXPBAL: single_label_utt that were collected: ")
+  
+    _.each(single_label_utt, function(lis, key, list){
+      console.log("DEBUGEXPBAL: "+key+" "+lis.length)
+    }, this)
+
+    _.each(tocount, function(lab, key, list){
+      if ((max > stats[lab]) && (lab in single_label_utt))
+      {
+        console.log("DEBUGOVER: intent: "+lab)
+        console.log("DEBUGOVER: size: "+single_label_utt[lab].length)
+        turns = turns.concat(setsize(single_label_utt[lab], max - stats[lab] ))
+      }
+    }, this)
+
+    callbackg(null, turns)
+  })
+}
+
+
 function undersample(turns)
 {
 
@@ -4956,5 +5023,6 @@ processdataset:processdataset,
 processdataset1:processdataset1,
 processdatasettrain:processdatasettrain,
 processdatasettest:processdatasettest,
-cleanFolder:cleanFolder
+cleanFolder:cleanFolder,
+expanbal:expanbal
 }
