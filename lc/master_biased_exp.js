@@ -536,8 +536,7 @@ module.exports = {
 	getstringlc:getstringlc,
 	plotlcagrlen:plotlcagrlen,
 	plotlcagrlenaverge:plotlcagrlenaverge,
-	extractGlobal:extractGlobal,
-	cleanFolder:cleanFolder
+	extractGlobal:extractGlobal
 } 
 
 // {
