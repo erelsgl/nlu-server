@@ -355,15 +355,6 @@ function getstringlc(output)
 		return value.join("\t") }).join("\n")
 }
 
-function cleanFolder(dir)
-{
-	var graph_files = fs.readdirSync(dir)
-
-	_.each(graph_files, function(value, key, list){ 
-		fs.unlinkSync(dir+"/"+value)
-	}, this)
-}
-
 function plotlc(fold, parameter, stat)
 {
 	
@@ -514,8 +505,8 @@ if (process.argv[1] === __filename)
 	
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
-	cleanFolder(__dirname + "/learning_curves")
-    cleanFolder("/tmp/logs")
+	bars.cleanFolder(__dirname + "/learning_curves")
+    bars.cleanFolder("/tmp/logs")
 
 	// var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
 	// var utterset = bars.getsetnocontext(dataset)
