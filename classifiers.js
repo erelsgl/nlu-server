@@ -823,7 +823,6 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 					//async_adapter.getwordnet(token.lemma, token.pos, function(err, results){
 						
 						// get rid of phrases
-						var temp = bars.copyobj(innerFeatures)
 					
 						console.vlog("DEBUGEXP: number of results with phrases "+results.length)
 						results = _.filter(results, function(num){ return num[0].indexOf(" ") == -1 })
@@ -840,12 +839,13 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 			                Lem.lemmatize(results, function(err, lemmas) {
 	
 								_.each(lemmas, function(expan, key, list){ 	
+									var temp = bars.copyobj(innerFeatures)
 									if (token.neg) expan+="-"
 									// innerFeatures[expan.toLowerCase()] = 1
 										temp[expan.toLowerCase()] = 1
 										delete temp[token.lemma]
 
-										results.push(bars.copyobj(temp))
+										output.push(bars.copyobj(temp))
 
 								}, this)
 	
@@ -862,7 +862,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 
 
 			// callback(null, innerFeatures)
-			callback(null, results)
+			callback(null, output)
 	     });
 
 //	}
