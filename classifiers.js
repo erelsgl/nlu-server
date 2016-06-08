@@ -25,10 +25,17 @@ var execSync = require('child_process').execSync
 var async_adapter = require('./utils/async_adapter')
 var async = require('async');
 var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
+var log_file = "/tmp/logs/" + process.pid
+var Lem = require('lemmer')
 
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
 var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-\?]+/});
+
+console.vlog = function(data) {
+    fs.appendFileSync(log_file, data + '\n', 'utf8')
+};
+
 // var tokenizer = new natural.WordTokenizer({'pattern':(/(\W+|\%)/)}); // WordTokenizer, TreebankWordTokenizer, WordPunctTokenizer
 // var ngrams = new natural.NGrams.ngrams()
 
@@ -722,11 +729,10 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 	if (!('sentences' in sample['input']))
 		throw new Error("sentences not in the sample")
 
-	console.log(process.pid + " DEBUG: train: "+train + " options: "+JSON.stringify(featureOptions))
+	console.vlog("DEBUGEXP: START: train: "+train + " options: "+JSON.stringify(featureOptions))
 
 	var cleaned = getRule(sample["input"]["sentences"]).cleaned
 	var cleaned_tokens = _.map(cleaned.tokens, function(num){ return num.word; });
-
 
 	// feAsync(sample, {}, train, {}, function(err, featuresAsync){
 // 
@@ -736,22 +742,23 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 			function(callbackl1){
 			  if (((!featureOptions.expand_test) && (train)) || (featureOptions.expand_test))
 				{	
-				console.log("DEBUG: train"+train)
 				callbackl1(null)
 				}
 			 else
 				{	
-				console.log(process.pid + " DEBUG: callback classify noexpansion"+ train +" "+ _.keys(features))
+				console.vlog("DEBUGEXP: callback classify noexpansion"+ train +" "+ _.keys(features))
 				callback(null, innerFeatures)
 				}
 			},
 			function(callbackl) {
 
+				console.vlog("DEBUGEXP: continue")
+
 				 if ((!featureOptions.allow_offer)&&(train))
 					{ 
 					if (sample.output[0] == "Offer")
 				 		{
-				 		console.log("Offer no expansion")
+						console.vlog("Offer no expansion")
 				 		callback(null, innerFeatures)	
 				 		}
 					}
@@ -759,7 +766,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 				var poses = {}
 				var roots = []
 	
-				console.log("DEBUG train" + train)	
+//				console.vlog("DEBUG train" + train)	
 				
 				_.each(sample['input']['sentences']['tokens'], function(token, key, list){ 
 					// _.each(sentence['tokens'], function(token, key, list){ 	
@@ -769,11 +776,16 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 														'neg': false
 														}
 				}, this)	
+
+				console.vlog("DEBUGEXP: found tokens: "+JSON.stringify(poses, null, 4))
 				
 				_.each(sample['input']['sentences']['basic-dependencies'], function(dep, key, list){ 	
 
 					if (dep.dep == "ROOT")
 						roots.push(dep.dependentGloss.toLowerCase())
+
+					if (dep.dep == "xcomp")
+                                                roots.push(dep.dependentGloss.toLowerCase())
 
 					if (dep.dep == "neg")
 						poses[dep.governorGloss.toLowerCase()]["neg"] = true
@@ -782,56 +794,62 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 
 
 
-			console.log("DEBUG EXP: roots: " + roots)
-			
-			console.log("poses train" + train + " " + JSON.stringify(poses))
+			console.vlog("DEBUGEXP: roots: " + roots)
+
+			console.vlog("DEBUGEXP: poses: " + JSON.stringify(poses))
         		callbackl(null, poses, roots);
     		},
 		    function(poses, roots, callbackll) {
 
-			var allowedpos = ["vb","vbd","vbg","vbn","vbp","vbz","uh","wp","wdt"]
+		//	var allowedpos = ["vb","vbd","vbg","vbn","vbp","vbz","uh","wp","wdt"]
 
 			async.forEachOfSeries(poses, function(token, unigram, callback2){ 
 			// async.forEachOfSeries(_.keys(poses), function(unigram, dind, callback2){ 
 				if (((!featureOptions.onlyroot) && (stopwords.indexOf(unigram)==-1))
-					|| ((featureOptions.onlyroot) && (roots.indexOf(unigram)!=-1) && (allowedpos.indexOf(token.pos.toLowerCase())!=-1) && (cleaned_tokens.indexOf(unigram)!=-1)))
+					//|| ((featureOptions.onlyroot) && (roots.indexOf(unigram)!=-1) && (allowedpos.indexOf(token.pos.toLowerCase())!=-1) && (cleaned_tokens.indexOf(unigram)!=-1)))
+					|| ((featureOptions.onlyroot) && (roots.indexOf(unigram)!=-1) && (cleaned_tokens.indexOf(unigram)!=-1)))
 				{
 
 				// we any case we are taking lemma and verb so take VB pos tag
 					
-					if ((featureOptions.onlyroot) && (token.pos.toLowerCase().indexOf("vb")!=-1))
-						token.pos = "VB"
+//					if ((featureOptions.onlyroot) && (token.pos.toLowerCase().indexOf("vb")!=-1))
+//						token.pos = "VB"
+
 					// if (!(unigram in poses))
 						// throw new Error(unigram + " is not found in "+poses)
 				
-					console.log("DEBUG EXP: ready to expand train" + train + " "+JSON.stringify(token))			
+					console.vlog("DEBUGEXP: ready to expand train:" + train + " "+JSON.stringify(token))			
 
-					// async_adapter.getppdb(token.lemma, token.pos, featureOptions.scale, featureOptions.relation,  function(err, results){
-					async_adapter.getwordnet(token.lemma, token.pos, function(err, results){
+					async_adapter.getppdb(token.lemma, token.pos, featureOptions.scale, featureOptions.relation,  function(err, results){
+					//async_adapter.getwordnet(token.lemma, token.pos, function(err, results){
 						
-		
 						// get rid of phrases
-						console.log("DEBUG EXP: results with phrases "+results.length)
+					
+						console.vlog("DEBUGEXP: number of results with phrases "+results.length)
 						results = _.filter(results, function(num){ return num[0].indexOf(" ") == -1 })
-						console.log("DEBUG EXP: results without phrases "+results.length)
+						console.vlog("DEBUGEXP: number of results without phrases "+results.length)
 
 						results = _.map(results, function(num){ return num[0] });
 						results = _.uniq(results)	
 		
-						// if (!_.isUndefined(featureOptions.best_results))
-							// results = results.slice(0, featureOptions.best_results)
+						if (!_.isUndefined(featureOptions.best_results))
+							results = results.slice(0, featureOptions.best_results)
 		
-						console.log("DEBUGEXP: results to add: "+results)
-
-						_.each(results, function(expan, key, list){ 
+						console.vlog("DEBUGEXP: results to add for token:"+ JSON.stringify(token)+ " results:"+JSON.stringify(results))
 						
-							if (token.neg) expan+="-"
-								innerFeatures[expan.toLowerCase()] = 1
+			                        Lem.lemmatize(results, function(err, lemmas) {
+	
+							_.each(lemmas, function(expan, key, list){ 	
+							
+								if (token.neg) expan+="-"
+									innerFeatures[expan.toLowerCase()] = 1
+    								innerFeatures[expan.toLowerCase()] = 1
+								
 							}, this)
-
-						console.log("DEBUGEXP: permanent features "+JSON.stringify(innerFeatures))
-			
-						callback2()
+	
+							console.vlog("DEBUGEXP: permanent features "+JSON.stringify(innerFeatures))
+							callback2()
+						})
 					})
 				}
 				else
@@ -840,7 +858,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 		}],
 		function (err, result) {
 //			console.log(process.pid + " DEBUG EXP: "+sample.input.text)
-			console.log(process.pid + " DEBUG EXP: EXPANSIONED "+_.keys(innerFeatures)+ " train"+train+" featureOptions"+JSON.stringify(featureOptions))
+			console.vlog("DEBUGEXP: EXPANSIONED "+_.keys(innerFeatures)+ " train"+train+" featureOptions"+JSON.stringify(featureOptions))
 			callback(null, innerFeatures)
 	     });
 
@@ -1585,6 +1603,7 @@ function feAsync(sam, features, train, featureOptions, callback) {
 		if ((filtr.indexOf(token.pos)==-1) && (lemfil.indexOf(token.lemma)==-1))
 		{
     		features[token.lemma.toLowerCase()] = 1
+    		//features[token.word.toLowerCase()] = 1
     		callback_local()
     	}
     	else
@@ -2013,7 +2032,14 @@ module.exports = {
 //		NLU_Biased_with_rephrase: enhance(SvmLinearMulticlassifier, [feAsync,  feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, /*postProcessor*/false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
 //		NLU_Biased: enhance(SvmLinearMulticlassifier, [feAsync,  feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent,/*postProcessor*/false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
 //		NLU_Unbiased: enhance(SvmLinearMulticlassifier, [feAsync,  feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
-		NLU_Baseline: enhance(SvmLinearMulticlassifier, [feAsync,  feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
+//		NLU_Baseline: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
+//		NLU_Exp: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feExpansion/*feAsync*/,  feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results':3, 'offered':false, 'unoffered':true, 'expand_test':false}),
+
+
+		NLU_Baseline: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
+                NLU_Exp: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feNeg, feExpansion/*feAsync*/,  feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':3, 'offered':false, 'unoffered':true, 'expand_test':false}),
+
+
 	    NLU_Unbiased_Bin: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncPrimitiveClean], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, false, {'unigrams':true,'offered':false, 'unoffered':true}),
 //
 //		NLU_Oversampled: enhance(SvmLinearMulticlassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, undefined, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':true, 'unoffered':true}),
