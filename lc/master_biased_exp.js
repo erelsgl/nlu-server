@@ -408,12 +408,12 @@ function learning_curves(classifiers, folds, dataset, callback)
 {
 	var stat = {}
 
-	//	var classifiers = [ 'DS_comp_unigrams_async','DS_comp_unigrams_async_over','DS_comp_unigrams_async_under','DS_comp_unigrams_async_biased']
-	var classifiers = [ 'NLU_Baseline']
+	var classifiers = [ 'NLU_Baseline','NLU_Exp']
+	//var classifiers = [ 'NLU_Exp']
 
-	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
-    var utterset1 = bars.getsetcontext(data1, true)
-    var train1 = utterset1["train"].concat(utterset1["test"])
+	var data1 = _.shuffle(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json")))
+ 	var utterset1 = bars.getsetcontext(data1, true)
+	var train1 = utterset1["train"].concat(utterset1["test"])
 
 	cluster.setupMaster({
   	exec: __dirname + '/worker_async_exp.js',
@@ -433,12 +433,12 @@ function learning_curves(classifiers, folds, dataset, callback)
 			console.log("DEBUGMASTER: fold "+ fold + " train size "+data.train.length + " test size " + data.test.length)
 
 			worker.send({ 		
-						'train': JSON.stringify(data.test), 
-						'test': JSON.stringify(data.train)
-						})
+					'train': JSON.stringify(data.test), 
+					'test': JSON.stringify(data.train)
+		     		})
 			
 			worker.on('disconnect', function(){
-			  	console.log("DEBUGMASTER: finished")
+			  	console.log("DEBUGMASTER: finished: workers.length: "+Object.keys(cluster.workers).length)
 			  	if (Object.keys(cluster.workers).length == 1)
 			  	{
 					console.log("DEBUGMASTER: all workers are disconnected")
@@ -526,7 +526,7 @@ if (process.argv[1] === __filename)
 
 */	// dataset = _.filter(dataset, function(num){ return num.length > 15 });
 
-	// dataset = dataset.slice(0,100)
+//	dataset = dataset.slice(0,100)
 
 	var folds = 10
 
