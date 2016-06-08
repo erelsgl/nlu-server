@@ -3805,6 +3805,7 @@ return converted
 function processdataset(dataset, type ) 
 {
 // should be executed after flattenation
+// prepares the 
 
   if (_.isUndefined(type) || type=="") throw new error("processdataset")
 
@@ -3819,6 +3820,55 @@ function processdataset(dataset, type )
 //  })
   return dataset
 }
+
+function processdatasettrain(dataset)
+{
+       _.each(dataset, function(utterance, utterance_key, list){
+            dataset[utterance_key]['output'] = _.unique(_.keys(utterance.outputhash))
+       })
+
+	var dataset = _.filter(dataset, function(num){ return num["output"].length <= 1; });
+	return dataset
+}
+
+function processdatasettest(dataset)
+{
+       _.each(dataset, function(utterance, utterance_key, list){
+            dataset[utterance_key]['output'] = _.unique(_.keys(utterance.outputhash))
+
+	  var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
+          var basicdependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'basic-dependencies'))
+          var collapseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-dependencies'))
+          var collapsedccprocesseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-ccprocessed-dependencies'))
+
+
+          dataset[utterance_key]['input']['sentences'] = [{
+							'tokens': tokens,
+							'basic-dependencies': basicdependencies,
+							'collapsed-dependencies': collapseddependencies,
+							'collapsed-ccprocessed-dependencies': collapsedccprocesseddependencies
+							}]
+
+
+       })
+
+        return dataset
+}
+
+
+
+function processdataset1(dataset)
+{
+ _.each(dataset, function(utterance, utterance_key, list){
+
+//       var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
+  //        if (type == "train")
+          dataset[utterance_key]['output'] = _.unique(_.keys(utterance.outputhash))
+    })
+
+    return dataset
+}
+
 
 
 function getsetcontext(dataset, rephrase)
@@ -4882,5 +4932,8 @@ singlelabeldst:singlelabeldst,
 getExm:getExm,
 mean_variance:mean_variance,
 turnoutput:turnoutput,
-processdataset:processdataset
+processdataset:processdataset,
+processdataset1:processdataset1,
+processdatasettrain:processdatasettrain,
+processdatasettest:processdatasettest
 }
