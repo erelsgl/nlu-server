@@ -27,7 +27,7 @@ var limdu = require("limdu");
 var ftrs = limdu.features;
 
 // check the ration of single vs all utterances
-var check_ration_all = true
+var check_ration_all = false
 
 // number of human utterances
 var check_human = false
@@ -43,7 +43,7 @@ var check_version7 = false
 var check_version7_1 = false
 
 // simple template to check performance on test and train even with simple multi-label binary relevance SVM
-var check_ds = false
+var check_ds = true
 
 // check distirbution of intents 
 var check_init = false
@@ -1224,7 +1224,7 @@ if (check_ds)
 
 //	var dataset = bars.loadds("../negochat_private/dialogues")
 //
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json.clean"))
+/*	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json.clean"))
 	var utterset = bars.getsetcontext(data)
 
 	// var stats = {}
@@ -1249,7 +1249,7 @@ if (check_ds)
 	console.log("Test in utts:"+utterset["test"].length)
 	
 	// concat tokens for primitive classification
-/*
+*//*
 	_.each(utterset["test"], function(utterance, key, list){
 		var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
 		utterset["test"][key]['input']['sentences'] = [{'tokens': tokens}]
@@ -1261,7 +1261,7 @@ if (check_ds)
 	}, this)
 
 */
-	_.each(utterset["train"], function(utterance, key, list){
+/*	_.each(utterset["train"], function(utterance, key, list){
 		var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
 		utterset["train"][key]['input']['sentences'] = [{'tokens': tokens}]
 	}, this)
@@ -1278,7 +1278,7 @@ if (check_ds)
 	_.each(utterset["test"], function(utterance, key, list){
 		utterset["test"][key]['output'] = _.unique(_.keys(utterance.outputhash))
 	}, this)
-
+*/
 	/*var count = 0
 	_.each(utterset["test"].concat(utterset["train"]), function(value, key, list){
 		if (value.output.indexOf("{\"Offer\":{\"Pension Fund\":\"No agreement\"}}")!=-1)
@@ -1315,7 +1315,25 @@ if (check_ds)
 		process.exit(0)
 	}, this)
 */
-	trainAndTest.trainAndTest_async(classifier.DS_Prim_Clean, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+
+	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+        var utterset = bars.getsetcontext(data1, /*rephrase*/true)
+
+	//utterset["train"] = bars.processdataset(_.flatten(utterset["train"]), 'test')
+//	utterset["train"] = bars.processdataset(_.flatten(utterset["train"]), 'test')
+	
+	utterset["train"] = bars.processdatasettrain(_.flatten(utterset["train"]))
+	utterset["test"] = bars.processdatasettest(_.flatten(utterset["test"]))
+
+	console.log("train.length="+utterset["train"].length)
+	console.log("test.length="+utterset["test"].length)
+	
+//	utterset["train"] = _.filter(utterset["train"], function(num){ return _.keys(num.outputhash).length <= 1 })
+
+//NLU_Unbiased_Bin:
+//NLU_Baseline
+
+	trainAndTest.trainAndTest_async(classifier.NLU_Exp, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		console.log(JSON.stringify(results, null, 4))
 		process.exit(0)
 	}, this)
