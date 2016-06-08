@@ -165,6 +165,21 @@ describe('Bars utilities', function() {
 		_.isEqual(dat[dat.length-1]["input"], "3").should.equal(true)
 	})
 
+	it('expanbal', function(callbackl) {
+		var dataset = [
+			{'input':"1", 'output':["\{\"Offer\":true\}"]},
+			{'input':"1", 'output':["\{\"Offer\":true\}"]},
+			{'input':"2", 'output':["\{\"Accept\":true\}"]},
+			{'input':"3", 'output':["\{\"Reject\":true\}"]},
+			{'input':"4", 'output':["\{\"Query\":true\}"]}
+		]
+
+		bars.expanbal(dataset,function(err, res){
+			console.log(JSON.stringify(res, null, 4))
+			callbackl()
+		})
+	})
+
 	it('setsize', function() {
 		_.isEqual(bars.setsize([1,2,3], 9).length, 9).should.equal(true)
 		_.isEqual(bars.setsize([1,2,3], 2).length, 2).should.equal(true)
