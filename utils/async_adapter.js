@@ -6,6 +6,12 @@ var WordNet = require('node-wordnet')
 var fs = require('fs')
 var wordCount = fs.readFileSync(__dirname + "/20k.txt", 'UTF-8').split("\n")
 
+var log_file = "/tmp/logs/" + process.pid
+
+console.vlog = function(data) {
+    fs.appendFileSync(log_file, data + '\n', 'utf8')
+};
+
 // var hostname = os.hostname();
 // var wordNet = require('wordnet-magic')
 // var wn = wordNet()
@@ -50,10 +56,11 @@ function getembed(string, db, callback)
 // splited[2] - PPDB 1.0 Score
 // splited[3] - PPDB 2.0 Score
 
+var client = new Redis(6379);
+
 function getppdb(string, pos, db, relation, callback)
 {	
 	var output = []
-	var client = new Redis(6379);
 	
 	var POS = {
 		'VBZ': 'VB', 'VBP': 'VB', 'VBN': 'VB', 'VBG': 'VB', 'VBD': 'VB',
@@ -62,20 +69,27 @@ function getppdb(string, pos, db, relation, callback)
 		}	
 
 	client.select(db, function(err, response) {
-		if (err) callback(err)
+		if (err) 
+			{
+			console.vlog("DEBUGPPDB: select: db: "+db+ " error: "+err)
+			callback(err)
+			}
 
 		client.smembers(string, function(err, replies) {
 
-			if (err) callback(err)
+			if (err) 
+			{
+				console.vlog("DEBUGPPDB: err " + err)
+				callback(err)
+			}
 			
-			console.log("DEBUGPPDB: err " + err)
-			console.log("DEBUGPPDB: string to expansion: " + string+ " POS: "+pos + " relation: "+ relation+ " db: "+ db +" replies " + JSON.stringify(replies))
+//			console.vlog("DEBUGPPDB: string to expansion: " + string+ " POS: "+pos + " relation: "+ relation+ " db: "+ db +" replies " + JSON.stringify(replies))
 
 			_.each(replies, function(value, key, list){ 
 
 				var splited = value.split("^")
 
-				console.log(splited)
+//				console.vlog("DEBUGPPDB:"+splited)
 
 				if (splited[0].indexOf(" ")!=-1)
 				{
@@ -107,8 +121,13 @@ function getppdb(string, pos, db, relation, callback)
 			}, this)
 
 			output = _.sortBy(output, function(num){ return num[2] });
-			console.log("DEBUGPPDB: string: " + string + " final output " + JSON.stringify(output))
+			
+//			console.vlog("DEBUGPPDB: string: " + string + " before lemma: " + JSON.stringify(output, null, 4))
+		  	
+			console.vlog("DEBUGPPDB: string: " + string + " final output: " + JSON.stringify(output, null, 4))
+	//			client.disconnect()
 			callback(err, output)
+		
         })
 	})	
 }
@@ -118,8 +137,8 @@ function getppdbCache(string, pos, db, callback)
 	ppdbcachecounter += 1
 	if (ppdbcachecounter % 100000 == 0)
 	{
-		console.log("getppdbCache")
-		console.log(JSON.stringify(ppdbcache.getStats(), null, 4))	
+		console.vlog("getppdbCache")
+		console.vlog(JSON.stringify(ppdbcache.getStats(), null, 4))	
 	}
 
 	ppdbcache.get(string+"_"+pos+"_"+db, function(err, value){
@@ -165,8 +184,8 @@ function getwordnetCache(string, pos, relation, callback)
 
 	if (wordnetcachecounter % 100000 == 0)
 	{
-		console.log("wordnetcache")
-		console.log(JSON.stringify(wordnetcache.getStats(), null, 4))	
+		console.vlog("wordnetcache")
+		console.vlog(JSON.stringify(wordnetcache.getStats(), null, 4))	
 	}
 
 
@@ -192,7 +211,7 @@ function synset2lemmas(synsets)
 
 function getwordnet(string, pos, callbackg)
 {
-	console.log("DEBUGWORDNET: string:"+string+" pos:"+pos)
+	console.vlog("DEBUGWORDNET: string:"+string+" pos:"+pos)
 
 	var POS = {
 
@@ -205,7 +224,7 @@ function getwordnet(string, pos, callbackg)
 
 	if (_.flatten(_.toArray(POS)).indexOf(pos) == -1)
 		{
-		console.log("DEBUGWORDNET: no pos")
+		console.vlog("DEBUGWORDNET: no pos")
 		callbackg(null, {'synonyms':[], 'antonyms':[]})
 		}
 	else
@@ -218,7 +237,7 @@ function getwordnet(string, pos, callbackg)
 			wnpos = wnp
 	}, this)
 
-	console.log("DEBUGWORDNET: string:"+string+" pos:"+wnpos)
+	console.vlog("DEBUGWORDNET: string:"+string+" pos:"+wnpos)
 	var wordnet = new WordNet()
 
 	var synonyms = []
