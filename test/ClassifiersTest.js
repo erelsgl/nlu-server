@@ -25,7 +25,7 @@ var SvmPerfBinaryRelevanceClassifier = limdu_classifiers.multilabel.BinaryReleva
 
 describe('Classifiers functions', function() {
 
-  it('neufeExpansion', function(callback) {
+  it('neufeExpansion', function(callback1) {
 
     var sample = {
       'output': ["Accept"],
@@ -50,7 +50,7 @@ describe('Classifiers functions', function() {
     }
 
     var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': 2, 'expand_test': false}
-    classifiers.feExpansion(sample, {}, true, params, function (err, features){
+    classifiers.feExpansion(sample, {'I':1, 'love':1, 'the':1, 'life':1}, true, params, function (err, features){
       console.log(JSON.stringify(features, null, 4))
       // _.isEqual(features, { i:1, love: 1,the:1, life: 1,enjoys: 1,liking: 1,prefers: 1,appreciates: 1,lifetime: 1}).should.equal(true)
       callback1(null)
