@@ -149,6 +149,7 @@ describe('Bars utilities', function() {
 	})
 
 	it('oversample', function() {
+		
 		var dataset = [
 			{'input':"1", 'output':["\{\"Offer\":true\}"]},
 			{'input':"1", 'output':["\{\"Offer\":true\}"]},
@@ -166,12 +167,29 @@ describe('Bars utilities', function() {
 	})
 
 	it('expanbal', function(callbackl) {
+
 		var dataset = [
-			{'input':"1", 'output':["\{\"Offer\":true\}"]},
-			{'input':"1", 'output':["\{\"Offer\":true\}"]},
-			{'input':"2", 'output':["\{\"Accept\":true\}"]},
-			{'input':"3", 'output':["\{\"Reject\":true\}"]},
-			{'input':"4", 'output':["\{\"Query\":true\}"]}
+			{
+      			'output': ["Accept"],
+				'input':{	
+           // 'text': "I love the life",
+        		'sentences':
+        			{
+          			'basic-dependencies':[
+            			{"dep": "ROOT", "dependentGloss": "love"},
+            			{"dependentGloss": "I"},
+            			{"dependentGloss": "the"},
+            			{"dependentGloss": "life"}
+          			],
+          			'tokens':[
+            			{'word': 'I','pos': 'ABC', 'lemma':'I'},
+            			{'word': 'love','pos': 'VB','lemma':'love'},
+            			{'word': 'the','pos': 'ABC','lemma':'the'},
+            			{'word': 'life','pos': 'NN','lemma':'life'},
+          			]
+        			}
+      			}
+    		}
 		]
 
 		bars.expanbal(dataset,function(err, res){
