@@ -3821,11 +3821,26 @@ function processdataset(dataset, type )
   return dataset
 }
 
+// concatenate sentences
+// filter multi - label utterances
+// convert output
 function processdatasettrain(dataset)
 {
-       _.each(dataset, function(utterance, utterance_key, list){
-            dataset[utterance_key]['output'] = _.unique(_.keys(utterance.outputhash))
-       })
+  _.each(dataset, function(utterance, utterance_key, list){
+    dataset[utterance_key]['output'] = _.unique(_.keys(utterance.outputhash))
+
+    var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
+    var basicdependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'basic-dependencies'))
+    var collapseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-dependencies'))
+    var collapsedccprocesseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-ccprocessed-dependencies'))
+
+    dataset[utterance_key]['input']['sentences'] = [{
+      'tokens': tokens,
+      'basic-dependencies': basicdependencies,
+      'collapsed-dependencies': collapseddependencies,
+      'collapsed-ccprocessed-dependencies': collapsedccprocesseddependencies
+    }]
+  })
 
 	var dataset = _.filter(dataset, function(num){ return num["output"].length <= 1; });
 	return dataset
@@ -3833,26 +3848,23 @@ function processdatasettrain(dataset)
 
 function processdatasettest(dataset)
 {
-       _.each(dataset, function(utterance, utterance_key, list){
-            dataset[utterance_key]['output'] = _.unique(_.keys(utterance.outputhash))
+  _.each(dataset, function(utterance, utterance_key, list){
+    dataset[utterance_key]['output'] = _.unique(_.keys(utterance.outputhash))
 
 	  var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
-          var basicdependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'basic-dependencies'))
-          var collapseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-dependencies'))
-          var collapsedccprocesseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-ccprocessed-dependencies'))
+    var basicdependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'basic-dependencies'))
+    var collapseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-dependencies'))
+    var collapsedccprocesseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-ccprocessed-dependencies'))
 
 
-          dataset[utterance_key]['input']['sentences'] = [{
-							'tokens': tokens,
-							'basic-dependencies': basicdependencies,
-							'collapsed-dependencies': collapseddependencies,
-							'collapsed-ccprocessed-dependencies': collapsedccprocesseddependencies
-							}]
-
-
-       })
-
-        return dataset
+    dataset[utterance_key]['input']['sentences'] = [{
+			'tokens': tokens,
+			'basic-dependencies': basicdependencies,
+		  'collapsed-dependencies': collapseddependencies,
+			'collapsed-ccprocessed-dependencies': collapsedccprocesseddependencies
+		}]
+  })
+  return dataset
 }
 
 
@@ -4812,6 +4824,14 @@ function generateopposite(dataset, callback)
 }
 
 
+function cleanFolder(dir)
+{
+  var graph_files = fs.readdirSync(dir)
+
+  _.each(graph_files, function(value, key, list){ 
+    fs.unlinkSync(dir+"/"+value)
+  }, this)
+}
 
 module.exports = {
   simulaterealds:simulaterealds,
@@ -4935,5 +4955,6 @@ turnoutput:turnoutput,
 processdataset:processdataset,
 processdataset1:processdataset1,
 processdatasettrain:processdatasettrain,
-processdatasettest:processdatasettest
+processdatasettest:processdatasettest,
+cleanFolder:cleanFolder
 }
