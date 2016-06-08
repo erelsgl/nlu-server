@@ -1315,9 +1315,10 @@ if (check_ds)
 		process.exit(0)
 	}, this)
 */
+    bars.cleanFolder("/tmp/logs")
 
 	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
-        var utterset = bars.getsetcontext(data1, /*rephrase*/true)
+    var utterset = bars.getsetcontext(data1, /*rephrase*/true)
 
 	//utterset["train"] = bars.processdataset(_.flatten(utterset["train"]), 'test')
 //	utterset["train"] = bars.processdataset(_.flatten(utterset["train"]), 'test')
@@ -1333,7 +1334,7 @@ if (check_ds)
 //NLU_Unbiased_Bin:
 //NLU_Baseline
 
-	trainAndTest.trainAndTest_async(classifier.NLU_Exp, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	trainAndTest.trainAndTest_async(classifier.NLU_Baseline, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		console.log(JSON.stringify(results, null, 4))
 		process.exit(0)
 	}, this)
