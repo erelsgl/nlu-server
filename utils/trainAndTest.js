@@ -17,7 +17,10 @@ var combinations = require('js-combinatorics');
 var bars = require('./bars');
 var distance = require('./distance');
 var partitions = require('limdu/utils/partitions');
-
+var log_file = "/tmp/logs/" + process.pid
+console.vlog = function(data) {
+    fs.appendFileSync(log_file, data + '\n', 'utf8')
+};
 /**
  * A short light-weight test function. Tests the given classifier on the given dataset, and 
  * writes a short summary of the mistakes and total performance.
@@ -207,7 +210,7 @@ module.exports.test_async = function(classifier, testSet, callback) {
 			record.classified = classes
 			record.explanation = currentStats.addCasesHash(testRecord.output, classes, true)
 
-			console.log("TEST:"+JSON.stringify(record.explanation, null, 4))
+			console.vlog("TEST: "+JSON.stringify(record.explanation, null, 4))
 
 /*			if ('FP' in record.explanation)
 			{
@@ -228,7 +231,7 @@ module.exports.test_async = function(classifier, testSet, callback) {
 */					
 			currentStats.addIntentHash(testRecord.output, classes, true)
 	
-			console.log("DEBUGCLASSIFY: "+JSON.stringify(record.explanation, null, 4))
+			console.vlog("DEBUGCLASSIFY:"+JSON.stringify(record.explanation, null, 4))
 
 			data_stats.push(record)
 			callback1()
