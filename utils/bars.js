@@ -4308,11 +4308,19 @@ function expanbal(turns, callbackg)
       classifiers.feAsync(turn, {}, true, {}, function (err, asfeatures){  
         classifiers.feNeg(turn, asfeatures,  true, {}, function (err, negasfeatures){  
           classifiers.feExpansion(turn, negasfeatures, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':3, 'expand_test':false}, function (err, features){
-            var turn_copy = copyobj(turn_copy)
-            delete turn_copy['input']['sentences']
-            turn_copy['input']['features'] = features
-            single_label_utt[intent].push(turn_copy)
-            callbackl()
+
+	    console.log("DEBUG: EXPANBAL: final features:"+JSON.stringify(features, null, 4))
+	
+	    async.forEachOf(_.unique(features), function (feature, key, callbackll) {
+	    	    console.log("DEBUG: EXPANBAL: feature:"+JSON.stringify(feature, null, 4))
+	            var turn_copy = copyobj(turn)
+        	    delete turn_copy['input']['sentences']
+	            turn_copy['input']['features'] = feature
+	            single_label_utt[intent].push(turn_copy)
+	            callbackll()
+	    }, function(err){
+             callbackl()
+	   })
           })
         })
       })
@@ -4332,7 +4340,8 @@ function expanbal(turns, callbackg)
     console.log("DEBUGEXPBAL: intents to consider: "+JSON.stringify(tocount, null, 4))
     console.log("DEBUGEXPBAL: stats of all intent's occurences: "+JSON.stringify(stats, null, 4))
     console.log("DEBUGEXPBAL: single_label_utt that were collected: ")
-  
+    console.log("DEBUGEXPBAL: finally denerated: "+JSON.stringify(single_label_utt, null, 4))  
+
     _.each(single_label_utt, function(lis, key, list){
       console.log("DEBUGEXPBAL: "+key+" "+lis.length)
     }, this)
