@@ -835,21 +835,24 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 							results = results.slice(0, featureOptions.best_results)
 		
 						console.vlog("DEBUGEXP: results to add for token:"+ JSON.stringify(token)+ " results:"+JSON.stringify(results))
+						console.log("DEBUGEXP: results to add for token:"+ JSON.stringify(token)+ " results:"+JSON.stringify(results))
 						
 			                Lem.lemmatize(results, function(err, lemmas) {
 	
 								_.each(lemmas, function(expan, key, list){ 	
-									var temp = bars.copyobj(innerFeatures)
+									var temp = JSON.parse(JSON.stringify(innerFeatures))
 									if (token.neg) expan+="-"
 									// innerFeatures[expan.toLowerCase()] = 1
 										temp[expan.toLowerCase()] = 1
 										delete temp[token.lemma]
 
-										output.push(bars.copyobj(temp))
+										output.push(JSON.parse(JSON.stringify((temp))))
+									
+									console.log("DEBUGEXP: temp: "+JSON.stringify(temp))
 
 								}, this)
 	
-								console.vlog("DEBUGEXP: permanent features "+JSON.stringify(innerFeatures))
+//								console.vlog("DEBUGEXP: permanent features "+JSON.stringify(innerFeatures))
 								callback2()
 							})
 					})
