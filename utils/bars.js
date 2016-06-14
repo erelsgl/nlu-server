@@ -3825,6 +3825,8 @@ function processdataset(dataset, type )
 // concatenate sentences
 // filter multi - label utterances
 // convert output
+//
+// in short in takes the role of post_processing
 function processdatasettrain(dataset)
 {
   _.each(dataset, function(utterance, utterance_key, list){
@@ -3835,12 +3837,12 @@ function processdatasettrain(dataset)
     var collapseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-dependencies'))
     var collapsedccprocesseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-ccprocessed-dependencies'))
 
-    dataset[utterance_key]['input']['sentences'] = [{
+    dataset[utterance_key]['input']['sentences'] = {
       'tokens': tokens,
       'basic-dependencies': basicdependencies,
       'collapsed-dependencies': collapseddependencies,
       'collapsed-ccprocessed-dependencies': collapsedccprocesseddependencies
-    }]
+    }
   })
 
 	var dataset = _.filter(dataset, function(num){ return num["output"].length <= 1; });
@@ -4281,7 +4283,7 @@ function oversample(turns)
   return turns
 }
 
-function expanbal(turns, callbackg)
+function expanbal(turns, best_results, callbackg)
 {
 
   // treat only by simple-label utterances
@@ -4289,14 +4291,24 @@ function expanbal(turns, callbackg)
   // - it doesn't count for context
 
   var single_label_utt = {}
-  var tocount = ['Offer', 'Accept', 'Reject','Query']
+  var tocount = ['Offer','Accept', 'Reject','Query']
   var stats = {}
+  var output = [] 
+   
+  console.vlog("DEBUGEXPBAL: START: turns: "+turns.length)
 
-  async.forEachOf(turns, function (turn, key, callbackl) {
+  async.forEachOfSeries(turns, function (turn, key, callbackl) {
+
+    console.vlog("DEBUGEXPBAL: check the number of labels of the current instance : "+turn.output.length)
+
+     output.push(turn)
 
     if (turn['output'].length == 1)
       {
+    	if (tocount.indexOf(turn['output'][0])!=-1)
+	{
         var intent = turn['output'][0]
+    	console.vlog("DEBUGEXPBAL: turn : "+key+ " intent: "+intent)
 
         if (!(intent in stats))
           stats[intent] = 0
@@ -4307,55 +4319,73 @@ function expanbal(turns, callbackg)
 
       classifiers.feAsync(turn, {}, true, {}, function (err, asfeatures){  
         classifiers.feNeg(turn, asfeatures,  true, {}, function (err, negasfeatures){  
-          classifiers.feExpansion(turn, negasfeatures, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':3, 'expand_test':false}, function (err, features){
+          classifiers.feExpansion(turn, negasfeatures, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':best_results, 'expand_test':false}, function (err, features){
 
 	    console.log("DEBUG: EXPANBAL: final features:"+JSON.stringify(features, null, 4))
-	
-	    async.forEachOf(_.unique(features), function (feature, key, callbackll) {
-	    	    console.log("DEBUG: EXPANBAL: feature:"+JSON.stringify(feature, null, 4))
+	    console.log("DEBUG: EXPANBAL: number of expanded train:"+features.length)
+
+	    output_temp = []	
+	    async.forEachOfSeries(_.unique(features), function (feature, key, callbackll) {
+	    	    console.vlog("DEBUG: EXPANBAL: feature:"+JSON.stringify(feature, null, 4))
 	            var turn_copy = copyobj(turn)
         	    delete turn_copy['input']['sentences']
 	            turn_copy['input']['features'] = feature
 	            single_label_utt[intent].push(turn_copy)
+
+		    output_temp.push(turn_copy)
 	            callbackll()
 	    }, function(err){
-             callbackl()
+//            	if (intent == "Offer")
+//		output = output.concat(_.sample(output_temp, 2))
+  //          	else
+		output = output.concat(output_temp)
+		 callbackl()
 	   })
           })
         })
       })
+	}
+	else
+    callbackl();
       }
     else
     callbackl();
 
   }, function (err) {
 
-    var max = 0
+    console.vlog("DEBUGEXPBAL: END: turns: "+output.length)
+    //output = output.concat(turns)
+    console.vlog("DEBUGEXPBAL: END: turns+source utterances: "+output.length)
+	callbackg(null, output)
+
+/*    var max = 0
     _.each(tocount, function(lab, key, list){
       if ((stats[lab]) > max)
       max = stats[lab]
     }, this)
 
-    console.log("DEBUGEXPBAL: max="+max)
-    console.log("DEBUGEXPBAL: intents to consider: "+JSON.stringify(tocount, null, 4))
-    console.log("DEBUGEXPBAL: stats of all intent's occurences: "+JSON.stringify(stats, null, 4))
-    console.log("DEBUGEXPBAL: single_label_utt that were collected: ")
-    console.log("DEBUGEXPBAL: finally denerated: "+JSON.stringify(single_label_utt, null, 4))  
+    console.vlog("DEBUGEXPBAL: max="+max)
+    console.vlog("DEBUGEXPBAL: intents to consider: "+JSON.stringify(tocount, null, 4))
+    console.vlog("DEBUGEXPBAL: stats of all intent's occurences: "+JSON.stringify(stats, null, 4))
+    console.vlog("DEBUGEXPBAL: single_label_utt that were collected: ")
+    console.vlog("DEBUGEXPBAL: finally denerated: "+JSON.stringify(single_label_utt, null, 4))  
 
     _.each(single_label_utt, function(lis, key, list){
-      console.log("DEBUGEXPBAL: "+key+" "+lis.length)
+      console.vlog("DEBUGEXPBAL: "+key+" "+lis.length)
     }, this)
 
     _.each(tocount, function(lab, key, list){
       if ((max > stats[lab]) && (lab in single_label_utt))
       {
-        console.log("DEBUGOVER: intent: "+lab)
-        console.log("DEBUGOVER: size: "+single_label_utt[lab].length)
+        console.vlog("DEBUGOVER: intent: "+lab)
+        console.vlog("DEBUGOVER: size: "+single_label_utt[lab].length)
         turns = turns.concat(setsize(single_label_utt[lab], max - stats[lab] ))
       }
     }, this)
 
+    console.vlog("DEBUGEXPBAL: END: turns: "+turns.length)
     callbackg(null, turns)
+*/
   })
 }
 
