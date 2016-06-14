@@ -45,7 +45,7 @@ process.on('message', function(message) {
 	    function (callbackwhilst) {
 
 		async.waterfall([
-    		function(callback) {
+    		function(callbacks) {
 
         		index += 5
 		
@@ -64,16 +64,18 @@ process.on('message', function(message) {
 					" classifier="+classifier+ " fold="+fold)
 				
 				if (classifier=="NLU_Exp")
-					bars.expanbal(mytrainex, function(err, gentra){
+					bars.expanbal(mytrainex, 100/index, function(err, gentra){
 						console.vlog("DEBUG: worker: "+classifier+" train size:"+gentra.length)
-						callback(null, gentra)
+						callbacks(null, gentra, mytestex, mytrainex.length)
 					})
 				else
-					callback(null, mytrainex, mytestex)
+					callbacks(null, mytrainex, mytestex, mytrainex.length)
 
     		},
-    		function(mytrainex, mytestex, callback) {
+    		function(mytrainex, mytestex, trainsize, callback) {
     	
+			console.vlog("DEBUG: worker SIZES: mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length)
+
     			trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
 
 				console.vlog("DEBUG: worker "+process["pid"]+": traintime="+
@@ -87,13 +89,13 @@ process.on('message', function(message) {
 				   			stats1[key] = value
 				}, this)
 
-				console.vlog("STATS: fold:"+fold+" trainsize:"+mytrain.length+" classifier:"+classifier+" "+JSON.stringify(stats1, null, 4))
+				console.vlog("STATS: fold:"+fold+" trainsize:"+mytrainex.length+" classifier:"+classifier+" "+JSON.stringify(stats1, null, 4))
 
 				var results = {
 					'classifier': classifier,
 					'fold': fold,
-					'trainsize': mytrain.length,
-					'trainsizeuttr': mytrainex.length,
+					'trainsize': trainsize,
+					'trainsizeuttr': trainsize,
 					'stats': stats1			
 				}
 
