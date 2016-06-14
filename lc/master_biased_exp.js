@@ -400,7 +400,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var stat = {}
 
 	var classifiers = [ 'NLU_Baseline','NLU_Exp']
-	//var classifiers = [ 'NLU_Exp']
+	//var classifiers = [ 'NLU_Baseline']
 
 	var data1 = _.shuffle(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json")))
  	var utterset1 = bars.getsetcontext(data1, true)
