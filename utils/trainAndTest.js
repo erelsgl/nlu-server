@@ -248,6 +248,46 @@ module.exports.test_async = function(classifier, testSet, callback) {
 	})
 }
 
+
+module.exports.testBatch_async = function(classifier, testSet, callback) {
+
+	var data_stats = []
+	var currentStats = new PrecisionRecall()
+	var testStart = new Date().getTime()
+
+	var testSetCopy = JSON.parse(JSON.stringify(testSet))
+	var clean_test = _.map(testSetCopy, function(num){ return num.input; });
+
+	classifier.classifyAsync(clean_test, 50, function(error, results){
+
+		async.forEachOfSeries(results, function (classes, testKey, callback1) {
+
+			var record = {}
+			record.input = testSet[testKey].input
+			record.output = testSet[testKey].output
+			record.classified = classes
+			record.explanation = currentStats.addCasesHash(testRecord.output, classes, true)
+
+			console.vlog("TEST: "+JSON.stringify(record.explanation, null, 4))
+			currentStats.addIntentHash(testRecord.output, classes, true)
+	
+			console.vlog("DEBUGCLASSIFY:"+JSON.stringify(record.explanation, null, 4))
+			data_stats.push(record)
+			callback1()
+
+		}, function(err){
+
+			var testEnd = new Date().getTime()		
+			currentStats.calculateStats()
+
+			callback(err, { 'data': data_stats,
+						'stats': currentStats,
+						'testtime': testEnd - testStart})
+		})
+	})
+}
+
+
 /**
  * Test the given classifier on the given test-set.
  * @param classifier a (trained) classifier.
@@ -506,6 +546,8 @@ module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, 
 		})
 	})
 }
+
+
 
 module.exports.trainAndTest_hash = function(
 		classifierType, 
