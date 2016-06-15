@@ -2050,7 +2050,7 @@ module.exports = {
 
 
 		NLU_Baseline: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
-        NLU_Exp: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feNeg/*, feExpansion*//*feAsync*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':3, 'offered':false, 'unoffered':true, 'expand_test':false}),
+        NLU_Exp: enhance(SvmLinearBinaryRelevanceClassifier, [/*feAsync, feNeg, feContext*//*, feExpansion*//*feAsync*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':3, 'offered':false, 'unoffered':true, 'expand_test':false}),
 
 
 	    NLU_Unbiased_Bin: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncPrimitiveClean], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, false, {'unigrams':true,'offered':false, 'unoffered':true}),
