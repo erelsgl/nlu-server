@@ -3712,7 +3712,7 @@ function singlelabeldst(dataset)
 {
   var src_dist = {}
   _.each(dataset, function(value, key, list){
-    var intents = _.unique(_.keys(value.outputhash))
+    var intents = value.output//_.unique(_.keys(value.outputhash))
 
     if (intents.length == 1)
     {
@@ -4352,7 +4352,7 @@ function expanbal(turns, best_results, callbackg)
     console.vlog("DEBUGEXPBAL: final STATS: "+JSON.stringify(stats, null, 4))
    
     _.each(single_label_utt, function(value, key, list){
-      console.vlog("DEBUGEXPBAL: intent: " + key " size of generate instances: "+value.length)
+      console.vlog("DEBUGEXPBAL: intent: " + key+ " size of generate instances: "+value.length)
     }, this)
     
     var max = _.without(_.values(stats),0)
@@ -4364,15 +4364,20 @@ function expanbal(turns, best_results, callbackg)
     if (max > stats[lab])
       {
       console.vlog("DEBUGEXPBAL: sample for intent: "+lab)
-      console.log("DEBUGEXPBAL: size of generated sentences: "+single_label_utt[lab].length)
-      output = output.concat(setsize(single_label_utt[lab], max - stats[lab] ))
+      console.log("DEBUGEXPBAL: size of generated sentences: "+single_label_utt[lab].length+" to generate:"+(max - stats[lab]))
+      var gen = setsize(single_label_utt[lab], max - stats[lab] )  
+      console.vlog("DEBUGEXPBAL: intent: "+lab+" size of generated:"+gen.length)
+    output = output.concat(gen)
       }
     }, this)
 
     console.vlog("DEBUGEXPBAL: END: turns: "+output.length)
     //output = output.concat(turns)
     console.vlog("DEBUGEXPBAL: END: turns+source utterances: "+output.length)
-  	callbackg(null, output)
+    
+	console.vlog("DEBUGEXPBAL: final dist: "+JSON.stringify(singlelabeldst(output), null, 4))
+  
+	callbackg(null, output)
 
 /*    var max = 0
     _.each(tocount, function(lab, key, list){
@@ -4481,6 +4486,8 @@ function undersample(turns)
 function setsize(dataset, size)
 {
   // random variante
+	if (dataset.length == 0)
+	return []
 
   var final_set = []
   _(size).times(function(n){ 
