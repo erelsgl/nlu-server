@@ -1770,13 +1770,14 @@ var SvmLinearBinaryClassifier = classifiers.SvmLinear.bind(0, {
         model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearBinary",
         multiclass: false,
 
-        // learn_args: "-c 100 -t 1 -d 2",
-        // train_command: "svm-train",
-        // test_command: "svm-predict"
+        learn_args: "-c 100 -t 2",
 
-        learn_args: "-c 100",
-        train_command: "liblinear_train",
-        test_command: "liblinear_test"
+        train_command: "svm-train",
+        test_command: "svm-predict"
+
+        // learn_args: "-c 100",
+        // train_command: "liblinear_train",
+        // test_command: "liblinear_test"
 });
 
 var SvmLinearBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
@@ -2048,7 +2049,7 @@ module.exports = {
 //		NLU_Exp: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feExpansion/*feAsync*/,  feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results':3, 'offered':false, 'unoffered':true, 'expand_test':false}),
 
 
-		NLU_Baseline: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feNeg], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
+		NLU_Baseline: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
         NLU_Exp: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feNeg/*, feExpansion*//*feAsync*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':3, 'offered':false, 'unoffered':true, 'expand_test':false}),
 
 
