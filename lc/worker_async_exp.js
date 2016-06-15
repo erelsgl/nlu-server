@@ -64,7 +64,7 @@ process.on('message', function(message) {
 					" classifier="+classifier+ " fold="+fold)
 				
 				if (classifier=="NLU_Exp")
-					bars.expanbal(mytrainex, 100/index, function(err, gentra){
+					bars.expanbal(mytrainex, 10, function(err, gentra){
 						console.vlog("DEBUG: worker: "+classifier+" train size:"+gentra.length)
 						callbacks(null, gentra, mytestex, mytrainex.length)
 					})
