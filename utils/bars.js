@@ -4315,28 +4315,29 @@ function expanbal(turns, best_results, callbackg)
       classifiers.feAsync(turn, {}, true, {}, function (err, asfeatures){  
         classifiers.feNeg(turn, asfeatures,  true, {}, function (err, negasfeatures){  
           classifiers.feExpansion(turn, negasfeatures, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':best_results, 'expand_test':false}, function (err, features){
+//          	classifiers.feContext(turn, featurestocon, true, {'offered':true, 'unoffered':true}, function (err, features){
 
-	    console.log("DEBUG: EXPANBAL: final features:"+JSON.stringify(features, null, 4))
-	    console.log("DEBUG: EXPANBAL: number of expanded train:"+features.length)
+		    console.log("DEBUG: EXPANBAL: final features:"+JSON.stringify(features, null, 4))
+		    console.log("DEBUG: EXPANBAL: number of expanded train:"+features.length)
 
-	    output_temp = []	
-	    async.forEachOfSeries(_.unique(features), function (feature, key, callbackll) {
-	    	    console.vlog("DEBUG: EXPANBAL: feature:"+JSON.stringify(feature, null, 4))
-	            var turn_copy = copyobj(turn)
-        	    delete turn_copy['input']['sentences']
-	            turn_copy['input']['features'] = feature
-	            single_label_utt[intent].push(turn_copy)
-
-            single_label_utt[intent].push(turn_copy)  
-		    // output_temp.push(turn_copy)
-	            callbackll()
-	    }, function(err){
+		    output_temp = []	
+		    async.forEachOfSeries(_.unique(features), function (feature, key, callbackll) {
+	    		    console.vlog("DEBUG: EXPANBAL: feature:"+JSON.stringify(feature, null, 4))
+	            	var turn_copy = copyobj(turn)
+        	    	delete turn_copy['input']['sentences']
+	            	turn_copy['input']['features'] = feature
+	            	single_label_utt[intent].push(turn_copy)
+		        single_label_utt[intent].push(turn_copy)  
+		        // output_temp.push(turn_copy)
+	                callbackll()
+	    	     }, function(err){
 //            	if (intent == "Offer")
 //		output = output.concat(_.sample(output_temp, 2))
   //          	else
 		// output = output.concat(output_temp)
-		 callbackl()
-	   })
+		      callbackl()
+	   	    })
+	//	})
           })
         })
       })
