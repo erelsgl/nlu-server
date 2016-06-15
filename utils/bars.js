@@ -4290,9 +4290,9 @@ function expanbal(turns, best_results, callbackg)
   // relates only to ['Offer', 'Accept', 'Reject']
   // - it doesn't count for context
 
-  var single_label_utt = {}
+  var single_label_utt = {'Offer':[], 'Reject':[], 'Accept':[], 'Query':[]}
+  var stats = {'Offer':0, 'Reject':0, 'Accept':0, 'Query':0}
   var tocount = ['Offer','Accept', 'Reject','Query']
-  var stats = {}
   var output = [] 
    
   console.vlog("DEBUGEXPBAL: START: turns: "+turns.length)
@@ -4301,21 +4301,16 @@ function expanbal(turns, best_results, callbackg)
 
     console.vlog("DEBUGEXPBAL: check the number of labels of the current instance : "+turn.output.length)
 
-     output.push(turn)
+    output.push(turn)
 
     if (turn['output'].length == 1)
       {
     	if (tocount.indexOf(turn['output'][0])!=-1)
-	{
+	     {
         var intent = turn['output'][0]
-    	console.vlog("DEBUGEXPBAL: turn : "+key+ " intent: "+intent)
+    	  console.vlog("DEBUGEXPBAL: turn : "+key+ " intent: "+intent)
 
-        if (!(intent in stats))
-          stats[intent] = 0
         stats[intent] += 1
-
-        if (!(intent in single_label_utt))
-          single_label_utt[intent] = []
 
       classifiers.feAsync(turn, {}, true, {}, function (err, asfeatures){  
         classifiers.feNeg(turn, asfeatures,  true, {}, function (err, negasfeatures){  
@@ -4332,13 +4327,14 @@ function expanbal(turns, best_results, callbackg)
 	            turn_copy['input']['features'] = feature
 	            single_label_utt[intent].push(turn_copy)
 
-		    output_temp.push(turn_copy)
+            single_label_utt[intent].push(turn_copy)  
+		    // output_temp.push(turn_copy)
 	            callbackll()
 	    }, function(err){
 //            	if (intent == "Offer")
 //		output = output.concat(_.sample(output_temp, 2))
   //          	else
-		output = output.concat(output_temp)
+		// output = output.concat(output_temp)
 		 callbackl()
 	   })
           })
@@ -4353,10 +4349,30 @@ function expanbal(turns, best_results, callbackg)
 
   }, function (err) {
 
+    console.vlog("DEBUGEXPBAL: final STATS: "+JSON.stringify(stats, null, 4))
+   
+    _.each(single_label_utt, function(value, key, list){
+      console.vlog("DEBUGEXPBAL: intent: " + key " size of generate instances: "+value.length)
+    }, this)
+    
+    var max = _.without(_.values(stats),0)
+    max = _.sortBy(max, function(num){ return num }).reverse()[0]
+
+    console.vlog("DEBUGEXPBAL: intent: the most representative intent: " + max)
+
+    _.each(tocount, function(lab, key, list){
+    if (max > stats[lab])
+      {
+      console.vlog("DEBUGEXPBAL: sample for intent: "+lab)
+      console.log("DEBUGEXPBAL: size of generated sentences: "+single_label_utt[lab].length)
+      output = output.concat(setsize(single_label_utt[lab], max - stats[lab] ))
+      }
+    }, this)
+
     console.vlog("DEBUGEXPBAL: END: turns: "+output.length)
     //output = output.concat(turns)
     console.vlog("DEBUGEXPBAL: END: turns+source utterances: "+output.length)
-	callbackg(null, output)
+  	callbackg(null, output)
 
 /*    var max = 0
     _.each(tocount, function(lab, key, list){
@@ -4461,7 +4477,7 @@ function undersample(turns)
   return res
 }
 
-
+// sample 'size' intenaces from 'dataset' with return
 function setsize(dataset, size)
 {
   // random variante
