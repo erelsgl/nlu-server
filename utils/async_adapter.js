@@ -124,7 +124,7 @@ function getppdb(string, pos, db, relation, callback)
 			
 //			console.vlog("DEBUGPPDB: string: " + string + " before lemma: " + JSON.stringify(output, null, 4))
 		  	
-			console.vlog("DEBUGPPDB: string: " + string + " final output: " + JSON.stringify(output, null, 4))
+			//console.vlog("DEBUGPPDB: string: " + string + " final output: " + JSON.stringify(output, null, 4))
 	//			client.disconnect()
 			callback(err, output)
 		
