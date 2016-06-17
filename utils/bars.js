@@ -3859,13 +3859,12 @@ function processdatasettest(dataset)
     var collapseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-dependencies'))
     var collapsedccprocesseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-ccprocessed-dependencies'))
 
-
-    dataset[utterance_key]['input']['sentences'] = [{
+    dataset[utterance_key]['input']['sentences'] = {
 			'tokens': tokens,
 			'basic-dependencies': basicdependencies,
 		  'collapsed-dependencies': collapseddependencies,
 			'collapsed-ccprocessed-dependencies': collapsedccprocesseddependencies
-		}]
+		}
   })
   return dataset
 }
