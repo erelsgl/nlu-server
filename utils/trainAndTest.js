@@ -258,20 +258,23 @@ module.exports.testBatch_async = function(classifier, testSet, callback) {
 	var testSetCopy = JSON.parse(JSON.stringify(testSet))
 	var clean_test = _.map(testSetCopy, function(num){ return num.input; });
 
-	classifier.classifyAsync(clean_test, 50, function(error, results){
+	console.vlog("TEST&TRAIN: test set length "+clean_test.length)
 
-		async.forEachOfSeries(results, function (classes, testKey, callback1) {
+	classifier.classifyBatchAsync(clean_test, 50, function(error, results){
+
+		async.forEachOfSeries(results, function (rec, testKey, callback1) {
 
 			var record = {}
+			var classes = rec.output
+
 			record.input = testSet[testKey].input
 			record.output = testSet[testKey].output
 			record.classified = classes
-			record.explanation = currentStats.addCasesHash(testRecord.output, classes, true)
+			record.explanation = currentStats.addCasesHash(record.output, classes, true)
 
-			console.vlog("TEST: "+JSON.stringify(record.explanation, null, 4))
-			currentStats.addIntentHash(testRecord.output, classes, true)
+			console.vlog("TEST&TRAIN: "+JSON.stringify(record, null, 4))
+			currentStats.addIntentHash(record.output, classes, true)
 	
-			console.vlog("DEBUGCLASSIFY:"+JSON.stringify(record.explanation, null, 4))
 			data_stats.push(record)
 			callback1()
 
@@ -279,6 +282,8 @@ module.exports.testBatch_async = function(classifier, testSet, callback) {
 
 			var testEnd = new Date().getTime()		
 			currentStats.calculateStats()
+
+			console.vlog("TEST&TRAIN: currentStats: "+JSON.stringify(currentStats, null, 4))
 
 			callback(err, { 'data': data_stats,
 						'stats': currentStats,
@@ -539,8 +544,8 @@ module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, 
 		var trainEnd = new Date().getTime()
 		console.log("trained")
 		// module.exports.test_hash(classifier, testSet, function(error, results){
-		// module.exports.testBatch_async(classifier, testSet, function(error, results){
-		module.exports.test_async(classifier, testSet_copy, function(error, results){
+		module.exports.testBatch_async(classifier, testSet_copy, function(error, results){
+		// module.exports.test_async(classifier, testSet_copy, function(error, results){
 			results['traintime'] = trainEnd - trainStart
 			callback(null, results)
 		})
