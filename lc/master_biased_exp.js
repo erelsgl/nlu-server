@@ -10,6 +10,13 @@ var gnuplot = 'gnuplot'
 var statusfile = __dirname + "/status"
 var plotfile = __dirname + "/plotstatus"
 
+var disc = 0
+
+var log_file = "/tmp/logs/master"
+
+console.vlog = function(data) {
+    fs.appendFileSync(log_file, data + '\n', 'utf8')
+};
 // function groupbylabel(dataset, minsize, sizetrain, catnames)
 // {
 
@@ -412,6 +419,8 @@ function learning_curves(classifiers, folds, dataset, callback)
 	// args: [JSON.stringify({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len})],
 	// silent: false
 	});
+	
+	console.vlog("DEBUGMASTER")
 
 	_.each(classifiers, function(classifier, key, list){ 
 		_(folds).times(function(fold){
@@ -421,7 +430,9 @@ function learning_curves(classifiers, folds, dataset, callback)
 			
 			var data = partitions.partitions_consistent_by_fold(train1, folds, fold)
 
-			console.log("DEBUGMASTER: fold "+ fold + " train size "+data.train.length + " test size " + data.test.length)
+			console.vlog("DEBUGMASTER: fold "+ fold + " train size "+data.train.length + " test size " + data.test.length)
+			//console.vlog(JSON.stringify(worker, bars.censor(worker), 4))
+			console.vlog("DEBUGMASTER: process.pid:"+worker.process.pid)
 
 			worker.send({ 		
 					'train': JSON.stringify(data.test), 
@@ -429,28 +440,29 @@ function learning_curves(classifiers, folds, dataset, callback)
 		     		})
 			
 			worker.on('disconnect', function(){
-			  	console.log("DEBUGMASTER: finished: workers.length: "+Object.keys(cluster.workers).length)
-			  	if (Object.keys(cluster.workers).length == 1)
+			  	console.vlog("DEBUGMASTER: finished: workers.length: "+Object.keys(cluster.workers).length + " disc: "+disc)
+				disc += 1
+			  	//if (Object.keys(cluster.workers).length == 1)
 			  	{
-					console.log("DEBUGMASTER: all workers are disconnected")
+				//	console.log("DEBUGMASTER: all workers are disconnected")
 			  		_.each(stat, function(data, param, list){
 						// update the graph for current fold per parameter
-						_(folds).times(function(fold){
-							plotlc(fold, param, stat)
-							console.log("DEBUG: param "+param+" fold "+fold+" build")
-						})
+						//_(folds).times(function(fold){
+						//	plotlc(fold, param, stat)
+						//	console.log("DEBUG: param "+param+" fold "+fold+" build")
+						//})
 						// build average per parameters
 						plotlc('average', param, stat)
 				
 					})
-					console.log(JSON.stringify(stat, null, 4))
+					console.vlog(JSON.stringify(stat, null, 4))
 			  	}
 			})
 
 			worker.on('message', function(message){
 				var workerstats = JSON.parse(message)
 				workerstats['classifiers'] = classifiers
-				console.log("DEBUGMASTER: on message: "+message)
+				console.vlog("DEBUGMASTER: on message: "+message)
 				// fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
 				extractGlobal(workerstats, stat)
 			})
@@ -519,7 +531,7 @@ if (process.argv[1] === __filename)
 
 //	dataset = dataset.slice(0,100)
 
-	var folds = 10
+	var folds = 20
 
 	//console.log("Dataset "+ dataset.length)
 //	console.log("DEBUG: master: dataset size "+ dataset.length)
