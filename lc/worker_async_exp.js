@@ -21,8 +21,7 @@ console.vlog = function(data) {
     fs.appendFileSync(log_file, data + '\n', 'utf8')
 };
 
-if ( 
-	cluster.isWorker)
+if (cluster.isWorker)
 	console.vlog("DEBUG: worker "+ process.pid+": started")
 
 process.on('message', function(message) {
@@ -41,13 +40,15 @@ process.on('message', function(message) {
 
 	async.whilst(
 	    //function () { return index < train.length },
-	    function () { return index < 50 },
+	    function () { return index < 30 },
 	    function (callbackwhilst) {
 
 		async.waterfall([
     		function(callbacks) {
 
-        		index += 5
+        		if (index == 0) index = 3
+			else if (index < 10) index +=1
+			else index += 5
 		
 	    		var mytrain = train.slice(0, index)
 	    		var mytrainex = JSON.parse(JSON.stringify(mytrain))
@@ -64,7 +65,7 @@ process.on('message', function(message) {
 					" classifier="+classifier+ " fold="+fold)
 				
 				if (classifier=="NLU_Exp")
-					bars.expanbal(mytrainex, 10, function(err, gentra){
+					bars.expanbal(mytrainex, 3, function(err, gentra){
 						console.vlog("DEBUG: worker: "+classifier+" train size:"+gentra.length)
 						callbacks(null, gentra, mytestex, mytrainex.length)
 					})
