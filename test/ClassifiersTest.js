@@ -25,6 +25,38 @@ var SvmPerfBinaryRelevanceClassifier = limdu_classifiers.multilabel.BinaryReleva
 
 describe('Classifiers functions', function() {
 
+  it("randomCheck", function(callback) {
+    var sample = {
+      'output': ["Accept"],
+      'input':{
+           // 'text': "I love the life",
+        'sentences':
+        {
+          'basic-dependencies':[
+            {"dep": "ROOT", "dependentGloss": "love"},
+            {"dependentGloss": "I"},
+            {"dependentGloss": "the"},
+            {"dependentGloss": "life"}
+          ],
+          'tokens':[
+            {'word': 'I','pos': 'ABC', 'lemma':'I'},
+            {'word': 'love','pos': 'VB','lemma':'love'},
+            {'word': 'the','pos': 'ABC','lemma':'the'},
+            {'word': 'life','pos': 'NN','lemma':'life'},
+          ]
+        }
+      }
+    }
+
+    var params = {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results': 5, 'expand_test': false}
+    classifiers.feExpansionW(sample, {'I':1, 'love':1, 'the':1, 'life':1}, true, params, function (err, features){
+      console.log(JSON.stringify(features, null, 4))
+      // _.isEqual(features, { i:1, love: 1,the:1, life: 1,enjoys: 1,liking: 1,prefers: 1,appreciates: 1,lifetime: 1}).should.equal(true)
+      callback(null)
+    })
+
+  })
+
   it('neufeExpansion', function(callback1) {
 
     var sample = {
