@@ -83,7 +83,7 @@ function getppdb(string, pos, db, relation, callback)
 				callback(err)
 			}
 			
-//			console.vlog("DEBUGPPDB: string to expansion: " + string+ " POS: "+pos + " relation: "+ relation+ " db: "+ db +" replies " + JSON.stringify(replies))
+			//console.vlog("DEBUGPPDB: string to expansion: " + string+ " POS: "+pos + " relation: "+ relation+ " db: "+ db +" replies " + JSON.stringify(replies))
 
 			_.each(replies, function(value, key, list){ 
 
@@ -122,7 +122,7 @@ function getppdb(string, pos, db, relation, callback)
 
 			output = _.sortBy(output, function(num){ return num[2] });
 			
-//			console.vlog("DEBUGPPDB: string: " + string + " before lemma: " + JSON.stringify(output, null, 4))
+			//console.vlog("DEBUGPPDB: string: " + string + " lemma: " + JSON.stringify(output, null, 4))
 		  	
 			//console.vlog("DEBUGPPDB: string: " + string + " final output: " + JSON.stringify(output, null, 4))
 	//			client.disconnect()
