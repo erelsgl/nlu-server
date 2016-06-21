@@ -832,10 +832,9 @@ function feExpansion(sample_or, features, train, featureOptions, callback) {
 					console.vlog("DEBUGEXP: ready to expand train:" + train + " "+JSON.stringify(token))			
 
 					async_adapter.getppdb(token.lemma, token.pos, featureOptions.scale, featureOptions.relation,  function(err, results){
-					//async_adapter.getwordnet(token.lemma, token.pos, function(err, results){
+					// async_adapter.getwordnet(token.lemma, token.pos, function(err, results){
 						
-						// get rid of phrases
-					
+						// get rid of phrases				
 						console.vlog("DEBUGEXP: number of results with phrases "+results.length)
 						results = _.filter(results, function(num){ return num[0].indexOf(" ") == -1 })
 						console.vlog("DEBUGEXP: number of results without phrases "+results.length)
@@ -891,6 +890,189 @@ function feExpansion(sample_or, features, train, featureOptions, callback) {
 	
 	// })
 }
+
+
+// as a feature source it gets it from upper feature extraction level
+function feExpansionW(sample_or, features, train, featureOptions, callback) {
+// featureOptions.scale
+// featureOptions.relation
+	var sample = JSON.parse(JSON.stringify(sample_or))	
+
+	if (!('allow_offer' in featureOptions)) throw new Error("allow_offer is not in the featureOptions")
+	if (!('expand_test' in featureOptions)) throw new Error("expand_test is not in the featureOptions")
+	if (!('best_results' in featureOptions)) throw new Error("best_results is not in the featureOptions")
+
+	var sentence = ""
+	var innerFeatures = JSON.parse(JSON.stringify(features))
+
+	var output = []
+
+	if (!("input" in sample))
+		{
+		var temp = JSON.parse(JSON.stringify(sample))
+		var sample ={'input':temp}
+		
+		}
+	if (!('sentences' in sample['input']))
+		throw new Error("sentences not in the sample")
+
+	console.vlog("DEBUGEXP: START: train: "+train + " options: "+JSON.stringify(featureOptions)+ "text: "+sample.input.text)
+	//console.vlog("DEBUGEXP: START: sample: "+JSON.stringify(sample, null, 4))
+
+	var cleaned = getRule(sample["input"]["sentences"]).cleaned
+	var cleaned_tokens = _.map(cleaned.tokens, function(num){ return num.word; });
+
+	// feAsync(sample, {}, train, {}, function(err, featuresAsync){
+	// innerFeatures = _.extend(innerFeatures, featuresAsync)
+
+		async.waterfall([
+			function(callbackl1){
+			  if (((!featureOptions.expand_test) && (train)) || (featureOptions.expand_test))
+				{	
+				callbackl1(null)
+				}
+			 else
+				{	
+				console.vlog("DEBUGEXP: callback classify noexpansion"+ train +" "+ _.keys(features))
+				callback(null, innerFeatures)
+				}
+			},
+			function(callbackl) {
+
+				console.vlog("DEBUGEXP: continue")
+
+				 if ((!featureOptions.allow_offer)&&(train))
+					{ 
+					if (sample.output[0] == "Offer")
+				 		{
+						console.vlog("Offer no expansion")
+				 		callback(null, innerFeatures)	
+				 		}
+					}
+	
+				var poses = {}
+				var roots = []
+	
+//				console.vlog("DEBUG train" + train)	
+				
+				_.each(sample['input']['sentences']['tokens'], function(token, key, list){ 
+					// _.each(sentence['tokens'], function(token, key, list){ 	
+					poses[token.word.toLowerCase()] = {
+														'pos':token.pos,
+														'lemma': token.lemma.toLowerCase(),
+														'word': token.word.toLowerCase(),
+														'neg': false
+														}
+				}, this)	
+
+//				console.vlog("DEBUGEXP: found tokens: "+JSON.stringify(poses, null, 4))
+				
+				_.each(sample['input']['sentences']['basic-dependencies'], function(dep, key, list){ 	
+
+					if (dep.dep == "ROOT")
+						roots.push(dep.dependentGloss.toLowerCase())
+
+	//				if (dep.dep == "xcomp")
+ 	//		                       roots.push(dep.dependentGloss.toLowerCase())
+
+					if (dep.dep == "neg")
+						{
+						poses[dep.governorGloss.toLowerCase()]["neg"] = true
+						delete poses[dep.dependentGloss.toLowerCase()]
+						
+						}
+					}, this)	
+				// }, this)
+
+			// eliminate number from root
+			var roots = _.filter(roots, function(num){ return num.indexOf("0") == -1 });
+			
+			
+			console.vlog("DEBUGEXP: words to expand: " + roots)
+
+//			console.vlog("DEBUGEXP: poses: " + JSON.stringify(poses))
+        		callbackl(null, poses, roots);
+    		},
+		    function(poses, roots, callbackll) {
+
+		//	var allowedpos = ["vb","vbd","vbg","vbn","vbp","vbz","uh","wp","wdt"]
+
+			async.forEachOfSeries(poses, function(token, unigram, callback2){ 
+			// async.forEachOfSeries(_.keys(poses), function(unigram, dind, callback2){ 
+				if (((!featureOptions.onlyroot) && (stopwords.indexOf(unigram)==-1))
+					//|| ((featureOptions.onlyroot) && (roots.indexOf(unigram)!=-1) && (allowedpos.indexOf(token.pos.toLowerCase())!=-1) && (cleaned_tokens.indexOf(unigram)!=-1)))
+					|| ((featureOptions.onlyroot) && (roots.indexOf(unigram)!=-1) && (cleaned_tokens.indexOf(unigram)!=-1)))
+				{
+
+				// we any case we are taking lemma and verb so take VB pos tag
+					
+//					if ((featureOptions.onlyroot) && (token.pos.toLowerCase().indexOf("vb")!=-1))
+//						token.pos = "VB"
+
+					// if (!(unigram in poses))
+						// throw new Error(unigram + " is not found in "+poses)
+				
+					console.vlog("DEBUGEXP: ready to expand train:" + train + " "+JSON.stringify(token))			
+
+					// async_adapter.getppdb(token.lemma, token.pos, featureOptions.scale, featureOptions.relation,  function(err, results){
+					async_adapter.getwordnet(token.lemma, token.pos, function(err, results){
+						
+						// get rid of phrases				
+						// console.vlog("DEBUGEXP: number of results with phrases "+results.length)
+						// results = _.filter(results, function(num){ return num[0].indexOf(" ") == -1 })
+						// console.vlog("DEBUGEXP: number of results without phrases "+results.length)
+
+						_.each(["synonyms","antonyms"], function(type, key, list){
+							// results = _.map(results, function(num){ return num[0] });
+							var res = results[type]	
+
+							if ((token.neg) && (type == "synonyms"))
+								res = _.map(res, function(num){ return num+"-"; });
+
+							if ((!token.neg) && (type == "antonyms"))
+								res = _.map(res, function(num){ return num+"-"; });
+
+							if (!_.isUndefined(featureOptions.best_results))
+								res = res.slice(0, featureOptions.best_results)
+		
+							console.log("DEBUGEXP: type: "+type+ " res: "+res)
+
+							_.each(res, function(expan, key, list){ 	
+								var temp = JSON.parse(JSON.stringify(innerFeatures))
+								delete temp[token.word+"-"]
+								delete temp[token.word]
+									// innerFeatures[expan.toLowerCase()] = 1
+								temp[expan.toLowerCase()] = 1
+								output.push(JSON.parse(JSON.stringify((temp))))
+									
+								console.vlog("DEBUGEXP: temp: "+JSON.stringify(temp))
+							}, this)
+						}, this)
+
+						callback2()
+					})
+				}
+				else
+				callback2()
+			}, function(err){callbackll()})
+		}],
+		function (err, result) {
+
+			// callback(null, innerFeatures)
+			console.vlog("DEBUGEXP: finish with "+output.length +" generated instances")
+			callback(null, output)
+	     });
+
+//	}
+//	else
+//	{
+//		console.log(process.pid + " DEBUG: callback classify noexpansion"+ train +" "+ _.keys(features))
+//		return callback(null, features)	
+//	}
+	
+	// })
+}
+
 
 function feWordnet(sample, features, train, featureOptions, callback) {
 
@@ -1977,6 +2159,7 @@ module.exports = {
 		normalizer: normalizer,
 		feContext:feContext,
 		feEmbed:feEmbed,
+		feExpansionW:feExpansionW,
 		feExpansion:feExpansion,
 		feAsync:feAsync,
 		feWordnet:feWordnet,
