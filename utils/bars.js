@@ -4311,21 +4311,20 @@ function expanbal(turns, best_results, callbackg)
 
         stats[intent] += 1
 
-      classifiers.feAsync(turn, {}, true, {}, function (err, asfeatures){  
+      classifiers.feAsync(turn, {}, true, {'toextract':'word'}, function (err, asfeatures){  
         classifiers.feNeg(turn, asfeatures,  true, {}, function (err, negasfeatures){  
-          classifiers.feExpansion(turn, negasfeatures, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':best_results, 'expand_test':false}, function (err, features){
-//          	classifiers.feContext(turn, featurestocon, true, {'offered':true, 'unoffered':true}, function (err, features){
+         classifiers.feContext(turn, negasfeatures, true, {'offered':true, 'unoffered':true}, function (err, featurestoex){
+          classifiers.feExpansion(turn, featurestoex, true, {'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':best_results, 'expand_test':false}, function (err, features){
 
-		    console.log("DEBUG: EXPANBAL: final features:"+JSON.stringify(features, null, 4))
-		    console.log("DEBUG: EXPANBAL: number of expanded train:"+features.length)
+		    console.vlog("DEBUG: EXPANBAL: final features:"+JSON.stringify(features, null, 4))
+		    console.vlog("DEBUG: EXPANBAL: number of expanded train:"+features.length)
 
 		    output_temp = []	
 		    async.forEachOfSeries(_.unique(features), function (feature, key, callbackll) {
-	    		    console.vlog("DEBUG: EXPANBAL: feature:"+JSON.stringify(feature, null, 4))
+	    		console.vlog("DEBUG: EXPANBAL: feature:"+JSON.stringify(feature, null, 4))
 	            	var turn_copy = copyobj(turn)
         	    	delete turn_copy['input']['sentences']
 	            	turn_copy['input']['features'] = feature
-	            	single_label_utt[intent].push(turn_copy)
 		        single_label_utt[intent].push(turn_copy)  
 		        // output_temp.push(turn_copy)
 	                callbackll()
@@ -4336,7 +4335,7 @@ function expanbal(turns, best_results, callbackg)
 		// output = output.concat(output_temp)
 		      callbackl()
 	   	    })
-	//	})
+		})
           })
         })
       })
@@ -4349,12 +4348,23 @@ function expanbal(turns, best_results, callbackg)
 
   }, function (err) {
 
+
     console.vlog("DEBUGEXPBAL: final STATS: "+JSON.stringify(stats, null, 4))
    
     _.each(single_label_utt, function(value, key, list){
       console.vlog("DEBUGEXPBAL: intent: " + key+ " size of generate instances: "+value.length)
     }, this)
-    
+
+	output = output.concat(_.flatten(_.values(single_label_utt)))
+
+      console.vlog("DEBUGEXPBAL: generated stuff: "+JSON.stringify(single_label_utt, null, 4))
+      console.vlog("DEBUGEXPBAL: final size: "+output.length)
+
+      console.vlog("DEBUGEXPBAL: final output: "+JSON.stringify(output, null, 4))
+//return all generated stuff
+      callbackg(null, output)
+
+ /*   
     var max = _.without(_.values(stats),0)
     max = _.sortBy(max, function(num){ return num }).reverse()[0]
 
@@ -4378,34 +4388,6 @@ function expanbal(turns, best_results, callbackg)
 	console.vlog("DEBUGEXPBAL: final dist: "+JSON.stringify(singlelabeldst(output), null, 4))
   
 	callbackg(null, output)
-
-/*    var max = 0
-    _.each(tocount, function(lab, key, list){
-      if ((stats[lab]) > max)
-      max = stats[lab]
-    }, this)
-
-    console.vlog("DEBUGEXPBAL: max="+max)
-    console.vlog("DEBUGEXPBAL: intents to consider: "+JSON.stringify(tocount, null, 4))
-    console.vlog("DEBUGEXPBAL: stats of all intent's occurences: "+JSON.stringify(stats, null, 4))
-    console.vlog("DEBUGEXPBAL: single_label_utt that were collected: ")
-    console.vlog("DEBUGEXPBAL: finally denerated: "+JSON.stringify(single_label_utt, null, 4))  
-
-    _.each(single_label_utt, function(lis, key, list){
-      console.vlog("DEBUGEXPBAL: "+key+" "+lis.length)
-    }, this)
-
-    _.each(tocount, function(lab, key, list){
-      if ((max > stats[lab]) && (lab in single_label_utt))
-      {
-        console.vlog("DEBUGOVER: intent: "+lab)
-        console.vlog("DEBUGOVER: size: "+single_label_utt[lab].length)
-        turns = turns.concat(setsize(single_label_utt[lab], max - stats[lab] ))
-      }
-    }, this)
-
-    console.vlog("DEBUGEXPBAL: END: turns: "+turns.length)
-    callbackg(null, turns)
 */
   })
 }
@@ -4966,6 +4948,22 @@ function cleanFolder(dir)
   }, this)
 }
 
+function censor(censor) {
+  var i = 0;
+
+  return function(key, value) {
+    if(i !== 0 && typeof(censor) === 'object' && typeof(value) == 'object' && censor == value) 
+      return '[Circular]'; 
+
+    if(i >= 29) // seems to be a harded maximum of 30 serialized objects?
+      return '[Unknown]';
+
+    ++i; // so we know we aren't using the original object anymore
+
+    return value;  
+  }
+}
+
 module.exports = {
   simulaterealds:simulaterealds,
   simulateds:simulateds,
@@ -5090,5 +5088,6 @@ processdataset1:processdataset1,
 processdatasettrain:processdatasettrain,
 processdatasettest:processdatasettest,
 cleanFolder:cleanFolder,
-expanbal:expanbal
+expanbal:expanbal,
+censor: censor
 }
