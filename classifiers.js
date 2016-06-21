@@ -710,10 +710,11 @@ function inputSplitter(text) {
 */
 
 // as a feature source it gets it from upper feature extraction level
-function feExpansion(sample, features, train, featureOptions, callback) {
+function feExpansion(sample_or, features, train, featureOptions, callback) {
 // featureOptions.scale
 // featureOptions.relation
-	
+	var sample = JSON.parse(JSON.stringify(sample_or))	
+
 	if (!('allow_offer' in featureOptions)) throw new Error("allow_offer is not in the featureOptions")
 	if (!('expand_test' in featureOptions)) throw new Error("expand_test is not in the featureOptions")
 	if (!('best_results' in featureOptions)) throw new Error("best_results is not in the featureOptions")
@@ -733,6 +734,7 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 		throw new Error("sentences not in the sample")
 
 	console.vlog("DEBUGEXP: START: train: "+train + " options: "+JSON.stringify(featureOptions)+ "text: "+sample.input.text)
+	//console.vlog("DEBUGEXP: START: sample: "+JSON.stringify(sample, null, 4))
 
 	var cleaned = getRule(sample["input"]["sentences"]).cleaned
 	var cleaned_tokens = _.map(cleaned.tokens, function(num){ return num.word; });
@@ -775,28 +777,37 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 					poses[token.word.toLowerCase()] = {
 														'pos':token.pos,
 														'lemma': token.lemma.toLowerCase(),
+														'word': token.word.toLowerCase(),
 														'neg': false
 														}
 				}, this)	
 
-				console.vlog("DEBUGEXP: found tokens: "+JSON.stringify(poses, null, 4))
+//				console.vlog("DEBUGEXP: found tokens: "+JSON.stringify(poses, null, 4))
 				
 				_.each(sample['input']['sentences']['basic-dependencies'], function(dep, key, list){ 	
 
 					if (dep.dep == "ROOT")
 						roots.push(dep.dependentGloss.toLowerCase())
 
-					if (dep.dep == "xcomp")
-                        roots.push(dep.dependentGloss.toLowerCase())
+	//				if (dep.dep == "xcomp")
+ 	//		                       roots.push(dep.dependentGloss.toLowerCase())
 
 					if (dep.dep == "neg")
+						{
 						poses[dep.governorGloss.toLowerCase()]["neg"] = true
-				}, this)	
+						delete poses[dep.dependentGloss.toLowerCase()]
+						
+						}
+					}, this)	
 				// }, this)
 
+			// eliminate number from root
+			var roots = _.filter(roots, function(num){ return num.indexOf("0") == -1 });
+			
+			
 			console.vlog("DEBUGEXP: words to expand: " + roots)
 
-			console.vlog("DEBUGEXP: poses: " + JSON.stringify(poses))
+//			console.vlog("DEBUGEXP: poses: " + JSON.stringify(poses))
         		callbackl(null, poses, roots);
     		},
 		    function(poses, roots, callbackll) {
@@ -838,29 +849,26 @@ function feExpansion(sample, features, train, featureOptions, callback) {
 						console.vlog("DEBUGEXP: results to add for token:"+ JSON.stringify(token)+ " results:"+JSON.stringify(results))
 						console.log("DEBUGEXP: results to add for token:"+ JSON.stringify(token)+ " results:"+JSON.stringify(results))
 						
-			                Lem.lemmatize(results, function(err, lemmas) {
+			                //Lem.lemmatize(results, function(err, lemmas) {
 	
-								_.each(lemmas, function(expan, key, list){ 	
+								_.each(results, function(expan, key, list){ 	
 									var temp = JSON.parse(JSON.stringify(innerFeatures))
 									if (token.neg)
-										{ 
 										expan+="-"
-										 delete temp[token.lemma]+"-"
-										}
-										else
-										 delete temp[token.lemma]
+									delete temp[token.word+"-"]
+									delete temp[token.word]
 									// innerFeatures[expan.toLowerCase()] = 1
-										temp[expan.toLowerCase()] = 1
+									temp[expan.toLowerCase()] = 1
 
-										output.push(JSON.parse(JSON.stringify((temp))))
+									output.push(JSON.parse(JSON.stringify((temp))))
 									
-									console.log("DEBUGEXP: temp: "+JSON.stringify(temp))
+									console.vlog("DEBUGEXP: temp: "+JSON.stringify(temp))
 
 								}, this)
 	
 //								console.vlog("DEBUGEXP: permanent features "+JSON.stringify(innerFeatures))
 								callback2()
-							})
+					//		})
 					})
 				}
 				else
@@ -1376,10 +1384,15 @@ function feSentiment(sample, features, train, featureOptions, callback) {
 	callback(null, features)
 }
 
-function feContext(sample, features, train, featureOptions, callback) {
+function feContext(sample_or, features, train, featureOptions, callback) {
 	// offered
 	// unoffered
 	// both
+	
+	var sample = JSON.parse(JSON.stringify(sample_or)) 
+
+	if (_.isArray(features))	
+		throw new Error("For some reason features is an array")
 
 	if ('input' in sample)
 		sample = sample.input
@@ -1397,8 +1410,8 @@ function feContext(sample, features, train, featureOptions, callback) {
 //	if (context.length == 0)
 //		features['NO_CONTEXT'] = 1
 	
-	console.log("DEBUGCONTEXT: text : "+ sample.text)	
-	console.log("DEBUGCONTEXT: context " + JSON.stringify(context) + " train "+train+" featureOptions "+JSON.stringify(featureOptions))
+	console.vlog("DEBUGCONTEXT: text : "+ sample.text)	
+	console.vlog("DEBUGCONTEXT: context " + JSON.stringify(context) + " train "+train+" featureOptions "+JSON.stringify(featureOptions))
 
 	// var attrval = rules.findData(sentence)
 	// attrval[0] - attrs
@@ -1416,7 +1429,7 @@ function feContext(sample, features, train, featureOptions, callback) {
 	var intents = []
 	var values = [] 
 
-	console.log("DEBUGCONTEXT: labels of the sample "+JSON.stringify(attrval))
+	console.vlog("DEBUGCONTEXT: labels of the sample "+JSON.stringify(attrval))
 
 	/*if (featureOptions.previous_intent)
 	{
@@ -1457,23 +1470,23 @@ function feContext(sample, features, train, featureOptions, callback) {
 			values.push(_.values(_.values(obj)[0])[0])
 	}, this)
 
-	console.log("DEBUGCONTEXT: values of the context "+ values)
+	console.vlog("DEBUGCONTEXT: values of the context "+ values)
 
 	console.log(JSON.stringify(values, null, 4))
 	console.log(JSON.stringify(attrval, null, 4))
 	
 	_.each(attrval[1], function(value, key, list){
-		console.log("DEBUGCONTEXT: check value "+ value)
+		console.vlog("DEBUGCONTEXT: check value "+ value)
 
 		if (values.indexOf(value)!=-1)
 		{
-			console.log("DEBUGCONTEXT: value "+ value + " is in the context")
+			console.vlog("DEBUGCONTEXT: value "+ value + " is in the context")
 			if (featureOptions.offered) 
 				features['OFFEREDVALUE'] = 1
 		}
 		else
 		{
-			console.log("DEBUGCONTEXT: value "+ value + " is not in the context")
+			console.vlog("DEBUGCONTEXT: value "+ value + " is not in the context")
 			if (featureOptions.unoffered)
 				features['UNOFFEREDVALUE'] = 1
 		}
@@ -1484,7 +1497,7 @@ function feContext(sample, features, train, featureOptions, callback) {
 
 	// features['END'] = 1
 
-	console.log("DEBUGCONTEXT: " + JSON.stringify(features))
+	console.vlog("DEBUGCONTEXT: " + JSON.stringify(features))
 	
 	callback(null, features)
 }
@@ -1583,6 +1596,9 @@ function feAsync(sam, features, train, featureOptions, callback) {
 	//var lemfil = ['be']
 	var lemfil = []
 	
+	if (!('toextract' in featureOptions))
+	           throw new Error("toextract is not defined")
+
 	if ("input" in sample)
 		sample = sample.input
 
@@ -1612,14 +1628,19 @@ function feAsync(sam, features, train, featureOptions, callback) {
 		throw new Error("feAsync: more than one sentence "+sample['sentences'].length)
 
 	async.eachSeries(sample['sentences']['tokens'], function(token, callback_local) {
-		if ((filtr.indexOf(token.pos)==-1) && (lemfil.indexOf(token.lemma)==-1))
-		{
-    		features[token.lemma.toLowerCase()] = 1
+	//	if ((filtr.indexOf(token.pos)==-1) && (lemfil.indexOf(token.lemma)==-1))
+	//	{
+    		if (featureOptions.toextract == "lemma")
+		features[token.lemma.toLowerCase()] = 1
+
+	        if (featureOptions.toextract == "word")
+	        features[token.word.toLowerCase()] = 1
+
     		//features[token.word.toLowerCase()] = 1
     		callback_local()
-    	}
-    	else
-    		callback_local()
+    	//}
+    	//else
+    	//	callback_local()
 
  	}, function(err){
 	        console.log("DEBUGASYNC:"+JSON.stringify(features, null, 4))
@@ -2049,8 +2070,8 @@ module.exports = {
 //		NLU_Exp: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feExpansion/*feAsync*/,  feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results':3, 'offered':false, 'unoffered':true, 'expand_test':false}),
 
 
-		NLU_Baseline: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true}),
-        NLU_Exp: enhance(SvmLinearBinaryRelevanceClassifier, [/*feAsync, feNeg, feContext*//*, feExpansion*//*feAsync*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':3, 'offered':false, 'unoffered':true, 'expand_test':false}),
+		NLU_Baseline: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true}),
+        NLU_Exp: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feNeg, feContext/*, feExpansion*//*feAsync*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':3, 'offered':true, 'unoffered':true, 'expand_test':false, 'toextract':'word'}),
 
 
 	    NLU_Unbiased_Bin: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncPrimitiveClean], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, false, {'unigrams':true,'offered':false, 'unoffered':true}),
