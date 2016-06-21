@@ -277,6 +277,17 @@ function getwordnet(string, pos, callbackg)
 
 		 		wordnet.close()
 
+				synonyms = _.filter(synonyms, function(num){ return (num[0].indexOf("_")==-1) })
+		 		antonyms = _.filter(antonyms, function(num){ return (num[0].indexOf("_")==-1) })
+		 		
+				// eliminate the numbers
+
+				synonyms = _.unique(_.flatten(_.map(synonyms, function(num){ return num[0] })))
+		 		antonyms = _.unique(_.flatten(_.map(antonyms, function(num){ return num[0] })))
+
+		 		console.vlog("DEBUGWORDNET: synonyms: "+JSON.stringify(synonyms, null, 4))
+		 		console.vlog("DEBUGWORDNET: antonyms: "+JSON.stringify(antonyms, null, 4))
+
 		 		callbackg(null, {
 		 			'synonyms':_.filter(synonyms, function(num){ return (num[0].indexOf("_")==-1) }),
 		 			'antonyms':_.filter(antonyms, function(num){ return (num[0].indexOf("_")==-1) })
