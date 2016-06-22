@@ -26,6 +26,9 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+// translate and org parsed
+var make_tr = true
+
 // check the ration of single vs all utterances
 var check_ration_all = false
 
@@ -43,7 +46,7 @@ var check_version7 = false
 var check_version7_1 = false
 
 // simple template to check performance on test and train even with simple multi-label binary relevance SVM
-var check_ds = true
+var check_ds = false
 
 // check distirbution of intents 
 var check_init = false
@@ -202,6 +205,74 @@ function walkSync(dir, filelist) {
 	}, this)
 }
 */
+
+if (make_tr)
+{
+	var lang = {
+		French:"fr",
+		German:"de",
+		Spanish:"es",
+		Hebrew:"he",
+		Russian:"ru",
+		Chinese:"zh",
+		Arabic:"ar"
+	}
+
+
+	var sys = {
+			"yandex": "Y",
+			"microsoft":"M"
+		}
+
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+
+	var child_process = require('child_process')
+	
+	_.each(data, function(dialogue, keyd, list){
+
+		console.log("DIALOGUE: "+ keyd)
+
+		_.each(dialogue["turns"], function(turn, keyt, list){
+			
+			if (turn.role == "Employer")
+			{
+
+				var trans = {}
+				console.log(turn.translation_id)
+
+				_.each(sys, function(engine1liter, engine1, list){
+					_.each(sys, function(engine2liter, engine2, list){
+
+						if (engine1 != engine2)
+						{
+							_.each(lang, function(ln, lnkey, list){						
+				
+	    						// var out = child_process.execSync("node utils/async_tran.js 'microsoft' 'en' 'ru' 'I am home'", {encoding: 'utf8'})
+	    						var out = child_process.execSync("node utils/async_tran.js '"+engine1+"' '"+engine2+"' '"+ln+"' '"+turn.input.text+"'", {encoding: 'utf8'})
+	   							out = out.replace(/\n$/, '')
+								trans[engine1liter+":"+ln+":"+engine2liter] = out
+								console.log(engine1liter+":"+ln+":"+engine2liter)
+		
+							}, this)
+						}
+					}, this)
+				}, this)
+
+				data[keyd]["turns"][keyt]["input"]["trans"] = trans
+				// console.log(JSON.stringify(trans, null, 4))
+				// process.exit(0)	
+
+			}
+
+		}, this)
+
+		console.log(JSON.stringify(data[keyd], null, 4))
+		process.exit(0)	
+
+	}, this)
+
+	process.exit(0)	
+}
 
 if (check_context)
 {
