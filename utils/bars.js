@@ -3945,6 +3945,7 @@ function getsetcontext(dataset, rephrase)
     
     utteranceset[dialogue.set].push(processed_dialogue)
   }, this)
+
   return utteranceset
 }
 
@@ -4288,24 +4289,28 @@ function gettrans(turns)
   var ln = ['de','fr','es','pt']
 
   console.vlog("gettrans: input.length: " + turns.length)
+  console.vlog("gettrans: input.length: " + JSON.stringify(turns, null, 4))
 
   _.each(turns, function(turn, key, list){
 
-    _.each(turn.trans, function(tran, key, list){
+    
+    _.each(turn["input"]["trans"], function(tran, key, list){
 
-        if (ln.indexOf(key.split(":")[1])!=-1)
+   //     if (ln.indexOf(key.split(":")[1])!=-1)
           output.push({
-            'input': {'text': tran},
-            'output': JSON.parse(JSON.stringify(turn.output)),
-            'context': JSON.parse(JSON.stringify(turn.context)),
+            'input': {'text': tran,
+			'context': turn.input.context},
+            'output': JSON.parse(JSON.stringify(turn.output))
+          //  'context': JSON.parse(JSON.stringify(turn.context)),
           })
 
     }, this)
     
     output.push({
-            'input': {'text': turn.input.text},
-            'output': JSON.parse(JSON.stringify(turn.output)),
-            'context': JSON.parse(JSON.stringify(turn.context)),
+            'input': {'text': turn.input.text,
+			'context': turn.input.context},
+            'output': JSON.parse(JSON.stringify(turn.output))
+//            'context': JSON.parse(JSON.stringify(turn.context)),
     })
 
   }, this)
