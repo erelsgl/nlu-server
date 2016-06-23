@@ -54,13 +54,17 @@ process.on('message', function(message) {
 		async.waterfall([
     		function(callbacks) {
 
-        		if (index == 0) index = 3
-			else if (index < 10) index +=1
+        		//if (index == 0) index = 3
+			if (index < 10) index +=1
 			else index += 5
 		
 	    		var mytrain = train.slice(0, index)
-	    		var mytrainex = JSON.parse(JSON.stringify(mytrain))
+			mytrain = mytrain.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds.json")))    		
+	
+			var mytrainex = JSON.parse(JSON.stringify(mytrain))
 	    		var mytestex = JSON.parse(JSON.stringify(test))
+
+			
 
 				// var mytrainex = (bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)
 				// var mytestex  = (bars.isDialogue(test) ? _.flatten(test) : test)
