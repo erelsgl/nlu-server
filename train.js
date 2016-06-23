@@ -27,7 +27,7 @@ var limdu = require("limdu");
 var ftrs = limdu.features;
 
 // translate and org parsed
-var make_tr = true
+var make_tr = false
 
 // check the ration of single vs all utterances
 var check_ration_all = false
@@ -46,7 +46,7 @@ var check_version7 = false
 var check_version7_1 = false
 
 // simple template to check performance on test and train even with simple multi-label binary relevance SVM
-var check_ds = false
+var check_ds = true
 
 // check distirbution of intents 
 var check_init = false
@@ -1388,7 +1388,7 @@ if (check_ds)
 */
     bars.cleanFolder("/tmp/logs")
 
-	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_tran.json"))
     var utterset = bars.getsetcontext(data1, /*rephrase*/true)
 
 	//utterset["train"] = bars.processdataset(_.flatten(utterset["train"]), 'test')
@@ -1399,6 +1399,16 @@ if (check_ds)
 
 	console.log("train.length="+utterset["train"].length)
 	console.log("test.length="+utterset["test"].length)
+
+
+	_.each(utterset["train"], function(turn, key, list){
+		delete utterset["train"][key]["input"]["sentences"]
+	}, this)
+
+	_.each(utterset["test"], function(turn, key, list){
+		delete utterset["test"][key]["input"]["sentences"]
+	}, this)
+
 	
 //	utterset["train"] = _.filter(utterset["train"], function(num){ return _.keys(num.outputhash).length <= 1 })
 
