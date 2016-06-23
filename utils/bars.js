@@ -4282,6 +4282,40 @@ function oversample(turns)
   return turns
 }
 
+function gettrans(turns)
+{
+  var output = []
+  var ln = ['de','fr','es','pt']
+
+  console.vlog("gettrans: input.length: " + turns.length)
+
+  _.each(turns, function(turn, key, list){
+
+    _.each(turn.trans, function(tran, key, list){
+
+        if (ln.indexOf(key.split(":")[1])!=-1)
+          output.push({
+            'input': {'text': tran},
+            'output': JSON.parse(JSON.stringify(turn.output)),
+            'context': JSON.parse(JSON.stringify(turn.context)),
+          })
+
+    }, this)
+    
+    output.push({
+            'input': {'text': turn.input.text},
+            'output': JSON.parse(JSON.stringify(turn.output)),
+            'context': JSON.parse(JSON.stringify(turn.context)),
+    })
+
+  }, this)
+
+
+  console.vlog("gettrans: output.length: " + output.length)
+
+  return output
+}
+
 function expanbal(turns, best_results, callbackg)
 {
 
@@ -5089,5 +5123,6 @@ processdatasettrain:processdatasettrain,
 processdatasettest:processdatasettest,
 cleanFolder:cleanFolder,
 expanbal:expanbal,
-censor: censor
+censor: censor,
+gettrans:gettrans
 }
