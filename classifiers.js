@@ -97,6 +97,9 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 // lemma and pos are required
 function getRule(sen)
 {
+
+	console.log("getRule:" +JSON.stringify(sen, null, 4))
+
 	if (!('tokens' in sen))
 		throw new Error("DEBUGRULE: for some reason tokens is not in the sentence " + JSON.stringify(sen, null, 4))
 
@@ -129,8 +132,8 @@ function getRule(sen)
 
 	_.each(temp, function(token, key, list){
 
-		if (!('pos' in token))
-			throw new Error('DEBUGRULE: pos is not in the token')
+		// if (!('pos' in token))
+			// throw new Error('DEBUGRULE: pos is not in the token')
 		
 		if (!('lemma' in token))
 			throw new Error('DEBUGRULE: lemma is not in the token')
@@ -1581,6 +1584,15 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 
 	if (!('context' in sample))
 		throw new Error("Hey guys where is a context "+ JSON.stringify(sample))
+
+	var words = tokenizer.tokenize(sample.text);
+	var tokens = _.flatten(natural.NGrams.ngrams(words, 1))
+
+	console.log("DEBUGASYNC: tokens: "+tokens)
+	tokens = _.map(tokens, function(num){ return {word: num, lemma: num} });
+
+	console.log("DEBUGASYNC: tokens: "+tokens)
+	sample.sentences = {'tokens':tokens}
 		
 	var context = sample['context']
 
@@ -1770,7 +1782,7 @@ function feAsyncPrimitiveClean(sam, features, train, featureOptions, callback) {
 }
 
 
-function feAsync(sam, features, train, featureOptions, callback) {
+/*function feAsync(sam, features, train, featureOptions, callback) {
 
 	var sample = JSON.parse(JSON.stringify(sam))
 	//var filtr = ["PRP","IN","CC","DT","PRP$","TO"]
@@ -1829,6 +1841,71 @@ function feAsync(sam, features, train, featureOptions, callback) {
  		callback(null, features)
 	})
 }
+*/
+function feAsync(sam, features, train, featureOptions, callback) {
+
+	var sample = JSON.parse(JSON.stringify(sam))
+	//var filtr = ["PRP","IN","CC","DT","PRP$","TO"]
+	var filtr = []
+	//var lemfil = ['be']
+	var lemfil = []
+
+	
+	if (!('toextract' in featureOptions))
+	    throw new Error("toextract is not defined")
+
+	if ("input" in sample)
+		sample = sample.input
+
+	var words = tokenizer.tokenize(sample.text);
+	var tokens = _.flatten(natural.NGrams.ngrams(words, 1))
+
+	console.log("DEBUGASYNC: tokens: "+tokens)
+	tokens = _.map(tokens, function(num){ return {word: num, lemma: num} });
+
+	console.log("DEBUGASYNC: tokens: "+tokens)
+	sample.sentences = {'tokens':tokens}
+
+	console.log(JSON.stringify(sample, null, 4))
+	// process.exit(0)
+
+	// clean the parse tree from attr and values 
+	sample.sentences = getRule(sample.sentences).cleaned
+
+	// console.log(JSON.stringify("CLEANED", null, 4))
+	// console.log(JSON.stringify(sample.sentences, null, 4))
+
+	// sentence = sentence.toLowerCase().trim()
+	// sentence = regexpNormalizer(sentence)
+	// var words = tokenizer.tokenize(sentence);
+
+	if (featureOptions.bigrams)
+	   throw new Error("this version doesn't support bigrams")
+
+	if (sample['sentences'].length>1)
+		throw new Error("feAsync: more than one sentence "+sample['sentences'].length)
+
+	async.eachSeries(sample['sentences']['tokens'], function(token, callback_local) {
+	//	if ((filtr.indexOf(token.pos)==-1) && (lemfil.indexOf(token.lemma)==-1))
+	//	{
+    	if (featureOptions.toextract == "lemma")
+			features[token.lemma.toLowerCase()] = 1
+
+	    if (featureOptions.toextract == "word")
+	        features[token.word.toLowerCase()] = 1
+
+    		//features[token.word.toLowerCase()] = 1
+    	callback_local()
+    	//}
+    	//else
+    	//	callback_local()
+
+ 	}, function(err){
+	        console.log("DEBUGASYNC:"+JSON.stringify(features, null, 4))
+ 		callback(null, features)
+	})
+}
+
 
 /*function feAsyncSeq(sam, features, train, featureOptions, callback) {
 
@@ -2253,8 +2330,9 @@ module.exports = {
 //		NLU_Exp: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feExpansion/*feAsync*/,  feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results':3, 'offered':false, 'unoffered':true, 'expand_test':false}),
 
 
-		NLU_Baseline: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true}),
+		NLU_Baseline: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, /*feNeg,*/ feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true}),
         NLU_Exp: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feNeg, feContext/*, feExpansion*//*feAsync*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':3, 'offered':true, 'unoffered':true, 'expand_test':false, 'toextract':'word'}),
+        NLU_Tran: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, /*feNeg,*/ feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'toextract':'word'}),
 
 
 	    NLU_Unbiased_Bin: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncPrimitiveClean], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, undefined, undefined, false, {'unigrams':true,'offered':false, 'unoffered':true}),
