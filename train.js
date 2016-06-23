@@ -215,7 +215,8 @@ if (make_tr)
 		Hebrew:"he",
 		Russian:"ru",
 		Chinese:"zh",
-		Arabic:"ar"
+		Arabic:"ar",
+		Portuguese: "pt"
 	}
 
 
@@ -248,10 +249,10 @@ if (make_tr)
 							_.each(lang, function(ln, lnkey, list){						
 				
 	    						// var out = child_process.execSync("node utils/async_tran.js 'microsoft' 'en' 'ru' 'I am home'", {encoding: 'utf8'})
-	    						var out = child_process.execSync("node utils/async_tran.js '"+engine1+"' '"+engine2+"' '"+ln+"' '"+turn.input.text+"'", {encoding: 'utf8'})
+	    						var out = child_process.execSync("node utils/async_tran.js \""+engine1+"\" \""+engine2+"\" \""+ln+"\" \""+turn.input.text+"\"", {encoding: 'utf8'})
 	   							out = out.replace(/\n$/, '')
 								trans[engine1liter+":"+ln+":"+engine2liter] = out
-								console.log(engine1liter+":"+ln+":"+engine2liter)
+				//				console.log(engine1liter+":"+ln+":"+engine2liter)
 		
 							}, this)
 						}
@@ -266,11 +267,11 @@ if (make_tr)
 
 		}, this)
 
-		console.log(JSON.stringify(data[keyd], null, 4))
-		process.exit(0)	
+//		process.exit(0)	
 
 	}, this)
 
+	console.log(JSON.stringify(data, null, 4))
 	process.exit(0)	
 }
 
