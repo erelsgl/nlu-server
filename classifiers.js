@@ -26,7 +26,7 @@ var async_adapter = require('./utils/async_adapter')
 var async = require('async');
 var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
 var log_file = "/tmp/logs/" + process.pid
-var Lem = require('lemmer')
+//var Lem = require('lemmer')
 
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
@@ -98,27 +98,32 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 function getRule(sen)
 {
 
-	console.log("getRule:" +JSON.stringify(sen, null, 4))
+	console.vlog("getRule:" +JSON.stringify(sen, null, 4))
 
 	if (!('tokens' in sen))
 		throw new Error("DEBUGRULE: for some reason tokens is not in the sentence " + JSON.stringify(sen, null, 4))
 
 	var sentence = JSON.parse(JSON.stringify(sen))
  
+
 	// first fix % sign
 	_.each(sentence['tokens'], function(token, key, list){
+		
+		if (key > 0)
 		if (token.lemma=='%')
 		{
 			sentence['tokens'][key-1].lemma = sentence['tokens'][key-1].lemma + "%"
 			sentence['tokens'][key-1].word = sentence['tokens'][key-1].word + "%"
 		}
 
+		if (key > 0)
 		if ((token.lemma == 'agreement') && (sentence['tokens'][key-1]["lemma"] == "no"))
 		{
 			sentence['tokens'][key-1].lemma = "no agreement"
 			sentence['tokens'][key-1].word = "no agreement"
 		}
-
+		
+		if (key > 0)
 		if ((token.lemma == 'car') && (sentence['tokens'][key-1]["lemma"] == "no"))
 		{
 			sentence['tokens'][key-1].lemma = "no car"
