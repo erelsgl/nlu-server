@@ -4292,14 +4292,12 @@ function gettrans(turns)
   console.vlog("gettrans: input.length: " + JSON.stringify(turns, null, 4))
 
   _.each(turns, function(turn, key, list){
-
-    
     _.each(turn["input"]["trans"], function(tran, key, list){
 
    //     if (ln.indexOf(key.split(":")[1])!=-1)
           output.push({
             'input': {'text': tran,
-			'context': turn.input.context},
+			     'context': turn.input.context},
             'output': JSON.parse(JSON.stringify(turn.output))
           //  'context': JSON.parse(JSON.stringify(turn.context)),
           })
@@ -5003,6 +5001,90 @@ function censor(censor) {
   }
 }
 
+function oversampleA(turns, bufferset)
+{
+
+  // add only by simple-label utterances
+  // relates only to ['Offer', 'Accept', 'Reject']
+  // - it doesn't count for context
+  // add all the stuff as separated dialogue per intent
+
+  var single_label_utt = {}
+  var tocount = ['Offer', 'Accept', 'Reject','Query']
+  var stats = {}
+
+  _.each(turns, function(turn, key, list){
+    _.each(turn['output'], function(label, key, list){
+//      var intent = _.keys(JSON.parse(label))[0]
+        var intent = label
+        if (!(intent in stats))
+          stats[intent] = 0
+        stats[intent] += 1
+      }, this)
+    }, this)
+
+  _.each(bufferset, function(turn, key, list){
+    if (turn['output'].length == 1)
+      {
+        var intent = turn['output'][0]
+        if (!(intent in single_label_utt))
+          single_label_utt[intent] = []
+
+        single_label_utt[intent].push(turn)
+      }
+  }, this)
+
+  var max = 0
+  _.each(tocount, function(lab, key, list){
+    if ((stats[lab]) > max)
+      max = stats[lab]
+  }, this)
+
+  console.log("DEBUGOVER: max="+max)
+
+  console.log("DEBUGOVER: intents to consider: "+JSON.stringify(tocount, null, 4))
+  console.log("DEBUGOVER: stats of all intent's occurences: "+JSON.stringify(stats, null, 4))
+
+  console.log("DEBUGOVER: single_label_utt that were collected: ")
+  _.each(single_label_utt, function(lis, key, list){
+   console.log("DEBUGOVER: "+key+" "+lis.length)
+  }, this)
+
+  _.each(tocount, function(lab, key, list){
+    if ((max > stats[lab]) && (lab in single_label_utt))
+    {
+    console.log("DEBUGOVER: intent: "+lab)
+    console.log("DEBUGOVER: size: "+single_label_utt[lab].length)
+    turns = turns.concat(setsize(single_label_utt[lab], max - stats[lab] ))
+    }
+  }, this)
+
+  return turns
+}
+
+// it created oversampled set from the set of translation-generating utterances
+function tranoversam(turns)
+{
+  console.vlog("DEBUGTRANOVER: length: "+turns.length)
+  var translations = []
+
+  _.each(turns, function(turn, key, list){
+    _.each(turn["input"]["trans"], function(tran, key, list){
+      translations.push({
+        'input': { 'text': tran,
+        'context': turn.input.context },
+        'output': JSON.parse(JSON.stringify(turn.output))
+      })
+    }, this)
+  }, this)
+ 
+  var gen = oversampleA(turns, translations)
+  console.vlog("DEBUGTRANOVER: oversampled trans length: "+gen.length)
+  console.vlog("DEBUGTRANOVER: dst: "+JSON.stringify(returndist(gen), null, 4))
+
+  return gen
+}
+
 module.exports = {
   simulaterealds:simulaterealds,
   simulateds:simulateds,
@@ -5129,5 +5211,7 @@ processdatasettest:processdatasettest,
 cleanFolder:cleanFolder,
 expanbal:expanbal,
 censor: censor,
-gettrans:gettrans
+gettrans:gettrans,
+oversampleA: oversampleA,
+tranoversam:tranoversam
 }
