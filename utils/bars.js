@@ -4213,7 +4213,7 @@ function returndist(dataset)
 {
   var intents = []
   _.each(dataset, function(value, key, list){
-      intents = intents.concat(_.map(value.output, function(num){ return _.keys(JSON.parse(num))[0] }))
+      intents = intents.concat(value.output)
   }, this)
   
   // console.log(JSON.stringify(intents, null, 4))
@@ -4229,6 +4229,8 @@ function oversample(turns)
   // relates only to ['Offer', 'Accept', 'Reject']
   // - it doesn't count for context
   // add all the stuff as separated dialogue per intent
+
+  console.vlog(" DEBUGOVERSAMPLE: dist before: "+JSON.stringify(returndist(turns), null, 4))
 
   var single_label_utt = {}
   var tocount = ['Offer', 'Accept', 'Reject','Query']
@@ -4279,6 +4281,8 @@ function oversample(turns)
 	turns = turns.concat(setsize(single_label_utt[lab], max - stats[lab] ))
 	}
   }, this)
+
+  console.vlog(" DEBUGOVERSAMPLE: dist after: "+JSON.stringify(returndist(turns), null, 4))
 
   return turns
 }
@@ -5066,6 +5070,8 @@ function oversampleA(turns, bufferset)
 function tranoversam(turns)
 {
   console.vlog("DEBUGTRANOVER: length: "+turns.length)
+  console.vlog("DEBUGTRANOVER: dst before: "+JSON.stringify(returndist(turns), null, 4))
+
   var translations = []
 
   _.each(turns, function(turn, key, list){
@@ -5080,7 +5086,7 @@ function tranoversam(turns)
  
   var gen = oversampleA(turns, translations)
   console.vlog("DEBUGTRANOVER: oversampled trans length: "+gen.length)
-  console.vlog("DEBUGTRANOVER: dst: "+JSON.stringify(returndist(gen), null, 4))
+  console.vlog("DEBUGTRANOVER: dst after: "+JSON.stringify(returndist(gen), null, 4))
 
   return gen
 }
