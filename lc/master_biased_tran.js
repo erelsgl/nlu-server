@@ -406,7 +406,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 {
 	var stat = {}
 
-	var classifiers = [ 'NLU_Baseline','NLU_Tran']
+	var classifiers = [ 'NLU_Baseline', 'NLU_Tran', 'NLU_Oversample', 'NLU_Tran_Oversample']
 	//var classifiers = [ 'NLU_Baseline']
 
 	var data1 = _.shuffle(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_tran.json")))
