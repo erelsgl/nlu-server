@@ -8,6 +8,8 @@ var microsoft = new microsoftT({
     client_secret: "yWIRO9uGAvfrLN9QgvNLhULEliMnVxAzxw1VQzJJDyU="
 }, true);
 
+var googleTranslate = require('google-translate')("AIzaSyD-hY-TaVLTUVl1Rjp_qWjLPGWm-So7NeM");
+
 console.vlog = function(data) {
   fs.appendFileSync("/tmp/logs/tran", data + '\n', 'utf8')
 };
@@ -33,6 +35,16 @@ function translate(engine, fromln, toln, text, callback)
 				translated = data
           		callback(null, null);
 			});
+        } else {
+          callback(null, null);
+        }
+    },
+  function(callback){
+        if(engine.toLowerCase() == "google") {
+                googleTranslate.translatie(text, fromln, toln, function(err, data) {
+                                translated = data.translatedText
+                        callback(null, null);
+                        });
         } else {
           callback(null, null);
         }
