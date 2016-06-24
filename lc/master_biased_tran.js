@@ -406,6 +406,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 {
 	var stat = {}
 
+//	var classifiers = [ 'NLU_Tran', 'NLU_Tran_Oversample']
 	var classifiers = [ 'NLU_Baseline', 'NLU_Tran', 'NLU_Oversample', 'NLU_Tran_Oversample']
 	//var classifiers = [ 'NLU_Baseline']
 
