@@ -27,7 +27,7 @@ var limdu = require("limdu");
 var ftrs = limdu.features;
 
 // translate and org parsed
-var make_tr = false
+var make_tr = true
 
 // check the ration of single vs all utterances
 var check_ration_all = false
@@ -46,7 +46,7 @@ var check_version7 = false
 var check_version7_1 = false
 
 // simple template to check performance on test and train even with simple multi-label binary relevance SVM
-var check_ds = true
+var check_ds = false
 
 // check distirbution of intents 
 var check_init = false
@@ -212,17 +212,18 @@ if (make_tr)
 		French:"fr",
 		German:"de",
 		Spanish:"es",
+		Portuguese: "pt",
 		Hebrew:"he",
-		Russian:"ru",
-		Chinese:"zh",
 		Arabic:"ar",
-		Portuguese: "pt"
+		Russian:"ru",
+		Chinese:"zh"
 	}
 
 
 	var sys = {
 			"yandex": "Y",
-			"microsoft":"M"
+			"microsoft":"M",
+			"google":"G"
 		}
 
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
@@ -244,7 +245,7 @@ if (make_tr)
 				_.each(sys, function(engine1liter, engine1, list){
 					_.each(sys, function(engine2liter, engine2, list){
 
-						if (engine1 != engine2)
+					//	if (engine1 != engine2)
 						{
 							_.each(lang, function(ln, lnkey, list){						
 				
@@ -259,7 +260,10 @@ if (make_tr)
 					}, this)
 				}, this)
 
+
 				data[keyd]["turns"][keyt]["input"]["trans"] = trans
+
+
 				// console.log(JSON.stringify(trans, null, 4))
 				// process.exit(0)	
 
@@ -268,6 +272,7 @@ if (make_tr)
 		}, this)
 
 //		process.exit(0)	
+			fs.writeFileSync("/tmp/buffer_dial.json", JSON.stringify(data, null, 4))
 
 	}, this)
 
