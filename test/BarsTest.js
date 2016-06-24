@@ -166,6 +166,28 @@ describe('Bars utilities', function() {
 		_.isEqual(dat[dat.length-1]["input"], "3").should.equal(true)
 	})
 
+	it('oversampleA', function() {
+
+		var dataset = [
+			{'input':"1", 'output':["Offer"]},
+			{'input':"1", 'output':["Offer"]},
+			{'input':"2", 'output':["Accept"]},
+			{'input':"3", 'output':["Reject"]},
+			{'input':"4", 'output':["Query"]}
+		]
+
+		var bufferset = [
+			{'input':"g1", 'output':["Offer"]},
+			{'input':"g1", 'output':["Offer"]},
+			{'input':"g2", 'output':["Accept"]},
+			{'input':"g3", 'output':["Reject"]},
+			{'input':"g4", 'output':["Query"]}
+		]
+
+		var dat = bars.oversampleA(dataset, bufferset)
+		console.log(JSON.stringify(dat, null, 4))
+	})
+
 	it('expanbal', function(callbackl) {
 
 		var dataset = [
