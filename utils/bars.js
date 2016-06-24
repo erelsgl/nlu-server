@@ -5027,6 +5027,8 @@ function oversampleA(turns, bufferset)
       }, this)
     }, this)
 
+   //delete turn["input"]["trans"]
+
   _.each(bufferset, function(turn, key, list){
     if (turn['output'].length == 1)
       {
@@ -5067,8 +5069,10 @@ function oversampleA(turns, bufferset)
 }
 
 // it created oversampled set from the set of translation-generating utterances
-function tranoversam(turns)
+function tranoversam(turns_copy)
 {
+
+  var turns = JSON.parse(JSON.stringify(turns_copy))
   console.vlog("DEBUGTRANOVER: length: "+turns.length)
   console.vlog("DEBUGTRANOVER: dst before: "+JSON.stringify(returndist(turns), null, 4))
 
@@ -5087,6 +5091,7 @@ function tranoversam(turns)
   var gen = oversampleA(turns, translations)
   console.vlog("DEBUGTRANOVER: oversampled trans length: "+gen.length)
   console.vlog("DEBUGTRANOVER: dst after: "+JSON.stringify(returndist(gen), null, 4))
+  console.vlog("DEBUGTRANOVER: set: "+JSON.stringify(gen, null, 4))
 
   return gen
 }
