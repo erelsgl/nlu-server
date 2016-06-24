@@ -6,7 +6,6 @@ var fs = require('fs');
 var master = require('./master');
 var classifiers = require(__dirname+"/../classifiers.js")
 var trainAndTest = require(__dirname+'/../utils/trainAndTest');
-var clc = require('cli-color')
 var bars = require(__dirname+'/../utils/bars');
 var log_file = "/tmp/logs/" + process.pid
 var util = require('util');
@@ -15,7 +14,6 @@ var fold = process.env["fold"]
 // var folds = process.env["folds"]
 var classifier = process.env["classifier"]
 var thread = process.env["thread"]
-var msg = clc.xterm(thread)
 
 console.vlog = function(data) {
     fs.appendFileSync(log_file, data + '\n', 'utf8')
@@ -133,7 +131,7 @@ process.on('message', function(message) {
    
 		})},
     function (err) {
-			console.log(msg("DEBUG: worker "+process["pid"]+": exiting"))
+			console.log("DEBUG: worker "+process["pid"]+": exiting")
 			process.exit()
 		})
 	});
