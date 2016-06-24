@@ -78,9 +78,21 @@ process.on('message', function(message) {
 				
 				if (classifier=="NLU_Tran")
 				{
-						gentra = bars.gettrans(mytrainex)
-						console.vlog("DEBUG: worker: "+classifier+" train size:"+gentra.length)
-						callbacks(null, gentra, mytestex, mytrainex.length)
+					var gentra = bars.gettrans(mytrainex)
+					console.vlog("DEBUG: worker: "+classifier+" train size:"+gentra.length)
+					callbacks(null, gentra, mytestex, mytrainex.length)
+				}
+				else if (classifier=="NLU_Oversample") 
+				{
+					var oversam = bars.oversample(mytrainex)
+					console.vlog("DEBUG: worker: "+classifier+" train size:"+oversam.length)
+					callbacks(null, oversam, mytestex, mytrainex.length)
+				}
+				else if (classifier=="NLU_Tran_Oversample")
+				{
+					var tranoversam = bars.tranoversam(mytrainex)
+					console.vlog("DEBUG: worker: "+classifier+" train size:"+oversam.length)
+					callbacks(null, tranoversam, mytestex, mytrainex.length)
 				}
 				else
 					callbacks(null, mytrainex, mytestex, mytrainex.length)
