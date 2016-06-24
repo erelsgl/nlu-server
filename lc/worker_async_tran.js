@@ -91,7 +91,7 @@ process.on('message', function(message) {
 				else if (classifier=="NLU_Tran_Oversample")
 				{
 					var tranoversam = bars.tranoversam(mytrainex)
-					console.vlog("DEBUG: worker: "+classifier+" train size:"+oversam.length)
+					console.vlog("DEBUG: worker: "+classifier+" train size:"+tranoversam.length)
 					callbacks(null, tranoversam, mytestex, mytrainex.length)
 				}
 				else
