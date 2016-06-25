@@ -46,7 +46,7 @@ process.on('message', function(message) {
 
 	async.whilst(
 	    //function () { return index < train.length },
-	    function () { return index < 30 },
+	    function () { return index < 40 },
 	    function (callbackwhilst) {
 
 		async.waterfall([
