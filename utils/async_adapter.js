@@ -34,9 +34,10 @@ function getembedall(db, callback)
 	})
 }
 
+var client = new Redis(6379);
+
 function getembed(string, db, callback)
 {
-	var client = new Redis(6379);
 	client.select(db, function(err, response) {
 		if (err) callback(err)
 
@@ -56,7 +57,6 @@ function getembed(string, db, callback)
 // splited[2] - PPDB 1.0 Score
 // splited[3] - PPDB 2.0 Score
 
-var client = new Redis(6379);
 
 function getppdb(string, pos, db, relation, callback)
 {	
