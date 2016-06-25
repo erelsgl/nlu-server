@@ -77,8 +77,9 @@ process.on('message', function(message) {
 				if (classifier=="NLU_Tran")
 				{
 					var gentra = bars.gettrans(mytrainex)
-					console.vlog("DEBUG: worker: "+classifier+" train size:"+gentra.length)
-					callbacks(null, gentra, mytestex, mytrainex.length)
+					var oversam = bars.oversample(gentra)
+					console.vlog("DEBUG: worker: "+classifier+" train size:"+oversam.length)
+					callbacks(null, oversam, mytestex, mytrainex.length)
 				}
 				else if (classifier=="NLU_Oversample") 
 				{
