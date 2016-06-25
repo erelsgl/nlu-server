@@ -4299,14 +4299,17 @@ function gettrans(turns)
     console.vlog("gettrans: add: " + _.keys(turn["input"]["trans"]).length)
     _.each(turn["input"]["trans"], function(tran, key, list){
 
-  	console.vlog("gettrans: key spliiting: " + JSON.stringify(key.split(":"), null, 4))
-   //     if (ln.indexOf(key.split(":")[1])!=-1)
+	var sp = key.split(":")
+  	console.vlog("gettrans: key spliiting: " + sp)
+        if ((sp[0]=="Y") && (sp[1]=="M"))
+	{
           output.push({
             'input': {'text': tran,
 			     'context': turn.input.context},
             'output': JSON.parse(JSON.stringify(turn.output))
           //  'context': JSON.parse(JSON.stringify(turn.context)),
           })
+	}
 
     }, this)
     
