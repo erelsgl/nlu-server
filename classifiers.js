@@ -1263,6 +1263,8 @@ function feWordnet(sample, features, train, featureOptions, callback) {
 
 function feEmbed(sample, features, train, featureOptions, callback) {
 
+	console.vlog("DEBUGEMBED: sample: "+JSON.stringify(features, null, 4))
+
 	if (featureOptions.unigrams || featureOptions.root)
 	{
 		if (!("input" in sample))
@@ -1272,26 +1274,30 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 		}
 	}
 
-	if (!('unigrams' in featureOptions)) throw new Error("unigrams is not in the featureOptions")
-	if (!('root' in featureOptions)) throw new Error("root is not in the featureOptions")
+//	if (!('withunigrams' in featureOptions)) throw new Error("unigrams is not in the featureOptions")
+//	if (!('root' in featureOptions)) throw new Error("root is not in the featureOptions")
 	// if (!('sentences' in sample['input'])) throw new Error("sentences not in the sample")
 
+		var bars = require('./utils/bars')
 	var embFeatures = {}
 	var embs = []
-	var roots = []
+//	var roots = []
 
-	if (featureOptions['root'] == true)
+/*	if (featureOptions['root'] == true)
 	{
 		_.each(sample['input']['sentences']['basic-dependencies'], function(dep, key, list){
 			if (dep.dep == "ROOT")
 				embFeatures["ROOT_"+dep.dependentGloss.toLowerCase()] = 1
 		}, this)	
 	}
-
+*/
+	if (_.keys(features).length == 0)
+		callback(null, {})
+	
 	async.eachSeries(_.keys(features), function(word, callback1){
 		
-		if (featureOptions['unigrams'] == true)
-			embFeatures[word] = 1
+//		if (featureOptions['unigrams'] == true)
+//			embFeatures[word] = 1
 
 		/*var negated = false
 		console.log("DEBUGEMB: word: "+word+" features "+featureOptions.minus_neg)
@@ -1302,10 +1308,12 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 			word = word.replace(/-/g, '')
 			negated = true
 		}*/
-
+		console.vlog(word)
 		async_adapter.getembed(word, featureOptions.embdeddb, function(err, emb){
 			// delete features[word]
 
+			//console.vlog(err)
+			//console.vlog(emb)
 			/*if (negated)
 			{
 				emb =_.map(emb, function(num){ return num * (-1); });
@@ -1319,6 +1327,10 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 
  	}, function(err) {
 
+
+	
+//		console.vlog("DEBUGEMBED: "+err)
+		console.vlog("DEBUGEMBED: all vectores are loaded: "+embs.length)
 		if (embs.length > 0)		 		
 		{
 			var sumvec = Array.apply(null, Array(embs[0].length)).map(function () { return 0})
@@ -1332,10 +1344,16 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 			_.each(sumvec, function(value, key, list){ 
 				embFeatures['w2v'+key] = value
 			}, this)
-		}
 
-	    callback(null, embFeatures)
-	})	
+			console.vlog("DEBUGEMBED: embFeatures is populated")
+	    		
+			callback(null, embFeatures)
+		}
+else
+			callback(null, embFeatures)
+
+
+	})
 }	
 
 // function feEmbedAverageUnigram(sample, features, train, featureOptions, callback) {
@@ -1594,7 +1612,8 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 	var tokens = _.flatten(natural.NGrams.ngrams(words, 1))
 
 	console.log("DEBUGASYNC: tokens: "+tokens)
-	tokens = _.map(tokens, function(num){ return {word: num, lemma: natural.PorterStemmer.stem(num)} });
+	//tokens = _.map(tokens, function(num){ return {word: num, lemma: natural.PorterStemmer.stem(num)} });
+	tokens = _.map(tokens, function(num){ return {word: num, lemma: num} });
 
 	console.log("DEBUGASYNC: tokens: "+tokens)
 	sample.sentences = {'tokens':tokens}
@@ -1877,7 +1896,8 @@ function feAsync(sam, features, train, featureOptions, callback) {
 	var tokens = _.flatten(natural.NGrams.ngrams(words, 1))
 
 	console.log("DEBUGASYNC: tokens: "+tokens)
-	tokens = _.map(tokens, function(num){ return {word: num, lemma: natural.PorterStemmer.stem(num)} });
+	//tokens = _.map(tokens, function(num){ return {word: num, lemma: natural.PorterStemmer.stem(num)} });
+	tokens = _.map(tokens, function(num){ return {word: num, lemma: num} });
 
 	console.log("DEBUGASYNC: tokens: "+tokens)
 	sample.sentences = {'tokens':tokens}
@@ -2346,10 +2366,14 @@ module.exports = {
 //		NLU_Exp: enhance(SvmLinearMulticlassifier, [feAsync, feNeg, feExpansion/*feAsync*/,  feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, preProcessor_onlyIntent, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': false, 'best_results':3, 'offered':false, 'unoffered':true, 'expand_test':false}),
 
 
-		NLU_Baseline: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, /*feNeg, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true}),
-		NLU_Tran: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, /*feNeg, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true}),
-		NLU_Oversample: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, /*feNeg, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true}),
-		NLU_Tran_Oversample: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, /*feNeg, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true}),
+		NLU_Emb_300: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feEmbed , feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'embdeddb': 10, 'aggregate':'average', 'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true, }),
+		NLU_Emb_100: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true, }),
+		NLU_Emb_50: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'embdeddb': 8, 'aggregate':'average', 'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true, }),
+		NLU_Emb_25: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'embdeddb': 7, 'aggregate':'average', 'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true, }),
+		NLU_Baseline: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true}),
+		NLU_Tran: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true}),
+		NLU_Oversample: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true}),
+		NLU_Tran_Oversample: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true}),
         
         NLU_Exp: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feNeg, feContext/*, feExpansion*//*feAsync*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'unoffered':true, 'scale':3, 'onlyroot': true, 'relation': undefined, 'allow_offer': true, 'best_results':3, 'offered':true, 'unoffered':true, 'expand_test':false, 'toextract':'word'}),
         
