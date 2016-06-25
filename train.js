@@ -28,7 +28,8 @@ var ftrs = limdu.features;
 
 // translate and org parsed
 var make_tr = false
-var make_tr_seeds = true
+var make_tr_seeds = false
+var make_tr_fix = true
 // check the ration of single vs all utterances
 var check_ration_all = false
 
@@ -279,6 +280,110 @@ if (make_tr)
 	console.log(JSON.stringify(data, null, 4))
 	process.exit(0)	
 }
+
+if (make_tr_fix)
+{
+	var lang = {
+		French:"fr",
+		German:"de",
+		Spanish:"es",
+		Portuguese: "pt",
+		Hebrew:"he",
+		Arabic:"ar",
+		Russian:"ru",
+		Chinese:"zh"
+	}
+
+
+	var sys = {
+			"yandex": "Y",
+			"microsoft":"M",
+			"google":"G"
+		}
+
+	var data = JSON.parse(fs.readFileSync("/tmp/buffer_dial.json.bk"))
+
+	var child_process = require('child_process')
+	
+	_.each(data, function(dialogue, keyd, list){
+
+		console.log("DIALOGUE: "+ keyd)
+
+		_.each(dialogue["turns"], function(turn, keyt, list){
+			
+			if (turn.role == "Employer")
+			{
+				if  (!("trains" in turn["input"]))
+				{ 
+
+				var trans = {}
+				console.log(turn.translation_id)
+
+				_.each(sys, function(engine1liter, engine1, list){
+					_.each(sys, function(engine2liter, engine2, list){
+
+					//	if (engine1 != engine2)
+						{
+							_.each(lang, function(ln, lnkey, list){						
+				
+	    						// var out = child_process.execSync("node utils/async_tran.js 'microsoft' 'en' 'ru' 'I am home'", {encoding: 'utf8'})
+	    						var out = child_process.execSync("node utils/async_tran.js \""+engine1+"\" \""+engine2+"\" \""+ln+"\" \""+turn.input.text+"\"", {encoding: 'utf8'})
+	   							out = out.replace(/\n$/, '')
+								trans[engine1liter+":"+ln+":"+engine2liter] = out
+				//				console.log(engine1liter+":"+ln+":"+engine2liter)
+		
+							}, this)
+						}
+					}, this)
+				}, this)
+				data[keyd]["turns"][keyt]["input"]["trans"] = trans
+				}
+
+				if  ("trains" in turn["input"])
+				{
+
+					if  (turn["input"]["trains"]["Y:fr:M"].indexOf("TranslateApiException")!=-1)
+					{
+						var trans = {}
+						console.log(turn.translation_id)
+
+						_.each(sys, function(engine1liter, engine1, list){
+							_.each(sys, function(engine2liter, engine2, list){
+
+					//	if (engine1 != engine2)
+								{
+								_.each(lang, function(ln, lnkey, list){						
+				
+	    						// var out = child_process.execSync("node utils/async_tran.js 'microsoft' 'en' 'ru' 'I am home'", {encoding: 'utf8'})
+	    							var out = child_process.execSync("node utils/async_tran.js \""+engine1+"\" \""+engine2+"\" \""+ln+"\" \""+turn.input.text+"\"", {encoding: 'utf8'})
+	   								out = out.replace(/\n$/, '')
+									trans[engine1liter+":"+ln+":"+engine2liter] = out
+				//				console.log(engine1liter+":"+ln+":"+engine2liter)
+		
+								}, this)
+								}
+							}, this)
+						}, this)
+						
+						data[keyd]["turns"][keyt]["input"]["trans"] = trans	
+					}
+
+
+				}
+
+			}
+
+		}, this)
+
+//		process.exit(0)	
+			fs.writeFileSync("/tmp/buffer_dial.json", JSON.stringify(data, null, 4))
+
+	}, this)
+
+	console.log(JSON.stringify(data, null, 4))
+	process.exit(0)	
+}
+
 
 if (make_tr_seeds)
 {
