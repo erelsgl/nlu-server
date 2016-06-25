@@ -4301,7 +4301,7 @@ function gettrans(turns)
 
 	var sp = key.split(":")
   	console.vlog("gettrans: key spliiting: " + sp)
-        if ((sp[0]=="Y") && (sp[2]=="M"))
+        //if ((sp[0]=="M") && (sp[2]=="Y"))
 	{
   	console.vlog("gettrans: add")
           output.push({
