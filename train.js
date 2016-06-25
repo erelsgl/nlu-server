@@ -296,7 +296,7 @@ if (make_tr_seeds)
 
 	var sys = {
 			"yandex": "Y",
-			"microsoft":"M",
+`			"microsoft":"M",
 			"google":"G"
 		}
 
@@ -337,7 +337,7 @@ if (make_tr_seeds)
 
 	}, this)
 
-	console.log(JSON.stringify(data, null, 4))
+	console.log(JSON.stringify(turns, null, 4))
 	process.exit(0)	
 }
 
