@@ -46,14 +46,14 @@ process.on('message', function(message) {
 
 	async.whilst(
 	    //function () { return index < train.length },
-	    function () { return index < 40 },
+	    function () { return index < 30 },
 	    function (callbackwhilst) {
 
 		async.waterfall([
     		function(callbacks) {
 
         		//if (index == 0) index = 3
-			if (index < 10) index +=1
+			if (index < 11) index +=1
 			else index += 5
 		
 	    		var mytrain = train.slice(0, index)
