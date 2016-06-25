@@ -41,7 +41,7 @@ function translate(engine, fromln, toln, text, callback)
     },
   function(callback){
         if(engine.toLowerCase() == "google") {
-                googleTranslate.translatie(text, fromln, toln, function(err, data) {
+                googleTranslate.translate(text, fromln, toln, function(err, data) {
                                 translated = data.translatedText
                         callback(null, null);
                         });
