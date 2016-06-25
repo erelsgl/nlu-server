@@ -1,14 +1,17 @@
 var async = require('async');
-var yandex = require('yandex-translate')('trnsl.1.1.20160622T063301Z.1d2854f450c7478f.c2f1267d80fff9c7aef78ea0de7a0a8d9126f67c'); 
-var microsoftT = require('mstranslator');
-var fs = require('fs')
 
+var microsoftT = require('mstranslator');
+
+var fs = require('fs')
+var keys = JSON.parse(fs.readFileSync(__dirname+"/keys.json"))
+
+var yandex = require('yandex-translate')(keys.yandex); 
 var microsoft = new microsoftT({
-  client_id: "ds354fsdaf4", 
-    client_secret: "yWIRO9uGAvfrLN9QgvNLhULEliMnVxAzxw1VQzJJDyU="
+  client_id: "fsdhkjhj", 
+    client_secret: keys.microsoft
 }, true);
 
-var googleTranslate = require('google-translate')("AIzaSyD-hY-TaVLTUVl1Rjp_qWjLPGWm-So7NeM");
+var googleTranslate = require('google-translate')(keys.google);
 
 console.vlog = function(data) {
   fs.appendFileSync("/tmp/logs/tran", data + '\n', 'utf8')
@@ -56,6 +59,8 @@ function translate(engine, fromln, toln, text, callback)
 
 /*
 node utils/async_tran.js 'yandex' 'microsoft' 'de' 'I am starting doing stuff'
+node utils/async_tran.js 'microsoft' 'microsoft' 'de' 'I am starting doing stuff'
+
 */
 
 var engine1 = process.argv[2]
