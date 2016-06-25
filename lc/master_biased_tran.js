@@ -407,10 +407,12 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var stat = {}
 
 //	var classifiers = [ 'NLU_Tran', 'NLU_Tran_Oversample']
-	var classifiers = [ 'NLU_Baseline', 'NLU_Tran', 'NLU_Oversample', 'NLU_Tran_Oversample']
+//	var classifiers = [ 'NLU_Baseline', 'NLU_Tran', 'NLU_Oversample', 'NLU_Tran_Oversample']
+	//var classifiers = [ 'NLU_Baseline', 'NLU_Emb_300', 'NLU_Emb_100', 'NLU_Emb_50']
+	var classifiers = [ 'NLU_Baseline', 'NLU_Tran']
 	//var classifiers = [ 'NLU_Baseline']
 
-	var data1 = _.shuffle(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_tran.json")))
+	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_tran.json")))
  	var utterset1 = bars.getsetcontext(data1, true)
 	var train1 = utterset1["train"].concat(utterset1["test"])
 
