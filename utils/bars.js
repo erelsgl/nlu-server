@@ -4299,6 +4299,7 @@ function gettrans(turns)
     console.vlog("gettrans: add: " + _.keys(turn["input"]["trans"]).length)
     _.each(turn["input"]["trans"], function(tran, key, list){
 
+  	console.vlog("gettrans: key spliiting: " + JSON.stringify(key.split(":"), null, 4))
    //     if (ln.indexOf(key.split(":")[1])!=-1)
           output.push({
             'input': {'text': tran,
