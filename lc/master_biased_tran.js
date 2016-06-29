@@ -415,11 +415,19 @@ function learning_curves(classifiers, folds, dataset, callback)
 			     'NLU_Tran_Google_Microsoft', 'NLU_Tran_Google_Yandex', 
 			     'NLU_Tran_Microsoft_Google', 'NLU_Tran_Microsoft_Yandex']
 */
-	var classifiers = [ 	'NLU_Baseline', 
+/*	var classifiers = [ 	'NLU_Baseline', 
 				'NLU_Tran_Yandex_Microsoft_French', 'NLU_Tran_Yandex_Microsoft_German',
 				'NLU_Tran_Yandex_Microsoft_Spanish', 'NLU_Tran_Yandex_Microsoft_Portuguese',
 				'NLU_Tran_Yandex_Microsoft_Hebrew', 'NLU_Tran_Yandex_Microsoft_Arabic',
 				'NLU_Tran_Yandex_Microsoft_Russian', 'NLU_Tran_Yandex_Microsoft_Chinese' ]
+
+*/	var classifiers = [ 	'NLU_Baseline', 
+				'NLU_Tran_French', 'NLU_Tran_German',
+				'NLU_Tran_Spanish', 'NLU_Tran_Portuguese',
+				'NLU_Tran_Hebrew', 'NLU_Tran_Arabic',
+				'NLU_Tran_Russian', 'NLU_Tran_Chinese' ]
+
+
 	//var classifiers = [ 'NLU_Baseline']
 
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_trans_new.json")))
