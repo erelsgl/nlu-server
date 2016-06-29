@@ -4287,10 +4287,11 @@ function oversample(turns)
   return turns
 }
 
-function gettrans(turns)
+function gettrans(turns, pat)
 {
   var output = []
   var ln = ['de','fr','es','pt']
+  var regex =  new RegExp(pat)
 
   console.vlog("gettrans: input.length: " + turns.length)
   console.vlog("gettrans: input.length: " + JSON.stringify(turns, null, 4))
@@ -4299,9 +4300,9 @@ function gettrans(turns)
     console.vlog("gettrans: add: " + _.keys(turn["input"]["trans"]).length)
     _.each(turn["input"]["trans"], function(tran, key, list){
 
-	var sp = key.split(":")
-  	console.vlog("gettrans: key spliiting: " + sp)
-        //if ((sp[0]=="M") && (sp[2]=="Y"))
+	var proc = regex.test(key)
+  	console.vlog("gettrans: key: " + key + " proc: "+proc+ " pat: "+pat)
+        if (proc)
 	{
   	console.vlog("gettrans: add")
           output.push({
