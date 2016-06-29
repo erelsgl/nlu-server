@@ -74,57 +74,34 @@ process.on('message', function(message) {
 					" test_dialogue="+test.length +" test_turns="+mytestex.length+
 					" classifier="+classifier+ " fold="+fold)
 				
-				if (classifier=="NLU_Tran_Google")
-				{
-					callbacks(null, bars.gettrans(mytrainex, "G:.*:G"), mytestex, mytrainex.length)
-				}
-				else if (classifier=="NLU_Tran_Microsoft")
-				{
-                                        callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length)
-				}
-				else if (classifier=="NLU_Tran_Yandex")
-                                {
-                                        callbacks(null, bars.gettrans(mytrainex, "Y:.*:Y"), mytestex, mytrainex.length)
-                                }
-				else if (classifier=="NLU_Tran_Yandex_Google")
-                                {
-                                        callbacks(null, bars.gettrans(mytrainex, "Y:.*:G"), mytestex, mytrainex.length)
-                                }
-				else if (classifier=="NLU_Tran_Yandex_Microsoft")
-                                {
-                                        callbacks(null, bars.gettrans(mytrainex, "Y:.*:M"), mytestex, mytrainex.length)
-                                }
-				 else if (classifier=="NLU_Tran_Microsoft_Yandex")
-                                {
-                                        callbacks(null, bars.gettrans(mytrainex, "M:.*:Y"), mytestex, mytrainex.length)
-                                }
-				else if (classifier=="NLU_Tran_Microsoft_Google")
-                                {
-                                        callbacks(null, bars.gettrans(mytrainex, "M:.*:G"), mytestex, mytrainex.length)
-                                }
-				else if (classifier=="NLU_Tran_Google_Yandex")
-                                {
-                                        callbacks(null, bars.gettrans(mytrainex, "G:.*:Y"), mytestex, mytrainex.length)
-                                }
-				else if (classifier=="NLU_Tran_Google_Microsoft")
-                                {
-                                        callbacks(null, bars.gettrans(mytrainex, "G:.*:M"), mytestex, mytrainex.length)
-                                }
-				else if (classifier=="NLU_Tran_Google_Microsoft")
-				else if (classifier=="NLU_Oversample") 
-				{
-					var oversam = bars.oversample(mytrainex)
-					console.vlog("DEBUG: worker: "+classifier+" train size:"+oversam.length)
-					callbacks(null, oversam, mytestex, mytrainex.length)
-				}
-				else if (classifier=="NLU_Tran_Oversample")
-				{
-					var tranoversam = bars.tranoversam(mytrainex)
-					console.vlog("DEBUG: worker: "+classifier+" train size:"+tranoversam.length)
-					callbacks(null, tranoversam, mytestex, mytrainex.length)
-				}
-				else
-					callbacks(null, mytrainex, mytestex, mytrainex.length)
+
+				switch(classifier) {
+    				case "NLU_Tran_Google": callbacks(null, bars.gettrans(mytrainex, "G:.*:G"), mytestex, mytrainex.length); break;
+    				case "NLU_Tran_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
+    				case "NLU_Tran_Yandex": callbacks(null, bars.gettrans(mytrainex, "Y:.*:Y"), mytestex, mytrainex.length); break;
+    				
+    				case "NLU_Tran_Yandex_Google": callbacks(null, bars.gettrans(mytrainex, "Y:.*:G"), mytestex, mytrainex.length); break;
+    				case "NLU_Tran_Yandex_Microsoft": callbacks(null, bars.gettrans(mytrainex, "Y:.*:M"), mytestex, mytrainex.length); break;
+    				case "NLU_Tran_Microsoft_Yandex": callbacks(null, bars.gettrans(mytrainex, "M:.*:Y"), mytestex, mytrainex.length); break;
+    				case "NLU_Tran_Microsoft_Google": callbacks(null, bars.gettrans(mytrainex, "M:.*:G"), mytestex, mytrainex.length); break;
+    				case "NLU_Tran_Google_Yandex": callbacks(null, bars.gettrans(mytrainex, "G:.*:Y"), mytestex, mytrainex.length); break;
+    				case "NLU_Tran_Google_Microsoft": callbacks(null, bars.gettrans(mytrainex, "G:.*:M"), mytestex, mytrainex.length); break;
+
+    				case "NLU_Tran_Yandex_Microsoft_French": callbacks(null, bars.gettrans(mytrainex, "Y:fr:M"), mytestex, mytrainex.length); break;
+    				case "NLU_Tran_Yandex_Microsoft_German": callbacks(null, bars.gettrans(mytrainex, "Y:de:M"), mytestex, mytrainex.length); break;
+    				case "NLU_Tran_Yandex_Microsoft_Spanish": callbacks(null, bars.gettrans(mytrainex, "Y:es:M"), mytestex, mytrainex.length); break;
+    				case "NLU_Tran_Yandex_Microsoft_Portuguese": callbacks(null, bars.gettrans(mytrainex, "Y:pt:M"), mytestex, mytrainex.length); break;
+    				case "NLU_Tran_Yandex_Microsoft_Hebrew": callbacks(null, bars.gettrans(mytrainex, "Y:he:M"), mytestex, mytrainex.length); break;
+    				case "NLU_Tran_Yandex_Microsoft_Arabic": callbacks(null, bars.gettrans(mytrainex, "Y:ar:M"), mytestex, mytrainex.length); break;
+    				case "NLU_Tran_Yandex_Microsoft_Russian": callbacks(null, bars.gettrans(mytrainex, "Y:ru:M"), mytestex, mytrainex.length); break;
+    				case "NLU_Tran_Yandex_Microsoft_Chinese": callbacks(null, bars.gettrans(mytrainex, "Y:zh:M"), mytestex, mytrainex.length); break;
+    				
+    				case "NLU_Oversample": callbacks(null, bars.oversample(mytrainex), mytestex, mytrainex.length); break;
+    				case "NLU_Tran_Oversample": callbacks(null, bars.tranoversam(mytrainex), mytestex, mytrainex.length); break;
+
+    				default:
+        				callbacks(null, mytrainex, mytestex, mytrainex.length)
+        		}
 
     		},
     		function(mytrainex, mytestex, trainsize, callback) {
