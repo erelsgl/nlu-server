@@ -409,10 +409,20 @@ function learning_curves(classifiers, folds, dataset, callback)
 //	var classifiers = [ 'NLU_Tran', 'NLU_Tran_Oversample']
 //	var classifiers = [ 'NLU_Baseline', 'NLU_Tran', 'NLU_Oversample', 'NLU_Tran_Oversample']
 	//var classifiers = [ 'NLU_Baseline', 'NLU_Emb_300', 'NLU_Emb_100', 'NLU_Emb_50']
-	var classifiers = [ 'NLU_Baseline', 'NLU_Tran']
+	//var classifiers = [ 'NLU_Baseline', 'NLU_Tran_Yandex', 'NLU_Tran_Microsoft', 'NLU_Tran_Google']
+/*	var classifiers = [ 'NLU_Baseline', 
+			     'NLU_Tran_Yandex_Microsoft', 'NLU_Tran_Yandex_Google', 
+			     'NLU_Tran_Google_Microsoft', 'NLU_Tran_Google_Yandex', 
+			     'NLU_Tran_Microsoft_Google', 'NLU_Tran_Microsoft_Yandex']
+*/
+	var classifiers = [ 	'NLU_Baseline', 
+				'NLU_Tran_Yandex_Microsoft_French', 'NLU_Tran_Yandex_Microsoft_German',
+				'NLU_Tran_Yandex_Microsoft_Spanish', 'NLU_Tran_Yandex_Microsoft_Portuguese',
+				'NLU_Tran_Yandex_Microsoft_Hebrew', 'NLU_Tran_Yandex_Microsoft_Arabic',
+				'NLU_Tran_Yandex_Microsoft_Russian', 'NLU_Tran_Yandex_Microsoft_Chinese' ]
 	//var classifiers = [ 'NLU_Baseline']
 
-	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_tran.json")))
+	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_trans_new.json")))
  	var utterset1 = bars.getsetcontext(data1, true)
 	var train1 = utterset1["train"].concat(utterset1["test"])
 
@@ -433,7 +443,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 			
 			var data = partitions.partitions_consistent_by_fold(train1, folds, fold)
 
-			console.vlog("DEBUGMASTER: fold "+ fold + " train size "+data.train.length + " test size " + data.test.length)
+			console.vlog("DEBUGMASTER: class: "+classifier+" fold:"+ fold + " train size:"+data.train.length + " test size:" + data.test.length)
 			//console.vlog(JSON.stringify(worker, bars.censor(worker), 4))
 			console.vlog("DEBUGMASTER: process.pid:"+worker.process.pid)
 
