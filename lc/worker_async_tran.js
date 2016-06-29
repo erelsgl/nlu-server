@@ -74,13 +74,43 @@ process.on('message', function(message) {
 					" test_dialogue="+test.length +" test_turns="+mytestex.length+
 					" classifier="+classifier+ " fold="+fold)
 				
-				if (classifier=="NLU_Tran")
+				if (classifier=="NLU_Tran_Google")
 				{
-					var gentra = bars.gettrans(mytrainex)
-					var oversam = bars.oversample(gentra)
-					console.vlog("DEBUG: worker: "+classifier+" train size:"+oversam.length)
-					callbacks(null, oversam, mytestex, mytrainex.length)
+					callbacks(null, bars.gettrans(mytrainex, "G:.*:G"), mytestex, mytrainex.length)
 				}
+				else if (classifier=="NLU_Tran_Microsoft")
+				{
+                                        callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length)
+				}
+				else if (classifier=="NLU_Tran_Yandex")
+                                {
+                                        callbacks(null, bars.gettrans(mytrainex, "Y:.*:Y"), mytestex, mytrainex.length)
+                                }
+				else if (classifier=="NLU_Tran_Yandex_Google")
+                                {
+                                        callbacks(null, bars.gettrans(mytrainex, "Y:.*:G"), mytestex, mytrainex.length)
+                                }
+				else if (classifier=="NLU_Tran_Yandex_Microsoft")
+                                {
+                                        callbacks(null, bars.gettrans(mytrainex, "Y:.*:M"), mytestex, mytrainex.length)
+                                }
+				 else if (classifier=="NLU_Tran_Microsoft_Yandex")
+                                {
+                                        callbacks(null, bars.gettrans(mytrainex, "M:.*:Y"), mytestex, mytrainex.length)
+                                }
+				else if (classifier=="NLU_Tran_Microsoft_Google")
+                                {
+                                        callbacks(null, bars.gettrans(mytrainex, "M:.*:G"), mytestex, mytrainex.length)
+                                }
+				else if (classifier=="NLU_Tran_Google_Yandex")
+                                {
+                                        callbacks(null, bars.gettrans(mytrainex, "G:.*:Y"), mytestex, mytrainex.length)
+                                }
+				else if (classifier=="NLU_Tran_Google_Microsoft")
+                                {
+                                        callbacks(null, bars.gettrans(mytrainex, "G:.*:M"), mytestex, mytrainex.length)
+                                }
+				else if (classifier=="NLU_Tran_Google_Microsoft")
 				else if (classifier=="NLU_Oversample") 
 				{
 					var oversam = bars.oversample(mytrainex)
