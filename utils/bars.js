@@ -4330,6 +4330,105 @@ function gettrans(turns, pat)
   return output
 }
 
+function distances(str1, str2)
+{
+  var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-\?]+/});
+
+  var tokens1 = _.flatten(natural.NGrams.ngrams(tokenizer.tokenize(str1), 1))
+  var tokens2 = _.flatten(natural.NGrams.ngrams(tokenizer.tokenize(str2), 1))
+
+  var dst = natural.LevenshteinDistance(str1,str2)
+
+  var dst_nrm = dst/_.max([tokens1.length, tokens2.length])
+  return dst_nrm
+}
+
+function gettransdist(turns, pat)
+{
+  var output = []
+  var regex =  new RegExp(pat)
+
+  console.vlog("gettrans: input.length: " + turns.length)
+  
+  var pool = [] 
+  var output = []
+
+  // engine - test - output
+
+  _.each(turns, function(turn, key, list){    
+    var pool_temp = _.pairs(turn["input"]["trans"])
+    pool_temp = _.map(pool_temp, function(num){ num.push(turn.output); return num; });
+    pool = pool.concat(pool_temp)
+
+    output.push({
+            'input': {'text': turn.input.text,
+            'context': turn.input.context},
+            'output': JSON.parse(JSON.stringify(turn.output))
+          })
+
+  }, this)
+
+  var pool_dst = []
+  _.each(pool, function(gen, key, list){
+      var str = gen[1]
+
+      console.log(JSON.stringify(gen, null, 4))
+
+      var dsts = []
+
+      // compare every translation to the soure set
+      _.each(turns, function(src, key, list){
+        dsts.push(distances(gen[1], src["input"]["text"]))
+      }, this)
+
+      _.each(pool, function(gen1, key1, list){
+        dsts.push(distances(gen[1], gen1[1]))
+      }, this)
+
+      pool_dst.push({
+        'type': gen[0],
+        'input': gen[1],
+        'output': gen[2],
+        'dst': average(dsts)
+      })
+
+  }, this)
+
+  // get 10 best
+
+  pool_dst = _.sortBy(pool_dst, function(num){ return num.dst }).reverse()
+  console.log(JSON.stringify(pool_dst, null, 4))
+
+  var pool_dst_best = pool_dst.splice(0, 20)
+  
+  var engines = _.map(pool_dst_best, function(num){ return num.type });
+  console.log("Bets engines :"+JSON.stringify(_.countBy(engines, function(num) { return num; }), null, 4))
+
+  _.each(pool_dst_best, function(value, key, list){
+
+      output.push({
+            'input': {'text': value["input"],
+            'context': []},
+            'output': value["output"]
+          })
+
+  }, this)
+
+  var output_before = _.map(turns, function(num){ return num.output });
+  output_before = _.flatten(output_before)
+  console.log("Dsist before :"+JSON.stringify(_.countBy(output_before, function(num) { return num; }), null, 4))
+
+  var output_after = _.map(output, function(num){ return num.output });
+  output_after = _.flatten(output_after)
+  console.log("Dist after :"+JSON.stringify(_.countBy(output_after, function(num) { return num; }), null, 4))
+
+  console.log(JSON.stringify(output, null, 4))
+  process.exit(0)
+
+  return output
+}
+
+
 function expanbal(turns, best_results, callbackg)
 {
 
@@ -5231,5 +5330,7 @@ expanbal:expanbal,
 censor: censor,
 gettrans:gettrans,
 oversampleA: oversampleA,
-tranoversam:tranoversam
+tranoversam:tranoversam,
+gettransdist:gettransdist,
+distances:distances
 }
