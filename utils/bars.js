@@ -4485,12 +4485,12 @@ function gettransdist(turns, pat)
   // get 10 best
 
   pool_dst = _.sortBy(pool_dst, function(num){ return num.dst })
-  console.log(JSON.stringify(pool_dst, null, 4))
+  console.vlog("gettrans:"+JSON.stringify(pool_dst, null, 4))
 
   var pool_dst_best = pool_dst.splice(0, 20)
   
   var engines = _.map(pool_dst_best, function(num){ return num.type });
-  console.log("Bets engines :"+JSON.stringify(_.countBy(engines, function(num) { return num; }), null, 4))
+  console.vlog("gettrans: Bets engines :"+JSON.stringify(_.countBy(engines, function(num) { return num; }), null, 4))
 
   _.each(pool_dst_best, function(value, key, list){
 
@@ -4504,14 +4504,13 @@ function gettransdist(turns, pat)
 
   var output_before = _.map(turns, function(num){ return num.output });
   output_before = _.flatten(output_before)
-  console.log("Dsist before :"+JSON.stringify(_.countBy(output_before, function(num) { return num; }), null, 4))
+  console.vlog("gettrans: Dsist before :"+JSON.stringify(_.countBy(output_before, function(num) { return num; }), null, 4))
 
   var output_after = _.map(output, function(num){ return num.output });
   output_after = _.flatten(output_after)
-  console.log("Dist after :"+JSON.stringify(_.countBy(output_after, function(num) { return num; }), null, 4))
+  console.vlog("gettrans: Dist after :"+JSON.stringify(_.countBy(output_after, function(num) { return num; }), null, 4))
 
   console.log(JSON.stringify(output, null, 4))
-  process.exit(0)
 
   return output
 }
