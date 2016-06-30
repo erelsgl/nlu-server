@@ -16,6 +16,19 @@ var fs = require('fs');
 
 describe('Bars utilities', function() {
 
+	it('mngrp', function() {
+		var val = bars.mngrp("the the the the the the the", "The cat is on the mat",1 )
+		_.isEqual(val, 0.2857142857142857).should.equal(true)
+	
+		var val = bars.mngrp("It is a guide to action which ensures that the military always obeys the commands of the party", 
+							 "It is a guide to action that ensures that the military will forever heed Party commands",1 )
+		// _.isEqual(val, 0.2857142857142857).should.equal(true)
+
+		var val = bars.bleu("the the the the the the the", "The cat is on the mat" )
+		console.log(JSON.stringify(val, null, 4))
+
+	})
+
 
 	it('distances', function() {
 		var res = bars.distances("The salary that you offer?", "I reject the salary of 90000")
