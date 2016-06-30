@@ -16,6 +16,12 @@ var fs = require('fs');
 
 describe('Bars utilities', function() {
 
+
+	it('distances', function() {
+		var res = bars.distances("The salary that you offer?", "I reject the salary of 90000")
+		console.log(JSON.stringify(res, null, 4))
+	})
+
 	it('turnoutput', function() {
 		var output = { "Offer": { "Job Description": "Project Manager" }}
 		_.isEqual(bars.turnoutput(output), [["Offer","Job Description"]]).should.equal(true)
