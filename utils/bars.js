@@ -4442,11 +4442,23 @@ function gettransdist(turns, pat)
   var output = []
 
   // engine - test - output
-
+  var regex =  new RegExp(".*:ar:.*")
+  
+    // create pool of translations
   _.each(turns, function(turn, key, list){    
     var pool_temp = _.pairs(turn["input"]["trans"])
     pool_temp = _.map(pool_temp, function(num){ num.push(turn.output); return num; });
     pool = pool.concat(pool_temp)
+
+    _.each(turn["input"]["trans"], function(tran, key, list){
+        var proc = regex.test(key)
+         if (proc)
+          output.push({
+            'input': {'text': tran,
+            'context': turn.input.context},
+            'output': JSON.parse(JSON.stringify(turn.output))
+          })
+    }, this)
 
     output.push({
             'input': {'text': turn.input.text,
@@ -4495,7 +4507,7 @@ function gettransdist(turns, pat)
 
   console.vlog("gettrans: plot: "+JSON.stringify(str, null, 4))
   console.vlog(str)
-  var pool_dst_best = pool_dst.splice(0, 20)
+  var pool_dst_best = pool_dst.splice(0, 10)
   
   var engines = _.map(pool_dst_best, function(num){ return num.type });
   console.vlog("gettrans: Bets engines :"+JSON.stringify(_.countBy(engines, function(num) { return num; }), null, 4))
