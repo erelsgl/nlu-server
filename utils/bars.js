@@ -4487,6 +4487,14 @@ function gettransdist(turns, pat)
   pool_dst = _.sortBy(pool_dst, function(num){ return num.dst })
   console.vlog("gettrans:"+JSON.stringify(pool_dst, null, 4))
 
+  var dists = _.pluck(pool_dst, 'dst');
+  var str = ""
+  _.each(dists, function(value, key, list){
+  str += value+"\t0\n"
+	}, this)
+
+  console.vlog("gettrans: plot: "+JSON.stringify(str, null, 4))
+  console.vlog(str)
   var pool_dst_best = pool_dst.splice(0, 20)
   
   var engines = _.map(pool_dst_best, function(num){ return num.type });
@@ -4510,7 +4518,7 @@ function gettransdist(turns, pat)
   output_after = _.flatten(output_after)
   console.vlog("gettrans: Dist after :"+JSON.stringify(_.countBy(output_after, function(num) { return num; }), null, 4))
 
-  console.log(JSON.stringify(output, null, 4))
+  console.vlog("gettransdist:"+JSON.stringify(output, null, 4))
 
   return output
 }
