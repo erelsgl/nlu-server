@@ -4341,6 +4341,7 @@ function distances(str1, str2)
 
   var dst_nrm = dst/_.max([tokens1.length, tokens2.length])
   return dst_nrm
+  //return dst
 }
 
 
@@ -4452,13 +4453,14 @@ function gettransdist(turns, pat)
 
     _.each(turn["input"]["trans"], function(tran, key, list){
         var proc = regex.test(key)
-         if (proc)
+  /*       if (proc)
           output.push({
             'input': {'text': tran,
             'context': turn.input.context},
             'output': JSON.parse(JSON.stringify(turn.output))
           })
-    }, this)
+*/  
+  }, this)
 
     output.push({
             'input': {'text': turn.input.text,
@@ -4507,7 +4509,7 @@ function gettransdist(turns, pat)
 
   console.vlog("gettrans: plot: "+JSON.stringify(str, null, 4))
   console.vlog(str)
-  var pool_dst_best = pool_dst.splice(0, 10)
+  var pool_dst_best = pool_dst.splice(0, turns*9)
   
   var engines = _.map(pool_dst_best, function(num){ return num.type });
   console.vlog("gettrans: Bets engines :"+JSON.stringify(_.countBy(engines, function(num) { return num; }), null, 4))
