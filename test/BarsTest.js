@@ -20,12 +20,14 @@ describe('Bars utilities', function() {
 		var val = bars.mngrp("the the the the the the the", "The cat is on the mat",1 )
 		_.isEqual(val, 0.2857142857142857).should.equal(true)
 	
-		var val = bars.mngrp("It is a guide to action which ensures that the military always obeys the commands of the party", 
-							 "It is a guide to action that ensures that the military will forever heed Party commands",1 )
+		// var val = bars.mngrp("It is a guide to action which ensures that the military always obeys the commands of the party", 
+							 // "It is a guide to action that ensures that the military will forever heed Party commands",1 )
 		// _.isEqual(val, 0.2857142857142857).should.equal(true)
 
-		var val = bars.bleu("the the the the the the the", "The cat is on the mat" )
-		console.log(JSON.stringify(val, null, 4))
+		var val = bars.mngrp("of the", "It is the guiding principle which guarantees the military forces always being under the command of the Party",1)
+		
+		var val = bars.mngrp("of the", "It is the guiding principle which guarantees the military forces always being under the command of the Party",2)
+		_.isEqual(val, 1).should.equal(true)
 
 	})
 
