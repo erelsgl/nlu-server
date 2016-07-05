@@ -132,14 +132,15 @@ process.on('message', function(message) {
 				   			stats1[key] = value
 				}, this)
 
-				console.vlog("STATS: fold:"+fold+" trainsize:"+mytrainex.length+" classifier:"+classifier+" "+JSON.stringify(stats1, null, 4))
+				console.vlog("STATS: data.length: "+stats["data"].length+" fold:"+fold+" trainsize:"+mytrainex.length+" classifier:"+classifier+" "+JSON.stringify(stats1, null, 4))
 
 				var results = {
 					'classifier': classifier,
 					'fold': fold,
 					'trainsize': trainsize,
 					'trainsizeuttr': trainsize,
-					'stats': stats1			
+					'stats': stats1,
+					'data': stats.data		
 				}
 
 				process.send(JSON.stringify(results))
