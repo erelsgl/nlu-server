@@ -1,8 +1,8 @@
-size	dial	NLU_Biased_no_rephrase	NLU_Biased_with_rephrase	NLU_Oversampled	NLU_Unbiased	NLU_Undersampled
-10	11.91	null	null	null	null	null
-20	21.93	null	null	null	null	null
-30	32.11	null	null	null	null	null
-40	47.13	null	null	null	null	null
-50	62.9	null	null	null	null	null
-60	74.4	null	null	null	null	null
-70	93.24	null	null	null	null	null
+size	dial	Biased_no_rephrase	Natural
+10	10	null	null
+20	20	null	null
+30	30	null	null
+40	40	null	null
+50	50	null	null
+60	60	null	null
+70	70	null	null
