@@ -562,7 +562,6 @@ if (process.argv[1] === __filename)
 //	console.log("DEBUG: master: dataset size "+ dataset.length)
 
 	learning_curves([], folds, [], function(){
-		console.log()
 		process.exit(0)
 	})	
 }
