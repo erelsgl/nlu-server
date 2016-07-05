@@ -6,7 +6,6 @@ var fs = require('fs');
 var master = require('./master');
 var classifiers = require(__dirname+"/../classifiers.js")
 var trainAndTest = require(__dirname+'/../utils/trainAndTest');
-var clc = require('cli-color')
 var bars = require(__dirname+'/../utils/bars');
 var log_file = fs.createWriteStream("/tmp/logs/" + process.pid, {flags : 'w'});
 var util = require('util');
@@ -15,7 +14,6 @@ var fold = process.env["fold"]
 // var folds = process.env["folds"]
 var classifier = process.env["classifier"]
 var thread = process.env["thread"]
-var msg = clc.xterm(thread)
 
 var log_stdout = process.stdout;
 
@@ -25,13 +23,14 @@ console.log = function(d) {
 };
 
 if (cluster.isWorker)
-	console.log(msg("DEBUG: worker "+ process.pid+": started"))
+	console.log("DEBUG: worker "+ process.pid+": started")
 
 process.on('message', function(message) {
-    console.log(msg('DEBUG: worker ' + process.pid + ' received message from master.'))
+    console.log('DEBUG: worker ' + process.pid + ' received message from master.')
 	
-	var train = JSON.parse(message['train'])
-	var test  = JSON.parse(message['test'])
+	var train = bars.processdatasettrain(JSON.parse(message['train']))
+	var test  = bars.processdatasettest(JSON.parse(message['test']))
+
 	var max  = JSON.parse(message['max'])
 	var max = 70
 
@@ -39,8 +38,8 @@ process.on('message', function(message) {
         train = _.filter(train, function(num){ return _.keys(num.outputhash).length <= 1 })
         console.log("DEBUGWORKER: train.length after filter = "+train.length)
 
-	console.log(msg("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max))
-	console.log(msg("DEBUG: max "+max))
+	console.log("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max)
+	console.log("DEBUG: max "+max)
 
 	var index = 0
 
@@ -69,10 +68,10 @@ process.on('message', function(message) {
 	       	var mytrainex = (bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)
 		var mytestex  = (bars.isDialogue(test) ? _.flatten(test) : test)
 
-			console.log(msg("DEBUG: worker "+process["pid"]+": index=" + index +
+			console.log("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+mytrainex.length+
 				" test_dialogue="+test.length +" test_turns="+mytestex.length+
-				" classifier="+classifier+ " fold="+fold))
+				" classifier="+classifier+ " fold="+fold)
 
 		    	// stats = trainAndTest_hash(classifiers[classifier], mytrainex, mytestex, false)
 
@@ -103,10 +102,10 @@ process.on('message', function(message) {
 
 		    		//var uniqueid = new Date().getTime()
 
-			    	console.log(msg("DEBUG: worker "+process["pid"]+": traintime="+
+			    	console.log("DEBUG: worker "+process["pid"]+": traintime="+
 			    		stats['traintime']/1000 + " testtime="+ 
 			    		stats['testtime']/1000 + " classifier="+classifier + 
-			    		" Accuracy="+stats['stats']['Accuracy']+ " fold="+fold))
+			    		" Accuracy="+stats['stats']['Accuracy']+ " fold="+fold)
 
 			    	console.log(JSON.stringify(stats['stats'], null, 4))
 
@@ -132,7 +131,7 @@ process.on('message', function(message) {
 			   	})
 	    	},
     	function (err) {
-			console.log(msg("DEBUG: worker "+process["pid"]+": exiting"))
+			console.log("DEBUG: worker "+process["pid"]+": exiting")
 			process.exit()
 		})
 			  	
