@@ -11,6 +11,12 @@ var gnuplot = 'gnuplot'
 var statusfile = __dirname + "/status"
 var plotfile = __dirname + "/plotstatus"
 
+var log_file = "/tmp/logs/master"
+
+console.vlog = function(data) {
+    fs.appendFileSync(log_file, data + '\n', 'utf8')
+};
+
 // function groupbylabel(dataset, minsize, sizetrain, catnames)
 // {
 
@@ -144,7 +150,7 @@ function plot(fold, parameter, stat, baseline, sota)
 
     var command = gnuplot +" -e \"set title '"+corpus+" : "+sota+" - "+baseline+"'; set output 'lc/hm/"+fold+"_"+parameter+"_"+sota+"-"+baseline+".png'\" "+__dirname+"/hm.plot " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image \""
     
-    console.log(command)
+    console.vlog(command)
 	child_process.execSync(command)
 }
 
@@ -168,7 +174,7 @@ function plotlcagrlenaverge(stat)
 		return distance.average(values)
 	else
 		{
-		console.log("DEBUGMASTER: plotlcagrlenaverge: "+JSON.stringify(stat))
+		console.vlog("DEBUGMASTER: plotlcagrlenaverge: "+JSON.stringify(stat))
 		return null
 		}
 }
@@ -371,7 +377,7 @@ function cleanFolder(dir)
 function plotlc(fold, parameter, stat)
 {
 	
-	console.log(JSON.stringify(stat, null, 4))
+	console.vlog(JSON.stringify(stat, null, 4))
 
 	fs.appendFileSync(plotfile, fold)
 	fs.appendFileSync(plotfile, JSON.stringify(parameter, null, 4))
@@ -381,13 +387,13 @@ function plotlc(fold, parameter, stat)
 
 	var classifiers = output[0].slice(1)
 
-	console.log("OUTPUTDATA:")
-	console.log(JSON.stringify(output, null, 4))
+	console.vlog("OUTPUTDATA:")
+	console.vlog(JSON.stringify(output, null, 4))
 
 	var string = getstringlc(output)
 	
-	console.log("OUTPUTSTRING:")
-	console.log(JSON.stringify(string, null, 4))
+	console.vlog("OUTPUTSTRING:")
+	console.vlog(JSON.stringify(string, null, 4))
 
 	var mapfile = __dirname+"/learning_curves/"+fold+"_"+parameter
 	var ylabel = _.last(("_"+parameter).split("_"))
@@ -397,12 +403,12 @@ function plotlc(fold, parameter, stat)
 
     var command = gnuplot +" -e \"set ylabel '"+ylabel+"' font ',20'; set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt i ps 3\""
 //    var command = gnuplot +" -e \"set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3\""//, \'\' using 1:(NaN):x2tic(2) axes x2y1\"" 
-    console.log(command)
+    console.vlog(command)
 
 	try {
 		child_process.execSync(command)
 	} catch (err) {
-		console.log(err)
+		console.vlog(err)
 	}
 }
 
@@ -414,11 +420,9 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var maxfolds = 0
 	var id_fold = {}
 
-//	var classifiers = [ 'DS_comp_unigrams_async','DS_comp_unigrams_async_over','DS_comp_unigrams_async_under','DS_comp_unigrams_async_biased']
-//	var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased','NLU_Biased_no_rephrase']
+
 	var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased_with_rephrase','NLU_Biased_no_rephrase']
-//	var classifiers = [ 'NLU_Unbiased','NLU_Biased_with_rephrase','NLU_Biased_no_rephrase']
-//	var classifiers = [ 'DS_comp_unigrams_async', 'DS_comp_unigrams_async_biased']
+//	var classifiers = [ 'NLU_Unbiased' ]
 
    /*var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
     var utterset1 = bars.getsetcontext(data1, true)
@@ -472,14 +476,14 @@ function learning_curves(classifiers, folds, dataset, callback)
 		var train2 = utterset2["train"].concat(utterset2["test"])
 		// only intents
 //		train2 = bars.processdataset(train2)
-		console.log("DEBUG: train2.length "+train2.length)
+		console.vlog("DEBUG: train2.length "+train2.length)
 
 		var data3 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7.json"))
 		var utterset3 = bars.getsetcontext(data3, /*rephrase*/false)
 		var train3 = utterset3["train"].concat(utterset3["test"])
 		// only intents
 //		train3 = bars.processdataset(train3)
-		console.log("DEBUG: train3.length "+train3.length)
+		console.vlog("DEBUG: train3.length "+train3.length)
 
 		_.each(classifiers, function(classifier, key, list){ 
 			_(folds).times(function(fold){
@@ -489,7 +493,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 				
 				var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
 		
-				console.log("DEBUGMASTER: fold "+ (fold+n*folds) + " train size "+data.train.length + " test size " + data.test.length)
+				console.vlog("DEBUGMASTER: fold "+ (fold+n*folds) + " train size "+data.train.length + " test size " + data.test.length)
 
 				var train2sam = _.flatten(_.sample(bars.copyobj(train2), 10))
 
@@ -507,8 +511,8 @@ function learning_curves(classifiers, folds, dataset, callback)
 				// var max = _.min([_.flatten(data.test).length, _.flatten(train2sam).length])
 				max = max - max % 10			
 				
-				console.log("DEBUGMASTER: train1.len="+_.flatten(data.test).length+ " train2.len="+ _.flatten(train2sam).length + " max="+max)
-				console.log("DEBUGMASTER: class="+classifier+ " fold="+ fold + " train1.len="+train.length + " test.len=" + data.train.length + " max: "+max)
+				console.vlog("DEBUGMASTER: train1.len="+_.flatten(data.test).length+ " train2.len="+ _.flatten(train2sam).length + " max="+max)
+				console.vlog("DEBUGMASTER: class="+classifier+ " fold="+ fold + " train1.len="+train.length + " test.len=" + data.train.length + " max: "+max)
 				
 				data.train = _.flatten(data.train)
 
@@ -520,7 +524,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 				thr += 1	
 
 				worker.on('disconnect', function(){
-				  	console.log("DEBUGMASTER: finished: number of clusters: " + Object.keys(cluster.workers).length)
+				  	console.vlog("DEBUGMASTER: finished: number of clusters: " + Object.keys(cluster.workers).length)
 				  	if (Object.keys(cluster.workers).length == 1)
 					next()
 				})
@@ -528,7 +532,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 				worker.on('message', function(message){
 					var workerstats = JSON.parse(message)
 					workerstats['classifiers'] = classifiers
-					console.log("DEBUGMASTER: on message: "+message)
+					console.vlog("DEBUGMASTER: on message: "+message)
 					fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
 					extractGlobal(workerstats, stat)
 				})
@@ -539,7 +543,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 			plotlc('average', param, stat)
 		})
 
-		console.log(JSON.stringify(stat, null, 4))
+		console.vlog(JSON.stringify(stat, null, 4))
 	})
 }
 
@@ -616,7 +620,6 @@ if (process.argv[1] === __filename)
 //	console.log("DEBUG: master: dataset size "+ dataset.length)
 
 	learning_curves([], folds, [], function(){
-		console.log()
 		process.exit(0)
 	})	
 }
