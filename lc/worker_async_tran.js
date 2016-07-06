@@ -7,7 +7,7 @@ var master = require('./master');
 var classifiers = require(__dirname+"/../classifiers.js")
 var trainAndTest = require(__dirname+'/../utils/trainAndTest');
 var bars = require(__dirname+'/../utils/bars');
-var log_file = "/tmp/logs/" + process.pid
+
 var util = require('util');
 
 var fold = process.env["fold"]
@@ -15,6 +15,7 @@ var fold = process.env["fold"]
 var classifier = process.env["classifier"]
 var thread = process.env["thread"]
 
+var log_file = "/tmp/logs/" + process.pid
 console.vlog = function(data) {
     fs.appendFileSync(log_file, data + '\n', 'utf8')
 };
