@@ -14,7 +14,8 @@ var plotfile = __dirname + "/plotstatus"
 var log_file = "/tmp/logs/master"
 
 console.vlog = function(data) {
-    fs.appendFileSync(log_file, data + '\n', 'utf8')
+    //fs.appendFileSync(log_file, data + '\n', 'utf8')
+    fs.writeFileSync(log_file, data + '\n', 'utf8')
 };
 
 // function groupbylabel(dataset, minsize, sizetrain, catnames)
@@ -98,7 +99,7 @@ function extractGlobal(workerstats, stat)
 	var classifiers = workerstats["classifiers"]
 	var fold = workerstats["fold"]
 
-//	console.log("DEBUGMASTER: workerstats: "+JSON.stringify(workerstats, null, 4))
+//	console.vlog("DEBUGMASTER: workerstats: "+JSON.stringify(workerstats, null, 4))
 //	console.log("DEBUGMASTER: clas:"+classifiers)
 
 	_.each(attributes, function(attr, key, list){ 
@@ -126,6 +127,7 @@ function extractGlobal(workerstats, stat)
 			stat[attr][trainsize]["dial"][fold] = workerstats["trainsizeuttr"]
 	//	}
 	}, this)
+//	console.vlog("DEBUGMASTER: GLOBALSTAT: "+JSON.stringify(stat, null, 4))
 }
 
 
@@ -210,9 +212,13 @@ if ('size' in stat)
 if ('dial' in stat)
     statmod['dial'] = stat['dial']
 
-var stat_arr = _.sortBy(_.pairs(stat), function(num){ return num })
-stat = _.extend(statmod, _.object(stat_arr))
+//var stat_arr = _.sortBy(_.pairs(stat), function(num){ return num })
 
+//console.vlog("stat_arr: "+ JSON.stringify(stat_arr, null, 4))
+
+//stat = _.extend(statmod, _.object(stat_arr))
+
+console.vlog("stat: "+ JSON.stringify(stat, null, 4))
 /*{
     "dial": {
         "0": 33,
@@ -401,7 +407,7 @@ function plotlc(fold, parameter, stat)
 	fs.appendFileSync(plotfile, string)
     fs.writeFileSync(mapfile, string)
 
-    var command = gnuplot +" -e \"set ylabel '"+ylabel+"' font ',20'; set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt i ps 3\""
+    var command = gnuplot +" -e \"set ylabel '"+ylabel+"' font ',20'; set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt i+1 ps 3\""
 //    var command = gnuplot +" -e \"set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3\""//, \'\' using 1:(NaN):x2tic(2) axes x2y1\"" 
     console.vlog(command)
 
@@ -421,8 +427,8 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var id_fold = {}
 
 
-	var classifiers = [ 'NLU_Unbiased','NLU_Oversampled','NLU_Undersampled','NLU_Biased_with_rephrase','NLU_Biased_no_rephrase']
-//	var classifiers = [ 'NLU_Unbiased' ]
+	var classifiers = [ 'Natural','Oversampled','Undersampled','Biased_with_rephrase','Biased_no_rephrase']
+	//var classifiers = [ 'Natural','Biased_no_rephrase']
 
    /*var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
     var utterset1 = bars.getsetcontext(data1, true)
@@ -500,9 +506,9 @@ function learning_curves(classifiers, folds, dataset, callback)
 				var train3sam = _.flatten(_.sample(bars.copyobj(train3), 10))
 
 				var train = []
-				if (classifier == "NLU_Biased_with_rephrase")
+				if (classifier == "Biased_with_rephrase")
 					train = train2sam
-				else if (classifier == "NLU_Biased_no_rephrase")
+				else if (classifier == "Biased_no_rephrase")
 					train = train3sam
 				else
 					train = _.flatten(bars.copyobj(data.test))
