@@ -7,7 +7,6 @@ var master = require('./master');
 var classifiers = require(__dirname+"/../classifiers.js")
 var trainAndTest = require(__dirname+'/../utils/trainAndTest');
 var bars = require(__dirname+'/../utils/bars');
-var log_file = fs.createWriteStream("/tmp/logs/" + process.pid, {flags : 'w'});
 var util = require('util');
 
 var fold = process.env["fold"]
@@ -15,31 +14,30 @@ var fold = process.env["fold"]
 var classifier = process.env["classifier"]
 var thread = process.env["thread"]
 
-var log_stdout = process.stdout;
-
-console.log = function(d) { 
-  log_file.write(util.format(d) + '\n');
-  log_stdout.write(util.format(d) + '\n');
+var log_file = "/tmp/logs/" + process.pid
+console.vlog = function(data) {
+    //fs.appendFileSync(log_file, data + '\n', 'utf8')
+    fs.writeFileSync(log_file, data + '\n', 'utf8')
 };
 
 if (cluster.isWorker)
-	console.log("DEBUG: worker "+ process.pid+": started")
+	console.vlog("DEBUG: worker "+ process.pid+": started")
 
 process.on('message', function(message) {
-    console.log('DEBUG: worker ' + process.pid + ' received message from master.')
+    console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
 	var train = bars.processdatasettrain(JSON.parse(message['train']))
 	var test  = bars.processdatasettest(JSON.parse(message['test']))
 
 	var max  = JSON.parse(message['max'])
-	var max = 70
+	var max = 60
 
-	console.log("DEBUGWORKER: train.length before filter = "+train.length)
-        train = _.filter(train, function(num){ return _.keys(num.outputhash).length <= 1 })
-        console.log("DEBUGWORKER: train.length after filter = "+train.length)
+//	console.vlog("DEBUGWORKER: train.length before filter = "+train.length)
+  //      train = _.filter(train, function(num){ return _.keys(num.outputhash).length <= 1 })
+  //      console.vlog("DEBUGWORKER: train.length after filter = "+train.length)
 
-	console.log("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max)
-	console.log("DEBUG: max "+max)
+	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max)
+	console.vlog("DEBUG: max "+max)
 
 	var index = 0
 
@@ -61,14 +59,14 @@ process.on('message', function(message) {
 */
 //biased
 
-		index += 10
+		index += 5
 
 	       	var mytrain = train.slice(0, index)
 
 	       	var mytrainex = (bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)
 		var mytestex  = (bars.isDialogue(test) ? _.flatten(test) : test)
 
-			console.log("DEBUG: worker "+process["pid"]+": index=" + index +
+			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+mytrainex.length+
 				" test_dialogue="+test.length +" test_turns="+mytestex.length+
 				" classifier="+classifier+ " fold="+fold)
@@ -84,9 +82,9 @@ process.on('message', function(message) {
 */
 			var realmytrainex = []
 
-			if (classifier=="NLU_Oversampled") {
+			if (classifier=="Oversampled") {
 				var realmytrainex = bars.oversample(bars.copyobj(mytrainex))
-			} else if (classifier=="NLU_Undersampled") {
+			} else if (classifier=="Undersampled") {
 				var realmytrainex = bars.undersample(bars.copyobj(mytrainex))
 				
 			} else {
@@ -102,12 +100,12 @@ process.on('message', function(message) {
 
 		    		//var uniqueid = new Date().getTime()
 
-			    	console.log("DEBUG: worker "+process["pid"]+": traintime="+
+			    	console.vlog("DEBUG: worker "+process["pid"]+": traintime="+
 			    		stats['traintime']/1000 + " testtime="+ 
 			    		stats['testtime']/1000 + " classifier="+classifier + 
 			    		" Accuracy="+stats['stats']['Accuracy']+ " fold="+fold)
 
-			    	console.log(JSON.stringify(stats['stats'], null, 4))
+			    	console.vlog(JSON.stringify(stats['stats'], null, 4))
 
 			    	var stats1 = {}
 			    	_.each(stats['stats'], function(value, key, list){ 
@@ -115,7 +113,7 @@ process.on('message', function(message) {
 			    			stats1[key] = value
 			    	}, this)
 
-				console.log("STATS: fold:"+fold+" trainsize:"+mytrain.length+" classifier:"+classifier+" "+JSON.stringify(stats1, null, 4))
+				console.vlog("STATS: fold:"+fold+" trainsize:"+mytrain.length+" classifier:"+classifier+" "+JSON.stringify(stats1, null, 4))
 
 					var results = {
 						'classifier': classifier,
@@ -131,7 +129,7 @@ process.on('message', function(message) {
 			   	})
 	    	},
     	function (err) {
-			console.log("DEBUG: worker "+process["pid"]+": exiting")
+			console.vlog("DEBUG: worker "+process["pid"]+": exiting")
 			process.exit()
 		})
 			  	
