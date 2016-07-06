@@ -3845,7 +3845,7 @@ function processdatasettrain(dataset)
     }
   })
 
-	var dataset = _.filter(dataset, function(num){ return num["output"].length <= 1; });
+	//var dataset = _.filter(dataset, function(num){ return num["output"].length <= 1; });
 	return dataset
 }
 
