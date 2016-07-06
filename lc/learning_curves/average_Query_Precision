@@ -1,7 +1,7 @@
 size	dial	Natural	Oversampled	Undersampled	Biased_with_rephrase	Biased_no_rephrase
-10	10.95	null	null	null	null	null
-20	20.6	null	null	null	null	null
-30	29.75	null	null	null	null	null
-40	45.75	null	null	null	null	null
-50	62.25	null	null	null	null	null
-60	78.35	null	null	null	null	null
+10	10.51	null	null	null	null	null
+20	22.36	null	null	null	null	null
+30	36.67	null	null	null	null	null
+40	50.57	null	null	null	null	null
+50	65.49	null	null	null	null	null
+60	82.77	null	null	null	null	null
