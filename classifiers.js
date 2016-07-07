@@ -1959,7 +1959,7 @@ function feAsync(sam, features, train, featureOptions, callback) {
 	Lem.lemmatize(tokens, function(err, lemmas) {
 
 		var zipped = _.zip(tokens, lemmas);
-		var clean_tokens = _.map(tokens, function(num){ return {word: num[0], lemma: num[1]} });
+		var clean_tokens = _.map(zipped, function(num){ return {word: num[0], lemma: num[1]} });
 
 		console.log("DEBUGASYNC: tokens: "+clean_tokens)
 		sample.sentences = {'tokens':clean_tokens}
