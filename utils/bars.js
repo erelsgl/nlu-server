@@ -3845,7 +3845,7 @@ function processdatasettrain(dataset)
     }
   })
 
-	//var dataset = _.filter(dataset, function(num){ return num["output"].length <= 1; });
+	var dataset = _.filter(dataset, function(num){ return num["output"].length <= 1; });
 	return dataset
 }
 
@@ -4507,9 +4507,9 @@ function gettransdist(turns, pat)
   str += value+"\t0\n"
 	}, this)
 
-  console.vlog("gettrans: plot: "+JSON.stringify(str, null, 4))
-  console.vlog(str)
-  var pool_dst_best = pool_dst.splice(0, turns*9)
+  //console.vlog("gettrans: plot: "+JSON.stringify(str, null, 4))
+  //console.vlog(str)
+  var pool_dst_best = pool_dst.splice(0, turns.length*9)
   
   var engines = _.map(pool_dst_best, function(num){ return num.type });
   console.vlog("gettrans: Bets engines :"+JSON.stringify(_.countBy(engines, function(num) { return num; }), null, 4))
