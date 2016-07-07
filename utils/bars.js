@@ -4340,6 +4340,7 @@ function distances(str1, str2)
   var dst = bleu(str1,str2)
 
   var dst_nrm = dst/_.max([tokens1.length, tokens2.length])
+
   return dst_nrm
   //return dst
 }
@@ -4429,7 +4430,9 @@ function bleu(can, ref)
   var brev = brevity(can, ref)
   console.log("BLEU: brevity: "+brev)
 
-  return P*brev
+  //return P*brev
+  //return P
+  return P/brev
 }
 
 function gettransdist(turns, pat)
@@ -4451,19 +4454,26 @@ function gettransdist(turns, pat)
       pool_temp = _.map(pool_temp, function(num){ num.push(turn.output); return num; });
       pool = pool.concat(pool_temp)
 
-      _.each(turn["input"]["trans"], function(tran, key, list){
+//[["Y:fr:Y","How would you feel about the Manager of the Team Instead?",["Offer"]],
+// ["Y:de:Y","How would you feel about the Team Manager Instead?",["Offer"]]
+
+  /*    _.each(turn["input"]["trans"], function(tran, key, list){
         var proc = regex.test(key)
         if (!proc)
           output.push({
-            'input': {'text': tran,
-            'context': turn.input.context},
+            'input': {
+		'text': tran,
+            	'context': turn.input.context
+		},
             'output': JSON.parse(JSON.stringify(turn.output))
           })
       }, this)
-
+*/
       output.push({
-            'input': {'text': turn.input.text,
-            'context': turn.input.context},
+            'input': {
+		'text': turn.input.text,
+            	'context': turn.input.context
+		},
             'output': JSON.parse(JSON.stringify(turn.output))
           })
 
@@ -4500,11 +4510,12 @@ function gettransdist(turns, pat)
   pool_dst = _.sortBy(pool_dst, function(num){ return num.dst })
   console.vlog("gettrans:"+JSON.stringify(pool_dst, null, 4))
 
-  var dists = _.pluck(pool_dst, 'dst');
+/*  var dists = _.pluck(pool_dst, 'dst');
   var str = ""
   _.each(dists, function(value, key, list){
   str += value+"\t0\n"
 	}, this)
+*/
 
   //console.vlog("gettrans: plot: "+JSON.stringify(str, null, 4))
   //console.vlog(str)
