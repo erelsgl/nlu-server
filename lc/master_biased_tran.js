@@ -430,7 +430,8 @@ function learning_curves(classifiers, folds, dataset, callback)
 */
 	//var classifiers = [ 'NLU_Baseline', 'NLU_Bal', 'NLU_Tran_Arabic' ]
 //	var classifiers = [ 'NLU_Bal', 'NLU_Tran_Arabic' ]
-	var classifiers = [ 'NLU_Tran_Arabic', 'NLU_Tran_Yandex_Microsoft_Arabic' ]
+	var classifiers = [ 'NLU_Bal', 'NLU_Tran_Spanish' ]
+//	var classifiers = [ 'NLU_Tran_Arabic', 'NLU_Tran_Yandex_Microsoft_Arabic' ]
 
 	//var classifiers = [ 'NLU_Baseline']
 
