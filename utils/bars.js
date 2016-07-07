@@ -4451,7 +4451,7 @@ function gettransdist(turns, pat)
     // create pool of translations
   _.each(turns, function(turn, key, list){    
       var pool_temp = _.pairs(turn["input"]["trans"])
-      pool_temp = _.map(pool_temp, function(num){ num.push(turn.output); return num; });
+      pool_temp = _.map(pool_temp, function(num){ num.push(turn.output); num.push(turn["input"]["text"]); return num; });
       pool = pool.concat(pool_temp)
 
 //[["Y:fr:Y","How would you feel about the Manager of the Team Instead?",["Offer"]],
@@ -4471,9 +4471,9 @@ function gettransdist(turns, pat)
 */
       output.push({
             'input': {
-		'text': turn.input.text,
+	           	'text': turn.input.text,
             	'context': turn.input.context
-		},
+		        },
             'output': JSON.parse(JSON.stringify(turn.output))
           })
 
@@ -4488,19 +4488,23 @@ function gettransdist(turns, pat)
       var dsts = []
 
       // compare every translation to the soure set
-      _.each(turns, function(src, key, list){
-        dsts.push(distances(gen[1], src["input"]["text"]))
-      }, this)
+      // _.each(turns, function(src, key, list){
+        // dsts.push(distances(gen[1], src["input"]["text"]))
+      // }, this)
 
-      _.each(pool, function(gen1, key1, list){
-        dsts.push(distances(gen[1], gen1[1]))
-      }, this)
+      //compare to each other
+      // _.each(pool, function(gen1, key1, list){
+        // dsts.push(distances(gen[1], gen1[1]))
+      // }, this)
+
+
 
       pool_dst.push({
         'type': gen[0],
         'input': gen[1],
         'output': gen[2],
-        'dst': average(dsts)
+        // 'dst': average(dsts)
+        'dst': distances(gen[1], gen[3])
       })
 
   }, this)
