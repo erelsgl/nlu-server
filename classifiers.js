@@ -33,8 +33,8 @@ var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split
 var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-\?]+/});
 
 console.vlog = function(data) {
-    //fs.appendFileSync(log_file, data + '\n', 'utf8')
-    fs.writeFileSync(log_file, data + '\n', 'utf8')
+    fs.appendFileSync(log_file, data + '\n', 'utf8')
+    //fs.writeFileSync(log_file, data + '\n', 'utf8')
 };
 
 // var tokenizer = new natural.WordTokenizer({'pattern':(/(\W+|\%)/)}); // WordTokenizer, TreebankWordTokenizer, WordPunctTokenizer
