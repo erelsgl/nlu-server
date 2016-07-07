@@ -26,7 +26,7 @@ var async_adapter = require('./utils/async_adapter')
 var async = require('async');
 var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
 var log_file = "/tmp/logs/" + process.pid
-//var Lem = require('lemmer')
+var Lem = require('lemmer')
 
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
@@ -1943,8 +1943,8 @@ function feAsync(sam, features, train, featureOptions, callback) {
 	var filtr = []
 	//var lemfil = ['be']
 	var lemfil = []
-
 	
+	// lemma or word
 	if (!('toextract' in featureOptions))
 	    throw new Error("toextract is not defined")
 
@@ -1955,49 +1955,35 @@ function feAsync(sam, features, train, featureOptions, callback) {
 	var tokens = _.flatten(natural.NGrams.ngrams(words, 1))
 
 	console.log("DEBUGASYNC: tokens: "+tokens)
-	//tokens = _.map(tokens, function(num){ return {word: num, lemma: natural.PorterStemmer.stem(num)} });
-	tokens = _.map(tokens, function(num){ return {word: num, lemma: num} });
 
-	console.log("DEBUGASYNC: tokens: "+tokens)
-	sample.sentences = {'tokens':tokens}
+	Lem.lemmatize(tokens, function(err, lemmas) {
 
-	console.log(JSON.stringify(sample, null, 4))
-	// process.exit(0)
+		var zipped = _.zip(tokens, lemmas);
+		var clean_tokens = _.map(tokens, function(num){ return {word: num[0], lemma: num[1]} });
 
-	// clean the parse tree from attr and values 
-	sample.sentences = getRule(sample.sentences).cleaned
+		console.log("DEBUGASYNC: tokens: "+clean_tokens)
+		sample.sentences = {'tokens':clean_tokens}
 
-	// console.log(JSON.stringify("CLEANED", null, 4))
-	// console.log(JSON.stringify(sample.sentences, null, 4))
+		console.log(JSON.stringify(sample, null, 4))
 
-	// sentence = sentence.toLowerCase().trim()
-	// sentence = regexpNormalizer(sentence)
-	// var words = tokenizer.tokenize(sentence);
+		sample.sentences = getRule(sample.sentences).cleaned
 
-	if (featureOptions.bigrams)
-	   throw new Error("this version doesn't support bigrams")
+		if (sample['sentences'].length>1)
+			throw new Error("feAsync: more than one sentence "+sample['sentences'].length)
 
-	if (sample['sentences'].length>1)
-		throw new Error("feAsync: more than one sentence "+sample['sentences'].length)
+		async.eachSeries(sample['sentences']['tokens'], function(token, callback_local) {
+			if (featureOptions.toextract == "lemma")
+				features[token.lemma.toLowerCase()] = 1
 
-	async.eachSeries(sample['sentences']['tokens'], function(token, callback_local) {
-	//	if ((filtr.indexOf(token.pos)==-1) && (lemfil.indexOf(token.lemma)==-1))
-	//	{
-    	if (featureOptions.toextract == "lemma")
-			features[token.lemma.toLowerCase()] = 1
+	    	if (featureOptions.toextract == "word")
+	        	features[token.word.toLowerCase()] = 1
 
-	    if (featureOptions.toextract == "word")
-	        features[token.word.toLowerCase()] = 1
-
-    		//features[token.word.toLowerCase()] = 1
-    	callback_local()
-    	//}
-    	//else
-    	//	callback_local()
-
- 	}, function(err){
+	    	callback_local()
+    
+ 		}, function(err){
 	        console.log("DEBUGASYNC:"+JSON.stringify(features, null, 4))
- 		callback(null, features)
+ 			callback(null, features)
+		})
 	})
 }
 
