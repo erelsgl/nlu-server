@@ -4447,22 +4447,21 @@ function gettransdist(turns, pat)
   
     // create pool of translations
   _.each(turns, function(turn, key, list){    
-    var pool_temp = _.pairs(turn["input"]["trans"])
-    pool_temp = _.map(pool_temp, function(num){ num.push(turn.output); return num; });
-    pool = pool.concat(pool_temp)
+      var pool_temp = _.pairs(turn["input"]["trans"])
+      pool_temp = _.map(pool_temp, function(num){ num.push(turn.output); return num; });
+      pool = pool.concat(pool_temp)
 
-    _.each(turn["input"]["trans"], function(tran, key, list){
+      _.each(turn["input"]["trans"], function(tran, key, list){
         var proc = regex.test(key)
-  /*       if (proc)
+        if (!proc)
           output.push({
             'input': {'text': tran,
             'context': turn.input.context},
             'output': JSON.parse(JSON.stringify(turn.output))
           })
-*/  
-  }, this)
+      }, this)
 
-    output.push({
+      output.push({
             'input': {'text': turn.input.text,
             'context': turn.input.context},
             'output': JSON.parse(JSON.stringify(turn.output))
