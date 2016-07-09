@@ -410,7 +410,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 //	var classifiers = [ 'NLU_Baseline', 'NLU_Tran', 'NLU_Oversample', 'NLU_Tran_Oversample']
 	//var classifiers = [ 'NLU_Baseline', 'NLU_Emb_300', 'NLU_Emb_100', 'NLU_Emb_50']
 	//var classifiers = [ 'NLU_Baseline', 'NLU_Tran_Yandex', 'NLU_Tran_Microsoft', 'NLU_Tran_Google']
-/*	var classifiers = [ 'NLU_Baseline', 
+/*	var classifiers = [  
 			     'NLU_Tran_Yandex_Microsoft', 'NLU_Tran_Yandex_Google', 
 			     'NLU_Tran_Google_Microsoft', 'NLU_Tran_Google_Yandex', 
 			     'NLU_Tran_Microsoft_Google', 'NLU_Tran_Microsoft_Yandex']
@@ -430,8 +430,10 @@ function learning_curves(classifiers, folds, dataset, callback)
 */
 	//var classifiers = [ 'NLU_Baseline', 'NLU_Bal', 'NLU_Tran_Arabic' ]
 //	var classifiers = [ 'NLU_Bal', 'NLU_Tran_Arabic' ]
-	var classifiers = [ 'NLU_Bal', 'NLU_Tran_Spanish' ]
-//	var classifiers = [ 'NLU_Tran_Arabic', 'NLU_Tran_Yandex_Microsoft_Arabic' ]
+//	var classifiers = [ 'NLU_Bal', 'NLU_Tran_Spanish' ]
+	//var classifiers = [ 'NLU_Tran_Arabic', 'NLU_Tran_Urdu', 'NLU_Tran_Finish', 'NLU_Tran_Hungarian' ]
+	//var classifiers = [ 'NLU_Tran_Finish', 'NLU_Tran_Finish_Arabic' ]
+	var classifiers = [ 'NLU_Tran_Finish', 'NLU_Tran_Yandex_Microsoft_Finish' ]
 
 	//var classifiers = [ 'NLU_Baseline']
 
