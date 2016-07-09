@@ -4301,10 +4301,10 @@ function gettrans(turns, pat)
     _.each(turn["input"]["trans"], function(tran, key, list){
 
 	var proc = regex.test(key)
-  	console.vlog("gettrans: key: " + key + " proc: "+proc+ " pat: "+pat)
+  //	console.vlog("gettrans: key: " + key + " proc: "+proc+ " pat: "+pat)
         if (proc)
 	{
-  	console.vlog("gettrans: add")
+  	console.vlog("gettrans: add: "+key)
           output.push({
             'input': {'text': tran,
 			     'context': turn.input.context},
@@ -4341,8 +4341,8 @@ function distances(str1, str2)
 
   var dst_nrm = dst/_.max([tokens1.length, tokens2.length])
 
-  return dst_nrm
-  //return dst
+  //return dst_nrm
+  return dst
 }
 
 
@@ -4431,8 +4431,8 @@ function bleu(can, ref)
   console.log("BLEU: brevity: "+brev)
 
   //return P*brev
-  //return P
-  return P/brev
+  return P
+  //return P/brev
 }
 
 function gettransdist(turns, pat)
@@ -4485,7 +4485,7 @@ function gettransdist(turns, pat)
 
       console.log(JSON.stringify(gen, null, 4))
 
-      var dsts = []
+     // var dsts = []
 
       // compare every translation to the soure set
       // _.each(turns, function(src, key, list){
@@ -4497,7 +4497,11 @@ function gettransdist(turns, pat)
         // dsts.push(distances(gen[1], gen1[1]))
       // }, this)
 
+// 	  var fi =  new RegExp(".*:fi:.*")
+ //	  var hu =  new RegExp(".*:hu:.*")
+ //	  var ur =  new RegExp(".*:ur:.*")
 
+//	if ((!fi.test(key))&&(!hu.test(key))&&(!ur.test(key)))
 
       pool_dst.push({
         'type': gen[0],
@@ -4511,8 +4515,14 @@ function gettransdist(turns, pat)
 
   // get 10 best
 
+
+
   pool_dst = _.sortBy(pool_dst, function(num){ return num.dst })
+  pool_dst = _.uniq(pool_dst, function(num){ return num["input"]});
+  
   console.vlog("gettrans:"+JSON.stringify(pool_dst, null, 4))
+
+
 
 /*  var dists = _.pluck(pool_dst, 'dst');
   var str = ""
@@ -4527,6 +4537,10 @@ function gettransdist(turns, pat)
   
   var engines = _.map(pool_dst_best, function(num){ return num.type });
   console.vlog("gettrans: Bets engines :"+JSON.stringify(_.countBy(engines, function(num) { return num; }), null, 4))
+  
+  console.vlog("gettrans: Lang agg :"+JSON.stringify(_.countBy(engines, function(num) { return num.substr(2,2) }), null, 4))
+  
+  console.vlog("gettrans: Engine agg :"+JSON.stringify(_.countBy(engines, function(num) { return num.substr(0,1)+num.substr(-1,1) }), null, 4))
 
   _.each(pool_dst_best, function(value, key, list){
 
@@ -4547,6 +4561,7 @@ function gettransdist(turns, pat)
   console.vlog("gettrans: Dist after :"+JSON.stringify(_.countBy(output_after, function(num) { return num; }), null, 4))
 
   console.vlog("gettransdist:"+JSON.stringify(output, null, 4))
+  console.vlog("gettransdist.length:"+output.length)
 
   return output
 }
