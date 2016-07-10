@@ -14,8 +14,8 @@ var plotfile = __dirname + "/plotstatus"
 var log_file = "/tmp/logs/master"
 
 console.vlog = function(data) {
-    //fs.appendFileSync(log_file, data + '\n', 'utf8')
-    fs.writeFileSync(log_file, data + '\n', 'utf8')
+    fs.appendFileSync(log_file, data + '\n', 'utf8')
+    //fs.writeFileSync(log_file, data + '\n', 'utf8')
 };
 
 // function groupbylabel(dataset, minsize, sizetrain, catnames)
@@ -477,14 +477,14 @@ function learning_curves(classifiers, folds, dataset, callback)
 		// only intents
 //		train1 = bars.processdataset(train1)
 
-		var data2 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7.json"))
+		var data2 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7_neww.json"))
 		var utterset2 = bars.getsetcontext(data2, /*rephrase*/true)
 		var train2 = utterset2["train"].concat(utterset2["test"])
 		// only intents
 //		train2 = bars.processdataset(train2)
 		console.vlog("DEBUG: train2.length "+train2.length)
 
-		var data3 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7.json"))
+		var data3 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7_neww.json"))
 		var utterset3 = bars.getsetcontext(data3, /*rephrase*/false)
 		var train3 = utterset3["train"].concat(utterset3["test"])
 		// only intents
@@ -499,7 +499,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 				
 				var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
 		
-				console.vlog("DEBUGMASTER: fold "+ (fold+n*folds) + " train size "+data.train.length + " test size " + data.test.length)
+				console.vlog("DEBUGMASTER: classifier: "+classifier+" fold: "+ (fold+n*folds) + " train size "+data.train.length + " test size " + data.test.length)
 
 				var train2sam = _.flatten(_.sample(bars.copyobj(train2), 10))
 
@@ -565,23 +565,13 @@ if (process.argv[1] === __filename)
 	// 	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_embed', 'DS_bigram_split_exp']
 	//	var classifiers = ['DS_bigram_split_async', 'DS_bigram_split_exp']
 	//	var classifiers = ['DS_comp_exp_0_undefined','DS_comp_exp_1_undefined','DS_comp_exp_2_undefined','DS_comp_exp_3_ref','DS_comp_exp_4_ref']
-	//	var classifiers = [ 'DS_comp_embed_d300_average_unoffered', 'DS_comp_embed_d100_average_unoffered', 'DS_comp_embed_d50_average_unoffered', 'DS_comp_embed_d25_average_unoffered', 'DS_comp_unigrams_async_context_unoffered']
-	//	var classifiers = ['DS_comp_unigrams_bigrams_async', 'DS_vanilla_svm']
-
-	//	var classifiers = ['DS_comp_unigrams_async', 'DS_comp_embed_d100_average', 'DS_comp_embed_d100_dep_average', 'DS_comp_embed_d100_sub_average']
-	//	var classifiers = ['DS_comp_exp_3_undefined_root', 'DS_comp_exp_3_undefined', 'DS_comp_embed_d100_average']
-	//var classifiers = ['DS_comp_exp_3_undefined_root_context', 'DS_comp_exp_3_undefined_context', 'DS_comp_embed_d100_average_context']
-	//var classifiers = ['DS_comp_unigrams_async_context', 'DS_comp_exp_3_undefined_context_embed_d100_average', 'DS_comp_embed_d100_average_context', 'DS_comp_exp_3_undefined_root_context']
 	 //var classifiers = ['DS_comp_unigrams_async_context', 'DS_comp_exp_3_undefined_root','DS_comp_exp_3_undefined_root_context_offer', 'DS_comp_exp_3_undefined_root_context', 'DS_comp_exp_3_undefined_root_context_test', 'DS_comp_exp_3_undefined_root_context_test_offer']
 	//var classifiers = ['DS_comp_unigrams_async_context_both', 'DS_comp_unigrams_async_context_offered','DS_comp_unigrams_async_context_unoffered', 'DS_comp_unigrams_async']
 
 	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_5_unoffered','DS_comp_exp_3_root_5_unoffered_test']
 	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_unigrams_async']
 	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_unigrams_async_context_unoffered_prev']
-	//var classifiers = ['DS_composition','DS_comp_embed_d100_average_unoffered','DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test']
 	// var classifiers = ['DS_comp_unigrams_async_context_unoffered']
-	// var classifiers = ['DS_comp_embed_d100_average_unoffered','DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_5_unoffered_yes_offer_yes_test']
-	//var classifiers = ['DS_comp_embed_d100_average_unoffered','DS_comp_unigrams_async_context_unoffered','DS_comp_exp_3_root_3_unoffered_yes_offer_yes_test']
 	//var classifiers = ['DS_comp_unigrams_async_context_unoffered','DS_comp_embed_d300_average_unoffered']
 
     /*var classifiers = [
@@ -589,16 +579,11 @@ if (process.argv[1] === __filename)
      				'DS_comp_unigrams_async_context_unoffered_wordnet_ant',
      				'DS_comp_unigrams_async_context_unoffered_wordnet_ant_syn',
      				'DS_comp_unigrams_async_context_unoffered',
-					'DS_comp_embed_d100_average_unoffered',
 					'DS_primitive'
      				]
     */ 				
 /*    var classifiers = [
     				
-				"DS_comp_embed_d100_avr_root_false_uni_false",
-				"DS_comp_embed_d100_avr_root_false_uni_true",
-				"DS_comp_embed_d100_avr_root_true_uni_true",
-				"DS_comp_embed_d100_avr_root_true_uni_false"
 				
 				]
 */
