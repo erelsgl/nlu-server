@@ -16,6 +16,7 @@ var multilabelutils = require('limdu/classifiers/multilabel/multilabelutils');
 var trainutils = require('./utils/bars')
 var wikipedia = require('./utils/wikipedia')
 var bars = require('./utils/bars')
+var distance = require('./utils/distance')
 var rules = require("./research/rule-based/rules.js")
 var cheapest_paths = require('limdu/node_modules/graph-paths').cheapest_paths;
 var natural = require('natural');
@@ -26,10 +27,15 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+var check_coverage = false
+var check_con = false
+var unidis = true 
+
 // translate and org parsed
+var check_rephrase = false
 var make_tr = false
 var make_tr_seeds = false
-var make_tr_fix = true
+var make_tr_fix = false
 // check the ration of single vs all utterances
 var check_ration_all = false
 
@@ -206,6 +212,21 @@ function walkSync(dir, filelist) {
 	}, this)
 }
 */
+
+
+if (unidis)
+{
+
+var with_rephrase = [0.33, 0.4, 0.2, 0.05]
+var without_rephrase = [0.37, 0.35, 0.21, 0.05]
+var uniform = [0.25, 0.25, 0.25, 0.25]
+
+var a = distance.tvd(with_rephrase, uniform)
+var b = distance.tvd(without_rephrase, uniform)
+
+console.log("if "+ a + " > "+ b)
+}
+
 
 if (make_tr)
 {
@@ -387,6 +408,11 @@ if (make_tr_fix)
 
 if (make_tr_seeds)
 {
+
+}
+
+if (make_tr_seeds)
+{
 	var lang = {
 		French:"fr",
 		German:"de",
@@ -401,7 +427,7 @@ if (make_tr_seeds)
 
 	var sys = {
 			"yandex": "Y",
-`			"microsoft":"M",
+			"microsoft":"M",
 			"google":"G"
 		}
 
@@ -698,6 +724,51 @@ if (check_cross_batch)
 	process.exit(0)
 }
 
+if (check_coverage)
+{
+    var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+
+    // var data_src = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	// var utterset = bars.getsetcontext(data_src, false)
+    // var data = utterset["train"].concat(utterset["test"])
+
+    var total = 0
+    var uncover = []
+    var dials = []
+
+    var data = _.filter(data, function(num){ return ["train","test"].indexOf(num.set)!=-1 });
+
+    console.log(data.length)
+
+
+    _.each(data, function(dialogue, dialid, list){
+    	_.each(dialogue["turns"], function(turn, key, list){
+
+    		if (turn.role == "Employer")
+    		{
+    			total += 1
+
+    			if (_.keys(turn.output).length == 0)
+    				{
+	    			uncover.push(turn.input.text)
+    				dials.push(dialid)
+    				}
+    		}
+    		
+    	}, this)
+    }, this)
+
+    dials = _.unique(dials)
+
+    console.log("COVERAGE")
+    console.log("total number of dials:"+data.length)
+    console.log("total:"+total)
+    console.log("uncover:"+uncover.length)
+    console.log("dials:"+_.unique(dials))
+    console.log("dials:"+dials.length)
+    console.log(JSON.stringify(uncover, null, 4))
+    process.exit(0)
+}
 
 if (check_intent_issue)
 {
@@ -838,7 +909,7 @@ if (check_version7_1)
 					'Reject': {}
 					}
 
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_neww.json"))
 
 	_.each(data, function(dialogue, key, list){
 
@@ -1261,6 +1332,89 @@ if (count_reject)
 	process.exit(0)
 }
 
+
+if (check_con)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_neww.json"))
+	var utterset = bars.getsetcontext(data, /*rephrase*/true)
+    console.log(JSON.stringify(utterset, null, 4))
+    process.exit(0)
+}
+
+if (check_rephrase)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_neww.json"))
+    var data = _.filter(data, function(num){ return ["train"].indexOf(num.set)!=-1 });
+
+    console.log(JSON.stringify(data.length, null, 4))
+
+	/*var intentshash = {
+		"Accept":[],
+		"Reject":[],
+		"Offer":[],
+		"Query":[]
+	}
+*/
+	var intentshash = {}
+
+
+	var lastintent = ""
+	var lasttext = false
+	var strem = false
+
+	_.each(data, function(dialogue, key, list){
+		_.each(dialogue['turns'], function(turn, key, list){
+			if (turn.role == "Employer")
+			{
+				var intents = _.keys(turn.output)
+				
+				if (intents.length == 1)
+				{
+					if (strem)
+					{	
+
+							// if (intents[0] == lastintent)
+							// intentshash[lastintent].push([lasttext, turn.input.text])
+					
+						if (!(lastintent in intentshash))
+							intentshash[lastintent] = {}
+
+						if (!(intents[0] in intentshash[lastintent]))
+							intentshash[lastintent][intents[0]] = {'count': 0, 'examples': [] }
+
+						intentshash[lastintent][intents[0]]['count'] += 1
+						// intentshash[lastintent][intents[0]]['examples'].push([lasttext, turn.input.text])
+
+						strem = false
+
+					}
+					else
+					{	
+						lastintent = intents[0]
+						lasttext = turn.input.text					
+					}
+				}
+			
+			}
+			if (turn.role == "Candidate")
+				if ("data" in turn)
+				{
+					if (turn.data == "AskRephrase")
+						strem = true
+				}
+				else
+				{
+					strem = false
+				}
+				
+		}, this)
+	}, this)
+
+	console.log(JSON.stringify(intentshash, null, 4))
+	process.exit(0)
+}
+
+
 if (check_biased)
 {
 	// example when rephrase wasn't successful
@@ -1357,6 +1511,7 @@ if (check_human)
 	process.exit(0)
 }
 
+// very useful routine 
 if (check_init)
 {
 	var result = {
@@ -1368,27 +1523,19 @@ if (check_init)
 				  	'Quit': {'count':0}
 				}
 	
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
-	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7.json"))
-	var utterset = bars.getsetcontext(data, true)
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_neww.json"))
+	var utterset = bars.getsetcontext(data, false)
 	var dialogues = utterset["test"].concat(utterset["train"])
 
-	
+    // var dialogues = _.filter(data, function(num){ return ["train","test"].indexOf(num.set)!=-1 });
+
 	console.log(dialogues.length)
-
-	
-	// dialogues = dialogues.slice(0,30)
-
-	// if (_.keys(utterset).length > 2)
-	// {
-		// throw new Error(_.keys(utterset))
-		// process.exit(0)
-	// }
 		
 	var int_stat = []
+	
 	var globallabels = []
-
-	// filter
+/*
 	_.each(_.flatten(dialogues), function(value, key, list){		
 		
 		// if (_.keys(value.outputhash).length==1)
@@ -1397,13 +1544,15 @@ if (check_init)
 	}, this)
 
 	console.log(JSON.stringify(_.countBy(globallabels, function(num) { return num })))
-
+*/
 	_.each(dialogues, function(dial, key, list){
 		var temp = []
-		_.each(dial, function(utters, key, list){
+		_.each(dial, function(turn, key, list){
 			// var intents = _.map(utters.output, function(num){ return _.keys(JSON.parse(num))[0] })
 			// if (_.keys(utters.outputhash).length==1)
-				temp = temp.concat(_.keys(utters.outputhash))
+			// if (turn.role=="Employer")
+				temp = temp.concat(_.keys(turn.outputhash))
+			// temp = temp.concat(_.keys(utters.outputhash))
 			
 		}, this)
 		int_stat.push(temp)
