@@ -14,10 +14,9 @@ var fold = process.env["fold"]
 var classifier = process.env["classifier"]
 var thread = process.env["thread"]
 
-var log_file = "/tmp/logs/" + process.pid
+var log_file = "./logs/" + process.pid
 console.vlog = function(data) {
-    //fs.appendFileSync(log_file, data + '\n', 'utf8')
-    fs.writeFileSync(log_file, data + '\n', 'utf8')
+    fs.appendFileSync(log_file, data + '\n', 'utf8')
 };
 
 if (cluster.isWorker)
@@ -28,6 +27,8 @@ process.on('message', function(message) {
 	
 	var train = bars.processdatasettrain(JSON.parse(message['train']))
 	var test  = bars.processdatasettest(JSON.parse(message['test']))
+
+	console.vlog("INITIALDIST: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(train), null, 4))	
 
 	var max  = JSON.parse(message['max'])
 	var max = 60
@@ -96,6 +97,17 @@ process.on('message', function(message) {
 	//		console.log("DEBUGWORKER: mytrainex.length after filter = "+realmytrainex.length)
 	//		var mytrainex = bars.copyobj(realmytrainex)
 	
+			console.vlog("DIST: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(realmytrainex), null, 4))
+
+			    if (index >= max)
+        		        {
+                        		if (classifier == "Undersampled")
+                       		         fs.appendFileSync("./logs/under", JSON.stringify(bars.returndist(realmytrainex), null, 4), 'utf8')
+
+	                        console.vlog("FINALE")
+        		        }
+
+
 		    	trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
 
 		    		//var uniqueid = new Date().getTime()
