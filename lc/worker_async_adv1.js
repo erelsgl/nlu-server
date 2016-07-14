@@ -25,10 +25,10 @@ if (cluster.isWorker)
 process.on('message', function(message) {
     console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
-	var train = bars.processdatasettrain(JSON.parse(message['train']))
 	var test  = bars.processdatasettest(JSON.parse(message['test']))
+	var train  = JSON.parse(message['train'])
 
-	console.vlog("INITIALDIST: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(train), null, 4))	
+	// console.vlog("INITIALDIST: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(train), null, 4))	
 
 	var max  = JSON.parse(message['max'])
 	var max = 60
@@ -78,6 +78,9 @@ process.on('message', function(message) {
 				}, this)
 				mytrainex = bars.copyobj(ttrain)	
 			}
+			else
+
+			mytrainex = bars.processdatasettrain(mytrainex)
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+mytrainex.length+
