@@ -3949,6 +3949,67 @@ function getsetcontext(dataset, rephrase)
   return utteranceset
 }
 
+function getsetcontextadv(dataset)
+{
+  var rectypes = ['AskRepeat', 'AskRephrase' ,'Reprompt' ,'Notify', 'Yield', 'Help', 'YouCanSay', 'TerseYouCanSay']
+  var utteranceset = {'train':[], 'test':[], 'unable':[]}
+  var context = []
+  var nextrepr = false
+ 
+  _.each(dataset, function(dialogue, key, list){
+    var processed_dialogue = []
+    _.each(dialogue['turns'], function(turn, key, list){
+
+      if ((turn.role == "Candidate") && (('data' in turn)))
+        if (rectypes.indexOf(turn.data)!=-1)
+          nextrepr = true
+          
+      if ((turn.role == "Candidate") && (('output' in turn)))
+        context = hashtoar(turn.output)
+ 
+      if (turn.role == "Employer") 
+      {
+        var record = copyobj(turn)
+
+        record['input']['context'] = context
+        record['outputhash'] = turn.output
+        record['output'] = hashtoar(turn.output)
+      
+        var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
+        var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
+        var QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Query'});
+          
+       // if ((QuitIndex==-1) && (GreetIndex==-1))
+
+            // processed_dialogue.push(record)
+
+        // context = []
+         if  (nextrepr)
+        {
+          if (!("rephrases" in mainturn))
+            mainturn["rephrases"] = []
+
+          mainturn["rephrases"].push(record)
+          nextrepr = false
+        }
+        else
+        {
+          processed_dialogue.push(record)
+          mainturn = record
+        }
+      }
+    },  this)
+
+    if (!("set" in dialogue))
+      dialogue["set"] = "train"
+    
+    utteranceset[dialogue.set].push(processed_dialogue)
+  }, this)
+
+  return utteranceset
+}
+
+
 function getsetnocontext(dataset)
 {
   var utteranceset = {'train':[], 'test':[]}
@@ -5478,5 +5539,6 @@ gettransdist:gettransdist,
 distances:distances,
 mngrp:mngrp,
 bleu:bleu,
-returndist:returndist
+returndist:returndist,
+getsetcontextadv:getsetcontextadv
 }
