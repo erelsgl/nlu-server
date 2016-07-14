@@ -62,7 +62,7 @@ process.on('message', function(message) {
 
 			index += 5
 
-	       	var mytrain = train.slice(0, index)
+	       	var mytrain = bars.copyobj(train.slice(0, index))
 
 	       	var mytrainex = (bars.isDialogue(mytrain) ? _.flatten(mytrain) : mytrain)
 			var mytestex  = (bars.isDialogue(test) ? _.flatten(test) : test)
@@ -70,15 +70,18 @@ process.on('message', function(message) {
 			if (classifier == "Biased_with_rephrase")
 			{
 				var ttrain = []
+				console.vlog("PHRASES BEFORE:"+JSON.stringify(mytrainex, null, 4))
+				
 				_.each(mytrainex, function(value, key, list){
 					if ("phrases" in value)
 						ttrain = ttrain.concat(value.phrases)
 
 					ttrain.push(value)
 				}, this)
-				mytrainex = bars.copyobj(ttrain)	
+				mytrainex = bars.copyobj(_.flatten(ttrain))
+				console.vlog("PHRASES AFTER:"+JSON.stringify(mytrainex, null, 4))
 			}
-			else
+			
 
 			mytrainex = bars.processdatasettrain(mytrainex)
 
