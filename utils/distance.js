@@ -20,6 +20,20 @@ function euclidean_distance(a, b) {
   	return Math.sqrt(sum);
 }
 
+// total variation distance
+function tvd(a, b) {
+  var c = vec_minus(a,b)
+  Math.abs(-7.25);
+
+  var sum = 0
+  for (n=0; n < c.length; n++) {
+    sum += Math.abs(c[n])
+  }
+
+  return sum/2
+}
+
+
 function vec_minus(a, b) {
   if (!isVectorNumber(a) || !isVectorNumber(b))
     throw new Error("Vectors should be consist of numbers " + JSON.stringify(a) + " " +JSON.stringify(b))
@@ -208,5 +222,6 @@ module.exports = {
   average:average,
   vec_minus: vec_minus,
   isVectorNumber:isVectorNumber,
-  stddv:stddv
+  stddv:stddv,
+  tvd:tvd
 }
