@@ -4686,6 +4686,8 @@ function undersample(turns)
   // - it doesn't count for context
   // add all the stuff as separated dialogue per intent
 
+console.vlog(" DEBUGUNDERSAMPLE: dist before: "+JSON.stringify(returndist(turns), null, 4))
+
   var single_label_utt = {}
   var tocount = ['Offer', 'Accept', 'Reject', 'Query']
   var stats = {}
@@ -4745,6 +4747,9 @@ function undersample(turns)
     res = res.concat(single_label_utt[lab].splice(0,min))
     }
   }, this)
+
+
+console.vlog(" DEBUGUNDERSAMPLE: dist after: "+JSON.stringify(returndist(res), null, 4))
 
   return res
 }
@@ -5472,5 +5477,6 @@ tranoversam:tranoversam,
 gettransdist:gettransdist,
 distances:distances,
 mngrp:mngrp,
-bleu:bleu
+bleu:bleu,
+returndist:returndist
 }
