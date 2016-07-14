@@ -3956,6 +3956,11 @@ function getsetcontextadv(dataset)
   var context = []
   var nextrepr = false
  
+  var GreetIndex = 0
+  var QuitIndex = 0
+  var QueryIndex = 0
+
+
   _.each(dataset, function(dialogue, key, list){
     var processed_dialogue = []
     _.each(dialogue['turns'], function(turn, key, list){
@@ -3975,9 +3980,9 @@ function getsetcontextadv(dataset)
         record['outputhash'] = turn.output
         record['output'] = hashtoar(turn.output)
       
-        var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
-        var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
-        var QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Query'});
+        GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
+        QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
+        QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Query'});
           
        // if ((QuitIndex==-1) && (GreetIndex==-1))
 
@@ -3989,13 +3994,20 @@ function getsetcontextadv(dataset)
           if (!("rephrases" in mainturn))
             mainturn["rephrases"] = []
 
+          record["outputhash"] = mainturn["outputhash"]
+          record["output"] = mainturn["output"]
+
           mainturn["rephrases"].push(record)
           nextrepr = false
         }
         else
         {
+       
+       if ((QuitIndex==-1) && (GreetIndex==-1))
+          {
           processed_dialogue.push(record)
           mainturn = record
+          }
         }
       }
     },  this)
