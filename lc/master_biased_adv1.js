@@ -486,7 +486,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 		// var train2 = utterset2["train"].concat(utterset2["test"])
 		// only intents
 //		train2 = bars.processdataset(train2)
-		console.vlog("DEBUG: train2.length "+train2.length)
+		// console.vlog("DEBUG: train2.length "+train2.length)
 
 		_.each(classifiers, function(classifier, key, list){ 
 			_(folds).times(function(fold){
