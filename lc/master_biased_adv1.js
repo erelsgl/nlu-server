@@ -427,9 +427,9 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var id_fold = {}
 
 
-	var classifiers = [ 'Natural','Undersampled','Oversampled','Biased_with_rephrase','Biased_no_rephrase']
+	//var classifiers = [ 'Natural','Undersampled','Oversampled','Biased_with_rephrase','Biased_no_rephrase']
 	//var classifiers = [ 'Natural','Undersampled','Oversampled']
-	//var classifiers = [ 'Natural','Biased_with_rephrase','Biased_no_rephrase']
+	var classifiers = [ 'Biased_with_rephrase','Biased_no_rephrase']
 	//var classifiers = [ 'Natural','Biased_no_rephrase']
 
    /*var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
@@ -483,7 +483,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 		var data2 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7_neww.json"))
 		var utterset2 = bars.getsetcontextadv(data2)
-		// var train2 = utterset2["train"].concat(utterset2["test"])
+		var train2 = utterset2["train"].concat(utterset2["test"])
 		// only intents
 //		train2 = bars.processdataset(train2)
 		// console.vlog("DEBUG: train2.length "+train2.length)
@@ -500,7 +500,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 		
 				console.vlog("DEBUGMASTER: classifier: "+classifier+" fold: "+ (fold+n*folds) + " train size "+data.train.length + " test size " + data.test.length)
 
-				var train2sam = _.flatten(_.sample(bars.copyobj(data2), 10))
+				var train2sam = _.flatten(_.sample(bars.copyobj(train2), 10))
 
 				var train = []
 
