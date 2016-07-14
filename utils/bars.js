@@ -3830,6 +3830,9 @@ function processdataset(dataset, type )
 function processdatasettrain(dataset)
 {
   _.each(dataset, function(utterance, utterance_key, list){
+    
+    //console.vlog("processdatasettrain: "+JSON.stringify(utterance, null, 4))
+
     dataset[utterance_key]['output'] = _.unique(_.keys(utterance.outputhash))
 
     var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
@@ -3954,7 +3957,6 @@ function getsetcontextadv(dataset)
   var rectypes = ['AskRepeat', 'AskRephrase' ,'Reprompt' ,'Notify', 'Yield', 'Help', 'YouCanSay', 'TerseYouCanSay']
   var utteranceset = {'train':[], 'test':[], 'unable':[]}
   var context = []
-  var nextrepr = false
  
   var GreetIndex = 0
   var QuitIndex = 0
@@ -3963,7 +3965,15 @@ function getsetcontextadv(dataset)
 
   _.each(dataset, function(dialogue, key, list){
     var processed_dialogue = []
-    _.each(dialogue['turns'], function(turn, key, list){
+    var nextrepr = false
+ 
+   var GreetIndex = 0
+  var QuitIndex = 0
+  var QueryIndex = 0
+    
+
+
+_.each(dialogue['turns'], function(turn, key, list){
 
       if ((turn.role == "Candidate") && (('data' in turn)))
         if (rectypes.indexOf(turn.data)!=-1)
