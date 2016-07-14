@@ -102,14 +102,19 @@ function getRule(sen)
 	console.vlog("getRule input:" +JSON.stringify(sen, null, 4))
 
 	if (!('tokens' in sen))
+		{
+		console.vlog("DEBUGRULE: for some reason tokens is not in the sentence " + JSON.stringify(sen, null, 4))
 		throw new Error("DEBUGRULE: for some reason tokens is not in the sentence " + JSON.stringify(sen, null, 4))
-
+		}
 	var sentence = JSON.parse(JSON.stringify(sen))
  
 
 	// first fix % sign
 	_.each(sentence['tokens'], function(token, key, list){
 		
+		if (_.isNull(token))
+			throw new Error("DEBUGRULE: token is null: " + JSON.stringify(sentence, null, 4))
+
 		if (key > 0)
 		if (token.lemma=='%')
 		{
@@ -1883,6 +1888,7 @@ function feAsyncPrimitiveClean(sam, features, train, featureOptions, callback) {
 function feAsyncStanford(sam, features, train, featureOptions, callback) {
 
 	var sample = JSON.parse(JSON.stringify(sam))
+	console.vlog("SAMPLE:"+ JSON.stringify(sample, null, 4))
 	//var filtr = ["PRP","IN","CC","DT","PRP$","TO"]
 	var filtr = []
 	//var lemfil = ['be']
