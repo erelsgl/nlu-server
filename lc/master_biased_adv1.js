@@ -427,8 +427,8 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var id_fold = {}
 
 
-	//var classifiers = [ 'Natural','Undersampled','Oversampled','Biased_with_rephrase','Biased_no_rephrase']
-	var classifiers = [ 'Natural','Undersampled','Oversampled']
+	var classifiers = [ 'Natural','Undersampled','Oversampled','Biased_with_rephrase','Biased_no_rephrase']
+	//var classifiers = [ 'Natural','Undersampled','Oversampled']
 	//var classifiers = [ 'Natural','Biased_with_rephrase','Biased_no_rephrase']
 	//var classifiers = [ 'Natural','Biased_no_rephrase']
 
@@ -500,7 +500,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 		
 				console.vlog("DEBUGMASTER: classifier: "+classifier+" fold: "+ (fold+n*folds) + " train size "+data.train.length + " test size " + data.test.length)
 
-				var train2sam = _.flatten(_.sample(bars.copyobj(train2), 10))
+				var train2sam = _.flatten(_.sample(bars.copyobj(data2), 10))
 
 				var train = []
 
@@ -522,8 +522,8 @@ function learning_curves(classifiers, folds, dataset, callback)
 				data.train = _.flatten(data.train)
 
 				worker.send({ 		
-							'train': JSON.stringify(bars.processdataset(train, 'train')), 
-							'test': JSON.stringify(bars.processdataset(data.train, 'test')),
+							'train': JSON.stringify(train), 
+							'test': JSON.stringify(data.train),
 							'max': JSON.stringify(max)
 							})
 				thr += 1	
