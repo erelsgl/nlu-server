@@ -29,7 +29,7 @@ var ftrs = limdu.features;
 
 var check_coverage = false
 var check_con = false
-var unidis = true 
+var unidis = false 
 
 // translate and org parsed
 var check_rephrase = false
@@ -46,11 +46,16 @@ var check_intent_issue_dst = false
 
 // check rephrase strategies
 var check_version4 = false
+
+
+
 var check_version7 = false
 
 // check the Ido's approach, we sample the strategy uniformly, then just see the reaction in intents
 // prefereably to do so in rations
 var check_version7_1 = false
+
+var getsetcontextadv = true
 
 // simple template to check performance on test and train even with simple multi-label binary relevance SVM
 var check_ds = false
@@ -213,20 +218,15 @@ function walkSync(dir, filelist) {
 }
 */
 
-
 if (unidis)
 {
-
 var with_rephrase = [0.33, 0.4, 0.2, 0.05]
 var without_rephrase = [0.37, 0.35, 0.21, 0.05]
 var uniform = [0.25, 0.25, 0.25, 0.25]
-
 var a = distance.tvd(with_rephrase, uniform)
 var b = distance.tvd(without_rephrase, uniform)
-
 console.log("if "+ a + " > "+ b)
 }
-
 
 if (make_tr)
 {
@@ -635,6 +635,15 @@ if (check_intent_issue_dst)
 	process.exit(0)
 }
 
+if (getsetcontextadv)
+{	
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_neww.json"))
+	var utterset = bars.getsetcontextadv(data)
+
+	console.log(JSON.stringify(utterset, null, 4))
+	process.exit(0)
+}
+
 if (check_single_multi)
 {
 
@@ -910,6 +919,10 @@ if (check_version7_1)
 					}
 
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_neww.json"))
+	console.log(data.length)
+
+	var data = _.filter(data, function(num){ return ["train","test"].indexOf(num.set)!=-1 });
+	console.log(data.length)
 
 	_.each(data, function(dialogue, key, list){
 
@@ -926,6 +939,8 @@ if (check_version7_1)
 			
 			if ((turn.role == "Candidate") && ('data' in turn))
 			{
+				// "data": "Job Description:Accept"
+
 				if (turn.data.indexOf(":")!=-1)
 				{
 					var intent = turn.data.split(":")[1];
@@ -933,9 +948,9 @@ if (check_version7_1)
 
 					iss[issue] = intent
 
-					/*console.log("intent: "+ intent + " issue: "+issue)
+					console.log("intent: "+ intent + " issue: "+issue)
 					console.log("strategies:"+JSON.stringify(strategy))
-					console.log("iss:"+JSON.stringify(iss))*/
+					console.log("iss:"+JSON.stringify(iss))
 				}
 			}
 
@@ -951,6 +966,7 @@ if (check_version7_1)
 				var curintents = bars.turnoutput(turn.output)
 				// [['Accept', 'Salary'], ['Reject', 'Job']]
 				
+				// check the work of turnoutput
 				console.log("ET: "+JSON.stringify(curintents) + " output "+JSON.stringify(turn.output))
 						
 				_.each(curintents, function(value, key, list){
@@ -972,6 +988,9 @@ if (check_version7_1)
 						}
 					}
 				}, this)
+
+				console.log("iss:"+JSON.stringify(iss))
+				console.log("strategy:"+JSON.stringify(strategy))
 			}
 		}, this)
 	}, this)
@@ -989,7 +1008,7 @@ if (check_version7_1)
 	}, this)
 
 	console.log(JSON.stringify(strategy, null, 4))
-
+	process.exit(0)
 
 }
 
