@@ -3803,6 +3803,18 @@ return converted
 }
 
 */
+
+function cleanoutput(dataset) 
+{
+  var output = copyobj(dataset)
+  _.each(dataset, function(value, key, list){
+    if ("input" in value)
+      if ("sentences" in value["input"])
+        delete value["input"]["sentences"]
+  }, this)
+  return output
+}
+
 function processdataset(dataset, type ) 
 {
 // should be executed after flattenation
@@ -5562,5 +5574,6 @@ distances:distances,
 mngrp:mngrp,
 bleu:bleu,
 returndist:returndist,
-getsetcontextadv:getsetcontextadv
+getsetcontextadv:getsetcontextadv,
+cleanoutput:cleanoutput
 }
