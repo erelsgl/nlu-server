@@ -70,21 +70,28 @@ process.on('message', function(message) {
 			{
 				var ttrain = []
 				console.vlog("PHRASES BEFORE:"+JSON.stringify(mytrainex.length, null, 4))
-				
 				_.each(mytrainex, function(value, key, list){
+					ttrain.push(value)
 					if ("rephrases" in value)
 					{
 						console.vlog("Add rephrase")
 						ttrain = ttrain.concat(value["rephrases"])
 					}
-					ttrain.push(value)
 				}, this)
 				mytrainex = bars.copyobj(_.flatten(ttrain))
 				console.vlog("PHRASES AFTER:"+JSON.stringify(mytrainex.length, null, 4))
-				console.vlog("PHRASES AFTER:"+JSON.stringify(mytrainex, null, 4))
+				console.vlog("PHRASES AFTER:"+JSON.stringify(bars.cleanoutput(mytrainex), null, 4))
+			}
+
+			if (classifier == "Biased_without_rephrase")
+			{
+				var ttrain = bars.copyobj(mytrainex)
+				_.each(ttrain, function(value, key, list){
+					delete value["rephrases"]
+				}, this)
+				mytrainex = bars.copyobj(_.flatten(ttrain))
 			}
 			
-
 			mytrainex = bars.processdatasettrain(mytrainex)
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
