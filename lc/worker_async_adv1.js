@@ -83,14 +83,14 @@ process.on('message', function(message) {
 				console.vlog("PHRASES AFTER:"+JSON.stringify(bars.cleanoutput(mytrainex), null, 4))
 			}
 
-			if (classifier == "Biased_without_rephrase")
+			/*if (classifier == "Biased_without_rephrase")
 			{
 				var ttrain = bars.copyobj(mytrainex)
 				_.each(ttrain, function(value, key, list){
 					delete value["rephrases"]
 				}, this)
 				mytrainex = bars.copyobj(_.flatten(ttrain))
-			}
+			}*/
 			
 			mytrainex = bars.processdatasettrain(mytrainex)
 
