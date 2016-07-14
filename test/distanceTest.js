@@ -9,8 +9,18 @@ var should = require('should');
 var distance = require('../utils/distance');
 var _ = require("underscore")._;
 
-describe('kNN common test', function() {
+describe('distance tests', function() {
 	
+	it('tvd', function(){
+		distance.tvd([0.25,0.25,0.25,0.25], [0.25,0.25,0.25,0.25]).should.equal(0)
+		var a = distance.tvd([0.2,0.2,0.2,0.2], [0.25,0.25,0.25,0.25])
+		var b = distance.tvd([0.1,0.1,0.1,0.1], [0.25,0.25,0.25,0.25])
+		
+		console.log(a)
+		console.log(b)
+
+	})
+
 	it('stddv', function(){
 		distance.stddv([600,470,170,430,300]).should.equal(147.32277488562318)
 	})
