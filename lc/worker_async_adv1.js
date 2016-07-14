@@ -37,8 +37,7 @@ process.on('message', function(message) {
   //      train = _.filter(train, function(num){ return _.keys(num.outputhash).length <= 1 })
   //      console.vlog("DEBUGWORKER: train.length after filter = "+train.length)
 
-	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max)
-	console.vlog("DEBUG: max "+max)
+	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max + " classifier "+classifier)
 
 	var index = 0
 
@@ -70,15 +69,18 @@ process.on('message', function(message) {
 			if (classifier == "Biased_with_rephrase")
 			{
 				var ttrain = []
-				console.vlog("PHRASES BEFORE:"+JSON.stringify(mytrainex, null, 4))
+				console.vlog("PHRASES BEFORE:"+JSON.stringify(mytrainex.length, null, 4))
 				
 				_.each(mytrainex, function(value, key, list){
-					if ("phrases" in value)
-						ttrain = ttrain.concat(value.phrases)
-
+					if ("rephrases" in value)
+					{
+						console.vlog("Add rephrase")
+						ttrain = ttrain.concat(value["rephrases"])
+					}
 					ttrain.push(value)
 				}, this)
 				mytrainex = bars.copyobj(_.flatten(ttrain))
+				console.vlog("PHRASES AFTER:"+JSON.stringify(mytrainex.length, null, 4))
 				console.vlog("PHRASES AFTER:"+JSON.stringify(mytrainex, null, 4))
 			}
 			
