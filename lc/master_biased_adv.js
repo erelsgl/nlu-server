@@ -11,7 +11,7 @@ var gnuplot = 'gnuplot'
 var statusfile = __dirname + "/status"
 var plotfile = __dirname + "/plotstatus"
 
-var log_file = "/tmp/logs/master"
+var log_file = "./logs/master"
 
 console.vlog = function(data) {
     fs.appendFileSync(log_file, data + '\n', 'utf8')
@@ -427,7 +427,9 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var id_fold = {}
 
 
-	var classifiers = [ 'Natural','Oversampled','Undersampled','Biased_with_rephrase','Biased_no_rephrase']
+	//var classifiers = [ 'Natural','Undersampled','Oversampled','Biased_with_rephrase','Biased_no_rephrase']
+	var classifiers = [ 'Natural','Undersampled','Oversampled']
+	//var classifiers = [ 'Natural','Biased_with_rephrase','Biased_no_rephrase']
 	//var classifiers = [ 'Natural','Biased_no_rephrase']
 
    /*var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
@@ -472,9 +474,11 @@ function learning_curves(classifiers, folds, dataset, callback)
 	async.timesSeries(10, function(n, next){
 
 		var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
-		var utterset1 = bars.getsetcontext(data1, true)
+		console.vlog("number of unprocessed dialogues: "+data1.length)
+		var utterset1 = bars.getsetcontext(data1, false)
 		var train1 = utterset1["train"].concat(utterset1["test"])
 		// only intents
+		console.vlog("number of the dialogues: "+train1.length)
 //		train1 = bars.processdataset(train1)
 
 		var data2 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7_neww.json"))
@@ -496,6 +500,8 @@ function learning_curves(classifiers, folds, dataset, callback)
 			
 				// worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
 				var worker = cluster.fork({'fold': fold+n*folds, 'classifier':classifier, 'thread': thr})
+				
+				console.vlog("DEBUGMASTER: classifier: "+classifier+" overall size: "+train1.length)
 				
 				var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
 		
@@ -592,7 +598,7 @@ if (process.argv[1] === __filename)
 	fs.writeFileSync(statusfile, "")
 	fs.writeFileSync(plotfile, "")
 	cleanFolder(__dirname + "/learning_curves")
-	cleanFolder("/tmp/logs")
+	cleanFolder("./logs")
 	
 	// var dataset = bars.loadds(__dirname+"/../../negochat_private/dialogues")
 	// var utterset = bars.getsetnocontext(dataset)
