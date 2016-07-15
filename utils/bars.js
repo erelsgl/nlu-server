@@ -3841,6 +3841,8 @@ function processdataset(dataset, type )
 // in short in takes the role of post_processing
 function processdatasettrain(dataset)
 {
+console.vlog("processdatasettrain: initial: "+ dataset.length)
+
   _.each(dataset, function(utterance, utterance_key, list){
     
     //console.vlog("processdatasettrain: "+JSON.stringify(utterance, null, 4))
@@ -3860,12 +3862,15 @@ function processdatasettrain(dataset)
     }
   })
 
-	var dataset = _.filter(dataset, function(num){ return num["output"].length <= 1; });
+//	var dataset = _.filter(dataset, function(num){ return num["output"].length <= 1; });
+console.vlog("processdatasettrain: end: "+ dataset.length)
 	return dataset
 }
 
 function processdatasettest(dataset)
 {
+  console.vlog("processdatasettest: initial: "+ dataset.length)
+
   _.each(dataset, function(utterance, utterance_key, list){
     dataset[utterance_key]['output'] = _.unique(_.keys(utterance.outputhash))
 
@@ -3881,6 +3886,9 @@ function processdatasettest(dataset)
 			'collapsed-ccprocessed-dependencies': collapsedccprocesseddependencies
 		}
   })
+
+  console.vlog("processdatasettest: end: "+ dataset.length)
+
   return dataset
 }
 
