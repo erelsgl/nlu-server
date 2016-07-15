@@ -427,9 +427,9 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var id_fold = {}
 
 
-	//var classifiers = [ 'Natural','Undersampled','Oversampled','Biased_with_rephrase','Biased_no_rephrase']
+	var classifiers = [ 'Natural','Undersampled','Oversampled','Biased_with_rephrase','Biased_no_rephrase']
 	//var classifiers = [ 'Natural','Undersampled','Oversampled']
-	var classifiers = [ 'Biased_with_rephrase','Biased_no_rephrase']
+	//var classifiers = [ 'Biased_with_rephrase','Biased_no_rephrase']
 	//var classifiers = [ 'Natural','Biased_no_rephrase']
 
    /*var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
