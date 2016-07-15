@@ -1,13 +1,13 @@
-size	dial	Biased_with_rephrase	Biased_no_rephrase
-5	5.0625	null	null
-10	10.857142857142858	null	null
-15	17.375	null	null
-20	22.896551724137932	null	null
-25	28.129032258064516	null	null
-30	33.515151515151516	null	null
-35	39.94117647058823	null	null
-40	46.729729729729726	null	null
-45	52.91428571428571	null	null
-50	58.526315789473685	null	null
-55	65.5945945945946	null	null
-60	73.35897435897436	null	null
+size	dial	Natural	Undersampled	Oversampled	Biased_with_rephrase	Biased_no_rephrase
+5	5.086956521739131	null	null	null	null	null
+10	11.08695652173913	null	null	null	null	null
+15	16.68	null	null	null	null	null
+20	22.153846153846153	null	null	null	null	null
+25	28.413793103448278	null	null	null	null	null
+30	34.645161290322584	null	null	null	null	null
+35	40.09375	null	null	null	null	null
+40	46.8	null	null	null	null	null
+45	51.73529411764706	null	null	null	null	null
+50	57.10526315789474	null	null	null	null	null
+55	63.4390243902439	null	null	null	null	null
+60	68.69767441860465	null	null	null	null	null
