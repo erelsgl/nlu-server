@@ -427,10 +427,11 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var id_fold = {}
 
 
-	//var classifiers = [ 'Natural','Undersampled','Oversampled','Biased_with_rephrase','Biased_no_rephrase']
+	var classifiers = [ 'Natural','Undersampled','Oversampled','Biased_with_rephrase','Biased_no_rephrase']
 	//var classifiers = [ 'Natural','Undersampled','Oversampled']
 	//var classifiers = [ 'Biased_with_rephrase','Biased_no_rephrase']
-	var classifiers = [ 'Natural','Biased_no_rephrase', 'Biased_with_rephrase']
+	//var classifiers = [ 'Natural','Biased_no_rephrase', 'Biased_with_rephrase']
+	//var classifiers = [ 'Natural','Biased_no_rephrase']
 
    /*var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
     var utterset1 = bars.getsetcontext(data1, true)
@@ -477,13 +478,15 @@ function learning_curves(classifiers, folds, dataset, callback)
 		console.vlog("number of unprocessed dialogues: "+data1.length)
 		var utterset1 = bars.getsetcontext(data1, false)
 		var train1 = utterset1["train"].concat(utterset1["test"])
-		// only intents
 		console.vlog("number of the dialogues: "+train1.length)
+
 //		train1 = bars.processdataset(train1)
 
 		var data2 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7_neww.json"))
 		var utterset2 = bars.getsetcontextadv(data2)
 		var train2 = utterset2["train"].concat(utterset2["test"])
+		
+		console.vlog("number of the dialogues2: "+train2.length)
 		// only intents
 //		train2 = bars.processdataset(train2)
 		// console.vlog("DEBUG: train2.length "+train2.length)
