@@ -3987,17 +3987,24 @@ function getsetcontextadv(dataset)
     var processed_dialogue = []
     var nextrepr = false
  
-   var GreetIndex = 0
-  var QuitIndex = 0
-  var QueryIndex = 0
+    var GreetIndex = 0
+    var QuitIndex = 0
+    var QueryIndex = 0
     
-
-
 _.each(dialogue['turns'], function(turn, key, list){
 
-      if ((turn.role == "Candidate") && (('data' in turn)))
+      if (turn.role == "Candidate")
+      {
+        if ('data' in turn)) 
+        {
         if (rectypes.indexOf(turn.data)!=-1)
           nextrepr = true
+        else
+          nextrepr = false
+        }
+        else
+          nextrepr = false
+      }
           
       if ((turn.role == "Candidate") && (('output' in turn)))
         context = hashtoar(turn.output)
@@ -4014,12 +4021,7 @@ _.each(dialogue['turns'], function(turn, key, list){
         QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
         QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Query'});
           
-       // if ((QuitIndex==-1) && (GreetIndex==-1))
-
-            // processed_dialogue.push(record)
-
-        // context = []
-         if  (nextrepr)
+        if  (nextrepr)
         {
           if (!("rephrases" in mainturn))
             mainturn["rephrases"] = []
@@ -4028,12 +4030,11 @@ _.each(dialogue['turns'], function(turn, key, list){
           record["output"] = mainturn["output"]
 
           mainturn["rephrases"].push(record)
-          nextrepr = false
+          // nextrepr = false
         }
         else
         {
-       
-       if ((QuitIndex==-1) && (GreetIndex==-1))
+          if ((QuitIndex==-1) && (GreetIndex==-1))
           {
           processed_dialogue.push(record)
           mainturn = record
