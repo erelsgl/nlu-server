@@ -3862,7 +3862,7 @@ console.vlog("processdatasettrain: initial: "+ dataset.length)
     }
   })
 
-//	var dataset = _.filter(dataset, function(num){ return num["output"].length <= 1; });
+	var dataset = _.filter(dataset, function(num){ return num["output"].length <= 1; });
 console.vlog("processdatasettrain: end: "+ dataset.length)
 	return dataset
 }
@@ -3995,7 +3995,7 @@ _.each(dialogue['turns'], function(turn, key, list){
 
       if (turn.role == "Candidate")
       {
-        if ('data' in turn)) 
+        if ('data' in turn) 
         {
         if (rectypes.indexOf(turn.data)!=-1)
           nextrepr = true
@@ -4016,10 +4016,6 @@ _.each(dialogue['turns'], function(turn, key, list){
         record['input']['context'] = context
         record['outputhash'] = turn.output
         record['output'] = hashtoar(turn.output)
-      
-        GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
-        QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
-        QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Query'});
           
         if  (nextrepr)
         {
@@ -4028,12 +4024,18 @@ _.each(dialogue['turns'], function(turn, key, list){
 
           record["outputhash"] = mainturn["outputhash"]
           record["output"] = mainturn["output"]
+          record['input']['context'] = context
 
           mainturn["rephrases"].push(record)
-          // nextrepr = false
+          nextrepr = false
         }
         else
         {
+
+	var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
+        var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
+        var QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Query'});
+	
           if ((QuitIndex==-1) && (GreetIndex==-1))
           {
           processed_dialogue.push(record)
