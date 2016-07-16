@@ -83,7 +83,7 @@ process.on('message', function(message) {
 				console.vlog("PHRASES AFTER:"+JSON.stringify(bars.cleanoutput(mytrainex), null, 4))
 			}
 
-			if (classifier == "Biased_without_rephrase")
+/*			if (classifier == "Biased_without_rephrase")
 			{
 			//	var ttrain = bars.copyobj(mytrainex)
 				_.each(mytrainex, function(value, key, list){
@@ -91,7 +91,7 @@ process.on('message', function(message) {
 				}, this)
 			//	mytrainex = bars.copyobj(_.flatten(ttrain))
 			}
-			
+*/			
 			mytrainex = bars.processdatasettrain(mytrainex)
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
