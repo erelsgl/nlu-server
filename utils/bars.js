@@ -3869,27 +3869,41 @@ console.vlog("processdatasettrain: end: "+ dataset.length)
 
 function processdatasettest(dataset)
 {
+var outputset = []
+
   console.vlog("processdatasettest: initial: "+ dataset.length)
 
   _.each(dataset, function(utterance, utterance_key, list){
-    dataset[utterance_key]['output'] = _.unique(_.keys(utterance.outputhash))
+  
+	var output = _.unique(_.keys(utterance.outputhash))
+	
+	var record = copyobj(dataset[utterance_key])
+
+  record['output'] = output
 
 	  var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
     var basicdependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'basic-dependencies'))
     var collapseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-dependencies'))
     var collapsedccprocesseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-ccprocessed-dependencies'))
 
-    dataset[utterance_key]['input']['sentences'] = {
+    record['input']['sentences'] = {
 			'tokens': tokens,
 			'basic-dependencies': basicdependencies,
 		  'collapsed-dependencies': collapseddependencies,
 			'collapsed-ccprocessed-dependencies': collapsedccprocesseddependencies
 		}
-  })
+       
+	 if ((output.indexOf("Greet")==-1)&&(output.indexOf("Quit")==-1))
+		
+	outputset.push(record)
+  
 
-  console.vlog("processdatasettest: end: "+ dataset.length)
+})
 
-  return dataset
+  console.vlog("processdatasettest: end: "+ outputset.length)
+  console.vlog("processdatasettest: end: "+JSON.stringify(outputset, null, 4))
+
+  return outputset
 }
 
 
@@ -3978,32 +3992,23 @@ function getsetcontextadv(dataset)
   var utteranceset = {'train':[], 'test':[], 'unable':[]}
   var context = []
  
-  var GreetIndex = 0
-  var QuitIndex = 0
-  var QueryIndex = 0
-
-
   _.each(dataset, function(dialogue, key, list){
     var processed_dialogue = []
     var nextrepr = false
  
-    var GreetIndex = 0
-    var QuitIndex = 0
-    var QueryIndex = 0
     
 _.each(dialogue['turns'], function(turn, key, list){
 
       if (turn.role == "Candidate")
       {
         if ('data' in turn) 
-        {
-        if (rectypes.indexOf(turn.data)!=-1)
-          nextrepr = true
-        else
-          nextrepr = false
-        }
-        else
-          nextrepr = false
+        	if (rectypes.indexOf(turn.data)!=-1)
+     		     nextrepr = true
+       // else
+        //  nextrepr = false
+        //}
+       // else
+        //  nextrepr = false
       }
           
       if ((turn.role == "Candidate") && (('output' in turn)))
@@ -4024,7 +4029,7 @@ _.each(dialogue['turns'], function(turn, key, list){
 
           record["outputhash"] = mainturn["outputhash"]
           record["output"] = mainturn["output"]
-          record['input']['context'] = context
+          record['input']['context'] = mainturn['input']['context']
 
           mainturn["rephrases"].push(record)
           nextrepr = false
@@ -4032,15 +4037,18 @@ _.each(dialogue['turns'], function(turn, key, list){
         else
         {
 
-	var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
-        var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
-        var QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Query'});
+//	var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab)).indexOf('Greet') == -1});
+ //       var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab)).indexOf('Quit') == -1});
+    //    var QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab)).indexOf('Query') == -1});
 	
-          if ((QuitIndex==-1) && (GreetIndex==-1))
+          //if ((QuitIndex==-1) && (GreetIndex==-1))
+          if ((_.keys(record['outputhash']).indexOf("Greet")==-1) && (_.keys(record['outputhash']).indexOf("Quit")==-1))
           {
           processed_dialogue.push(record)
           mainturn = record
           }
+
+	nextrepr = false
         }
       }
     },  this)
