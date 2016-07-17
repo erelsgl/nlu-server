@@ -4455,7 +4455,7 @@ function distances(str1, str2)
 
   var dst_nrm = dst/_.max([tokens1.length, tokens2.length])
 
-  //return dst_nrm
+  // return dst_nrm
   return dst
 }
 
@@ -4544,10 +4544,94 @@ function bleu(can, ref)
   var brev = brevity(can, ref)
   console.log("BLEU: brevity: "+brev)
 
-  //return P*brev
-  return P
+  return P*brev
+  // return P
   //return P/brev
 }
+
+
+function mngrp_nist(can, refm, n)
+{
+  can = can.toLowerCase()
+  refm = refm.toLowerCase()
+
+  if (n == 0)
+    throw new Error("mngrp: n = 0")
+
+  var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-\?]+/});
+
+  var can = natural.NGrams.ngrams(tokenizer.tokenize(can), n)
+  var refm = natural.NGrams.ngrams(tokenizer.tokenize(refm), n)
+
+  var refh = {}
+  _.each(refm, function(value, key, list){
+    if (!(value in refh))
+        refh[value] = 0
+  
+    refh[value] += 1
+  }, this)
+
+  var m = 0
+  _.each(can, function(ngr, key, list){
+    ngr = ngr
+    if (ngr in refh)
+    {
+      if (refh[ngr] > 0)
+        {
+        m += 1
+        refh[ngr] -= 1
+        }
+    }
+  }, this)
+
+  return { "M": m,
+           "L": can.length }
+
+  // if (n>1)
+    // return  (m+1)/(can.length+1)
+  // else
+    // return  m/can.length
+}
+
+
+function bleu_nist(can, ref)
+{
+  var maxg = 3
+  can = can.toLowerCase()
+  ref = ref.toLowerCase()
+
+  console.log("BLEU: can: "+can)
+  console.log("BLEU: ref: "+ref)
+
+  var P = 1
+  var invcnt = 1
+
+  _(maxg).times(function(n){ 
+    var temp = mngrp_nist(can, ref, n+1)
+
+    var mod_m = temp.M
+    if (temp.M == 0)
+    {
+      invcnt = invcnt*2
+      mod_m = 1/invcnt
+    }
+    // console.log("BLEU: P_"+(n+1)+": "+temp)
+    P *= mod_m/temp.L
+  });
+
+  console.log("P="+P)
+  P = Math.pow(P,1/maxg)  
+
+  console.log("BLEU: exp P="+P)
+
+  var brev = brevity(can, ref)
+  console.log("BLEU: brevity: "+brev)
+
+  return P*brev
+  // return P
+  //return P/brev
+}
+
 
 function gettransdist(turns, pat)
 {
@@ -5594,5 +5678,6 @@ mngrp:mngrp,
 bleu:bleu,
 returndist:returndist,
 getsetcontextadv:getsetcontextadv,
-cleanoutput:cleanoutput
+cleanoutput:cleanoutput,
+bleu_nist:bleu_nist
 }
