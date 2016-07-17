@@ -50,8 +50,9 @@ function vec_minus(a, b) {
 }
 
 function average(a) {
-  if (!isVectorNumber(a))
-    throw new Error("Vectors should be consist of numbers " + JSON.stringify(a))
+  isVectorNumber(a)
+  // if (!isVectorNumber(a))
+    // throw new Error("Vectors should be consist of numbers " + JSON.stringify(a))
 
   var output = 0
     for (n=0; n < a.length; n++) {
@@ -162,7 +163,8 @@ function isVectorNumber(a) {
   var n;
   for (n=0; n < a.length; n++) {
    if (isNaN(parseFloat(a[n])) || !isFinite(a[n]))
-    return false
+    throw new Error(a[n] + " is not a number")
+    // return false
   }
   return true
 }
