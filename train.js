@@ -27,6 +27,9 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+
+var correlation = true
+
 var check_coverage = false
 var check_con = false
 var unidis = false 
@@ -55,7 +58,7 @@ var check_version7 = false
 // prefereably to do so in rations
 var check_version7_1 = false
 
-var getsetcontextadv = true
+var getsetcontextadv = false
 
 // simple template to check performance on test and train even with simple multi-label binary relevance SVM
 var check_ds = false
@@ -226,6 +229,77 @@ var uniform = [0.25, 0.25, 0.25, 0.25]
 var a = distance.tvd(with_rephrase, uniform)
 var b = distance.tvd(without_rephrase, uniform)
 console.log("if "+ a + " > "+ b)
+}
+
+if (correlation)
+{
+	var lang = {}
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_trans_new.json"))
+
+
+	_.each(data, function(dialogue, key, list){
+
+		_.each(dialogue["turns"], function(turn, key, list){
+			if (turn.role == "Employer")
+				if ("trans" in turn["input"])
+					{
+
+						var temp = {}
+
+						_.each(turn["input"]["trans"], function(text, key, list){
+							// var ln = key.substr(2,2)
+							
+							var ln = key.substr(0,1) + key.substr(-1,1)
+						    var language = key.substr(2,2)
+
+						    if (["fi"].indexOf(language)!=-1)
+						    {
+
+								if (!(ln in lang))
+									lang[ln] = []
+
+								var dst = bars.distances(text, turn["input"]["text"])
+	   							temp[ln] = dst
+
+	   							if (isNaN(parseFloat(dst)) || !isFinite(dst))
+	   								{
+	   								console.log("FUCK")
+	   								console.log(text)
+	   								console.log(turn["input"]["text"])
+	   								console.log(dst)
+	   								}
+	   							else
+									lang[ln].push(dst)
+							
+							}
+						}, this)
+
+						if ((temp['MY'] > temp['MM'])
+							&&
+							(temp['MG'] > temp['MM']))
+						{
+							console.log("CASE")
+							console.log("text:"+turn["input"]["text"])
+							console.log("MM:"+turn["input"]["trans"]["M:fi:M"])
+							console.log("MY:"+turn["input"]["trans"]["M:fi:Y"])
+							console.log("MG:"+turn["input"]["trans"]["M:fi:G"])
+						}
+					}
+		}, this)
+
+	}, this)
+
+	var aver = {}
+
+	_.each(lang, function(value, ln, list){
+		aver[ln] = distances.average(value)
+	}, this)
+
+	var arr = _.pairs(aver)
+	arr = _.sortBy(arr, function(num){ return num[1] });
+
+	console.log(JSON.stringify(arr, null, 4))
+	process.exit(0)
 }
 
 if (make_tr)
