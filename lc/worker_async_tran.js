@@ -58,7 +58,7 @@ process.on('message', function(message) {
 			else index += 5
 		
 	    		var mytrain = train.slice(0, index)
-			mytrain = mytrain.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
+			// mytrain = mytrain.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
 	
 			var mytrainex = JSON.parse(JSON.stringify(mytrain))
 	    		var mytestex = JSON.parse(JSON.stringify(test))
@@ -106,7 +106,18 @@ process.on('message', function(message) {
     				case "NLU_Tran_Russian": callbacks(null, bars.gettrans(mytrainex, ".*:ru:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Chinese": callbacks(null, bars.gettrans(mytrainex, ".*:zh:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Urdu": callbacks(null, bars.gettrans(mytrainex, ".*:ur:.*"), mytestex, mytrainex.length); break;
-    				//case "NLU_Tran_Finish": callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); break;
+    				case "NLU_Tran_Finish": 
+
+
+    				// callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); 
+    				_.each(mytrainex, function(turn, key, list){
+    					delete mytrainex[key]["input"]["trans"]
+    				}, this)
+
+					mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
+
+
+    				break;
     				case "NLU_Tran_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;	
     				case "NLU_Tran_Finish_Arabic:": callbacks(null, bars.gettrans(mytrainex, ".*:(ar|fi):.*"), mytestex, mytrainex.length); break;	
     				case "NLU_Tran_Yandex_Microsoft_Finish": callbacks(null, bars.gettrans(mytrainex, "Y:fi:M"), mytestex, mytrainex.length); break;	
@@ -117,6 +128,7 @@ process.on('message', function(message) {
     				case "NLU_Tran_Oversample": callbacks(null, bars.tranoversam(mytrainex), mytestex, mytrainex.length); break;
 
     				default:
+						mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
         				callbacks(null, mytrainex, mytestex, mytrainex.length)
         		}
 
