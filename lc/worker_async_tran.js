@@ -111,11 +111,12 @@ process.on('message', function(message) {
 
     				// callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); 
     				_.each(mytrainex, function(turn, key, list){
-    					delete mytrainex[key]["input"]["trans"]
+    					mytrainex[key]["input"]["trans"] = {}
     				}, this)
 
 					mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
-
+    					callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); 
+					
 
     				break;
     				case "NLU_Tran_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;	
