@@ -93,9 +93,11 @@ if (cluster.isWorker)
 				console.vlog("PHRASES AFTER:"+JSON.stringify(bars.cleanoutput(mytrainex), null, 4))
 			}
 */
-			if (classifier == "Biased_no_rephrase_trans")
+			if (classifier == "Biased_no_rephrase_no_con_trans")
 			{
-				mytrainex = bars.gettrans(mytrainex, ".*:fi:.*")
+				console.vlog("STARTTRAN")
+				//mytrainex = bars.gettrans(mytrainex, ".*:fi:.*")
+				mytrainex = bars.gettrans(mytrainex, ".*")
 			}
 
 /*			if (classifier == "Biased_without_rephrase")
