@@ -3901,7 +3901,6 @@ var outputset = []
 })
 
   console.vlog("processdatasettest: end: "+ outputset.length)
-  console.vlog("processdatasettest: end: "+JSON.stringify(outputset, null, 4))
 
   return outputset
 }
@@ -4408,7 +4407,7 @@ function gettrans(turns, pat)
   var regex =  new RegExp(pat)
 
   console.vlog("gettrans: input.length: " + turns.length)
-  console.vlog("gettrans: input.length: " + JSON.stringify(turns, null, 4))
+  //console.vlog("gettrans: input.length: " + JSON.stringify(turns, null, 4))
 
   _.each(turns, function(turn, key, list){
     console.vlog("gettrans: add: " + _.keys(turn["input"]["trans"]).length)
