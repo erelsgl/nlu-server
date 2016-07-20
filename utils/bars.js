@@ -4403,7 +4403,7 @@ function oversample(turns)
 function gettrans(turns, pat)
 {
   var output = []
-  var ln = ['de','fr','es','pt']
+  // var ln = ['de','fr','es','pt']
   var regex =  new RegExp(pat)
 
   console.vlog("gettrans: input.length: " + turns.length)
@@ -4415,12 +4415,14 @@ function gettrans(turns, pat)
 
 	var proc = regex.test(key)
   //	console.vlog("gettrans: key: " + key + " proc: "+proc+ " pat: "+pat)
-        if (proc)
+  if (proc)
 	{
   	console.vlog("gettrans: add: "+key)
           output.push({
-            'input': {'text': tran,
-			     'context': turn.input.context},
+            'input': {
+                      'text': tran,
+			                'context': turn.input.context
+                    },
             'output': JSON.parse(JSON.stringify(turn.output))
           //  'context': JSON.parse(JSON.stringify(turn.context)),
           })
@@ -4429,14 +4431,13 @@ function gettrans(turns, pat)
     }, this)
     
     output.push({
-            'input': {'text': turn.input.text,
-			'context': turn.input.context},
-            'output': JSON.parse(JSON.stringify(turn.output))
+             'input': {'text': turn.input.text,
+			       'context': turn.input.context},
+             'output': JSON.parse(JSON.stringify(turn.output))
 //            'context': JSON.parse(JSON.stringify(turn.context)),
     })
 
   }, this)
-
 
   console.vlog("gettrans: output.length: " + output.length)
 
