@@ -466,7 +466,7 @@ function learning_curves(classifiers, folds, dataset, callback)
     // train3 = train3.slice(0,30)
 
 	cluster.setupMaster({
-  	exec: __dirname + '/worker_async_adv1.js',
+  	exec: __dirname + '/worker_async_adv1_trans.js',
   	// exec: __dirname + '/worker.js',
 	// args: [JSON.stringify({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len})],
 	// silent: false
@@ -497,17 +497,17 @@ function learning_curves(classifiers, folds, dataset, callback)
 				// worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
 				var worker = cluster.fork({'fold': fold+n*folds, 'classifier':classifier, 'thread': thr})
 				
-				console.vlog("DEBUGMASTER: classifier: "+classifier+" overall size: "+train1.length)
+			//	console.vlog("DEBUGMASTER: classifier: "+classifier+" overall size: "+train1.length)
 				
 				var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
 		
-				console.vlog("DEBUGMASTER: classifier: "+classifier+" fold: "+ (fold+n*folds) + " train size "+data.train.length + " test size " + data.test.length)
+				console.vlog("DEBUGMASTER: classifier: "+classifier+" fold: "+ (fold+n*folds) + " train size "+data.train.length + " test size " + data.test.length+" process: "+worker.process.id)
 
 				var train2sam = _.flatten(_.sample(bars.copyobj(train2), 10))
 
 				var train = []
 
-				if (["Biased_with_rephrase", "Biased_no_rephrase", "Biased_no_rephrase_trans"].indexOf(classifier)!=-1)
+				if (["Biased_with_rephrase", "Biased_no_rephrase", "Biased_no_rephrase_trans", "Biased_no_rephrase_no_con_trans", "Biased_no_rephrase_no_con"].indexOf(classifier)!=-1)
 				// if (classifier == "Biased_with_rephrase")
 					train = bars.copyobj(train2sam)
 				// else if (classifier == "Biased_no_rephrase")
