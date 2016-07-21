@@ -27,8 +27,7 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
-
-var correlation = true
+var correlation = false
 
 var check_coverage = false
 var check_con = false
@@ -51,7 +50,8 @@ var check_intent_issue_dst = false
 var check_version4 = false
 
 
-
+// simlple naive multi label classification with train/test split
+var simple_naive_test_train = true
 var check_version7 = false
 
 // check the Ido's approach, we sample the strategy uniformly, then just see the reaction in intents
@@ -1688,6 +1688,33 @@ if (check_init)
 
 	process.exit(0)
 }
+
+// simple composite labeling with test/train
+if (simple_naive_test_train)
+{
+ 	bars.cleanFolder("/tmp/logs")
+
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+    var utterset = bars.getsetcontext(data)
+
+    console.log(utterset["train"].length)
+    console.log(utterset["test"].length)
+
+	utterset["train"] = _.flatten(utterset["train"])
+	utterset["test"] = _.flatten(utterset["test"])
+
+	console.log(utterset["train"].length)
+    console.log(utterset["test"].length)
+
+    utterset["train"] = bars.processdataset(utterset["train"],{"intents": false, "filter":false})
+	utterset["test"] = bars.processdataset(utterset["test"],{"intents": false, "filter":false})
+
+	trainAndTest.trainAndTest_async(classifier.Natural_no_con, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+		console.log(JSON.stringify(results, null, 4))
+		process.exit(0)
+	}, this)	
+}
+
 
 if (check_ds)
 {
