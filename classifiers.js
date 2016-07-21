@@ -1960,15 +1960,16 @@ function feAsync(sam, features, train, featureOptions, callback) {
 	var words = tokenizer.tokenize(sample.text);
 	var tokens = _.flatten(natural.NGrams.ngrams(words, 1))
 
+
+	tokens = _.map(tokens, function(num){ return {word: num, lemma: num} });
 	console.log("DEBUGASYNC: tokens: "+tokens)
 
-	Lem.lemmatize(tokens, function(err, lemmas) {
+	// Lem.lemmatize(tokens, function(err, lemmas) {
+		// var zipped = _.zip(tokens, lemmas);
+		// var clean_tokens = _.map(zipped, function(num){ return {word: num[0], lemma: num[1]} });
 
-		var zipped = _.zip(tokens, lemmas);
-		var clean_tokens = _.map(zipped, function(num){ return {word: num[0], lemma: num[1]} });
-
-		console.log("DEBUGASYNC: tokens: "+clean_tokens)
-		sample.sentences = {'tokens':clean_tokens}
+		// console.log("DEBUGASYNC: tokens: "+clean_tokens)
+		sample.sentences = {'tokens':tokens}
 
 		console.log(JSON.stringify(sample, null, 4))
 
@@ -1990,7 +1991,7 @@ function feAsync(sam, features, train, featureOptions, callback) {
 	        console.log("DEBUGASYNC:"+JSON.stringify(features, null, 4))
  			callback(null, features)
 		})
-	})
+	// })
 }
 
 
@@ -2431,7 +2432,7 @@ module.exports = {
 		Biased_no_rephrase_no_con: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		Biased_no_rephrase_no_con_trans: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		
-		NLU_Baseline: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync/*, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true}),
+		// NLU_Baseline: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford/*, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true}),
 		
 		NLU_Bal: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync/*, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		NLU_Tran_Microsoft: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync/*, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true}),
