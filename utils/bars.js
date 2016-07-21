@@ -3906,17 +3906,45 @@ var outputset = []
 }
 
 
-
-function processdataset1(dataset)
+// options:
+// - intents - only intents as a output
+// - filter - filter multilabel utterances (for test set)
+function processdataset(dataset, options)
 {
- _.each(dataset, function(utterance, utterance_key, list){
+  var output = []
 
-//       var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
-  //        if (type == "train")
-          dataset[utterance_key]['output'] = _.unique(_.keys(utterance.outputhash))
-    })
+  console.vlog("processdataset: initial: "+ dataset.length)
 
-    return dataset
+  _.each(dataset, function(utterance, utterance_key, list){
+    
+    var record = copyobj(dataset[utterance_key])
+
+    if (options.intents)
+      record['output'] = _.unique(_.keys(utterance.outputhash))
+  
+    var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
+    var basicdependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'basic-dependencies'))
+    var collapseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-dependencies'))
+    var collapsedccprocesseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-ccprocessed-dependencies'))
+
+    record['input']['sentences'] = {
+      'tokens': tokens,
+      'basic-dependencies': basicdependencies,
+      'collapsed-dependencies': collapseddependencies,
+      'collapsed-ccprocessed-dependencies': collapsedccprocesseddependencies
+    }
+       
+   // if ((output.indexOf("Greet")==-1)&&(output.indexOf("Quit")==-1))
+    
+    output.push(record)
+  })
+
+  if (options.filter)
+    output = _.filter(output, function(num){ return num["output"].length <= 1; });
+
+  console.vlog("processdataset: end: "+ output.length)
+
+  return output
 }
 
 
@@ -5663,7 +5691,6 @@ getExm:getExm,
 mean_variance:mean_variance,
 turnoutput:turnoutput,
 processdataset:processdataset,
-processdataset1:processdataset1,
 processdatasettrain:processdatasettrain,
 processdatasettest:processdatasettest,
 cleanFolder:cleanFolder,
