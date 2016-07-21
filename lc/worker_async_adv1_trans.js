@@ -67,7 +67,7 @@ if (cluster.isWorker)
 */
 //biased
 
-			index += 5
+			index += 10
 
 	       	var mytrain = bars.copyobj(train.slice(0, index))
 
@@ -93,11 +93,11 @@ if (cluster.isWorker)
 				console.vlog("PHRASES AFTER:"+JSON.stringify(bars.cleanoutput(mytrainex), null, 4))
 			}
 */
-			if (classifier == "Biased_no_rephrase_no_con_trans")
+			if (classifier == "Biased_no_rephrase_trans")
 			{
 				console.vlog("STARTTRAN")
-				//mytrainex = bars.gettrans(mytrainex, ".*:fi:.*")
-				mytrainex = bars.gettrans(mytrainex, ".*")
+				mytrainex = bars.gettrans(mytrainex, ".*:fi:.*")
+				//mytrainex = bars.gettrans(mytrainex, ".*")
 			}
 
 /*			if (classifier == "Biased_without_rephrase")
