@@ -39,7 +39,7 @@ if (cluster.isWorker)
 	// console.vlog("INITIALDIST: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(train), null, 4))	
 
 	var max  = JSON.parse(message['max'])
-	var max = 60
+	var max = 70
 
 //	console.vlog("DEBUGWORKER: train.length before filter = "+train.length)
 //      train = _.filter(train, function(num){ return _.keys(num.outputhash).length <= 1 })
@@ -61,7 +61,7 @@ if (cluster.isWorker)
 			index += 2
 		} else if (index<20)
 		{
-			index += 10
+			index += 5
 		}
 		else index += 10
 
@@ -96,8 +96,15 @@ if (cluster.isWorker)
 			if (classifier == "Biased_no_rephrase_trans")
 			{
 				console.vlog("STARTTRAN")
-				mytrainex = bars.gettrans(mytrainex, ".*:fi:.*")
-				//mytrainex = bars.gettrans(mytrainex, ".*")
+				// mytrainex = bars.gettrans(mytrainex, ".*:fi:.*")
+				mytrainex = bars.gettrans(mytrainex, ".*")
+			}
+
+			if (classifier == "Natural_trans")
+			{
+				console.vlog("STARTTRAN")
+				// mytrainex = bars.gettrans(mytrainex, ".*:fi:.*")
+				mytrainex = bars.gettrans(mytrainex, ".*")
 			}
 
 /*			if (classifier == "Biased_without_rephrase")
@@ -130,14 +137,14 @@ if (cluster.isWorker)
 */
 			var realmytrainex = []
 
-			if (classifier=="Oversampled") {
+/*			if (classifier=="Oversampled") {
 				var realmytrainex = bars.oversample(bars.copyobj(mytrainex))
 			} else if (classifier=="Undersampled") {
 				var realmytrainex = bars.undersample(bars.copyobj(mytrainex))
 				
 			} else {
-				var realmytrainex = bars.copyobj(mytrainex)
-				}
+*/			var realmytrainex = bars.copyobj(mytrainex)
+				// }
 		
 	//		console.log("DEBUGWORKER: mytrainex.length before filter = "+mytrainex.length)
 	//		var realmytrainex = _.filter(mytrainex, function(num){ return _.keys(num.outputhash).length <= 1 })
