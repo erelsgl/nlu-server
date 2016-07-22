@@ -139,6 +139,15 @@ describe('Classifiers functions', function() {
 
   it('getRule', function() {  
 
+
+    var data = {'tokens':[{'word':'60,000','lemma':'60,000','pos':'A'},{'lemma':'USD','word':'USD','pos':'A'},
+                          {'lemma':'salary','word':'salary','pos':'A'}]}
+
+    var results = classifiers.getRule(data)
+    console.log(results)
+    process.exit(0)
+
+
     var data = {'tokens':[{'word':'10','lemma':'10','pos':'A'},{'lemma':'%','word':'%','pos':'A'},
                           {'lemma':'is','word':'is','pos':'A'},{'word':'accepted','lemma':'accepted','pos':'A'}]}
 
@@ -175,7 +184,7 @@ describe('Classifiers functions', function() {
 
     results["cleaned"]["tokens"].length.should.equal(0)
 
-    _.isEqual(results.labels,  [['Salary','Leased Car'],['120,000 USD','Without leased car']]).should.equal(true)
+	_.isEqual(results.labels,  [['Salary','Leased Car'],['120,000 USD','Without leased car']]).should.equal(true)
 
     var data = {'tokens':[{'word':'I','lemma':'I','pos':'A'},{'lemma':'have','word':'have','pos':'A'},{'lemma':'a','word':'a','pos':'A'},
                           {'word':'salary','lemma':'salary','pos':'A'},{'lemma':'of','word':'of','pos':'A'},{'lemma':'60,000','word':'60,000','pos':'A'}]
@@ -234,7 +243,7 @@ describe('Classifiers functions', function() {
     var data = classifiers.getRule({'tokens':[{'lemma':'I','pos':'A'},{'lemma':'offering','pos':'A'},{'lemma':'a','pos':'A'},{'lemma':'job','pos':'A'},{'lemma':':','pos':'A'},{'lemma':'programmer','pos':'A'}, {'lemma':'10','pos':'A'},{'lemma':'hours','pos':'A'},{'lemma':'a','pos':'A'},{'lemma':'day','pos':'A'},{'lemma':',','pos':'A'}, {'lemma':'60000','pos':'A'},{'lemma':'no','pos':'A'},{'lemma':'car','pos':'A'},{'lemma':'fast','pos':'A'},{'lemma':'promotion','pos':'A'},{'lemma':'track','pos':'A'}]})
     
     data["cleaned"]["tokens"].length.should.equal(5)
-    _.isEqual(data.labels,[["Salary","Promotion Possibilities","Working Hours","Job Description","Leased Car"],["60,000 USD","Fast promotion track","10 hours","Programmer"]]).should.equal(true)
+    _.isEqual(data.labels,[["Salary","Promotion Possibilities","Working Hours","Job Description","Leased Car"],["60,000 USD","Fast promotion track","10 hours","Programmer","Without leased car"]]).should.equal(true)
 
   })
 
