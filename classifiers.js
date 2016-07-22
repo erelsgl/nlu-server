@@ -1628,14 +1628,15 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 	if (!('context' in sample))
 		throw new Error("Hey guys where is a context "+ JSON.stringify(sample))
 
-	var words = tokenizer.tokenize(sample.text);
+	var sentence = regexpNormalizer(sample.text.toLowerCase().trim())
+	var words = tokenizer.tokenize(sentence)
 	var tokens = _.flatten(natural.NGrams.ngrams(words, 1))
 
-	console.log("DEBUGASYNC: tokens: "+tokens)
+//	console.log("DEBUGASYNC: tokens: "+tokens)
 	//tokens = _.map(tokens, function(num){ return {word: num, lemma: natural.PorterStemmer.stem(num)} });
 	tokens = _.map(tokens, function(num){ return {word: num, lemma: num} });
 
-	console.log("DEBUGASYNC: tokens: "+tokens)
+//	console.log("DEBUGASYNC: tokens: "+tokens)
 	sample.sentences = {'tokens':tokens}
 		
 	var context = sample['context']
@@ -1648,8 +1649,8 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 //	if (context.length == 0)
 //		features['NO_CONTEXT'] = 1
 	
-	console.vlog("DEBUGCONTEXT: text : "+ sample.text)	
-	console.vlog("DEBUGCONTEXT: context " + JSON.stringify(context) + " train "+train+" featureOptions "+JSON.stringify(featureOptions))
+//	console.vlog("DEBUGCONTEXT: text : "+ sample.text)	
+//	console.vlog("DEBUGCONTEXT: context " + JSON.stringify(context) + " train "+train+" featureOptions "+JSON.stringify(featureOptions))
 
 	// var attrval = rules.findData(sentence)
 	// attrval[0] - attrs
@@ -1667,7 +1668,7 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 	var intents = []
 	var values = [] 
 
-	console.vlog("DEBUGCONTEXT: labels of the sample "+JSON.stringify(attrval))
+//	console.vlog("DEBUGCONTEXT: labels of the sample "+JSON.stringify(attrval))
 	
 	 if (attrval[0].length > 0)	
                 features['THERE_IS_ATTRIBUTES'] = 1
@@ -1719,23 +1720,23 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 			values.push(_.values(_.values(obj)[0])[0])
 	}, this)
 
-	console.vlog("DEBUGCONTEXT: values of the context "+ values)
+//	console.vlog("DEBUGCONTEXT: values of the context "+ values)
 
-	console.log(JSON.stringify(values, null, 4))
-	console.log(JSON.stringify(attrval, null, 4))
+//	console.log(JSON.stringify(values, null, 4))
+//	console.log(JSON.stringify(attrval, null, 4))
 	
 	_.each(attrval[1], function(value, key, list){
-		console.vlog("DEBUGCONTEXT: check value "+ value)
+//		console.vlog("DEBUGCONTEXT: check value "+ value)
 
 		if (values.indexOf(value)!=-1)
 		{
-			console.vlog("DEBUGCONTEXT: value "+ value + " is in the context")
+//			console.vlog("DEBUGCONTEXT: value "+ value + " is in the context")
 			if (featureOptions.offered) 
 				features['OFFEREDVALUE'] = 1
 		}
 		else
 		{
-			console.vlog("DEBUGCONTEXT: value "+ value + " is not in the context")
+//			console.vlog("DEBUGCONTEXT: value "+ value + " is not in the context")
 			if (featureOptions.unoffered)
 				features['UNOFFEREDVALUE'] = 1
 		}
@@ -1746,7 +1747,7 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 
 	// features['END'] = 1
 
-	console.vlog("DEBUGCONTEXT: " + JSON.stringify(features))
+//	console.vlog("DEBUGCONTEXT: " + JSON.stringify(features))
 	
 	callback(null, features)
 }
@@ -1970,7 +1971,8 @@ function feAsync(sam, features, train, featureOptions, callback) {
 	if ("input" in sample)
 		sample = sample.input
 
-	var words = tokenizer.tokenize(sample.text);
+	var sentence = regexpNormalizer(sample.text.toLowerCase().trim())
+	var words = tokenizer.tokenize(sentence);
 	var tokens = _.flatten(natural.NGrams.ngrams(words, 1))
 
 
