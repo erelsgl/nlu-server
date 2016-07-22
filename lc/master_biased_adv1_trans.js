@@ -426,7 +426,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var maxfolds = 0
 	var id_fold = {}
 
-	var classifiers = [ 'Natural','Biased_no_rephrase', 'Biased_no_rephrase_trans']
+	var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	//var classifiers = [ 'Natural_no_con','Biased_no_rephrase_no_con', 'Biased_no_rephrase_no_con_trans']
 	// var classifiers = [ 'Natural','Undersampled','Oversampled','Biased_with_rephrase','Biased_no_rephrase']
 	//var classifiers = [ 'Natural','Undersampled','Oversampled']
