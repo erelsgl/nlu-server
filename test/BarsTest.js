@@ -16,6 +16,14 @@ var fs = require('fs');
 
 describe('Bars utilities', function() {
 
+	it('parseoutput', function() {
+		var output = bars.parseoutput({ "Accept": true, "Offer": {"Working Hours": "10 hours"}})
+		_.isEqual(output, ["Working Hours","10 hours"]).should.equal(true)
+	
+		var output = bars.parseoutput({ "Accept": {"Salary": "60,000 USD", "Working Hours": "10 hours" }})
+		_.isEqual(output, ["Salary", "60,000 USD", "Working Hours", "10 hours"]).should.equal(true)
+	})
+
 	it('mngrp', function() {
 		var val = bars.mngrp("the the the the the the the", "The cat is on the mat",1 )
 		_.isEqual(val, 0.2857142857142857).should.equal(true)
