@@ -4439,7 +4439,8 @@ function gettrans(turns, pat)
 
   _.each(turns, function(turn, key, list){
     console.vlog("gettrans: add: " + _.keys(turn["input"]["trans"]).length)
-    _.each(turn["input"]["trans"], function(tran, key, list){
+  	if (turn["output"].length > 0)
+	  _.each(turn["input"]["trans"], function(tran, key, list){
 
 	var proc = regex.test(key)
   //	console.vlog("gettrans: key: " + key + " proc: "+proc+ " pat: "+pat)
