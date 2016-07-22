@@ -56,18 +56,18 @@ if (cluster.isWorker)
 			// var len = 5
 //	       	index += (index < 20 ? 3 : 5)
 		
-/*		if (index<10)
-		{
-			index += 1
-		} else if (index<20)
+		if (index<10)
 		{
 			index += 2
+		} else if (index<20)
+		{
+			index += 10
 		}
-		else index += 5
-*/
+		else index += 10
+
 //biased
 
-			index += 10
+//			index += 10
 
 	       	var mytrain = bars.copyobj(train.slice(0, index))
 
