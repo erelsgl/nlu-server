@@ -51,7 +51,18 @@ var check_version4 = false
 
 
 // simlple naive multi label classification with train/test split
-var simple_naive_test_train = true
+var simple_naive_test_train = false
+
+//  the same but to calculate intents
+var simple_naive_intent_test_train_intents = false
+
+// check the accuracy of regular expression identification
+var check_regexp = true
+
+var consistent_query = false
+
+var reshuffle = false
+
 var check_version7 = false
 
 // check the Ido's approach, we sample the strategy uniformly, then just see the reaction in intents
@@ -1694,7 +1705,7 @@ if (simple_naive_test_train)
 {
  	bars.cleanFolder("/tmp/logs")
 
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
     var utterset = bars.getsetcontext(data)
 
     console.log(utterset["train"].length)
@@ -1715,6 +1726,127 @@ if (simple_naive_test_train)
 	}, this)	
 }
 
+if (reshuffle)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	var data = _.filter(data, function(num){ return ["train", "test"].indexOf(num.set) != -1 });
+
+	_.each(data, function(value, key, list){
+		data[key]["set"] = "train"
+	}, this)
+
+	data = _.shuffle(data)
+
+	_(20).times(function(n){ 
+		var key = _.random(0, 100);
+		data[key]["set"] = "test"
+	});
+
+	console.log(JSON.stringify(data, null, 4))
+
+	var cou = _.countBy(data, function(num) {return num.set})
+	console.log(JSON.stringify(cou, null, 4))
+	process.exit(0)
+}
+
+if (simple_naive_intent_test_train_intents)
+{
+ 	bars.cleanFolder("/tmp/logs")
+
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
+    var utterset = bars.getsetcontext(data)
+
+    console.log(utterset["train"].length)
+    console.log(utterset["test"].length)
+
+	utterset["train"] = _.flatten(utterset["train"])
+	utterset["test"] = _.flatten(utterset["test"])
+
+	console.log(utterset["train"].length)
+    console.log(utterset["test"].length)
+
+    utterset["train"] = bars.processdataset(utterset["train"],{"intents": true, "filter":false})
+	utterset["test"] = bars.processdataset(utterset["test"],{"intents": true, "filter":false})
+
+	trainAndTest.trainAndTest_async(classifier.Natural_no_con, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+		console.log(JSON.stringify(results, null, 4))
+		process.exit(0)
+	}, this)	
+}
+
+// turns all Queries to consistent 
+if (consistent_query)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
+
+	_.each(data, function(dialogue, dkey, list){
+		_.each(dialogue["turns"], function(turn, tkey, list){
+			if ("output" in turn)
+				if ("Query" in turn.output)
+				{
+					var ob = turn["output"]["Query"]
+					if (_.isObject(ob))
+					{
+						if (_.keys(ob).length > 1)
+						{
+							console.log(JSON.stringify(turn.output, null, 4))
+							process.exit(0)
+						}
+						else
+						{
+							data[dkey]["turns"][tkey]["output"]["Query"] = _.values(turn["output"]["Query"])[0]
+						}
+					}
+					else
+					{
+						if (ob == "Offer")
+							data[dkey]["turns"][tkey]["output"]["Query"] = true
+						else
+							{
+								console.log(JSON.stringify(turn.output, null, 4))
+								process.exit(0)
+							}
+					}
+				}
+		}, this)
+	}, this)
+
+	console.log(JSON.stringify(data, null, 4))
+	process.exit(0)
+}
+
+// get the accuracy of regexp to identify issues and values
+if (check_regexp)
+{
+	var stats = new PrecisionRecall()
+
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
+    var utterset = bars.getsetcontext(data)
+    var dataset = _.flatten(utterset.train.concat(utterset.test))
+    dataset = bars.processdataset(dataset, {"intents": false, "filter":false})
+
+    _.each(dataset, function(value, key, list){
+		var found = classifier.getRule(value["input"]["sentences"]).labels
+		found = _.flatten(found)
+
+		var actual = bars.parseoutput(value["outputhash"])
+		var exp = stats.addCasesHash(actual, found, true)
+		
+		if (("FP" in exp)||("FN" in exp))
+		{
+			console.log(value["input"]["text"])
+			console.log(JSON.stringify(value["outputhash"], null, 4))
+			console.log(JSON.stringify(exp, null, 4))
+			
+		}
+		var exp = stats.addIntentHash(actual, found, true)
+
+    }, this)
+
+	stats.calculateStats()
+    console.log(JSON.stringify(stats, null, 4))
+    process.exit(0)
+}
 
 if (check_ds)
 {
