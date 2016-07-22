@@ -1,11 +1,13 @@
-size	dial	Natural	Biased_no_rephrase	Biased_no_rephrase_trans
-2	96.05	null	null	null
-4	259.42	null	null	null
-6	486.15	null	null	null
-8	729.71	null	null	null
-10	991.09	null	null	null
-20	1976.24	null	null	null
-30	2952.48	null	null	null
-40	3942.58	null	null	null
-50	4924.76	null	null	null
-60	5916.84	null	null	null
+size	dial	Natural	Natural_trans	Biased_no_rephrase	Biased_no_rephrase_trans
+2	140.6	null	null	null	null
+4	373.27	null	null	null	null
+6	592.08	null	null	null	null
+8	792.08	null	null	null	null
+10	991.09	null	null	null	null
+15	1485.15	null	null	null	null
+20	1979.21	null	null	null	null
+30	2950.5	null	null	null	null
+40	3934.66	null	null	null	null
+50	4910.9	null	null	null	null
+60	5899.02	null	null	null	null
+70	6893.08	null	null	null	null
