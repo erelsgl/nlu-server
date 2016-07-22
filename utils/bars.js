@@ -3815,25 +3815,6 @@ function cleanoutput(dataset)
   return output
 }
 
-function processdataset(dataset, type ) 
-{
-// should be executed after flattenation
-// prepares the 
-
-  if (_.isUndefined(type) || type=="") throw new error("processdataset")
-
-//_.each(dataset, function(dialogue, dialogue_key, list){
-    _.each(dataset, function(utterance, utterance_key, list){
-	
-         var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
-          if (type == "train")
-          dataset[utterance_key]['input']['sentences'] = [{'tokens': tokens}]
-          dataset[utterance_key]['output'] = _.unique(_.keys(utterance.outputhash))
-    })
-//  })
-  return dataset
-}
-
 // concatenate sentences
 // filter multi - label utterances
 // convert output
@@ -5571,7 +5552,32 @@ function tranoversam(turns_copy)
   return gen
 }
 
+function parseoutput(outputhash)
+{
+  var output = []
+  _.each(outputhash, function(value, key, list){
+    // output.push(key)
+    if (_.isObject(value))
+    {
+      _.each(value, function(value1, key1, list){
+        output.push(key1)
+        output.push(value1)
+      }, this)
+    }
+    else
+    {
+    output.push(value)
+    }
+  }, this)
+  
+  output = _.without(output, true);
+
+  return  output
+}
+
+
 module.exports = {
+  parseoutput:parseoutput,
   simulaterealds:simulaterealds,
   simulateds:simulateds,
   filterlabels:filterlabels,
