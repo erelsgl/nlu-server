@@ -1,3 +1,4 @@
+var partitions = require('limdu/utils/partitions');
 var cluster = require('cluster');
 var async = require('async')
 var _ = require('underscore')._;
@@ -20,11 +21,9 @@ console.vlog = function(data) {
     fs.appendFileSync(log_file, data + '\n', 'utf8')
 };
 
-// if (cluster.isWorker)
-	// console.vlog("DEBUG: worker "+ process.pid+": started")
-
+if (cluster.isWorker)
 process.on('message', function(message) {
-   	 console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
+   	 console.log('DEBUG: worker ' + process.pid + ' received message from master.')
 	
 	var test  = bars.processdatasettest(JSON.parse(message['test']))
 	var train = bars.processdatasettrain(JSON.parse(message['train']))
@@ -146,10 +145,12 @@ function learning_curves(classifiers, folds, dataset, callback)
 	var maxfolds = 0
 	var id_fold = {}
 
-	var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
+	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
+	var classifiers = [ 'Natural']
 	
 	cluster.setupMaster({
-  	exec: __dirname + '/worker_async_adv1_trans_compact.js',
+  	exec: __filename,
+  	//exec: __dirname + '/worker_async_adv1_trans_compact.js',
   	// exec: __dirname + '/worker.js',
 	// args: [JSON.stringify({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len})],
 	// silent: false
@@ -179,8 +180,8 @@ function learning_curves(classifiers, folds, dataset, callback)
 			
 				// worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
 				var worker = cluster.fork({'fold': fold+n*folds, 'classifier':classifier, 'thread': thr})
-				
-			//	console.vlog("DEBUGMASTER: classifier: "+classifier+" overall size: "+train1.length)
+				console.log("start worker")
+				//	console.vlog("DEBUGMASTER: classifier: "+classifier+" overall size: "+train1.length)
 				
 				var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
 		
@@ -238,13 +239,14 @@ function learning_curves(classifiers, folds, dataset, callback)
 	})
 }
 
-if (process.argv[1] === __filename)
+if (cluster.isMaster)
 {
-	
-	fs.writeFileSync(statusfile, "")
-	fs.writeFileSync(plotfile, "")
-	cleanFolder(__dirname + "/learning_curves")
-	cleanFolder("./logs")
+	console.log("start master")
+
+	//fs.writeFileSync(statusfile, "")
+	//fs.writeFileSync(plotfile, "")
+	lc.cleanFolder(__dirname + "/learning_curves")
+	lc.cleanFolder("./logs")
 	
 	var folds = 10
 
