@@ -125,8 +125,8 @@ if (cluster.isMaster)
 	// var maxfolds = 0
 	// var id_fold = {}
 
-	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
-	var classifiers = [ 'Natural']
+	var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
+	//var classifiers = [ 'Natural']
 	
 	cluster.setupMaster({
   	exec: __filename,
@@ -205,7 +205,7 @@ if (cluster.isMaster)
 					var workerstats = JSON.parse(message)
 					workerstats['classifiers'] = classifiers
 					console.vlog("DEBUGMASTER: on message: "+message)
-					fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
+					//fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
 					lc.extractGlobal(workerstats, stat)
 				})
 			})
