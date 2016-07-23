@@ -1,29 +1,27 @@
-var partitions = require('limdu/utils/partitions');
 var cluster = require('cluster');
 var async = require('async')
 var _ = require('underscore')._;
 var fs = require('fs');
-// var wikipedia = require(__dirname + '/../utils/wikipedia');
-var master = require('./master');
 var classifiers = require(__dirname+"/../classifiers.js")
+var partitions = require('limdu/utils/partitions');
 var trainAndTest = require(__dirname+'/../utils/trainAndTest');
 var bars = require(__dirname+'/../utils/bars');
 var lc = require(__dirname+'/lc');
 var util = require('util');
-
-var fold = process.env["fold"]
-// var folds = process.env["folds"]
-var classifier = process.env["classifier"]
-var thread = process.env["thread"]
-
 var log_file = "./logs/" + process.pid
+
 console.vlog = function(data) {
     fs.appendFileSync(log_file, data + '\n', 'utf8')
 };
 
 if (cluster.isWorker)
 process.on('message', function(message) {
-   	 console.log('DEBUG: worker ' + process.pid + ' received message from master.')
+	
+	var classifier = process.env["classifier"]
+	var fold = process.env["fold"]
+	// var thread = process.env["thread"]
+
+   	console.log('DEBUG: worker ' + process.pid + ' received message from master.')
 	
 	var test  = bars.processdatasettest(JSON.parse(message['test']))
 	var train = bars.processdatasettrain(JSON.parse(message['train']))
@@ -36,27 +34,20 @@ process.on('message', function(message) {
 		delete test[key]["input"]["sentences"]
 	}, this)
 
-	// console.vlog("INITIALDIST: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(train), null, 4))	
-
 	var max  = JSON.parse(message['max'])
 	var max = 70
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max + " classifier "+classifier)
-
 	var index = 0
 
 	async.whilst(
 	    function () { return index < max },
 	    function (callbackwhilst) {
 
-		
 		if (index<10)
-		{
-			index += 2
-		} else if (index<20)
-		{
-			index += 5
-		}
+		{ index += 2} 
+		else if (index<20)
+		{ index += 5 }
 		else index += 10
 
 
@@ -64,10 +55,7 @@ process.on('message', function(message) {
 	       	var mytrainex =  _.flatten(mytrain)
 			var mytestex  = _.flatten(test)
 
-			if (classifier == "Biased_no_rephrase_trans")
-				mytrainex = bars.gettrans(mytrainex, ".*")
-
-			if (classifier == "Natural_trans")
+			if (["Biased_no_rephrase_trans", "Natural_trans"].indexOf(classifier) != -1)
 				mytrainex = bars.gettrans(mytrainex, ".*")
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
@@ -75,75 +63,67 @@ process.on('message', function(message) {
 				" test_dialogue="+test.length +" test_turns="+mytestex.length+
 				" classifier="+classifier+ " fold="+fold)
 
-			var realmytrainex = []
-
-			var realmytrainex = bars.copyobj(mytrainex)
-	
+			var realmytrainex = bars.copyobj(mytrainex)	
 			console.vlog("DIST: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(realmytrainex), null, 4))
 
-			    if (index >= max)
-        		        {
-                        		if (classifier == "Undersampled")
-                       		         fs.appendFileSync("./logs/under", JSON.stringify(bars.returndist(realmytrainex), null, 4), 'utf8')
+			if (index >= max)
+        	    {
+               		if (classifier == "Undersampled")
+            	         fs.appendFileSync("./logs/under", JSON.stringify(bars.returndist(realmytrainex), null, 4), 'utf8')
 
-	                        console.vlog("FINALE")
-        		        }
+	        	    console.vlog("FINALE")
+        		}
 
+	    	trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
 
-		    	trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
+		    	console.vlog("DEBUG: worker "+process["pid"]+": traintime="+
+		    		stats['traintime']/1000 + " testtime="+ 
+		    		stats['testtime']/1000 + " classifier="+classifier + 
+		    		" Accuracy="+stats['stats']['Accuracy']+ " fold="+fold)
 
-		    		//var uniqueid = new Date().getTime()
+		    	console.vlog(JSON.stringify(stats['stats'], null, 4))
 
-			    	console.vlog("DEBUG: worker "+process["pid"]+": traintime="+
-			    		stats['traintime']/1000 + " testtime="+ 
-			    		stats['testtime']/1000 + " classifier="+classifier + 
-			    		" Accuracy="+stats['stats']['Accuracy']+ " fold="+fold)
-
-			    	console.vlog(JSON.stringify(stats['stats'], null, 4))
-
-			    	var stats1 = {}
-			    	_.each(stats['stats'], function(value, key, list){ 
-			    		if ((key.indexOf("Precision") != -1) || (key.indexOf("Recall") != -1 ) || (key.indexOf("F1") != -1) || (key.indexOf("Accuracy") != -1))
-			    			stats1[key] = value
-			    	}, this)
+		    	var stats1 = {}
+		    	_.each(stats['stats'], function(value, key, list){ 
+		    		if ((key.indexOf("Precision") != -1) || (key.indexOf("Recall") != -1 ) || (key.indexOf("F1") != -1) || (key.indexOf("Accuracy") != -1))
+		    			stats1[key] = value
+		    	}, this)
 
 				console.vlog("STATS: fold:"+fold+" trainsize:"+mytrain.length+" classifier:"+classifier+" "+JSON.stringify(stats1, null, 4))
 
-					var results = {
-						'classifier': classifier,
-						'fold': fold,
-						'trainsize': mytrain.length,
-						'trainsizeuttr': realmytrainex.length,
-						'stats': stats1
-						// 'uniqueid': stats['id']
-					}
+				var results = {
+					'classifier': classifier,
+					'fold': fold,
+					'trainsize': mytrain.length,
+					'trainsizeuttr': realmytrainex.length,
+					'stats': stats1
+					// 'uniqueid': stats['id']
+				}
 
-					process.send(JSON.stringify(results))
-			   		callbackwhilst()
-			   	})
-	    	},
+				process.send(JSON.stringify(results))
+		   		callbackwhilst()
+		   	})
+	    },
     	function (err) {
 			console.vlog("DEBUG: worker "+process["pid"]+": exiting")
 			process.exit()
 		})
-			  	
-	// fs.appendFileSync(statusfile, JSON.stringify(stat, null, 4))
-	// console.log(JSON.parse(cluster.worker.process.argv[3]))
-	// // console.log(cluster.worker.process.config)
-	// setTimeout(function() {
-	// process.send({ msg: 'test' })      
-	//     }, _.random(10)*1000);
-
 });
 
-
-// there is a worker for every classifier and every fold
-function learning_curves(classifiers, folds, dataset, callback)
+if (cluster.isMaster)
 {
+	console.log("start master")
+
+	//fs.writeFileSync(statusfile, "")
+	//fs.writeFileSync(plotfile, "")
+	lc.cleanFolder(__dirname + "/learning_curves")
+	lc.cleanFolder("./logs")
+	
+	var folds = 10
 	var stat = {}
-	var thr = 0
-	var maxfolds = 0
-	var id_fold = {}
+	// var thr = 0
+	// var maxfolds = 0
+	// var id_fold = {}
 
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	var classifiers = [ 'Natural']
@@ -179,7 +159,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 			_(folds).times(function(fold){
 			
 				// worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
-				var worker = cluster.fork({'fold': fold+n*folds, 'classifier':classifier, 'thread': thr})
+				var worker = cluster.fork({'fold': fold+n*folds, 'classifier':classifier, /*'thread': thr*/})
 				console.log("start worker")
 				//	console.vlog("DEBUGMASTER: classifier: "+classifier+" overall size: "+train1.length)
 				
@@ -213,7 +193,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 							'test': JSON.stringify(data.train),
 							'max': JSON.stringify(max)
 							})
-				thr += 1	
+				// thr += 1	
 
 				worker.on('disconnect', function(){
 				  	console.vlog("DEBUGMASTER: finished: number of clusters: " + Object.keys(cluster.workers).length)
@@ -237,21 +217,6 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 		console.vlog(JSON.stringify(stat, null, 4))
 	})
-}
 
-if (cluster.isMaster)
-{
-	console.log("start master")
-
-	//fs.writeFileSync(statusfile, "")
-	//fs.writeFileSync(plotfile, "")
-	lc.cleanFolder(__dirname + "/learning_curves")
-	lc.cleanFolder("./logs")
-	
-	var folds = 10
-
-	learning_curves([], folds, [], function(){
-		process.exit(0)
-	})	
 }
 
