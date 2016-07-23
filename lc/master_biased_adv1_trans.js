@@ -475,7 +475,7 @@ function learning_curves(classifiers, folds, dataset, callback)
 
 	async.timesSeries(10, function(n, next){
 
-		var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
+		var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_trans_new.json"))
 		console.vlog("number of unprocessed dialogues: "+data1.length)
 		var utterset1 = bars.getsetcontext(data1, false)
 		var train1 = utterset1["train"].concat(utterset1["test"])
