@@ -153,13 +153,14 @@ semlang = [
   // '{"Insist":"Job Description"}',
   
 
-  '{"Query":"Offer"}',
-  '{"Query":{"Offer":"Salary"}}',
-  '{"Query":{"Offer":"Job Description"}}',
-  '{"Query":{"Offer":"Leased Car"}}',
-  '{"Query":{"Offer":"Promotion Possibilities"}}',
-  '{"Query":{"Offer":"Working Hours"}}',
-  '{"Query":{"Offer":"Pension Fund"}}',
+  '{"Query":true}',
+  '{"Query":"true"}',
+  '{"Query":"Salary"}',
+  '{"Query":"Job Description"}',
+  '{"Query":"Leased Car"}',
+  '{"Query":"Promotion Possibilities"}',
+  '{"Query":"Working Hours"}',
+  '{"Query":"Pension Fund"}',
   
 
   // '{"Query":"accept"}',
@@ -2425,7 +2426,7 @@ function resolve_emptiness_rule(label)
   if (label[0].indexOf("Query")!=-1) 
   {
     label[2] = label[2].concat(label[1])
-    label[1].push("Offer")
+    // label[1].push("Offer")
   }
 
 if ((label[0].indexOf("Reject")!=-1) && (label[2].indexOf("Without leased car")!=-1))
@@ -4124,6 +4125,7 @@ function hashtoar(hash)
 
 function coverfilter(labels)
 {
+  labels = _.unique(labels)
   var b = _.map(labels, function(num){ return JSON.parse(num) });
 
   var lists = []
