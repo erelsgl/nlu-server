@@ -291,14 +291,11 @@ describe('Bars utilities', function() {
 		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Reject"], [], []])))
 		_.isEqual(labels, ["{\"Reject\":true}"]).should.equal(true)
 
-		var labels = bars.resolve_emptiness_rule([["Query"], [], ['Salary']])
-		labels[1][0].should.equal("Offer")
-
 		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Query"], ['Salary'], []])))
-		_.isEqual(labels,["{\"Query\":{\"Offer\":\"Salary\"}}"]).should.equal(true)
+		_.isEqual(labels,["{\"Query\":\"Salary\"}"]).should.equal(true)
 
 		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Query"], [], []])))
-		_.isEqual(labels,["{\"Query\":\"Offer\"}"])
+		_.isEqual(labels,["{\"Query\":true}"])
 
 		var labels = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([["Reject"], ["Leased Car"], ["Without leased car"]])))
 		_.isEqual(labels,["{\"Reject\":{\"Leased Car\":\"With leased car\"}}"])
