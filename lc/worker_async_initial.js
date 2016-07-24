@@ -50,7 +50,7 @@ if (cluster.isWorker)
 	      if (classifier == "Natural")
               		mytestex  = bars.processdataset(_.flatten(test), {"intents": true, "filter":false})
               else
-                        mytestex  = _.flatten(test)
+                    mytestex  = _.flatten(test)
 
 		console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 			" train_dialogue="+mytrain.length+" train_turns="+mytrainex.length+
@@ -75,13 +75,57 @@ if (cluster.isWorker)
    	 		},
   		  	function(callback){
         		if (classifier == "Component") {
-        		
+
+        			var mapping = []
+					var test_set = []
+
+					// prepare single sentence testSet in usualy format  
+					_.each(mytestex, function(turn, vkey, list){
+
+						mytestex[vkey]["actual"] = []
+
+						_.each(turn["input"]["sentences"], function(value, key, list){
+							var record = {"input":{"context":[]}}
+							var text = _.reduce(value["tokens"], function(memo, num){ return memo +" "+ num.word; }, "");
+							record["input"]["text"] = text
+							record["input"]["context"] = turn["input"]["context"]
+							record["input"]["sentences"] = {"tokens": value["tokens"]}
+							test_set.push(record)
+							mapping.push(vkey)
+						}, this)
+					}, this)
+
+					var test_set_copy = bars.copyobj(test_set)
+					var classif = new classifier.Natural
+					var classes = []
+					var currentStats = new PrecisionRecall()
+
+					classif.trainBatchAsync(realmytrainex, function(err, results){
+						classif.classifyBatchAsync(test_set_copy, 50, function(error, test_results){
+		
+							_.each(test_results, function(value, key, list){
+								var attrval = classifier.getRule(test_set[key]["input"]["sentences"]).labels
+								var cl = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([value.output, attrval[0], attrval[1]])))
+								mytestex[mapping[key]]["actual"].push(cl)
+							}, this)
+
+							_.each(mytestex, function(value, key, list){
+								var cla = _.flatten(value["actual"])
+								mytestex[key]["exp"] = currentStats.addCasesHash(value.output, cla, true)
+								currentStats.addIntentHash(value.output, cla, true)
+							}, this)
+
+							currentStats.calculateStats()
+
+							global_stats = {'stats': currentStats}
+		          			callback(null, null);
+						})
+					})
+
+			} else 
           			callback(null, null);
-			} else {
-          			callback(null, null);
-        		}
-   		 	}
-		], function () {
+      	
+		}], function () {
 
 			var stats1 = {}
 			_.each(global_stats['stats'], function(value, key, list){ 
@@ -121,7 +165,7 @@ if (cluster.isMaster)
 	var stat = {}
 
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
-	var classifiers = [ 'Natural' ]
+	var classifiers = [ "Natural", "Component" ]
 	
 	cluster.setupMaster({
   	exec: __filename,
@@ -165,7 +209,6 @@ if (cluster.isMaster)
 			})
 		}, this)
 		
-
 		_.each(stat, function(data, param, list){
 			lc.plotlc('average', param, stat)
 		})
