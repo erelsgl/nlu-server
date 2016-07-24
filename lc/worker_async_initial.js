@@ -3,6 +3,7 @@ var async = require('async')
 var _ = require('underscore')._;
 var fs = require('fs');
 var classifiers = require(__dirname+"/../classifiers.js")
+var PrecisionRecall = require('limdu/utils/PrecisionRecall');
 var partitions = require('limdu/utils/partitions');
 var trainAndTest = require(__dirname+'/../utils/trainAndTest');
 var bars = require(__dirname+'/../utils/bars');
@@ -44,13 +45,20 @@ if (cluster.isWorker)
 		else index += 10
 
 	    var mytrain = bars.copyobj(train.slice(0, index))
-	    var mytrainex =  bars.processdataset(_.flatten(mytrain), {"intents": true, "filter":true})
+	   // var mytrainex =  bars.processdataset(_.flatten(mytrain), {"intents": true, "filter":true})
 	    var mytestex  = []
+		var mytrainex = []
 
 	      if (classifier == "Natural")
-              		mytestex  = bars.processdataset(_.flatten(test), {"intents": true, "filter":false})
-              else
-                    mytestex  = _.flatten(test)
+		{
+	    		mytrainex =  bars.processdataset(_.flatten(mytrain), {"intents": false, "filter":false})
+              		mytestex  = bars.processdataset(_.flatten(test), {"intents": false, "filter":false})
+		}             
+ 		else
+		{                
+	    	  mytrainex =  bars.processdataset(_.flatten(mytrain), {"intents": true, "filter":false})
+		    mytestex  = _.flatten(test)
+		}
 
 		console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 			" train_dialogue="+mytrain.length+" train_turns="+mytrainex.length+
@@ -96,7 +104,7 @@ if (cluster.isWorker)
 					}, this)
 
 					var test_set_copy = bars.copyobj(test_set)
-					var classif = new classifier.Natural
+					var classif = new classifiers.Natural
 					var classes = []
 					var currentStats = new PrecisionRecall()
 
@@ -104,7 +112,7 @@ if (cluster.isWorker)
 						classif.classifyBatchAsync(test_set_copy, 50, function(error, test_results){
 		
 							_.each(test_results, function(value, key, list){
-								var attrval = classifier.getRule(test_set[key]["input"]["sentences"]).labels
+								var attrval = classifiers.getRule(test_set[key]["input"]["sentences"]).labels
 								var cl = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([value.output, attrval[0], attrval[1]])))
 								mytestex[mapping[key]]["actual"].push(cl)
 							}, this)
