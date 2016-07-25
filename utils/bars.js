@@ -3924,6 +3924,9 @@ function processdataset(dataset, options)
   if (options.filter)
     output = _.filter(output, function(num){ return num["output"].length <= 1; });
 
+  if (options.filter_Quit_Greet)
+    output = _.filter(output, function(num){ return ( num["output"].indexOf("Greet") == -1 && num["output"].indexOf("Quit") == -1) });
+  
   console.vlog("processdataset: end: "+ output.length)
 
   return output
