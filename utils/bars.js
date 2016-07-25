@@ -5587,9 +5587,17 @@ function convertObject(label)
   var attr = ""
   var value = ""
   var obj = {}
+  var param = ""
 
+  if (label.indexOf("_")!=-1)
+  {
+    obj = label.split("_")[0]
+    param = label.split("_")[1]
+  }
+  else
+    return label
 
-  try { 
+  try {
     obj = JSON.parse(label)
     }
     catch (e)
@@ -5609,11 +5617,11 @@ function convertObject(label)
     else
     attr = obj[intent]
 
-    return intent.replace(/ /g,"-") + "-" + attr.replace(/ /g,"-") + "-" + value
+    return intent.replace(/ /g,"-") + "-" + attr.replace(/ /g,"-") + "-" + value+"_"+param
     
   }
   else
-    return label
+    return label+"_"+param
 }
 
 module.exports = {
