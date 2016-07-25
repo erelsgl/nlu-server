@@ -3821,7 +3821,7 @@ function cleanoutput(dataset)
 // convert output
 //
 // in short in takes the role of post_processing
-function processdatasettrain(dataset)
+/*function processdatasettrain(dataset)
 {
 console.vlog("processdatasettrain: initial: "+ dataset.length)
 
@@ -3848,8 +3848,8 @@ console.vlog("processdatasettrain: initial: "+ dataset.length)
 console.vlog("processdatasettrain: end: "+ dataset.length)
 	return dataset
 }
-
-function processdatasettest(dataset)
+*/
+/*function processdatasettest(dataset)
 {
 var outputset = []
 
@@ -3886,7 +3886,7 @@ var outputset = []
 
   return outputset
 }
-
+*/
 
 // options:
 // - intents - only intents as a output
@@ -3995,6 +3995,8 @@ function getsetcontext(dataset, rephrase)
   return utteranceset
 }
 
+// implements the idea that rephrases we get for free
+// annotate rephrases as a source utterance
 function getsetcontextadv(dataset)
 {
   var rectypes = ['AskRepeat', 'AskRephrase' ,'Reprompt' ,'Notify', 'Yield', 'Help', 'YouCanSay', 'TerseYouCanSay']
@@ -5578,6 +5580,41 @@ function parseoutput(outputhash)
   return  output
 }
 
+function convertObject(label)
+{  
+
+  var intent = ""
+  var attr = ""
+  var value = ""
+  var obj = {}
+
+
+  try { 
+    obj = JSON.parse(label)
+    }
+    catch (e)
+    { 
+    return label
+    }
+ 
+  if (_.isObject(obj))
+  {
+    intent = _.keys(obj)[0]
+
+    if (_.isObject(obj[intent]))
+    {
+      attr = _.keys(obj[intent])[0]
+      value = obj[intent][attr].replace(/ /g,"-")
+    }
+    else
+    attr = obj[intent]
+
+    return intent.replace(/ /g,"-") + "-" + attr.replace(/ /g,"-") + "-" + value
+    
+  }
+  else
+    return label
+}
 
 module.exports = {
   parseoutput:parseoutput,
@@ -5700,8 +5737,8 @@ getExm:getExm,
 mean_variance:mean_variance,
 turnoutput:turnoutput,
 processdataset:processdataset,
-processdatasettrain:processdatasettrain,
-processdatasettest:processdatasettest,
+// processdatasettrain:processdatasettrain,
+// processdatasettest:processdatasettest,
 cleanFolder:cleanFolder,
 expanbal:expanbal,
 censor: censor,
@@ -5715,5 +5752,6 @@ bleu:bleu,
 returndist:returndist,
 getsetcontextadv:getsetcontextadv,
 cleanoutput:cleanoutput,
-bleu_nist:bleu_nist
+bleu_nist:bleu_nist,
+convertObject:convertObject
 }
