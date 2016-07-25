@@ -5589,7 +5589,9 @@ function convertObject(label)
   var obj = {}
   var param = ""
 
-  if (label.indexOf("_")!=-1)
+	console.vlog("convertObject:"+label)	
+  
+if (label.indexOf("_")!=-1)
   {
     obj = label.split("_")[0]
     param = label.split("_")[1]
@@ -5597,13 +5599,20 @@ function convertObject(label)
   else
     return label
 
+
+	console.vlog("convertObject: obj: "+obj)	
+	console.vlog("convertObject: param: "+param)	
+	
+
   try {
-    obj = JSON.parse(label)
+    obj = JSON.parse(obj)
     }
     catch (e)
     { 
     return label
     }
+	
+console.vlog("convertObject: obj: "+obj)	
  
   if (_.isObject(obj))
   {
@@ -5616,6 +5625,10 @@ function convertObject(label)
     }
     else
     attr = obj[intent]
+
+
+// workaround for true
+	attr = JSON.stringify(attr)
 
     return intent.replace(/ /g,"-") + "-" + attr.replace(/ /g,"-") + "-" + value+"_"+param
     
