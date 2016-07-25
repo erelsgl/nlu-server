@@ -3,6 +3,7 @@ var async = require('async')
 var _ = require('underscore')._;
 var fs = require('fs');
 var master = require('./master');
+var partitions = require('limdu/utils/partitions');
 var classifiers = require(__dirname+"/../classifiers.js")
 var trainAndTest = require(__dirname+'/../utils/trainAndTest');
 var bars = require(__dirname+'/../utils/bars');
@@ -13,7 +14,7 @@ var fold = process.env["fold"]
 var classifier = process.env["classifier"]
 var thread = process.env["thread"]
 
-var log_file = "/tmp/logs/" + process.pid
+var log_file = "./logs/" + process.pid
 
 console.vlog = function(data) { fs.appendFileSync(log_file, data + '\n', 'utf8') };
 console.mlog = function(data) { fs.appendFileSync("./logs/master", data + '\n', 'utf8') };
@@ -170,13 +171,11 @@ if (cluster.isMaster)
 {
 	var stat = {}
 
-	fs.writeFileSync(statusfile, "")
-	fs.writeFileSync(plotfile, "")
 	bars.cleanFolder(__dirname + "/learning_curves")
-    bars.cleanFolder("/tmp/logs")
+	bars.cleanFolder("./logs")
 
 	var folds = 20
-	var classifiers = [ 'NLU_Baseline', 'NLU_Tran_Finish' ]
+	var classifiers = [ 'Natural', 'NLU_Tran_Finish' ]
 
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
  	var utterset1 = bars.getsetcontext(data1, true)
