@@ -49,6 +49,9 @@ var check_intent_issue_dst = false
 // check rephrase strategies
 var check_version4 = false
 
+var composite_ds = false
+
+var finalization = false
 
 // simlple naive multi label classification with train/test split
 var simple_naive_test_train = false
@@ -557,17 +560,6 @@ if (make_tr_seeds)
 	process.exit(0)	
 }
 
-
-if (check_context)
-{
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7.json"))
-	var utterset = bars.getsetcontext(data)
-	var dataset = utterset["train"].concat(utterset["test"])
-	console.log(JSON.stringify(dataset, null, 4))
-	process.exit(0)
-}
-
-
 if (check_word)
 {
 	var wordembs = {}
@@ -720,15 +712,6 @@ if (check_intent_issue_dst)
 	process.exit(0)
 }
 
-if (getsetcontextadv)
-{	
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_neww.json"))
-	var utterset = bars.getsetcontextadv(data)
-
-	console.log(JSON.stringify(utterset, null, 4))
-	process.exit(0)
-}
-
 if (check_single_multi)
 {
 
@@ -864,6 +847,7 @@ if (check_coverage)
     process.exit(0)
 }
 
+// kind of intent issue distribution
 if (check_intent_issue)
 {
 	var intents = {}
@@ -902,10 +886,9 @@ if (check_intent_issue)
 
 	console.log(JSON.stringify(intents, null, 4))
 	process.exit(0)
-
-
 }
 
+// single vs multi intent utterances
 if (check_ration_all)
 {
 	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
@@ -1774,6 +1757,37 @@ if (simple_naive_intent_test_train_intents)
 	}, this)	
 }
 
+// add trans to finalized parsed
+/*if (finalization)
+{
+
+	var trans = {}
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_trans_new.json"))
+	
+	_.each(data, function(dialogue, key, list){
+		_.each(dialogue["turns"], function(turn, key, list){
+			if (turn.role == "Employer")
+			{
+				if (!("trans" in turn["input"]))
+					throw new Error("error")
+				trans[turn.translation_id] = turn["input"]["trans"]
+			}
+		}, this)
+	}, this)
+
+
+	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
+	_.each(data1, function(dialogue, key, list){
+		_.each(dialogue["turns"], function(turn, key, list){
+			if (turn.translation_id in trans)
+				turn["input"]["trans"] = trans[turn.translation_id]
+		}, this)
+	}, this)
+
+	console.log(JSON.stringify(data1, null, 4))
+}
+*/
+
 // turns all Queries to consistent 
 if (consistent_query)
 {
@@ -1847,6 +1861,71 @@ if (check_regexp)
     console.log(JSON.stringify(stats, null, 4))
     process.exit(0)
 }
+
+if (composite_ds)
+{
+    bars.cleanFolder("/tmp/logs")
+
+	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
+    var utterset = bars.getsetcontext(data1, /*rephrase*/true)
+
+	utterset["train"] = bars.processdataset(_.flatten(utterset["train"]), {"intents": true, "filter":true})
+	utterset["test"] = _.flatten(utterset["test"])
+	
+	var mapping = []
+	var test_set = []
+
+	// prepare single sentence testSet in usualy format  
+	_.each(utterset["test"], function(turn, vkey, list){
+
+		utterset["test"][vkey]["actual"] = []
+
+		_.each(turn["input"]["sentences"], function(value, key, list){
+
+			var record = {"input":{"context":[]}}
+			var text = _.reduce(value["tokens"], function(memo, num){ return memo +" "+ num.word; }, "");
+			
+			record["input"]["text"] = text
+			record["input"]["context"] = turn["input"]["context"]
+			record["input"]["sentences"] = {"tokens": value["tokens"]}
+			// mapping[text] = vkey
+
+			test_set.push(record)
+			mapping.push(vkey)
+
+		}, this)
+
+	}, this)
+
+	var test_set_copy = bars.copyobj(test_set)
+	var classif = new classifier.Natural
+	var classes = []
+	var currentStats = new PrecisionRecall()
+
+	classif.trainBatchAsync(utterset["train"], function(err, results){
+		classif.classifyBatchAsync(test_set_copy, 50, function(error, test_results){
+		
+			_.each(test_results, function(value, key, list){
+				var attrval = classifier.getRule(test_set[key]["input"]["sentences"]).labels
+				var cl = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([value.output, attrval[0], attrval[1]])))
+				utterset["test"][mapping[key]]["actual"].push(cl)
+			}, this)
+
+			_.each(utterset["test"], function(value, key, list){
+				var cla = _.flatten(value["actual"])
+				utterset["test"][key]["exp"] = currentStats.addCasesHash(value.output, cla, true)
+				currentStats.addIntentHash(value.output, cla, true)
+			}, this)
+
+			currentStats.calculateStats()
+			console.log(JSON.stringify(utterset["test"], null, 4))
+			console.log(currentStats, null, 4)
+			process.exit(0)
+			
+		})
+	})
+}
+
 
 if (check_ds)
 {
@@ -1968,20 +2047,22 @@ if (check_ds)
 	//utterset["train"] = bars.processdataset(_.flatten(utterset["train"]), 'test')
 //	utterset["train"] = bars.processdataset(_.flatten(utterset["train"]), 'test')
 	
-	utterset["train"] = bars.processdatasettrain(_.flatten(utterset["train"]))
-	utterset["test"] = bars.processdatasettest(_.flatten(utterset["test"]))
+	// utterset["train"] = bars.processdatasettrain(_.flatten(utterset["train"]))
+	// utterset["test"] = bars.processdatasettest(_.flatten(utterset["test"]))
+
+	utterset["train"] = _.flatten(utterset["train"])
+	utterset["test"] = _.flatten(utterset["test"])
 
 	console.log("train.length="+utterset["train"].length)
 	console.log("test.length="+utterset["test"].length)
 
+	// _.each(utterset["train"], function(turn, key, list){
+		// delete utterset["train"][key]["input"]["sentences"]
+	// }, this)
 
-	_.each(utterset["train"], function(turn, key, list){
-		delete utterset["train"][key]["input"]["sentences"]
-	}, this)
-
-	_.each(utterset["test"], function(turn, key, list){
-		delete utterset["test"][key]["input"]["sentences"]
-	}, this)
+	// _.each(utterset["test"], function(turn, key, list){
+		// delete utterset["test"][key]["input"]["sentences"]
+	// }, this)
 
 	
 //	utterset["train"] = _.filter(utterset["train"], function(num){ return _.keys(num.outputhash).length <= 1 })
@@ -1989,7 +2070,7 @@ if (check_ds)
 //NLU_Unbiased_Bin:
 //NLU_Baseline
 
-	trainAndTest.trainAndTest_async(classifier.NLU_Baseline, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	trainAndTest.trainAndTest_async(classifier.DS_Component_wise, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		console.log(JSON.stringify(results, null, 4))
 		process.exit(0)
 	}, this)
