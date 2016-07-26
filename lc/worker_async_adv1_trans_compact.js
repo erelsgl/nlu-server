@@ -8,11 +8,9 @@ var trainAndTest = require(__dirname+'/../utils/trainAndTest');
 var bars = require(__dirname+'/../utils/bars');
 var lc = require(__dirname+'/lc');
 var util = require('util');
-var log_file = "./logs/" + process.pid
 
-console.vlog = function(data) {
-    fs.appendFileSync(log_file, data + '\n', 'utf8')
-};
+console.vlog = function(data) { fs.appendFileSync( "./logs/" + process.pid, data + '\n', 'utf8') };
+console.mlog = function(data) { fs.appendFileSync("./logs/master", data + '\n', 'utf8') };
 
 if (cluster.isWorker)
 process.on('message', function(message) {
@@ -21,20 +19,15 @@ process.on('message', function(message) {
 	var fold = process.env["fold"]
 	// var thread = process.env["thread"]
 
-   	console.log('DEBUG: worker ' + process.pid + ' received message from master.')
+   	console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
-	var test  = bars.processdatasettest(JSON.parse(message['test']))
-	var train = bars.processdatasettrain(JSON.parse(message['train']))
+	var test  = bars.processdataset(_.flatten(JSON.parse(message['test'])), {"intents":true, "filter": false, "filter_Quit_Greet":true})
+	var train = bars.processdataset(_.flatten(JSON.parse(message['train'])), {"intents":true, "filter": true, "filter_Quit_Greet":true})
 
-	_.each(train, function(turn, key, list){
-		delete train[key]["input"]["sentences"]
-	}, this)
+	_.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"] }, this)
+	_.each(test, function(turn, key, list){ delete test[key]["input"]["sentences"] }, this)
 
-	_.each(test, function(turn, key, list){
-		delete test[key]["input"]["sentences"]
-	}, this)
-
-	var max  = JSON.parse(message['max'])
+//	var max  = JSON.parse(message['max'])
 	var max = 70
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max + " classifier "+classifier)
@@ -50,13 +43,15 @@ process.on('message', function(message) {
 		{ index += 5 }
 		else index += 10
 
-
 	       	var mytrain = bars.copyobj(train.slice(0, index))
-	       	var mytrainex =  _.flatten(mytrain)
-			var mytestex  = _.flatten(test)
+	       	var mytrainex =  bars.copyobj(mytrain)
+		var mytestex  = bars.copyobj(test)
 
 			if (["Biased_no_rephrase_trans", "Natural_trans"].indexOf(classifier) != -1)
+				{
+				console.vlog("Enalbe trans")
 				mytrainex = bars.gettrans(mytrainex, ".*")
+				}
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+mytrainex.length+
@@ -65,7 +60,7 @@ process.on('message', function(message) {
 
 			var realmytrainex = bars.copyobj(mytrainex)	
 			console.vlog("DIST: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(realmytrainex), null, 4))
-
+/*
 			if (index >= max)
         	    {
                		if (classifier == "Undersampled")
@@ -73,7 +68,7 @@ process.on('message', function(message) {
 
 	        	    console.vlog("FINALE")
         		}
-
+*/
 	    	trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
 
 		    	console.vlog("DEBUG: worker "+process["pid"]+": traintime="+
@@ -95,7 +90,7 @@ process.on('message', function(message) {
 					'classifier': classifier,
 					'fold': fold,
 					'trainsize': mytrain.length,
-					'trainsizeuttr': realmytrainex.length,
+					'trainsizeuttr': mytrain.length,
 					'stats': stats1
 					// 'uniqueid': stats['id']
 				}
@@ -112,25 +107,17 @@ process.on('message', function(message) {
 
 if (cluster.isMaster)
 {
-	console.log("start master")
-
-	//fs.writeFileSync(statusfile, "")
-	//fs.writeFileSync(plotfile, "")
 	lc.cleanFolder(__dirname + "/learning_curves")
 	lc.cleanFolder("./logs")
 	
 	var folds = 10
 	var stat = {}
-	// var thr = 0
-	// var maxfolds = 0
-	// var id_fold = {}
 
-	var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
-	//var classifiers = [ 'Natural']
+	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
+	var classifiers = [ 'Natural','Natural_trans']
 	
 	cluster.setupMaster({
   	exec: __filename,
-  	//exec: __dirname + '/worker_async_adv1_trans_compact.js',
   	// exec: __dirname + '/worker.js',
 	// args: [JSON.stringify({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len})],
 	// silent: false
@@ -138,11 +125,11 @@ if (cluster.isMaster)
 
 	async.timesSeries(10, function(n, next){
 
-		var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed.json"))
-		console.vlog("number of unprocessed dialogues: "+data1.length)
+		var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json"))
+		console.mlog("number of unprocessed dialogues: "+data1.length)
 		var utterset1 = bars.getsetcontext(data1, false)
 		var train1 = utterset1["train"].concat(utterset1["test"])
-		console.vlog("number of the dialogues: "+train1.length)
+		console.mlog("number of the dialogues: "+train1.length)
 
 //		train1 = bars.processdataset(train1)
 
@@ -150,53 +137,41 @@ if (cluster.isMaster)
 		var utterset2 = bars.getsetcontextadv(data2)
 		var train2 = utterset2["train"].concat(utterset2["test"])
 		
-		console.vlog("number of the dialogues2: "+train2.length)
-		// only intents
-//		train2 = bars.processdataset(train2)
-		// console.vlog("DEBUG: train2.length "+train2.length)
+		console.mlog("number of the dialogues2: "+train2.length)
 
 		_.each(classifiers, function(classifier, key, list){ 
 			_(folds).times(function(fold){
 			
-				// worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
 				var worker = cluster.fork({'fold': fold+n*folds, 'classifier':classifier, /*'thread': thr*/})
-				console.log("start worker")
-				//	console.vlog("DEBUGMASTER: classifier: "+classifier+" overall size: "+train1.length)
-				
 				var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
 		
-				console.vlog("DEBUGMASTER: classifier: "+classifier+" fold: "+ (fold+n*folds) + " train size "+data.train.length + " test size " + data.test.length+" process: "+worker.process.id)
+				console.mlog("DEBUGMASTER: classifier: "+classifier+" fold: "+ (fold+n*folds) + 
+					     " train size "+data.train.length + " test size " + data.test.length+
+                                             " process: "+worker.process.id)
 
-				var train2sam = _.flatten(_.sample(bars.copyobj(train2), 10))
+				var train2sam = _.sample(bars.copyobj(train2), 10)
 
 				var train = []
 
 				if (["Biased_with_rephrase", "Biased_no_rephrase", "Biased_no_rephrase_trans", "Biased_no_rephrase_no_con_trans", "Biased_no_rephrase_no_con"].indexOf(classifier)!=-1)
-				// if (classifier == "Biased_with_rephrase")
 					train = bars.copyobj(train2sam)
-				// else if (classifier == "Biased_no_rephrase")
-					// train = train3sam
 				else
-					train = _.flatten(bars.copyobj(data.test))
+					train = bars.copyobj(data.test)
 
 				var max = _.min([_.flatten(data.test).length, _.flatten(train2sam).length])
 				// var max = _.min([_.flatten(data.test).length, _.flatten(train2sam).length])
 				max = max - max % 10			
 				
-				console.vlog("DEBUGMASTER: train1.len="+_.flatten(data.test).length+ " train2.len="+ _.flatten(train2sam).length + " max="+max)
-				console.vlog("DEBUGMASTER: class="+classifier+ " fold="+ fold + " train1.len="+train.length + " test.len=" + data.train.length + " max: "+max)
-				
-				data.train = _.flatten(data.train)
-
+				console.mlog("DEBUGMASTER: train1.len="+_.flatten(data.test).length+ " train2.len="+ _.flatten(train2sam).length + " max="+max)
+				console.mlog("DEBUGMASTER: class="+classifier+ " fold="+ fold + " train1.len="+train.length + " test.len=" + data.train.length + " max: "+max)
 				worker.send({ 		
-							'train': JSON.stringify(train), 
-							'test': JSON.stringify(data.train),
-							'max': JSON.stringify(max)
-							})
-				// thr += 1	
+						'train': JSON.stringify(_.flatten(train)), 
+						'test': JSON.stringify(_.flatten(data.train)),
+						'max': JSON.stringify(max)
+						})
 
 				worker.on('disconnect', function(){
-				  	console.vlog("DEBUGMASTER: finished: number of clusters: " + Object.keys(cluster.workers).length)
+				  	console.mlog("DEBUGMASTER: finished: number of clusters: " + Object.keys(cluster.workers).length)
 				  	if (Object.keys(cluster.workers).length == 1)
 					next()
 				})
@@ -204,7 +179,7 @@ if (cluster.isMaster)
 				worker.on('message', function(message){
 					var workerstats = JSON.parse(message)
 					workerstats['classifiers'] = classifiers
-					console.vlog("DEBUGMASTER: on message: "+message)
+					console.mlog("DEBUGMASTER: on message: "+message)
 					//fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
 					lc.extractGlobal(workerstats, stat)
 				})
@@ -215,7 +190,7 @@ if (cluster.isMaster)
 			lc.plotlc('average', param, stat)
 		})
 
-		console.vlog(JSON.stringify(stat, null, 4))
+		console.mlog(JSON.stringify(stat, null, 4))
 	})
 
 }

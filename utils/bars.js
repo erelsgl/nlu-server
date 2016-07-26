@@ -4438,7 +4438,7 @@ function gettrans(turns, pat)
           output.push({
             'input': {
                       'text': tran,
-			                'context': turn.input.context
+	              'context': turn.input.context
                     },
             'output': JSON.parse(JSON.stringify(turn.output))
           //  'context': JSON.parse(JSON.stringify(turn.context)),
@@ -4456,6 +4456,7 @@ function gettrans(turns, pat)
 
   }, this)
 
+  console.vlog("gettrans: output: " + JSON.stringify(output, null, 4))
   console.vlog("gettrans: output.length: " + output.length)
 
   return output

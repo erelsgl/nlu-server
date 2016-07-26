@@ -28,15 +28,14 @@ if (cluster.isWorker)
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
 
-	var train =  bars.processdatasettrain(_.flatten(train))
-    var test  = bars.processdatasettest(_.flatten(test))
+	var train =  bars.processdataset(_.flatten(train), {"intents": true, "filter_Quit_Greet":true, "filter":true})
+        var test  = bars.processdataset(_.flatten(test), {"intents": true, "filter_Quit_Greet":true, "filter":false})
 
-    _.each(train, function(turn, key, list){
-		delete train[key]["input"]["sentences"]
-	}, this)
+        _.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"]}, this)
 
 	_.each(test, function(turn, key, list){
 		delete test[key]["input"]["sentences"]
+		delete test[key]["input"]["trans"]
 	}, this)
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
@@ -61,7 +60,7 @@ if (cluster.isWorker)
     		var mytestex = JSON.parse(JSON.stringify(test))
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
-				" train_dialogue="+mytrain.length+" train_turns="+mytrainex.length+
+				" train_dialogue="+mytrain.length+" train_turns="+_.flatten(mytrainex).length+
 				" test_dialogue="+test.length +" test_turns="+mytestex.length+
 				" classifier="+classifier+ " fold="+fold)
 			
@@ -99,13 +98,13 @@ if (cluster.isWorker)
     				case "NLU_Tran_Finish": 
 
 
-    				// callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); 
-    				_.each(mytrainex, function(turn, key, list){
-    					mytrainex[key]["input"]["trans"] = {}
-    				}, this)
-
-					mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
-    					callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); 
+    				callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); 
+    				//_.each(mytrainex, function(turn, key, list){
+    				//	mytrainex[key]["input"]["trans"] = {}
+    				//}, this)
+//
+//					mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
+  //  					callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); 
 					
 
     				break;
@@ -114,19 +113,19 @@ if (cluster.isWorker)
     				case "NLU_Tran_Yandex_Microsoft_Finish": callbacks(null, bars.gettrans(mytrainex, "Y:fi:M"), mytestex, mytrainex.length); break;	
     				case "NLU_Tran_All": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;	
     				
-					case "NLU_Bal": callbacks(null, bars.gettransdist(mytrainex), mytestex, mytrainex.length); break;
+				case "NLU_Bal": callbacks(null, bars.gettransdist(mytrainex), mytestex, mytrainex.length); break;
     				case "NLU_Oversample": callbacks(null, bars.oversample(mytrainex), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Oversample": callbacks(null, bars.tranoversam(mytrainex), mytestex, mytrainex.length); break;
 
     				default:
-						mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
+						//mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
         				callbacks(null, mytrainex, mytestex, mytrainex.length)
         		}
 
     		},
     		function(mytrainex, mytestex, trainsize, callback) {
     	
-			console.vlog("DEBUG: worker SIZES: mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length)
+			console.vlog("DEBUG: worker SIZES: mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
 
     			trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
 
@@ -207,8 +206,8 @@ if (cluster.isMaster)
 		     		})
 			
 			worker.on('disconnect', function(){
-			  	console.mlog("DEBUGMASTER: finished: workers.length: "+Object.keys(cluster.workers).length + " disc: "+disc)
-				disc += 1
+			  	console.mlog("DEBUGMASTER: finished: workers.length: "+Object.keys(cluster.workers).length )
+				//disc += 1
 			  	//if (Object.keys(cluster.workers).length == 1)
 			  	{
 			  		_.each(stat, function(data, param, list){
