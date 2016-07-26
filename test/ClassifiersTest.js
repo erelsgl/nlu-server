@@ -139,21 +139,17 @@ describe('Classifiers functions', function() {
 
   it('getRule', function() {  
 
+    var data = {'tokens':[{'word':'no','lemma':'no','pos':'A'},{'lemma':'agreement','word':'agreement','pos':'A'},{'lemma':'pension','word':'pension','pos':'A'}]} 
+	  var results = classifiers.getRule(data)
 
     var data = {'tokens':[{'word':'60,000','lemma':'60,000','pos':'A'},{'lemma':'USD','word':'USD','pos':'A'},
                           {'lemma':'salary','word':'salary','pos':'A'}]}
-
     var results = classifiers.getRule(data)
-    console.log(results)
-    process.exit(0)
-
 
     var data = {'tokens':[{'word':'10','lemma':'10','pos':'A'},{'lemma':'%','word':'%','pos':'A'},
                           {'lemma':'is','word':'is','pos':'A'},{'word':'accepted','lemma':'accepted','pos':'A'}]}
-
     var results = classifiers.getRule(data)
     results['cleaned']['tokens'].length.should.equal(2)
-
             
     var data = {'tokens':[{'word':'with','lemma':'with','pos':'A'},{'lemma':'no','word':'no','pos':'A'},
                           {'lemma':'agreement','word':'agreement','pos':'A'},{'word':'the','lemma':'the','pos':'A'},
