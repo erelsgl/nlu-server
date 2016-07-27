@@ -14,16 +14,13 @@ var fold = process.env["fold"]
 var classifier = process.env["classifier"]
 var thread = process.env["thread"]
 
-var log_file = "./logs/" + process.pid
-
-console.vlog = function(data) { fs.appendFileSync(log_file, data + '\n', 'utf8') };
+console.vlog = function(data) { fs.appendFileSync("./logs/" + process.pid, data + '\n', 'utf8') };
 console.mlog = function(data) { fs.appendFileSync("./logs/master", data + '\n', 'utf8') };
 
 if (cluster.isWorker)
 	process.on('message', function(message) {
 
-    console.vlog("DEBUG: worker "+ process.pid+": started")
-    console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
+    	console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
@@ -54,17 +51,16 @@ if (cluster.isWorker)
 			if (index < 11) index +=1
 			else index += 5
 	
-    		var mytrain = train.slice(0, index)
+    			var mytrain = train.slice(0, index)
 
 			var mytrainex = JSON.parse(JSON.stringify(mytrain))
-    		var mytestex = JSON.parse(JSON.stringify(test))
+    			var mytestex = JSON.parse(JSON.stringify(test))
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+_.flatten(mytrainex).length+
 				" test_dialogue="+test.length +" test_turns="+mytestex.length+
 				" classifier="+classifier+ " fold="+fold)
 			
-
 				switch(classifier) {
     				case "NLU_Tran_Google": callbacks(null, bars.gettrans(mytrainex, "G:.*:G"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
@@ -95,10 +91,11 @@ if (cluster.isWorker)
     				case "NLU_Tran_Russian": callbacks(null, bars.gettrans(mytrainex, ".*:ru:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Chinese": callbacks(null, bars.gettrans(mytrainex, ".*:zh:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Urdu": callbacks(null, bars.gettrans(mytrainex, ".*:ur:.*"), mytestex, mytrainex.length); break;
-    				case "NLU_Tran_Finish": 
+//    				case "NLU_Tran_Finish": 
+				case "Natural_trans": 
 
-
-    				callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); 
+				console.vlog("NLU_trans")
+    				callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); 
     				//_.each(mytrainex, function(turn, key, list){
     				//	mytrainex[key]["input"]["trans"] = {}
     				//}, this)
@@ -127,7 +124,8 @@ if (cluster.isWorker)
     	
 			console.vlog("DEBUG: worker SIZES: mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
 
-    			trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
+    			//trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
+    			trainAndTest.trainAndTest_async(classifiers.Natural, bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
 
 				console.vlog("DEBUG: worker "+process["pid"]+": traintime="+
 					stats['traintime']/1000 + " testtime="+ 
@@ -159,7 +157,7 @@ if (cluster.isWorker)
    
 		})},
     function (err) {
-			console.log("DEBUG: worker "+process["pid"]+": exiting")
+			console.vlog("DEBUG: worker "+process["pid"]+": exiting")
 			process.exit()
 		})
 	});
@@ -174,10 +172,11 @@ if (cluster.isMaster)
 	bars.cleanFolder("./logs")
 
 	var folds = 20
-	var classifiers = [ 'Natural', 'NLU_Tran_Finish' ]
+	var classifiers = [ 'Natural', "NLU_Tran_Google", "NLU_Tran_Microsoft", "NLU_Tran_Yandex" ]
+
 
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
- 	var utterset1 = bars.getsetcontext(data1, true)
+ 	var utterset1 = bars.getsetcontext(data1, false)
 	var train1 = utterset1["train"].concat(utterset1["test"])
 
 	cluster.setupMaster({
@@ -186,7 +185,7 @@ if (cluster.isMaster)
 	// silent: false
 	});
 	
-	console.mlog("DEBUGMASTER")
+	console.mlog("DEBUGMASTER: loaded: "+train1.length)
 
 	_.each(classifiers, function(classifier, key, list){ 
 		_(folds).times(function(fold){
@@ -197,7 +196,6 @@ if (cluster.isMaster)
 			var data = partitions.partitions_consistent_by_fold(train1, folds, fold)
 
 			console.mlog("DEBUGMASTER: class: "+classifier+" fold:"+ fold + " train size:"+data.train.length + " test size:" + data.test.length)
-			//console.vlog(JSON.stringify(worker, bars.censor(worker), 4))
 			console.mlog("DEBUGMASTER: process.pid:"+worker.process.pid)
 
 			worker.send({ 		
