@@ -82,7 +82,7 @@ if (cluster.isWorker)
     				case "NLU_Tran_Yandex_Microsoft_Russian": callbacks(null, bars.gettrans(mytrainex, "Y:ru:M"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Yandex_Microsoft_Chinese": callbacks(null, bars.gettrans(mytrainex, "Y:zh:M"), mytestex, mytrainex.length); break;
     				
-				case "NLU_Tran_French": callbacks(null, bars.gettrans(mytrainex, ".*:fr:.*"), mytestex, mytrainex.length); break;
+					case "NLU_Tran_French": callbacks(null, bars.gettrans(mytrainex, ".*:fr:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_German": callbacks(null, bars.gettrans(mytrainex, ".*:de:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Spanish": callbacks(null, bars.gettrans(mytrainex, ".*:es:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Portuguese": callbacks(null, bars.gettrans(mytrainex, ".*:pt:.*"), mytestex, mytrainex.length); break;
@@ -92,9 +92,9 @@ if (cluster.isWorker)
     				case "NLU_Tran_Chinese": callbacks(null, bars.gettrans(mytrainex, ".*:zh:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Urdu": callbacks(null, bars.gettrans(mytrainex, ".*:ur:.*"), mytestex, mytrainex.length); break;
 //    				case "NLU_Tran_Finish": 
-				case "Natural_trans": 
+					case "Natural_trans": 
 
-				console.vlog("NLU_trans")
+					console.vlog("NLU_trans")
     				callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); 
     				//_.each(mytrainex, function(turn, key, list){
     				//	mytrainex[key]["input"]["trans"] = {}
@@ -132,22 +132,16 @@ if (cluster.isWorker)
 					stats['testtime']/1000 + " classifier="+classifier + 
 					" Accuracy="+stats['stats']['Accuracy']+ " fold="+fold)
 
-				var stats1 = {}
-				_.each(stats['stats'], function(value, key, list){ 
-				   		if ((key.indexOf("Precision") != -1) || (key.indexOf("Recall") != -1 ) || (key.indexOf("F1") != -1) || (key.indexOf("Accuracy") != -1))
-				   			stats1[key] = value
-				}, this)
-
-				console.vlog("STATS: data.length: "+stats["data"].length+" fold:"+fold+" trainsize:"+mytrainex.length+" classifier:"+classifier+" "+JSON.stringify(stats1, null, 4))
-
 				var results = {
 					'classifier': classifier,
 					'fold': fold,
 					'trainsize': trainsize,
 					'trainsizeuttr': trainsize,
-					'stats': stats1
+					'stats': bars.compactStats(stats)
 					//'data': stats.data		
 				}
+
+				console.vlog("STATS: stats:"+JSON.stringify(results, null, 4))
 
 				process.send(JSON.stringify(results))
 				callbackwhilst()
@@ -173,7 +167,6 @@ if (cluster.isMaster)
 
 	var folds = 20
 	var classifiers = [ 'Natural', "NLU_Tran_Google", "NLU_Tran_Microsoft", "NLU_Tran_Yandex" ]
-
 
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
  	var utterset1 = bars.getsetcontext(data1, false)
@@ -207,19 +200,16 @@ if (cluster.isMaster)
 			  	console.mlog("DEBUGMASTER: finished: workers.length: "+Object.keys(cluster.workers).length )
 				//disc += 1
 			  	//if (Object.keys(cluster.workers).length == 1)
-			  	{
-			  		_.each(stat, function(data, param, list){
-						lc.plotlc('average', param, stat)
-					})
-					console.mlog(JSON.stringify(stat, null, 4))
-			  	}
+			  	_.each(stat, function(data, param, list){
+					lc.plotlc('average', param, stat)
+				})
+				console.mlog(JSON.stringify(stat, null, 4))
 			})
 
 			worker.on('message', function(message){
 				var workerstats = JSON.parse(message)
 				workerstats['classifiers'] = classifiers
 				console.mlog("DEBUGMASTER: on message: "+message)
-				// fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
 				lc.extractGlobal(workerstats, stat)
 			})
 		})
