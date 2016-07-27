@@ -166,7 +166,9 @@ if (cluster.isMaster)
 	bars.cleanFolder("./logs")
 
 	var folds = 20
-	var classifiers = [ 'Natural', "NLU_Tran_Google", "NLU_Tran_Microsoft", "NLU_Tran_Yandex" ]
+	// var classifiers = [ 'Natural', "NLU_Tran_Google", "NLU_Tran_Microsoft", "NLU_Tran_Yandex" ]
+	var classifiers = [ 'Natural', "NLU_Tran_Yandex_Google", "NLU_Tran_Yandex_Microsoft", "NLU_Tran_Microsoft_Yandex",
+						"NLU_Tran_Microsoft_Google", "NLU_Tran_Google_Yandex", "NLU_Tran_Google_Microsoft"]
 
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
  	var utterset1 = bars.getsetcontext(data1, false)
