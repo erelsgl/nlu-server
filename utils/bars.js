@@ -5641,6 +5641,16 @@ console.vlog("convertObject: obj: "+obj)
     return label+"_"+param
 }
 
+function compactStats(stats)
+{
+  var stats1 = {}
+  _.each(stats['stats'], function(value, key, list){ 
+    if ((key.indexOf("Precision") != -1) || (key.indexOf("Recall") != -1 ) || (key.indexOf("F1") != -1) || (key.indexOf("Accuracy") != -1))
+      stats1[key] = value
+  }, this)
+  return stats1
+}
+
 module.exports = {
   parseoutput:parseoutput,
   simulaterealds:simulaterealds,
@@ -5778,5 +5788,6 @@ returndist:returndist,
 getsetcontextadv:getsetcontextadv,
 cleanoutput:cleanoutput,
 bleu_nist:bleu_nist,
-convertObject:convertObject
+convertObject:convertObject,
+compactStats: compactStats
 }
