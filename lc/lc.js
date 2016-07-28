@@ -377,9 +377,6 @@ function plotlc(fold, parameter, stat)
 	
 	console.vlog(JSON.stringify(stat, null, 4))
 
-	fs.appendFileSync(plotfile, fold)
-	fs.appendFileSync(plotfile, JSON.stringify(parameter, null, 4))
-
 	// build output in the format size * classifiers
 	var output = plotlcagr(fold, stat[parameter])
 
@@ -388,8 +385,9 @@ function plotlc(fold, parameter, stat)
 	console.vlog("OUTPUTDATA:")
 	console.vlog(JSON.stringify(output, null, 4))
 
-	var ranges = output.splice(0,1)
-	ranges = _.map(ranges, function(num){ return num.splice(0,2) });
+	var ranges = bars.copyobj(output)
+	ranges.splice(0,1)
+	ranges = _.map(ranges, function(num){ return num.slice(2,num.length - 2 )});
 	var ran = bars.ran(_.flatten(ranges))
 
 	var string = getstringlc(output)
