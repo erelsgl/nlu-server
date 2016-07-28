@@ -167,9 +167,10 @@ if (cluster.isMaster)
 	bars.cleanFolder("./logs")
 
 	var folds = 10
-	var classifiers = [ 'No_translations', "Google", "Microsoft", "Yandex" ]
-//	var classifiers = [ 'Natural', "NLU_Tran_Yandex_Google", "NLU_Tran_Yandex_Microsoft", "NLU_Tran_Microsoft_Yandex",
-	//					"NLU_Tran_Microsoft_Google", "NLU_Tran_Google_Yandex", "NLU_Tran_Google_Microsoft"]
+	//var classifiers = [ 'No_translations', "Google", "Microsoft", "Yandex" ]
+	//var classifiers = [ 'Natural', "NLU_Tran_Yandex_Google", "NLU_Tran_Yandex_Microsoft", "NLU_Tran_Microsoft_Yandex",
+	//			"NLU_Tran_Microsoft_Google", "NLU_Tran_Google_Yandex", "NLU_Tran_Google_Microsoft"]
+	var classifiers = [ "No_translations", "Google", "NLU_Tran_Microsoft_Google"]
 
 	//var classifiers = ["Natural", "NLU_Tran_German","NLU_Tran_Spanish","NLU_Tran_Portuguese","NLU_Tran_Hebrew","NLU_Tran_Arabic","NLU_Tran_Russian","NLU_Tran_Chinese","NLU_Tran_Urdu","NLU_Tran_Finish", "NLU_Tran_Hungarian", "NLU_Tran_All"]
 	
