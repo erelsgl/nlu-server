@@ -1,11 +1,14 @@
 [
   {"source": "won't", "target": "will not"}
+, {"source": "8hr", "target": "8 hours"}
+, {"source": "9hr", "target": "9 hours"}
+, {"source": "10hr", "target": "10 hours"}
 , {"source": "60,000", "target": "60000"}
 , {"source": "90,000", "target": "90000"}
 , {"source": "120,000", "target": "120000"}
-, {"source": "60,000", "target": "60000"}
-, {"source": "90,000", "target": "90000"}
-, {"source": "120,000", "target": "120000"}
+, {"source": "60,000USD", "target": "60000"}
+, {"source": "90,000USD", "target": "90000"}
+, {"source": "120,000USD", "target": "120000"}
 , {"source": " 60 ", "target": " 60000 "}
 , {"source": " 90 ", "target": " 90000 "}
 , {"source": " 120 ", "target": " 120000 "}

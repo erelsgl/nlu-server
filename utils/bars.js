@@ -3924,6 +3924,9 @@ function processdataset(dataset, options)
   if (options.filter)
     output = _.filter(output, function(num){ return num["output"].length <= 1; });
 
+  if (options.filter_Quit_Greet)
+    output = _.filter(output, function(num){ return ( num["output"].indexOf("Greet") == -1 && num["output"].indexOf("Quit") == -1) });
+  
   console.vlog("processdataset: end: "+ output.length)
 
   return output
@@ -4435,7 +4438,7 @@ function gettrans(turns, pat)
           output.push({
             'input': {
                       'text': tran,
-			                'context': turn.input.context
+	              'context': turn.input.context
                     },
             'output': JSON.parse(JSON.stringify(turn.output))
           //  'context': JSON.parse(JSON.stringify(turn.context)),
@@ -4453,6 +4456,7 @@ function gettrans(turns, pat)
 
   }, this)
 
+  console.vlog("gettrans: output: " + JSON.stringify(output, null, 4))
   console.vlog("gettrans: output.length: " + output.length)
 
   return output
@@ -5637,6 +5641,27 @@ console.vlog("convertObject: obj: "+obj)
     return label+"_"+param
 }
 
+function compactStats(stats)
+{
+  var stats1 = {}
+  _.each(stats['stats'], function(value, key, list){ 
+    if ((key.indexOf("Precision") != -1) || (key.indexOf("Recall") != -1 ) || (key.indexOf("F1") != -1) || (key.indexOf("Accuracy") != -1))
+      stats1[key] = value
+  }, this)
+  return stats1
+}
+
+function ran(ranges)
+{
+  var minv = _.min(ranges)
+  var maxv = _.max(ranges)
+
+  return {
+    "min": Math.floor(minv*10)/10,
+    "max": Math.ceil(maxv*10)/10
+  }
+}
+
 module.exports = {
   parseoutput:parseoutput,
   simulaterealds:simulaterealds,
@@ -5774,5 +5799,7 @@ returndist:returndist,
 getsetcontextadv:getsetcontextadv,
 cleanoutput:cleanoutput,
 bleu_nist:bleu_nist,
-convertObject:convertObject
+convertObject:convertObject,
+compactStats: compactStats,
+ran:ran
 }

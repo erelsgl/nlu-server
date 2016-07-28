@@ -269,6 +269,23 @@ function getRule(sen)
 */
 	}
 
+
+
+
+	// work around for missing car
+
+	
+	if ((ar_attrs.indexOf("Leased Car")!=-1) || (ar_attrs.indexOf("Pension Fund")!=-1) || (ar_attrs.indexOf("Promotion Possibilities")!=-1))
+		if (unigrams.indexOf("no agreement")!=-1)
+			ar_values.push("No agreement")
+
+	if (ar_attrs.indexOf("Leased Car")!=-1)
+		if (ar_values.indexOf("With leased car")==-1)
+			if (ar_values.indexOf("Without leased car")==-1)
+				if (ar_values.indexOf("No agreement")==-1)
+					if (unigrams.indexOf("car")!=-1)
+						ar_values.push("With leased car")
+	
 	cleaned['tokens'] = []
 	_.each(sentence['tokens'], function(token, key, list){
 		if (arAttrVal.indexOf(token.lemma.toLowerCase())==-1)
@@ -280,7 +297,6 @@ function getRule(sen)
 		'cleaned': cleaned
 	}
 }
-
 
 // convert array of sentences into one sentence
 function preProcessor_onlyIntent(value)
@@ -2485,7 +2501,7 @@ module.exports = {
 		NLU_Tran_Russian: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync/*, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'toextract':'word'}),
 		NLU_Tran_Chinese: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync/*, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'toextract':'word'}),
 		NLU_Tran_Urdu: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync/*, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'toextract':'word'}),
-		NLU_Tran_Finish: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'toextract':'word'}),
+		NLU_Tran_Finish: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync , feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'toextract':'word'}),
 		NLU_Tran_Finish_Arabic: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync/*, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'toextract':'word'}),
 		NLU_Tran_Hungarian: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync/*, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined, false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'toextract':'word'}),
 		NLU_Tran: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync/*, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true}),

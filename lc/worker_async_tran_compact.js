@@ -14,29 +14,25 @@ var fold = process.env["fold"]
 var classifier = process.env["classifier"]
 var thread = process.env["thread"]
 
-var log_file = "./logs/" + process.pid
-
-console.vlog = function(data) { fs.appendFileSync(log_file, data + '\n', 'utf8') };
+console.vlog = function(data) { fs.appendFileSync("./logs/" + process.pid, data + '\n', 'utf8') };
 console.mlog = function(data) { fs.appendFileSync("./logs/master", data + '\n', 'utf8') };
 
 if (cluster.isWorker)
 	process.on('message', function(message) {
 
-    console.vlog("DEBUG: worker "+ process.pid+": started")
-    console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
+    	console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
 
-	var train =  bars.processdatasettrain(_.flatten(train))
-    var test  = bars.processdatasettest(_.flatten(test))
+	var train =  bars.processdataset(_.flatten(train), {"intents": true, "filter_Quit_Greet":true, "filter":true})
+        var test  = bars.processdataset(_.flatten(test), {"intents": true, "filter_Quit_Greet":true, "filter":false})
 
-    _.each(train, function(turn, key, list){
-		delete train[key]["input"]["sentences"]
-	}, this)
+        _.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"]}, this)
 
 	_.each(test, function(turn, key, list){
 		delete test[key]["input"]["sentences"]
+		delete test[key]["input"]["trans"]
 	}, this)
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
@@ -45,31 +41,30 @@ if (cluster.isWorker)
 
 	async.whilst(
 	    //function () { return index < train.length },
-	    function () { return index < 30 },
+	    function () { return index < 50 },
 	    function (callbackwhilst) {
 
 		async.waterfall([
     		function(callbacks) {
 
         		//if (index == 0) index = 3
-			if (index < 11) index +=1
+			if (index < 10) index +=1
 			else index += 5
 	
-    		var mytrain = train.slice(0, index)
+    			var mytrain = train.slice(0, index)
 
 			var mytrainex = JSON.parse(JSON.stringify(mytrain))
-    		var mytestex = JSON.parse(JSON.stringify(test))
+    			var mytestex = JSON.parse(JSON.stringify(test))
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
-				" train_dialogue="+mytrain.length+" train_turns="+mytrainex.length+
+				" train_dialogue="+mytrain.length+" train_turns="+_.flatten(mytrainex).length+
 				" test_dialogue="+test.length +" test_turns="+mytestex.length+
 				" classifier="+classifier+ " fold="+fold)
 			
-
 				switch(classifier) {
-    				case "NLU_Tran_Google": callbacks(null, bars.gettrans(mytrainex, "G:.*:G"), mytestex, mytrainex.length); break;
-    				case "NLU_Tran_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
-    				case "NLU_Tran_Yandex": callbacks(null, bars.gettrans(mytrainex, "Y:.*:Y"), mytestex, mytrainex.length); break;
+    				case "Google": callbacks(null, bars.gettrans(mytrainex, "G:.*:G"), mytestex, mytrainex.length); break;
+    				case "Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
+    				case "Yandex": callbacks(null, bars.gettrans(mytrainex, "Y:.*:Y"), mytestex, mytrainex.length); break;
     				
     				case "NLU_Tran_Yandex_Google": callbacks(null, bars.gettrans(mytrainex, "Y:.*:G"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Yandex_Microsoft": callbacks(null, bars.gettrans(mytrainex, "Y:.*:M"), mytestex, mytrainex.length); break;
@@ -96,16 +91,18 @@ if (cluster.isWorker)
     				case "NLU_Tran_Russian": callbacks(null, bars.gettrans(mytrainex, ".*:ru:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Chinese": callbacks(null, bars.gettrans(mytrainex, ".*:zh:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Urdu": callbacks(null, bars.gettrans(mytrainex, ".*:ur:.*"), mytestex, mytrainex.length); break;
-    				case "NLU_Tran_Finish": 
+    				case "NLU_Tran_Finish": callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length);break;
+    				case "NLU_Tran_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length);break;
+				case "Natural_trans": 
 
-
-    				// callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); 
-    				_.each(mytrainex, function(turn, key, list){
-    					mytrainex[key]["input"]["trans"] = {}
-    				}, this)
-
-					mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
-    					callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); 
+					console.vlog("NLU_trans")
+    				callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); 
+    				//_.each(mytrainex, function(turn, key, list){
+    				//	mytrainex[key]["input"]["trans"] = {}
+    				//}, this)
+//
+//					mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
+  //  					callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); 
 					
 
     				break;
@@ -114,43 +111,38 @@ if (cluster.isWorker)
     				case "NLU_Tran_Yandex_Microsoft_Finish": callbacks(null, bars.gettrans(mytrainex, "Y:fi:M"), mytestex, mytrainex.length); break;	
     				case "NLU_Tran_All": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;	
     				
-					case "NLU_Bal": callbacks(null, bars.gettransdist(mytrainex), mytestex, mytrainex.length); break;
+				case "NLU_Bal": callbacks(null, bars.gettransdist(mytrainex), mytestex, mytrainex.length); break;
     				case "NLU_Oversample": callbacks(null, bars.oversample(mytrainex), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Oversample": callbacks(null, bars.tranoversam(mytrainex), mytestex, mytrainex.length); break;
 
     				default:
-						mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
+						//mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
         				callbacks(null, mytrainex, mytestex, mytrainex.length)
         		}
 
     		},
     		function(mytrainex, mytestex, trainsize, callback) {
     	
-			console.vlog("DEBUG: worker SIZES: mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length)
+			console.vlog("DEBUG: worker SIZES: mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
 
-    			trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
+    			//trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
+    			trainAndTest.trainAndTest_async(classifiers.Natural, bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
 
 				console.vlog("DEBUG: worker "+process["pid"]+": traintime="+
 					stats['traintime']/1000 + " testtime="+ 
 					stats['testtime']/1000 + " classifier="+classifier + 
 					" Accuracy="+stats['stats']['Accuracy']+ " fold="+fold)
 
-				var stats1 = {}
-				_.each(stats['stats'], function(value, key, list){ 
-				   		if ((key.indexOf("Precision") != -1) || (key.indexOf("Recall") != -1 ) || (key.indexOf("F1") != -1) || (key.indexOf("Accuracy") != -1))
-				   			stats1[key] = value
-				}, this)
-
-				console.vlog("STATS: data.length: "+stats["data"].length+" fold:"+fold+" trainsize:"+mytrainex.length+" classifier:"+classifier+" "+JSON.stringify(stats1, null, 4))
-
 				var results = {
 					'classifier': classifier,
 					'fold': fold,
 					'trainsize': trainsize,
 					'trainsizeuttr': trainsize,
-					'stats': stats1
+					'stats': bars.compactStats(stats)
 					//'data': stats.data		
 				}
+
+				console.vlog("STATS: stats:"+JSON.stringify(results, null, 4))
 
 				process.send(JSON.stringify(results))
 				callbackwhilst()
@@ -160,7 +152,7 @@ if (cluster.isWorker)
    
 		})},
     function (err) {
-			console.log("DEBUG: worker "+process["pid"]+": exiting")
+			console.vlog("DEBUG: worker "+process["pid"]+": exiting")
 			process.exit()
 		})
 	});
@@ -174,11 +166,15 @@ if (cluster.isMaster)
 	bars.cleanFolder(__dirname + "/learning_curves")
 	bars.cleanFolder("./logs")
 
-	var folds = 20
-	var classifiers = [ 'Natural', 'NLU_Tran_Finish' ]
+	var folds = 10
+	var classifiers = [ 'No_translations', "Google", "Microsoft", "Yandex" ]
+//	var classifiers = [ 'Natural', "NLU_Tran_Yandex_Google", "NLU_Tran_Yandex_Microsoft", "NLU_Tran_Microsoft_Yandex",
+	//					"NLU_Tran_Microsoft_Google", "NLU_Tran_Google_Yandex", "NLU_Tran_Google_Microsoft"]
 
+	//var classifiers = ["Natural", "NLU_Tran_German","NLU_Tran_Spanish","NLU_Tran_Portuguese","NLU_Tran_Hebrew","NLU_Tran_Arabic","NLU_Tran_Russian","NLU_Tran_Chinese","NLU_Tran_Urdu","NLU_Tran_Finish", "NLU_Tran_Hungarian", "NLU_Tran_All"]
+	
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
- 	var utterset1 = bars.getsetcontext(data1, true)
+ 	var utterset1 = bars.getsetcontext(data1, false)
 	var train1 = utterset1["train"].concat(utterset1["test"])
 
 	cluster.setupMaster({
@@ -187,7 +183,7 @@ if (cluster.isMaster)
 	// silent: false
 	});
 	
-	console.mlog("DEBUGMASTER")
+	console.mlog("DEBUGMASTER: loaded: "+train1.length)
 
 	_.each(classifiers, function(classifier, key, list){ 
 		_(folds).times(function(fold){
@@ -198,7 +194,6 @@ if (cluster.isMaster)
 			var data = partitions.partitions_consistent_by_fold(train1, folds, fold)
 
 			console.mlog("DEBUGMASTER: class: "+classifier+" fold:"+ fold + " train size:"+data.train.length + " test size:" + data.test.length)
-			//console.vlog(JSON.stringify(worker, bars.censor(worker), 4))
 			console.mlog("DEBUGMASTER: process.pid:"+worker.process.pid)
 
 			worker.send({ 		
@@ -207,22 +202,19 @@ if (cluster.isMaster)
 		     		})
 			
 			worker.on('disconnect', function(){
-			  	console.mlog("DEBUGMASTER: finished: workers.length: "+Object.keys(cluster.workers).length + " disc: "+disc)
-				disc += 1
+			  	console.mlog("DEBUGMASTER: finished: workers.length: "+Object.keys(cluster.workers).length )
+				//disc += 1
 			  	//if (Object.keys(cluster.workers).length == 1)
-			  	{
-			  		_.each(stat, function(data, param, list){
-						lc.plotlc('average', param, stat)
-					})
-					console.mlog(JSON.stringify(stat, null, 4))
-			  	}
+			  	_.each(stat, function(data, param, list){
+					lc.plotlc('average', param, stat)
+				})
+				console.mlog(JSON.stringify(stat, null, 4))
 			})
 
 			worker.on('message', function(message){
 				var workerstats = JSON.parse(message)
 				workerstats['classifiers'] = classifiers
 				console.mlog("DEBUGMASTER: on message: "+message)
-				// fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
 				lc.extractGlobal(workerstats, stat)
 			})
 		})
