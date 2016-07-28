@@ -6,17 +6,9 @@ var bars = require(__dirname+'/../utils/bars');
 var distance = require(__dirname+'/../utils/distance');
 var child_process = require('child_process')
 var partitions = require('limdu/utils/partitions');
-
 var gnuplot = 'gnuplot'
-var statusfile = __dirname + "/status"
-var plotfile = __dirname + "/plotstatus"
 
-var log_file = "./logs/master"
-
-console.vlog = function(data) {
-    fs.appendFileSync(log_file, data + '\n', 'utf8')
-    //fs.writeFileSync(log_file, data + '\n', 'utf8')
-};
+console.vlog = function(data) { fs.appendFileSync("./logs/master", data + '\n', 'utf8') };
 
 // function groupbylabel(dataset, minsize, sizetrain, catnames)
 // {
@@ -396,6 +388,10 @@ function plotlc(fold, parameter, stat)
 	console.vlog("OUTPUTDATA:")
 	console.vlog(JSON.stringify(output, null, 4))
 
+	var ranges = output.splice(0,1)
+	ranges = _.map(ranges, function(num){ return num.splice(0,2) });
+	var ran = bars.ran(_.flatten(ranges))
+
 	var string = getstringlc(output)
 	
 	console.vlog("OUTPUTSTRING:")
@@ -407,7 +403,7 @@ function plotlc(fold, parameter, stat)
 	// fs.appendFileSync(plotfile, string)
     fs.writeFileSync(mapfile, string)
 
-    var command = gnuplot +" -e \"set ylabel '"+ylabel+"' font ',20'; set output 'lc/learning_curves/"+fold+"_"+bars.convertObject(parameter)+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt i+1 ps 3\""
+    var command = gnuplot +" -e \"set ylabel '"+ylabel+"' font ',20'; set yrange ["+ran.min+":"+ran.max+"]; set output 'lc/learning_curves/"+fold+"_"+bars.convertObject(parameter)+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt i+1 ps 3\""
 //    var command = gnuplot +" -e \"set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3\""//, \'\' using 1:(NaN):x2tic(2) axes x2y1\"" 
     console.vlog(command)
 
