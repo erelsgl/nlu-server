@@ -41,14 +41,14 @@ if (cluster.isWorker)
 
 	async.whilst(
 	    //function () { return index < train.length },
-	    function () { return index < 30 },
+	    function () { return index < 50 },
 	    function (callbackwhilst) {
 
 		async.waterfall([
     		function(callbacks) {
 
         		//if (index == 0) index = 3
-			if (index < 11) index +=1
+			if (index < 10) index +=1
 			else index += 5
 	
     			var mytrain = train.slice(0, index)
@@ -62,9 +62,9 @@ if (cluster.isWorker)
 				" classifier="+classifier+ " fold="+fold)
 			
 				switch(classifier) {
-    				case "NLU_Tran_Google": callbacks(null, bars.gettrans(mytrainex, "G:.*:G"), mytestex, mytrainex.length); break;
-    				case "NLU_Tran_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
-    				case "NLU_Tran_Yandex": callbacks(null, bars.gettrans(mytrainex, "Y:.*:Y"), mytestex, mytrainex.length); break;
+    				case "Google": callbacks(null, bars.gettrans(mytrainex, "G:.*:G"), mytestex, mytrainex.length); break;
+    				case "Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
+    				case "Yandex": callbacks(null, bars.gettrans(mytrainex, "Y:.*:Y"), mytestex, mytrainex.length); break;
     				
     				case "NLU_Tran_Yandex_Google": callbacks(null, bars.gettrans(mytrainex, "Y:.*:G"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Yandex_Microsoft": callbacks(null, bars.gettrans(mytrainex, "Y:.*:M"), mytestex, mytrainex.length); break;
@@ -82,7 +82,7 @@ if (cluster.isWorker)
     				case "NLU_Tran_Yandex_Microsoft_Russian": callbacks(null, bars.gettrans(mytrainex, "Y:ru:M"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Yandex_Microsoft_Chinese": callbacks(null, bars.gettrans(mytrainex, "Y:zh:M"), mytestex, mytrainex.length); break;
     				
-					case "NLU_Tran_French": callbacks(null, bars.gettrans(mytrainex, ".*:fr:.*"), mytestex, mytrainex.length); break;
+				case "NLU_Tran_French": callbacks(null, bars.gettrans(mytrainex, ".*:fr:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_German": callbacks(null, bars.gettrans(mytrainex, ".*:de:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Spanish": callbacks(null, bars.gettrans(mytrainex, ".*:es:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Portuguese": callbacks(null, bars.gettrans(mytrainex, ".*:pt:.*"), mytestex, mytrainex.length); break;
@@ -91,8 +91,9 @@ if (cluster.isWorker)
     				case "NLU_Tran_Russian": callbacks(null, bars.gettrans(mytrainex, ".*:ru:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Chinese": callbacks(null, bars.gettrans(mytrainex, ".*:zh:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Urdu": callbacks(null, bars.gettrans(mytrainex, ".*:ur:.*"), mytestex, mytrainex.length); break;
-//    				case "NLU_Tran_Finish": 
-					case "Natural_trans": 
+    				case "NLU_Tran_Finish": callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length);break;
+    				case "NLU_Tran_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length);break;
+				case "Natural_trans": 
 
 					console.vlog("NLU_trans")
     				callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); 
@@ -165,11 +166,13 @@ if (cluster.isMaster)
 	bars.cleanFolder(__dirname + "/learning_curves")
 	bars.cleanFolder("./logs")
 
-	var folds = 20
-	// var classifiers = [ 'Natural', "NLU_Tran_Google", "NLU_Tran_Microsoft", "NLU_Tran_Yandex" ]
-	var classifiers = [ 'Natural', "NLU_Tran_Yandex_Google", "NLU_Tran_Yandex_Microsoft", "NLU_Tran_Microsoft_Yandex",
-						"NLU_Tran_Microsoft_Google", "NLU_Tran_Google_Yandex", "NLU_Tran_Google_Microsoft"]
+	var folds = 10
+	var classifiers = [ 'No_translations', "Google", "Microsoft", "Yandex" ]
+//	var classifiers = [ 'Natural', "NLU_Tran_Yandex_Google", "NLU_Tran_Yandex_Microsoft", "NLU_Tran_Microsoft_Yandex",
+	//					"NLU_Tran_Microsoft_Google", "NLU_Tran_Google_Yandex", "NLU_Tran_Google_Microsoft"]
 
+	//var classifiers = ["Natural", "NLU_Tran_German","NLU_Tran_Spanish","NLU_Tran_Portuguese","NLU_Tran_Hebrew","NLU_Tran_Arabic","NLU_Tran_Russian","NLU_Tran_Chinese","NLU_Tran_Urdu","NLU_Tran_Finish", "NLU_Tran_Hungarian", "NLU_Tran_All"]
+	
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
  	var utterset1 = bars.getsetcontext(data1, false)
 	var train1 = utterset1["train"].concat(utterset1["test"])
