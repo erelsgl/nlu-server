@@ -16,6 +16,11 @@ var fs = require('fs');
 
 describe('Bars utilities', function() {
 
+	it('ran', function() {
+		var res = bars.ran([0.23,0.37,0.28,0.45])
+		console.log(JSON.stringify(res, null, 4))
+	})
+
 	it('convertObject', function() {
 		var output = bars.convertObject("{\"Offer\":{\"Leased Car\":\"Without leased car\"}}")
 		_.isEqual(output, "Offer-Leased-Car-Without-leased-car").should.equal(true)
