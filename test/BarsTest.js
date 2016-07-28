@@ -17,14 +17,14 @@ var fs = require('fs');
 describe('Bars utilities', function() {
 
 	it('convertObject', function() {
-		var output = bars.convertObject("{\"Offer\":{\"Leased Car\":\"Without leased car\"}}")
-		_.isEqual(output, "Offer-Leased-Car-Without-leased-car").should.equal(true)
+		var output = bars.convertObject("{\"Offer\":{\"Leased Car\":\"Without leased car\"}}_Precision")
+		_.isEqual(output, "Offer-Leased-Car-Without-leased-car_Precision").should.equal(true)
 
-		var output = bars.convertObject("{\"Offer\":\"Salary\"}")
-		_.isEqual(output, "Offer-Salary-").should.equal(true)
+		var output = bars.convertObject("{\"Offer\":\"Salary\"}_Recall")
+		_.isEqual(output, "Offer-Salary-_Recall").should.equal(true)
 	
-		var output = bars.convertObject("Offer")
-		_.isEqual(output, "Offer").should.equal(true)
+		var output = bars.convertObject("Offer_F1")
+		_.isEqual(output, "Offer_F1").should.equal(true)
 
 	})
 
