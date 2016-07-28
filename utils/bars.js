@@ -5651,6 +5651,17 @@ function compactStats(stats)
   return stats1
 }
 
+function ran(ranges)
+{
+  var minv = _.min(ranges)
+  var maxv = _.max(ranges)
+
+  return {
+    "min": Math.floor(minv*10)/10,
+    "max": Math.ceil(maxv*10)/10
+  }
+}
+
 module.exports = {
   parseoutput:parseoutput,
   simulaterealds:simulaterealds,
@@ -5789,5 +5800,6 @@ getsetcontextadv:getsetcontextadv,
 cleanoutput:cleanoutput,
 bleu_nist:bleu_nist,
 convertObject:convertObject,
-compactStats: compactStats
+compactStats: compactStats,
+ran:ran
 }
