@@ -1,4 +1,4 @@
-size	dial	Natural	NLU_Emb_25	Google	NLU_Tran_Microsoft_Google
+size	dial	Natural	NLU_Emb_25	NLU_Emb_Trans	NLU_Tran_Microsoft_Google
 1	1	null	null	null	null
 2	2	null	null	null	null
 3	3	null	null	null	null
