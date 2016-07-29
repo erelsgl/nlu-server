@@ -124,8 +124,14 @@ if (cluster.isWorker)
     		function(mytrainex, mytestex, trainsize, callback) {
     	
 			console.vlog("DEBUG: worker SIZES: mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
+			
+			if (classifier.indexOf("Emb")!=-1)
+				var baseline_cl = classifiers[classifier]
+			else
+				var baseline_cl = classifiers.Natural
 
-    			trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
+    			trainAndTest.trainAndTest_async(baseline_cl, bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
+    			//trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
     			//trainAndTest.trainAndTest_async(classifiers.Natural, bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
 
 				console.vlog("DEBUG: worker "+process["pid"]+": traintime="+
@@ -171,7 +177,7 @@ if (cluster.isMaster)
 	//var classifiers = [ 'Natural', "NLU_Tran_Yandex_Google", "NLU_Tran_Yandex_Microsoft", "NLU_Tran_Microsoft_Yandex",
 	//			"NLU_Tran_Microsoft_Google", "NLU_Tran_Google_Yandex", "NLU_Tran_Google_Microsoft"]
 	//var classifiers = [ "No_translations", "Google", "NLU_Tran_Microsoft_Google"]
-	var classifiers = [ "Natural", "NLU_Emb_25", "NLU_Emb_50", "NLU_Emb_100", "NLU_Emb_300"]
+	var classifiers = [ "Natural", "NLU_Emb_25", "Google", "NLU_Tran_Microsoft_Google"]
 
 	//var classifiers = ["Natural", "NLU_Tran_German","NLU_Tran_Spanish","NLU_Tran_Portuguese","NLU_Tran_Hebrew","NLU_Tran_Arabic","NLU_Tran_Russian","NLU_Tran_Chinese","NLU_Tran_Urdu","NLU_Tran_Finish", "NLU_Tran_Hungarian", "NLU_Tran_All"]
 	
