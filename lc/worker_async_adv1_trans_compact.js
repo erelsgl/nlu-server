@@ -113,8 +113,9 @@ if (cluster.isMaster)
 	var folds = 10
 	var stat = {}
 
+	var classifiers = [ 'Natural','Undersampled','Oversampled','Biased_with_rephrases', 'Biased_no_rephrases']
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
-	var classifiers = [ 'Natural','Natural_trans']
+	//var classifiers = [ 'Natural','Natural_trans']
 	
 	cluster.setupMaster({
   	exec: __filename,
