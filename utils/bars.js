@@ -5658,7 +5658,7 @@ function ran(ranges)
 
   return {
     "min": Math.floor(minv*10)/10,
-    "max": Math.ceil(maxv*10)/10
+    "max": Math.ceil(maxv*10)/10 + 0.1
   }
 }
 
