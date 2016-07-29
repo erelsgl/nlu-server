@@ -45,7 +45,7 @@ process.on('message', function(message) {
 
 	       	var mytrain = bars.copyobj(train.slice(0, index))
 	       	var mytrainex =  bars.copyobj(mytrain)
-		var mytestex  = bars.copyobj(test)
+			var mytestex  = bars.copyobj(test)
 
 			if (["Biased_no_rephrase_trans", "Natural_trans"].indexOf(classifier) != -1)
 				{
@@ -53,23 +53,23 @@ process.on('message', function(message) {
 				mytrainex = bars.gettrans(mytrainex, ".*")
 				}
 
+			if (classifier=="Oversampled") {
+                var realmytrainex = bars.oversample(bars.copyobj(mytrainex))
+            } else if (classifier=="Undersampled") {
+            	var realmytrainex = bars.undersample(bars.copyobj(mytrainex))
+            } else {
+                var realmytrainex = bars.copyobj(mytrainex)
+            }
+
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+mytrainex.length+
 				" test_dialogue="+test.length +" test_turns="+mytestex.length+
 				" classifier="+classifier+ " fold="+fold)
 
-			var realmytrainex = bars.copyobj(mytrainex)	
 			console.vlog("DIST: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(realmytrainex), null, 4))
-/*
-			if (index >= max)
-        	    {
-               		if (classifier == "Undersampled")
-            	         fs.appendFileSync("./logs/under", JSON.stringify(bars.returndist(realmytrainex), null, 4), 'utf8')
 
-	        	    console.vlog("FINALE")
-        		}
-*/
-	    	trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
+	    	// trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
+	    	trainAndTest.trainAndTest_async(classifiers.Natural, bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
 
 		    	console.vlog("DEBUG: worker "+process["pid"]+": traintime="+
 		    		stats['traintime']/1000 + " testtime="+ 
@@ -78,21 +78,14 @@ process.on('message', function(message) {
 
 		    	console.vlog(JSON.stringify(stats['stats'], null, 4))
 
-		    	var stats1 = {}
-		    	_.each(stats['stats'], function(value, key, list){ 
-		    		if ((key.indexOf("Precision") != -1) || (key.indexOf("Recall") != -1 ) || (key.indexOf("F1") != -1) || (key.indexOf("Accuracy") != -1))
-		    			stats1[key] = value
-		    	}, this)
-
-				console.vlog("STATS: fold:"+fold+" trainsize:"+mytrain.length+" classifier:"+classifier+" "+JSON.stringify(stats1, null, 4))
+				console.vlog("STATS: fold:"+fold+" trainsize:"+mytrain.length+" classifier:"+classifier)
 
 				var results = {
 					'classifier': classifier,
 					'fold': fold,
 					'trainsize': mytrain.length,
 					'trainsizeuttr': mytrain.length,
-					'stats': stats1
-					// 'uniqueid': stats['id']
+	                'stats': bars.compactStats(stats)
 				}
 
 				process.send(JSON.stringify(results))
@@ -113,7 +106,7 @@ if (cluster.isMaster)
 	var folds = 10
 	var stat = {}
 
-	var classifiers = [ 'Natural','Undersampled','Oversampled','Biased_with_rephrases', 'Biased_no_rephrases']
+	var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase']
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	//var classifiers = [ 'Natural','Natural_trans']
 	
