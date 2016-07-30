@@ -43,11 +43,16 @@ var make_tr_fix = false
 var check_ration_all = false
 
 
-var extractbyid = true
+var embedproc = true
+
+var extractbyid = false
 // number of human utterances
 var check_human = false
 
 var check_intent_issue_dst = false
+
+
+
 
 // check rephrase strategies
 var check_version4 = false
@@ -1624,6 +1629,21 @@ if (check_human)
 	console.log(utt.length)
 
 	process.exit(0)
+}
+
+if (embedproc)
+{
+	var parsing = {}
+	var parsedfiles  = walkSync("/tmp/json/", parsedfiles)
+
+	_.each(parsedfiles, function(file, key, list){
+        var id = path.basename(file).split(".")[0]
+        parsing[id] = JSON.parse(fs.readFileSync(file, 'utf8'))
+    }, this)
+
+	console.log(JSON.stringify(parsing, null, 4))
+	process.exit(0)
+
 }
 
 if (extractbyid)
