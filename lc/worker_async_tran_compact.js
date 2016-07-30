@@ -28,10 +28,10 @@ if (cluster.isWorker)
 	var train =  bars.processdataset(_.flatten(train), {"intents": true, "filter_Quit_Greet":true, "filter":true})
         var test  = bars.processdataset(_.flatten(test), {"intents": true, "filter_Quit_Greet":true, "filter":false})
 
-        _.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"]}, this)
+        //_.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"]}, this)
 
 	_.each(test, function(turn, key, list){
-		delete test[key]["input"]["sentences"]
+	//	delete test[key]["input"]["sentences"]
 		delete test[key]["input"]["trans"]
 	}, this)
 
