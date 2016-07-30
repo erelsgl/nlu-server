@@ -3934,12 +3934,12 @@ function processdataset(dataset, options)
 
 
 
-function getsetcontext(dataset, rephrase)
+function getsetcontext(dataset)
 {
   var rectypes = ['AskRepeat', 'AskRephrase' ,'Reprompt' ,'Notify', 'Yield', 'Help', 'YouCanSay', 'TerseYouCanSay']
   var utteranceset = {'train':[], 'test':[], 'unable':[]}
   var context = []
-  var addrepr = true
+  var rephrase = false
  
   _.each(dataset, function(dialogue, key, list){
     var processed_dialogue = []
@@ -3947,16 +3947,15 @@ function getsetcontext(dataset, rephrase)
 
       if ((turn.role == "Candidate") && (('data' in turn)))
         if (rectypes.indexOf(turn.data)!=-1)
-          if (rephrase == false)
-            addrepr = false
+            rephrase = true
 
       if ((turn.role == "Candidate") && (('output' in turn)))
         context = hashtoar(turn.output)
  
       if (turn.role == "Employer") 
       {
-      if  (addrepr)
-      {
+      // if  (addrepr)
+      // {
         var record = {}
         // record['input'] = {}
         // record['input']['text'] = turn.input
@@ -3966,26 +3965,21 @@ function getsetcontext(dataset, rephrase)
         turn['output'] = hashtoar(turn.output)
 
         var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
-
         var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
         
-        var QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Query'});
 	
-    /*   	var AcceptIndex = _.findIndex(turn['output'], function(lab){ return lab=='{\"Accept\":true}'});
+        if (rephrase)
+          turn['type'] = "rephrase"
+        else
+          turn['type'] = "normal"
 
-        // eliminate car issue
-         var CarIndexV = _.findIndex(turn['output'], function(lab){ return _.values(JSON.parse(lab))[0]=='Leased Car'});
-         var CarIndex = _.findIndex(turn['output'], function(lab){ return _.keys(_.values(JSON.parse(lab))[0])[0]=='Leased Car'});
-*/
-          
        if ((QuitIndex==-1) && (GreetIndex==-1))
-
-            processed_dialogue.push(turn)
+          processed_dialogue.push(turn)
 
         // context = []
-        }
-        else
-          addrepr = true
+        // }
+        // else
+          rephrase = false
       }
     }, this)
 
