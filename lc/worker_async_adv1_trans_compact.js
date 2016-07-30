@@ -46,11 +46,11 @@ process.on('message', function(message) {
 	       	var mytrainex =  bars.copyobj(mytrain)
 			var mytestex  = bars.copyobj(test)
 
-			if (["Biased_no_rephrase_trans", "Natural_trans"].indexOf(classifier) != -1)
-				{
+			//if (["Biased_no_rephrase_trans", "Natural_trans"].indexOf(classifier) != -1)
+			//	{
 				console.vlog("Enalbe trans")
-				mytrainex = bars.gettrans(mytrainex, ".*")
-				}
+			//	mytrainex = bars.gettrans(mytrainex, ".*")
+			//	}
 
 			if (classifier=="Oversampled") {
                 var realmytrainex = bars.oversample(bars.copyobj(mytrainex))
@@ -146,12 +146,14 @@ if (cluster.isMaster)
 				var train2sam = _.flatten(_.sample(bars.copyobj(train2), 10))
 				var train2sam_no_reph = _.filter(bars.copyobj(train2sam), function(num){ return num.type == "normal" });
 
+				console.mlog("DEBUGMASTER: with rephrases: "+train2sam.length + " without:"+train2sam_no_reph.length)
+
 				var train = []
 
 				if (classifier == "Biased_with_rephrase")
 					train = bars.copyobj(train2sam)
 				else if (classifier == "Biased_no_rephrase")
-					train = bars.copyobj(train2sam_no_reph)
+					train = bars.copyobj(train2sam_no_reph)	
 				else
 					train = bars.copyobj(data.test)
 
