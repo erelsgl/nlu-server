@@ -27,7 +27,6 @@ process.on('message', function(message) {
 	_.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"] }, this)
 	_.each(test, function(turn, key, list){ delete test[key]["input"]["sentences"] }, this)
 
-//	var max  = JSON.parse(message['max'])
 	var max = 70
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max + " classifier "+classifier)
@@ -128,7 +127,8 @@ if (cluster.isMaster)
 //		train1 = bars.processdataset(train1)
 
 		var data2 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7_trans.json"))
-		var utterset2 = bars.getsetcontextadv(data2)
+		// var utterset2 = bars.getsetcontextadv(data2)
+		var utterset2 = bars.getsetcontext(data2)
 		var train2 = utterset2["train"].concat(utterset2["test"])
 		
 		console.mlog("number of the dialogues2: "+train2.length)
@@ -141,23 +141,26 @@ if (cluster.isMaster)
 		
 				console.mlog("DEBUGMASTER: classifier: "+classifier+" fold: "+ (fold+n*folds) + 
 					     " train size "+data.train.length + " test size " + data.test.length+
-                                             " process: "+worker.process.id)
+                         " process: "+worker.process.id)
 
-				var train2sam = _.sample(bars.copyobj(train2), 10)
+				var train2sam = _.flatten(_.sample(bars.copyobj(train2), 10))
+				var train2sam_no_reph = _.filter(bars.copyobj(train2sam), function(num){ return num.type == "normal" });
 
 				var train = []
 
-				if (["Biased_with_rephrase", "Biased_no_rephrase", "Biased_no_rephrase_trans", "Biased_no_rephrase_no_con_trans", "Biased_no_rephrase_no_con"].indexOf(classifier)!=-1)
+				if (classifier == "Biased_with_rephrase")
 					train = bars.copyobj(train2sam)
+				else if (classifier == "Biased_no_rephrase")
+					train = bars.copyobj(train2sam_no_reph)
 				else
 					train = bars.copyobj(data.test)
 
-				var max = _.min([_.flatten(data.test).length, _.flatten(train2sam).length])
+				var max = _.min([_.flatten(data.test).length, _.flatten(train2sam_no_reph).length])
 				// var max = _.min([_.flatten(data.test).length, _.flatten(train2sam).length])
 				max = max - max % 10			
 				
 				console.mlog("DEBUGMASTER: train1.len="+_.flatten(data.test).length+ " train2.len="+ _.flatten(train2sam).length + " max="+max)
-				console.mlog("DEBUGMASTER: class="+classifier+ " fold="+ fold + " train1.len="+train.length + " test.len=" + data.train.length + " max: "+max)
+				console.mlog("DEBUGMASTER: class="+classifier+ " fold="+ fold + " train.len="+train.length + " test.len=" + data.train.length + " max: "+max)
 				worker.send({ 		
 						'train': JSON.stringify(_.flatten(train)), 
 						'test': JSON.stringify(_.flatten(data.train)),
