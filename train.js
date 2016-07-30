@@ -27,6 +27,7 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+// output the blue average
 var correlation = false
 
 var check_coverage = false
@@ -41,6 +42,8 @@ var make_tr_fix = false
 // check the ration of single vs all utterances
 var check_ration_all = false
 
+
+var extractbyid = true
 // number of human utterances
 var check_human = false
 
@@ -48,6 +51,8 @@ var check_intent_issue_dst = false
 
 // check rephrase strategies
 var check_version4 = false
+
+var best_dial = false
 
 var composite_ds = false
 
@@ -60,7 +65,7 @@ var simple_naive_test_train = false
 var simple_naive_intent_test_train_intents = false
 
 // check the accuracy of regular expression identification
-var check_regexp = true
+var check_regexp = false
 
 var consistent_query = false
 
@@ -248,8 +253,7 @@ console.log("if "+ a + " > "+ b)
 if (correlation)
 {
 	var lang = {}
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_trans_new.json"))
-
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
 
 	_.each(data, function(dialogue, key, list){
 
@@ -261,14 +265,13 @@ if (correlation)
 						var temp = {}
 
 						_.each(turn["input"]["trans"], function(text, key, list){
-							// var ln = key.substr(2,2)
+							var ln = key.substr(2,2)
 							
-							var ln = key.substr(0,1) + key.substr(-1,1)
-						    var language = key.substr(2,2)
+							// var ln = key.substr(0,1) + key.substr(-1,1)
+						    // var language = key.substr(2,2)
 
-						    if (["fi"].indexOf(language)!=-1)
-						    {
-
+						    // if (["fi"].indexOf(language)!=-1)
+						    // {
 								if (!(ln in lang))
 									lang[ln] = []
 
@@ -285,10 +288,10 @@ if (correlation)
 	   							else
 									lang[ln].push(dst)
 							
-							}
+							// }
 						}, this)
 
-						if ((temp['MY'] > temp['MM'])
+						/*if ((temp['MY'] > temp['MM'])
 							&&
 							(temp['MG'] > temp['MM']))
 						{
@@ -297,7 +300,7 @@ if (correlation)
 							console.log("MM:"+turn["input"]["trans"]["M:fi:M"])
 							console.log("MY:"+turn["input"]["trans"]["M:fi:Y"])
 							console.log("MG:"+turn["input"]["trans"]["M:fi:G"])
-						}
+						}*/
 					}
 		}, this)
 
@@ -558,6 +561,31 @@ if (make_tr_seeds)
 
 	console.log(JSON.stringify(turns, null, 4))
 	process.exit(0)	
+}
+
+if (best_dial)
+{
+	var count = {}
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_trans.json"))
+
+	var data = _.filter(data, function(num){ return num.gameid == "2016-05-04T14:00:43.923Z" });
+	var dial = data[0]["turns"]
+
+	_.each(dial, function(value, key, list){
+		if ("input" in value)
+		{
+			delete value["input"]["trans"]
+			delete value["input"]["sentences"]
+		}
+	}, this)
+
+	console.log(JSON.stringify(dial, null, 4))
+
+	// _.each(data, function(dialogue, key, list){
+		// count[dialogue.gameid] = dialogue["turns"].length
+	// }, this)
+	// console.log(JSON.stringify(count, null, 4))
+
 }
 
 if (check_word)
@@ -1598,6 +1626,35 @@ if (check_human)
 	process.exit(0)
 }
 
+if (extractbyid)
+{
+	var directory = "/tmp/sen/"
+	var sentences = {}
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
+
+	_.each(data, function(dialogue, key, list){
+		_.each(dialogue["turns"], function(turn, key, list){
+			if (turn.role == "Employer")
+			{
+				_.each(turn["input"]["trans"], function(value1, key1, list){
+					sentences[turn["translation_id"]+"_"+key1] = value1
+				}, this)
+			}
+		}, this)
+	}, this)
+
+	_.each(sentences, function(value, key, list){
+    	fs.writeFileSync(directory+key, value, 'utf-8')
+     }, this)
+
+    fs.writeFileSync(directory+"list", "", 'utf-8')
+    _.each(sentences, function(value, key, list){
+	    fs.appendFileSync(directory+"list", directory+key+"\n", 'utf-8')
+    }, this)
+
+    process.exit(0)
+}	
+
 // very useful routine 
 if (check_init)
 {
@@ -1610,7 +1667,7 @@ if (check_init)
 				  	'Quit': {'count':0}
 				}
 	
-	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_neww.json"))
 	var utterset = bars.getsetcontext(data, false)
 	var dialogues = utterset["test"].concat(utterset["train"])
