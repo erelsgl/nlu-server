@@ -27,7 +27,7 @@ process.on('message', function(message) {
 	_.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"] }, this)
 	_.each(test, function(turn, key, list){ delete test[key]["input"]["sentences"] }, this)
 
-	var max = 70
+	var max = 60
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max + " classifier "+classifier)
 	var index = 0
@@ -37,10 +37,10 @@ process.on('message', function(message) {
 	    function (callbackwhilst) {
 
 		if (index<10)
-		{ index += 2} 
+		{ index += 5} 
 		else if (index<20)
 		{ index += 5 }
-		else index += 10
+		else index += 5
 
 	       	var mytrain = bars.copyobj(train.slice(0, index))
 	       	var mytrainex =  bars.copyobj(mytrain)
