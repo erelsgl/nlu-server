@@ -1317,7 +1317,6 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 	var bars = require('./utils/bars')
 	var embFeatures = {}
 	var embs = []
-//	var roots = []
 
 /*	if (featureOptions['root'] == true)
 	{
@@ -1332,12 +1331,8 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 	
 	async.eachSeries(_.keys(features), function(word, callback1){
 		
-//		if (featureOptions['unigrams'] == true)
-//			embFeatures[word] = 1
-
 		var negated = false
-		// console.log("DEBUGEMB: word: "+word+" features "+featureOptions.minus_neg)
-
+		
 		// if (featureOptions.minus_neg && word.indexOf("-")!=-1)
 		if (word.indexOf("-")!=-1)
 		{
@@ -1348,10 +1343,7 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 
 		console.vlog("feEmbed: "+word)
 		async_adapter.getembed(word, featureOptions.embdeddb, function(err, emb){
-			// delete features[word]
 
-			//console.vlog(err)
-			//console.vlog(emb)
 			if (negated)
 			{
 				emb =_.map(emb, function(num){ return num * (-1); });
@@ -1365,8 +1357,6 @@ function feEmbed(sample, features, train, featureOptions, callback) {
  	}, function(err) {
 
 
-	
-//		console.vlog("DEBUGEMBED: "+err)
 		console.vlog("DEBUGEMBED: all vectores are loaded: "+embs.length)
 		if (embs.length > 0)		 		
 		{
@@ -1586,10 +1576,8 @@ function feNeg(sample, features, train, featureOptions, callback) {
 				features[lem+"-"] = 1		
 			}
 		}
-
 	}, this)
 	callback(null, features)
-
 }
 
 function feSentiment(sample, features, train, featureOptions, callback) {
