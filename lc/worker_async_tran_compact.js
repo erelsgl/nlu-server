@@ -25,13 +25,14 @@ if (cluster.isWorker)
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
 
-	var train =  bars.processdataset(_.flatten(train), {"intents": true, "filter_Quit_Greet":true, "filter":true})
+	//var train = _.flatten(train)
         var test  = bars.processdataset(_.flatten(test), {"intents": true, "filter_Quit_Greet":true, "filter":false})
+        var train  = bars.processdataset(_.flatten(train), {"intents": true, "filter_Quit_Greet":true, "filter":true})
 
-        //_.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"]}, this)
+    //    _.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"]}, this)
 
 	_.each(test, function(turn, key, list){
-	//	delete test[key]["input"]["sentences"]
+		//delete test[key]["input"]["sentences"]
 		delete test[key]["input"]["trans"]
 	}, this)
 
@@ -75,6 +76,7 @@ if (cluster.isWorker)
 				case "NLU_Tran_Google_Yandex": callbacks(null, bars.gettrans(mytrainex, "G:.*:Y"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Google_Microsoft": callbacks(null, bars.gettrans(mytrainex, "G:.*:M"), mytestex, mytrainex.length); break;
 
+    				case "NLU_Tran_GGFinish": callbacks(null, bars.gettrans(mytrainex, "G:fi:G"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Yandex_Microsoft_French": callbacks(null, bars.gettrans(mytrainex, "Y:fr:M"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Yandex_Microsoft_German": callbacks(null, bars.gettrans(mytrainex, "Y:de:M"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Yandex_Microsoft_Spanish": callbacks(null, bars.gettrans(mytrainex, "Y:es:M"), mytestex, mytrainex.length); break;
@@ -124,8 +126,10 @@ if (cluster.isWorker)
 
     		},
     		function(mytrainex, mytestex, trainsize, callback) {
+
+			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filter_Quit_Greet":true, "filter":true})
     	
-			console.vlog("DEBUG: worker SIZES: mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
+			console.vlog("DEBUGPRETRAIN: classifier:"+classifier+" mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
 			
 			if (classifier.indexOf("Emb")!=-1)
 				var baseline_cl = classifiers[classifier]
@@ -180,6 +184,7 @@ if (cluster.isMaster)
 	//			"NLU_Tran_Microsoft_Google", "NLU_Tran_Google_Yandex", "NLU_Tran_Google_Microsoft"]
 	//var classifiers = [ "No_translations", "Google", "NLU_Tran_Microsoft_Google"]
 	var classifiers = [ "Natural", "NLU_Emb_25", "NLU_Emb_50", "NLU_Emb_Trans", "NLU_Tran_All"]
+	//var classifiers = [ "Natural","NLU_Tran_GGFinish"]
 
 	//var classifiers = ["Natural", "NLU_Tran_German","NLU_Tran_Spanish","NLU_Tran_Portuguese","NLU_Tran_Hebrew","NLU_Tran_Arabic","NLU_Tran_Russian","NLU_Tran_Chinese","NLU_Tran_Urdu","NLU_Tran_Finish", "NLU_Tran_Hungarian", "NLU_Tran_All"]
 	
