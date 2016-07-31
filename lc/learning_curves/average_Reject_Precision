@@ -1,19 +1,19 @@
-size	dial	Natural	NLU_Emb_25	NLU_Emb_50	NLU_Emb_Trans	NLU_Tran_All
-1	1	null	null	null	null	null
-2	2	null	null	null	null	null
-3	3	null	null	null	null	null
-4	4	null	null	null	null	null
-5	5	null	null	null	null	null
-6	6	null	null	null	null	null
-7	7	null	null	null	null	null
-8	8	null	null	null	null	null
-9	9	null	null	null	null	null
-10	10	null	null	null	null	null
-15	15	null	null	null	null	null
-20	20	null	null	null	null	null
-25	25	null	null	null	null	null
-30	30	null	null	null	null	null
-35	35	null	0.4717672350329066	0.5429848817750935	0.550613147480643	0.5199642117484645
-40	40	null	0.48015023742112223	0.526074922479545	0.5498896340836674	0.5314269250512311
-45	45	null	0.3710563554551656	null	0.5619933222551061	0.5588649334056742
-50	50	null	0.3807330863750125	null	0.5521942008479457	0.5464312012857057
+size	dial	NLU_Tran_All	NLU_Emb_Trans_25	NLU_Emb_Trans_50	NLU_Emb_Trans_100
+1	1	null	null	null	null
+2	2	null	null	null	null
+3	3	null	null	null	null
+4	4	null	null	null	null
+5	5	null	null	null	null
+6	6	null	null	null	null
+7	7	null	null	null	null
+8	8	null	null	null	null
+9	9	null	null	null	null
+10	10	null	null	null	null
+15	15	null	null	null	null
+20	20	null	null	null	null
+25	25	null	null	null	null
+30	30	null	null	null	null
+35	35	0.5199642117484645	0.5620158473781044	0.550613147480643	0.6136817988986507
+40	40	0.5314269250512311	0.5484427756674963	0.5498896340836674	0.5769420435598992
+45	45	0.5588649334056742	0.5637021558081893	0.5619933222551061	0.566642246634792
+50	50	0.5464312012857057	0.55822053704387	0.5521942008479457	0.5532017305244243
