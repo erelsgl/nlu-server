@@ -3899,24 +3899,20 @@ function processdataset(dataset, options)
 
   _.each(dataset, function(utterance, utterance_key, list){
     
-    var record = copyobj(dataset[utterance_key])
+    var record = copyobj(utterance)
 
     if (options.intents)
       record['output'] = _.unique(_.keys(utterance.outputhash))
-  
-    var tokens = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
-    var basicdependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'basic-dependencies'))
-    var collapseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-dependencies'))
-    var collapsedccprocesseddependencies = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-ccprocessed-dependencies'))
-
-    record['input']['sentences'] = {
-      'tokens': tokens,
-      'basic-dependencies': basicdependencies,
-      'collapsed-dependencies': collapseddependencies,
-      'collapsed-ccprocessed-dependencies': collapsedccprocesseddependencies
-    }
-       
-   // if ((output.indexOf("Greet")==-1)&&(output.indexOf("Quit")==-1))
+	
+    if (_.isArray(record['input']['sentences']))
+	{
+	record['input']['sentences']= {}
+    record['input']['sentences']["tokens"] = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
+    record['input']['sentences']["basic-dependencies"] = _.flatten(_.pluck(utterance['input']['sentences'], 'basic-dependencies'))
+    record['input']['sentences']["collapsed-dependencies"]= _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-dependencies'))
+    record['input']['sentences']["collapsed-ccprocessed-dependencies"] = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-ccprocessed-dependencies'))
+   	}
+// if ((output.indexOf("Greet")==-1)&&(output.indexOf("Quit")==-1))
     
     output.push(record)
   })
@@ -3931,7 +3927,6 @@ function processdataset(dataset, options)
 
   return output
 }
-
 
 
 function getsetcontext(dataset)
@@ -4429,28 +4424,31 @@ function gettrans(turns, pat)
   if (proc)
 	{
   	console.vlog("gettrans: add: "+key)
-          output.push({
-            'input': {
-                      'text': tran,
-	              'context': turn.input.context
-                    },
-            'output': JSON.parse(JSON.stringify(turn.output))
-          //  'context': JSON.parse(JSON.stringify(turn.context)),
-          })
+          var record= copyobj(turn)
+		record["input"]["text"] = tran
+		delete record["input"]["sentences"]
+		delete record["input"]["trans"]
+		_.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json")));
+	
+	output.push(record)
+	
 	}
 
     }, this)
     
+	
     output.push({
              'input': {'text': turn.input.text,
+			'sentences': turn.input.sentences,
 			       'context': turn.input.context},
-             'output': JSON.parse(JSON.stringify(turn.output))
+             'output': JSON.parse(JSON.stringify(turn.output)),
+             'outputhash': JSON.parse(JSON.stringify(turn.outputhash))
 //            'context': JSON.parse(JSON.stringify(turn.context)),
     })
 
   }, this)
 
-  console.vlog("gettrans: output: " + JSON.stringify(output, null, 4))
+console.vlog("gettrans: output: " + JSON.stringify(output, null, 4))
   console.vlog("gettrans: output.length: " + output.length)
 
   return output
