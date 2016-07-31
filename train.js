@@ -1633,6 +1633,7 @@ if (check_human)
 
 if (embedproc)
 {
+	var path = require('path');
 	var parsing = {}
 	var parsedfiles  = walkSync("/tmp/json/", parsedfiles)
 
