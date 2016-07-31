@@ -1,4 +1,4 @@
-size	dial	NLU_Tran_All	NLU_Emb_Trans_25	NLU_Emb_Trans_50	NLU_Emb_Trans_100
+size	dial	No_translations	Google	Microsoft	Yandex
 1	1	null	null	null	null
 2	2	null	null	null	null
 3	3	null	null	null	null
