@@ -36,62 +36,63 @@ process.on('message', function(message) {
 	    function () { return index < max },
 	    function (callbackwhilst) {
 
-		if (index<10)
-		{ index += 5} 
-		else if (index<20)
-		{ index += 5 }
-		else index += 5
+	    async.waterfall([
+    	function(callbacks) {
+
+			if (index<10)
+			{ index += 5} 
+			else if (index<20)
+			{ index += 5 }
+			else index += 5
 
 	       	var mytrain = bars.copyobj(train.slice(0, index))
 	       	var mytrainex =  bars.copyobj(mytrain)
 			var mytestex  = bars.copyobj(test)
-
-			//if (["Biased_no_rephrase_trans", "Natural_trans"].indexOf(classifier) != -1)
-			//	{
-				console.vlog("Enalbe trans")
-			//	mytrainex = bars.gettrans(mytrainex, ".*")
-			//	}
-
-			if (classifier=="Oversampled") {
-                var realmytrainex = bars.oversample(bars.copyobj(mytrainex))
-            } else if (classifier=="Undersampled") {
-            	var realmytrainex = bars.undersample(bars.copyobj(mytrainex))
-            } else {
-                var realmytrainex = bars.copyobj(mytrainex)
-            }
-
+		
+			console.vlog("DIST: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(mytrain), null, 4))
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+mytrainex.length+
 				" test_dialogue="+test.length +" test_turns="+mytestex.length+
 				" classifier="+classifier+ " fold="+fold)
 
-			console.vlog("DIST: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(realmytrainex), null, 4))
+			switch(classifier) {
+				case "Google": callbacks(null, bars.gettrans(mytrainex, "G:.*:G"), mytestex, mytrainex.length); break;
+				case "Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
+				case "Yandex": callbacks(null, bars.gettrans(mytrainex, "Y:.*:Y"), mytestex, mytrainex.length); break;
+				case "Oversampled": callbacks(null, bars.oversample(bars.copyobj(mytrainex)), mytestex, mytrainex.length); break;
+				case "Undersampled": callbacks(null, bars.undersample(bars.copyobj(mytrainex)), mytestex, mytrainex.length); break;
+				default:
+					callbacks(null, mytrainex, mytestex, mytrainex.length)
+    		}
+		},
+    		function(mytrainex, mytestex, trainsize, callback) {
 
+			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filter_Quit_Greet":true, "filter":true})
 	    	// trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
-	    	trainAndTest.trainAndTest_async(classifiers.Natural, bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
+    		trainAndTest.trainAndTest_async(classifiers.Natural, bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
 
 		    	console.vlog("DEBUG: worker "+process["pid"]+": traintime="+
 		    		stats['traintime']/1000 + " testtime="+ 
 		    		stats['testtime']/1000 + " classifier="+classifier + 
 		    		" Accuracy="+stats['stats']['Accuracy']+ " fold="+fold)
 
-		    	console.vlog(JSON.stringify(stats['stats'], null, 4))
-
-				console.vlog("STATS: fold:"+fold+" trainsize:"+mytrain.length+" classifier:"+classifier)
-
 				var results = {
 					'classifier': classifier,
 					'fold': fold,
-					'trainsize': mytrain.length,
-					'trainsizeuttr': mytrain.length,
-	                'stats': bars.compactStats(stats)
+					'trainsize': trainsize,
+					'trainsizeuttr': trainsize,
+					'stats': bars.compactStats(stats)
+					//'data': stats.data		
 				}
 
 				process.send(JSON.stringify(results))
-		   		callbackwhilst()
-		   	})
-	    },
-    	function (err) {
+				callbackwhilst()
+			 	})
+		    			
+    		}], function (err, result) {
+   
+		})},
+    function (err) {
 			console.vlog("DEBUG: worker "+process["pid"]+": exiting")
 			process.exit()
 		})
@@ -105,7 +106,8 @@ if (cluster.isMaster)
 	var folds = 10
 	var stat = {}
 
-	var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase']
+	var classifiers = [ 'Natural', 'Google', 'Microsoft', 'Yandex']
+	// var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase']
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	//var classifiers = [ 'Natural','Natural_trans']
 	
