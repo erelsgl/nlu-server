@@ -52,10 +52,9 @@ if (cluster.isWorker)
 			if (index < 10) index +=1
 			else index += 5
 	
-    			var mytrain = train.slice(0, index)
-
+    		var mytrain = train.slice(0, index)
 			var mytrainex = JSON.parse(JSON.stringify(mytrain))
-    			var mytestex = JSON.parse(JSON.stringify(test))
+    		var mytestex = JSON.parse(JSON.stringify(test))
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+_.flatten(mytrainex).length+
