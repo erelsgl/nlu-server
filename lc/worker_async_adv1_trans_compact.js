@@ -69,8 +69,18 @@ process.on('message', function(message) {
     		function(mytrainex, mytestex, trainsize, callback) {
 
 			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filter_Quit_Greet":true, "filter":true})
+	
+		var baseline_cl = classifiers.Natural
+
+		if (classifier.indexOf("25")!=-1)
+                     baseline_cl = classifiers.NLU_Emb_25
+                else if (classifier.indexOf("50")!=-1)
+                     baseline_cl = classifiers.NLU_Emb_50
+                else if (classifier.indexOf("100")!=-1)
+                     baseline_cl = classifiers.NLU_Emb_100
+                
 	    	// trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
-    		trainAndTest.trainAndTest_async(classifiers.Natural, bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
+    		trainAndTest.trainAndTest_async(baseline_cl, bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
 
 		    	console.vlog("DEBUG: worker "+process["pid"]+": traintime="+
 		    		stats['traintime']/1000 + " testtime="+ 
@@ -107,7 +117,8 @@ if (cluster.isMaster)
 	var folds = 10
 	var stat = {}
 
-	var classifiers = [ 'Natural', 'Balanced', 'Natural_Trans_Microsoft', 'Balanced_Trans_Microsoft', 'Natural_Trans_All', 'Balanced_Trans_All']
+	var classifiers = [ 'Natural', 'Balanced', 'Balanced_Embed_25', 'Balanced_Embed_50', 'Balanced_Embed_100']
+	//var classifiers = [ 'Natural', 'Balanced', 'Natural_Trans_Microsoft', 'Balanced_Trans_Microsoft', 'Natural_Trans_All', 'Balanced_Trans_All']
 	//var classifiers = [ 'Natural', 'Biased_no_rephrase', 'Trans_Google', 'Trans_Microsoft', 'Trans_Yandex']
 	// var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase']
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
