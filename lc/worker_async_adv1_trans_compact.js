@@ -56,9 +56,10 @@ process.on('message', function(message) {
 				" classifier="+classifier+ " fold="+fold)
 
 			switch(classifier) {
-				case "Trans_Google": callbacks(null, bars.gettrans(mytrainex, "G:.*:G"), mytestex, mytrainex.length); break;
-				case "Trans_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
-				case "Trans_Yandex": callbacks(null, bars.gettrans(mytrainex, "Y:.*:Y"), mytestex, mytrainex.length); break;
+				case "Natural_Trans_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
+				case "Balanced_Trans_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
+				case "Natural_Trans_All": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
+				case "Balanced_Trans_All": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
 				case "Oversampled": callbacks(null, bars.oversample(bars.copyobj(mytrainex)), mytestex, mytrainex.length); break;
 				case "Undersampled": callbacks(null, bars.undersample(bars.copyobj(mytrainex)), mytestex, mytrainex.length); break;
 				default:
@@ -106,7 +107,8 @@ if (cluster.isMaster)
 	var folds = 10
 	var stat = {}
 
-	var classifiers = [ 'Natural', 'Biased_no_rephrase', 'Trans_Google', 'Trans_Microsoft', 'Trans_Yandex']
+	var classifiers = [ 'Natural', 'Balanced', 'Natural_Trans_Microsoft', 'Balanced_Trans_Microsoft', 'Natural_Trans_All', 'Balanced_Trans_All']
+	//var classifiers = [ 'Natural', 'Biased_no_rephrase', 'Trans_Google', 'Trans_Microsoft', 'Trans_Yandex']
 	// var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase']
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	//var classifiers = [ 'Natural','Natural_trans']
@@ -156,7 +158,7 @@ if (cluster.isMaster)
 					train = bars.copyobj(train2sam)
 				else if (classifier == "Biased_no_rephrase")
 					train = bars.copyobj(train2sam_no_reph)	
-				else if (classifier.indexOf("Trans")!=-1)
+				else if (classifier.indexOf("Balance")!=-1)
 					train = bars.copyobj(train2sam_no_reph)		
 				else
 					train = bars.copyobj(data.test)
