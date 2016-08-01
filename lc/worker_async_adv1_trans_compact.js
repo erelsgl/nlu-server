@@ -24,8 +24,8 @@ process.on('message', function(message) {
 	var test  = bars.processdataset(_.flatten(JSON.parse(message['test'])), {"intents":true, "filter": false, "filter_Quit_Greet":true})
 	var train = bars.processdataset(_.flatten(JSON.parse(message['train'])), {"intents":true, "filter": true, "filter_Quit_Greet":true})
 
-	_.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"] }, this)
-	_.each(test, function(turn, key, list){ delete test[key]["input"]["sentences"] }, this)
+//	_.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"] }, this)
+//	_.each(test, function(turn, key, list){ delete test[key]["input"]["sentences"] }, this)
 
 	var max = 60
 
