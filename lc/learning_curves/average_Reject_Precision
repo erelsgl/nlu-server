@@ -1,43 +1,19 @@
-<<<<<<< HEAD
-size	dial	Natural	NLU_Tran_Yandex_Google	NLU_Tran_Yandex_Microsoft	NLU_Tran_Microsoft_Yandex	NLU_Tran_Microsoft_Google	NLU_Tran_All
-1	1	null	null	null	null	null	null
-2	2	null	null	null	null	null	null
-3	3	null	null	null	null	null	null
-4	4	null	null	null	null	null	null
-5	5	null	null	null	null	null	null
-6	6	null	null	null	null	null	null
-7	7	null	null	null	null	null	null
-8	8	null	null	null	null	null	null
-9	9	null	null	null	null	null	null
-10	10	null	null	null	null	null	null
-15	15	null	null	null	null	null	null
-20	20	null	null	null	null	null	null
-25	25	null	null	null	null	null	null
-30	30	null	null	null	null	null	null
-35	35	null	null	null	0.49802488500074604	null	0.5344764725081458
-40	40	null	null	null	0.5138497609577539	null	0.5525418760796662
-45	45	null	null	null	0.5351889568338508	0.5339826957128468	0.5573074295312666
-50	50	null	null	null	0.5224548943531762	0.5182080717331605	0.5511654050372978
-=======
-size	dial	Natural	Undersampled	Oversampled	Biased_with_rephrase	Biased_no_rephrase
-1	1	null	null	null	null	null
-2	2	null	null	null	null	null
-3	3	null	null	null	null	null
-4	4	null	null	null	null	null
-5	5	null	null	null	null	null
-6	6	null	null	null	null	null
-7	7	null	null	null	null	null
-8	8	null	null	null	null	null
-9	9	null	null	null	null	null
-10	10	null	null	null	null	null
-15	15	null	null	null	null	null
-20	20	null	null	null	null	null
-25	25	null	null	null	null	null
-30	30	null	null	null	null	null
-35	35	null	null	null	null	null
-40	40	null	null	null	null	0.6069537424513061
-45	45	null	null	null	null	0.6100407435643384
-50	50	null	null	null	0.55655498717198	0.6144482786662819
-55	55	0.5892548631805758	0.5255933204751557	0.5902917087936441	0.5696022471814873	0.6218605262337351
-60	60	0.5713266227679206	0.5257605046165457	0.5724334277276667	0.5659038752503249	0.6271614940860522
->>>>>>> f0de7826a09f7aed5158288a9cd079b26c4afd79
+size	dial	Natural	NLU_Tran_Yandex_Google	NLU_Tran_Yandex_Microsoft	NLU_Tran_Microsoft_Yandex	NLU_Tran_Microsoft_Google	NLU_Tran_All	Google	Yandex
+1	1	null	null	null	null	null	null	null	null
+2	2	null	null	null	null	null	null	null	null
+3	3	null	null	null	null	null	null	null	null
+4	4	null	null	null	null	null	null	null	null
+5	5	null	null	null	null	null	null	null	null
+6	6	null	null	null	null	null	null	null	null
+7	7	null	null	null	null	null	null	null	null
+8	8	null	null	null	null	null	null	null	null
+9	9	null	null	null	null	null	null	null	null
+10	10	null	null	null	null	null	null	null	null
+15	15	null	null	null	null	null	null	null	null
+20	20	null	null	null	null	null	null	null	null
+25	25	null	null	null	null	null	null	null	null
+30	30	null	null	null	null	null	null	null	null
+35	35	null	null	null	0.49802488500074604	null	0.5344764725081458	null	null
+40	40	null	null	null	0.5138497609577539	null	0.5525418760796662	null	null
+45	45	null	null	null	0.5351889568338508	0.5339826957128468	0.5573074295312666	null	null
+50	50	null	null	null	0.5224548943531762	0.5182080717331605	0.5511654050372978	null	null
