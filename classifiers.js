@@ -1559,7 +1559,8 @@ function feNeg(sample, features, train, featureOptions, callback) {
 	var word_lemma = {}
 
 	_.each(samplecopy['sentences']['tokens'], function(token, key, list){
-		word_lemma[token.word.toLowerCase()] = token.lemma.toLowerCase()
+		// word_lemma[token.word.toLowerCase()] = token.lemma.toLowerCase()
+		word_lemma[token.word.toLowerCase()] = token.word.toLowerCase()
 	}, this)
 
 	_.each(samplecopy['sentences']['basic-dependencies'], function(dep, key, list){
@@ -1917,7 +1918,7 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	//var lemfil = ['be']
 	var lemfil = []
 
-	featureOptions["toextract"] = "lemma"
+	featureOptions["toextract"] = "word"
 
 	if (!('toextract' in featureOptions))
 	           throw new Error("toextract is not defined")
