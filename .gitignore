@@ -1,6 +1,7 @@
 utils/keys.json
 lc/status
 /build
+/logs
 *.seed
 *.out
 *.pid
