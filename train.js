@@ -43,7 +43,7 @@ var make_tr_fix = false
 var check_ration_all = false
 
 
-var embedproc = true
+var embedproc = false
 
 var extractbyid = false
 // number of human utterances
@@ -52,7 +52,7 @@ var check_human = false
 var check_intent_issue_dst = false
 
 
-
+var check_num_dial_utt = true
 
 // check rephrase strategies
 var check_version4 = false
@@ -396,6 +396,17 @@ if (make_tr)
 
 	console.log(JSON.stringify(data, null, 4))
 	process.exit(0)	
+}
+
+if (check_num_dial_utt)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
+	var utterset = bars.getsetcontext(data, false)
+	var dialogues = utterset["test"].concat(utterset["train"])
+
+	console.log(dialogues.length)
+	console.log(_.flatten(dialogues).length)
+	process.exit(0)
 }
 
 if (make_tr_fix)
