@@ -39,7 +39,9 @@ process.on('message', function(message) {
 	    async.waterfall([
     	function(callbacks) {
 
-			if (index<10)
+			if (index < 5)
+			{ index +=1 }
+			else if (index<10)
 			{ index += 5} 
 			else if (index<20)
 			{ index += 5 }
@@ -58,6 +60,10 @@ process.on('message', function(message) {
 			switch(classifier) {
 				case "Natural_Trans_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
 				case "Balanced_Trans_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
+				case "Balanced_Trans_Microsoft_Google": callbacks(null, bars.gettrans(mytrainex, "M:.*:G"), mytestex, mytrainex.length); break;
+				case "Balanced_Trans_Google_Microsoft": callbacks(null, bars.gettrans(mytrainex, "G:.*:M"), mytestex, mytrainex.length); break;
+				case "Balanced_Trans_Yandex_Microsoft": callbacks(null, bars.gettrans(mytrainex, "Y:.*:M"), mytestex, mytrainex.length); break;
+				case "Balanced_Trans_Microsoft_Yandex": callbacks(null, bars.gettrans(mytrainex, "M:.*:Y"), mytestex, mytrainex.length); break;
 				case "Natural_Trans_All": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
 				case "Balanced_Trans_All": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
 				case "Oversampled": callbacks(null, bars.oversample(bars.copyobj(mytrainex)), mytestex, mytrainex.length); break;
@@ -117,7 +123,9 @@ if (cluster.isMaster)
 	var folds = 10
 	var stat = {}
 
-	var classifiers = [ 'Natural', 'Balanced', 'Balanced_Embed_25', 'Balanced_Embed_50', 'Balanced_Embed_100']
+	var classifiers = [ 'Natural', 'Balanced', 'Balanced_Trans_Microsoft',  "Balanced_Trans_Yandex_Microsoft", "Balanced_Trans_Microsoft_Yandex", "Balanced_Trans_All"]
+	//var classifiers = [ 'Natural', 'Balanced', 'Balanced_Trans_Microsoft', "Balanced_Trans_Microsoft_Google", "Balanced_Trans_Google_Microsoft", "Balanced_Trans_Yandex_Microsoft", "Balanced_Trans_Microsoft_Yandex"]
+	//var classifiers = [ 'Natural', 'Balanced', 'Balanced_Embed_25', 'Balanced_Embed_50', 'Balanced_Embed_100']
 	//var classifiers = [ 'Natural', 'Balanced', 'Natural_Trans_Microsoft', 'Balanced_Trans_Microsoft', 'Natural_Trans_All', 'Balanced_Trans_All']
 	//var classifiers = [ 'Natural', 'Biased_no_rephrase', 'Trans_Google', 'Trans_Microsoft', 'Trans_Yandex']
 	// var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase']
@@ -170,7 +178,10 @@ if (cluster.isMaster)
 				else if (classifier == "Biased_no_rephrase")
 					train = bars.copyobj(train2sam_no_reph)	
 				else if (classifier.indexOf("Balance")!=-1)
-					train = bars.copyobj(train2sam_no_reph)		
+					{
+					console.mlog("DEBUGMASTER: classifier: "+classifier+" its balanced")
+					train = bars.copyobj(train2sam_no_reph)
+					}		
 				else
 					train = bars.copyobj(data.test)
 
