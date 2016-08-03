@@ -10,7 +10,7 @@ set key autotitle columnhead
 set key font ",25"
 set ytics 0,0.1,1
 set xtics nomirror
-set tics font ", 23"
+set tics font ", 20"
 #set xtics rotate by -90
 set autoscale xfix
 #set xlabel 'Utterances'
