@@ -136,7 +136,7 @@ if (cluster.isWorker)
 			if (classifier.indexOf("Emb")!=-1)
 				var baseline_cl = classifiers[classifier]
 			else
-				var baseline_cl = classifiers.Natural
+				var baseline_cl = classifiers.Natural_Neg
 
     			trainAndTest.trainAndTest_async(baseline_cl, bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
     			//trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
