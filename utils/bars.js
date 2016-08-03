@@ -3455,6 +3455,27 @@ function onlyunigrams(strhash)
     return c
   }
 
+function vectorextremum(a, b)
+  {
+    if (a.length != b.length)
+    {
+      console.error("The length is different "+a.length+" "+b.length)
+      process.exit(0)
+    }
+
+    var c = []
+
+    _(a.length).times(function(n){
+      if (Math.abs(a[n]) > Math.abs(b[n]))
+        c.push(a[n])
+      else
+        c.push(b[n])
+
+    })
+    return c
+  }
+
+
   // leave only unique coordinates
   function uniquecoord(actual)
   {
@@ -5654,6 +5675,29 @@ function ran(ranges)
   }
 }
 
+function vecsumaverage(matrix)
+{
+  var resultvec = Array.apply(null, Array(matrix[0].length)).map(function () { return 0})
+
+  _.each(matrix, function(value, key, list){ 
+      resultvec = vectorsum(resultvec, value)
+  }, this)
+
+  return _.map(resultvec, function(value){ return value/resultvec.length })
+}
+
+function vecextremum(matrix)
+{
+  var resultvec = Array.apply(null, Array(matrix[0].length)).map(function () { return 0})
+
+  _.each(matrix, function(value, key, list){ 
+      resultvec = vectorextremum(resultvec, value)
+  }, this)
+
+  return resultvec
+}
+
+
 module.exports = {
   parseoutput:parseoutput,
   simulaterealds:simulaterealds,
@@ -5793,5 +5837,8 @@ cleanoutput:cleanoutput,
 bleu_nist:bleu_nist,
 convertObject:convertObject,
 compactStats: compactStats,
-ran:ran
+ran:ran,
+vecsumaverage:vecsumaverage,
+vectorextremum:vectorextremum,
+vecextremum:vecextremum
 }
