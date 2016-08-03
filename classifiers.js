@@ -174,7 +174,7 @@ function getRule(sen)
 		  // 'Leased Car': [['without','Without leased car'], ['with', 'With leased car'], ['agreement','No agreement']]
 		}
 
-	var arAttrVal = ['salary','pension','fund','promotion','possibilities','working','hours','hour',
+	var arAttrVal = ['000','salary','pension','fund','promotion','possibilities','working','hours','hour',
 					'job','description','60000','90000','120000','usd','fast','slow','track','8','9','10',
 					'qa','programmer','team','project','manager','car','leased','with','without','agreement',
 					'0%','10%','15%','20%', 'no agreement', 'no car','position','workday']
@@ -1661,8 +1661,8 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 //	if (context.length == 0)
 //		features['NO_CONTEXT'] = 1
 	
-//	console.vlog("DEBUGCONTEXT: text : "+ sample.text)	
-//	console.vlog("DEBUGCONTEXT: context " + JSON.stringify(context) + " train "+train+" featureOptions "+JSON.stringify(featureOptions))
+	console.vlog("DEBUGCONTEXT: text : "+ sample.text)	
+	console.vlog("DEBUGCONTEXT: context " + JSON.stringify(context) + " train "+train+" featureOptions "+JSON.stringify(featureOptions))
 
 	// var attrval = rules.findData(sentence)
 	// attrval[0] - attrs
@@ -1676,11 +1676,10 @@ function feContext(sample_or, features, train, featureOptions, callback) {
         if (!_.isArray(sample['sentences']))
                 sample['sentences'] = [sample['sentences']]
 
-
 	var intents = []
 	var values = [] 
 
-//	console.vlog("DEBUGCONTEXT: labels of the sample "+JSON.stringify(attrval))
+	console.vlog("DEBUGCONTEXT: labels of the sample "+JSON.stringify(attrval))
 	
 	 if (attrval[0].length > 0)	
                 features['THERE_IS_ATTRIBUTES'] = 1
@@ -1759,8 +1758,7 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 
 	// features['END'] = 1
 
-//	console.vlog("DEBUGCONTEXT: " + JSON.stringify(features))
-	
+	console.vlog("DEBUGCONTEXT: " + JSON.stringify(features))	
 	callback(null, features)
 }
 
