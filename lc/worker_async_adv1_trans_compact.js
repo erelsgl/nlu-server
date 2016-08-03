@@ -40,9 +40,9 @@ process.on('message', function(message) {
     	function(callbacks) {
 
 			if (index < 5)
-			{ index +=1 }
+			{ index +=5 }
 			else if (index<10)
-			{ index += 1} 
+			{ index += 5} 
 			else if (index<20)
 			{ index += 5 }
 			else index += 5
