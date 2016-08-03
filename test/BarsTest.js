@@ -16,6 +16,21 @@ var fs = require('fs');
 
 describe('Bars utilities', function() {
 
+	it('vecsumaverage', function() {
+		var res = bars.vecsumaverage([[1,1,1],[2,2,2],[3,3,3]])
+		_.isEqual(res, [2,2,2]).should.equal(true)
+	})
+
+	it('vectorextremum', function() {
+		var res = bars.vectorextremum([-7,0,6],[4,0,8])
+		_.isEqual(res, [-7,0,8]).should.equal(true)
+	})
+
+	it('vecextremum', function() {
+		var res = bars.vecextremum([[-7,0,6],[4,0,8],[10,0,-10]])
+		_.isEqual(res, [10,0,-10]).should.equal(true)
+	})
+
 	it('ran', function() {
 		var res = bars.ran([0.23,0.37,0.28,0.45])
 		console.log(JSON.stringify(res, null, 4))
