@@ -9,6 +9,7 @@ var partitions = require('limdu/utils/partitions');
 var gnuplot = 'gnuplot'
 
 console.vlog = function(data) { fs.appendFileSync("./logs/master", data + '\n', 'utf8') };
+console.mlog = function(data) { fs.appendFileSync("./logs/master", data + '\n', 'utf8') };
 
 // function groupbylabel(dataset, minsize, sizetrain, catnames)
 // {
@@ -144,7 +145,7 @@ function plot(fold, parameter, stat, baseline, sota)
 
     var command = gnuplot +" -e \"set title '"+corpus+" : "+sota+" - "+baseline+"'; set output 'lc/hm/"+fold+"_"+parameter+"_"+sota+"-"+baseline+".png'\" "+__dirname+"/hm.plot " + "-e \"plot \'"+mapfile+"\' using 2:1:3 with image \""
     
-    console.vlog(command)
+        console.mlog(command)
 	child_process.execSync(command)
 }
 
@@ -382,8 +383,8 @@ function plotlc(fold, parameter, stat)
 
 	var classifiers = output[0].slice(1)
 
-	console.vlog("OUTPUTDATA:")
-	console.vlog(JSON.stringify(output, null, 4))
+	console.mlog("OUTPUTDATA:")
+	console.mlog(JSON.stringify(output, null, 4))
 
 	var ranges = bars.copyobj(output)
 	ranges.splice(0,1)
@@ -392,8 +393,8 @@ function plotlc(fold, parameter, stat)
 
 	var string = getstringlc(output)
 	
-	console.vlog("OUTPUTSTRING:")
-	console.vlog(JSON.stringify(string, null, 4))
+	console.mlog("OUTPUTSTRING:")
+	console.mlog(JSON.stringify(string, null, 4))
 
 	var mapfile = __dirname+"/learning_curves/"+fold+"_"+bars.convertObject(parameter)
 	var ylabel = _.last(("_"+parameter).split("_"))
@@ -403,7 +404,7 @@ function plotlc(fold, parameter, stat)
 
     var command = gnuplot +" -e \"set ylabel '"+ylabel+"' font ',25' offset 0,0; set yrange ["+ran.min+":"+ran.max+"]; set output 'lc/learning_curves/"+fold+"_"+bars.convertObject(parameter)+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt i+1 ps 3\""
 //    var command = gnuplot +" -e \"set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3\""//, \'\' using 1:(NaN):x2tic(2) axes x2y1\"" 
-    console.vlog(command)
+    console.mlog(command)
 
 	try {
 		child_process.execSync(command)
