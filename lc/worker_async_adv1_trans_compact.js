@@ -17,7 +17,6 @@ process.on('message', function(message) {
 	
 	var classifier = process.env["classifier"]
 	var fold = process.env["fold"]
-	// var thread = process.env["thread"]
 
    	console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
