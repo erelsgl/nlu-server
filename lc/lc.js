@@ -373,7 +373,7 @@ function cleanFolder(dir)
 	}, this)
 }
 
-function plotlc(fold, parameter, stat)
+function plotlc(fold, parameter, stat, lcfolder)
 {
 
 	var pt = [1,1,1,5,7,9,11,13,15,6,8,10,12]	
@@ -397,13 +397,13 @@ function plotlc(fold, parameter, stat)
 	console.mlog("OUTPUTSTRING:")
 	console.mlog(JSON.stringify(string, null, 4))
 
-	var mapfile = __dirname+"/learning_curves/"+fold+"_"+bars.convertObject(parameter)
+	var mapfile = lcfolder+fold+"_"+bars.convertObject(parameter)
 	var ylabel = _.last(("_"+parameter).split("_"))
 
 	// fs.appendFileSync(plotfile, string)
     fs.writeFileSync(mapfile, string)
 
-    var command = gnuplot +" -e \"set ylabel '"+ylabel+"' font ',25' offset 0,0; set yrange ["+ran.min+":"+ran.max+"]; set output 'lc/learning_curves/"+fold+"_"+bars.convertObject(parameter)+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linestyle i-2\""
+    var command = gnuplot +" -e \"set ylabel '"+ylabel+"' font ',25' offset 0,0; set yrange ["+ran.min+":"+ran.max+"]; set output '"+lcfolder+fold+"_"+bars.convertObject(parameter)+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linestyle i-2\""
 
 //    var command = gnuplot +" -e \"set output 'lc/learning_curves/"+fold+"_"+parameter+".png'\" "+__dirname+"/lc.plot " + "-e \"plot for [i=3:"+(classifiers.length+2)+"] \'"+mapfile+"\' using 1:i:xtic(1) with linespoints linecolor i pt "+(fold == 'average' ? 0 : fold)+" ps 3\""//, \'\' using 1:(NaN):x2tic(2) axes x2y1\"" 
     console.mlog(command)
