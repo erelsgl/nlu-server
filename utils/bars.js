@@ -4469,7 +4469,7 @@ function gettrans(turns, pat)
 
   }, this)
 
-console.vlog("gettrans: output: " + JSON.stringify(output, null, 4))
+//console.vlog("gettrans: output: " + JSON.stringify(output, null, 4))
   console.vlog("gettrans: output.length: " + output.length)
 
   return output
