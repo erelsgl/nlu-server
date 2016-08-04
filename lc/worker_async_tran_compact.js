@@ -121,6 +121,9 @@ if (cluster.isWorker)
     				case "NLU_Oversample": callbacks(null, bars.oversample(mytrainex), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Oversample": callbacks(null, bars.tranoversam(mytrainex), mytestex, mytrainex.length); break;
 
+				case "NLU_Emb_Trans_Sum_100": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
+				case "NLU_Emb_Trans_Ext_100": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
+
     				default:
 						//mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
         				callbacks(null, mytrainex, mytestex, mytrainex.length)
@@ -181,7 +184,7 @@ if (cluster.isMaster)
 	bars.cleanFolder("./logs")
 
 	var folds = 10
-	var classifiers = [ "No_translations", "NLU_Tran_All", "NLU_Emb_Trans_Sum", "NLU_Emb_Trans_Ext" ]
+	var classifiers = [ "No_translations", "NLU_Tran_All", "NLU_Emb_Trans_Sum_100", "NLU_Emb_Trans_Ext_100" ]
 	//var classifiers = [ 'No_translations', "Google", "Microsoft", "Yandex" ]
 	//var classifiers = [ 'Natural', "NLU_Tran_Yandex_Google", "NLU_Tran_Yandex_Microsoft", "NLU_Tran_Microsoft_Yandex",
 	//			"NLU_Tran_Microsoft_Google", "NLU_Tran_All", "Google", "Yandex"]
