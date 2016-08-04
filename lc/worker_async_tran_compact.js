@@ -12,7 +12,7 @@ var util = require('util');
 var fold = process.env["fold"]
 // var folds = process.env["folds"]
 var classifier = process.env["classifier"]
-var thread = process.env["thread"]
+var lcfolder = __dirname + "/learning_curves_trans/"
 
 console.vlog = function(data) { fs.appendFileSync("./logs/" + process.pid, data + '\n', 'utf8') };
 console.mlog = function(data) { fs.appendFileSync("./logs/master", data + '\n', 'utf8') };
@@ -177,7 +177,7 @@ if (cluster.isMaster)
 {
 	var stat = {}
 
-	bars.cleanFolder(__dirname + "/learning_curves")
+	bars.cleanFolder(lcfolder)
 	bars.cleanFolder("./logs")
 
 	var folds = 10
@@ -226,7 +226,7 @@ if (cluster.isMaster)
 				//disc += 1
 			  	//if (Object.keys(cluster.workers).length == 1)
 			  	_.each(stat, function(data, param, list){
-					lc.plotlc('average', param, stat)
+					lc.plotlc('average', param, stat, lcfolder)
 				})
 				console.mlog(JSON.stringify(stat, null, 4))
 			})
