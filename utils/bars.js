@@ -3837,6 +3837,30 @@ function cleanoutput(dataset)
   return output
 }
 
+
+function cleanRecord(record)
+{
+  var recordCopy = copyobj(record)
+  if ("input" in recordCopy)
+  {
+    if ("sentences" in recordCopy["input"])
+    {
+      delete recordCopy["input"]["sentences"]["basic-dependencies"]
+      delete recordCopy["input"]["sentences"]["collapsed-dependencies"]
+      delete recordCopy["input"]["sentences"]["collapsed-ccprocessed-dependencies"]
+    }
+  }
+  else
+  {
+    if ("sentences" in recordCopy)
+    {
+      delete recordCopy["sentences"]["basic-dependencies"]
+      delete recordCopy["sentences"]["collapsed-dependencies"]
+      delete recordCopy["sentences"]["collapsed-ccprocessed-dependencies"]
+    }
+  }
+  return recordCopy
+}
 // concatenate sentences
 // filter multi - label utterances
 // convert output
@@ -5840,5 +5864,6 @@ compactStats: compactStats,
 ran:ran,
 vecsumaverage:vecsumaverage,
 vectorextremum:vectorextremum,
-vecextremum:vecextremum
+vecextremum:vecextremum,
+cleanRecord:cleanRecord
 }
