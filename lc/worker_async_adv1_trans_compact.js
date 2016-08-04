@@ -8,6 +8,7 @@ var trainAndTest = require(__dirname+'/../utils/trainAndTest');
 var bars = require(__dirname+'/../utils/bars');
 var lc = require(__dirname+'/lc');
 var util = require('util');
+var lcfolder = __dirname + "/learning_curves/"
 
 console.vlog = function(data) { fs.appendFileSync( "./logs/" + process.pid, data + '\n', 'utf8') };
 console.mlog = function(data) { fs.appendFileSync("./logs/master", data + '\n', 'utf8') };
@@ -116,7 +117,7 @@ process.on('message', function(message) {
 
 if (cluster.isMaster)
 {
-	lc.cleanFolder(__dirname + "/learning_curves")
+	lc.cleanFolder(lcfolder)
 	lc.cleanFolder("./logs")
 	
 	var folds = 10
@@ -213,7 +214,7 @@ if (cluster.isMaster)
 		}, this)
 	}, function(){
 		_.each(stat, function(data, param, list){
-			lc.plotlc('average', param, stat)
+			lc.plotlc('average', param, stat, lcfolder)
 		})
 
 		console.mlog(JSON.stringify(stat, null, 4))
