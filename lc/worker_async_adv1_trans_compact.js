@@ -65,6 +65,8 @@ process.on('message', function(message) {
 				case "Balanced_Trans_Yandex_Microsoft": callbacks(null, bars.gettrans(mytrainex, "Y:.*:M"), mytestex, mytrainex.length); break;
 				case "Balanced_Trans_Microsoft_Yandex": callbacks(null, bars.gettrans(mytrainex, "M:.*:Y"), mytestex, mytrainex.length); break;
 				case "Natural_Trans_All": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
+				case "NLU_Emb_Trans_Sum_100": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
+				case "NLU_Emb_Trans_Ext_100": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
 				case "Balanced_Trans_All": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
 				case "Oversampled": callbacks(null, bars.oversample(bars.copyobj(mytrainex)), mytestex, mytrainex.length); break;
 				case "Undersampled": callbacks(null, bars.undersample(bars.copyobj(mytrainex)), mytestex, mytrainex.length); break;
@@ -76,15 +78,24 @@ process.on('message', function(message) {
 
 			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filter_Quit_Greet":true, "filter":true})
 	
-		var baseline_cl = classifiers.Natural
+		var baseline_cl = classifiers.Natural_Neg
 
-		if (classifier.indexOf("25")!=-1)
+/*		if (classifier.indexOf("25")!=-1)
                      baseline_cl = classifiers.NLU_Emb_25
                 else if (classifier.indexOf("50")!=-1)
                      baseline_cl = classifiers.NLU_Emb_50
                 else if (classifier.indexOf("100")!=-1)
                      baseline_cl = classifiers.NLU_Emb_100
-                
+*/  
+
+		if (classifier.indexOf("Emb")!=-1)
+		{
+
+			if (!(classifier in classifiers))
+				throw new Error(classifier+"not in classifiers")
+			else	
+				baseline_cl = classifiers[classifier]
+              	}
 	    	// trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
     		trainAndTest.trainAndTest_async(baseline_cl, bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
 
@@ -126,9 +137,9 @@ if (cluster.isMaster)
 	//var classifiers = [ 'Natural', 'Balanced', 'Balanced_Trans_Microsoft',  "Balanced_Trans_Yandex_Microsoft", "Balanced_Trans_Microsoft_Yandex", "Balanced_Trans_All"]
 	//var classifiers = [ 'Natural', 'Balanced', 'Balanced_Trans_Microsoft', "Balanced_Trans_Microsoft_Google", "Balanced_Trans_Google_Microsoft", "Balanced_Trans_Yandex_Microsoft", "Balanced_Trans_Microsoft_Yandex"]
 	//var classifiers = [ 'Natural', 'Balanced', 'Balanced_Embed_25', 'Balanced_Embed_50', 'Balanced_Embed_100']
-	//var classifiers = [ 'Natural', 'Balanced', 'Natural_Trans_Microsoft', 'Balanced_Trans_Microsoft', 'Natural_Trans_All', 'Balanced_Trans_All']
+	var classifiers = [ 'Natural', 'Balanced', 'Balanced_Trans_All', 'NLU_Emb_Trans_Sum_100', 'NLU_Emb_Trans_Ext_100']
 	//var classifiers = [ 'Natural', 'Biased_no_rephrase', 'Trans_Google', 'Trans_Microsoft', 'Trans_Yandex']
-	var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase']
+	//var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase']
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	//var classifiers = [ 'Natural','Natural_trans']
 	
