@@ -13,7 +13,7 @@ size	dial	No_translations	NLU_Tran_All	NLU_Emb_Trans_Sum	NLU_Emb_Trans_Ext
 20	20	null	null	null	null
 25	25	null	null	null	null
 30	30	null	null	null	null
-35	35	null	null	null	null
-40	40	null	null	null	null
-45	45	null	null	null	0.6145325677510043
-50	50	null	null	null	null
+35	35	null	0.5241018537798875	null	null
+40	40	null	0.5502023878388439	null	null
+45	45	null	0.5686364738139	null	0.6145325677510043
+50	50	null	0.5578145205782421	null	0.6203165595873879
