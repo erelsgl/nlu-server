@@ -98,7 +98,7 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 function getRule(sen)
 {
 
-	console.vlog("getRule input:" +JSON.stringify(sen, null, 4))
+//	console.vlog("getRule input:" +JSON.stringify(sen, null, 4))
 
 	if (!('tokens' in sen))
 		{
@@ -1911,7 +1911,7 @@ function feAsyncPrimitiveClean(sam, features, train, featureOptions, callback) {
 function feAsyncStanford(sam, features, train, featureOptions, callback) {
 
 	var sample = JSON.parse(JSON.stringify(sam))
-	console.vlog("SAMPLE:"+ JSON.stringify(sample, null, 4))
+//	console.vlog("SAMPLE:"+ JSON.stringify(sample, null, 4))
 	//var filtr = ["PRP","IN","CC","DT","PRP$","TO"]
 	var filtr = []
 	//var lemfil = ['be']
@@ -1925,7 +1925,7 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	if ("input" in sample)
 		sample = sample.input
 	
-	console.vlog("TEXT:"+ sample.text)
+	//console.vlog("TEXT:"+ sample.text)
 
 	if (!('sentences' in sample))
 	   throw new Error("for some reason sentences not in sample "+JSON.stringify(sample))
@@ -2451,13 +2451,13 @@ module.exports = {
 		NLU_Emb_Trans_50: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feNeg, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'embdeddb': 8, 'aggregate':'average', 'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true, }),
 		NLU_Emb_Trans_25: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feNeg, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'embdeddb': 7, 'aggregate':'average', 'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true, }),
 		NLU_Emb_Trans_100: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feNeg, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true, }),
-		NLU_Emb_Trans_Sum_100: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feNeg, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'operation':'sum', 'embdeddb': 9, 'aggregate':'average', 'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true, }),
-		NLU_Emb_Trans_Ext_100: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feNeg, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'operation':'extremum', 'embdeddb': 9, 'aggregate':'average', 'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true, }),
+		NLU_Emb_Trans_Sum_100: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'operation':'sum', 'embdeddb': 9, 'aggregate':'average', 'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true, }),
+		NLU_Emb_Trans_Ext_100: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'operation':'extremum', 'embdeddb': 9, 'aggregate':'average', 'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true, }),
 		
 		//Natural: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		Component: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		Natural: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
-		Natural_Neg: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feNeg, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
+		Natural_Neg: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		Natural_trans: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		Natural_no_con: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		Oversampled: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
