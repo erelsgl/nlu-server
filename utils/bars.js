@@ -4453,49 +4453,47 @@ function oversample(turns)
 function gettrans(turns, pat)
 {
   var output = []
-  // var ln = ['de','fr','es','pt']
   var regex =  new RegExp(pat)
 
   console.vlog("gettrans: input.length: " + turns.length)
   //console.vlog("gettrans: input.length: " + JSON.stringify(turns, null, 4))
 
   _.each(turns, function(turn, key, list){
-    console.vlog("gettrans: add: " + _.keys(turn["input"]["trans"]).length)
-  	if (turn["output"].length > 0)
+  	
+    if (turn["output"].length > 0)
 	  _.each(turn["input"]["trans"], function(tran, key, list){
 
-	var proc = regex.test(key)
-  //	console.vlog("gettrans: key: " + key + " proc: "+proc+ " pat: "+pat)
-  if (proc)
-	{
-  	console.vlog("gettrans: add: "+key)
-          var record= copyobj(turn)
-		record["input"]["text"] = tran
-		delete record["input"]["sentences"]
-		delete record["input"]["trans"]
-		_.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json")));
-	
-	output.push(record)
-	
-	}
+  	  var proc = regex.test(key)
+
+      var l1 = key.substr(0,1)
+      var l2 = key.substr(-1,1)
+
+      if (proc && (l1!=l2))
+  	  {
+        console.vlog("gettrans: add: "+key)
+        var record= copyobj(turn)
+  		  record["input"]["text"] = tran
+  		  delete record["input"]["sentences"]
+  		  delete record["input"]["trans"]
+  		  _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json")));
+  	    output.push(record)
+  	  }
 
     }, this)
     
-	
     output.push({
              'input': {'text': turn.input.text,
-			'sentences': turn.input.sentences,
+	         	 'sentences': turn.input.sentences,
 			       'context': turn.input.context},
              'output': JSON.parse(JSON.stringify(turn.output)),
              'outputhash': JSON.parse(JSON.stringify(turn.outputhash))
 //            'context': JSON.parse(JSON.stringify(turn.context)),
-    })
-
+      })
   }, this)
 
-//console.vlog("gettrans: output: " + JSON.stringify(output, null, 4))
-  console.vlog("gettrans: output.length: " + output.length)
-
+  console.vlog("gettrans: output.length: " + output.length)  
+  console.vlog(JSON.stringify(output, null, 4))
+  
   return output
 }
 
