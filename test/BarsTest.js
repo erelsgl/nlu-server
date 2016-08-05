@@ -17,8 +17,8 @@ var fs = require('fs');
 describe('Bars utilities', function() {
 
 	it('vecsumaverage', function() {
-		var res = bars.vecsumaverage([[1,1,1],[2,2,2],[3,3,3]])
-		_.isEqual(res, [2,2,2]).should.equal(true)
+		var res = bars.vecsumaverage([[1,1,1,5],[2,2,2,4],[3,3,3,0]])
+		_.isEqual(res, [2,2,2,3]).should.equal(true)
 	})
 
 	it('vectorextremum', function() {
