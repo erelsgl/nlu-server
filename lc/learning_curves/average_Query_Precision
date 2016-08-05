@@ -1,4 +1,4 @@
-size	dial	Natural	Balanced	Balanced_Trans_All	NLU_Emb_Trans_Sum_100	NLU_Emb_Trans_Ext_100
+size	dial	Natural	Undersampled	Oversampled	Biased_with_rephrase	Biased_no_rephrase
 5	5	null	null	null	null	null
 10	10	null	null	null	null	null
 15	15	null	null	null	null	null
