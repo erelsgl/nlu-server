@@ -1298,36 +1298,23 @@ function feWordnet(sample, features, train, featureOptions, callback) {
 
 function feEmbed(sample, features, train, featureOptions, callback) {
 
+	var bars = require('./utils/bars')
 	console.vlog("DEBUGEMBED: sample: "+JSON.stringify(features, null, 4))
 
-	if (featureOptions.unigrams || featureOptions.root)
-	{
-		if (!("input" in sample))
+	if (!("input" in sample))
 		{
 			var temp = JSON.parse(JSON.stringify(sample))
 			var sample ={'input':temp}	
 		}
-	}
-
+	
 	if (!('operation' in featureOptions)) throw new Error("operation is not in the featureOptions")
 
 	if (["sum", "extremum"].indexOf(featureOptions.operation)==-1)
 		throw new Error("unknown value for featureOptions.operation")		
-//	if (!('root' in featureOptions)) throw new Error("root is not in the featureOptions")
-	// if (!('sentences' in sample['input'])) throw new Error("sentences not in the sample")
 
-	var bars = require('./utils/bars')
 	var embFeatures = {}
 	var embs = []
 
-/*	if (featureOptions['root'] == true)
-	{
-		_.each(sample['input']['sentences']['basic-dependencies'], function(dep, key, list){
-			if (dep.dep == "ROOT")
-				embFeatures["ROOT_"+dep.dependentGloss.toLowerCase()] = 1
-		}, this)	
-	}
-*/
 	if (_.keys(features).length == 0)
 		callback(null, {})
 	
@@ -1540,7 +1527,7 @@ function feSplitted(sample, features, train, featureOptions, callback) {
 }
 */
 
-function feNeg(sample, features, train, featureOptions, callback) {
+/*function feNeg(sample, features, train, featureOptions, callback) {
 
 	var sentence = ""
 
@@ -1581,7 +1568,7 @@ function feNeg(sample, features, train, featureOptions, callback) {
 	}, this)
 	callback(null, features)
 }
-
+*/
 function feSentiment(sample, features, train, featureOptions, callback) {
 
 	var sentence = ""
@@ -1910,23 +1897,17 @@ function feAsyncPrimitiveClean(sam, features, train, featureOptions, callback) {
 
 function feAsyncStanford(sam, features, train, featureOptions, callback) {
 
-	var sample = JSON.parse(JSON.stringify(sam))
-//	console.vlog("SAMPLE:"+ JSON.stringify(sample, null, 4))
-	//var filtr = ["PRP","IN","CC","DT","PRP$","TO"]
-	var filtr = []
-	//var lemfil = ['be']
-	var lemfil = []
-
-	featureOptions["toextract"] = "lemma"
+	var sample = bars.copyobj(sam)
 
 	if (!('toextract' in featureOptions))
-	           throw new Error("toextract is not defined")
+	    throw new Error("toextract is not defined")
 
 	if ("input" in sample)
 		sample = sample.input
-	
-	//console.vlog("TEXT:"+ sample.text)
 
+	if (!('basic-dependencies' in sample['sentences']))
+		throw new Error("basic-dependencies not in the sample")
+	
 	if (!('sentences' in sample))
 	   throw new Error("for some reason sentences not in sample "+JSON.stringify(sample))
 
@@ -1936,22 +1917,16 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	if (_.isArray(sample['sentences']))
 	   throw new Error("feAsync is only for object sentences")
 
-	// clean the parse tree from attr and values 
+	var word_lemma = {}
+	_.each(sample['sentences']['tokens'], function(token, key, list){
+		word_lemma[token.word.toLowerCase()] = {
+									"lemma":token.lemma.toLowerCase(),
+									"word":token.word.toLowerCase()
+								}
+	}, this)
+
 	sample.sentences = getRule(sample.sentences).cleaned
-
-	// console.log(JSON.stringify("CLEANED", null, 4))
-	// console.log(JSON.stringify(sample.sentences, null, 4))
-
-	// sentence = sentence.toLowerCase().trim()
-	// sentence = regexpNormalizer(sentence)
-	// var words = tokenizer.tokenize(sentence);
-
-	if (featureOptions.bigrams)
-	   throw new Error("this version doesn't support bigrams")
-
-	if (sample['sentences'].length>1)
-		throw new Error("feAsync: more than one sentence "+sample['sentences'].length)
-
+	
 	async.eachSeries(sample['sentences']['tokens'], function(token, callback_local) {
 
 		switch(featureOptions.toextract) {
@@ -1961,7 +1936,29 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
         }
     	
  	}, function(err){
-	        console.vlog("DEBUGASYNCSTANFORD:"+JSON.stringify(features, null, 4))
+
+ 		_.each(sample['sentences']['basic-dependencies'], function(dep, key, list){
+			if (dep.dep=="neg")
+			{
+			var word = dep.governorGloss.toLowerCase()
+			var negword = dep.dependentGloss.toLowerCase()
+
+			console.vlog("feNeg: "+word+" is negated "+negword+" is negation word")
+		
+				if (word in word_lemma)
+				{
+					delete features[word_lemma[negword][featureOptions.toextract]]
+					delete features[word_lemma[word][featureOptions.toextract]]
+					features[word_lemma[word][featureOptions.toextract]+"-"] =  1
+				}
+				else
+					throw new Error(word+" not in "+word_lemma)
+			}
+
+		}, this)
+	
+
+	    console.vlog("DEBUGASYNCSTANFORD:"+JSON.stringify(features, null, 4))
  		callback(null, features)
 	})
 }
@@ -2451,13 +2448,13 @@ module.exports = {
 		NLU_Emb_Trans_50: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feNeg, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'embdeddb': 8, 'aggregate':'average', 'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true, }),
 		NLU_Emb_Trans_25: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feNeg, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'embdeddb': 7, 'aggregate':'average', 'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true, }),
 		NLU_Emb_Trans_100: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feNeg, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'embdeddb': 9, 'aggregate':'average', 'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true, }),
-		NLU_Emb_Trans_Sum_100: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feNeg, feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'operation':'sum', 'embdeddb': 8, 'aggregate':'average', 'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true, }),
-		NLU_Emb_Trans_Ext_100: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feNeg, feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'operation':'extremum', 'embdeddb': 8, 'aggregate':'average', 'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true, }),
+		NLU_Emb_Trans_Sum_100: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'operation':'sum', 'embdeddb': 8, 'toextract':'word','unoffered':true, 'offered':false }),
+		NLU_Emb_Trans_Ext_100: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'operation':'extremum', 'embdeddb': 8, 'toextract':'word','unoffered':true, 'offered':false }),
 		
 		//Natural: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		Component: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		Natural: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
-		Natural_Neg: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feNeg], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
+		Natural_Neg: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':false}),
 		//Natural_trans: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		//Natural_no_con: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		//Oversampled: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
