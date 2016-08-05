@@ -5705,7 +5705,7 @@ function vecsumaverage(matrix)
       resultvec = vectorsum(resultvec, value)
   }, this)
 
-  return _.map(resultvec, function(value){ return value/resultvec.length })
+  return _.map(resultvec, function(value){ return value/matrix.length })
 }
 
 function vecextremum(matrix)
