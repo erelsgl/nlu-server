@@ -4468,7 +4468,8 @@ function gettrans(turns, pat)
       var l1 = key.substr(0,1)
       var l2 = key.substr(-1,1)
 
-      if (proc && (l1!=l2))
+      //if (proc && (l1!=l2))
+      if (proc)
   	  {
         console.vlog("gettrans: add: "+key)
         var record= copyobj(turn)
