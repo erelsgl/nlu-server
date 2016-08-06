@@ -30,6 +30,8 @@ var ftrs = limdu.features;
 // output the blue average
 var correlation = false
 
+var latex_plot = true
+
 var check_coverage = false
 var check_con = false
 var unidis = false 
@@ -52,7 +54,7 @@ var check_human = false
 var check_intent_issue_dst = false
 
 
-var check_num_dial_utt = true
+var check_num_dial_utt = false
 
 // check rephrase strategies
 var check_version4 = false
@@ -245,6 +247,53 @@ function walkSync(dir, filelist) {
 }
 */
 
+if (latex_plot)
+{
+
+
+	var lc = require(__dirname + "/lc/lc.js")
+	var stat =  JSON.parse(fs.readFileSync(__dirname+"/js"))
+
+	_.each(stat, function(value, parameter, list){
+	
+		var results = {}
+
+		_.each(value, function(sta, size, list){
+	
+			var classifiers = lc.plotlcagrlen("average", stat[parameter][size])
+			
+			_.each(classifiers, function(result, classifier, list){
+				
+				if (!(classifier in results))
+					results[classifier] = []
+
+				results[classifier].push([parseInt(size), result])				
+			}, this)
+		}, this)
+
+		var string = ""
+
+		_.each(results, function(listres, classifier, list){
+
+			string += "\\addplot[color=green,mark=*] coordinates {\n"
+
+			_.each(listres, function(value1, key, list){
+				string += "("+value1[0]+","+value1[1]+")" 
+			}, this)
+
+	     	string += "\n};\n"
+	     	string += "\\addlegendentry{"+classifier.replace(/_/g,"\\_")+"}\n"
+	     	string += "\n"
+
+		}, this)
+
+		fs.writeFileSync(__dirname+"/latex_plot/"+parameter, string, 'utf-8')
+
+	}, this)
+	
+	process.exit(0)
+}
+
 if (unidis)
 {
 var with_rephrase = [0.33, 0.4, 0.2, 0.05]
@@ -408,6 +457,8 @@ if (check_num_dial_utt)
 	console.log(_.flatten(dialogues).length)
 	process.exit(0)
 }
+
+
 
 if (make_tr_fix)
 {
