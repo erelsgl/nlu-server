@@ -376,9 +376,10 @@ function cleanFolder(dir)
 function latexplot(fold, parameter, stat, lcfolder)
 {
 	var results = {}
+	console.mlog("Latexplot")
 
-	_.each(value, function(sta, size, list){
-		var classifiers = lc.plotlcagrlen(fold, stat[parameter][size])
+	_.each(stat[parameter], function(sta, size, list){
+		var classifiers = plotlcagrlen(fold, stat[parameter][size])
 		
 		_.each(classifiers, function(result, classifier, list){
 			
