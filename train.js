@@ -30,7 +30,7 @@ var ftrs = limdu.features;
 // output the blue average
 var correlation = false
 
-var latex_plot = true
+var latex_plot = false
 
 var check_coverage = false
 var check_con = false
@@ -48,13 +48,14 @@ var check_ration_all = false
 var embedproc = false
 
 var extractbyid = false
+
 // number of human utterances
 var check_human = false
 
 var check_intent_issue_dst = false
 
 
-var check_num_dial_utt = false
+var check_num_dial_utt = true
 
 // check rephrase strategies
 var check_version4 = false
@@ -449,12 +450,28 @@ if (make_tr)
 
 if (check_num_dial_utt)
 {
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_trans.json"))
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
 	var utterset = bars.getsetcontext(data, false)
 	var dialogues = utterset["test"].concat(utterset["train"])
 
+
+
 	console.log(dialogues.length)
 	console.log(_.flatten(dialogues).length)
+	
+	var para = 0
+
+	_.each(_.flatten(dialogues), function(utterance, key, list){
+	
+		if ("trans" in utterance["input"])
+			para += _.keys(utterance["input"]["trans"]).length
+
+	}, this)
+
+
+	console.log(JSON.stringify(para, null, 4))
+
 	process.exit(0)
 }
 
