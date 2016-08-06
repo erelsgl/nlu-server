@@ -9,9 +9,8 @@ var trainAndTest = require(__dirname+'/../utils/trainAndTest');
 var bars = require(__dirname+'/../utils/bars');
 var lc = require(__dirname+'/lc');
 var util = require('util');
-var log_file = "./logs/" + process.pid
 
-console.vlog = function(data) { fs.appendFileSync(log_file, data + '\n', 'utf8') };
+console.vlog = function(data) { fs.appendFileSync("./logs/" + process.pid, data + '\n', 'utf8') };
 console.mlog = function(data) { fs.appendFileSync("./logs/master", data + '\n', 'utf8') };
 
 if (cluster.isWorker)
