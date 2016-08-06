@@ -373,10 +373,46 @@ function cleanFolder(dir)
 	}, this)
 }
 
+function latexplot(fold, parameter, stat, lcfolder)
+{
+	var results = {}
+
+	_.each(value, function(sta, size, list){
+		var classifiers = lc.plotlcagrlen(fold, stat[parameter][size])
+		
+		_.each(classifiers, function(result, classifier, list){
+			
+			if (!(classifier in results))
+				results[classifier] = []
+
+			results[classifier].push([parseInt(size), result])				
+		}, this)
+	}, this)
+
+	var string = ""
+
+	_.each(results, function(listres, classifier, list){
+
+		string += "\\addplot[color=green,mark=*] coordinates {\n"
+
+		_.each(listres, function(value1, key, list){
+			string += "("+value1[0]+","+value1[1]+")" 
+		}, this)
+
+     	string += "\n};\n"
+     	string += "\\addlegendentry{"+classifier.replace(/_/g,"\\_")+"}\n"
+     	string += "\n"
+
+	}, this)
+
+	fs.writeFileSync(lcfolder+fold+"_"+bars.convertObject(parameter)+"_latex", string, 'utf-8')
+	return true
+}
+
 function plotlc(fold, parameter, stat, lcfolder)
 {
 
-	var pt = [1,1,1,5,7,9,11,13,15,6,8,10,12]	
+	latexplot(fold, parameter, stat, lcfolder)
 	console.vlog(JSON.stringify(stat, null, 4))
 
 	// build output in the format size * classifiers
