@@ -1,0 +1,45 @@
+\addplot[color=green,mark=*] coordinates {
+(5,5)(10,10)(15,15)(20,20)(25,25)(30,30)(35,35)(40,40)(45,45)(50,50)(55,55)(60,60)
+};
+\addlegendentry{dial}
+
+\addplot[color=green,mark=*] coordinates {
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.5821473714042037)(60,0.5978863237002436)
+};
+\addlegendentry{Natural}
+
+\addplot[color=green,mark=*] coordinates {
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,0.5094239962907775)(40,0.5125457183114925)(45,0.5108090379223664)(50,0.5163761379173608)(55,0.5180184403939312)(60,0.5193704804784868)
+};
+\addlegendentry{Balanced}
+
+\addplot[color=green,mark=*] coordinates {
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,0.4637326410990605)(40,0.4941469555180163)(45,0.5188480668803018)(50,0.512267231558099)(55,0.6006735833022671)(60,0.6185056087706922)
+};
+\addlegendentry{Natural\_Trans}
+
+\addplot[color=green,mark=*] coordinates {
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,0.5862181008478737)(45,0.5977992119796675)(50,0.6038138721406612)(55,0.6149910257809005)(60,0.6179088819950589)
+};
+\addlegendentry{Balanced\_Trans}
+
+\addplot[color=green,mark=*] coordinates {
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.511609919824025)(60,0.4682725696776979)
+};
+\addlegendentry{Natural\_Emb}
+
+\addplot[color=green,mark=*] coordinates {
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,0.44399173437507755)(40,0.4515044753055905)(45,0.44746818414919914)(50,0.46919183207583204)(55,0.45623730245826827)(60,0.45621766187845236)
+};
+\addlegendentry{Balanced\_Emb}
+
+\addplot[color=green,mark=*] coordinates {
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,0.37051507399915373)(40,0.4077979500779936)(45,0.40410761667297024)(50,0.3859230800428312)(55,0.463889109002633)(60,0.47532991976278105)
+};
+\addlegendentry{Natural\_Trans\_Emb}
+
+\addplot[color=green,mark=*] coordinates {
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,0.4546681240120183)(35,0.4591105062397488)(40,0.48829271523433443)(45,0.4939819782665169)(50,0.5033506284747774)(55,0.519788441013613)(60,0.5306598251671446)
+};
+\addlegendentry{Balanced\_Trans\_Emb}
+
