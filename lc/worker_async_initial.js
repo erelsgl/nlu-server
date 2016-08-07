@@ -1,3 +1,5 @@
+//compare natural and component approaches
+
 var cluster = require('cluster');
 var async = require('async')
 var _ = require('underscore')._;
