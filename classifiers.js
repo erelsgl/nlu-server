@@ -158,9 +158,6 @@ function getRule(sen)
 //	if (sentence['tokens'].length == 0)
 //		throw new Error("DEBUGRULE: for some reason tokens is empty")
 
-	// console.log("DEBUGRULE: after % fix")
-	// console.log(JSON.stringify(sentence, null, 4))
-
 	var RuleValues = {
 
 		  'Salary': [['60000','60,000 USD'],['90000','90,000 USD'],['120000','120,000 USD']],
@@ -176,7 +173,7 @@ function getRule(sen)
 	var arAttrVal = ['000','salary','pension','fund','promotion','possibilities','working','hours','hour',
 					'job','description','60000','90000','120000','usd','fast','slow','track','8','9','10',
 					'qa','programmer','team','project','manager','car','leased','with','without','agreement',
-					'0%','10%','15%','20%', 'no agreement', 'no car','position','workday']
+					'0%','10%','15%','20%', 'no agreement', 'no car','position','workday', "company car", "leased"]
 
 	var ar_values = []
 	var ar_attrs = []
@@ -1946,13 +1943,14 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 
  		if (featureOptions.neg == true)
  		{
+ 			console.vlog("feAsyncStanford: negation is applied")
 	 		_.each(sample['sentences']['basic-dependencies'], function(dep, key, list){
 				if (dep.dep=="neg")
 				{
 				var word = dep.governorGloss.toLowerCase()
 				var negword = dep.dependentGloss.toLowerCase()
 
-				console.vlog("feNeg: "+word+" is negated "+negword+" is negation word")
+				console.vlog("feAsyncStanford: feNeg: "+word+" is negated "+negword+" is negation word")
 			
 					if (word in word_lemma)
 					{
