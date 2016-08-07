@@ -158,9 +158,6 @@ function getRule(sen)
 //	if (sentence['tokens'].length == 0)
 //		throw new Error("DEBUGRULE: for some reason tokens is empty")
 
-	// console.log("DEBUGRULE: after % fix")
-	// console.log(JSON.stringify(sentence, null, 4))
-
 	var RuleValues = {
 
 		  'Salary': [['60000','60,000 USD'],['90000','90,000 USD'],['120000','120,000 USD']],
@@ -176,7 +173,7 @@ function getRule(sen)
 	var arAttrVal = ['000','salary','pension','fund','promotion','possibilities','working','hours','hour',
 					'job','description','60000','90000','120000','usd','fast','slow','track','8','9','10',
 					'qa','programmer','team','project','manager','car','leased','with','without','agreement',
-					'0%','10%','15%','20%', 'no agreement', 'no car','position','workday']
+					'0%','10%','15%','20%', 'no agreement', 'no car','position','workday', "company car", "leased"]
 
 	var ar_values = []
 	var ar_attrs = []
@@ -1902,6 +1899,13 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	if (!('toextract' in featureOptions))
 	    throw new Error("toextract is not defined")
 
+	if (["word","lemma"].indexOf(featureOptions.toextract)==-1)
+	    throw new Error("toextract value is unknown")
+	
+	// apply negation
+	if (!('neg' in featureOptions))
+	    throw new Error("neg is not defined")
+
 	if ("input" in sample)
 		sample = sample.input
 
@@ -1937,26 +1941,29 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
     	
  	}, function(err){
 
- 		_.each(sample['sentences']['basic-dependencies'], function(dep, key, list){
-			if (dep.dep=="neg")
-			{
-			var word = dep.governorGloss.toLowerCase()
-			var negword = dep.dependentGloss.toLowerCase()
-
-			console.vlog("feNeg: "+word+" is negated "+negword+" is negation word")
-		
-				if (word in word_lemma)
+ 		if (featureOptions.neg == true)
+ 		{
+ 			console.vlog("feAsyncStanford: negation is applied")
+	 		_.each(sample['sentences']['basic-dependencies'], function(dep, key, list){
+				if (dep.dep=="neg")
 				{
-					delete features[word_lemma[negword][featureOptions.toextract]]
-					delete features[word_lemma[word][featureOptions.toextract]]
-					features[word_lemma[word][featureOptions.toextract]+"-"] =  1
-				}
-				else
-					throw new Error(word+" not in "+word_lemma)
-			}
+				var word = dep.governorGloss.toLowerCase()
+				var negword = dep.dependentGloss.toLowerCase()
 
-		}, this)
-	
+				console.vlog("feAsyncStanford: feNeg: "+word+" is negated "+negword+" is negation word")
+			
+					if (word in word_lemma)
+					{
+						delete features[word_lemma[negword][featureOptions.toextract]]
+						delete features[word_lemma[word][featureOptions.toextract]]
+						features[word_lemma[word][featureOptions.toextract]+"-"] =  1
+					}
+					else
+						throw new Error(word+" not in "+word_lemma)
+				}
+
+			}, this)
+		}
 
 	    console.vlog("DEBUGASYNCSTANFORD:"+JSON.stringify(features, null, 4))
  		callback(null, features)
@@ -2459,6 +2466,12 @@ module.exports = {
 		Component: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		Natural: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		Natural_Neg: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':false}),
+
+		"Unigram": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {"neg":false, 'toextract':'word','unoffered':true, 'offered':false}),
+		"Unigram+Context": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':false, "neg": false}),
+		"Unigram+Neg": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':false, "neg":true}),
+		"Unigram+Context+Neg": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':false, "neg":true}),
+
 		//Natural_trans: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		//Natural_no_con: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		//Oversampled: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
@@ -2468,8 +2481,7 @@ module.exports = {
 		//Biased_no_rephrase: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		//Biased_no_rephrase_no_con: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
 		//Biased_no_rephrase_no_con_trans: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
-		//Biased_no_rephrase_trans: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
-		
+		//Biased_no_rephrase_trans: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),		
 		// NLU_Baseline: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford/*, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'word','unoffered':true}),
 		
 		//NLU_Bal: enhance(SvmLinearBinaryRelevanceClassifier, [feAsync/*, feContext*/], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'unigrams':true, 'bigrams':false, 'allow_stopwords':true, 'offered':false, 'toextract':'lemma','unoffered':true}),
