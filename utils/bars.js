@@ -3940,7 +3940,7 @@ function processdataset(dataset, options)
 {
   var output = []
 
-  console.vlog("processdataset: initial: "+ dataset.length + " option: "+options)
+  console.vlog("processdataset: initial: "+ dataset.length + " option: "+JSON.stringify(options, null, 4))
 
   _.each(dataset, function(utterance, utterance_key, list){
     
