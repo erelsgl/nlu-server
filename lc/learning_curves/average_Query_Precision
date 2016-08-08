@@ -1,13 +1,13 @@
-size	dial	Natural	Balanced
-5	5	null	null
-10	10	null	null
-15	15	null	null
-20	20	null	null
-25	25	null	null
-30	30	null	null
-35	35	null	null
-40	40	null	null
-45	45	null	null
-50	50	null	null
-55	55	null	null
-60	60	null	null
+size	dial	Natural	Balanced	Natural_Trans_Emb	Balanced_Trans_Emb
+5	5	null	null	null	null
+10	10	null	null	null	null
+15	15	null	null	null	null
+20	20	null	null	null	null
+25	25	null	null	null	null
+30	30	null	null	null	null
+35	35	null	null	null	null
+40	40	null	null	null	null
+45	45	null	null	null	null
+50	50	null	null	null	null
+55	55	null	null	null	null
+60	60	null	null	null	null
