@@ -9,7 +9,7 @@
 \addlegendentry{Natural}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,0.7454761555576735)
 };
 \addlegendentry{Balanced}
 
