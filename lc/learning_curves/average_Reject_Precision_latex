@@ -4,42 +4,12 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.5978104361495908)(60,0.5809828583444737)
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.5940027673646598)(60,0.5990236966995736)
 };
 \addlegendentry{Natural}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,0.4768191221233329)(40,0.48561059443528004)(45,0.49986732110612314)(50,0.5075258473821129)(55,0.5136198645908925)(60,0.5143801946865686)
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,0.5841240728070022)(50,0.5861019168584991)(55,0.5891803386725363)(60,0.5912772517930841)
 };
 \addlegendentry{Balanced}
-
-\addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.5705315293008031)(60,0.5804756831136632)
-};
-\addlegendentry{Natural\_Trans}
-
-\addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,0.5253698977709557)(35,0.5494239816765314)(40,0.5644832117015025)(45,0.5729614647681632)(50,0.5842716252444664)(55,0.5887753712503875)(60,0.5861071414776123)
-};
-\addlegendentry{Balanced\_Trans}
-
-\addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.4824219319847095)(60,0.5319882147163711)
-};
-\addlegendentry{Natural\_Emb}
-
-\addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,0.4168225515462789)(45,0.42993859486458613)(50,0.43722900908496465)(55,0.4598656492476355)(60,0.4765836890978675)
-};
-\addlegendentry{Balanced\_Emb}
-
-\addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,0.35796916677878565)(40,0.35907157680813656)(45,0.35584912647253275)(50,0.3556798806072569)(55,0.4760490909447445)(60,0.4944993888678747)
-};
-\addlegendentry{Natural\_Trans\_Emb}
-
-\addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,0.44623086086584834)(30,0.46214568203221773)(35,0.47590039212148766)(40,0.4849144558656273)(45,0.49620620783038655)(50,0.509922885751848)(55,0.5282808135406928)(60,0.5367215299002218)
-};
-\addlegendentry{Balanced\_Trans\_Emb}
 
