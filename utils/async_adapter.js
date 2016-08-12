@@ -45,9 +45,10 @@ function getembed(string, db, callback)
 			if (err) callback(err)
 			
 			if (_.isNull(results))
-				client.get("1", function(err, results) {
-					callback(err, Array.apply(null, Array(results.slice(0,-1).split(",").length)).map(function () { return 0}))
-				})
+				callback(err, [])
+			//	client.get("1", function(err, results) {
+			//		callback(err, Array.apply(null, Array(results.slice(0,-1).split(",").length)).map(function () { return 0}))
+			//	})
 			else
 				callback(err, _.map(results.slice(0,-1).split(","), parseFloat))
 		})
@@ -581,3 +582,7 @@ module.exports = {
   getembed:getembed,
   getembedall:getembedall
 }
+
+getembed("asdasddsa", 8, function(err, emb){
+console.log(emb)
+})
