@@ -4455,6 +4455,7 @@ function gettrans(turns, pat)
 {
   var output = []
   var regex =  new RegExp(pat)
+  var omitlang = ["ar", "es"]
 
   console.vlog("gettrans: input.length: " + turns.length)
   //console.vlog("gettrans: input.length: " + JSON.stringify(turns, null, 4))
@@ -4462,15 +4463,21 @@ function gettrans(turns, pat)
   _.each(turns, function(turn, key, list){
   	
     if (turn["output"].length > 0)
-	  _.each(turn["input"]["trans"], function(tran, key, list){
+	{
+  
+		var unique_trans = {}
+	_.each(turn["input"]["trans"], function(tran, key, list){
 
   	  var proc = regex.test(key)
 
-      var l1 = key.substr(0,1)
-      var l2 = key.substr(-1,1)
+      var engine1 = key.substr(0,1)
+      var engine2 = key.substr(-1,1)
+      var pivotlang = key.substr(2,2)
+	
+	console.vlog("gettrans: engine1: "+engine1+ " engine2: "+engine2+" pivotlang: "+pivotlang)
 
       //if (proc && (l1!=l2))
-      if (proc)
+      if ((proc) && (omitlang.indexOf(pivotlang)==-1))
   	  {
         console.vlog("gettrans: add: "+key)
         var record= copyobj(turn)
@@ -4478,10 +4485,15 @@ function gettrans(turns, pat)
   		  delete record["input"]["sentences"]
   		  delete record["input"]["trans"]
   		  _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json")));
-  	    output.push(record)
+  	 //   output.push(record)
+  	 	unique_trans[record["input"]["text"]] = record
   	  }
 
     }, this)
+		console.vlog("gettrans: there are unique records "+_.values(unique_trans).length)
+	output = output.concat(_.values(unique_trans))
+
+	}
     
     output.push({
              'input': {'text': turn.input.text,
@@ -4494,7 +4506,7 @@ function gettrans(turns, pat)
   }, this)
 
   console.vlog("gettrans: output.length: " + output.length)  
-  console.vlog(JSON.stringify(output, null, 4))
+//  console.vlog(JSON.stringify(output, null, 4))
   
   return output
 }
@@ -5681,10 +5693,16 @@ console.vlog("convertObject: obj: "+obj)
 function compactStats(stats)
 {
   var stats1 = {}
+
+	if (!("stats" in stats))
+		throw new Error("compactStats error")
+	
   _.each(stats['stats'], function(value, key, list){ 
     if ((key.indexOf("Precision") != -1) || (key.indexOf("Recall") != -1 ) || (key.indexOf("F1") != -1) || (key.indexOf("Accuracy") != -1))
       stats1[key] = value
   }, this)
+
+  console.mlog("compactStats:"+JSON.stringify(stats1, null, 4))
   return stats1
 }
 
