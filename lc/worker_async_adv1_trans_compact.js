@@ -40,7 +40,7 @@ process.on('message', function(message) {
     	function(callbacks) {
 
 			if (index < 5)
-			{ index +=5 }
+			{ index +=1 }
 			else if (index<10)
 			{ index += 5} 
 			else if (index<20)
@@ -70,6 +70,7 @@ process.on('message', function(message) {
 				case "Balanced_Trans_Emb": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
 				case "Oversampled": callbacks(null, bars.oversample(bars.copyobj(mytrainex)), mytestex, mytrainex.length); break;
 				case "Undersampled": callbacks(null, bars.undersample(bars.copyobj(mytrainex)), mytestex, mytrainex.length); break;
+				case "Balanced_Trans_Emb_Neg": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
 				default:
 					callbacks(null, mytrainex, mytestex, mytrainex.length)
     		}
@@ -93,8 +94,11 @@ process.on('message', function(message) {
 
 			if (!(classifier in classifiers))
 				throw new Error(classifier+"not in classifiers")
-			else	
+			else
+				{	
 				baseline_cl = classifiers[classifier]
+				console.vlog("WORKER: "+classifier+" is applied")
+				}
               	}
 	    	// trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
     		trainAndTest.trainAndTest_async(baseline_cl, bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
@@ -137,7 +141,9 @@ if (cluster.isMaster)
 	//var classifiers = [ 'Natural', 'Balanced', 'Balanced_Trans_Microsoft',  "Balanced_Trans_Yandex_Microsoft", "Balanced_Trans_Microsoft_Yandex", "Balanced_Trans_All"]
 	//var classifiers = [ 'Natural', 'Balanced', 'Balanced_Trans_Microsoft', "Balanced_Trans_Microsoft_Google", "Balanced_Trans_Google_Microsoft", "Balanced_Trans_Yandex_Microsoft", "Balanced_Trans_Microsoft_Yandex"]
 	//var classifiers = [ 'Natural', 'Balanced', 'Balanced_Embed_25', 'Balanced_Embed_50', 'Balanced_Embed_100']
-	var classifiers = [ 'Natural', 'Balanced', 'Natural_Trans', 'Balanced_Trans', 'Natural_Emb', 'Balanced_Emb', 'Natural_Trans_Emb', 'Balanced_Trans_Emb']
+	//var classifiers = [ 'Natural', 'Balanced', 'Natural_Trans', 'Balanced_Trans', 'Natural_Emb', 'Balanced_Emb', 'Natural_Trans_Emb', 'Balanced_Trans_Emb', 'Natural_Trans_Emb_Neg', 'Balanced_Trans_Emb_Neg']
+	var classifiers = [ 'Natural', 'Balanced', 'Balanced_Trans', 'Balanced_Trans_Emb_Neg']
+	//var classifiers = [ 'Natural', 'Balanced',  'Natural_Trans_Emb', 'Balanced_Trans_Emb']
 	//var classifiers = [ 'Natural', 'Biased_no_rephrase', 'Trans_Google', 'Trans_Microsoft', 'Trans_Yandex']
 	//var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase']
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
@@ -164,7 +170,7 @@ if (cluster.isMaster)
 		// var utterset2 = bars.getsetcontextadv(data2)
 		var utterset2 = bars.getsetcontext(data2)
 		var train2 = utterset2["train"].concat(utterset2["test"])
-		
+	
 		console.mlog("number of the dialogues2: "+train2.length)
 
 		_.each(classifiers, function(classifier, key, list){ 
@@ -201,7 +207,7 @@ if (cluster.isMaster)
 				max = max - max % 10			
 				
 				console.mlog("DEBUGMASTER: train1.len="+_.flatten(data.test).length+ " train2.len="+ _.flatten(train2sam).length + " max="+max)
-				console.mlog("DEBUGMASTER: class="+classifier+ " fold="+ fold + " train.len="+train.length + " test.len=" + data.train.length + " max: "+max)
+				console.mlog("DEBUGMASTER: class="+classifier+ " fold="+ (fold+n*folds) + " train.len="+train.length + " test.len=" + data.train.length + " max: "+max)
 				worker.send({ 		
 						'train': JSON.stringify(_.flatten(train)), 
 						'test': JSON.stringify(_.flatten(data.train)),
@@ -228,7 +234,6 @@ if (cluster.isMaster)
 			lc.plotlc('average', param, stat, lcfolder)
 		})
 
-		console.mlog(JSON.stringify(stat, null, 4))
 	})
 
 }
