@@ -11,6 +11,7 @@ var trainAndTest = require(__dirname+'/../utils/trainAndTest');
 var bars = require(__dirname+'/../utils/bars');
 var lc = require(__dirname+'/lc');
 var util = require('util');
+var lcfolder = __dirname + "/learning_curves_initial/"
 
 console.vlog = function(data) { fs.appendFileSync("./logs/" + process.pid, data + '\n', 'utf8') };
 console.mlog = function(data) { fs.appendFileSync("./logs/master", data + '\n', 'utf8') };
@@ -21,7 +22,7 @@ if (cluster.isWorker)
 	var classifier = process.env["classifier"]
 	var fold = process.env["fold"]
 	
-   	console.log('DEBUG: worker ' + process.pid + ' received message from master.')
+   	console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
 	//var train = bars.processdataset(_.flatten(JSON.parse(message['train'])), {"intents": true, "filter":true})
 	var train = JSON.parse(message['train'])
@@ -40,11 +41,12 @@ if (cluster.isWorker)
 	    function (callbackwhilst) {
 
 		if (index<10)
-			{ index += 2} 
+			{ index += 1} 
 		else if (index<20)
 			{ index += 5 }
 		else index += 10
 
+// on dialogue level
 	    var mytrain = bars.copyobj(train.slice(0, index))
 	   // var mytrainex =  bars.processdataset(_.flatten(mytrain), {"intents": true, "filter":true})
 	    var mytestex  = []
@@ -52,13 +54,13 @@ if (cluster.isWorker)
 
 	      if (classifier == "Natural")
 		{
-	    		mytrainex =  bars.processdataset(_.flatten(mytrain), {"intents": false, "filter":false})
-              		mytestex  = bars.processdataset(_.flatten(test), {"intents": false, "filter":false})
+	    		mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": false, "filter":false})
+              		mytestex  = bars.processdataset(_.flatten(bars.copyobj(test)), {"intents": false, "filter":false})
 		}             
- 		else
+             if (classifier == "Component")
 		{                
-	    	  mytrainex =  bars.processdataset(_.flatten(mytrain), {"intents": true, "filter":false})
-		    mytestex  = _.flatten(test)
+	    	    mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": true, "filter":false})
+		    mytestex  = _.flatten(bars.copyobj(test))
 		}
 
 		console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
@@ -98,14 +100,15 @@ if (cluster.isWorker)
 							var text = _.reduce(value["tokens"], function(memo, num){ return memo +" "+ num.word; }, "");
 							record["input"]["text"] = text
 							record["input"]["context"] = turn["input"]["context"]
-							record["input"]["sentences"] = {"tokens": value["tokens"]}
+							record["input"]["sentences"] = {"tokens": value["tokens"],
+											"basic-dependencies": value["basic-dependencies"]}
 							test_set.push(record)
 							mapping.push(vkey)
 						}, this)
 					}, this)
 
 					var test_set_copy = bars.copyobj(test_set)
-					var classif = new classifiers.Natural
+					var classif = new classifiers[classifier]
 					var classes = []
 					var currentStats = new PrecisionRecall()
 
@@ -136,21 +139,17 @@ if (cluster.isWorker)
       	
 		}], function () {
 
-			var stats1 = {}
-			_.each(global_stats['stats'], function(value, key, list){ 
-		    		if ((key.indexOf("Precision") != -1) || (key.indexOf("Recall") != -1 ) || (key.indexOf("F1") != -1) || (key.indexOf("Accuracy") != -1))
-		    			stats1[key] = value
-		    	}, this)
-
-			
+				console.mlog("global_stats: "+_.keys(global_stats['stats'], null, 4).length)
+	
 				var results = {
 					'classifier': classifier,
 					'fold': fold,
 					'trainsize': mytrain.length,
 					'trainsizeuttr': mytrain.length,
-					'stats': stats1
-					// 'uniqueid': stats['id']
+					'stats': bars.compactStats(global_stats)
 				}
+
+				console.mlog("worker send message: "+JSON.stringify(results, null, 4))
 
 				process.send(JSON.stringify(results))
 		   		callbackwhilst()
@@ -167,11 +166,11 @@ if (cluster.isWorker)
 
 if (cluster.isMaster)
 {
-	lc.cleanFolder(__dirname + "/learning_curves")
+	lc.cleanFolder(lcfolder)
 	lc.cleanFolder("./logs")
 	
 	var folds = 10
-	var stat = {}
+	var statt = {}
 
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	var classifiers = [ "Natural", "Component" ]
@@ -203,22 +202,21 @@ if (cluster.isMaster)
 						})
 
 				worker.on('disconnect', function(){
-				  	console.mlog("DEBUGMASTER: finished: number of clusters: " + Object.keys(cluster.workers).length)
-				  	//if (Object.keys(cluster.workers).length == 1)
-					//next()
-					_.each(stat, function(data, param, list){ lc.plotlc('average', param, stat) })
+  					console.mlog("DEBUGMASTER: finished: number of clusters: " + Object.keys(cluster.workers).length)
+  					console.mlog("DEBUGMASTER: "+_.keys(statt))
+					_.each(statt, function(data, param, list){ 
+  						console.mlog("plotlc")
+						lc.plotlc('average', param, statt, lcfolder) 
+					})
 				})
 
 				worker.on('message', function(message){
 					var workerstats = JSON.parse(message)
 					workerstats['classifiers'] = classifiers
 					console.mlog("DEBUGMASTER: on message: "+message)
-					lc.extractGlobal(workerstats, stat)
+					lc.extractGlobal(workerstats, statt)
 				})
 			})
 		}, this)
 		
-		_.each(stat, function(data, param, list){
-			lc.plotlc('average', param, stat)
-		})
 }
