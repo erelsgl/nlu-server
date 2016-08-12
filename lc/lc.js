@@ -412,9 +412,15 @@ function latexplot(fold, parameter, stat, lcfolder)
 
 function plotlc(fold, parameter, stat, lcfolder)
 {
+	console.mlog("plotlc: fold: "+fold+" parameter:"+parameter+" stat:"+_.keys(stat))
+	
+	if (_.keys(stat).length == 0)
+		throw new Error("plotlc: stat is empty")
+
 
 	latexplot(fold, parameter, stat, lcfolder)
-	console.vlog(JSON.stringify(stat, null, 4))
+
+	//console.vlog(JSON.stringify(stat, null, 4))
 
 	// build output in the format size * classifiers
 	var output = plotlcagr(fold, stat[parameter])
