@@ -122,7 +122,8 @@ if (cluster.isWorker)
     				case "NLU_Tran_Oversample": callbacks(null, bars.tranoversam(mytrainex), mytestex, mytrainex.length); break;
 
 				case "NLU_Emb_Trans_Sum_100": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
-				case "NLU_Emb_Trans_Ext_100": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
+				case "NLU_Emb_Trans_Sum_50": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
+				//case "NLU_Emb_Trans_Ext_100": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
 
     				default:
 						//mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
@@ -137,7 +138,10 @@ if (cluster.isWorker)
 			console.vlog("DEBUGPRETRAIN: classifier:"+classifier+" mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
 			
 			if (classifier.indexOf("Emb")!=-1)
+				{
 				var baseline_cl = classifiers[classifier]
+				console.vlog(classifier+" is applied")
+				}
 			else
 				var baseline_cl = classifiers.Natural_Neg
 
@@ -184,8 +188,9 @@ if (cluster.isMaster)
 	bars.cleanFolder("./logs")
 
 	var folds = 10
-	var classifiers = [ "No_translations", "NLU_Tran_All", "NLU_Emb_Trans_Sum_100", "NLU_Emb_Trans_Ext_100" ]
-	//var classifiers = [ 'No_translations', "Google", "Microsoft", "Yandex" ]
+	//var classifiers = [ "No_translations", "NLU_Tran_All", "NLU_Emb_Trans_Sum_100", "NLU_Emb_Trans_Sum_50"]
+	//var classifiers = [ 'No_translations', "Google", "Microsoft", "Yandex", "NLU_Emb_Trans_Sum_100" ]
+	var classifiers = [ 'No_translations', "NLU_Tran_All", "NLU_Tran_Hungarian", "NLU_Tran_Finish","NLU_Tran_German","NLU_Tran_French" ]
 	//var classifiers = [ 'Natural', "NLU_Tran_Yandex_Google", "NLU_Tran_Yandex_Microsoft", "NLU_Tran_Microsoft_Yandex",
 	//			"NLU_Tran_Microsoft_Google", "NLU_Tran_All", "Google", "Yandex"]
 				//"NLU_Tran_Microsoft_Google", "NLU_Tran_Google_Yandex", "NLU_Tran_Google_Microsoft"]
