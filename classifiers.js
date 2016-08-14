@@ -1332,11 +1332,14 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 		}
 
 		console.vlog("feEmbed: "+word)
+		
+		if (word=="ca") word = "can"
+		if (word=="n't") word = "not"
+		if (word=="wo") word = "will"
+		if (word=="'m") word = "am"
+		if (word=="'s") word = "us"
+		
 		async_adapter.getembed(word, featureOptions.embdeddb, function(err, emb){
-
-			if (word=="ca") console.vlog("feEmbword: "+word)
-			if (word=="n't") console.vlog("feEmbword: "+word)
-			
 
 			if (emb.length != 0)
 			{
@@ -1370,6 +1373,11 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 
 			console.vlog("DEBUGEMBED: embFeatures is populated")
 	    		
+			if ("?" in features)
+			{
+				console.vlog("feEmbquestion")
+				embFeatures["?"] = 1
+			}
 			callback(null, embFeatures)
 		}
 else
@@ -2490,7 +2498,9 @@ module.exports = {
 		
 		Component: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'offered':true, 'toextract':'word','unoffered':true}),
 		Natural: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'offered':true, 'toextract':'word','unoffered':true}),
-		Natural_Neg: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false}),
+		Natural_Neg: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":true}),
+		NLU_Emb_Trans_Sum_100: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":true, 'embdeddb': 9, 'operation':'sum'}),
+		NLU_Emb_Trans_Sum_50: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":true, 'embdeddb': 8, 'operation':'sum'}),
 
 		"Unigram": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {"neg":false, 'toextract':'word','unoffered':true, 'offered':true}),
                 "Unigram_Lemma": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {"neg":false, 'toextract':'lemma','unoffered':true, 'offered':true}),
