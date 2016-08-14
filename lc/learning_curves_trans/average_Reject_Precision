@@ -1,4 +1,4 @@
-size	dial	No_translations	NLU_Tran_All	NLU_Emb_Trans_Sum_100	NLU_Emb_Trans_Sum_50
+size	dial	No_translations	Google	Microsoft	Yandex
 1	1	null	null	null	null
 2	2	null	null	null	null
 3	3	null	null	null	null
@@ -13,7 +13,7 @@ size	dial	No_translations	NLU_Tran_All	NLU_Emb_Trans_Sum_100	NLU_Emb_Trans_Sum_5
 20	20	null	null	null	null
 25	25	null	null	null	null
 30	30	null	null	null	null
-35	35	null	null	0.4861976975316935	0.4572811907998501
-40	40	null	null	0.5141808057565979	0.48056560331855447
-45	45	null	null	0.5423459416361223	0.4548387658099098
-50	50	null	null	0.5367396438026298	0.44945507245183347
+35	35	null	null	0.5351339817636827	null
+40	40	null	null	0.5225425680287623	null
+45	45	null	null	0.583740062387079	null
+50	50	null	null	0.5700286710894014	null
