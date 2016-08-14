@@ -23,3 +23,13 @@
 };
 \addlegendentry{NLU\_Tran\_Finish}
 
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,0.6009340303732136)(20,0.6075729408167073)(25,0.5400544648718755)(30,0.5701772252447106)(35,0.6213662542800623)(40,0.6079256929568689)(45,0.6613143334803558)(50,0.6669198784066505)
+};
+\addlegendentry{NLU\_Tran\_German}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,0.5309705018594306)(20,null)(25,0.5406993769991366)(30,0.5388153658826192)(35,0.5861583647621906)(40,0.5738473207899492)(45,0.5923029391806633)(50,0.60023136021196)
+};
+\addlegendentry{NLU\_Tran\_French}
+
