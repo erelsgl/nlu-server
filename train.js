@@ -27,6 +27,8 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
+
+var signif = true
 // output the blue average
 var correlation = false
 
@@ -55,7 +57,7 @@ var check_human = false
 var check_intent_issue_dst = false
 
 
-var check_num_dial_utt = true
+var check_num_dial_utt = false
 
 // check rephrase strategies
 var check_version4 = false
@@ -448,6 +450,87 @@ if (make_tr)
 	process.exit(0)	
 }
 
+
+if (signif)
+{
+	var glresults = {
+		"classifier1":[],
+		"classifier2":[]
+	}
+
+	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
+	var utterset1 = bars.getsetcontext(data1, false)
+	var train1 = utterset1["train"].concat(utterset1["test"])
+
+	var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), 10, 1)
+
+	// data["test"] - 10 dialogues
+	// data["train"] - 90 dialogues
+
+	var  train = data["test"] 
+	var  test = data["train"] 
+
+	console.log("DEBUGTRAIN: test: "+test.length)	
+	console.log("DEBUGTRAIN: train: "+train.length)	
+
+
+	var train = bars.processdataset(_.flatten(train), {"intents":true, "filter": true, "filter_Quit_Greet":true})
+
+	var classifier1 = new classifier.Natural_Neg 
+	var classifier2 = new classifier.Natural_Neg
+
+	var train1 = bars.copyobj(train)
+
+	classifier1.trainBatchAsync(bars.copyobj(train1), function(err, results){
+		
+		console.log("classifier1 is trained")
+		var train2 = bars.gettrans(bars.copyobj(train), ".*:hu:.*")
+		
+		classifier2.trainBatchAsync(bars.copyobj(train2), function(err, results){
+			
+			console.log("classifier2 is trained")
+			// _(30).times(function(n){ 
+			var index = 0
+
+			var testop = bars.copyobj(test)
+
+			async.timesSeries(30, function(n, callbackl){ 
+
+				// var index = n*3
+				console.log("DEBUGTRAIN: index: "+index)
+				console.log("DEBUGTRAIN: test size : "+testop.length)
+				var testsplice  = testop.splice(0, 3)
+				console.log("DEBUGTRAIN: testsplice: "+testsplice.length)
+				console.log("DEBUGTRAIN: testsplice uttreances: "+_.flatten(testsplice).length)
+
+				var testdata =  bars.processdataset(bars.copyobj(_.flatten(testsplice)), {"intents":true, "filter": false, "filter_Quit_Greet":true})
+					
+				console.log("DEBUGTRAIN:"+testdata.length)	
+				trainAndTest.testBatch_async(classifier1, bars.copyobj(testdata), function(error, results1){
+
+					glresults["classifier1"].push(results1['stats']["macro-F1"])
+					trainAndTest.testBatch_async(classifier2, bars.copyobj(testdata), function(error, results2){
+						glresults["classifier2"].push(results2['stats']["macro-F1"])
+						callbackl()
+					})
+				})
+			},
+			function(err)
+			{
+				console.log(JSON.stringify(glresults, null, 4))
+				process.exit(0)
+			})
+
+		})
+	})
+
+
+	// console.log(data["train"].length)
+	// console.log(data["test"].length)
+	// process.exit(0)
+
+}
+
 if (check_num_dial_utt)
 {
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_trans.json"))
@@ -469,12 +552,9 @@ if (check_num_dial_utt)
 
 	}, this)
 
-
 	console.log(JSON.stringify(para, null, 4))
-
 	process.exit(0)
 }
-
 
 
 if (make_tr_fix)
