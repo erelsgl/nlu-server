@@ -4455,7 +4455,7 @@ function gettrans(turns, pat)
 {
   var output = []
   var regex =  new RegExp(pat)
-  var omitlang = ["ar", "es"]
+  var omitlang = ["ar", "es", "ru", "zh"]
 
   console.vlog("gettrans: input.length: " + turns.length)
   //console.vlog("gettrans: input.length: " + JSON.stringify(turns, null, 4))
@@ -4485,7 +4485,8 @@ function gettrans(turns, pat)
   		  delete record["input"]["sentences"]
   		  delete record["input"]["trans"]
   		  _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json")));
-  	 //   output.push(record)
+  			record["input"]["source"] = turn.translation_id
+		 //   output.push(record)
   	 	unique_trans[record["input"]["text"]] = record
   	  }
 
@@ -5713,7 +5714,7 @@ function ran(ranges)
 
   return {
     "min": Math.floor(minv*10)/10,
-    "max": Math.ceil(maxv*10)/10 + 0.1
+    "max": Math.ceil(maxv*10)/10
   }
 }
 
