@@ -3940,6 +3940,12 @@ function processdataset(dataset, options)
 {
   var output = []
 
+  if (!("filterIntent" in options))
+    throw new Error("filterIntent not in options")
+
+  if (!_.isArray(options["filterIntent"]))
+    throw new Error("filterIntent not an array")
+
   console.vlog("processdataset: initial: "+ dataset.length + " option: "+JSON.stringify(options, null, 4))
 
   _.each(dataset, function(utterance, utterance_key, list){
@@ -3965,7 +3971,7 @@ function processdataset(dataset, options)
   if (options.filter)
     output = _.filter(output, function(num){ return num["output"].length <= 1; });
 
-  if (options["filter"].length > 0)
+  if (options["filterIntent"].length > 0)
     output = _.filter(output, function(num){ return _.intersection(num["output"], options["filter"]).length == 0 });
   
   console.vlog("processdataset: end: "+ output.length)
