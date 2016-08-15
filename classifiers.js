@@ -1911,6 +1911,49 @@ function feAsyncPrimitiveClean(sam, features, train, featureOptions, callback) {
 }
 */
 
+
+function feAsyncStanfordRoot(sam, features, train, featureOptions, callback) {
+
+	var sample = JSON.parse(JSON.stringify(sam))
+
+	if (!('basic-dependencies' in sample['sentences']))
+		throw new Error("basic-dependencies not in the sample "+JSON.stringify(sample))
+
+	if (!('sentences' in sample))
+	   throw new Error("for some reason sentences not in sample "+JSON.stringify(sample))
+
+	if (!('tokens' in sample['sentences']))
+	   throw new Error("for some reason tokens not in sample"+JSON.stringify(sample, null, 4))
+
+	if (_.isArray(sample['sentences']))
+	   throw new Error("feAsync is only for object sentences")
+
+	var rootwords = {}
+	var negatedwords = []
+
+	_.each(sample['sentences']["basic-dependencies"], function(value, key, list){
+		if (value.dep == "ROOT")
+			rootwords[value.dependentGloss] = 1
+
+		if (value.dep == "neg")
+			negatedwords.push(value.governorGloss)
+	}, this)
+
+	console.vlog("feAsyncStanfordRoot: found roots: "+rootwords)
+	console.vlog("feAsyncStanfordRoot: found negations: "+negatedwords)
+
+	_.each(negatedwords, function(value, key, list){
+		if (value in rootwords)
+		{
+			delete rootwords[value]
+			rootwords[value+"-"] = 1
+		}
+	}, this)
+
+	console.vlog("DEBUGASYNCSTANFORD: "+rootwords)
+ 	callback(null, rootwords)
+}
+
 function feAsyncStanford(sam, features, train, featureOptions, callback) {
 
 	var sample = JSON.parse(JSON.stringify(sam))
@@ -2499,6 +2542,7 @@ module.exports = {
 		Component: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'offered':true, 'toextract':'word','unoffered':true}),
 		Natural: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'offered':true, 'toextract':'word','unoffered':true}),
 		Natural_Neg: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":true}),
+		Natural_Root: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanfordRoot, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":true}),
 		NLU_Emb_Trans_Sum_100: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":true, 'embdeddb': 9, 'operation':'sum'}),
 		NLU_Emb_Trans_Sum_50: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":true, 'embdeddb': 8, 'operation':'sum'}),
 
