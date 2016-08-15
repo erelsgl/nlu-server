@@ -21,8 +21,8 @@ process.on('message', function(message) {
 
    	console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
-	var test  = bars.processdataset(_.flatten(JSON.parse(message['test'])), {"intents":true, "filter": false, "filter_Quit_Greet":true})
-	var train = bars.processdataset(_.flatten(JSON.parse(message['train'])), {"intents":true, "filter": true, "filter_Quit_Greet":true})
+	var test  = bars.processdataset(_.flatten(JSON.parse(message['test'])), {"intents":true, "filter": false, "filterIntent":['Quit','Greet','Query']})
+	var train = bars.processdataset(_.flatten(JSON.parse(message['train'])), {"intents":true, "filter": true, "filterIntent":['Quit','Greet','Query']})
 
 //	_.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"] }, this)
 //	_.each(test, function(turn, key, list){ delete test[key]["input"]["sentences"] }, this)
@@ -77,7 +77,7 @@ process.on('message', function(message) {
 		},
     		function(mytrainex, mytestex, trainsize, callback) {
 
-			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filter_Quit_Greet":true, "filter":true})
+			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent":["Greet", "Quit", "Query"], "filter":true})
 	
 		var baseline_cl = classifiers.Natural_Neg
 
