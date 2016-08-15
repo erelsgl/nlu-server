@@ -461,7 +461,8 @@ if (signif)
 	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
 	var utterset1 = bars.getsetcontext(data1, false)
 	var train1 = utterset1["train"].concat(utterset1["test"])
-
+	train1 = _.shuffle(train1)
+	
 	var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), 10, 1)
 
 	// data["test"] - 10 dialogues
@@ -485,7 +486,9 @@ if (signif)
 		
 		console.log("classifier1 is trained")
 		var train2 = bars.gettrans(bars.copyobj(train), ".*:hu:.*")
-		
+		train2 =  bars.processdataset(train2, {"intents": true, "filter_Quit_Greet":true, "filter":true})
+	
+	
 		classifier2.trainBatchAsync(bars.copyobj(train2), function(err, results){
 			
 			console.log("classifier2 is trained")
@@ -508,9 +511,9 @@ if (signif)
 				console.log("DEBUGTRAIN:"+testdata.length)	
 				trainAndTest.testBatch_async(classifier1, bars.copyobj(testdata), function(error, results1){
 
-					glresults["classifier1"].push(results1['stats']["macro-F1"])
+					glresults["classifier1"].push(results1['stats']["macro-F1"]*100)
 					trainAndTest.testBatch_async(classifier2, bars.copyobj(testdata), function(error, results2){
-						glresults["classifier2"].push(results2['stats']["macro-F1"])
+						glresults["classifier2"].push(results2['stats']["macro-F1"]*100)
 						callbackl()
 					})
 				})
@@ -518,6 +521,8 @@ if (signif)
 			function(err)
 			{
 				console.log(JSON.stringify(glresults, null, 4))
+				var str = "from scipy import stats\nclassifier1= "+JSON.stringify(glresults["classifier1"])+"\nclassifier2= "+JSON.stringify(glresults["classifier2"])+"\nprint stats.wilcoxon(classifier1, classifier2)"
+	                        fs.writeFileSync("./wilcoxon.py", str)
 				process.exit(0)
 			})
 
