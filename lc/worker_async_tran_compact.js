@@ -190,7 +190,8 @@ if (cluster.isMaster)
 	var folds = 10
 	//var classifiers = [ "No_translations", "NLU_Tran_All", "NLU_Emb_Trans_Sum_100", "NLU_Emb_Trans_Sum_50"]
 	//var classifiers = [ 'No_translations', "Google", "Microsoft", "Yandex", "NLU_Emb_Trans_Sum_100" ]
-	var classifiers = [ 'No_translations', "NLU_Tran_All", "NLU_Tran_Hungarian", "NLU_Tran_Finish","NLU_Tran_German","NLU_Tran_French" ]
+	var classifiers = [ 'No_translations', "NLU_Tran_All", "NLU_Emb_Trans_Sum_100" ]
+	//var classifiers = [ 'No_translations', "NLU_Tran_All", "NLU_Tran_Hungarian", "NLU_Tran_Finish","NLU_Tran_German","NLU_Tran_French" ]
 	//var classifiers = [ 'Natural', "NLU_Tran_Yandex_Google", "NLU_Tran_Yandex_Microsoft", "NLU_Tran_Microsoft_Yandex",
 	//			"NLU_Tran_Microsoft_Google", "NLU_Tran_All", "Google", "Yandex"]
 				//"NLU_Tran_Microsoft_Google", "NLU_Tran_Google_Yandex", "NLU_Tran_Google_Microsoft"]
