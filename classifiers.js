@@ -165,10 +165,10 @@ function getRule(sen)
 		  'Pension Fund': [['0%','0%'],['10%','10%'],['15%','15%'],['20%','20%']],
 		  'Promotion Possibilities': [['fast','Fast promotion track'],['slow','Slow promotion track']],
 		  'Working Hours': [['8','8 hours'],['9','9 hours'],['10','10 hours']],
-		  'Job Description': [['QA','QA'],['Programmer','Programmer'],['Team','Team Manager'],['Project','Project Manager']]
+		  'Job Description': [['QA','QA'],['Programmer','Programmer'],['Team','Team Manager'],['Project','Project Manager']],
 		  // 'Job Description': ['QA','Programmer','Team Manager','Project Manager'],
-		   'Leased Car': ['Without leased car', 'With leased car', 'No agreement']
-		  // 'Leased Car': [['without','Without leased car'], ['with', 'With leased car'], ['agreement','No agreement']]
+		   //'Leased Car': ['Without leased car', 'With leased car', 'No agreement']
+		   'Leased Car': [['without','Without leased car'], ['with', 'With leased car'], ['agreement','No agreement']]
 		}
 
 	var arAttrVal = ['000','salary','pension','fund','promotion','possibilities','working','hours','hour',
@@ -257,7 +257,7 @@ function getRule(sen)
 
 		
 		
-/*		if (!found)
+		if (!found)
 			if ('basic-dependencies' in sentence)
 			{
 				_.each(sentence['basic-dependencies'], function(dep, key, list){
@@ -269,7 +269,7 @@ function getRule(sen)
 	}
 
 
-*/
+
 
 	// work around for missing car
 
