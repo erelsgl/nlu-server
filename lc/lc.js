@@ -432,7 +432,11 @@ function plotlc(fold, parameter, stat, lcfolder)
 
 	var ranges = bars.copyobj(output)
 	ranges.splice(0,1)
-	ranges = _.map(ranges, function(num){ return num.slice(2,num.length - 2 )});
+	ranges = _.map(ranges, function(num){ return num.slice(2,num.length )});
+	
+	console.mlog("RANGES:")
+        console.mlog(JSON.stringify(ranges, null, 4))
+
 	var ran = bars.ran(_.flatten(ranges))
 
 	var string = getstringlc(output)
