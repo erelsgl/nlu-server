@@ -1,23 +1,23 @@
-size	dial	Natural_Neg	NLU_Tran_All
-1	1	null	null
-2	2	null	null
-3	3	null	null
-4	4	null	null
-5	5	null	null
-6	6	null	null
-7	7	null	null
-8	8	null	null
-9	9	null	null
-10	10	null	null
-15	15	null	null
-20	20	null	null
-25	25	null	null
-30	30	null	null
-35	35	null	null
-40	40	null	null
-45	45	null	null
-50	50	0.6545953464910197	0.6805640886743254
-55	55	0.6681875959640272	0.7099480402603426
-60	60	0.6783608585416461	0.7284227166248491
-65	65	0.6762698176693229	0.7470288352104972
-70	70	0.6842749718604956	0.7330760088360481
+size	dial	Natural_Neg	Google	Microsoft	Yandex	NLU_Tran_All
+1	1	null	null	null	null	null
+2	2	null	null	null	null	null
+3	3	null	null	null	null	null
+4	4	null	null	null	null	null
+5	5	null	null	null	null	null
+6	6	null	null	null	null	null
+7	7	null	null	null	null	null
+8	8	null	null	null	null	null
+9	9	null	null	null	null	null
+10	10	null	null	null	null	null
+15	15	null	null	null	null	null
+20	20	null	null	null	null	null
+25	25	null	null	null	null	null
+30	30	null	null	null	null	null
+35	35	null	null	null	null	null
+40	40	null	null	null	null	null
+45	45	null	null	null	null	null
+50	50	0.6545953464910197	0.6477668464456193	0.6711991715056549	0.6350531531037975	0.6805640886743254
+55	55	0.6681875959640272	0.6753626219553415	0.6804414955111524	0.6616035883997742	0.7099480402603426
+60	60	0.6783608585416461	0.6863881634590433	0.6939761738900206	0.6720441348013202	0.7284227166248491
+65	65	0.6762698176693229	0.6980938504950741	0.7143864494312678	0.6921057802485133	0.7470288352104972
+70	70	0.6842749718604956	0.6843912471127853	0.6890694792930165	0.6797654372141283	0.7330760088360481
