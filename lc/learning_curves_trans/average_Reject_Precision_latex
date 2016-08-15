@@ -6,7 +6,12 @@
 \addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)
 };
-\addlegendentry{No\_translations}
+\addlegendentry{Natural\_Neg}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,0.6279950778142024)(40,0.6169149582297231)(45,0.6083339879438475)(50,0.6559432114775626)
+};
+\addlegendentry{Natural\_Root}
 
 \addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)
@@ -14,7 +19,7 @@
 \addlegendentry{NLU\_Tran\_All}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,0.5478678220189093)(40,0.5202793387698856)(45,0.4841497212139392)(50,0.5288667111523859)
 };
-\addlegendentry{NLU\_Emb\_Trans\_Sum\_100}
+\addlegendentry{Natural\_Root\_Trans}
 

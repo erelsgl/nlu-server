@@ -1,19 +1,19 @@
-size	dial	No_translations	NLU_Tran_All	NLU_Emb_Trans_Sum_100
-1	1	null	null	null
-2	2	null	null	null
-3	3	null	null	null
-4	4	null	null	null
-5	5	null	null	null
-6	6	null	null	null
-7	7	null	null	null
-8	8	null	null	null
-9	9	null	null	null
-10	10	null	null	null
-15	15	null	null	null
-20	20	null	null	null
-25	25	null	null	null
-30	30	null	null	null
-35	35	null	null	null
-40	40	null	null	null
-45	45	null	null	null
-50	50	null	null	null
+size	dial	Natural_Neg	Natural_Root	NLU_Tran_All	Natural_Root_Trans
+1	1	null	null	null	null
+2	2	null	null	null	null
+3	3	null	null	null	null
+4	4	null	null	null	null
+5	5	null	null	null	null
+6	6	null	null	null	null
+7	7	null	null	null	null
+8	8	null	null	null	null
+9	9	null	null	null	null
+10	10	null	null	null	null
+15	15	null	null	null	null
+20	20	null	null	null	null
+25	25	null	null	null	null
+30	30	null	null	null	null
+35	35	null	0.6279950778142024	null	0.5478678220189093
+40	40	null	0.6169149582297231	null	0.5202793387698856
+45	45	null	0.6083339879438475	null	0.4841497212139392
+50	50	null	0.6559432114775626	null	0.5288667111523859
