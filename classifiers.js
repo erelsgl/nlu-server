@@ -1349,7 +1349,7 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 					console.vlog("DEBUGEMB: word: "+word+" vector is reversed")
 				}
 
-				embs.push(emb)
+				embs.push(bars.copyobj(emb))
 			}	
 			callback1()
 		})
@@ -1365,7 +1365,8 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 				var res = bars.vecsumaverage(embs)
 
 			if (featureOptions.operation == "extremum")
-				var res = bars.vecextremum(embs)
+				throw new Error("error")
+				// var res = bars.vecextremum(embs)
 
 			_.each(res, function(value, key, list){ 
 				embFeatures['w2v'+key] = value
@@ -1373,11 +1374,11 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 
 			console.vlog("DEBUGEMBED: embFeatures is populated")
 	    		
-			if ("?" in features)
-			{
-				console.vlog("feEmbquestion")
-				embFeatures["?"] = 1
-			}
+			// if ("?" in features)
+			// {
+				// console.vlog("feEmbquestion")
+				// embFeatures["?"] = 1
+			// }
 			callback(null, embFeatures)
 		}
 else
