@@ -1,4 +1,4 @@
-size	dial	Natural_Neg	Root_Trans	NLU_Tran_All	Root_Emb	Root_Trans_Emb
+size	dial	Natural_Neg	Emb_25	Emb_50	Emb_100	Emb_300
 1	1	null	null	null	null	null
 2	2	null	null	null	null	null
 3	3	null	null	null	null	null
@@ -13,7 +13,7 @@ size	dial	Natural_Neg	Root_Trans	NLU_Tran_All	Root_Emb	Root_Trans_Emb
 20	20	null	null	null	null	null
 25	25	null	null	null	null	null
 30	30	null	null	null	null	null
-35	35	null	0.5478678220189093	null	0.5700553320053919	0.4989252199327594
-40	40	null	0.5202793387698856	null	0.5794927745836382	0.5086456736442334
-45	45	null	0.4841497212139392	null	0.5258546290298833	0.5178495874497606
-50	50	null	0.5288667111523859	null	0.5572758166939236	0.5257770624106113
+35	35	null	0.47004458023940715	null	null	null
+40	40	null	0.38220569255895737	null	null	null
+45	45	null	0.2916359155868469	null	null	null
+50	50	null	0.28853740795162885	null	null	null
