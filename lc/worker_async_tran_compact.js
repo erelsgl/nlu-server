@@ -42,7 +42,7 @@ if (cluster.isWorker)
 
 	async.whilst(
 	    //function () { return index < train.length },
-	    function () { return index < 50 },
+	    function () { return index < 70 },
 	    function (callbackwhilst) {
 
 		async.waterfall([
@@ -88,7 +88,8 @@ if (cluster.isWorker)
     				case "NLU_Tran_Yandex_Microsoft_Russian": callbacks(null, bars.gettrans(mytrainex, "Y:ru:M"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Yandex_Microsoft_Chinese": callbacks(null, bars.gettrans(mytrainex, "Y:zh:M"), mytestex, mytrainex.length); break;
     				
-				case "NLU_Tran_French": callbacks(null, bars.gettrans(mytrainex, ".*:fr:.*"), mytestex, mytrainex.length); break;
+				case "Google_French": callbacks(null, bars.gettrans(mytrainex, "G:fr:G"), mytestex, mytrainex.length); break;
+				case "French": callbacks(null, bars.gettrans(mytrainex, ".*:fr:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_German": callbacks(null, bars.gettrans(mytrainex, ".*:de:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Spanish": callbacks(null, bars.gettrans(mytrainex, ".*:es:.*"), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Portuguese": callbacks(null, bars.gettrans(mytrainex, ".*:pt:.*"), mytestex, mytrainex.length); break;
@@ -112,11 +113,14 @@ if (cluster.isWorker)
 					
 
     				break;
-    				case "NLU_Tran_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;	
+    				case "Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;	
+    				case "Google_Hungarian": callbacks(null, bars.gettrans(mytrainex, "G:hu:G"), mytestex, mytrainex.length); break;	
     				case "NLU_Tran_Finish_Arabic:": callbacks(null, bars.gettrans(mytrainex, ".*:(ar|fi):.*"), mytestex, mytrainex.length); break;	
     				case "NLU_Tran_Yandex_Microsoft_Finish": callbacks(null, bars.gettrans(mytrainex, "Y:fi:M"), mytestex, mytrainex.length); break;	
     				case "NLU_Tran_All": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;	
-    				
+    				case "Root_Trans": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;	
+    				case "Root_Trans_Emb": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;	
+	
 				case "NLU_Bal": callbacks(null, bars.gettransdist(mytrainex), mytestex, mytrainex.length); break;
     				case "NLU_Oversample": callbacks(null, bars.oversample(mytrainex), mytestex, mytrainex.length); break;
     				case "NLU_Tran_Oversample": callbacks(null, bars.tranoversam(mytrainex), mytestex, mytrainex.length); break;
@@ -136,14 +140,11 @@ if (cluster.isWorker)
 			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filter_Quit_Greet":true, "filter":true})
     	
 			console.vlog("DEBUGPRETRAIN: classifier:"+classifier+" mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
+
+			var baseline_cl = classifiers.Natural_Neg
 			
-			if (classifier.indexOf("Emb")!=-1)
-				{
-				var baseline_cl = classifiers[classifier]
-				console.vlog(classifier+" is applied")
-				}
-			else
-				var baseline_cl = classifiers.Natural_Neg
+			if (classifier.indexOf("Root")!=-1) baseline_cl = classifiers.Natural_Root
+			if (classifier.indexOf("Emb")!=-1)  baseline_cl = classifiers[classifier]
 
     			trainAndTest.trainAndTest_async(baseline_cl, bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
     			//trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
@@ -190,14 +191,20 @@ if (cluster.isMaster)
 	var folds = 10
 	//var classifiers = [ "No_translations", "NLU_Tran_All", "NLU_Emb_Trans_Sum_100", "NLU_Emb_Trans_Sum_50"]
 	//var classifiers = [ 'No_translations', "Google", "Microsoft", "Yandex", "NLU_Emb_Trans_Sum_100" ]
-	var classifiers = [ 'No_translations', "NLU_Tran_All", "NLU_Emb_Trans_Sum_100" ]
-	//var classifiers = [ 'No_translations', "NLU_Tran_All", "NLU_Tran_Hungarian", "NLU_Tran_Finish","NLU_Tran_German","NLU_Tran_French" ]
+	//var classifiers = [ 'No_translations', "NLU_Tran_All", "NLU_Emb_Trans_Sum_100" ]
+//	var classifiers = [ 'Natural_Neg', "Root_Trans","NLU_Tran_All", "Root_Emb","Root_Trans_Emb" ]
+
+	
+//var classifiers = [ 'No_translations', "NLU_Tran_All", "NLU_Tran_Hungarian", "NLU_Tran_Finish","NLU_Tran_German","NLU_Tran_French" ]
 	//var classifiers = [ 'Natural', "NLU_Tran_Yandex_Google", "NLU_Tran_Yandex_Microsoft", "NLU_Tran_Microsoft_Yandex",
 	//			"NLU_Tran_Microsoft_Google", "NLU_Tran_All", "Google", "Yandex"]
 				//"NLU_Tran_Microsoft_Google", "NLU_Tran_Google_Yandex", "NLU_Tran_Google_Microsoft"]
 	//var classifiers = [ "No_translations", "Google", "NLU_Tran_Microsoft_Google"]
 	//var classifiers = [ "Natural", "NLU_Emb_25", "NLU_Emb_50", "NLU_Emb_Trans", "NLU_Tran_All"]
-	//var classifiers = [ "NLU_Tran_All", "NLU_Emb_Trans_25", "NLU_Emb_Trans_50", "NLU_Emb_Trans_100"]
+	//var classifiers = [ "Natural_Neg", "Emb_25", "Emb_50", "Emb_100", "Emb_300"]
+	//var classifiers = [ "Natural_Neg", "Google_French", "French", "NLU_Tran_All", "Hungarian", "Google_Hungarian"]
+	//var classifiers = [ "Natural_Neg", "Google", "Microsoft", "Yandex", "NLU_Tran_All"]
+	var classifiers = [ "Natural_Neg", "NLU_Tran_All"]
 	//var classifiers = [ "Natural","NLU_Tran_GGFinish"]
 
 	//var classifiers = ["Natural", "NLU_Tran_German","NLU_Tran_Spanish","NLU_Tran_Portuguese","NLU_Tran_Hebrew","NLU_Tran_Arabic","NLU_Tran_Russian","NLU_Tran_Chinese","NLU_Tran_Urdu","NLU_Tran_Finish", "NLU_Tran_Hungarian", "NLU_Tran_All"]
