@@ -9,27 +9,27 @@
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6747996572937779)(60,0.6832077281414274)(65,0.6659656233681943)(70,0.6721474488977381)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6752630787803069)(60,0.6823615620988828)(65,0.6736588407210418)(70,0.6789119443074698)
 };
 \addlegendentry{Google\_French}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6536157104648801)(60,0.6709069501485161)(65,0.6746234265732511)(70,0.6872213914725448)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6478173205566439)(60,0.6725900416970205)(65,0.6829003481153428)(70,0.6976592409244077)
 };
 \addlegendentry{French}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6878649577978341)(60,0.7040684733680493)(65,0.671381707680337)(70,0.679510089309727)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.7069547099733842)(60,0.7097173912610416)(65,0.6938828377646689)(70,0.694558922047574)
 };
 \addlegendentry{NLU\_Tran\_All}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.7119076672749153)(60,0.7079535373636284)(65,0.7100029962473544)(70,0.7114740552047595)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.7172280211295596)(60,0.7075397955185683)(65,0.7196172818515549)(70,0.7149748832902991)
 };
 \addlegendentry{Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6516488914905947)(60,0.6830692222225444)(65,0.6794310878025822)(70,0.6793358150965233)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6521690962231436)(60,0.6813197423813794)(65,0.6957605129600056)(70,0.6796280854389727)
 };
 \addlegendentry{Google\_Hungarian}
 
