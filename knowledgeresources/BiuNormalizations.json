@@ -1,17 +1,48 @@
 [
-  {"source": "won't", "target": "will not"}
+  {"source": "\"", "target": ""}
+, {"source": "won't", "target": "will not"}
 , {"source": "8hr", "target": "8 hours"}
 , {"source": "9hr", "target": "9 hours"}
 , {"source": "10hr", "target": "10 hours"}
+
+, {"source": "8 am", "target": "8 hours"}
+, {"source": "9 am", "target": "9 hours"}
+, {"source": "10 am", "target": "10 hours"}
+
+, {"source": "8-hours", "target": "8 hours"}
+, {"source": "9-hours", "target": "9 hours"}
+, {"source": "10-hours", "target": "10 hours"}
+
+
+, {"source": "60 000", "target": "60000"}
+, {"source": "90 000", "target": "90000"}
+, {"source": "120 000", "target": "120000"}
+
+
+, {"source": " 60 ", "target": " 60000 "}
+, {"source": " 90 ", "target": " 90000 "}
+, {"source": " 120 ", "target": " 120000 "}
+
+
+
+
+, {"source": "\\. 0", "target": ".0"}
+, {"source": "\\, 0", "target": ",0"}
 , {"source": "60,000", "target": "60000"}
+, {"source": "6,", "target": "60000,"}
+, {"source": "9,", "target": "90000,"}
+, {"source": "12,", "target": "120000,"}
+, {"source": "fast-track", "target": "fast track"}
+, {"source": " pension fun ", "target": " pension fund "}
 , {"source": "90,000", "target": "90000"}
 , {"source": "120,000", "target": "120000"}
 , {"source": "60,000USD", "target": "60000"}
 , {"source": "90,000USD", "target": "90000"}
 , {"source": "120,000USD", "target": "120000"}
-, {"source": " 60 ", "target": " 60000 "}
-, {"source": " 90 ", "target": " 90000 "}
-, {"source": " 120 ", "target": " 120000 "}
+, {"source": "10:00", "target": " 10 hours "}
+, {"source": "9:00", "target": " 9 hours "}
+, {"source": "8:00", "target": " 8 hours "}
+, {"source": "0 0", "target": "00"}
 , {"source": "don't", "target": "do not"}
 , {"source": "dont", "target": "do not"}
 , {"source": "doesn't", "target": "does not"}
