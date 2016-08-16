@@ -3972,7 +3972,7 @@ function processdataset(dataset, options)
     output = _.filter(output, function(num){ return num["output"].length <= 1; });
 
   if (options["filterIntent"].length > 0)
-    output = _.filter(output, function(num){ return _.intersection(num["output"], options["filter"]).length == 0 });
+    output = _.filter(output, function(num){ return _.intersection(num["output"], options["filterIntent"]).length == 0 });
   
   console.vlog("processdataset: end: "+ output.length)
 
