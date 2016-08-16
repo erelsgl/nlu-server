@@ -4463,7 +4463,7 @@ function gettrans(turns, pat)
 {
   var output = []
   var regex =  new RegExp(pat)
-  var omitlang = ["ar", "es", "ru", "zh"]
+  var omitlang = ["ar", "es", "ru"]
 
   console.vlog("gettrans: input.length: " + turns.length)
 
@@ -4478,8 +4478,8 @@ function gettrans(turns, pat)
     })
 
 
-    // if (turn["output"].length > 0)
-	   // {
+     if (turn["output"].length > 0)
+	    {
   
 		  var unique_trans = {}
 	    _.each(turn["input"]["trans"], function(tran, key, list){
@@ -4501,16 +4501,16 @@ function gettrans(turns, pat)
   		  delete record["input"]["sentences"]
   		  delete record["input"]["trans"]
   		  _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json")));
-  			record["input"]["source"] = turn.translation_id
-		 //   output.push(record)
-  	 	unique_trans[record["input"]["text"]] = record
+  		  record["input"]["source"] = turn.translation_id
+	//	  output.push(record)
+  	  	  unique_trans[record["input"]["text"]] = record
   	  }
 
     }, this)
 		console.vlog("gettrans: there are unique records "+_.values(unique_trans).length)
 	 output = output.concat(_.values(unique_trans))
 
-	 // }
+	  }
     
   }, this)
 
