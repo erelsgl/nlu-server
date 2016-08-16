@@ -4455,7 +4455,7 @@ function oversample(turns)
   }, this)
 
   console.vlog(" DEBUGOVERSAMPLE: dist after: "+JSON.stringify(returndist(turns), null, 4))
-
+gettra
   return turns
 }
 
@@ -4466,15 +4466,23 @@ function gettrans(turns, pat)
   var omitlang = ["ar", "es", "ru", "zh"]
 
   console.vlog("gettrans: input.length: " + turns.length)
-  //console.vlog("gettrans: input.length: " + JSON.stringify(turns, null, 4))
 
   _.each(turns, function(turn, key, list){
   	
-    if (turn["output"].length > 0)
-	{
+    output.push({
+             'input': {'text': turn.input.text,
+             'sentences': turn.input.sentences,
+             'context': turn.input.context},
+             'output': JSON.parse(JSON.stringify(turn.output)),
+             'outputhash': JSON.parse(JSON.stringify(turn.outputhash))
+    })
+
+
+    // if (turn["output"].length > 0)
+	   // {
   
-		var unique_trans = {}
-	_.each(turn["input"]["trans"], function(tran, key, list){
+		  var unique_trans = {}
+	    _.each(turn["input"]["trans"], function(tran, key, list){
 
   	  var proc = regex.test(key)
 
@@ -4482,7 +4490,7 @@ function gettrans(turns, pat)
       var engine2 = key.substr(-1,1)
       var pivotlang = key.substr(2,2)
 	
-	console.vlog("gettrans: engine1: "+engine1+ " engine2: "+engine2+" pivotlang: "+pivotlang)
+	    console.vlog("gettrans: engine1: "+engine1+ " engine2: "+engine2+" pivotlang: "+pivotlang)
 
       //if (proc && (l1!=l2))
       if ((proc) && (omitlang.indexOf(pivotlang)==-1))
@@ -4500,18 +4508,10 @@ function gettrans(turns, pat)
 
     }, this)
 		console.vlog("gettrans: there are unique records "+_.values(unique_trans).length)
-	output = output.concat(_.values(unique_trans))
+	 output = output.concat(_.values(unique_trans))
 
-	}
+	 // }
     
-    output.push({
-             'input': {'text': turn.input.text,
-	         	 'sentences': turn.input.sentences,
-			       'context': turn.input.context},
-             'output': JSON.parse(JSON.stringify(turn.output)),
-             'outputhash': JSON.parse(JSON.stringify(turn.outputhash))
-//            'context': JSON.parse(JSON.stringify(turn.context)),
-      })
   }, this)
 
   console.vlog("gettrans: output.length: " + output.length)  
