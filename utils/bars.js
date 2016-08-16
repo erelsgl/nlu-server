@@ -22,6 +22,8 @@ var distance = require(__dirname+'/distance');
 var async_adapter = require(__dirname+'/async_adapter');
 var async = require('async');
 var classifiers = require(__dirname+'/../classifiers');
+var limdu = require("limdu");
+var ftrs = limdu.features;
 
 const walker = require('walker-sample');
 
@@ -35,8 +37,8 @@ var splitPartEqually = Hierarchy.splitPartEqually
 var splitPartEqually1 = Hierarchy.splitPartEqually1
 var joinJsonRecursive = Hierarchy.joinJsonRecursive
 
-// var regexpNormalizer = ftrs.RegexpNormalizer(
-    // JSON.parse(fs.readFileSync(__dirname+'/../knowledgeresources/BiuNormalizations.json')));
+var regexpNormalizer = ftrs.RegexpNormalizer(
+    JSON.parse(fs.readFileSync(__dirname+'/../knowledgeresources/BiuNormalizations.json')));
 
 // Tokenizer = require('natural').WordTokenizer,
   // tokenizer = new Tokenizer();
@@ -4522,6 +4524,9 @@ function gettrans(turns, pat)
 
 function distances(str1, str2)
 {
+  str1 = regexpNormalizer(str1.toLowerCase())
+  str2 = regexpNormalizer(str2.toLowerCase())
+
   var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-\?]+/});
 
   var tokens1 = _.flatten(natural.NGrams.ngrams(tokenizer.tokenize(str1), 1))
@@ -4622,7 +4627,6 @@ function bleu(can, ref)
 
   return P*brev
   // return P
-  //return P/brev
 }
 
 

@@ -95,10 +95,8 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 
 // sentence is a hash and not an array
 // lemma and pos are required
-function getRule(sen)
+function getRule(sen, text)
 {
-
-//	console.vlog("getRule input:" +JSON.stringify(sen, null, 4))
 
 	if (!('tokens' in sen))
 		{
@@ -107,6 +105,24 @@ function getRule(sen)
 		}
 	var sentence = JSON.parse(JSON.stringify(sen))
  
+	// change tokens 
+  	var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-\?]+/});
+	
+	text = regexpNormalizer(text.toLowerCase())
+	console.vlog("getRule: normalized: "+sentence)
+
+	var tkns = natural.NGrams.ngrams(tokenizer.tokenize(text), 1)
+	console.vlog("getRule: tokens: "+tkns)
+	  
+	sentence['tokens'] = []
+
+	_.each(tkns, function(value, key, list){
+		sentence['tokens'].push({
+			"word": value[0],
+			"lemma": value[0]
+			})
+	}, this)
+	console.vlog("getRule: tokens: "+JSON.stringify(sentence['tokens'], null, 4))
 
 	// first fix % sign
 	_.each(sentence['tokens'], function(token, key, list){
@@ -1999,7 +2015,7 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	}, this)
 
 	if (featureOptions.clean)
-		sample.sentences = getRule(sample.sentences).cleaned
+		sample.sentences = getRule(sample.sentences, sample.text).cleaned
 	else
 		console.vlog("feAsyncStanford: ATTENTION: clean method")	
 

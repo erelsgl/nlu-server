@@ -28,9 +28,9 @@ var limdu = require("limdu");
 var ftrs = limdu.features;
 
 
-var signif = true
+var signif = false
 // output the blue average
-var correlation = false
+var correlation = true
 
 var latex_plot = false
 
@@ -310,6 +310,10 @@ console.log("if "+ a + " > "+ b)
 if (correlation)
 {
 	var lang = {}
+
+	// among all language MM for some reason  
+  	var omitlang = ["ar", "es", "ru"]
+
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
 
 	_.each(data, function(dialogue, key, list){
@@ -322,18 +326,26 @@ if (correlation)
 						var temp = {}
 
 						_.each(turn["input"]["trans"], function(text, key, list){
-							var ln = key.substr(2,2)
 							
+							var ln = key.substr(2,2)
+							var engine1 = key.substr(0,1)
+							var engine2 = key.substr(-1,1)
+							
+							var par = engine1+engine2
+
+							if (omitlang.indexOf(ln)==-1)
+							{
+
+								console.log("language:"+ln)
+								console.log("par:"+par)
 							// var ln = key.substr(0,1) + key.substr(-1,1)
 						    // var language = key.substr(2,2)
 
-						    // if (["fi"].indexOf(language)!=-1)
-						    // {
-								if (!(ln in lang))
-									lang[ln] = []
+								if (!(par in lang))
+									lang[par] = []
 
 								var dst = bars.distances(text, turn["input"]["text"])
-	   							temp[ln] = dst
+	   							// temp[par] = dst
 
 	   							if (isNaN(parseFloat(dst)) || !isFinite(dst))
 	   								{
@@ -343,9 +355,9 @@ if (correlation)
 	   								console.log(dst)
 	   								}
 	   							else
-									lang[ln].push(dst)
-							
-							// }
+									lang[par].push(dst)
+							}
+						
 						}, this)
 
 						/*if ((temp['MY'] > temp['MM'])
@@ -461,8 +473,7 @@ if (signif)
 	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
 	var utterset1 = bars.getsetcontext(data1, false)
 	var train1 = utterset1["train"].concat(utterset1["test"])
-	train1 = _.shuffle(train1)
-	
+
 	var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), 10, 1)
 
 	// data["test"] - 10 dialogues
@@ -486,9 +497,7 @@ if (signif)
 		
 		console.log("classifier1 is trained")
 		var train2 = bars.gettrans(bars.copyobj(train), ".*:hu:.*")
-		train2 =  bars.processdataset(train2, {"intents": true, "filter_Quit_Greet":true, "filter":true})
-	
-	
+
 		classifier2.trainBatchAsync(bars.copyobj(train2), function(err, results){
 			
 			console.log("classifier2 is trained")
@@ -511,9 +520,9 @@ if (signif)
 				console.log("DEBUGTRAIN:"+testdata.length)	
 				trainAndTest.testBatch_async(classifier1, bars.copyobj(testdata), function(error, results1){
 
-					glresults["classifier1"].push(results1['stats']["macro-F1"]*100)
+					glresults["classifier1"].push(results1['stats']["macro-F1"])
 					trainAndTest.testBatch_async(classifier2, bars.copyobj(testdata), function(error, results2){
-						glresults["classifier2"].push(results2['stats']["macro-F1"]*100)
+						glresults["classifier2"].push(results2['stats']["macro-F1"])
 						callbackl()
 					})
 				})
@@ -521,8 +530,6 @@ if (signif)
 			function(err)
 			{
 				console.log(JSON.stringify(glresults, null, 4))
-				var str = "from scipy import stats\nclassifier1= "+JSON.stringify(glresults["classifier1"])+"\nclassifier2= "+JSON.stringify(glresults["classifier2"])+"\nprint stats.wilcoxon(classifier1, classifier2)"
-	                        fs.writeFileSync("./wilcoxon.py", str)
 				process.exit(0)
 			})
 
