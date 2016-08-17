@@ -4483,7 +4483,7 @@ function gettrans(turns, pat)
         var engine2 = key.substr(-1,1)
         var pivotlang = key.substr(2,2)
 	
-        console.vlog("gettrans: engine1: "+engine1+ " engine2: "+engine2+" pivotlang: "+pivotlang)
+        //console.vlog("gettrans: engine1: "+engine1+ " engine2: "+engine2+" pivotlang: "+pivotlang)
 
         if ((proc) && (omitlang.indexOf(pivotlang)==-1))
         {
@@ -4513,6 +4513,7 @@ function gettrans(turns, pat)
 		  console.vlog("gettrans: unique_trans: "+JSON.stringify(unique_trans, null, 4))
 
 	    output = output.concat(_.values(unique_trans))
+	console.vlog("gettrans: "+_.keys(unique_trans).length +" was added among "+_.keys(turn["input"]["trans"]).length)
 	  }
     
   }, this)
