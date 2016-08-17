@@ -1,17 +1,21 @@
-size	dial	Natural_Neg	huzh	NLU_Tran_All	Hungarian	Chinese	German
-1	1	null	null	null	null	null	null
-2	2	null	null	null	null	null	null
-3	3	null	null	null	null	null	null
-4	4	null	null	null	null	null	null
-5	5	null	null	null	null	null	null
-6	6	null	null	null	null	null	null
-7	7	null	null	null	null	null	null
-8	8	null	null	null	null	null	null
-9	9	null	null	null	null	null	null
-10	10	null	null	null	null	null	null
-15	15	null	null	null	null	null	null
-20	20	null	null	null	null	null	null
-25	25	null	null	null	null	null	null
-30	30	null	null	null	null	null	null
-35	35	null	null	null	null	null	null
-40	40	0.5316433876111877	0.545953844481918	0.5236857781639371	0.557653350994917	0.517290426623343	0.47979613548569766
+size	dial	Natural_Neg	Emb_25	Emb_50	Emb_100	Emb_300
+1	1	null	null	null	null	null
+2	2	null	null	null	null	null
+3	3	null	null	null	null	null
+4	4	null	null	null	null	null
+5	5	null	null	null	null	null
+6	6	null	null	null	null	null
+7	7	null	null	null	null	null
+8	8	null	null	null	null	null
+9	9	null	null	null	null	null
+10	10	null	null	null	null	null
+15	15	null	null	null	null	null
+20	20	null	null	null	null	null
+25	25	null	null	null	null	null
+30	30	null	null	null	null	null
+35	35	null	null	null	null	null
+40	40	0.5316433876111877	null	null	null	null
+45	45	0.5464217788530479	null	null	null	null
+46	46	0.6171428571428571	0.631578947368421	0.7083333333333334	0.7310924369747899	null
+47	47	0.3860868566176471	0.6802824858757062	0.7262206913222142	0.8121848739495798	0.841995841995842
+50	50	0.5891855592960346	0.668963962344906	null	null	null
