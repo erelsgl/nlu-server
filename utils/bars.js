@@ -4465,53 +4465,54 @@ function gettrans(turns, pat)
 {
   var output = []
   var regex =  new RegExp(pat)
-  var omitlang = ["ar", "es", "ru"]
+  var omitlang = ["ar", "es"]
 
   console.vlog("gettrans: input.length: " + turns.length)
 
   _.each(turns, function(turn, key, list){
-  	
-    output.push({
-             'input': {'text': turn.input.text,
-             'sentences': turn.input.sentences,
-             'context': turn.input.context},
-             'output': JSON.parse(JSON.stringify(turn.output)),
-             'outputhash': JSON.parse(JSON.stringify(turn.outputhash))
-    })
 
-
-     if (turn["output"].length > 0)
-	    {
+    if (turn["output"].length > 0)
+    {
   
 		  var unique_trans = {}
-	    _.each(turn["input"]["trans"], function(tran, key, list){
-
-  	  var proc = regex.test(key)
-
-      var engine1 = key.substr(0,1)
-      var engine2 = key.substr(-1,1)
-      var pivotlang = key.substr(2,2)
+	  
+      _.each(turn["input"]["trans"], function(tran, key, list){
+        
+        var proc = regex.test(key)
+        var engine1 = key.substr(0,1)
+        var engine2 = key.substr(-1,1)
+        var pivotlang = key.substr(2,2)
 	
-	    console.vlog("gettrans: engine1: "+engine1+ " engine2: "+engine2+" pivotlang: "+pivotlang)
+        console.vlog("gettrans: engine1: "+engine1+ " engine2: "+engine2+" pivotlang: "+pivotlang)
 
-      //if (proc && (l1!=l2))
-      if ((proc) && (omitlang.indexOf(pivotlang)==-1))
-  	  {
-        console.vlog("gettrans: add: "+key)
-        var record= copyobj(turn)
-  		  record["input"]["text"] = tran
-  		  delete record["input"]["sentences"]
-  		  delete record["input"]["trans"]
-  		  _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json")));
-  		  record["input"]["source"] = turn.translation_id
-	//	  output.push(record)
+        if ((proc) && (omitlang.indexOf(pivotlang)==-1))
+        {
+          console.vlog("gettrans: add: "+key)
+          var record= copyobj(turn)
+          record["input"]["text"] = tran
+  		    delete record["input"]["sentences"]
+  		    delete record["input"]["trans"]
+  		    _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json")));
+  		    record["input"]["source"] = turn.translation_id
+          // output.push(record)
   	  	  unique_trans[record["input"]["text"]] = record
-  	  }
+        }
+      }, this)
 
-    }, this)
-		console.vlog("gettrans: there are unique records "+_.values(unique_trans).length)
-	 output = output.concat(_.values(unique_trans))
+      unique_trans[turn.input.text] = 
+      {
+        'input': {'text': turn.input.text,
+        'sentences': turn.input.sentences,
+        'context': turn.input.context},
+        'output': JSON.parse(JSON.stringify(turn.output)),
+        'outputhash': JSON.parse(JSON.stringify(turn.outputhash))
+      }
 
+      console.vlog("gettrans: there are unique records: "+_.values(unique_trans).length)
+      console.vlog("gettrans: unique strings: "+JSON.stringify(_.keys(unique_trans), null, 4))
+		  console.vlog("gettrans: unique_trans: "+JSON.stringify(unique_trans, null, 4))
+
+	    output = output.concat(_.values(unique_trans))
 	  }
     
   }, this)
