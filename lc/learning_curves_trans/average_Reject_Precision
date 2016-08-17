@@ -1,23 +1,17 @@
-size	dial	Natural_Neg	Google	Microsoft	Yandex	NLU_Tran_All	MY	GM
-1	1	null	null	null	null	null	null	null
-2	2	null	null	null	null	null	null	null
-3	3	null	null	null	null	null	null	null
-4	4	null	null	null	null	null	null	null
-5	5	null	null	null	null	null	null	null
-6	6	null	null	null	null	null	null	null
-7	7	null	null	null	null	null	null	null
-8	8	null	null	null	null	null	null	null
-9	9	null	null	null	null	null	null	null
-10	10	null	null	null	null	null	null	null
-15	15	null	null	null	null	null	null	null
-20	20	null	null	null	null	null	null	null
-25	25	null	null	null	null	null	null	null
-30	30	null	null	null	null	null	null	null
-35	35	null	null	null	null	null	null	null
-40	40	null	null	null	null	null	null	null
-45	45	null	null	null	null	null	null	null
-50	50	null	null	null	null	null	null	null
-55	55	0.6570891763003539	null	0.6478124719755673	0.631429234302003	0.664537677746098	0.6295325593431893	0.6610483278117055
-60	60	0.6608436075027662	null	0.6738682922722805	0.6395788345341838	0.6440818274493781	0.6441888908838864	0.6776600202613315
-65	65	0.672709731489243	null	0.6813373342997996	0.6451901806618181	0.6124494200727089	0.6586821238638855	0.6954186084354036
-70	70	0.6809777234918897	null	0.6924840519947607	0.6777758023590692	0.6201164510071231	0.6816280179023491	0.7102601966107156
+size	dial	Natural_Neg	huzh	NLU_Tran_All	Hungarian	Chinese	German
+1	1	null	null	null	null	null	null
+2	2	null	null	null	null	null	null
+3	3	null	null	null	null	null	null
+4	4	null	null	null	null	null	null
+5	5	null	null	null	null	null	null
+6	6	null	null	null	null	null	null
+7	7	null	null	null	null	null	null
+8	8	null	null	null	null	null	null
+9	9	null	null	null	null	null	null
+10	10	null	null	null	null	null	null
+15	15	null	null	null	null	null	null
+20	20	null	null	null	null	null	null
+25	25	null	null	null	null	null	null
+30	30	null	null	null	null	null	null
+35	35	null	null	null	null	null	null
+40	40	null	null	null	null	null	null
