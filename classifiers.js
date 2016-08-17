@@ -27,6 +27,16 @@ var async = require('async');
 var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
 var log_file = "./logs/" + process.pid
 
+
+var antonyms = {}
+var data = fs.readFileSync("./antonyms.txt", 'utf8').split("\n")
+
+_.each(data, function(value, key, list){
+        var value1 = value.split(",")
+        antonyms[value1[0]] = value1[1]
+        antonyms[value1[1]] = value1[0]
+}, this)
+
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
 var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-\?]+/});
@@ -1344,7 +1354,10 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 		{
 			console.vlog("DEBUGEMB: word: "+word+" is negated")
 			word = word.replace(/-/g, '')
-			negated = true
+			word  = antonyms[word]
+			console.vlog("DEBUGEMB: the antonyms is "+word)
+
+			// negated = true
 		}
 
 		console.vlog("feEmbed: "+word)
@@ -1359,11 +1372,11 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 
 			if (emb.length != 0)
 			{
-				if (negated)
-				{
-					emb =_.map(emb, function(num){ return num * (-1); });
-					console.vlog("DEBUGEMB: word: "+word+" vector is reversed")
-				}
+				// if (negated)
+				// {
+					// emb =_.map(emb, function(num){ return num * (-1); });
+					// console.vlog("DEBUGEMB: word: "+word+" vector is reversed")
+				// }
 
 				embs.push(bars.copyobj(emb))
 			}	
@@ -1390,11 +1403,8 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 
 			console.vlog("DEBUGEMBED: embFeatures is populated")
 	    		
-			// if ("?" in features)
-			// {
-				// console.vlog("feEmbquestion")
-				// embFeatures["?"] = 1
-			// }
+			if ("?" in features) embFeatures["?"] = 1
+			
 			callback(null, embFeatures)
 		}
 else
