@@ -13,5 +13,5 @@ size	dial	Natural_Neg	Emb_25	Emb_50	Emb_100	Emb_300
 20	20	null	null	null	null	null
 25	25	null	null	null	null	null
 30	30	null	null	null	null	null
-35	35	null	null	null	null	null
-40	40	null	null	null	null	null
+35	35	null	0.4005202503834515	null	null	null
+40	40	null	0.3583710407239819	null	null	null
