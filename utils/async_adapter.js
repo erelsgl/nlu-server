@@ -38,7 +38,18 @@ var client = new Redis(6379);
 
 function getembed(string, db, callback)
 {
-	client.select(db, function(err, response) {
+
+
+async.series([
+    function(callbacklocal){
+        if (_.isUndefined(string) || _.isNaN(string) || _.isEmpty(string))
+			callback(err, [])
+        else
+        	callbacklocal(null, null);
+    },
+    function(callbacklocal){
+    
+    	client.select(db, function(err, response) {
 		if (err) callback(err)
 
 		client.get(string, function(err, results) {
@@ -53,6 +64,12 @@ function getembed(string, db, callback)
 				callback(err, _.map(results.slice(0,-1).split(","), parseFloat))
 		})
 	})
+
+    }
+], function () {
+  
+});
+
 }
 
 // splited[2] - PPDB 1.0 Score
