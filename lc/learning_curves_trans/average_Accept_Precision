@@ -1,4 +1,4 @@
-size	dial	Natural_Neg	NLU_Tran_All	Hungarian	Hebrew	Portuguese
+size	dial	Natural_Neg	NLU_Tran_All	Hungarian	huzh	huzhur
 1	1	null	null	null	null	null
 2	2	null	null	null	null	null
 3	3	null	null	null	null	null
@@ -14,4 +14,4 @@ size	dial	Natural_Neg	NLU_Tran_All	Hungarian	Hebrew	Portuguese
 25	25	null	null	null	null	null
 30	30	null	null	null	null	null
 35	35	null	null	null	null	null
-40	40	0.5128596414062057	0.5236009430955083	0.5566291300282608	0.489672541696589	0.4276789784152018
+40	40	0.5128596414062057	0.5236009430955083	0.5566291300282608	0.5429900591626592	0.5424367063283752
