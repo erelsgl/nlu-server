@@ -1,4 +1,4 @@
-size	dial	Natural_Neg	YY	NLU_Tran_All	MY	GM	YG	GG
+size	dial	Natural_Neg	NLU_Tran_All	hu_GG	hu_MY	hu_YG	hu_YY	Hungarian
 1	1	null	null	null	null	null	null	null
 2	2	null	null	null	null	null	null	null
 3	3	null	null	null	null	null	null	null
@@ -14,4 +14,4 @@ size	dial	Natural_Neg	YY	NLU_Tran_All	MY	GM	YG	GG
 25	25	null	null	null	null	null	null	null
 30	30	null	null	null	null	null	null	null
 35	35	null	null	null	null	null	null	null
-40	40	0.5128596414062057	0.501327054090338	0.5236009430955083	0.5314159239392172	0.5184901767478987	0.4831114643394813	0.5471513640870067
+40	40	0.5128596414062057	0.5236009430955083	0.5548454446935074	0.5307572900518063	0.5131533926650034	0.5492704171696043	0.5566291300282608

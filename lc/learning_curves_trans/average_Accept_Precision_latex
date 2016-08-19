@@ -9,32 +9,32 @@
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,0.501327054090338)
-};
-\addlegendentry{YY}
-
-\addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,0.5236009430955083)
 };
 \addlegendentry{NLU\_Tran\_All}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,0.5314159239392172)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,0.5548454446935074)
 };
-\addlegendentry{MY}
+\addlegendentry{hu\_GG}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,0.5184901767478987)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,0.5307572900518063)
 };
-\addlegendentry{GM}
+\addlegendentry{hu\_MY}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,0.4831114643394813)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,0.5131533926650034)
 };
-\addlegendentry{YG}
+\addlegendentry{hu\_YG}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,0.5471513640870067)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,0.5492704171696043)
 };
-\addlegendentry{GG}
+\addlegendentry{hu\_YY}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,0.5566291300282608)
+};
+\addlegendentry{Hungarian}
 
