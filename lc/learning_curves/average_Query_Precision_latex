@@ -4,7 +4,7 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.42499999999999993)(60,0.5416666666666667)
+(1,null)(2,null)(3,null)(4,null)(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)
 };
 \addlegendentry{Natural}
 
@@ -14,7 +14,7 @@
 \addlegendentry{Balanced}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,0.6904761904761906)(40,0.6904761904761906)(45,0.7000000000000001)(50,0.7000000000000001)(55,0.5605263157894737)(60,0.55)
+(1,null)(2,null)(3,null)(4,null)(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)
 };
 \addlegendentry{Natural\_Hungarian}
 
