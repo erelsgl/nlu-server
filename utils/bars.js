@@ -4968,6 +4968,9 @@ function write_wilcoxon(glresults)
   string += JSON.stringify(glresults["classifier2"], null, 4)
   string += "\n"
   string += "print stats.wilcoxon(classifier1, classifier2)"
+  string += "\n"
+  string += "#classifier1="+average(glresults["classifier1"]) + "\n"
+  string += "#classifier2="+average(glresults["classifier2"]) + "\n"
   fs.writeFileSync(__dirname+"/../wilcoxon.py", string, 'utf-8')
 }
 
