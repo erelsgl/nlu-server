@@ -28,9 +28,9 @@ var limdu = require("limdu");
 var ftrs = limdu.features;
 
 
-var signif = false
+var signif = true
 // output the blue average
-var correlation = true
+var correlation = false
 
 var latex_plot = false
 
@@ -312,7 +312,7 @@ if (correlation)
 	var lang = {}
 
 	// among all language MM for some reason  
-  	var omitlang = ["ar", "es", "ru"]
+  	var omitlang = ["ar", "es"]
 
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
 
@@ -332,30 +332,43 @@ if (correlation)
 							var engine2 = key.substr(-1,1)
 							
 							var par = engine1+engine2
+							// var par = ln
 
 							if (omitlang.indexOf(ln)==-1)
 							{
 
 								console.log("language:"+ln)
 								console.log("par:"+par)
-							// var ln = key.substr(0,1) + key.substr(-1,1)
-						    // var language = key.substr(2,2)
+						
+								var intents = _.keys(turn["output"])
+								// var ln = key.substr(0,1) + key.substr(-1,1)
+							    // var language = key.substr(2,2)
 
 								if (!(par in lang))
+									// lang[par] = {}
 									lang[par] = []
 
-								var dst = bars.distances(text, turn["input"]["text"])
-	   							// temp[par] = dst
 
-	   							if (isNaN(parseFloat(dst)) || !isFinite(dst))
-	   								{
-	   								console.log("FUCK")
-	   								console.log(text)
-	   								console.log(turn["input"]["text"])
-	   								console.log(dst)
-	   								}
-	   							else
-									lang[par].push(dst)
+								// if (intents.length == 1)
+								// {	
+
+									// if (!(intents[0] in lang[par]))
+									// lang[par][intents[0]] = [] 
+
+									var dst = bars.distances(text, turn["input"]["text"])
+		   							// temp[par] = dst
+
+		   							if (isNaN(parseFloat(dst)) || !isFinite(dst))
+		   								{
+		   								console.log("FUCK")
+		   								console.log(text)
+		   								console.log(turn["input"]["text"])
+		   								console.log(dst)
+		   								}
+		   							else
+										lang[par].push(dst)
+										// lang[par][intents[0]].push(dst)
+								// }
 							}
 						
 						}, this)
@@ -485,8 +498,7 @@ if (signif)
 	console.log("DEBUGTRAIN: test: "+test.length)	
 	console.log("DEBUGTRAIN: train: "+train.length)	
 
-
-	var train = bars.processdataset(_.flatten(train), {"intents":true, "filter": true, "filter_Quit_Greet":true})
+	var train = bars.processdataset(_.flatten(train), {"intents":true, "filter": true, "filterIntent": ["Quit", "Greet"]})
 
 	var classifier1 = new classifier.Natural_Neg 
 	var classifier2 = new classifier.Natural_Neg
@@ -506,7 +518,7 @@ if (signif)
 
 			var testop = bars.copyobj(test)
 
-			async.timesSeries(30, function(n, callbackl){ 
+			async.timesSeries(10, function(n, callbackl){ 
 
 				// var index = n*3
 				console.log("DEBUGTRAIN: index: "+index)
@@ -515,7 +527,7 @@ if (signif)
 				console.log("DEBUGTRAIN: testsplice: "+testsplice.length)
 				console.log("DEBUGTRAIN: testsplice uttreances: "+_.flatten(testsplice).length)
 
-				var testdata =  bars.processdataset(bars.copyobj(_.flatten(testsplice)), {"intents":true, "filter": false, "filter_Quit_Greet":true})
+				var testdata =  bars.processdataset(bars.copyobj(_.flatten(testsplice)), {"intents":true, "filter": false, "filterIntent": ["Quit", "Greet"]})
 					
 				console.log("DEBUGTRAIN:"+testdata.length)	
 				trainAndTest.testBatch_async(classifier1, bars.copyobj(testdata), function(error, results1){
@@ -530,6 +542,7 @@ if (signif)
 			function(err)
 			{
 				console.log(JSON.stringify(glresults, null, 4))
+				bars.write_wilcoxon(glresults)
 				process.exit(0)
 			})
 
@@ -1007,7 +1020,7 @@ if (check_cross_batch)
 
 if (check_coverage)
 {
-    var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
+    var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
 
     // var data_src = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
 	// var utterset = bars.getsetcontext(data_src, false)
@@ -1017,37 +1030,79 @@ if (check_coverage)
     var uncover = []
     var dials = []
 
+    var employer = 0
+    var candidate = 0
+
+    var human_single = 0
+    var human_multi = 0
+    var human_zero = 0
+
+    var endedIn = []
+    var gender = []
+    var age = []
+
+    var candidate_intents = []
+    var employer_intents = []
+
     var data = _.filter(data, function(num){ return ["train","test"].indexOf(num.set)!=-1 });
 
     console.log(data.length)
 
-
     _.each(data, function(dialogue, dialid, list){
+
+    	endedIn.push(dialogue.endedIn)
+    	gender.push(dialogue.gender)
+    	age.push(dialogue.age)
+
     	_.each(dialogue["turns"], function(turn, key, list){
+
+ 			if (turn.role == "Candidate")
+ 			{
+   				candidate += 1
+   				if ("output" in turn) candidate_intents.push(_.keys(turn.output))
+
+ 			}
 
     		if (turn.role == "Employer")
     		{
-    			total += 1
+    			var intents = _.keys(turn.output)
+    			employer += 1
 
-    			if (_.keys(turn.output).length == 0)
-    				{
-	    			uncover.push(turn.input.text)
-    				dials.push(dialid)
-    				}
-    		}
+    			if (intents.length == 1) human_single += 1
+    			if (intents.length == 0) human_zero += 1
+    			if (intents.length > 1) human_multi += 1
+
+   				if ("output" in turn) employer_intents.push(_.keys(turn.output))
+
+ 	   		}
     		
     	}, this)
     }, this)
 
-    dials = _.unique(dials)
+    console.log(JSON.stringify(_.countBy(endedIn, function(num){ return num }), null, 4))	
+    console.log(JSON.stringify(_.countBy(gender, function(num){ return num }), null, 4))
+    console.log(JSON.stringify(_.countBy(age, function(num){ return num }), null, 4))
 
-    console.log("COVERAGE")
+    console.log("employer")
+    console.log(JSON.stringify(_.countBy(_.flatten(employer_intents), function(num){ return num }), null, 4))
+    console.log("candidate")
+    console.log(JSON.stringify(_.countBy(_.flatten(candidate_intents), function(num){ return num }), null, 4))
+
+
+    // console.log("COVERAGE")
     console.log("total number of dials:"+data.length)
-    console.log("total:"+total)
-    console.log("uncover:"+uncover.length)
-    console.log("dials:"+_.unique(dials))
-    console.log("dials:"+dials.length)
-    console.log(JSON.stringify(uncover, null, 4))
+    console.log("total number agent utterances:"+candidate)
+    console.log("total number human utterances:"+employer)
+
+    console.log("total number human single utterances:"+human_single)
+    console.log("total number human zero utterances:"+human_zero)
+    console.log("total number human multi utterances:"+human_multi)
+
+    // console.log("total:"+total)
+    // console.log("uncover:"+uncover.length)
+    // console.log("dials:"+_.unique(dials))
+    // console.log("dials:"+dials.length)
+    // console.log(JSON.stringify(uncover, null, 4))
     process.exit(0)
 }
 
