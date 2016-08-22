@@ -4960,15 +4960,15 @@ function expanbal(turns, best_results, callbackg)
 
 function write_wilcoxon(glresults)
 {
-  var string = "from scipy import stats\\"
+  var string = "from scipy import stats\n"
   string += "classifier1="
   string += JSON.stringify(glresults["classifier1"], null, 4)
-  string += "\\"
+  string += "\n"
   string += "classifier2="
   string += JSON.stringify(glresults["classifier2"], null, 4)
-  string += "\\"
+  string += "\n"
   string += "print stats.wilcoxon(classifier1, classifier2)"
-  fs.writeFileSync(__dirname+"/wilcoxon.py", string, 'utf-8')
+  fs.writeFileSync(__dirname+"/../wilcoxon.py", string, 'utf-8')
 }
 
 function undersample(turns)
