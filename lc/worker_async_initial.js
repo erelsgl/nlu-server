@@ -54,12 +54,12 @@ if (cluster.isWorker)
 
 	      if (classifier == "Natural")
 		{
-	    		mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": false, "filter":false})
-              		mytestex  = bars.processdataset(_.flatten(bars.copyobj(test)), {"intents": false, "filter":false})
+	    		mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": false, "filter":false, "filterIntent":[]})
+              		mytestex  = bars.processdataset(_.flatten(bars.copyobj(test)), {"intents": false, "filter":false, "filterIntent":[]})
 		}             
              if (classifier == "Component")
 		{                
-	    	    mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": true, "filter":false})
+	    	    mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": true, "filter":false, "filterIntent":[]})
 		    mytestex  = _.flatten(bars.copyobj(test))
 		}
 
@@ -116,7 +116,7 @@ if (cluster.isWorker)
 						classif.classifyBatchAsync(test_set_copy, 50, function(error, test_results){
 		
 							_.each(test_results, function(value, key, list){
-								var attrval = classifiers.getRule(test_set[key]["input"]["sentences"]).labels
+								var attrval = classifiers.getRule(test_set[key]["input"]["sentences"], test_set[key]["input"]["text"]).labels
 								var cl = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([value.output, attrval[0], attrval[1]])))
 								mytestex[mapping[key]]["actual"].push(cl)
 							}, this)
