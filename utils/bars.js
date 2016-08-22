@@ -4958,6 +4958,19 @@ function expanbal(turns, best_results, callbackg)
 }
 
 
+function write_wilcoxon(glresults)
+{
+  var string = "from scipy import stats\\"
+  string += "classifier1="
+  string += JSON.stringify(glresults["classifier1"], null, 4)
+  string += "\\"
+  string += "classifier2="
+  string += JSON.stringify(glresults["classifier2"], null, 4)
+  string += "\\"
+  string += "print stats.wilcoxon(classifier1, classifier2)"
+  fs.writeFileSync(__dirname+"/wilcoxon.py", string, 'utf-8')
+}
+
 function undersample(turns)
 {
 
@@ -5898,5 +5911,6 @@ ran:ran,
 vecsumaverage:vecsumaverage,
 vectorextremum:vectorextremum,
 vecextremum:vecextremum,
-cleanRecord:cleanRecord
+cleanRecord:cleanRecord,
+write_wilcoxon:write_wilcoxon
 }
