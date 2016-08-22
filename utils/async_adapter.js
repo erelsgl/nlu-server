@@ -43,7 +43,10 @@ function getembed(string, db, callback)
 async.series([
     function(callbacklocal){
         if (_.isUndefined(string) || _.isNaN(string) || _.isEmpty(string))
-			callback(err, [])
+	{
+			console.vlog("emb: "+string)
+			callback(null, [])
+	}
         else
         	callbacklocal(null, null);
     },
