@@ -494,11 +494,13 @@ if (signif)
 
 	var  train = data["test"] 
 	var  test = data["train"] 
+	
+	train = train.slice(0,2)
 
 	console.log("DEBUGTRAIN: test: "+test.length)	
 	console.log("DEBUGTRAIN: train: "+train.length)	
 
-	var train = bars.processdataset(_.flatten(train), {"intents":true, "filter": true, "filterIntent": ["Quit", "Greet"]})
+	train = bars.processdataset(_.flatten(train), {"intents":true, "filter": true, "filterIntent": ["Quit", "Greet"]})
 
 	var classifier1 = new classifier.Natural_Neg 
 	var classifier2 = new classifier.Natural_Neg
@@ -509,7 +511,11 @@ if (signif)
 		
 		console.log("classifier1 is trained")
 		var train2 = bars.gettrans(bars.copyobj(train), ".*:hu:.*")
+		console.log("train2 before additional processdataset: "+train2.length)
+		train2 =  bars.processdataset(train2, {"intents": true, "filterIntent": ["Quit","Greet"], "filter":true})
+		console.log("train2 after additional processdataset: "+train2.length)
 
+	
 		classifier2.trainBatchAsync(bars.copyobj(train2), function(err, results){
 			
 			console.log("classifier2 is trained")
@@ -518,7 +524,7 @@ if (signif)
 
 			var testop = bars.copyobj(test)
 
-			async.timesSeries(10, function(n, callbackl){ 
+			async.timesSeries(30, function(n, callbackl){ 
 
 				// var index = n*3
 				console.log("DEBUGTRAIN: index: "+index)
