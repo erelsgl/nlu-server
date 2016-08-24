@@ -264,8 +264,11 @@ module.exports.testBatch_async = function(classifier, testSet, callback) {
 
 		async.forEachOfSeries(results, function (rec, testKey, callback1) {
 
+			console.vlog("TEST&TRAIN: current classification: "+JSON.stringify(rec, null, 4))
+
 			var record = {}
-			var classes = rec.output
+
+			var classes = (_.isArray(rec) ? rec: rec.output)
 
 			record.input = testSet[testKey].input
 			record.output = testSet[testKey].output
