@@ -121,7 +121,7 @@ function getRule(sen, text)
   	var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-\?]+/});
 	
 	text = regexpNormalizer(text.toLowerCase())
-	console.vlog("getRule: normalized: "+sentence)
+	console.vlog("getRule: normalized: "+text)
 
 	var tkns = natural.NGrams.ngrams(tokenizer.tokenize(text), 1)
 	console.vlog("getRule: tokens: "+tkns)
@@ -1705,7 +1705,7 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 	 if (_.isArray(sample['sentences']))
                 sample['sentences'] = sample['sentences'][0]
 
-	var attrval = getRule(sample.sentences).labels
+	var attrval = getRule(sample.sentences, sample.text).labels
 
         if (!_.isArray(sample['sentences']))
                 sample['sentences'] = [sample['sentences']]
