@@ -2290,8 +2290,26 @@ var SvmLinearBinaryClassifier = classifiers.SvmLinear.bind(0, {
 
 var SvmLinearBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
         binaryClassifierType: SvmLinearBinaryClassifier,
-        // debug: true
 });
+
+var scikitsvm = classifiers.multilabel.BinaryRelevance.bind(0, {
+    binaryClassifierType: classifiers.scikit.bind(0, {classifier: "svm"})
+});
+
+var scikitdecisiontree = classifiers.multilabel.BinaryRelevance.bind(0, {
+    binaryClassifierType: classifiers.scikit.bind(0, {classifier: "decisiontree"})
+});
+
+var scikitrandomforest = classifiers.multilabel.BinaryRelevance.bind(0, {
+    binaryClassifierType: classifiers.scikit.bind(0, {classifier: "randomforest"})
+});
+
+var scikitadaboost = classifiers.multilabel.BinaryRelevance.bind(0, {
+    binaryClassifierType: classifiers.scikit.bind(0, {classifier: "adaboost"})
+});
+
+
+
 
 //var SagaeSegmenter =
 //	classifiers.multilabel.BinarySegmentation.bind(0, {
@@ -2573,7 +2591,14 @@ module.exports = {
 		
 		Component: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'offered':true, 'toextract':'word','unoffered':true}),
 		Natural: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'offered':true, 'toextract':'word','unoffered':true}),
+		
 		Natural_Neg: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false}),
+
+		Natural_Neg_Svm: enhance(scikitsvm, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false}),
+		Natural_Neg_Decisiontree: enhance(scikitdecisiontree, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false}),
+		Natural_Neg_Randomforest: enhance(scikitrandomforest, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false}),
+		Natural_Neg_Adaboost: enhance(scikitadaboost, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false}),
+
 		//Natural_Root: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanfordRoot, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":true}),
 		Emb_300: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 10, 'operation':'sum'}),
 		Emb_100: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 9, 'operation':'sum'}),
