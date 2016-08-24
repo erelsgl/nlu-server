@@ -28,7 +28,7 @@ var limdu = require("limdu");
 var ftrs = limdu.features;
 
 
-var signif = true
+var signif = false
 // output the blue average
 var correlation = false
 
@@ -72,7 +72,7 @@ var finalization = false
 var simple_naive_test_train = false
 
 //  the same but to calculate intents
-var simple_naive_intent_test_train_intents = false
+var simple_naive_intent_test_train_intents = true
 
 // check the accuracy of regular expression identification
 var check_regexp = false
@@ -2058,10 +2058,10 @@ if (simple_naive_intent_test_train_intents)
 	console.log(utterset["train"].length)
     console.log(utterset["test"].length)
 
-    utterset["train"] = bars.processdataset(utterset["train"],{"intents": true, "filter":false})
-	utterset["test"] = bars.processdataset(utterset["test"],{"intents": true, "filter":false})
+    utterset["train"] = bars.processdataset(utterset["train"],{"intents": true, "filter":false, "filterIntent":[]})
+	utterset["test"] = bars.processdataset(utterset["test"],{"intents": true, "filter":false, "filterIntent":[]})
 
-	trainAndTest.trainAndTest_async(classifier.Natural_no_con, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	trainAndTest.trainAndTest_async(classifier.Natural_Neg_Adaboost, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		console.log(JSON.stringify(results, null, 4))
 		process.exit(0)
 	}, this)	
