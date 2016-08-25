@@ -1,19 +1,19 @@
-size	dial	Unigram	Unigram_Lemma	Unigram+Context	Unigram_Lemma+Context	Unigram+Context+Neg	Unigram+Neg
-1	1	null	null	null	null	null	null
-2	2	null	null	null	null	null	null
-3	3	null	null	null	null	null	null
-4	4	null	null	null	null	null	null
-5	5	null	null	null	null	null	null
-6	6	null	null	null	null	null	null
-7	7	null	null	null	null	null	null
-8	8	null	null	null	null	null	null
-9	9	null	null	null	null	null	null
-10	10	null	null	null	null	null	null
-15	15	null	null	null	null	null	null
-20	20	null	null	null	null	null	null
-25	25	null	null	null	null	null	null
-30	30	null	null	null	null	null	null
-35	35	null	null	null	null	null	null
-40	40	null	null	null	null	null	null
-45	45	null	null	null	null	null	null
-50	50	null	null	null	null	null	null
+size	dial	Natural_Neg	Natural_Neg_Decisiontree	Natural_Neg_Randomforest	Natural_Neg_Adaboost
+1	1	null	null	null	null
+2	2	null	null	null	null
+3	3	null	null	null	null
+4	4	null	null	null	null
+5	5	null	null	null	null
+6	6	null	null	null	null
+7	7	null	null	null	null
+8	8	null	null	null	null
+9	9	null	null	null	null
+10	10	null	null	null	null
+15	15	null	null	null	null
+20	20	null	null	null	null
+25	25	null	null	null	null
+30	30	null	null	null	null
+35	35	null	null	null	0.41187819155735383
+40	40	null	null	null	null
+45	45	null	0.46963727210496264	null	null
+50	50	null	0.5217634405052004	null	0.5899495336649531
