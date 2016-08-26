@@ -73,10 +73,10 @@ if (cluster.isWorker)
 				case "hu_MY": callbacks(null, bars.gettrans(mytrainex, "M:hu:Y"), mytestex, mytrainex.length); break;
 				case "hu_YG": callbacks(null, bars.gettrans(mytrainex, "Y:hu:G"), mytestex, mytrainex.length); break;
 				case "hu_YY": callbacks(null, bars.gettrans(mytrainex, "Y:hu:Y"), mytestex, mytrainex.length); break;
-    //				case "NLU_Emb_Trans": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
-    //				case "NLU_Emb_Trans_25": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
-    //				case "NLU_Emb_Trans_50": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
-    //				case "NLU_Emb_Trans_100": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
+ 
+   			 
+    			case "Emb_50_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length);break;
+    			case "Emb_50_All": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length);break;
 
 
 				case "Google_French": callbacks(null, bars.gettrans(mytrainex, "G:fr:G"), mytestex, mytrainex.length); break;
@@ -130,7 +130,7 @@ if (cluster.isWorker)
 
 			var baseline_cl = classifiers.Natural_Neg
 			
-			if (classifier.indexOf("Root")!=-1) baseline_cl = classifiers.Natural_Root
+			// if (classifier.indexOf("Root")!=-1) baseline_cl = classifiers.Natural_Root
 			if (classifier.indexOf("Emb")!=-1)  baseline_cl = classifiers[classifier]
 
     			trainAndTest.trainAndTest_async(baseline_cl, bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
@@ -176,28 +176,17 @@ if (cluster.isMaster)
 	bars.cleanFolder("./logs")
 
 	var folds = 20
-	//var classifiers = [ "No_translations", "NLU_Tran_All", "NLU_Emb_Trans_Sum_100", "NLU_Emb_Trans_Sum_50"]
-	//var classifiers = [ 'No_translations', "Google", "Microsoft", "Yandex", "NLU_Emb_Trans_Sum_100" ]
-	//var classifiers = [ 'No_translations', "NLU_Tran_All", "NLU_Emb_Trans_Sum_100" ]
-//	var classifiers = [ 'Natural_Neg', "Root_Trans","NLU_Tran_All", "Root_Emb","Root_Trans_Emb" ]
 
 	
-//var classifiers = [ 'No_translations', "NLU_Tran_All", "NLU_Tran_Hungarian", "NLU_Tran_Finish","NLU_Tran_German","NLU_Tran_French" ]
-	//var classifiers = [ 'Natural', "NLU_Tran_Yandex_Google", "NLU_Tran_Yandex_Microsoft", "NLU_Tran_Microsoft_Yandex",
-	//			"NLU_Tran_Microsoft_Google", "NLU_Tran_All", "Google", "Yandex"]
-				//"NLU_Tran_Microsoft_Google", "NLU_Tran_Google_Yandex", "NLU_Tran_Google_Microsoft"]
-	//var classifiers = [ "No_translations", "Google", "NLU_Tran_Microsoft_Google"]
-	//var classifiers = [ "Natural", "NLU_Emb_25", "NLU_Emb_50", "NLU_Emb_Trans", "NLU_Tran_All"]
 	//var classifiers = [ "Natural_Neg", "Emb_25", "Emb_50", "Emb_100", "Emb_300"]
-	//var classifiers = [ "Natural_Neg", "Google_French", "French", "NLU_Tran_All", "Hungarian", "Google_Hungarian"]
 	//var classifiers = [ "Natural_Neg", "German", "Hebrew", "Hungarian", "NLU_Tran_All"]
-	var classifiers = [ "Natural_Neg", "NLU_Tran_All", "hu_GG", "hu_MY", "hu_YG", "hu_YY", "Hungarian"]
+	// var classifiers = [ "Natural_Neg", "NLU_Tran_All", "hu_GG", "hu_MY", "hu_YG", "hu_YY", "Hungarian"]
 	///var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Hungarian", "huzh", "huzhur"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All"]
 	//var classifiers = [ "Natural","NLU_Tran_GGFinish"]
 
-	//var classifiers = ["Natural", "NLU_Tran_German","NLU_Tran_Spanish","NLU_Tran_Portuguese","NLU_Tran_Hebrew","NLU_Tran_Arabic","NLU_Tran_Russian","NLU_Tran_Chinese","NLU_Tran_Urdu","NLU_Tran_Finish", "NLU_Tran_Hungarian", "NLU_Tran_All"]
-	
+	var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Emb_50", "Hungarian", "Emb_50_Hungarian", "Emb_50_All"]
+		
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
  	var utterset1 = bars.getsetcontext(data1, false)
 	var train1 = utterset1["train"].concat(utterset1["test"])
