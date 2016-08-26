@@ -4,12 +4,27 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,0.37429906542056074)(25,0.37183544303797467)(30,0.5350492880613362)(35,0.5129198966408268)(40,0.5476421188630491)(45,0.6482142857142856)(50,0.5445804195804196)
 };
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,0.37429906542056074)(25,0.37183544303797467)(30,0.5350492880613362)(35,0.5129198966408268)(40,0.5476421188630491)(45,0.6482142857142856)(50,0.5445804195804196)
 };
 \addlegendentry{Natural\_Neg\_Svm}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,0.3581081081081081)(25,0.3977272727272727)(30,0.491600790513834)(35,0.42339121552604697)(40,0.42339121552604697)(45,0.4915371595630097)(50,0.4311882765211851)
+};
+\addlegendentry{Natural\_Neg\_Decisiontree}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,0.32142857142857145)(30,null)(35,0.4258064516129032)(40,0.4)(45,0.8529411764705883)(50,0.7564102564102564)
+};
+\addlegendentry{Natural\_Neg\_Randomforest}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,0.38181818181818183)(25,0.375)(30,0.3595959595959596)(35,0.3595959595959596)(40,0.4073083778966132)(45,0.35623678646934465)(50,0.5015020427781783)
+};
+\addlegendentry{Natural\_Neg\_Adaboost}
 

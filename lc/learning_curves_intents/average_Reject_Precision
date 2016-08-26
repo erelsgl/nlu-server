@@ -1,19 +1,19 @@
-size	dial	Natural_Neg	Natural_Neg_Svm
-1	1	null	null
-2	2	null	null
-3	3	null	null
-4	4	null	null
-5	5	null	null
-6	6	null	null
-7	7	null	null
-8	8	null	null
-9	9	null	null
-10	10	null	null
-15	15	null	null
-20	20	null	null
-25	25	null	null
-30	30	null	null
-35	35	null	null
-40	40	null	null
-45	45	null	null
-50	50	null	null
+size	dial	Natural_Neg	Natural_Neg_Svm	Natural_Neg_Decisiontree	Natural_Neg_Randomforest	Natural_Neg_Adaboost
+1	1	null	null	null	null	null
+2	2	null	null	null	null	null
+3	3	null	null	null	null	null
+4	4	null	null	null	null	null
+5	5	null	null	null	null	null
+6	6	null	null	null	null	null
+7	7	null	null	null	null	null
+8	8	null	null	null	null	null
+9	9	null	null	null	null	null
+10	10	null	null	null	null	null
+15	15	null	null	null	null	null
+20	20	0.37429906542056074	0.37429906542056074	0.3581081081081081	null	0.38181818181818183
+25	25	0.37183544303797467	0.37183544303797467	0.3977272727272727	0.32142857142857145	0.375
+30	30	0.5350492880613362	0.5350492880613362	0.491600790513834	null	0.3595959595959596
+35	35	0.5129198966408268	0.5129198966408268	0.42339121552604697	0.4258064516129032	0.3595959595959596
+40	40	0.5476421188630491	0.5476421188630491	0.42339121552604697	0.4	0.4073083778966132
+45	45	0.6482142857142856	0.6482142857142856	0.4915371595630097	0.8529411764705883	0.35623678646934465
+50	50	0.5445804195804196	0.5445804195804196	0.4311882765211851	0.7564102564102564	0.5015020427781783
