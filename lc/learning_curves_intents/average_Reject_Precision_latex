@@ -9,17 +9,7 @@
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,0.46963727210496264)(50,0.5217634405052004)
-};
-\addlegendentry{Natural\_Neg\_Decisiontree}
-
-\addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)
 };
-\addlegendentry{Natural\_Neg\_Randomforest}
-
-\addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,0.41187819155735383)(40,null)(45,null)(50,0.5899495336649531)
-};
-\addlegendentry{Natural\_Neg\_Adaboost}
+\addlegendentry{Natural\_Neg\_Svm}
 
