@@ -2278,7 +2278,7 @@ var SvmLinearBinaryClassifier = classifiers.SvmLinear.bind(0, {
         model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearBinary",
         multiclass: false,
 
-        learn_args: "-c 100 -t 2",
+        learn_args: "-c 100 -t 0",
 
         train_command: "svm-train",
         test_command: "svm-predict"
