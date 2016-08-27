@@ -556,7 +556,8 @@ function getred(params, db, callback)
 {
 
 	// var client = redis.createClient(6379)
-	var client = new Redis(6379, 'te-srv4');
+	//var client = new Redis(6379, 'te-srv4');
+	var client = new Redis(6379);
 
 
 // previouse dataset was 15
