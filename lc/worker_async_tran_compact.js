@@ -178,14 +178,16 @@ if (cluster.isMaster)
 	var folds = 20
 
 	
-	//var classifiers = [ "Natural_Neg", "Emb_25", "Emb_50", "Emb_100", "Emb_300"]
+	//var classifiers = [ "Natural_Neg", "Emb_25", "Emb_50", "Emb_100"]
+	var classifiers = [ "Natural_Neg", "Emb_100"]
 	//var classifiers = [ "Natural_Neg", "German", "Hebrew", "Hungarian", "NLU_Tran_All"]
 	// var classifiers = [ "Natural_Neg", "NLU_Tran_All", "hu_GG", "hu_MY", "hu_YG", "hu_YY", "Hungarian"]
 	///var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Hungarian", "huzh", "huzhur"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All"]
 	//var classifiers = [ "Natural","NLU_Tran_GGFinish"]
 
-	var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Emb_50", "Hungarian", "Emb_50_Hungarian", "Emb_50_All"]
+	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Emb_50", "Hungarian", "Emb_50_Hungarian", "Emb_50_All"]
+	//var classifiers = [ "Natural_Neg", "NLU_Tran_All"]
 		
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
  	var utterset1 = bars.getsetcontext(data1, false)
