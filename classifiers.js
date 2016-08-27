@@ -1658,8 +1658,10 @@ function feSalient(sample_or, features, train, featureOptions, callback) {
 	
 	var salient = {
 		'REJECT':['no', 'not'],
-		'QUERY': ['what', 'which', 'how', 'about', 'let', 'discuss', '?']
+		'QUERY': ['how', 'about', 'let', 'discuss']
 	}
+
+	var wh = ["what", "which", "how"]
 
 	var sample = JSON.parse(JSON.stringify(sample_or)) 
 
@@ -1668,10 +1670,11 @@ function feSalient(sample_or, features, train, featureOptions, callback) {
 
 	console.vlog("DEBUGSALIENT: text : "+ sample.text)	
 
+	var attrval = getRule(sample.sentences, sample.text).labels
 	var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-\?]+/});
-	
+
 	text = regexpNormalizer(sample.text.toLowerCase())
-	
+
 	console.vlog("DEBUGSALIENT: normalized: "+text)
 
 	var tkns = _.flatten(natural.NGrams.ngrams(tokenizer.tokenize(text), 1))
@@ -1686,6 +1689,12 @@ function feSalient(sample_or, features, train, featureOptions, callback) {
 			features[key] = inter
 			}
 	}, this)
+
+	if ((_.intersection(tkns, wh).length > 0) && (tkns.indexOf("?")!=-1))
+		features["QUERY"] = 1
+
+	if (attrval[1].length != 0)
+		delete features["QUERY"]
 
 	console.vlog("DEBUGSALIENT: "+JSON.stringify(features, null, 4))
 
