@@ -1696,6 +1696,9 @@ function feSalient(sample_or, features, train, featureOptions, callback) {
 	if (attrval[1].length != 0)
 		delete features["QUERY"]
 
+	if (attrval[1].indexOf("Without leased car") != -1)
+		delete features["REJECT"]
+
 	console.vlog("DEBUGSALIENT: "+JSON.stringify(features, null, 4))
 
 	callback(null, features)
@@ -2651,6 +2654,10 @@ module.exports = {
 		Emb_300: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feSalient], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 10, 'operation':'sum'}),
 		Emb_100: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feSalient], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 9, 'operation':'sum'}),
 		Emb_50: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feSalient], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 8, 'operation':'sum'}),
+		Emb_100_Dep: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feSalient], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 1, 'operation':'sum'}),
+		Emb_100_Sub: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feSalient], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 2, 'operation':'sum'}),
+		Emb_100_Bow5: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feSalient], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 3, 'operation':'sum'}),
+		Emb_100_Bow10: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feSalient], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 4, 'operation':'sum'}),
 		Emb_50_Hungarian: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feSalient], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 8, 'operation':'sum'}),
 		Emb_50_All: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feSalient], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 8, 'operation':'sum'}),
 		
