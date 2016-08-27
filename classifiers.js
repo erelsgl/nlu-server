@@ -29,14 +29,14 @@ var log_file = "./logs/" + process.pid
 
 
 var antonyms = {}
-var data = fs.readFileSync("./antonyms.txt", 'utf8').split("\n")
+//var data = fs.readFileSync("./antonyms.txt", 'utf8').split("\n")
 
-_.each(data, function(value, key, list){
+/*_.each(data, function(value, key, list){
         var value1 = value.split(",")
         antonyms[value1[0]] = value1[1]
         antonyms[value1[1]] = value1[0]
 }, this)
-
+*/
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
 var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-\?]+/});
