@@ -550,6 +550,7 @@ module.exports.trainAndTest_async = function(classifierType, trainSet, testSet, 
 		module.exports.testBatch_async(classifier, testSet_copy, function(error, results){
 		// module.exports.test_async(classifier, testSet_copy, function(error, results){
 			results['traintime'] = trainEnd - trainStart
+			results['datafile'] = classifier.getDataFile()
 			callback(null, results)
 		})
 	})
