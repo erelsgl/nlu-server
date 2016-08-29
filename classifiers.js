@@ -107,12 +107,12 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 function getRule(sen, text)
 {
 
-	if (!('tokens' in sen))
+/*	if (!('tokens' in sen))
 		{
 		console.vlog("DEBUGRULE: for some reason tokens is not in the sentence " + JSON.stringify(sen, null, 4))
 		throw new Error("DEBUGRULE: for some reason tokens is not in the sentence " + JSON.stringify(sen, null, 4))
 		}
-	var sentence = JSON.parse(JSON.stringify(sen))
+*/	var sentence = JSON.parse(JSON.stringify(sen))
  
 	// change tokens 
   	var tokenizer = new natural.RegexpTokenizer({pattern: /[^\%a-zA-Z0-9\-\?]+/});
@@ -257,14 +257,14 @@ function getRule(sen, text)
 		if (unigrams.indexOf("no")!=-1)				ar_values['Without leased car']=1
 		
 		
-		if ('basic-dependencies' in sentence)
+		/*if ('basic-dependencies' in sentence)
 		{
 			_.each(sentence['basic-dependencies'], function(dep, key, list){
 				if ((dep['dep']=='neg')&&(['car','leased'].indexOf(dep['governorGloss']!=-1)))
 						ar_values['Without leased car']=1
 			}, this)
 		}
-		
+		*/
 		if (unigrams.indexOf("agreement")!=-1)			
 		{
 			delete ar_values['With leased car']
@@ -2028,26 +2028,26 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	if ("input" in sample)
 		sample = sample.input
 
-	if (!('basic-dependencies' in sample['sentences']))
+/*	if (!('basic-dependencies' in sample['sentences']))
 		throw new Error("train:"+train+" basic-dependencies not in the sample "+JSON.stringify(sample))
-	
+*/	
 	if (!('sentences' in sample))
 	   throw new Error("for some reason sentences not in sample "+JSON.stringify(sample))
 
-	if (!('tokens' in sample['sentences']))
+/*	if (!('tokens' in sample['sentences']))
 	   throw new Error("for some reason tokens not in sample"+JSON.stringify(sample, null, 4))
-
+*/
 	if (_.isArray(sample['sentences']))
 	   throw new Error("feAsync is only for object sentences")
 
-	var word_lemma = {}
+/*	var word_lemma = {}
 	_.each(sample['sentences']['tokens'], function(token, key, list){
 		word_lemma[token.word.toLowerCase()] = {
 									"lemma":token.lemma.toLowerCase(),
 									"word":token.word.toLowerCase()
 								}
 	}, this)
-
+*/
 	if (featureOptions.clean)
 		sample.sentences = getRule(sample.sentences, sample.text).cleaned
 	else
