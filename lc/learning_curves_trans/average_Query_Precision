@@ -1,23 +1,25 @@
-size	dial	Natural_Neg	German	Emb_100	Emb_100_German
-1	1	null	null	null	null
-2	2	null	null	null	null
-3	3	null	null	null	null
-4	4	null	null	null	null
-5	5	null	null	null	null
-6	6	null	null	null	null
-7	7	null	null	null	null
-8	8	null	null	null	null
-9	9	null	null	null	null
-10	10	null	null	null	null
-15	15	null	null	null	null
-20	20	null	null	null	null
-25	25	null	null	null	null
-30	30	null	null	null	null
-35	35	null	null	null	null
-40	40	null	null	null	null
-45	45	null	null	null	null
-50	50	null	null	null	null
-55	55	null	null	null	null
-60	60	null	null	null	null
-65	65	null	null	null	null
-70	70	null	null	null	null
+size	dial	Natural_Neg	German	Emb_100	Emb_100_German	Emb_100_Hungarian
+1	1	null	null	null	null	null
+2	2	null	null	null	null	null
+3	3	null	null	null	null	null
+4	4	null	null	null	null	null
+5	5	null	null	null	null	null
+6	6	null	null	null	null	null
+7	7	null	null	null	null	null
+8	8	null	null	null	null	null
+9	9	null	null	null	null	null
+10	10	null	null	null	null	null
+15	15	null	null	null	null	null
+20	20	null	null	null	null	null
+25	25	null	null	null	null	null
+30	30	null	null	null	null	null
+35	35	null	null	null	null	null
+40	40	null	null	null	null	null
+45	45	null	null	null	null	null
+46	46	0.46153846153846156	0.11363636363636363	0.21804511278195488	0.12096774193548387	0.12558139534883722
+47	47	0.3618421052631579	0.37337662337662336	0.43632643235435725	0.44940577249575553	0.44144874976140486
+50	50	null	null	null	null	null
+52	52	0.6730769230769231	0.6944444444444444	0.40625	0.19753086419753085	0.3780487804878049
+53	53	0.5945945945945946	0.3409090909090909	0.22580645161290322	0.2682926829268293	0.32
+55	55	null	null	null	null	null
+60	60	null	null	null	null	null
