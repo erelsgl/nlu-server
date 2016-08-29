@@ -37,14 +37,13 @@ var antonyms = {}
         antonyms[value1[1]] = value1[0]
 }, this)
 */
+
+
 var old_unused_tokenizer = {tokenize: function(sentence) { return sentence.split(/[ \t,;:.!?]/).filter(function(a){return !!a}); }}
 
 var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-\?]+/});
 
-console.vlog = function(data) {
-    fs.appendFileSync(log_file, data + '\n', 'utf8')
-    //fs.writeFileSync(log_file, data + '\n', 'utf8')
-};
+console.vlog = function(data) { fs.appendFileSync(log_file, data + '\n', 'utf8') };
 
 // var tokenizer = new natural.WordTokenizer({'pattern':(/(\W+|\%)/)}); // WordTokenizer, TreebankWordTokenizer, WordPunctTokenizer
 // var ngrams = new natural.NGrams.ngrams()
@@ -108,8 +107,6 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 function getRule(sen, text)
 {
 
-	console.vlog("text: "+text)
-
 	if (!('tokens' in sen))
 		{
 		console.vlog("DEBUGRULE: for some reason tokens is not in the sentence " + JSON.stringify(sen, null, 4))
@@ -118,14 +115,10 @@ function getRule(sen, text)
 	var sentence = JSON.parse(JSON.stringify(sen))
  
 	// change tokens 
-  	var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-\?]+/});
+  	var tokenizer = new natural.RegexpTokenizer({pattern: /[^\%a-zA-Z0-9\-\?]+/});
 	
 	text = regexpNormalizer(text.toLowerCase())
-	console.vlog("getRule: normalized: "+text)
-
 	var tkns = natural.NGrams.ngrams(tokenizer.tokenize(text), 1)
-	console.vlog("getRule: tokens: "+tkns)
-	  
 	sentence['tokens'] = []
 
 	_.each(tkns, function(value, key, list){
@@ -134,7 +127,6 @@ function getRule(sen, text)
 			"lemma": value[0]
 			})
 	}, this)
-	console.vlog("getRule: tokens: "+JSON.stringify(sentence['tokens'], null, 4))
 
 	// first fix % sign
 	_.each(sentence['tokens'], function(token, key, list){
@@ -193,21 +185,21 @@ function getRule(sen, text)
 		  'Pension Fund': [['0%','0%'],['10%','10%'],['15%','15%'],['20%','20%']],
 		  'Promotion Possibilities': [['fast','Fast promotion track'],['slow','Slow promotion track']],
 		  'Working Hours': [['8','8 hours'],['9','9 hours'],['10','10 hours']],
-		  'Job Description': [['QA','QA'],['Programmer','Programmer'],['Team','Team Manager'],['Project','Project Manager']],
+		  'Job Description': [['QA','QA'],['Programmer','Programmer'],['Team','Team Manager'],['Project','Project Manager']]
 		  // 'Job Description': ['QA','Programmer','Team Manager','Project Manager'],
 		   //'Leased Car': ['Without leased car', 'With leased car', 'No agreement']
-		   'Leased Car': [['without','Without leased car'], ['with', 'With leased car'], ['agreement','No agreement']]
+		   // 'Leased Car': [['without','Without leased car'], ['with', 'With leased car'], ['agreement','No agreement']]
 		}
 
 	var arAttrVal = ['000','salary','pension','fund','promotion','possibilities','working','hours','hour',
 					'job','description','60000','90000','120000','usd','fast','slow','track','8','9','10',
 					'qa','programmer','team','project','manager','agreement',
-					'0%','10%','15%','20%', 'no agreement', 'position','workday']
+					'0%','10%','15%','20%', 'no agreement', 'position','workday', 'with', 'car', 'no car', 'leased', 'without']
 
 //	arAttrVal = arAttrVal.concat(['no car', "company car", "leased", "car", "leased", "with", "without"])
 
-	var ar_values = []
-	var ar_attrs = []
+	var ar_values = {}
+	var ar_attrs = {}
 
 	// check the salary
 	sentence['tokens'] = _.map(sentence['tokens'], function(unigram){ unigram.lemma = unigram.lemma.replace(/[,.]/g,''); return unigram });	
@@ -222,11 +214,13 @@ function getRule(sen, text)
 	var unigrams = _.map(sentence['tokens'], function(token){ return token.lemma.toLowerCase()});
 	// var words = _.map(sentence['tokens'], function(token){ return token.word.toLowerCase()});
 	
+
+
 	_.each(RuleValues, function(values, attr, list){
 
 		// the biggest intersection
 		if (_.intersection(unigrams, attr.toLowerCase().split(" ")).length != 0)
-			ar_attrs.push(attr)
+			ar_attrs[attr] = 1
 		
 		_.each(values, function(value, key, list){
 			var temp = []
@@ -240,8 +234,8 @@ function getRule(sen, text)
 
 			if (_.intersection(unigrams, temp[0].toLowerCase().split(" ")).length != 0)
 			{
-				ar_attrs.push(attr)
-				ar_values.push(temp[1])
+				ar_attrs[attr] = 1
+				ar_values[temp[1]] = 1
 			}
 
 		}, this)
@@ -250,68 +244,47 @@ function getRule(sen, text)
 
 	if (unigrams.indexOf("no car")!=-1)
 	{
-		ar_attrs.push("Leased Car")
-		ar_values.push('Without leased car')
+		ar_attrs["Leased Car"]= 1
+		ar_values['Without leased car']=1
 	}
 
 	if (unigrams.indexOf("car")!=-1)
 	{
-		ar_attrs.push("Leased Car")
-		var found = false
+		ar_attrs["Leased Car"]= 1
 
-		if (unigrams.indexOf("agreement")!=-1)
-		{
-			ar_values.push('No agreement')
-			found = true
-		}
-
-		if (!found && unigrams.indexOf("without")!=-1)
-		{
-			ar_values.push('Without leased car')
-			found = true
-		}
-		
-		if (!found && unigrams.indexOf("with")!=-1)
-		{
-			ar_values.push('With leased car')
-			found = true
-		}
-
-		if (!found && unigrams.indexOf("no")!=-1)
-		{
-			ar_values.push('Without leased car')
-			found = true
-		}
-
+		if (unigrams.indexOf("without")!=-1) 		ar_values['Without leased car']=1
+		if (unigrams.indexOf("with")!=-1) 			ar_values['With leased car']=1
+		if (unigrams.indexOf("no")!=-1)				ar_values['Without leased car']=1
 		
 		
-		if (!found)
-			if ('basic-dependencies' in sentence)
-			{
-				_.each(sentence['basic-dependencies'], function(dep, key, list){
-					if ((dep['dep']=='neg')&&(['car','leased'].indexOf(dep['governorGloss']!=-1)))
-						ar_values.push('Without leased car')
-				}, this)
-			}
-
+		if ('basic-dependencies' in sentence)
+		{
+			_.each(sentence['basic-dependencies'], function(dep, key, list){
+				if ((dep['dep']=='neg')&&(['car','leased'].indexOf(dep['governorGloss']!=-1)))
+						ar_values['Without leased car']=1
+			}, this)
+		}
+		
+		if (unigrams.indexOf("agreement")!=-1)			
+		{
+			delete ar_values['With leased car']
+			delete ar_values['Without leased car']
+		}
 	}
-
-
-
 
 	// work around for missing car
 
 	
-	if ((ar_attrs.indexOf("Leased Car")!=-1) || (ar_attrs.indexOf("Pension Fund")!=-1) || (ar_attrs.indexOf("Promotion Possibilities")!=-1))
+	if (("Leased Car" in ar_attrs) || ("Pension Fund" in ar_attrs) || ("Promotion Possibilities" in ar_attrs))
 		if (unigrams.indexOf("no agreement")!=-1)
-			ar_values.push("No agreement")
+			ar_values["No agreement"]=1
 
-	if (ar_attrs.indexOf("Leased Car")!=-1)
-		if (ar_values.indexOf("With leased car")==-1)
-			if (ar_values.indexOf("Without leased car")==-1)
-				if (ar_values.indexOf("No agreement")==-1)
+	if ("Leased Car" in ar_attrs)
+		if (!("With leased car" in ar_values))
+			if (!("Without leased car" in ar_values))
+				if (!("No agreement" in ar_values))
 					if (unigrams.indexOf("car")!=-1)
-						ar_values.push("With leased car")
+						ar_values["With leased car"]=1
 	
 	cleaned['tokens'] = []
 	_.each(sentence['tokens'], function(token, key, list){
@@ -320,7 +293,7 @@ function getRule(sen, text)
 	}, this)
 
 	return {
-		'labels':[_.unique(ar_attrs), _.unique(ar_values)],
+		'labels':[_.unique(_.keys(ar_attrs)), _.unique(_.keys(ar_values))],
 		'cleaned': cleaned
 	}
 }
@@ -1658,7 +1631,7 @@ function feSalient(sample_or, features, train, featureOptions, callback) {
 	
 	var salient = {
 		'REJECT':['no', 'not'],
-		'QUERY': ['how', 'about', 'let', 'discuss', 'allow', 'allows']
+		'QUERY': ['how', 'about', 'let', 'discuss']
 	}
 
 	var wh = ["what", "which", "how"]
@@ -2664,7 +2637,6 @@ module.exports = {
 		Emb_100_Hungarian: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feSalient], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 9, 'operation':'sum'}),
 		Emb_100_German: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feSalient], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 9, 'operation':'sum'}),
 		Emb_100_All: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feSalient], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 9, 'operation':'sum'}),
-		
 		
 		"Unigram": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {"neg":false, 'toextract':'word','unoffered':true, 'offered':true}),
         "Unigram_Lemma": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {"neg":false, 'toextract':'lemma','unoffered':true, 'offered':true}),
