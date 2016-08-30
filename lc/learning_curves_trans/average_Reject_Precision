@@ -1,23 +1,23 @@
-size	dial	Natural_Neg	Russian	Hebrew	Hungarian	NLU_Tran_All	Portuguese
-1	1	null	null	null	null	null	null
-2	2	null	null	null	null	null	null
-3	3	null	null	null	null	null	null
-4	4	null	null	null	null	null	null
-5	5	null	null	null	null	null	null
-6	6	null	null	null	null	null	null
-7	7	null	null	null	null	null	null
-8	8	null	null	null	null	null	null
-9	9	null	null	null	null	null	null
-10	10	null	null	null	null	null	null
-15	15	null	null	null	null	null	null
-20	20	null	null	null	null	null	null
-25	25	null	null	null	null	null	null
-30	30	null	null	null	null	null	null
-35	35	null	null	null	null	null	null
-40	40	null	null	null	null	null	null
-45	45	null	null	null	null	null	null
-50	50	null	null	null	null	null	null
-55	55	0.6817464425234461	0.6905310007756464	0.6333751536763418	0.6996444643593313	0.678551248600991	0.6527957052260175
-60	60	0.6863447222415304	0.6987683835297387	0.6709882208733413	0.7191219042363817	0.6486535388934977	0.660650278455391
-65	65	0.6920194937744377	0.6987247247588178	0.6731763974274083	null	0.6148642919161454	0.6640128411856191
-70	70	0.7032882908405332	0.6992437432667986	0.7037801437727844	null	0.6383789355254483	null
+size	dial	Natural_Neg	Emb_100	NLU_Tran_All	Hungarian	Emb_100_Hungarian
+1	1	null	null	null	null	null
+2	2	null	null	null	null	null
+3	3	null	null	null	null	null
+4	4	null	null	null	null	null
+5	5	null	null	null	null	null
+6	6	null	null	null	null	null
+7	7	null	null	null	null	null
+8	8	null	null	null	null	null
+9	9	null	null	null	null	null
+10	10	null	null	null	null	null
+15	15	null	null	null	null	null
+20	20	null	null	null	null	null
+25	25	null	null	null	null	null
+30	30	null	null	null	null	null
+35	35	null	null	null	null	0.5704084594276501
+40	40	null	null	null	null	0.5819938152089577
+45	45	null	null	null	null	0.5884696323502074
+50	50	null	null	null	null	0.6029096353775664
+55	55	0.6817464425234461	0.731786700626418	0.678551248600991	0.6996444643593313	0.5908056742011036
+60	60	0.6863447222415304	0.7424665145250716	0.6486535388934977	0.7191219042363817	0.61621826545168
+65	65	0.6920194937744377	0.7401696780624625	0.6148642919161454	null	0.6504731211570716
+70	70	0.7032882908405332	0.7266092840211307	0.6383789355254483	null	0.6474503863808101
