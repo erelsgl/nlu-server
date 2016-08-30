@@ -1,35 +1,35 @@
 \addplot[color=green,mark=*] coordinates {
-(6,6)(7,7)(8,8)(9,9)(10,10)(15,15)(20,20)(25,25)(30,30)(35,35)(40,40)(45,45)(50,50)(55,55)(60,60)(65,65)(70,70)
+(1,1)(2,2)(3,3)(4,4)(5,5)(6,6)(7,7)(8,8)(9,9)(10,10)(15,15)(20,20)(25,25)(30,30)(35,35)(40,40)(45,45)(50,50)(55,55)(60,60)(65,65)(70,70)
 };
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6817464425234461)(60,0.6863447222415304)(65,0.6920194937744377)(70,0.7032882908405332)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6817464425234461)(60,0.6863447222415304)(65,0.6920194937744377)(70,0.7032882908405332)
 };
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6905310007756464)(60,0.6987683835297387)(65,0.6987247247588178)(70,0.6992437432667986)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6905310007756464)(60,0.6987683835297387)(65,0.6987247247588178)(70,0.6992437432667986)
 };
 \addlegendentry{Russian}
 
 \addplot[color=green,mark=*] coordinates {
-(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6333751536763418)(60,0.6709882208733413)(65,0.6731763974274083)(70,0.7037801437727844)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6333751536763418)(60,0.6709882208733413)(65,0.6731763974274083)(70,0.7037801437727844)
 };
 \addlegendentry{Hebrew}
 
 \addplot[color=green,mark=*] coordinates {
-(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6996444643593313)(60,0.7191219042363817)(65,null)(70,null)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6996444643593313)(60,0.7191219042363817)(65,null)(70,null)
 };
 \addlegendentry{Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.678551248600991)(60,0.6486535388934977)(65,0.6148642919161454)(70,0.6383789355254483)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.678551248600991)(60,0.6486535388934977)(65,0.6148642919161454)(70,0.6383789355254483)
 };
 \addlegendentry{NLU\_Tran\_All}
 
 \addplot[color=green,mark=*] coordinates {
-(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6527957052260175)(60,0.660650278455391)(65,0.6640128411856191)(70,null)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6527957052260175)(60,0.660650278455391)(65,0.6640128411856191)(70,null)
 };
 \addlegendentry{Portuguese}
 
