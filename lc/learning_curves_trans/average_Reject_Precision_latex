@@ -9,22 +9,27 @@
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
+(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.5968373536046578)(60,0.5928808408743527)(65,0.5521356086265188)(70,0.5896770947437835)
+};
+\addlegendentry{Emb\_25}
+
+\addplot[color=green,mark=*] coordinates {
+(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6415422737088357)(60,0.6225188108343243)(65,0.6182003485113985)(70,0.6227204951971743)
+};
+\addlegendentry{Emb\_50}
+
+\addplot[color=green,mark=*] coordinates {
 (6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.731786700626418)(60,0.7424665145250716)(65,0.7401696780624625)(70,0.7266092840211307)
 };
 \addlegendentry{Emb\_100}
 
 \addplot[color=green,mark=*] coordinates {
-(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.678551248600991)(60,0.6486535388934977)(65,0.6148642919161454)(70,0.6383789355254483)
+(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
 };
-\addlegendentry{NLU\_Tran\_All}
+\addlegendentry{Emb\_200}
 
 \addplot[color=green,mark=*] coordinates {
-(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,0.6996444643593313)(60,0.7191219042363817)(65,null)(70,null)
+(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
 };
-\addlegendentry{Hungarian}
-
-\addplot[color=green,mark=*] coordinates {
-(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,0.5504093014621869)(40,0.5518205840803262)(45,0.5395848511578291)(50,0.5579272802605149)(55,0.5869283324415322)(60,0.5800219273415378)(65,0.6215254863086614)(70,0.6093616580255166)
-};
-\addlegendentry{Emb\_100\_Hungarian}
+\addlegendentry{Emb\_300}
 

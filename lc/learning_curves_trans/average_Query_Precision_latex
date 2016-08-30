@@ -11,20 +11,25 @@
 \addplot[color=green,mark=*] coordinates {
 (6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
 };
+\addlegendentry{Emb\_25}
+
+\addplot[color=green,mark=*] coordinates {
+(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
+};
+\addlegendentry{Emb\_50}
+
+\addplot[color=green,mark=*] coordinates {
+(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
+};
 \addlegendentry{Emb\_100}
 
 \addplot[color=green,mark=*] coordinates {
 (6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
 };
-\addlegendentry{NLU\_Tran\_All}
+\addlegendentry{Emb\_200}
 
 \addplot[color=green,mark=*] coordinates {
 (6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
 };
-\addlegendentry{Hungarian}
-
-\addplot[color=green,mark=*] coordinates {
-(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
-};
-\addlegendentry{Emb\_100\_Hungarian}
+\addlegendentry{Emb\_300}
 
