@@ -2052,7 +2052,9 @@ if (simple_naive_intent_test_train_intents)
     console.log(utterset["train"].length)
     console.log(utterset["test"].length)
 
-	utterset["train"] = _.flatten(utterset["train"])
+	
+
+	utterset["train"] = _.flatten(utterset["train"][2])
 	utterset["test"] = _.flatten(utterset["test"])
 
 	console.log(utterset["train"].length)
@@ -2061,9 +2063,14 @@ if (simple_naive_intent_test_train_intents)
     utterset["train"] = bars.processdataset(utterset["train"],{"intents": true, "filter":false, "filterIntent":[]})
 	utterset["test"] = bars.processdataset(utterset["test"],{"intents": true, "filter":false, "filterIntent":[]})
 
-	trainAndTest.trainAndTest_async(classifier.Natural_Neg_Adaboost, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
-		console.log(JSON.stringify(results, null, 4))
-		process.exit(0)
+	trainAndTest.trainAndTest_async(classifier.Natural_Neg, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+		console.log(JSON.stringify(results["stats"], null, 4))
+
+		trainAndTest.trainAndTest_async(classifier.Natural_Neg_Svm, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results1){
+			console.log(JSON.stringify(results1["stats"], null, 4))
+			process.exit(0)
+		}, this)	
+
 	}, this)	
 }
 

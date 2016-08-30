@@ -42,7 +42,7 @@ if (cluster.isWorker)
 
 	async.whilst(
 	    //function () { return index < train.length },
-	    function () { return index < 40 },
+	    function () { return index < 60 },
 	    function (callbackwhilst) {
 
 		async.waterfall([
@@ -53,8 +53,10 @@ if (cluster.isWorker)
 			else index += 5
 	
     		var mytrain = train.slice(0, index)
-			var mytrainex = JSON.parse(JSON.stringify(mytrain))
+		var mytrainex = JSON.parse(JSON.stringify(mytrain))
     		var mytestex = JSON.parse(JSON.stringify(test))
+
+		mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))                 
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+_.flatten(mytrainex).length+
@@ -74,7 +76,8 @@ if (cluster.isWorker)
 				case "hu_YG": callbacks(null, bars.gettrans(mytrainex, "Y:hu:G"), mytestex, mytrainex.length); break;
 				case "hu_YY": callbacks(null, bars.gettrans(mytrainex, "Y:hu:Y"), mytestex, mytrainex.length); break;
  
-    				case "Emb_100_Hungarian": callbacks(null, bars.gettrans(mytrainex, "(G|Y):hu:(G|Y)"), mytestex, mytrainex.length);break;
+    				case "Emb_100_German": callbacks(null, bars.gettrans(mytrainex, ".*:de:.*"), mytestex, mytrainex.length); break;
+				case "Emb_100_Hungarian": callbacks(null, bars.gettrans(mytrainex, "(G|Y):hu:(G|Y)"), mytestex, mytrainex.length);break;
 	    			case "Emb_100_All": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length);break;
 
 				case "Google_French": callbacks(null, bars.gettrans(mytrainex, "G:fr:G"), mytestex, mytrainex.length); break;
@@ -173,10 +176,10 @@ if (cluster.isMaster)
 	bars.cleanFolder(lcfolder)
 	bars.cleanFolder("./logs")
 
-	var folds = 20
-
+	var folds = 5
 	
-	//var classifiers = [ "Natural_Neg", "Emb_25", "Emb_50", "Emb_100"]
+	var classifiers = [ "Natural_Neg", "Emb_100", "NLU_Tran_All", "Hungarian", "Emb_100_Hungarian"]
+	//var classifiers = [ "Natural_Neg", "Emb_25", "Emb_50", "Emb_100", "Emb_200", "Emb_300"]
 	//var classifiers = [ "Natural_Neg", "Emb_25", "Emb_50", "Emb_100", "Emb_200", "Emb_300"]
 	//var classifiers = [ "Natural_Neg", "German", "Hebrew", "Hungarian", "NLU_Tran_All"]
 	// var classifiers = [ "Natural_Neg", "NLU_Tran_All", "hu_GG", "hu_MY", "hu_YG", "hu_YY", "Hungarian"]
@@ -184,7 +187,7 @@ if (cluster.isMaster)
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All"]
 	//var classifiers = [ "Natural","NLU_Tran_GGFinish"]
 
-	var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Emb_100", "Hungarian", "Emb_100_Hungarian", "Emb_100_All"]
+//	var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Emb_100", "Hungarian", "Emb_100_Hungarian", "Emb_100_All"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All"]
 		
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
@@ -199,20 +202,23 @@ if (cluster.isMaster)
 	
 	console.mlog("DEBUGMASTER: loaded: "+train1.length)
 
-	_.each(classifiers, function(classifier, key, list){ 
-		_(folds).times(function(fold){
+	_(folds).times(function(fold){
+
+		var data = partitions.partitions_consistent_by_fold(train1, folds, fold)
+
+		_.each(classifiers, function(classifier, key, list){ 
 		
 			// worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
 			var worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier})
 			
-			var data = partitions.partitions_consistent_by_fold(train1, folds, fold)
-
 			console.mlog("DEBUGMASTER: class: "+classifier+" fold:"+ fold + " train size:"+data.train.length + " test size:" + data.test.length)
 			console.mlog("DEBUGMASTER: process.pid:"+worker.process.pid)
 
 			worker.send({ 		
 					'train': JSON.stringify(data.test), 
+					//'train': data["test"].slice(0, 1), 
 					'test': JSON.stringify(data.train)
+					//'test': data["train"].slice(0, 1)
 		     		})
 			
 			worker.on('disconnect', function(){
@@ -231,6 +237,6 @@ if (cluster.isMaster)
 				console.mlog("DEBUGMASTER: on message: "+message)
 				lc.extractGlobal(workerstats, stat)
 			})
-		})
+		}, this)
 	}, this)
 }
