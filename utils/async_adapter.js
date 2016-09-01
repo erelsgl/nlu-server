@@ -53,16 +53,12 @@ async.series([
     function(callbacklocal){
     
     	client.select(db, function(err, response) {
-		console.log(err)
 		if (err) callback(err)
 
 		client.dbsize(function(err, size) {
-
-			console.log(size)
+			if (size == 0) throw new Error(db+" is empty")
 
 			client.get(string, function(err, results) {
-	
-				console.log(err)
 				if (err) callback(err)
 			
 				if (_.isNull(results))
@@ -612,6 +608,6 @@ module.exports = {
   getembedall:getembedall
 }
 
-getembed("home", 10, function(err, emb){
+getembed("home", 9, function(err, emb){
 console.log(emb)
 })
