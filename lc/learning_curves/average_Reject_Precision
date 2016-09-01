@@ -1,0 +1,17 @@
+size	dial	Natural	Balanced	Natural_Hungarian	Balanced_Hungarian	Emb_100	Balanced_Emb_100
+1	1	null	null	null	null	null	null
+2	2	null	null	null	null	null	null
+3	3	null	null	null	null	null	null
+4	4	null	null	null	null	null	null
+5	5	null	null	null	null	null	null
+10	10	null	null	null	null	null	null
+15	15	null	null	null	null	null	null
+20	20	null	null	null	null	null	null
+25	25	null	null	null	null	null	null
+30	30	null	null	null	null	null	null
+35	35	null	0.6598405679284954	null	0.64802396113319	null	null
+40	40	null	0.6605796154358033	null	0.6736306835521286	null	null
+45	45	null	0.664721991054199	null	0.6822629949089141	null	null
+50	50	null	0.6685809376955417	null	0.6949018474038792	null	null
+55	55	0.681746442523446	0.6747207263431884	0.6996444643593311	0.6967147840428355	null	null
+60	60	0.6863447222415302	0.6794961800087944	0.7191219042363816	0.695393327241658	null	null
