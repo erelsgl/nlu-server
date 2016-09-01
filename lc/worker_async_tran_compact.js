@@ -22,6 +22,7 @@ if (cluster.isWorker)
 
     	console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
+	//var train = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")).concat(JSON.parse(message['train']))
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
 
@@ -42,7 +43,7 @@ if (cluster.isWorker)
 
 	async.whilst(
 	    //function () { return index < train.length },
-	    function () { return index < 60 },
+	    function () { return index < 70 },
 	    function (callbackwhilst) {
 
 		async.waterfall([
@@ -56,7 +57,6 @@ if (cluster.isWorker)
 		var mytrainex = JSON.parse(JSON.stringify(mytrain))
     		var mytestex = JSON.parse(JSON.stringify(test))
 
-		mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))                 
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+_.flatten(mytrainex).length+
@@ -65,6 +65,10 @@ if (cluster.isWorker)
 			
 				switch(classifier) {
     				
+				case "Natural_Neg":  callbacks(null, mytrainex, mytestex, mytrainex.length); break;
+				case "Emb_25": case "Emb_50": case "Emb_100": case "Emb_200": case "Emb_300":  callbacks(null, mytrainex, mytestex, mytrainex.length); break;
+			
+			
 				case "MY": callbacks(null, bars.gettrans(mytrainex, "M:.*:Y"), mytestex, mytrainex.length); break;
 				case "GM": callbacks(null, bars.gettrans(mytrainex, "G:.*:M"), mytestex, mytrainex.length); break;
 				case "YG": callbacks(null, bars.gettrans(mytrainex, "Y:.*:G"), mytestex, mytrainex.length); break;
@@ -77,13 +81,13 @@ if (cluster.isWorker)
 				case "hu_YY": callbacks(null, bars.gettrans(mytrainex, "Y:hu:Y"), mytestex, mytrainex.length); break;
  
     				case "Emb_100_German": callbacks(null, bars.gettrans(mytrainex, ".*:de:.*"), mytestex, mytrainex.length); break;
-				case "Emb_100_Hungarian": callbacks(null, bars.gettrans(mytrainex, "(G|Y):hu:(G|Y)"), mytestex, mytrainex.length);break;
+				case "Emb_100_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length);break;
 	    			case "Emb_100_All": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length);break;
 
-				case "Google_French": callbacks(null, bars.gettrans(mytrainex, "G:fr:G"), mytestex, mytrainex.length); break;
 				case "French": callbacks(null, bars.gettrans(mytrainex, ".*:fr:.*"), mytestex, mytrainex.length); break;
     				case "German": callbacks(null, bars.gettrans(mytrainex, ".*:de:.*"), mytestex, mytrainex.length); break;
     				case "Chinese": callbacks(null, bars.gettrans(mytrainex, ".*:zh:.*"), mytestex, mytrainex.length); break;
+    				case "Russian": callbacks(null, bars.gettrans(mytrainex, ".*:ru:.*"), mytestex, mytrainex.length); break;
     				case "Portuguese": callbacks(null, bars.gettrans(mytrainex, ".*:pt:.*"), mytestex, mytrainex.length); break;
     				case "Hebrew": callbacks(null, bars.gettrans(mytrainex, ".*:he:.*"), mytestex, mytrainex.length); break;
     				case "Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length);break;
@@ -118,8 +122,10 @@ if (cluster.isWorker)
 	//			//case "NLU_Emb_Trans_Ext_100": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
 
     				default:
-						//mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
-        				callbacks(null, mytrainex, mytestex, mytrainex.length)
+
+					throw new Error("no classifier")				
+			//mytrainex = mytrainex.concat(JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")))    		
+        			//	callbacks(null, mytrainex, mytestex, mytrainex.length)
         		}
 
     		},
@@ -176,12 +182,12 @@ if (cluster.isMaster)
 	bars.cleanFolder(lcfolder)
 	bars.cleanFolder("./logs")
 
-	var folds = 5
+	var folds = 10
 	
-	var classifiers = [ "Natural_Neg", "Emb_100", "NLU_Tran_All", "Hungarian", "Emb_100_Hungarian"]
+	//var classifiers = [ "Natural_Neg", "Emb_100", "NLU_Tran_All", "Hungarian", "Emb_100_Hungarian"]
+	var classifiers = [ "Natural_Neg", "Emb_25", "Emb_50", "Emb_100", "Emb_200", "Emb_300"]
 	//var classifiers = [ "Natural_Neg", "Emb_25", "Emb_50", "Emb_100", "Emb_200", "Emb_300"]
-	//var classifiers = [ "Natural_Neg", "Emb_25", "Emb_50", "Emb_100", "Emb_200", "Emb_300"]
-	//var classifiers = [ "Natural_Neg", "German", "Hebrew", "Hungarian", "NLU_Tran_All"]
+//	var classifiers = [ "Natural_Neg", "Russian", "Hebrew", "Hungarian", "NLU_Tran_All", "Portuguese"]
 	// var classifiers = [ "Natural_Neg", "NLU_Tran_All", "hu_GG", "hu_MY", "hu_YG", "hu_YY", "Hungarian"]
 	///var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Hungarian", "huzh", "huzhur"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All"]
@@ -216,9 +222,7 @@ if (cluster.isMaster)
 
 			worker.send({ 		
 					'train': JSON.stringify(data.test), 
-					//'train': data["test"].slice(0, 1), 
 					'test': JSON.stringify(data.train)
-					//'test': data["train"].slice(0, 1)
 		     		})
 			
 			worker.on('disconnect', function(){
