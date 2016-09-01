@@ -53,18 +53,26 @@ async.series([
     function(callbacklocal){
     
     	client.select(db, function(err, response) {
+		console.log(err)
 		if (err) callback(err)
 
-		client.get(string, function(err, results) {
-			if (err) callback(err)
+		client.dbsize(function(err, size) {
+
+			console.log(size)
+
+			client.get(string, function(err, results) {
+	
+				console.log(err)
+				if (err) callback(err)
 			
-			if (_.isNull(results))
+				if (_.isNull(results))
 				callback(err, [])
 			//	client.get("1", function(err, results) {
 			//		callback(err, Array.apply(null, Array(results.slice(0,-1).split(",").length)).map(function () { return 0}))
 			//	})
-			else
+				else
 				callback(err, _.map(results.slice(0,-1).split(","), parseFloat))
+			})
 		})
 	})
 
@@ -604,6 +612,6 @@ module.exports = {
   getembedall:getembedall
 }
 
-getembed("asdasddsa", 8, function(err, emb){
+getembed("home", 10, function(err, emb){
 console.log(emb)
 })
