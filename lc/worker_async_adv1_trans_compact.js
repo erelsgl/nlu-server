@@ -145,7 +145,7 @@ if (cluster.isMaster)
 	//var classifiers = [ 'Natural', 'Balanced', 'Balanced_Embed_25', 'Balanced_Embed_50', 'Balanced_Embed_100']
 	//var classifiers = [ 'Natural', 'Balanced', 'Natural_Trans', 'Balanced_Trans', 'Natural_Emb', 'Balanced_Emb', 'Natural_Trans_Emb', 'Balanced_Trans_Emb', 'Natural_Trans_Emb_Neg', 'Balanced_Trans_Emb_Neg']
 //	var classifiers = [ 'Natural', 'Balanced', 'Balanced_Trans', 'Balanced_Trans_Emb_Neg']
-	var classifiers = [ 'Natural', 'Balanced', 'Natural_Hungarian', 'Balanced_Hungarian']
+	var classifiers = [ 'Natural', 'Balanced', 'Natural_Hungarian', 'Balanced_Hungarian', 'Emb_100', 'Balanced_Emb_100']
 //var classifiers = [ 'Natural', 'Balanced',  'Natural_Trans_Emb', 'Balanced_Trans_Emb']
 	//var classifiers = [ 'Natural', 'Biased_no_rephrase', 'Trans_Google', 'Trans_Microsoft', 'Trans_Yandex']
 	//var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase']
@@ -176,11 +176,13 @@ if (cluster.isMaster)
 	
 		console.mlog("number of the dialogues2: "+train2.length)
 
-		_.each(classifiers, function(classifier, key, list){ 
-			_(folds).times(function(fold){
+		_(folds).times(function(fold){
+	
+			var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
+
+			_.each(classifiers, function(classifier, key, list){ 
 			
 				var worker = cluster.fork({'fold': fold+n*folds, 'classifier':classifier, /*'thread': thr*/})
-				var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
 		
 				console.mlog("DEBUGMASTER: classifier: "+classifier+" fold: "+ (fold+n*folds) + 
 					     " train size "+data.train.length + " test size " + data.test.length+
@@ -230,7 +232,7 @@ if (cluster.isMaster)
 					//fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
 					lc.extractGlobal(workerstats, stat)
 				})
-			})
+			}, this)
 		}, this)
 	}, function(){
 		_.each(stat, function(data, param, list){
