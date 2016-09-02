@@ -11,25 +11,20 @@
 \addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,null)(4,null)(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
 };
-\addlegendentry{Balanced}
+\addlegendentry{Undersampled}
 
 \addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,null)(4,null)(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
 };
-\addlegendentry{Natural\_Hungarian}
+\addlegendentry{Oversampled}
 
 \addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,null)(4,null)(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
 };
-\addlegendentry{Balanced\_Hungarian}
+\addlegendentry{Biased\_with\_rephrase}
 
 \addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,null)(4,null)(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
 };
-\addlegendentry{Emb\_100}
-
-\addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
-};
-\addlegendentry{Balanced\_Emb\_100}
+\addlegendentry{Biased\_no\_rephrase}
 
