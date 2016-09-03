@@ -25,9 +25,9 @@ process.on('message', function(message) {
 	var train = bars.processdataset(_.flatten(JSON.parse(message['train'])), {"intents":true, "filter": true, "filterIntent":['Quit','Greet']})
 
 //	_.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"] }, this)
-//	_.each(test, function(turn, key, list){ delete test[key]["input"]["sentences"] }, this)
+	//_.each(test, function(turn, key, list){ delete test[key]["input"]["sentences"] }, this)
 
-	var max = 60
+	var max = 70
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max + " classifier "+classifier)
 	var index = 0
@@ -64,6 +64,8 @@ process.on('message', function(message) {
 				case "Balanced_Trans_Google_Microsoft": callbacks(null, bars.gettrans(mytrainex, "G:.*:M"), mytestex, mytrainex.length); break;
 				case "Natural_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;
 				case "Balanced_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;
+				case "Balanced_Emb_100_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;
+				case "Emb_100_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;
 				case "Balanced_Trans_Yandex_Microsoft": callbacks(null, bars.gettrans(mytrainex, "Y:.*:M"), mytestex, mytrainex.length); break;
 				case "Balanced_Trans_Microsoft_Yandex": callbacks(null, bars.gettrans(mytrainex, "M:.*:Y"), mytestex, mytrainex.length); break;
 				case "Natural_Trans": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
@@ -145,10 +147,10 @@ if (cluster.isMaster)
 	//var classifiers = [ 'Natural', 'Balanced', 'Balanced_Embed_25', 'Balanced_Embed_50', 'Balanced_Embed_100']
 	//var classifiers = [ 'Natural', 'Balanced', 'Natural_Trans', 'Balanced_Trans', 'Natural_Emb', 'Balanced_Emb', 'Natural_Trans_Emb', 'Balanced_Trans_Emb', 'Natural_Trans_Emb_Neg', 'Balanced_Trans_Emb_Neg']
 //	var classifiers = [ 'Natural', 'Balanced', 'Balanced_Trans', 'Balanced_Trans_Emb_Neg']
-	var classifiers = [ 'Natural', 'Balanced', 'Natural_Hungarian', 'Balanced_Hungarian', 'Emb_100', 'Balanced_Emb_100']
+	//var classifiers = [ 'Natural', 'Balanced', 'Natural_Hungarian', 'Balanced_Hungarian', 'Emb_100', 'Balanced_Emb_100', 'Emb_100_Hungarian', 'Balanced_Emb_100_Hungarian']
 //var classifiers = [ 'Natural', 'Balanced',  'Natural_Trans_Emb', 'Balanced_Trans_Emb']
 	//var classifiers = [ 'Natural', 'Biased_no_rephrase', 'Trans_Google', 'Trans_Microsoft', 'Trans_Yandex']
-	//var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase']
+	var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase']
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	//var classifiers = [ 'Natural','Natural_trans']
 	
@@ -186,7 +188,7 @@ if (cluster.isMaster)
 		
 				console.mlog("DEBUGMASTER: classifier: "+classifier+" fold: "+ (fold+n*folds) + 
 					     " train size "+data.train.length + " test size " + data.test.length+
-                         " process: "+worker.process.id)
+                         		     " process: "+worker.process.id)
 
 				var train2sam = _.flatten(_.sample(bars.copyobj(train2), 10))
 				var train2sam_no_reph = _.filter(bars.copyobj(train2sam), function(num){ return num.type == "normal" });
@@ -211,8 +213,8 @@ if (cluster.isMaster)
 				// var max = _.min([_.flatten(data.test).length, _.flatten(train2sam).length])
 				max = max - max % 10			
 				
-				console.mlog("DEBUGMASTER: train1.len="+_.flatten(data.test).length+ " train2.len="+ _.flatten(train2sam).length + " max="+max)
-				console.mlog("DEBUGMASTER: class="+classifier+ " fold="+ (fold+n*folds) + " train.len="+train.length + " test.len=" + data.train.length + " max: "+max)
+				//console.mlog("DEBUGMASTER: train1.len="+_.flatten(data.test).length+ " train2.len="+ _.flatten(train2sam).length + " max="+max)
+				console.mlog("DEBUGMASTER: class="+classifier+ " fold="+ (fold+n*folds) + " train.sen.len="+ _.flatten(train).length+" train.len="+train.length + " test.len=" + data.train.length + " max: "+max)
 				worker.send({ 		
 						'train': JSON.stringify(_.flatten(train)), 
 						'test': JSON.stringify(_.flatten(data.train)),
