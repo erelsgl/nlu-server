@@ -1,4 +1,4 @@
-size	dial	Natural_Neg	Emb_25	Emb_50	Emb_100	Emb_200	Emb_300
+size	dial	Natural_Neg	NLU_Tran_All	Emb_100	Hungarian	Emb_100_Hungarian	Emb_100_All
 1	1	null	null	null	null	null	null
 2	2	null	null	null	null	null	null
 3	3	null	null	null	null	null	null
