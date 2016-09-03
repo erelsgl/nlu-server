@@ -1,4 +1,4 @@
-size	dial	Natural_Neg	Natural_Neg_Svm	Natural_Neg_Decisiontree	Natural_Neg_Randomforest	Natural_Neg_Adaboost
+size	dial	Natural_Neg_old	Natural_Neg_Svm	Natural_Neg_Decisiontree	Natural_Neg_Randomforest	Natural_Neg_Adaboost
 1	1	null	null	null	null	null
 2	2	null	null	null	null	null
 3	3	null	null	null	null	null
@@ -13,7 +13,7 @@ size	dial	Natural_Neg	Natural_Neg_Svm	Natural_Neg_Decisiontree	Natural_Neg_Rando
 20	20	null	null	null	null	null
 25	25	null	null	null	null	null
 30	30	null	null	null	null	null
-35	35	null	null	0.06557377049180328	null	0.06557377049180328
-40	40	null	null	0.06557377049180328	null	0.3618700667880996
-45	45	null	null	0.3079710144927536	null	0.06557377049180328
-50	50	null	null	0.3155737704918033	null	0.06557377049180328
+35	35	null	null	0.3618700667880996	null	0.3618700667880996
+40	40	null	null	0.3155737704918033	null	0.06557377049180328
+45	45	null	null	0.057971014492753624	null	0.3155737704918033
+50	50	null	null	0.3155737704918033	null	0.3618700667880996
