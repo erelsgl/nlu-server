@@ -13,7 +13,11 @@ size	dial	Natural_Neg_old	Natural_Neg_Svm	Natural_Neg_Decisiontree	Natural_Neg_R
 20	20	null	null	null	null	null
 25	25	null	null	null	null	null
 30	30	null	null	null	null	null
-35	35	null	null	0.3618700667880996	null	0.3618700667880996
-40	40	null	null	0.3155737704918033	null	0.06557377049180328
-45	45	null	null	0.057971014492753624	null	0.3155737704918033
-50	50	null	null	0.3155737704918033	null	0.3618700667880996
+35	35	null	null	null	null	null
+40	40	null	null	null	null	null
+45	45	null	null	null	null	null
+50	50	null	null	null	null	null
+55	55	null	null	null	null	null
+60	60	null	null	null	null	null
+65	65	null	null	null	null	null
+70	70	null	null	null	null	null
