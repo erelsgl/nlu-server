@@ -4457,7 +4457,6 @@ function oversample(turns)
   }, this)
 
   console.vlog(" DEBUGOVERSAMPLE: dist after: "+JSON.stringify(returndist(turns), null, 4))
-gettra
   return turns
 }
 
