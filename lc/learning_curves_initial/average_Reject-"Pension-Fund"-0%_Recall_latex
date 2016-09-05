@@ -1,0 +1,25 @@
+\addplot[color=green,mark=*] coordinates {
+(1,1)(2,2)(5,5)(6,6)
+};
+\addlegendentry{dial}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(5,null)(6,null)
+};
+\addlegendentry{Natural}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(5,null)(6,null)
+};
+\addlegendentry{Natural+Context}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(5,null)(6,null)
+};
+\addlegendentry{Component}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(5,null)(6,null)
+};
+\addlegendentry{Component+Context}
+

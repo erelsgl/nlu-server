@@ -1,0 +1,25 @@
+\addplot[color=green,mark=*] coordinates {
+(1,1)(2,2)(3,3)(4,4)(5,5)(6,6)(7,7)(8,8)(9,9)(10,10)(15,15)(20,20)(30,30)(40,40)(50,50)(60,60)(70,70)(80,80)(90,90)
+};
+\addlegendentry{dial}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(30,0)(40,0)(50,null)(60,null)(70,null)(80,null)(90,0)
+};
+\addlegendentry{Natural}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,null)(3,null)(4,null)(5,null)(6,0)(7,0.1125)(8,null)(9,null)(10,0.1125)(15,0.2111111111111111)(20,null)(30,0)(40,0)(50,null)(60,null)(70,null)(80,null)(90,0)
+};
+\addlegendentry{Natural+Context}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,null)(3,null)(4,null)(5,null)(6,0.41111111111111115)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(30,0.5444444444444444)(40,0.5277777777777777)(50,0.5142857142857142)(60,0.6857142857142857)(70,0.6380952380952382)(80,0.6380952380952382)(90,0.6)
+};
+\addlegendentry{Component}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,null)(3,null)(4,null)(5,null)(6,0.41111111111111115)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(30,0.8444444444444444)(40,0.8777777777777778)(50,null)(60,null)(70,null)(80,null)(90,0.8777777777777778)
+};
+\addlegendentry{Component+Context}
+
