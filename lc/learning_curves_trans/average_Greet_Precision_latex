@@ -28,3 +28,8 @@
 };
 \addlegendentry{Finish+Hungarian+Hebrew}
 
+\addplot[color=green,mark=*] coordinates {
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
+};
+\addlegendentry{Urdu+Chinese+Hungarian}
+
