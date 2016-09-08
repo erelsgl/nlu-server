@@ -38,13 +38,14 @@ if (cluster.isWorker)
 
 	async.whilst(
 	    function () { return index < train.length },
+	    //function () { return index < 70 },
 	    function (callbackwhilst) {
 
 		if (index<10)
 			{ index += 1} 
 		else if (index<20)
 			{ index += 5 }
-		else index += 10
+		else index += 5
 
 // on dialogue level
 	    var mytrain = bars.copyobj(train.slice(0, index))
@@ -52,12 +53,12 @@ if (cluster.isWorker)
 	    var mytestex  = []
 		var mytrainex = []
 
-	      if (classifier == "Natural")
+	      if (classifier.indexOf("Natural")!=-1)
 		{
 	    		mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": false, "filter":false, "filterIntent":[]})
               		mytestex  = bars.processdataset(_.flatten(bars.copyobj(test)), {"intents": false, "filter":false, "filterIntent":[]})
 		}             
-             if (classifier == "Component")
+             if (classifier.indexOf("Component")!=-1)
 		{                
 	    	    mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": true, "filter":false, "filterIntent":[]})
 		    mytestex  = _.flatten(bars.copyobj(test))
@@ -75,7 +76,7 @@ if (cluster.isWorker)
 
 		async.series([
  			function(callback){
-        		if(classifier == "Natural") {
+        		if(classifier.indexOf("Natural")!=-1) {
      		   		trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
      		   			global_stats = bars.copyobj(stats)
           				callback(null, null);     		   		
@@ -85,7 +86,7 @@ if (cluster.isWorker)
         		}
    	 		},
   		  	function(callback){
-        		if (classifier == "Component") {
+        		if (classifier.indexOf("Component")!=-1) {
 
         			var mapping = []
 					var test_set = []
@@ -173,7 +174,7 @@ if (cluster.isMaster)
 	var statt = {}
 
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
-	var classifiers = [ "Natural", "Component" ]
+	var classifiers = [ "Natural", "Natural+Context", "Component", "Component+Context" ]
 	
 	cluster.setupMaster({
   	exec: __filename,
