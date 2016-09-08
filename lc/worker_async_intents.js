@@ -22,15 +22,14 @@ if (cluster.isWorker)
 
     	console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
-		var train = JSON.parse(message['train'])
-		var test  = JSON.parse(message['test'])
+	var train = JSON.parse(message['train'])
+	var test  = JSON.parse(message['test'])
 
         var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Quit","Greet"], "filter":false})
         var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Quit","Greet"], "filter":true})
-
-    
-		_.each(test, function(turn, key, list){ delete test[key]["input"]["trans"] }, this)
-		_.each(train, function(turn, key, list){ delete test[key]["input"]["trans"] }, this)
+   
+	_.each(test, function(turn, key, list){ delete test[key]["input"]["trans"] }, this)
+	_.each(train, function(turn, key, list){ delete test[key]["input"]["trans"] }, this)
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
 
@@ -38,7 +37,7 @@ if (cluster.isWorker)
 
 	async.whilst(
 	    //function () { return index < train.length },
-	    function () { return index < 50 },
+	    function () { return index < 70 },
 	    function (callbackwhilst) {
 
 		async.waterfall([
@@ -69,7 +68,6 @@ if (cluster.isWorker)
 		
 			console.vlog("DEBUGPRETRAIN: classifier:"+classifier+" mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
 			
-
     			trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
     			//trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
     			//trainAndTest.trainAndTest_async(classifiers.Natural, bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
@@ -103,8 +101,6 @@ if (cluster.isWorker)
 		})
 	});
 
-
-
 if (cluster.isMaster)
 {
 	var stat = {}
@@ -112,12 +108,12 @@ if (cluster.isMaster)
 	bars.cleanFolder(lcfolder)
 	bars.cleanFolder("./logs")
 
-	var folds = 2
+	var folds = 10
 
 //	var classifiers = ["Unigram", "Unigram_Lemma", "Unigram+Context", "Unigram_Lemma+Context", "Unigram+Context+Neg", 'Unigram+Neg']
 //	var classifiers = [ "Unigram", "Unigram+Context", "Unigram+Neg", "Unigram+Context+Neg" ]
 //	var classifiers = [ "Natural_Neg", "Natural_Neg_Svm" ]
-	var classifiers = [ "Natural_Neg", "Natural_Neg_Svm", "Natural_Neg_Decisiontree", "Natural_Neg_Randomforest", "Natural_Neg_Adaboost" ]
+	var classifiers = [ "Natural_Neg_old", "Natural_Neg_Svm", "Natural_Neg_Decisiontree", "Natural_Neg_Randomforest", "Natural_Neg_Adaboost" ]
 
 	
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
@@ -132,20 +128,20 @@ if (cluster.isMaster)
 	
 	console.mlog("DEBUGMASTER: loaded: "+train1.length)
 
-	_.each(classifiers, function(classifier, key, list){ 
-		_(folds).times(function(fold){
+	_(folds).times(function(fold){
+		var data = partitions.partitions_consistent_by_fold(train1, folds, fold)
+		
+		_.each(classifiers, function(classifier, key, list){ 
 		
 			// worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
-			var worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier})
-			
-			var data = partitions.partitions_consistent_by_fold(train1, folds, fold)
+			var worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier})			
 
 			console.mlog("DEBUGMASTER: class: "+classifier+" fold:"+ fold + " train size:"+data.train.length + " test size:" + data.test.length)
 			console.mlog("DEBUGMASTER: process.pid:"+worker.process.pid)
 
 			worker.send({ 		
-					'train': JSON.stringify(data.test), 
-					'test': JSON.stringify(data.train)
+				'train': JSON.stringify(data.test), 
+				'test': JSON.stringify(data.train)
 		     		})
 			
 			worker.on('disconnect', function(){
@@ -164,6 +160,6 @@ if (cluster.isMaster)
 				console.mlog("DEBUGMASTER: on message: "+message)
 				lc.extractGlobal(workerstats, stat)
 			})
-		})
+		}, this)
 	}, this)
 }
