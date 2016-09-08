@@ -34,6 +34,9 @@ if (cluster.isWorker)
 
     //    _.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"]}, this)
 
+//	 _.each(train, function(turn, key, list){ train[key]["input"]["trans"] = {} }, this)
+  //      train = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")).concat(train)
+
 	_.each(test, function(turn, key, list){
 		//delete test[key]["input"]["sentences"]
 		delete test[key]["input"]["trans"]
@@ -203,7 +206,7 @@ if (cluster.isMaster)
 
 	var folds = 10
 	
-	//var classifiers = [ "Natural_Neg", "Emb_100", "NLU_Tran_All", "Hungarian", "Emb_100_Hungarian"]
+	//var classifiers = [ "Natural_Neg", "Emb_100", "Emb_50", "NLU_Tran_All"]
 	//var classifiers = [ "Natural_Neg", "Emb_25", "Emb_50", "Emb_100", "Emb_200", "Emb_300"]
 //	var classifiers = [ "Natural_Neg", "YY", "MM", "GG", "YG", "GY", "YM", "MY", "GM", "MG"]
 	//var classifiers = [ "Natural_Neg", "Russian", "Hebrew", "Hungarian", "NLU_Tran_All", "Portuguese", "Chinese", "Finish", "Urdu", "Finish+Hungarian", "Spanish", "Arabic"]
