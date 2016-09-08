@@ -3970,8 +3970,12 @@ function processdataset(dataset, options)
     output.push(record)
   })
 
-  if (options.filter)
-    output = _.filter(output, function(num){ return num["output"].length <= 1; });
+    console.vlog("processdataset: before filter: "+ output.length)
+ 
+ if (options.filter)
+    output = _.filter(output, function(num){ return num["output"].length == 1; });
+    
+  console.vlog("processdataset: after filter: "+ output.length)
 
   if (options["filterIntent"].length > 0)
     output = _.filter(output, function(num){ return _.intersection(num["output"], options["filterIntent"]).length == 0 });
@@ -4471,10 +4475,19 @@ function gettrans(turns, pat)
 
   _.each(turns, function(turn, key, list){
 
-    if (turn["output"].length > 0)
+     var temp_copy = copyobj(turn)
+     delete temp_copy["input"]["trans"]
+     output.push(temp_copy)
+
+	var roots = _.filter(turn["input"]["sentences"]["basic-dependencies"], function(num){ return num["dep"] == "ROOT" }).length
+ 
+
+    if ((turn["output"].length == 1) && (roots == 1))
     {
-  
-		  var unique_trans = {}
+ 	
+	 
+  	console.vlog("gettrans: turn " + key + " is applied")
+		//  var unique_trans = {}
 	  
       _.each(turn["input"]["trans"], function(tran, key, list){
         
@@ -4487,34 +4500,36 @@ function gettrans(turns, pat)
 
         if ((proc) && (omitlang.indexOf(pivotlang)==-1))
         {
-          console.vlog("gettrans: add: "+key)
+          console.vlog("gettrans: add: "+key + " text: "+tran)
           var record= copyobj(turn)
           record["input"]["text"] = tran
   		    delete record["input"]["sentences"]
   		    delete record["input"]["trans"]
   		    _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json")));
   		    record["input"]["source"] = turn.translation_id
-          // output.push(record)
-  	  	  unique_trans[record["input"]["text"]] = record
+          	output.push(record)
+  	  //	  unique_trans[record["input"]["text"]] = record
         }
       }, this)
 
-      unique_trans[turn.input.text] = 
+     /* unique_trans[turn.input.text] = 
       {
         'input': {'text': turn.input.text,
         'sentences': turn.input.sentences,
         'context': turn.input.context},
         'output': JSON.parse(JSON.stringify(turn.output)),
         'outputhash': JSON.parse(JSON.stringify(turn.outputhash))
-      }
+      }*/
 
-      console.vlog("gettrans: there are unique records: "+_.values(unique_trans).length)
-      console.vlog("gettrans: unique strings: "+JSON.stringify(_.keys(unique_trans), null, 4))
-		  console.vlog("gettrans: unique_trans: "+JSON.stringify(unique_trans, null, 4))
+  //    console.vlog("gettrans: there are unique records: "+_.values(unique_trans).length)
+    //  console.vlog("gettrans: unique strings: "+JSON.stringify(_.keys(unique_trans), null, 4))
+//		  console.vlog("gettrans: unique_trans: "+JSON.stringify(unique_trans, null, 4))
 
-	    output = output.concat(_.values(unique_trans))
-	console.vlog("gettrans: "+_.keys(unique_trans).length +" was added among "+_.keys(turn["input"]["trans"]).length)
+	  //  output = output.concat(_.values(unique_trans))
+//	console.vlog("gettrans: "+_.keys(unique_trans).length +" was added among "+_.keys(turn["input"]["trans"]).length)
 	  }
+	else
+		console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"].length+" sentences: "+roots)
     
   }, this)
 
