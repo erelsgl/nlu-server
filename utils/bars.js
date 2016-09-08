@@ -4023,7 +4023,7 @@ function getsetcontext(dataset)
         else
           turn['type'] = "normal"
 
-       if ((QuitIndex==-1) && (GreetIndex==-1))
+     //  if ((QuitIndex==-1) && (GreetIndex==-1))
           processed_dialogue.push(turn)
 
         // context = []
@@ -4464,7 +4464,8 @@ function gettrans(turns, pat)
 {
   var output = []
   var regex =  new RegExp(pat)
-  var omitlang = ["ar", "es"]
+  //var omitlang = ["ar", "es"]
+  var omitlang = []
 
   console.vlog("gettrans: input.length: " + turns.length)
 
