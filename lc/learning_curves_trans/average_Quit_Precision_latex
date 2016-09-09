@@ -16,21 +16,6 @@
 \addplot[color=green,mark=*] coordinates {
 (25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,null)(80,null)(85,null)(90,null)(95,null)(100,null)(105,null)(110,null)(115,null)(120,null)(125,null)(130,null)(135,null)(140,null)(145,null)(150,null)
 };
-\addlegendentry{French+German+Potuguese}
-
-\addplot[color=green,mark=*] coordinates {
-(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,null)(80,null)(85,null)(90,null)(95,null)(100,null)(105,null)(110,null)(115,null)(120,null)(125,null)(130,null)(135,null)(140,null)(145,null)(150,null)
-};
-\addlegendentry{Finish+Hungarian+Chinese}
-
-\addplot[color=green,mark=*] coordinates {
-(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,null)(80,null)(85,null)(90,null)(95,null)(100,null)(105,null)(110,null)(115,null)(120,null)(125,null)(130,null)(135,null)(140,null)(145,null)(150,null)
-};
-\addlegendentry{Russian+Spanish+Arabic}
-
-\addplot[color=green,mark=*] coordinates {
-(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,null)(80,null)(85,null)(90,null)(95,null)(100,null)(105,null)(110,null)(115,null)(120,null)(125,null)(130,null)(135,null)(140,null)(145,null)(150,null)
-};
 \addlegendentry{Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
@@ -41,5 +26,5 @@
 \addplot[color=green,mark=*] coordinates {
 (25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,null)(80,null)(85,null)(90,null)(95,null)(100,null)(105,null)(110,null)(115,null)(120,null)(125,null)(130,null)(135,null)(140,null)(145,null)(150,null)
 };
-\addlegendentry{German}
+\addlegendentry{Best}
 
