@@ -4482,10 +4482,10 @@ function gettrans(turns, pat)
 	var roots = _.filter(turn["input"]["sentences"]["basic-dependencies"], function(num){ return num["dep"] == "ROOT" }).length
  
 
+    //if ((turn["output"].length == 1) && (roots == 1))
     if ((turn["output"].length == 1) && (roots == 1))
     {
- 	
-	 
+ 
   	console.vlog("gettrans: turn " + key + " is applied")
 		//  var unique_trans = {}
 	  
@@ -4529,7 +4529,7 @@ function gettrans(turns, pat)
 //	console.vlog("gettrans: "+_.keys(unique_trans).length +" was added among "+_.keys(turn["input"]["trans"]).length)
 	  }
 	else
-		console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"].length+" sentences: "+roots)
+		console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"]+" sentences: "+roots)
     
   }, this)
 
@@ -4542,7 +4542,6 @@ function gettrans(turns, pat)
 function gettransbest(turns)
 {
   var output = []
-  var regex =  new RegExp(pat)
   var omitlang = []
 
   console.vlog("gettransbest: input.length: " + turns.length)
@@ -4556,13 +4555,12 @@ function gettransbest(turns)
 
     var roots = _.filter(turn["input"]["sentences"]["basic-dependencies"], function(num){ return num["dep"] == "ROOT" }).length
  
-    if ((turn["output"].length == 1) && (roots == 1))
+    if ((turn["output"].length == 1) && (roots == 1) && turn["output"][0]!="Offer")
     {
        console.vlog("gettransbest: turn " + key + " is applied")
     
       _.each(turn["input"]["trans"], function(tran, key, list){
         
-        var proc = regex.test(key)
         var engine1 = key.substr(0,1)
         var engine2 = key.substr(-1,1)
         var pivotlang = key.substr(2,2)
@@ -4581,13 +4579,14 @@ function gettransbest(turns)
 
       candidates = _.sortBy(candidates, function(num){ return num[0] })
       candidates = candidates.slice(0,9)
-
-      console.vlog("gettransbest: "+ console.log(JSON.stringify(_.countBy(candidates, function(num) { return num[1] }))))
+ 
+      console.vlog("gettransbest:" + JSON.stringify(_.map(candidates, function(num){ return [num[0], num[1], num[2]["input"]["text"]] }), null, 4))
+      console.vlog("gettransbest: "+ JSON.stringify(_.countBy(candidates, function(num) { return num[1] }), null, 4))
 
       output = output.concat(_.map(candidates, function(num){ return num[2] }))
     }
   else
-    console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"].length+" sentences: "+roots)
+    console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"]+" sentences: "+roots)
     
   }, this)
 
