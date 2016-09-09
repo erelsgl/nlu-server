@@ -1,4 +1,4 @@
-size	dial	Natural_Neg	NLU_Tran_All	French+Potuguese	Finish+Hungarian	Arabic+Hebrew	Hungarian	Finish	Portuguese	Arabic	Russian
+size	dial	Natural_Neg	NLU_Tran_All	Hungarian	Finish	Portuguese	Arabic	Russian	Chinese	French	Hebrew
 25	25	null	null	null	null	null	null	null	null	null	null
 30	30	null	null	null	null	null	null	null	null	null	null
 35	35	null	null	null	null	null	null	null	null	null	null
