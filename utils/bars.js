@@ -4539,6 +4539,63 @@ function gettrans(turns, pat)
   return output
 }
 
+function gettransbest(turns)
+{
+  var output = []
+  var regex =  new RegExp(pat)
+  var omitlang = []
+
+  console.vlog("gettransbest: input.length: " + turns.length)
+
+  _.each(turns, function(turn, key, list){
+
+    var candidates = []
+    var temp_copy = copyobj(turn)
+    delete temp_copy["input"]["trans"]
+    output.push(temp_copy)
+
+    var roots = _.filter(turn["input"]["sentences"]["basic-dependencies"], function(num){ return num["dep"] == "ROOT" }).length
+ 
+    if ((turn["output"].length == 1) && (roots == 1))
+    {
+       console.vlog("gettransbest: turn " + key + " is applied")
+    
+      _.each(turn["input"]["trans"], function(tran, key, list){
+        
+        var proc = regex.test(key)
+        var engine1 = key.substr(0,1)
+        var engine2 = key.substr(-1,1)
+        var pivotlang = key.substr(2,2)
+  
+        console.vlog("gettransbest: add: "+key + " text: "+tran)
+  
+        var record= copyobj(turn)
+        record["input"]["text"] = tran
+        delete record["input"]["sentences"]
+        delete record["input"]["trans"]
+        _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json")));
+        record["input"]["source"] = turn.translation_id
+               
+        candidates.push([distances(tran, turn["input"]["text"]), pivotlang, record])
+      }, this)
+
+      candidates = _.sortBy(candidates, function(num){ return num[0] })
+      candidates = candidates.slice(0,9)
+
+      console.vlog("gettransbest: "+ console.log(JSON.stringify(_.countBy(candidates, function(num) { return num[1] }))))
+
+      output = output.concat(_.map(candidates, function(num){ return num[2] }))
+    }
+  else
+    console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"].length+" sentences: "+roots)
+    
+  }, this)
+
+  console.vlog("gettrans: output.length: " + output.length)  
+  return output
+}
+
+
 function distances(str1, str2)
 {
   str1 = regexpNormalizer(str1.toLowerCase())
@@ -5930,5 +5987,6 @@ vecsumaverage:vecsumaverage,
 vectorextremum:vectorextremum,
 vecextremum:vecextremum,
 cleanRecord:cleanRecord,
-write_wilcoxon:write_wilcoxon
+write_wilcoxon:write_wilcoxon,
+gettransbest:gettransbest
 }
