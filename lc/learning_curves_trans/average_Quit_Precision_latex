@@ -21,40 +21,15 @@
 \addplot[color=green,mark=*] coordinates {
 (30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)
 };
-\addlegendentry{Finish}
+\addlegendentry{Hungarian\_Google}
 
 \addplot[color=green,mark=*] coordinates {
 (30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)
 };
-\addlegendentry{Portuguese}
+\addlegendentry{Hungarian\_Yandex}
 
 \addplot[color=green,mark=*] coordinates {
 (30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)
 };
-\addlegendentry{Arabic}
-
-\addplot[color=green,mark=*] coordinates {
-(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)
-};
-\addlegendentry{Russian}
-
-\addplot[color=green,mark=*] coordinates {
-(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)
-};
-\addlegendentry{Chinese}
-
-\addplot[color=green,mark=*] coordinates {
-(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)
-};
-\addlegendentry{French}
-
-\addplot[color=green,mark=*] coordinates {
-(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)
-};
-\addlegendentry{Hebrew}
-
-\addplot[color=green,mark=*] coordinates {
-(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)
-};
-\addlegendentry{Finish+Hungarian+Chinese}
+\addlegendentry{Hungarian\_Microsoft}
 
