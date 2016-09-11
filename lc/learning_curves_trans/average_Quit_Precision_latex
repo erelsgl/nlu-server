@@ -11,7 +11,7 @@
 \addplot[color=green,mark=*] coordinates {
 (30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)
 };
-\addlegendentry{NLU\_Tran\_All}
+\addlegendentry{All\_together}
 
 \addplot[color=green,mark=*] coordinates {
 (30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)
@@ -21,15 +21,10 @@
 \addplot[color=green,mark=*] coordinates {
 (30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)
 };
-\addlegendentry{Hungarian\_Google}
+\addlegendentry{Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
 (30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)
 };
-\addlegendentry{Hungarian\_Yandex}
-
-\addplot[color=green,mark=*] coordinates {
-(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)
-};
-\addlegendentry{Hungarian\_Microsoft}
+\addlegendentry{Russian}
 
