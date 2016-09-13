@@ -1,0 +1,7217 @@
+[
+    {
+        "act": "sv",
+        "utt": "let's mess with the neutral countries.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "Wow.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "he had to stay home.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "h",
+        "utt": "I don't know",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "sd",
+        "utt": "I didn't like it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "Yeah,",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sv",
+        "utt": "I don't really think anyone was being, cruel or,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Colorado, you know they have the state income tax,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ad",
+        "utt": "you let it come to a boil again",
+        "dsc": "Action-directive"
+    },
+    {
+        "act": "sd",
+        "utt": "she doesn't believe in,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Let's face it,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "he could have gotten away at lunch time",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm trying to think exactly what is imposed if they would become a state versus a territory.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "know what you don't see,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "I said you probably have some friends that have television .",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "If we're doing good, we catch a catfish or two once in a while.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "breed one of the litter, then next year?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "It was just a,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "both.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "that I wasn't sure on either, whether it should be unanimous or not.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "However, in that case, I guess I would favor status quo.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I always assumed that that was why I was never called.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "ours are all out of the nest .",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Again, knock wood that, I haven't used it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "draw the line there with just the premeditated murder?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "I really do.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "We didn't seem to be going in and taking anything out of the country other than just labor,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "that does make a big difference.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "high school juniors.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "the way to spend a nice Sunday morning.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "great,",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sv",
+        "utt": "inside the jail no real rehabilitation.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Their employees earn almost nothing.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "they had,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "he did miss it",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "seems like",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qw",
+        "utt": "where do you live in Pennsylvania?",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "it kind of cut my transportation costs a lot.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "my husband had been on this project,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "That's right .",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "seven courses isn't what I usually look for .",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "you wouldn't have to have a keyboard,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Been on a real barbecue kick lately.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "yes.",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sd",
+        "utt": "walk up to them they're covered with thorns.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "end up keeping one out of each litter and then breeding those.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "of course, it's going to keep going up.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I didn't know if that was just something for drama or that's truly the way it is.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "like I say, I'm in New York",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qw",
+        "utt": "big then?",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "it was just a complete culture shock,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Uhhuh.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "we just went shopping",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "A lot of times when we do stir fry we just put in tofu,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "essentially",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "think that girls today, have children,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "bf",
+        "utt": "Presentation",
+        "dsc": "Summarize/reformulate"
+    },
+    {
+        "act": "sd",
+        "utt": "One.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I, heck,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "of course,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "You can't just tell them that anyway,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it's a rather touchy topic at that,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "if you leave something anywhere you might as well forget it.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "aa",
+        "utt": "I am too a little bit,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I really think,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "teaching is third down on the list of importance things",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "some other type of oil than just regular",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I use H O M A.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think there are certain things that, guilty or not guilty,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "retirement.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "maybe division one right now.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Right,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I was working on a masters degree",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I would love to help somebody,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Course, I broke mine,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "the people that I've known like from Germany and Finland that have done that",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "especially, young kids getting out of high school.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "have you ever seen any of the (( )) movies?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "protest",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we visit Mexico occasionally,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "Legally?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "qy",
+        "utt": "Do you know had a I'm saying?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "qy",
+        "utt": "you like Fords, apparently, huh?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "in fact, I drove a cab when I was a graduate student",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "a matter of tearing all the dash out and all that kind of stuff,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I know mine",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "that's interesting.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sv",
+        "utt": "I'm saying that pensions, say in the year two thousand or more when social security goes away, which it probably will,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Exactly,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "a tree (( )) is always something very nice to have.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "the one soap opera, ALL MY CHILDREN.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm here,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they would read and play,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "the (( Himie )) is probably the sweetest one.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Exactly.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "qy",
+        "utt": "Are you ready?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "it varies what it is, of course,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "sort of accepts that,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it must be a beautiful country.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it was a small restaurant, just kind of out of the way,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "I guess I better go.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sd",
+        "utt": "worked most of my life.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "It was real aggravating,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "if I want to grow a tomato or something",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "That's something, ,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "think, voluntary,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I know group I was in at the time this all came up they, were quite vocal about it, through electronic mail,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "new experience for her.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I have a total of five children.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "Uhhuh,",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sd",
+        "utt": "had known a lot of undergraduates who pick schools because they want the best reputation for a school.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you just run,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "am particularly fond of a number of ethnic cuisines,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I remember getting out of doing things like that when I was younger,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Industrial Marketing.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "so against it that you couldn't persuade them in any instance.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I think it was probably one of my largest eyeopening experiences because I come from nice middle class white suburban home",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "that's what they're for,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "is it,",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "she acts like she wants to chew their leg off.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you turn them over.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "You're absolutely right.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sv",
+        "utt": "Another thing I have that, is weird is locus tree in the back yard.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "when I need something, I tell my boss",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "you get a good broad education out of it.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "gee.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sv",
+        "utt": "it would almost have to be, I suppose.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "h",
+        "utt": "I don't know,",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "sd",
+        "utt": "the dental is right away,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they called in",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they had to do some adjustments on that and of course it had never been adjusted so they had to pull it off and pull all the plugs out, to get to it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it goes along lines of industrial arts,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "better to be employed.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qw",
+        "utt": "skits,",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "they never present that,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't know if they suffer in a sense of income loss as being, since they aren't a state, whether there are monies that escape them so to speak because they aren't able to tax like a typical state would be.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I've heard from many people that we could not even to understand how they feel about things because their values and their perceptions are so much different than ours",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I know,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we still find it fun.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm trying to think what else is on television,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "sort of semifortunate right now,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "a lot of times, whenever we head out of town on a trip or something,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "think of what happens is who made that supposed mistake turns around",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "they just don't think the same way we do.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I live in Butler,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I would love to live up there.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "That's, kind of a minimum there that you're getting.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "is sad.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think contraceptives are going to be more popular.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I don't think the parole system is really helping that much .",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I can't complain about it because I haven't used it",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I can't even hear what you're ,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "she'd have squash and corn bread .",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I just couldn't ima,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "after that we,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Just, small things that make it seem a lot more homey.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "they don't like it.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "Is really kind of bad .",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "they understand the plight of people.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "There's always a few of those people that lost their head or whatever.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I cook a little bit now.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "remains a tough question",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "You have to,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "health, inoculation things.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "the guy might get off.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I guess they've been using them for six months now.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "eightythree T Bird",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Right.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "West Texan.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it gets foamy almost.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "They don't even try to keep up with it.",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "Jenny is a sweet kid.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "That's interesting. Uhhuh.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "light weight lifting.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "It sounds like just neglect all over.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "have died at the end",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "that just rancles me",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "Byebye.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sv",
+        "utt": "I think pretty much knows that that was kind of a smoke screen to implement it throughout the whole company.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "here lately it seems,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm glad that you're in the business.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "It takes time.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "Okay,",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sd",
+        "utt": "I mean something real life, I just,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "there's got to be trade.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'll tell you the people I feel the sorriest for,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "that they wanted something",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "The, U S Army is doing it all.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "actually working at night",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "then they also have property taxes,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "than I was, property tax down there.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they just couldn't believe this",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Do you know that I've never, I think other then accept on a commercial or on news coverage or something,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "Do they?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "T I s gotten with their Speak and Spell and everything,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "that's",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "you can see her smiling from ear to ear, she's so happy to see me.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "in an attempt to get some kind of a model of what speech is like.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I think now, that I recall, reading about it in the paper.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "That's what I heard.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "we're North Americans",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "she weighs in at about fifty pounds,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Take a picnic lunch.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "everything's free except for the food.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we were just a very small specialized group, too, to get that going and spread",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "how nice,",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sv",
+        "utt": "it really is,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I really don't.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "do I,",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "aa",
+        "utt": "It very definitely is.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "ny",
+        "utt": "Yeah,",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sd",
+        "utt": "I was reading a Spanish book,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you can invest your own money.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "That's why I lucked out,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "a lot of, inhabitants of Russia would love to stay in their country just as long as they were able to express what they wanted to.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "French I guess are into the slapsti,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "somebody takes it home and eats it then when there's just a couple people instead of a whole crowd.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "cooking, that's not really a hobby,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Right.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "you like to have it there.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "Hey,",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sd",
+        "utt": "I have high blood pressure problems myself.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm from Midland.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "No fresh, or almost no fresh seafood",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "outdoor pets",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "that sounds interesting.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "ny",
+        "utt": "Yeah,",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sd",
+        "utt": "We'd just go out,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you have a pension",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "Yes.",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't have any, I guess, definite views about elderly care.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I heard it's twenty bucks a whack.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "Yes,",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "qy",
+        "utt": "do you think that's good",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "one thing I think that's no good for anyone is these monster institutions.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't mind doing it so much anymore.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "h",
+        "utt": "I don't know,",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "sd",
+        "utt": "I guess we were selling parts to the automotive industry, or whatever.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "their culture is so much different than ours,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "whole attitude,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "It's not,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "very possibly.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "It was like I didn't belong anymore.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "like you say, we're out in the labor force, but I think we've lost something too.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it made school fun for them again because prior to that school was just a big pain, a drain.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it is,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we try to ride during the week to try and stay in shape for that.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "most of the politicians understand this.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qw",
+        "utt": "How long has it been since you've had one?",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "then, a career is a smart choice.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "activities affect your work",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "yard work and little repairs, and painting and stuff like that.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "They fight hard.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "Wow.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "have a set of twins that are fourteen",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "because I can just see brushing up against it, that it would",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "three calls and my daughter had one, too, from different students out of North Carolina.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I kind of like it down there,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "whether United Nations,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "of course, we kind of concentrate on (( )) ,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "Yes.",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sd",
+        "utt": "I had three children,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "That's like automobile insurance.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I always thought it had to be unanimous.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "I think that helps, when you certainly can speak their language,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm Catholic",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it's more money that I make in a year,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I spent a year teaching there",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qw",
+        "utt": "What are you interested in in restaurants?",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "cut money on your taxes, and on your insurance,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "No.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "thousands of people come with their bikes and ride over hilly terrain for thirty or forty miles, which that's a lot of fun.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "Then would you condone the burning of the capitol building?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "It's pretty bad.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I started about a month ago",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "peas,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it's a classic slapstick situation with these bungling burglars trying to get in",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "very somewhat to New England",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "such a pleasure to come home at night",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "I agree with you.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I like the N B A playoffs,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "yes.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "obviously if it's almost impossible to track that down any more",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "the dog being fed, and everything else from all directions.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "That's right,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "we each have a third of an acre we do.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qw",
+        "utt": "what kind of neat hobbies do you have?",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "Some people, would really like to have them,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I know how it made me feel.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I never did.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "ba",
+        "utt": "Ugh.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "Mexican restaurants where it's not owned by an Anglo or a corporation.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "my encyclopedias and tried to read about the history.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "although I was living in the slums, I was really working with the middle class.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "It's just the stud fees are so much, though.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "People would kill to have a lilac bush",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "do you keep trying anyway?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm not really that big on watching what I eat,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "Is that on tape?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't know,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qw",
+        "utt": "What division are you all in?",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "get specialized education now, for instance, take computer science.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "taxed on taxes",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "A fuzzy little dog.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "yet I'm proud to be an American",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I did teach economics at the university one night a week,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "h",
+        "utt": "I guess.",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "sv",
+        "utt": "before the father would work",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I saw reruns of it,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I can't say that,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "a lot of times you might just need to go now and file for it just like a business.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you whip the line.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "my goal is to try to retire by the time I'm fiftyfive.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'll get another week when I hit fifteen.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it's better than nothing.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "think about things is probably",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "It might have a new name.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think you're righ,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "really the Iraqi beliefs, if you will, are more similar to our own.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Right.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "Especially these days where there is not a job right around the corner.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "that's what he's worried about. The trees, or a bush, because lilac bushes, grow fast.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "right in the sense of freedom of speech",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "that's great.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "automobile insurance,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "There you go .",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't know what your talking about when you say health insurance,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "of movies I have less fun during",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "My husband would like to live there,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't like that part,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "his buddies ended up going to Saudi.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "even diets that quadrupled the amount of cholesterol that we're ingesting now,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "h",
+        "utt": "Something,",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "sv",
+        "utt": "You need to really,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "there, they came from poverty,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "that's very true",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "the job benefits",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they went by each one, saying guilty or innocent, guilty or innocent.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "that could become a hobby.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I take two.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "they",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "as it turns out, we don't really have a tremendous education system because they don't have the money they need to run it.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ad",
+        "utt": "Stir it real, real well.",
+        "dsc": "Action-directive"
+    },
+    {
+        "act": "sv",
+        "utt": "nonconventional warheads the chemical weapons and things",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "I agree,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "actually I'm selling computer software.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "Mostly trout in the mountains.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "seems perfectly logical that if somebody's going to take public money, then they should return something to the public.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "like round big huge round cucumbers.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we both enjoy that.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "or twentyone.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ad",
+        "utt": "Reduce the violence in the prisons.",
+        "dsc": "Action-directive"
+    },
+    {
+        "act": "sv",
+        "utt": "I sure like that one.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it really was.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "don't think it's right",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "very good at doing what they're supposed to be doing.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "in fact I'm just also,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "the textbook was in English,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "supervised play, can teach without,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we didn't really start it for the money,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "can do without one",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "my youngest is twelve.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "That's right.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "now the bank's not available.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "those activities helped a lot in,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "feel that way when movies are",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "qy",
+        "utt": "Are they good to eat?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "more an impact, I think, on the oldest two.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "of course, nothing ever goes down,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "then you'd have to try to get a pension in another one.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "sat and (( )) it all in for a little while",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "he went down and bought some at a",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "by third or fourth generation Americans",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "some of them were quite big in the sense they were community development,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "pretty much the innovator of the whole exercise thing.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "byebye.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "the freedom of choice.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ad",
+        "utt": "Somebody take care of me.",
+        "dsc": "Action-directive"
+    },
+    {
+        "act": "sd",
+        "utt": "It's not a discretionary thing.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "Gee.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "I paid my entire way,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it's gone up quite a bit",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I agree with that,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "read well at five years old,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I was appalled at they were paying them.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they go fishing, up there.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm in Computer Science",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "that's something Puerto Rico as a tropical island and consequently large numbers of barefoot natives or something not in a (( perjuritive )) sense but in a, in a carefree sense, I guess.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "Do you think the verdict should be completely unanimous by the jury?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "ad",
+        "utt": "let the chicken you fried kind of drain, so that a lot of the oil comes out of it .",
+        "dsc": "Action-directive"
+    },
+    {
+        "act": "sv",
+        "utt": "you see it when it first comes out if you really want to see it",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "maybe you would,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "that symbol means a lot to me.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "you were in Peru?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "In fact, I think they end up worse, because the conditions are so bad.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "as being slow.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "he's blind",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think that there's too much way of selfgratification today,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "college.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "have to be touching or anything,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ad",
+        "utt": "comment on it,",
+        "dsc": "Action-directive"
+    },
+    {
+        "act": "sd",
+        "utt": "There's a lot of things that they don't do in school anymore.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I do.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "Did you see when he was doing the coverage of the Gulf?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "when he goes to Maine, he eats lobster, I guess, at least twice a day, all the time he's up there .",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "My husband will say that he'd like to have a little boy to take hunting and fishing",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "when",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "that would be quite a shock.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I remember them,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "by definition all lawyers and politicians are liars.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "the got cross pollinated by the bees",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "other then that I'm sure they watched,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "wow.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sv",
+        "utt": "I guess with that money who cares .",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "as you said for someone needs to learn selfdiscipline and so forth would be appropriate for them.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "everything was sort of hot.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "uhhuh.",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "qw",
+        "utt": "would you spend time with kids?",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "I forget what it was called,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "then you get to remote control the stereo phonic,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "to some extent, utilities, I imagine.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "You ever seen anybody kill a chicken?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "I've heard stories.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it seems like a of people live there,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'll tell you what we could do.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "when I was a kid growing up and going to high school if I wanted to take a little electronics course, I had a electronics course I could take,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "in a world of his own,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it changed my understanding of the world around me",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ad",
+        "utt": "Take, for instance, a large construction company I used to work for. Ed Swampers.",
+        "dsc": "Action-directive"
+    },
+    {
+        "act": "sd",
+        "utt": "bounced around.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "in the county of Devon.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you can possess 'em here too",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "he talks about that.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they gave some figures out",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Because, life, and the reality of working for a living, and trying to make ends meet, is just so overwhelming to someone,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "the gardens are kind of old,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "in Texas we got it from the Gulf.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I know your voice in your own head resonates a different way.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "exactly,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I think we're,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "They say Peru can't be traveled to",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "gags and stuff like that",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "then that was it,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "You fish upstream.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think so,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I have a repairman just came,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I never had either,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I make more than my boss. Because he's salary and I'm not.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "beforehand.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I don't know about the judge making the decision, if that's,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I enjoy it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "feeling of second class citizenry, to be in a territory that large and not being able to vote.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "h",
+        "utt": "I don't know",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "fc",
+        "utt": "thanks so much for the conversation.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "ba",
+        "utt": "That's great.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "aa",
+        "utt": "Yes,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "There's something really be skeptical of,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "yeah.",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sv",
+        "utt": "I don't think you should just not listen to advice, even if you don't take it, just listen.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "Yes,",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sd",
+        "utt": "they give you an opportunity to either transfer into an project.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "if nothing else, go out along an interstate and pick up garbage.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I just thought,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "all doing pretty good.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "how it'll sway from to another.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "people that I have known that have done that, like from other countries, especially,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I must say it was interesting.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "We think of ourselves as the only Americans, when they're Americans, too.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "then again each state sets its own",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "she likes to do that?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "stage in their life.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "stud.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "that's interesting.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sv",
+        "utt": "Sometimes if you're a tinkerer, you luck out.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "they're too easily swayed by their emotion.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "although I guess it's, want them to rehabilitate and become better rather than sitting in there and being a drain all the time.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I do go to church and things.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "there's big differences, of course,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "what they would be making at minimum wage.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "she was home with two kids.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "We have gone more into the business aspect I don't know, working more,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "With a teaching background I've, had a little bit of experience with the child day care type situations",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "he ended up going to Korea",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I really do.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I just love the way it looks.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "any wrath",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "I know .",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sv",
+        "utt": "We really have,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "because like to get in and fertilize things too.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "Nice talking to you.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sd",
+        "utt": "she can cover quite an area.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "You work for five, six, seven,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "that was what I was going to say.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "a girl from Puerto Rico",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "if I am it's always fun to talk.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "a year ago I bought my own house,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "There is no need to have children if you don't want them.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "it's been nice talking to you, Jack,",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sd",
+        "utt": "I like COSBY,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Not necessarily in that order,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "one's a seventyseven",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "no,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "aa",
+        "utt": "Yes",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "she's never really been around children",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I have six weeks left",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Sure,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "aa",
+        "utt": "No,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "Americans (( have )) a lot of influence",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "don't see it going to any place where it belongs.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't either.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "called in",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I was ready,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "h",
+        "utt": "I'm not too sure,",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "sv",
+        "utt": "that's certainly true.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you work for a company seven years,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "miniature.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we got half our yield.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "ny",
+        "utt": "Yes.",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sv",
+        "utt": "maybe you had to put some money in it, too,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "have any real affect on,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "do.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "This is bad.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "It seemed like not a good,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you live on the other side of town in the high price apartments.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I see some freshmen wandering around in there",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "h",
+        "utt": "It's hard to say though.",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "ba",
+        "utt": "That's right.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "we like seafood, too.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "people need to take groups of children,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "have a lot of sympathy in that we're here in Texas,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they have stair masters and all kinds of new machine, that are fun to ride and workout on.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "It's",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I really believe that this Charismatic care, or the Charismatic belief when emphasized on care, or semi Charismatic I might say",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "my parents were in the military at the time",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "you referring to yourself",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "at this point in time we're just sort of going to have to live with it, .",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "everybody does.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "that's the way it is here in Colorado, also.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it's just bees and insects will do it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I know.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "This whole thing about,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "From the dock, from shore.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you're an instructor,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "a majority.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "things for the old folks around the neighborhood,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm a half hour,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "We don't have any kids yet",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I just think they were not doing anymore, than they had to do.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "once you get that job with the university, you've got ten years of probation.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "they don't have a goal,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "she ends up with so many plants that she can't fit them all in her garden.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "bf",
+        "utt": "they have n,",
+        "dsc": "Summarize/reformulate"
+    },
+    {
+        "act": "h",
+        "utt": "I'm not sure,",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "sv",
+        "utt": "start stiffening the penalties.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I understand about bass.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "insurance dropped about sixty dollars a year.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "They loved it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it's, agricultural.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "the U S has.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't even have cable",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Every time somebody wants something they always turn to the government.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "having listened to you relative to the economy thing, I think if I were being forced to make a decision I would plead ignorance and wait to do more research before picking one of these.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "one engineer said it was really an education.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I know a lot of kids that don't even know,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Once you get into the border, then there's a threat.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "ba",
+        "utt": "That's good.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "I never have either.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we've got a little bit of it, but not much.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "for the daughter.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "That's something, that, if I had to work in an elderly home, I don't think I could do it.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Right,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "qy",
+        "utt": "your from Indiana, yeah. *",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "four, five, six little rolls, coils, of line into your hand.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "tell you sometimes I worry about things over seas because we have such problems right here in our own country.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "my parents, there is no way they could afford to send twelve kids to college.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "They would like to say that we're North Americans because they're Americans too,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I (( )) think there was only six or eight countries in the world, that have capital punishment still.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it out on a (( cart )) .",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I forget.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "That's difficult.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sv",
+        "utt": "the other one just seems so terrible.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "the guy that comes back is not her original husband,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "where she lost all of that fat?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "we probably have some of the strictest gun control laws in the nation",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "number one, you've got to have the tools around.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "quite pass.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "then ,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "You can usually find it in a health food store.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I think it's probably due to pricing, often.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "it is.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "ba",
+        "utt": "yeah .",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm trying to figure out how I can retire without having to work until I'm ninetyfive.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "especially up in Vermont there, you should have, some really nice soil.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "sir.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Two point two million dollar kind of settlement versus a judge knowing, this may be sad and all that thing,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "sometimes we've said we're not interested in what other countries do.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "something that nationalized very quickly.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "mutant.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I thought it was a very good idea at the time.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "if that's not the problem ...",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we had a case like that here",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I do make her come in.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "really shocked at the amount of taxes I ended up paying.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "he was the pioneer of aerobics and all of health",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm doing my best",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "A lot of the restaurants you can get two one pound lobsters for like ten ninetynine.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Vietnam we never did get out, never did get the job done because they were too (( ham strung )) .",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm trying to stay in shape on a regular basis.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Hate to come away feeling uncomfortable .",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "she want be an only child for long,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "bf",
+        "utt": "Nod your head and smile at them.",
+        "dsc": "Summarize/reformulate"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "ba",
+        "utt": "that sounds great.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sv",
+        "utt": "they get a car.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they recommended,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Last year, we had",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it worked out wonderfully.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Right.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "My husband works as a police man,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "is interesting to watch that water rise all of a sudden.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "yeah,",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sv",
+        "utt": "It's really a shame.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "seems so awful.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "I enjoyed it.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "ba",
+        "utt": "no.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "registered",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you go to their office anytime.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "Yes,",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sd",
+        "utt": "we in the United States have more ties to Europe and everything",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "in the rivers and stuff?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "it is,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I've helped out ,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yes.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "unhappy with it",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think that's where a lot of people think, boy they're getting put away for a long time,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they're encouraged to do that, missionary work,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "it's for them to believe that somebody else could do the things that have been done?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "none of us are.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "A man can afford the necessities, a woman affords the luxuries.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qw",
+        "utt": "what did you do when you did exercise regularly?",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "I used to, get into it and get out of it based on my schedule,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "Yeah,",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "ad",
+        "utt": "go ahead.",
+        "dsc": "Action-directive"
+    },
+    {
+        "act": "sd",
+        "utt": "our baby lives just a mile over the hill ,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "there's no way fix every car in the world,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think that's true",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it's a good place to go.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "ninety percent of all politicians,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it was on the news last night.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "though Pennsylvania and New York, aren't actually as liberal,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qw",
+        "utt": "are you taking in school,",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "That's fine,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't think they do anymore,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "suppose go to war",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "No,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I would feel so guilty.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "They made a little patio area where they can go outside.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "obesity.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you're at work.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "he always refers to it as shortterm pleasure oriented.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Right.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I found that probably one of the worst things that anybody can ingest is chlorinated water.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "he's funny.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I like that whenever I watch it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I wish I had the answer for that,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "that's right,",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sv",
+        "utt": "that's,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm from Indiana.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they had a gun control law which went a little bit too far.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it's been raining a lot this spring,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "my problem is I want to use those rail ties to build up a planter",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "It's only because they make a big stink over it.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "your conscience is clear",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "everybody else would donate time,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it's partially because I can work on them.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't think I really know that.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I remember,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "constitutionally I don't think there are any prescriptions against that decision even if Louisiana chose to go with Creole or something.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "Yeah,",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sd",
+        "utt": "I like to think that I'm a very good cook.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "jeez.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "fuzzy little thing.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "there ought to be someone there that inspects it before it's turned.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "usually two colored.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "For nothing.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "It's just going to take, of the majority of the American people to come to a decisive answer,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "often times that will happen.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Their culture is completely different and almost opposite.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": ", no.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "parents are in their late sixties now,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "on one of verdict by the jury",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "you just kind of all of sudden",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "bf",
+        "utt": "they weren't.",
+        "dsc": "Summarize/reformulate"
+    },
+    {
+        "act": "bf",
+        "utt": "just something you do everyday.",
+        "dsc": "Summarize/reformulate"
+    },
+    {
+        "act": "sd",
+        "utt": "they couldn't tell me what went on at school because they would be coming in the door,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it is sad.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "that anyone's doing.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "decided to,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "I understand that.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "than I did growing up.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think it ought to be mandatory. for kids to do military service, or public service, one of the two.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "public",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think it was Campinas,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I'm sure singers and professional people know that,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "been difficult to try to find the time,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "They've got great big ears,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "Do you have,",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "I needed to make friends.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "in other words, they came up with this federalized system where everyone in the third grade would be taught basically the same thing.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I was just astounded.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "a lot better than AETNA",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "recently was over a friends house that's Indian",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it's working out pretty well.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "bf",
+        "utt": "All done in advance,",
+        "dsc": "Summarize/reformulate"
+    },
+    {
+        "act": "sd",
+        "utt": "That our high school graduates can't even match the national average.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "hundred dollars to me,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "just purchased a gun that day,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Very few I would imagine.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "very.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't like fast food hamburgers and all of that.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they're looking for twentytwo thousand dollars for tuition and room and board now.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we do have our fun",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Sure.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "You have no control over your social security.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "before that I was in college for four years",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm trying to think about the only other show I watch.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "h",
+        "utt": "I don't really know.",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "bf",
+        "utt": "lure.",
+        "dsc": "Summarize/reformulate"
+    },
+    {
+        "act": "sd",
+        "utt": "that's a of it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they record these",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "It doesn't matter where you go or anything.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I heard of it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "the good guys can get hit all day long",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "h",
+        "utt": "I don't know,",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "sd",
+        "utt": "Putting any of my family in an elderly home, to me would be the very last resort.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "to accept the fact that Mom and Dad were his company from then on,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "you really do use it throughout the year, because you get your teeth fixed and all that,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they fought individually,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "That really is.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm single,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Sunday brunch, you can eat brunches.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "to keep me occupied,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "SATURDAY NIGHT LIVE has changed a lot if you haven't seen it in about a year.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "though I've never done that myself, I, was a basically an education major when I graduated from college",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "she was an only child,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I had never heard of such thing,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm from the (( )) .",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "if you like it really hot, you can add some hot, hot peppers and hot sauce and all that kind of stuff.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't know how people can afford kids.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "her biggest concern in life was that she couldn't get a housekeeper.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "a prude or old fashioned or anything, but unless you earn something and you've worked for it, and you have a sense of pride about it,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "It's pretty cool,",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "ny",
+        "utt": "yeah.",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sd",
+        "utt": "look at her paycheck, I'm just floored when I see how little of it we're actually allowed to keep.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "Did you go with kids though?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "ny",
+        "utt": "Yeah,",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sd",
+        "utt": "I didn't care for it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "in the northern part of the county.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Just so that my kids would have me at home.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "No,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "was it six weeks old.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Sometimes it seems like during the trial part, the jury's misses some of the best evidence because they make them leave,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qw",
+        "utt": "where are you calling from?",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "my Grandmother must have put that on my Dad because he got my sister,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I can recommend it for people to take their cars.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "then again, so many times you get one or two holdouts,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qw",
+        "utt": "how do you feel that is for someone that phase in their life?",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "I just don't like that.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you let it carry it downstream.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "kind of the way they are there.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I got caught up in the oil layoff ,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "was becoming an adult.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you're encouraged to do it because, helps you,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I spent, couple of years down there.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "these are going to croak too.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you're asking to be lynched.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "That's true, too.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "T I had a place,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I thought if I do that, I might not have a job",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "we have a lot of people, especially in major corporations, who aren't doing a damn thing.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "always thought that any, be paid",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "in so far that the melting pot aspect.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't know with a true perfect system, if one exists.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "worked since I was,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think our justice system needs a major overhaul,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I think most states do have capital punishment.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they have to shake it off",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "Yeah.",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sv",
+        "utt": "they're preoccupied with,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I would think that for, like people that are just filthy, filthy rich,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "you're at school.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "some people say go to New York,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you get just a little patter",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "sometimes those people young enough, they can still get out and cause a lot of trouble.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they're not show cats.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "movies.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "in the sense that we've come a long way,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "other than gardening which I fiddle at,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm fiftythree years old,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm not highly proficient,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Probably doing outdoorsie stuff, and them away from the T V, I guess .",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "status quo.",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "it may be good for someone who already has self discipline, who has a certain amount of leadership quality in their own,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "We're supposed to be discussing the subject.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I know it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "Do they?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "cheaper,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "here if you have an accident and no one's injured, the police won't even show up.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "a person personally.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I noticed that.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "come around and realize",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I always remembered it was my own fault,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "on a leash,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "one friend of ours got rid of his were getting along out ours",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Right,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "the guys very opinionated,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Right.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "qy",
+        "utt": "Do you have to,",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "fc",
+        "utt": "thank you very much.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sd",
+        "utt": "I, thought I was smart, ran away and got married,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "You know what I'm saying?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "right now I see a lot of kids who get out of school, have no idea what they want to do.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I guess it'd go with my flowers.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I've only been up there once.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I wanted to see it, much recommended,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "Jean, it's been awful nice talking to you.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sv",
+        "utt": "they won't have that,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "the Kuwaitis aren't even helping rebuild their own country.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "seafood shacks, we've called them.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I've put my cucumbers down at one end of the garden",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "there you fish mornings and evenings.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I suppose would require such aid.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Norman Gear.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I know what you mean.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "talking to you about this. Although it has been difficult",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "really, I'm kind of open on food.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "funny,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "wife does.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "there are.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we have one.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "Ugh.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sv",
+        "utt": "be tested for wouldn't be on those lists,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ad",
+        "utt": "pour oil out of the pan",
+        "dsc": "Action-directive"
+    },
+    {
+        "act": "sd",
+        "utt": "we do most of our fishing at night.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "That's mine.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "Yeah.",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sd",
+        "utt": "It seems like here is not as good as on some of the better lakes there.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they were set up with two buffets, one for their regular Sunday chicken and roast beef and vegetables and everything.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we got her",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "do you consider yourself a liberal?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "most people doing, child care earn almost no money.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I don't believe that anybody should die",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I suspect I would be, brutally killed, or something like that.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Exactly.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "sometimes chicken broth,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Uhhuh,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "(( )) I watch pro football",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "how they would expect,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "At just a small,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "right.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "smart move to make.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Uhhuh,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I read an article one time talking about even the quote unquote realistic movies, don't have very realistic upsets of the violence.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "It's a top rated institution",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "letters,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "when they were coming home I was going to work.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "wow.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "I had a real job when I was thirteen,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "don't you miss that with not having a television so far?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "Something besides license plates and tiddlywinks.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we won.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they're very thin,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "like Collin County, would only equal about maybe an eighth the size of Baltimore County, here in Maryland.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "he had a Ph D in how to get a job after he was,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "my wife and I were wondering what if,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you splash in",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I do, essentially do it all.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "yeah.",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "bf",
+        "utt": "it's just, that, that just happens to be what the fish like this year,",
+        "dsc": "Summarize/reformulate"
+    },
+    {
+        "act": "sd",
+        "utt": "She doesn't believe in the woman working unless she has to.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it was very different",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qw",
+        "utt": "what's the name of this book again?",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "we see it, once a month. I'm sure in San Antonio they see it more often than that.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "exactly.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "ways of life than they would",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Only going to breed them once.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Right,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "ny",
+        "utt": "yeah.",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sv",
+        "utt": "it's the best one in the world.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Exactly.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "he's assigned to,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "he said that people in the west,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "My soninlaw is a Texan,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "Do they sometimes make a recommendation?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "aa",
+        "utt": "It's fun,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "heard a very interesting,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "my mom, she's a housewife,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "that just really rubbed me the wrong way.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "No.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm going to wait on those.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it's tough,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "have we done our ten minutes.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "He can just kind of make noises.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Right,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "a fulltime job that,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "they have their own quirks and tolerances and,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "if, they could stay at home,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "Thanks.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sd",
+        "utt": "tear apart a automatic transmission",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I just pushed on the wires.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "do you and your husband both work.",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "they're going to graduate early,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "a business more than a hobby.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "They won't be a caring parent.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I got my degree and got the better paying job,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Somebody told me the other day that there is, (( )) what they call a six man jury,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "a lot of changes.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "everybody in the fourth grade's basically taught the same thing.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I have a son that's a little bit overweight",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "yet it didn't happen.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "No,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "he could have gone home.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they do walking tours too,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Just",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm quite pleased with it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "that's nice.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "h",
+        "utt": "I don't know,",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "sd",
+        "utt": "I'd love to have one",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "is it they say we have so many lawyers in this country,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "that just was not fair.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it works out real nice.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "In the summer.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we don't put in meat,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "(( T )) lives in Pittsburgh, you probably don't know where that is.",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "I will use oil, or things.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "try to do as much as I can.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "she's very old fashioned.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I said good luck on that one, then.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "they are controlled, or pretty much do what they want to do.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "the regular schedule stuff, that when you say everybody get out of it, that's a good point,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm an education reporter,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "The water's kind of,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think the jury should be able to recommend,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "That's great.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "it certainly does.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't think so.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "long as you have a good time, that's the main point",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "what the stands for I guess to me is",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I guess just what scents it gives off,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think they're tough",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "I know",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm trying to stay in shape on a regular basis now,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think, it's justified.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "It's really,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I thought it had a weight.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you happen to take an extra penicillin,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "It's thirty miles.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "still rancled about their decision to permit burning of the flag.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "that really,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "that she has a whole bunch of kittens.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "aa",
+        "utt": "That's right.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I know, I feel bad for people who just, when anything goes wrong, a fuse, they just have to take it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "if he's going to do it, you've got to twist his arm to get him to go do it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "you would be.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "saying that that wouldn't have happened anyway,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I have, I can think of to say.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it really helps those people, I think.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "two older cars.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "right now all with her during the day.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "about apartment houses that would have eight or ten or twelve people living in them, sleeping in the same bed in shifts and all that.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I have five children total.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you as an individual, what you do, that to me is your business.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "That's a plus.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it goes on for years and years, and costs hundreds of thousands of dollars, taxpayer money.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "A Keeshonden.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "just putting a plant in a room,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "in the public schools.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they lay me off,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "It came from,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we have to be careful,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Uhhuh,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "designs on that place since nineteen twentytwo",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I still think resentment.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "obviously they're probably not going to be doing a good job and so forth,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "there is camping",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'd encourage it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it's tough being a parent and doing all the things that you should do for yourself, too.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "was thinking about that too,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "there's got to be a lot of potential down there.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "That's true.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "we need to channel it and focus it on some things need some fixing up.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "as with anything, it's preparation.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "shoes,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "they're anxious for someone to be killed .",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "Okay,",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sd",
+        "utt": "every weekend a small town will sponsor a rally",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qw",
+        "utt": "What kind of wok do you have,",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "sd",
+        "utt": ", we were talking about how much it cost to go to Disney Land.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "It was a magic number for him",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't want to say three months,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I saw HOME ALONE with some friends just a couple days ago.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Israel",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I, plants from Michigan Bulb Company",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "when you get out into the real world then you'll know.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "No.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "I think if there's any major piece of advice is to find a way of getting an education that doesn't incur that kind of debt.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I wouldn't be so upset about the amount of taxes paid if it weren't for the fact that go to any place.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we don't have one yet,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "It's important in so many facets of our lives.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "bf",
+        "utt": "symbol.",
+        "dsc": "Summarize/reformulate"
+    },
+    {
+        "act": "aa",
+        "utt": "absolutely,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "less highways",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "graduate the best engineers or the best English majors, but",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think it does have to be unanimous.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "this new company came in",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "school year they would be tested",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "She just recently started working then.",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "she's a medium size.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you reel it in,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "they go all the way up to the Supreme Court,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I've just never been called up.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "you part of the school system out there?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "at least once you pay your way in there,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't either,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Fishing is not dragging fish out of the water.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it's the best one that exists, I guess.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "Now these are long haired?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "that's wonderfully supposedly",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Fish in Colorado different than that.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "North of Pittsburgh, Pennsylvania.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I believe that, that was beginning to form",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't know how I feel about that.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I usually, when I hear about a movie that's supposed to be very good",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "just yanked on it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm not really worried about it,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Four weeks is a lot, I think.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Two of our children live there.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "if I could have a good small restaurant or a good large restaurant I'd go to the good small restaurant.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "teacher,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they'll all be married.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "moved out in eightynine.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "want us to say we're the North Americans.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Three.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "You can get somebody maybe willing to babysit",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "that's,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "there's got to be a lot of potential for business down there, for the products certainly that we make and everything.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "It's pretty cool",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "It's my experience is beneficial,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it can still flag as a positive",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'd just be,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they said since they imposed the federal regulations on education,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it was just beautiful.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "It's through Baxter Labs,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "anyway they stopped and waited to see if Iraq would accept a permanent cease fire situation though.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "hate it,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "the best thing we found to do with him is to walk around.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "To see if we could sort of clean them up",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "That's right.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I started delivering papers when I was ten,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Moved down there in eightyseven",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "My husband wants to go into medical school and be a neurosurgeon",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "Yeah.",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sv",
+        "utt": "the only way that you're going to have peace over there, we determine that we want to go in and wipe out every last one of them,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Uhhuh,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "generally it does work out that way.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "Do you think they should have a jury there?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm exempt.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "an area becoming a state as you do.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "Right.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "we grow a lot of, the basic, corn, potatoes.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "is insurance bad there?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "the only reason I did it,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "frequently the laws in a territory in some ways as stringent as they are in other states,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Unless",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "getting a kick out of the whole program",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it must be a somewhat different environment from a regular college.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "Yes.",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sd",
+        "utt": "I remember when I got out of high school, all through high school was,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "h",
+        "utt": "I don't know,",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "sd",
+        "utt": "eighth grade this year.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Calcutta or either India,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I wish this phone would stop screeching,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "the food",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm sure they have some of that now,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "give a little",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we have that here in North Carolina.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I always go and do an education things.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "They probably have it better in jail than what they would out in the streets.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "for the language, is very foolish.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "Okay,",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sd",
+        "utt": "I have mixed feelings about that.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "that sounds kind of stupid",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it's amazing now how much it's changed.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "that's wonderful.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "They have that to some extent here,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I learned because just,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "understand people more,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I guess they pass the names amongst your computer students, or whatever.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "It's okay for us to go extend our youth's lives like so much water in the desert.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "they should have them go out and doing stuff.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "two or three times a year.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "it's very true,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "a friend of mine is a psychologist",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "like the idea.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I used live in Plano.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "a big responsibility,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it was because I had worked for about nine months,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I feel that's very important,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "That's really true.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "that's done through example, not an actual sit down learn situation",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "he really tries to, brighten up your life.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "he said he learned a tremendous amount that he never would have able to pick up on his own.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "anything until you spend the minimum?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "still a big question in my mind",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "a seven hour labor",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ad",
+        "utt": "you kind of clean it out",
+        "dsc": "Action-directive"
+    },
+    {
+        "act": "sd",
+        "utt": "and what not.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "They almost always get thrown right back out again,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "have gotten comfortable being around these people,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think the idea of freedom of speech goes back to",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it has to be fun.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it's certainly not going to be a slow change process",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "there isn't.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I guess the one that really got me too was that,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "crying,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you get your doctor to give you a more than six months prescription",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I even had friends when I was going to college who were in, (( )) pharmacy school",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "(( )) those old movies seemed to have had something",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Red meat and a potato.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "buy your pills one at a time?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "ny",
+        "utt": "Uhhuh.",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sd",
+        "utt": "we ran into some problems with, having them work on that carburetor.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it's almost like a lot of things that were available to us as children,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I would be bothered by that.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "that's wonderful you can make it that way.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sv",
+        "utt": "more of a functioning member of society.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "Take care now.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sd",
+        "utt": "we still had a good time out,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "the kids who would be giving the service are going to get a lot more out of it than just money.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "what if's always rough.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I was ready,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I always watch them no matter who's on,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I wanted to get out and see some things.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "on the other hand",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "about a year I guess.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "program in Maryland that's called Adopt A Highway.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "It is with a lot of other people.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "You too.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sd",
+        "utt": "In New York they have it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "basically I like comedy shows .",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ad",
+        "utt": "you shouldn't be talking about this while you're fixing dinner.",
+        "dsc": "Action-directive"
+    },
+    {
+        "act": "qy",
+        "utt": "your cousin's a kid,",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "It's very sophisticated.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "until we make a decision to do that there won't be peace but I don't think we want to make that decision either.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "Okay.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sd",
+        "utt": "we don't have a family budget.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "FINANCIAL SELF DEFENSE is the name of it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "bf",
+        "utt": "she had all of those types of vegetables.",
+        "dsc": "Summarize/reformulate"
+    },
+    {
+        "act": "sd",
+        "utt": "Lots of shrimp.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "h",
+        "utt": "I just really don't know,",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "sv",
+        "utt": "That is a sad situation.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it was very foreign in a certain sense, although I had grown up in California",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "Bye.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sd",
+        "utt": "I have seen a town change from a town to a city and its,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "That's right.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "aa",
+        "utt": "No,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "a lot of time after work or maybe on the weekends, we'd go over there and lift weights and do the tread mill,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "a long time",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "to me that's ridiculous.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "It's lazy.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "No,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "I guess that's true.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "a strange looking cat.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we're not on the subject. Of course,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "that's a lot of fun.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "that would be something to look for.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "They did have, seminars every once in a while.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "people really quieted down after everything started",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we have been in Panama",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "that's great.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "the school district couldn't hire many people,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "a happy,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "There's just too many people.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qw",
+        "utt": "Where do you go to brunches?",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "fc",
+        "utt": "Nice talking to you also.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sd",
+        "utt": "It makes you more at ease.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "You don't have to depend on anybody to be putting that money in for you,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "They,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "is that they can do that",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "in the suburbs,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "at times she enjoys it, at times not.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "is it ten minutes.",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "aa",
+        "utt": "That's right.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "they're always (( )) in Florida.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they go into the fourth grade",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I've originated only few.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "No,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "let it go, one or the other.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I've been around for quite a few years and worked for a lot of different companies,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I was going to say",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't even know where he's at.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "that's what I mean by,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "time we spend with our children.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "does that make since to you?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "some of the,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "she starts her own stuff from seed now,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Playtex was in,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I understand Six Flags is real expensive now.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "they don't even consider it.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "In fact, at one time I worked as a second shift,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "They actually had to a driving test on the tractor,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "let's see, insurance.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "h",
+        "utt": "I don't know",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "sd",
+        "utt": "we went, without the kids,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm trying to ready early.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "there's the ones that you never know anything about,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "h",
+        "utt": "I don't know.",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "sd",
+        "utt": "I'd like to know there's a lot of interaction and,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "them before they're ready,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "you don't work for a company twenty years through no fault of your own,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "you're right.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "Byebye.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sd",
+        "utt": "I've seen SHOW probably ten times.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "It was about a week before I finally",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we don't ever catch enough to eat.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I try to get my money's worth.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "That's really hard for me because, have a son that's sixteen",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qw",
+        "utt": "What other benefits,",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "I don't know how long I'm,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "trying to setup businesses down there and use the one resource, anyway, that Salvador had, ,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Not a bit.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "they're kind of a pain,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Kathy and Kevin Guy.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "the University of (( Shah )) teaching ...",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "do you have Lowe's up there?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "You have a good ratio of good to bad.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "that would be pushing it.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "of them did quit the company.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": ". I've never heard of it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I hope we don't try to keep, in there and try to keep our fingers in the pot and try to,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "one case where we had some Canadians in there who were every bit as bad,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "the bonding process,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "amazingly a lot of times it's real easy.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "found out she could wait until I let her out in the morning.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "They don't have a southern accent up there though.",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "they won't be as good as they could be.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "You just open the door and pop it out.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "Bye.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "aa",
+        "utt": "me, too.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "qw",
+        "utt": "About how many calls have you made on this system?",
+        "dsc": "Wh-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "The",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I was in the eleventh grade,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "Me too.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "It was really bad because of the water.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "consider",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Some of these guys are really,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "you won't get that at M I T anything like that.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I didn't like her desserts very well,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ad",
+        "utt": "believe me,",
+        "dsc": "Action-directive"
+    },
+    {
+        "act": "sv",
+        "utt": "figure out what they want to do, instead of hanging around street corners selling drugs or something.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "bought everything in a grocery store.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I don't know how we'd ever find out, really whether it is or not.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I took it.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "you've must have seen it recently?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "fc",
+        "utt": "bye.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sv",
+        "utt": "a lot of work went into a lot of that,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "the stud will find her attractive.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "would really like to be a teacher,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "took one off my little Buick I had,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "all the things come out of property taxes,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I hadn't thought about international trials at all.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "not even a year yet,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I somehow think that war is one of those things that maybe is inevitable,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it may prevent somebody who teetering on the edge of experimenting or whatnot",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "child care, your views.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "That's very true, but then they shouldn't have a family.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "that's true.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "they dwell on what they do have",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they've only been married five years have a cute one year old kids",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "it had Indian flavor.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "They're just there.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "when I was in college I visited Mexico several times,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "Get that unemployment way up",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think maybe walking or running would probably work because it doesn't take much time and much money or whatever.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "qy",
+        "utt": "you have children I take it?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "one time we were there,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Exactly.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I mean at one time they would go into the service,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "there's a lot that can be done.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "I guess, Mississippi",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "She really didn't know how to handle herself.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "(( ))",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I think it has something to do with oil, don't get me wrong.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I was talking to someone yesterday about that.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "some health cookies that are high in fiber,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I noticed brother, who was quite a bit younger, was learning Spanish in elementary school",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "she brings them up here from Philadelphia and gives me all her extras.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "to go straight to college",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it really is.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "my cats got into it and started digging and that took care of that.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I've never had any luck with their's.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": ". I try when it's nice out,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I worked that shift for eleven years.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "it's there.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "we do do things,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm mainly do a lot of walking.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "in Montgomery, before I came up to North Carolina,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I needed education that you can get, pretty much anywhere for the first couple of years.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "broadened the audience that it could have been targeted for, I thought",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "there were certain things that they could provide without a doctors prescription based on their qualifications",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ny",
+        "utt": "Yeah,",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "sd",
+        "utt": "actually originally from Hollywood,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "the judge has the final decision",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "That's why, they, no smoking and all that.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "you're taxed on the bonuses too,",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "that was how it was this Virginia, we've recently moved here to Texas, but in Virginia I think if you take more than three children in on more than a several hours a day bases you have to be licensed.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm those hoses off.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they claimed to have the best shrimp on the Gulf coast.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I'm trying to think the last thing I did to a car.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "A lot of dancers and stuff like that.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "still green,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "True.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "a little bit of love attention is what most of them need.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "exactly.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "they're not exactly business men.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "sometimes I'm not,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "don't know if it's a man or a woman .",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "h",
+        "utt": "I don't know,",
+        "dsc": "Hedge"
+    },
+    {
+        "act": "qy",
+        "utt": "Am I going to end up in a place like that ?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sv",
+        "utt": "there's no quick solution, or no sure fire easy answer.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "again, they just were six,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "Are you teaching Computer Science?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "that think that would be a negative step to make",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "God,",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "we're rolling.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "since the state is paying for them, they should get some work out of them.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "that's another big thing I think people get out of college is the appreciation for of view,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I felt I was losing my family.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "that's good.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "do have a little information on it here,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "not that great a cook",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "I wish I knew more to tell you why,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "That's true.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "they've been pretty close together.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "fc",
+        "utt": "Bye.",
+        "dsc": "Conventional-closing"
+    },
+    {
+        "act": "sv",
+        "utt": "you can pretty much figure what they're going to be,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "A year.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "thinks,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "I'm sure we're getting close to our five minutes whatever, here.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "Right,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "and they have little conversations and things.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ad",
+        "utt": "They got the forms in personnel",
+        "dsc": "Action-directive"
+    },
+    {
+        "act": "sd",
+        "utt": "I've heard it's pretty cool.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they come in a lot of different colors.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "drugs extremely bad.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "aa",
+        "utt": "right.",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "aa",
+        "utt": "yeah,",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sd",
+        "utt": "someone does repairs or little things like that,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "don't plan on having one either, ever.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "once you got interested in something and things started to click in place then after that you take off.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "has those influences lasted (( ))",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "aa",
+        "utt": "No",
+        "dsc": "Agree/Accept"
+    },
+    {
+        "act": "sv",
+        "utt": "Maybe cause she got chubby again or something,",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "that sounds like fun.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "qy",
+        "utt": "Did they have an outside consultant, like employ,",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "It's kinds of neat, they take animals over and let the people pet them.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they said it's like getting a Ph D almost,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "I love that.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "ba",
+        "utt": "That's nice.",
+        "dsc": "Appreciation"
+    },
+    {
+        "act": "sd",
+        "utt": "stress on it",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "things the way we grow are carrots, cabbage, that sort of (( )) goes to waste",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "they came out four thousand dollars better a year, by taking welfare.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "The Kuwaiti young won't rebuild anything.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "there wasn't much to take out of the country",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "one daughter was fairly interested.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "a set of twins,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "sentencing.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "We do the same thing.",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sd",
+        "utt": "maybe,",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "political",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "sv",
+        "utt": "you're not totally out of the loop.",
+        "dsc": "Statement-opinion"
+    },
+    {
+        "act": "ad",
+        "utt": "you first on the subject,",
+        "dsc": "Action-directive"
+    },
+    {
+        "act": "qy",
+        "utt": "Did you go with kids?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "qy",
+        "utt": "You probably have some friends that have television ?",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "ny",
+        "utt": "Yeah.",
+        "dsc": "Yes answers"
+    },
+    {
+        "act": "qy",
+        "utt": "Are you fly fishing",
+        "dsc": "Yes-No-Question"
+    },
+    {
+        "act": "sd",
+        "utt": "We've had people come in and babysit for an hour or two",
+        "dsc": "Statement-non-opinion"
+    },
+    {
+        "act": "qw",
+        "utt": "what religious faith?",
+        "dsc": "Wh-Question"
+    }
+]
