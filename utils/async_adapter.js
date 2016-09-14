@@ -608,6 +608,6 @@ module.exports = {
   getembedall:getembedall
 }
 
-getembed("home", 9, function(err, emb){
-console.log(emb)
-})
+//getembed("home", 9, function(err, emb){
+//console.log(emb)
+//})

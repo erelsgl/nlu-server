@@ -27,7 +27,7 @@
 		Finish:"fi",
 		}
 
-		var sys = { "yandex": "Y", "microsoft": "M" }
+		var sys = { "yandex": "Y", "microsoft": "M", "google": "G" }
 
 		_.each(sys, function(engine1liter, engine1, list){
 			_.each(sys, function(engine2liter, engine2, list){
@@ -47,7 +47,7 @@
 	
 if (parsing)
 {	
-	var data = JSON.parse(fs.readFileSync("/tmp/buffer_dial_switch2.json"))
+	var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.json"))
 	
 	async.eachOfSeries(data, function(value, keyd, callback2){ 
 		var trans = {}
@@ -77,7 +77,7 @@ if (parsing)
 
 			}, function(err){
 				data[keyd]["trans"] = JSON.parse(JSON.stringify(trans))
-				fs.writeFileSync("/tmp/buffer_dial_switch2.json", JSON.stringify(data, null, 4))
+				fs.writeFileSync("./buffer_dial_switch2.json", JSON.stringify(data, null, 4))
 				callback2()
 			})
 	}, 
@@ -91,7 +91,7 @@ if (correlation)
 	var lang = {}
 	var total_ln={}
 
-	var data = JSON.parse(fs.readFileSync("/tmp/buffer_dial_switch2.json"))
+	var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.json"))
 
 	_.each(data, function(value, key, list){
 		if ("trans" in value)
