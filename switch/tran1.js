@@ -1,4 +1,4 @@
-	
+
 	var async = require('async');
 	var child_process = require('child_process')
 	var _ = require('underscore')._;
@@ -8,8 +8,8 @@
 	var distance = require('./../utils/distance')
 
 
-	var correlation = false
-	var parsing = true
+	var correlation = true
+	var parsing = false
 
 	function generator()
 	{
@@ -91,7 +91,7 @@ if (correlation)
 	var lang = {}
 	var total_ln={}
 
-	var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.json"))
+	var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.gold.json"))
 
 	_.each(data, function(value, key, list){
 		if ("trans" in value)
