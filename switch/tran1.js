@@ -8,7 +8,8 @@
 	var distance = require('./../utils/distance')
 
 
-	var correlation = true
+	var norma = true
+	var correlation = false
 	var parsing = false
 
 	function generator()
@@ -138,3 +139,36 @@ if (correlation)
 	console.log(JSON.stringify(lang_copy, null, 4))
 }
 
+
+
+
+if (norma)
+{
+	var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.gold.json"))
+
+	_.each(data, function(value, key, list){
+		_.each(value["trans"], function(tran, key1, list){
+
+			    tran = tran.replace(/\s+/g, ' ');
+			    tran = tran.trim()
+
+			    if ([".", "!", ",", "?"].indexOf(tran[0]) != -1)
+			    {
+			    	console.log(tran)
+			    	tran = tran.substring(1)
+			    	tran = tran.trim()
+			    	console.log(tran)
+			    }
+
+				tran = tran.replace(/\.\s+\./g, ".");
+
+			    data[key]["trans"][key1] = tran
+		}, this)
+	}, this)
+
+	console.log(data.length)
+	data = _.filter(data, function(num){ return num.utt != "" });
+	console.log(data.length)
+
+	console.log(JSON.stringify(data, null, 4))
+}
