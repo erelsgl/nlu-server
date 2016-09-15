@@ -9,32 +9,32 @@
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(40,null)(50,null)(60,null)(70,null)(80,0.4251883796238635)(90,0.43413999252708935)(100,0.37619631094971917)(110,0.39959833136303724)(120,null)
+(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,0.47765151515151516)(100,0.3966991341991342)(110,0.4874347874347875)(120,0.5412688919267867)
 };
 \addlegendentry{All\_together}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(40,null)(50,null)(60,null)(70,null)(80,0.42830332446458214)(90,0.4630760517373093)(100,0.3883858634362837)(110,0.44622000548471136)(120,0.44221445221445216)
+(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)
 };
 \addlegendentry{Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.4163784179338902)(110,0.43407402344153023)(120,0.4860790598290598)
+(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)
 };
 \addlegendentry{French}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(40,null)(50,null)(60,0.43306323604710706)(70,null)(80,0.5015568571376193)(90,0.5145658076114701)(100,0.4606214173327957)(110,null)(120,null)
+(30,null)(40,null)(50,null)(60,null)(70,0.4717652717652717)(80,null)(90,null)(100,null)(110,null)(120,null)
 };
 \addlegendentry{Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(40,null)(50,null)(60,null)(70,null)(80,0.3659784596626702)(90,0.3179382039847156)(100,0.3340059293543336)(110,0.40877289377289383)(120,null)
+(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,0.4605097022860181)(100,0.435406258131668)(110,null)(120,null)
 };
 \addlegendentry{Russian}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(40,null)(50,null)(60,null)(70,null)(80,0.5186699824997698)(90,0.5269000933706817)(100,0.47259500915750907)(110,0.5057356532356532)(120,0.4994344785649133)
+(30,null)(40,null)(50,null)(60,null)(70,0.5121184371184371)(80,null)(90,null)(100,null)(110,null)(120,null)
 };
 \addlegendentry{Arabic}
 
