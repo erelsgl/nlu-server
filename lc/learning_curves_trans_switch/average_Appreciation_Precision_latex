@@ -9,27 +9,27 @@
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.3612889251271604)
+(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,0.36901897284580804)(100,0.3848624904507258)
 };
 \addlegendentry{All\_together}
 
 \addplot[color=green,mark=*] coordinates {
-(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.45124250749250755)
+(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,0.43075911017087487)(100,0.4683337577455224)
 };
 \addlegendentry{Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)
+(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,0.35478739462292086)(100,null)
 };
 \addlegendentry{French}
 
 \addplot[color=green,mark=*] coordinates {
-(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.40059262576503957)
+(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,0.40512303788165854)(100,0.45219696969696976)
 };
 \addlegendentry{Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
-(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.438856048166393)
+(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,0.4346345855340384)(100,0.46025538701237617)
 };
 \addlegendentry{Russian}
 
