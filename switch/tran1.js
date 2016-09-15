@@ -6,11 +6,13 @@
 	var async_tran = require(__dirname + "/../utils/async_tran.js")
 	var bars = require('./../utils/bars')
 	var distance = require('./../utils/distance')
+	var md5 = require('md5');
 
-
-	var norma = true
+	var norma = false
 	var correlation = false
 	var parsing = false
+	var convert = false
+	var stand = true
 
 	function generator()
 	{
@@ -139,9 +141,6 @@ if (correlation)
 	console.log(JSON.stringify(lang_copy, null, 4))
 }
 
-
-
-
 if (norma)
 {
 	var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.gold.json"))
@@ -171,4 +170,65 @@ if (norma)
 	console.log(data.length)
 
 	console.log(JSON.stringify(data, null, 4))
+}
+
+if (convert)
+{
+	var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.gold.json"))
+
+	_.each(data, function(value, key, list){
+		_.each(value["trans"], function(tran, key1, list){
+
+			    tran = tran.replace(/\s+/g, ' ');
+			    tran = tran.trim()
+
+			    if ([".", "!", ",", "?"].indexOf(tran[0]) != -1)
+			    {
+			    	console.log(tran)
+			    	tran = tran.substring(1)
+			    	tran = tran.trim()
+			    	console.log(tran)
+			    }
+
+				tran = tran.replace(/\.\s+\./g, ".");
+
+			    data[key]["trans"][key1] = tran
+		}, this)
+	}, this)
+
+	console.log(data.length)
+	data = _.filter(data, function(num){ return num.utt != "" });
+	console.log(data.length)
+
+	console.log(JSON.stringify(data, null, 4))
+}
+
+
+if (stand)
+{
+	var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.gold.final.json"))
+
+	_.each(data, function(value, key, list){
+
+
+		if (!fs.existsSync("../json/"+md5(value["utt"])+".json"))
+			throw new Error("no file")
+
+
+		value["input"] = {}
+		value["input"]["text"] = value["utt"]
+		value["input"]["sentences"] =  JSON.parse(fs.readFileSync("../json/"+md5(value["utt"])+".json"))["sentences"]
+		value["input"]["trans"] = JSON.parse(JSON.stringify(value["trans"]))
+		value["output"] = [value["dsc"]]
+		value["outputhash"] = {}
+		value["outputhash"][value["dsc"]] = 1
+
+
+		delete value["trans"]
+		delete value["utt"]
+		delete value["dsc"]
+	}, this)
+
+	console.log(JSON.stringify(data, null, 4))
+	process.exit(0)
 }
