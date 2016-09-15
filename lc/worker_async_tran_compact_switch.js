@@ -25,20 +25,20 @@ if (cluster.isWorker)
 		var train = JSON.parse(message['train'])
 		var test  = JSON.parse(message['test'])
 
-	    var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Actiondirective", "Yesanswers", "Hedge", "WhQuestion", "Summarizereformulate", "Conventionalclosing"], "filter":false})
+	    var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate"], "filter":false})
 //	    var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
- 	    var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Actiondirective", "Yesanswers", "Hedge", "WhQuestion", "Summarizereformulate", "Conventionalclosing"], "filter":true})
+ 	    var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate"], "filter":true})
  	    //var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
 
     _.each(test, function(turn, key, list){	delete test[key]["input"]["trans"] }, this)
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
 
-	var index = 20
+	var index = 10
 
 	async.whilst(
 	    //function () { return index < train.length },
-	    function () { return index < 120 },
+	    function () { return index < 150 },
 	    function (callbackwhilst) {
 
 		async.waterfall([
@@ -151,7 +151,7 @@ if (cluster.isWorker)
     		function(mytrainex, mytestex, trainsize, callback) {
 
 			//mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": ["Quit","Greet"], "filter":true})
-			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": ["Actiondirective", "Yesanswers", "Hedge", "WhQuestion", "Summarizereformulate", "Conventionalclosing"], "filter":true})
+			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": ["Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate"], "filter":true})
 			//mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": [], "filter":true})
     	
 			console.vlog("DEBUGPRETRAIN: classifier:"+classifier+" mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
