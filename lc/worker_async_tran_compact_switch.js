@@ -203,7 +203,7 @@ if (cluster.isMaster)
 	bars.cleanFolder(lcfolder)
 	bars.cleanFolder("./logs")
 
-	var folds = 10
+	var folds = 5
 	
 	var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "French", "Portuguese", "Russian", "Arabic", "Portuguese"]
 	//var classifiers = [ "Natural_Neg", "Hungarian"]
