@@ -3979,8 +3979,13 @@ function processdataset(dataset, options)
   console.vlog("processdataset: after filter: "+ output.length)
 
   if (options["filterIntent"].length > 0)
+  {  
+    console.vlog("processdataset: filterIntent: "+options["filterIntent"])
+    console.vlog("processdataset: filterIntent: before: "+output.length)
     output = _.filter(output, function(num){ return _.intersection(num["output"], options["filterIntent"]).length == 0 });
-  
+    console.vlog("processdataset: filterIntent: after: "+output.length)
+  }
+
   console.vlog("processdataset: end: "+ output.length)
 
   return output

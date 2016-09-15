@@ -25,8 +25,10 @@ if (cluster.isWorker)
 		var train = JSON.parse(message['train'])
 		var test  = JSON.parse(message['test'])
 
-	    var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
- 	    var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
+	    var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Actiondirective", "Yesanswers", "Hedge", "WhQuestion", "Summarizereformulate", "Conventionalclosing"], "filter":false})
+//	    var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
+ 	    var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Actiondirective", "Yesanswers", "Hedge", "WhQuestion", "Summarizereformulate", "Conventionalclosing"], "filter":true})
+ 	    //var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
 
     _.each(test, function(turn, key, list){	delete test[key]["input"]["trans"] }, this)
 
@@ -36,7 +38,7 @@ if (cluster.isWorker)
 
 	async.whilst(
 	    //function () { return index < train.length },
-	    function () { return index < 150 },
+	    function () { return index < 120 },
 	    function (callbackwhilst) {
 
 		async.waterfall([
@@ -149,7 +151,8 @@ if (cluster.isWorker)
     		function(mytrainex, mytestex, trainsize, callback) {
 
 			//mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": ["Quit","Greet"], "filter":true})
-			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": [], "filter":true})
+			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": ["Actiondirective", "Yesanswers", "Hedge", "WhQuestion", "Summarizereformulate", "Conventionalclosing"], "filter":true})
+			//mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": [], "filter":true})
     	
 			console.vlog("DEBUGPRETRAIN: classifier:"+classifier+" mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
 
@@ -200,12 +203,14 @@ if (cluster.isMaster)
 	bars.cleanFolder(lcfolder)
 	bars.cleanFolder("./logs")
 
-	var folds = 5
+	var folds = 10
 	
-	// var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "Portuguese", "Russian"]
-	var classifiers = [ "Natural_Neg", "Hungarian"]
+	var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "French", "Portuguese", "Russian", "Arabic", "Portuguese"]
+	//var classifiers = [ "Natural_Neg", "Hungarian"]
 	var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../switch/buffer_dial_switch2.gold.final.std.json")))
- 	
+ 
+	train1 = _.shuffle(train1)
+	
 	cluster.setupMaster({
   	exec: __filename,
 	// args: [JSON.stringify({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len})],
