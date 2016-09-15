@@ -21,6 +21,7 @@ var Hierarchy = require(__dirname+'/../Hierarchy');
 var distance = require(__dirname+'/distance');
 var async_adapter = require(__dirname+'/async_adapter');
 var async = require('async');
+var md5 = require('md5');
 var classifiers = require(__dirname+'/../classifiers');
 var limdu = require("limdu");
 var ftrs = limdu.features;
@@ -4479,9 +4480,8 @@ function gettrans(turns, pat)
      delete temp_copy["input"]["trans"]
      output.push(temp_copy)
 
-	var roots = _.filter(turn["input"]["sentences"]["basic-dependencies"], function(num){ return num["dep"] == "ROOT" }).length
+	   var roots = _.filter(turn["input"]["sentences"]["basic-dependencies"], function(num){ return num["dep"] == "ROOT" }).length
  
-
     //if ((turn["output"].length == 1) && (roots == 1))
     if ((turn["output"].length == 1) && (roots == 1))
     {
@@ -4505,8 +4505,23 @@ function gettrans(turns, pat)
           record["input"]["text"] = tran
   		    delete record["input"]["sentences"]
   		    delete record["input"]["trans"]
-  		    _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json")));
-  		    record["input"]["source"] = turn.translation_id
+
+          if ("translation_id" in turn)
+          {
+            if (fs.existsSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json"))
+              _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json")));
+  		      else
+              throw new Error("sentence file is not found")
+          }
+          else
+          {
+            if (fs.readFileSync(__dirname+"/../json/"+md5(tran)+".json"))
+              _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+md5(tran)+".json")))
+            else
+              throw new Error("sentence file not found for md5")
+          }
+
+          record["input"]["source"] = turn.translation_id
           	output.push(record)
   	  //	  unique_trans[record["input"]["text"]] = record
         }
