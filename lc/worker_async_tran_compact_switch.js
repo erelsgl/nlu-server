@@ -22,25 +22,13 @@ if (cluster.isWorker)
 
     	console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
-	//var train = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")).concat(JSON.parse(message['train']))
-	var train = JSON.parse(message['train'])
-	var test  = JSON.parse(message['test'])
+		var train = JSON.parse(message['train'])
+		var test  = JSON.parse(message['test'])
 
-	//var train = _.flatten(train)
-//        var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Quit","Greet"], "filter":false})
-        var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
-  //      var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Quit","Greet"], "filter":true})
-        var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
+	    var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
+ 	    var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
 
-    //    _.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"]}, this)
-
-//	 _.each(train, function(turn, key, list){ train[key]["input"]["trans"] = {} }, this)
-    //    train = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")).concat(train)
-
-	_.each(test, function(turn, key, list){
-		//delete test[key]["input"]["sentences"]
-		delete test[key]["input"]["trans"]
-	}, this)
+    _.each(test, function(turn, key, list){	delete test[key]["input"]["trans"] }, this)
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
 
@@ -60,7 +48,7 @@ if (cluster.isWorker)
 			index += 10
 	
     		var mytrain = train.slice(0, index)
-		var mytrainex = JSON.parse(JSON.stringify(mytrain))
+			var mytrainex = JSON.parse(JSON.stringify(mytrain))
     		var mytestex = JSON.parse(JSON.stringify(test))
 
 
@@ -95,18 +83,18 @@ if (cluster.isWorker)
 				case "Finish+Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:(fi|hu):.*"), mytestex, mytrainex.length); break;
 				case "Urdu": callbacks(null, bars.gettrans(mytrainex, ".*:ur:.*"), mytestex, mytrainex.length); break;
 				case "French": callbacks(null, bars.gettrans(mytrainex, ".*:fr:.*"), mytestex, mytrainex.length); break;
-    				case "German": callbacks(null, bars.gettrans(mytrainex, ".*:de:.*"), mytestex, mytrainex.length); break;
-    				case "Spanish": callbacks(null, bars.gettrans(mytrainex, ".*:es:.*"), mytestex, mytrainex.length); break;
-    				case "Arabic": callbacks(null, bars.gettrans(mytrainex, ".*:ar:.*"), mytestex, mytrainex.length); break;
-    				case "Chinese": callbacks(null, bars.gettrans(mytrainex, ".*:zh:.*"), mytestex, mytrainex.length); break;
-    				case "Finish": callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); break;
-    				case "Russian": callbacks(null, bars.gettrans(mytrainex, ".*:ru:.*"), mytestex, mytrainex.length); break;
-    				case "Portuguese": callbacks(null, bars.gettrans(mytrainex, ".*:pt:.*"), mytestex, mytrainex.length); break;
-    				case "Hebrew": callbacks(null, bars.gettrans(mytrainex, ".*:he:.*"), mytestex, mytrainex.length); break;
-    				case "Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length);break;
-    				case "Hungarian_Yandex": callbacks(null, bars.gettrans(mytrainex, "Y:hu:Y"), mytestex, mytrainex.length);break;
-    				case "Hungarian_Google": callbacks(null, bars.gettrans(mytrainex, "G:hu:G"), mytestex, mytrainex.length);break;
-    				case "Hungarian_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:hu:M"), mytestex, mytrainex.length);break;
+    			case "German": callbacks(null, bars.gettrans(mytrainex, ".*:de:.*"), mytestex, mytrainex.length); break;
+    			case "Spanish": callbacks(null, bars.gettrans(mytrainex, ".*:es:.*"), mytestex, mytrainex.length); break;
+    			case "Arabic": callbacks(null, bars.gettrans(mytrainex, ".*:ar:.*"), mytestex, mytrainex.length); break;
+    			case "Chinese": callbacks(null, bars.gettrans(mytrainex, ".*:zh:.*"), mytestex, mytrainex.length); break;
+    			case "Finish": callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); break;
+    			case "Russian": callbacks(null, bars.gettrans(mytrainex, ".*:ru:.*"), mytestex, mytrainex.length); break;
+    			case "Portuguese": callbacks(null, bars.gettrans(mytrainex, ".*:pt:.*"), mytestex, mytrainex.length); break;
+    			case "Hebrew": callbacks(null, bars.gettrans(mytrainex, ".*:he:.*"), mytestex, mytrainex.length); break;
+    			case "Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length);break;
+    			case "Hungarian_Yandex": callbacks(null, bars.gettrans(mytrainex, "Y:hu:Y"), mytestex, mytrainex.length);break;
+    			case "Hungarian_Google": callbacks(null, bars.gettrans(mytrainex, "G:hu:G"), mytestex, mytrainex.length);break;
+    			case "Hungarian_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:hu:M"), mytestex, mytrainex.length);break;
 				case "French+German+Potuguese": callbacks(null, bars.gettrans(mytrainex, ".*:(de|fr|pt):.*"), mytestex, mytrainex.length); break;
 				case "Russian+Spanish+Arabic": callbacks(null, bars.gettrans(mytrainex, ".*:(ru|es|ar):.*"), mytestex, mytrainex.length); break;
 				case "Russian+Hebrew+Arabic": callbacks(null, bars.gettrans(mytrainex, ".*:(ru|he|ar):.*"), mytestex, mytrainex.length); break;
@@ -214,12 +202,10 @@ if (cluster.isMaster)
 
 	var folds = 5
 	
-	var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "Portuguese", "Russian"]
-		
-	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../switch/buffer_dial_switch2.gold.final.json")))
- 	var utterset1 = bars.getsetcontext(data1, false)
-	var train1 = utterset1["train"].concat(utterset1["test"])
-
+	// var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "Portuguese", "Russian"]
+	var classifiers = [ "Natural_Neg", "Hungarian"]
+	var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../switch/buffer_dial_switch2.gold.final.std.json")))
+ 	
 	cluster.setupMaster({
   	exec: __filename,
 	// args: [JSON.stringify({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len})],
