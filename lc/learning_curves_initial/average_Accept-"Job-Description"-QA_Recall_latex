@@ -1,0 +1,25 @@
+\addplot[color=green,mark=*] coordinates {
+(5,5)(10,10)(15,15)
+};
+\addlegendentry{dial}
+
+\addplot[color=green,mark=*] coordinates {
+(5,null)(10,null)(15,null)
+};
+\addlegendentry{Natural\_SVM}
+
+\addplot[color=green,mark=*] coordinates {
+(5,null)(10,null)(15,null)
+};
+\addlegendentry{Natural\_ADA}
+
+\addplot[color=green,mark=*] coordinates {
+(5,null)(10,null)(15,null)
+};
+\addlegendentry{Natural\_RF}
+
+\addplot[color=green,mark=*] coordinates {
+(5,null)(10,null)(15,null)
+};
+\addlegendentry{Component}
+

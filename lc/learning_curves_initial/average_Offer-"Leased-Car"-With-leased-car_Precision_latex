@@ -1,20 +1,25 @@
 \addplot[color=green,mark=*] coordinates {
-(1,1)(2,2)(3,3)(4,4)(5,5)(6,6)(7,7)(8,8)(9,9)(10,10)(15,15)(20,20)(25,25)(30,30)(35,35)(40,40)(45,45)(50,50)(55,55)(60,60)(65,65)(70,70)(75,75)(80,80)(85,85)(90,90)
+(5,5)(10,10)(15,15)(20,20)(25,25)(30,30)(35,35)(40,40)(45,45)(50,50)(55,55)(60,60)(65,65)(70,70)
 };
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,0.19785714285714284)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,0.39777777777777773)(25,0.39714285714285713)(30,0.4504761904761905)(35,0.44333333333333336)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,null)(80,null)(85,null)(90,null)
+(5,null)(10,null)(15,null)(20,0.39777777777777773)(25,0.39714285714285713)(30,0.4504761904761905)(35,0.44333333333333336)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
 };
 \addlegendentry{Natural\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,0.2391643323996265)(3,0.22871794871794876)(4,0.22871794871794876)(5,null)(6,0.29818181818181816)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,null)(80,null)(85,null)(90,null)
+(5,null)(10,null)(15,null)(20,0.4333333333333334)(25,null)(30,null)(35,null)(40,0.5976190476190476)(45,0.6383333333333334)(50,null)(55,null)(60,0.6404761904761904)(65,null)(70,null)
 };
-\addlegendentry{Natural\_Ada}
+\addlegendentry{Natural\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,null)(80,null)(85,null)(90,null)
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
 };
 \addlegendentry{Natural\_RF}
+
+\addplot[color=green,mark=*] coordinates {
+(5,0.571959706959707)(10,0.5130785296574769)(15,0.5003385868517447)(20,0.5441986659711118)(25,0.5432551731893838)(30,0.5041040903540903)(35,0.5524008739798212)(40,0.6206623931623932)(45,0.5996685340802987)(50,0.6108351370851371)(55,0.5970443935149816)(60,0.6084726711197299)(65,0.5631085254614667)(70,0.5525723622782447)
+};
+\addlegendentry{Component}
 

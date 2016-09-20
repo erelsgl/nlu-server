@@ -1,27 +1,15 @@
-size	dial	Natural_SVM	Natural_Ada	Natural_RF
-1	1	0	0	0
-2	2	0	0	0
-3	3	0	0	0
-4	4	0	0	0
-5	5	0	0	0
-6	6	0	0	0
-7	7	0	0	0
-8	8	0	null	0
-9	9	0	null	0
-10	10	0	null	null
-15	15	0	null	null
-20	20	null	null	null
-25	25	null	null	null
-30	30	null	null	null
-35	35	null	null	null
-40	40	null	null	null
-45	45	null	null	null
-50	50	null	null	null
-55	55	null	null	null
-60	60	0	null	null
-65	65	0	null	null
-70	70	0	null	null
-75	75	0	null	null
-80	80	0	null	null
-85	85	0	null	null
-90	90	0	null	null
+size	dial	Natural_SVM	Natural_ADA	Natural_RF	Component
+5	5	null	null	null	null
+10	10	null	null	null	null
+15	15	null	null	null	null
+20	20	null	null	null	null
+25	25	null	null	null	null
+30	30	null	null	null	null
+35	35	null	null	null	null
+40	40	null	null	null	null
+45	45	null	null	null	null
+50	50	null	null	null	null
+55	55	null	null	null	null
+60	60	null	null	null	null
+65	65	null	null	null	null
+70	70	null	null	null	null

@@ -1,0 +1,25 @@
+\addplot[color=green,mark=*] coordinates {
+(10,10)(15,15)(20,20)(25,25)(30,30)(35,35)(45,45)(50,50)(55,55)
+};
+\addlegendentry{dial}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(45,null)(50,null)(55,null)
+};
+\addlegendentry{Natural\_SVM}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(45,null)(50,null)(55,null)
+};
+\addlegendentry{Natural\_ADA}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(45,null)(50,null)(55,null)
+};
+\addlegendentry{Natural\_RF}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(45,null)(50,null)(55,null)
+};
+\addlegendentry{Component}
+
