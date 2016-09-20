@@ -1,23 +1,15 @@
-size	dial	Natural_Neg_old	Natural_Neg_Svm	Natural_Neg_Decisiontree	Natural_Neg_Randomforest	Natural_Neg_Adaboost
-1	1	null	null	null	null	null
-2	2	null	null	null	null	null
-3	3	null	null	null	null	null
-4	4	null	null	null	null	null
-5	5	null	null	null	null	null
-6	6	null	null	null	null	null
-7	7	null	null	null	null	null
-8	8	null	null	null	null	null
-9	9	null	null	null	null	null
-10	10	null	null	null	null	null
-15	15	null	null	null	null	null
-20	20	null	null	null	null	null
-25	25	null	null	null	null	null
-30	30	null	null	null	null	null
-35	35	null	null	0.6048347857056198	null	0.508947296810058
-40	40	null	null	null	null	0.5242874340693057
-45	45	null	null	0.6178761177171067	null	null
-50	50	null	null	0.5060743938814977	null	0.622114150356374
-55	55	0.6760949103955616	0.667289471206429	0.6559511409072444	null	0.6342030832412237
-60	60	0.6808015382729964	0.6722770189689328	0.6165930164738309	null	0.6468355168769713
-65	65	0.6748036545165277	0.6621771986722604	0.6249817161413513	null	0.6531268803036043
-70	70	0.6765822140201557	0.6737989755203315	0.657576768574102	null	0.6521090029563337
+size	dial	Natural_SVM	Natural_RF	Natural_ADA
+5	5	null	null	null
+10	10	null	null	null
+15	15	null	null	null
+20	20	null	null	null
+25	25	null	null	null
+30	30	null	null	null
+35	35	null	null	null
+40	40	null	null	0.553198511871092
+45	45	null	null	0.5468964054125387
+50	50	null	null	0.6389674301235384
+55	55	0.6465927594549166	null	0.6373525225161039
+60	60	0.63705888320631	null	0.6120924031471684
+65	65	0.6595826131935654	0.6980374005105541	0.6529597391063182
+70	70	0.6771942359169902	0.7313512228448925	0.6612289290421687
