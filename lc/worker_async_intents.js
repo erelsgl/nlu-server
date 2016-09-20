@@ -25,8 +25,10 @@ if (cluster.isWorker)
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
 
-        var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Quit","Greet"], "filter":false})
-        var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Quit","Greet"], "filter":true})
+        var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
+        //var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Quit","Greet"], "filter":false})
+        var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
+        //var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Quit","Greet"], "filter":true})
    
 	_.each(test, function(turn, key, list){ delete test[key]["input"]["trans"] }, this)
 	_.each(train, function(turn, key, list){ delete test[key]["input"]["trans"] }, this)
@@ -44,8 +46,8 @@ if (cluster.isWorker)
     		function(callbacks) {
 
         		//if (index == 0) index = 3
-			if (index < 10) index +=1
-			else index += 5
+			//if (index < 10) index +=1
+			index += 5
 	
     		var mytrain = train.slice(0, index)
 			var mytrainex = JSON.parse(JSON.stringify(mytrain))
@@ -113,7 +115,7 @@ if (cluster.isMaster)
 //	var classifiers = ["Unigram", "Unigram_Lemma", "Unigram+Context", "Unigram_Lemma+Context", "Unigram+Context+Neg", 'Unigram+Neg']
 //	var classifiers = [ "Unigram", "Unigram+Context", "Unigram+Neg", "Unigram+Context+Neg" ]
 //	var classifiers = [ "Natural_Neg", "Natural_Neg_Svm" ]
-	var classifiers = [ "Natural_Neg_old", "Natural_Neg_Svm", "Natural_Neg_Decisiontree", "Natural_Neg_Randomforest", "Natural_Neg_Adaboost" ]
+	var classifiers = [ "Natural_SVM", "Natural_RF", "Natural_ADA" ]
 
 	
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
@@ -129,6 +131,7 @@ if (cluster.isMaster)
 	console.mlog("DEBUGMASTER: loaded: "+train1.length)
 
 	_(folds).times(function(fold){
+	
 		var data = partitions.partitions_consistent_by_fold(train1, folds, fold)
 		
 		_.each(classifiers, function(classifier, key, list){ 
