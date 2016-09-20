@@ -1,0 +1,20 @@
+\addplot[color=green,mark=*] coordinates {
+(1,1)(2,2)(3,3)(4,4)(5,5)(6,6)(7,7)(8,8)(9,9)(10,10)(15,15)(20,20)(25,25)(30,30)(35,35)(40,40)(45,45)(50,50)(55,55)(60,60)(65,65)(70,70)(75,75)(80,80)(85,85)(90,90)
+};
+\addlegendentry{dial}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,0.20644133644133644)(3,0.2183488733488733)(4,0.17772727272727273)(5,0.12860812645192948)(6,0.1301190476190476)(7,0.1472961287078934)(8,0.11482587814484366)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,null)(80,null)(85,null)(90,null)
+};
+\addlegendentry{Natural\_SVM}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,0.2313563163227217)(3,0.20756965256965257)(4,0.18237076648841358)(5,0.15768266757397192)(6,0.18538895315211104)(7,0.10104044037785534)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,null)(80,null)(85,null)(90,null)
+};
+\addlegendentry{Natural\_Ada}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,null)(80,null)(85,null)(90,null)
+};
+\addlegendentry{Natural\_RF}
+
