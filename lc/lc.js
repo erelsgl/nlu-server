@@ -410,13 +410,43 @@ function latexplot(fold, parameter, stat, lcfolder)
 	return true
 }
 
+function unifyX(parameter, stat)
+{
+	var val = -1
+	stat_copy = JSON.parse(JSON.stringify(stat))
+
+	_.each(stat_copy[parameter], function(value, key, list){
+		var clas = _.keys(value)[0]
+
+		if (val == -1)
+			val = _.keys(value[clas]).length
+		else
+			{
+			console.mlog("unifyX: key: "+ key +" current clas: "+clas + " max num of folds: "+val+ " current num: "+_.keys(value[clas]).length)
+				
+			if (_.keys(value[clas]).length > val)
+				throw new Error("anomaly")
+
+			if (_.keys(value[clas]).length < val)
+				{
+				console.mlog("unifyX: key: "+ key +" current clas: " + clas + " deleted")
+				delete stat_copy[parameter][key]
+				}
+			}
+	}, this)	
+
+	return stat_copy
+}
+
 function plotlc(fold, parameter, stat, lcfolder)
 {
 	console.mlog("plotlc: fold: "+fold+" parameter:"+parameter+" stat:"+_.keys(stat))
+	console.mlog("plotlc: "+JSON.stringify(stat, null, 4))
 	
 	if (_.keys(stat).length == 0)
 		throw new Error("plotlc: stat is empty")
 
+	stat = unifyX(parameter, stat)
 
 	latexplot(fold, parameter, stat, lcfolder)
 
