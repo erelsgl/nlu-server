@@ -92,8 +92,7 @@ function extractGlobal(workerstats, stat)
 	var classifiers = workerstats["classifiers"]
 	var fold = workerstats["fold"]
 
-//	console.vlog("DEBUGMASTER: workerstats: "+JSON.stringify(workerstats, null, 4))
-//	console.log("DEBUGMASTER: clas:"+classifiers)
+	console.mlog("extractGlobal: attributes: "+attributes+" trainsize:"+trainsize+" classifier:"+classifier+" classifiers: "+classifiers+" fold:"+fold)
 
 	_.each(attributes, function(attr, key, list){ 
 	//	if (!_.isNull(workerstats['stats'][attr]))
@@ -114,13 +113,10 @@ function extractGlobal(workerstats, stat)
 
 			}, this)
 	
-//			console.log("DEBUGMASTER: stat: "+JSON.stringify(stat, null, 4))
-			
 			stat[attr][trainsize][classifier][fold] = workerstats['stats'][attr]
 			stat[attr][trainsize]["dial"][fold] = workerstats["trainsizeuttr"]
 	//	}
 	}, this)
-//	console.vlog("DEBUGMASTER: GLOBALSTAT: "+JSON.stringify(stat, null, 4))
 }
 
 
@@ -412,22 +408,30 @@ function latexplot(fold, parameter, stat, lcfolder)
 
 function unifyX(parameter, stat)
 {
-	var val = -1
+	var val = []
 	stat_copy = JSON.parse(JSON.stringify(stat))
 
+	console.mlog("unifyX: parameter: "+parameter)
 	_.each(stat_copy[parameter], function(value, key, list){
-		var clas = _.keys(value)[0]
+		// key is the size
+		// value {
+		//         "dial": { "0": 5, "1": 5 },
+		//         "Natural_SVM": { "0": 0.9889135254988913, "1": 0.9747474747474747 }
+		//       }
+		var classs = _.without(_.keys(value), "dial")
+		if (classs.length == 0) throw new Error("anomaly")
+		var clas = classs[0]
 
-		if (val == -1)
-			val = _.keys(value[clas]).length
+		if (val.length == 0)
+			val = _.keys(value[clas])
 		else
 			{
-			console.mlog("unifyX: key: "+ key +" current clas: "+clas + " max num of folds: "+val+ " current num: "+_.keys(value[clas]).length)
+			console.mlog("unifyX: key: "+ key +" current clas: "+clas + " max num of folds: "+val+ " current num: "+_.keys(value[clas]))
 				
-			if (_.keys(value[clas]).length > val)
+			if (_.keys(value[clas]).length > val.length)
 				throw new Error("anomaly")
 
-			if (_.keys(value[clas]).length < val)
+			if (_.keys(value[clas]).length < val.length)
 				{
 				console.mlog("unifyX: key: "+ key +" current clas: " + clas + " deleted")
 				delete stat_copy[parameter][key]
