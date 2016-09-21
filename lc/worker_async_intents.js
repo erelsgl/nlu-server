@@ -35,11 +35,11 @@ if (cluster.isWorker)
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
 
-	var index = 0
+	var index = 5
 
 	async.whilst(
-	    //function () { return index < train.length },
-	    function () { return index < 70 },
+	    function () { return index < train.length },
+	    //function () { return index < 70 },
 	    function (callbackwhilst) {
 
 		async.waterfall([
@@ -47,10 +47,11 @@ if (cluster.isWorker)
 
         		//if (index == 0) index = 3
 			//if (index < 10) index +=1
-			index += 5
 	
     		var mytrain = train.slice(0, index)
-			var mytrainex = JSON.parse(JSON.stringify(mytrain))
+		index += 5
+	
+		var mytrainex = JSON.parse(JSON.stringify(mytrain))
     		var mytestex = JSON.parse(JSON.stringify(test))
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
@@ -118,7 +119,7 @@ if (cluster.isMaster)
 	var classifiers = [ "Natural_SVM", "Natural_RF", "Natural_ADA" ]
 
 	
-	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
+	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin.json")))
  	var utterset1 = bars.getsetcontext(data1, false)
 	var train1 = utterset1["train"].concat(utterset1["test"])
 

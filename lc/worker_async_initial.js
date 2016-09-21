@@ -34,21 +34,22 @@ if (cluster.isWorker)
 		var test  = _.flatten(JSON.parse(message['test']))
 */
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " classifier "+classifier)
-	var index = 0
+	var index = 1
 
 	async.whilst(
 	    function () { return index < train.length },
 	    //function () { return index < 70 },
 	    function (callbackwhilst) {
 
-		if (index<10)
+	/*if (index<10)
 			{ index += 1} 
 		else if (index<20)
 			{ index += 5 }
 		else index += 5
-
+*/
 // on dialogue level
 	    var mytrain = bars.copyobj(train.slice(0, index))
+	    index += 1
 	   // var mytrainex =  bars.processdataset(_.flatten(mytrain), {"intents": true, "filter":true})
 	    var mytestex  = []
 		var mytrainex = []
@@ -150,7 +151,7 @@ if (cluster.isWorker)
 					'stats': bars.compactStats(global_stats)
 				}
 
-				console.mlog("worker send message: "+JSON.stringify(results, null, 4))
+//				console.mlog("worker send message: "+JSON.stringify(results, null, 4))
 
 				process.send(JSON.stringify(results))
 		   		callbackwhilst()
@@ -174,32 +175,37 @@ if (cluster.isMaster)
 	var statt = {}
 
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
-	var classifiers = [ "Natural", "Natural+Context", "Component", "Component+Context" ]
+	//var classifiers = [ "Natural", "Natural+Context", "Component", "Component+Context" ]
 	
+	var classifiers = [ "Natural_SVM", "Natural_ADA", "Natural_RF", "Component" ]
+	
+
 	cluster.setupMaster({
   	exec: __filename,
 	// args: [JSON.stringify({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len})],
 	// silent: false
 	});
 
-		var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json"))
+		var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin.json"))
 		console.mlog("number of unprocessed dialogues: "+data.length)
 
 		var utterset = bars.getsetcontext(data)
 		var dataset = utterset["train"].concat(utterset["test"])
 			
-		_.each(classifiers, function(classifier, key, list){ 
-			_(folds).times(function(fold){
+		_(folds).times(function(fold){
+			
+			var data = partitions.partitions_consistent_by_fold(bars.copyobj(dataset), folds, fold)
+			_.each(classifiers, function(classifier, key, list){ 
 			
 				var worker = cluster.fork({ 'fold': fold, 'classifier':classifier })
 				console.mlog("start worker")
 				
-				var data = partitions.partitions_consistent_by_fold(bars.copyobj(dataset), folds, fold)
+			//	var data = partitions.partitions_consistent_by_fold(bars.copyobj(dataset), folds, fold)
 				console.mlog("DEBUGMASTER: classifier: "+classifier+" fold: "+ fold + " train size "+data.train.length + " test size " + data.test.length+" process: "+worker.process.id)
 
 				worker.send({ 		
-						'train': JSON.stringify(data.train), 
-						'test': JSON.stringify(data.test)
+						'train': JSON.stringify(data.test), 
+						'test': JSON.stringify(data.train)
 						})
 
 				worker.on('disconnect', function(){
@@ -214,7 +220,7 @@ if (cluster.isMaster)
 				worker.on('message', function(message){
 					var workerstats = JSON.parse(message)
 					workerstats['classifiers'] = classifiers
-					console.mlog("DEBUGMASTER: on message: "+message)
+					//console.mlog("DEBUGMASTER: on message: "+message)
 					lc.extractGlobal(workerstats, statt)
 				})
 			})
