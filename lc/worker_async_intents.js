@@ -115,8 +115,9 @@ if (cluster.isMaster)
 
 //	var classifiers = ["Unigram", "Unigram_Lemma", "Unigram+Context", "Unigram_Lemma+Context", "Unigram+Context+Neg", 'Unigram+Neg']
 //	var classifiers = [ "Unigram", "Unigram+Context", "Unigram+Neg", "Unigram+Context+Neg" ]
+	var classifiers = [ "Unigram", "Unigram+Context", "Context" ]
 //	var classifiers = [ "Natural_Neg", "Natural_Neg_Svm" ]
-	var classifiers = [ "Natural_SVM", "Natural_RF", "Natural_ADA" ]
+//	var classifiers = [ "Natural_SVM_Context", "Natural_RF_Context", "Natural_ADA_Context" ]
 
 	
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin.json")))
