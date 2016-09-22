@@ -92,7 +92,7 @@ function extractGlobal(workerstats, stat)
 	var classifiers = workerstats["classifiers"]
 	var fold = workerstats["fold"]
 
-	console.mlog("extractGlobal: attributes: "+attributes+" trainsize:"+trainsize+" classifier:"+classifier+" classifiers: "+classifiers+" fold:"+fold)
+//	console.mlog("extractGlobal: attributes: "+attributes+" trainsize:"+trainsize+" classifier:"+classifier+" classifiers: "+classifiers+" fold:"+fold)
 
 	_.each(attributes, function(attr, key, list){ 
 	//	if (!_.isNull(workerstats['stats'][attr]))
@@ -412,6 +412,8 @@ function unifyX(parameter, stat)
 	stat_copy = JSON.parse(JSON.stringify(stat))
 
 	console.mlog("unifyX: parameter: "+parameter)
+	console.mlog("unifyX: "+JSON.stringify(stat_copy[parameter], null, 4))
+	
 	_.each(stat_copy[parameter], function(value, key, list){
 		// key is the size
 		// value {
@@ -423,7 +425,10 @@ function unifyX(parameter, stat)
 		var clas = classs[0]
 
 		if (val.length == 0)
+			{
+			console.mlog("unifyX: first time: key: " + key +" " + JSON.stringify(value, null, 4))
 			val = _.keys(value[clas])
+			}
 		else
 			{
 			console.mlog("unifyX: key: "+ key +" current clas: "+clas + " max num of folds: "+val+ " current num: "+_.keys(value[clas]))
@@ -450,7 +455,7 @@ function plotlc(fold, parameter, stat, lcfolder)
 	if (_.keys(stat).length == 0)
 		throw new Error("plotlc: stat is empty")
 
-	stat = unifyX(parameter, stat)
+	//stat = unifyX(parameter, stat)
 
 	latexplot(fold, parameter, stat, lcfolder)
 
