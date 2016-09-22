@@ -37,7 +37,7 @@ if (cluster.isWorker)
 	var index = 1
 
 	async.whilst(
-	    function () { return index < train.length },
+	    function () { return index <= train.length },
 	    //function () { return index < 70 },
 	    function (callbackwhilst) {
 
@@ -151,7 +151,7 @@ if (cluster.isWorker)
 					'stats': bars.compactStats(global_stats)
 				}
 
-//				console.mlog("worker send message: "+JSON.stringify(results, null, 4))
+				console.mlog("worker send message: "+JSON.stringify(results, null, 4))
 
 				process.send(JSON.stringify(results))
 		   		callbackwhilst()
@@ -177,7 +177,7 @@ if (cluster.isMaster)
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	//var classifiers = [ "Natural", "Natural+Context", "Component", "Component+Context" ]
 	
-	var classifiers = [ "Natural_SVM", "Natural_ADA", "Natural_RF", "Component" ]
+	var classifiers = [ "Natural_SVM", "Natural_ADA", "Natural_RF", "Component", "Component+Context", "Natural_SVM_Context", "Natural_ADA_Context", "Natural_RF_Context" ]
 	
 
 	cluster.setupMaster({
