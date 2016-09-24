@@ -234,3 +234,17 @@ if (stand)
 	console.log(JSON.stringify(data, null, 4))
 	process.exit(0)
 }
+
+if (dist)
+{
+       var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.gold.final.std.json"))
+
+       var dst = _.countBy(data, function(num) {return num["output"][0] });
+       console.log(JSON.stringify(dst, null, 4))
+       data = _.filter(data, function(num){ return ["Yesanswers", "Conventionalclosing", "Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate"].indexOf(num[
+
+       var dst = _.countBy(data, function(num) {return num["output"][0] });
+       console.log(JSON.stringify(dst, null, 4))
+       console.log(JSON.stringify(data.length, null, 4))
+}
+
