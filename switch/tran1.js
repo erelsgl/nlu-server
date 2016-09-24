@@ -23,7 +23,7 @@
 		French:"fr",
 		German:"de",
 		Portuguese: "pt",
-		//Hebrew:"he",
+		Hebrew:"he",
 		Arabic:"ar",
 		Russian:"ru",
 		Chinese:"zh",
