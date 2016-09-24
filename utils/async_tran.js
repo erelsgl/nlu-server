@@ -21,31 +21,43 @@ console.vlog = function(data) {
 function translate(engine, fromln, toln, text, callback)
 {
   var translated = ""
+  var buffer_tran = {}
+  var command_string = engine+"_"+fromln+"_"+toln+"_"+text
+
   console.vlog("DEBUGTRAN: inside: engine:"+engine+" fromln:"+fromln+" toln:"+toln+" text:"+text)
+
   async.series([
+    
     function(callback){
-        if(["yandex","Y","y"].indexOf(engine)!=-1) {
+        buffer_tran = JSON.parse(fs.readFileSync(__dirname+"/buffer_tran.json"))
+        if (command_string in buffer_tran)
+        {
+          console.log("LOADED") 
+          translated = buffer_tran[command_string]
+          callback(null, null);
+        }
+        else
+          callback(null, null);          
+    },
+    function(callback){
+        if ((["yandex","Y","y"].indexOf(engine)!=-1) && (translated == "")) {
 			    yandex.translate(text, { to: toln, from: fromln }, function(err, res) {
 				    translated = res.text[0]
           	callback(null, null);
-			});
-	    } else {
-          callback(null, null);
-        }
+			    });
+	      } else callback(null, null)
     },
     function(callback){
-        if(["microsoft", "M", "m"].indexOf(engine)!=-1) {
+        if ((["microsoft", "M", "m"].indexOf(engine)!=-1) && (translated == "")) {
         	microsoft.translate({ text:  text, from: fromln, to: toln }, function(err, data) {
-				translated = data
-          		callback(null, null);
-			});
-        } else {
-          callback(null, null);
-        }
+				    translated = data
+          	callback(null, null);
+			    });
+        } else callback(null, null)
     },
   function(callback){
 
-        if(["google", "g", "G"].indexOf(engine)!=-1) {
+        if ((["google", "g", "G"].indexOf(engine)!=-1) && (translated == "")) {
 
           var map = {
             "he": "iw",
@@ -69,11 +81,12 @@ function translate(engine, fromln, toln, text, callback)
 	       	  }).catch(err => {
     		  	 console.error(err);
 		        })
-          } else {
-            callback(null, null);
-          }
+          } else callback(null, null)
     }
 ], function () {
+
+    buffer_tran[command_string] = translated
+    fs.writeFileSync(__dirname+"/buffer_tran.json", JSON.stringify(buffer_tran, null, 4))
     console.vlog("DEBUGTRAN: inside: "+translated)
     callback(null, translated)
 })
