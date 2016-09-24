@@ -1,5 +1,6 @@
 var async = require('async');
 
+const translate = require('google-translate-api');
 var microsoftT = require('mstranslator');
 
 var fs = require('fs')
@@ -45,12 +46,21 @@ function translate(engine, fromln, toln, text, callback)
   function(callback){
 	
         if(["google", "g", "G"].indexOf(engine)!=-1) {
-                googleTranslate.translate(text, fromln, toln, function(err, data) {
+/*                googleTranslate.translate(text, fromln, toln, function(err, data) {
 				console.log(err)
 				console.log(data)
                                 translated = data.translatedText
                         callback(null, null);
                         });
+*/
+
+
+		translate(text, {from: fromln, to: toln}).then(res => {
+   			 console.log(res.text);
+			translated = res.text
+		}).catch(err => {
+    			console.error(err);
+		})
         } else {
           callback(null, null);
         }
