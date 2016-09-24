@@ -85,12 +85,10 @@ node utils/async_tran.js 'microsoft' 'microsoft' 'de' 'I am starting doing stuff
 
 function tran(engine1, ln, engine2, text, callback)
 {
-	console.vlog("DEBUGTRAN: engine1: "+engine1+ " engine2:"+ engine2+" ln:"+ln)
-	console.vlog("DEBUGTRAN: text: "+text)
+	console.log("DEBUGTRAN: engine1: "+engine1+ " engine2:"+ engine2+" ln:"+ln+" text:"+text)
 	translate(engine1, 'en', ln, text, function(err, translated){
-  		console.vlog("DEBUGTRAN: err: "+err+" to: "+translated) 
+  		console.log("DEBUGTRAN: err: "+err+" to: "+translated) 
   		translate(engine2, ln, 'en', translated, function(err, result){
-   			console.vlog("DEBUGTRAN: back: "+result)
     			console.log(result)
 			callback(null, result)
   		})

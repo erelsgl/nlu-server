@@ -10,9 +10,9 @@
 
 	var norma = false
 	var correlation = false
-	var parsing = false
+	var parsing = true
 	var convert = false
-	var stand = true
+	var stand = false
 
 	function generator()
 	{
@@ -30,12 +30,13 @@
 		Finish:"fi",
 		}
 
-		var sys = { "yandex": "Y", "microsoft": "M", "google": "G" }
+		//var sys = { "yandex": "Y", "microsoft": "M", "google": "G" }
+		var sys = { "google": "G", "microsoft": "M" }
 
 		_.each(sys, function(engine1liter, engine1, list){
 			_.each(sys, function(engine2liter, engine2, list){
 				_.each(lang, function(ln, lnkey, list){
-					if (engine1liter == engine2liter)						
+					//if (engine1liter != engine2liter)						
 	    					output.push({
 	    						'engine1':engine1liter,
 	    						'ln':ln,
@@ -50,10 +51,15 @@
 	
 if (parsing)
 {	
-	var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.json"))
+	//var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.json"))
+	var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.gold.final.std.json"))
 	
 	async.eachOfSeries(data, function(value, keyd, callback2){ 
-		var trans = {}
+		
+			var trans = {}
+			if ("trans" in value["input"])
+                        	trans = value["input"]["trans"]     
+                        else throw new Error("anomaly")
 
 			async.eachOfSeries(generator(), function(composition, key, callback3){ 
 
@@ -62,13 +68,9 @@ if (parsing)
 	    			var engine2 = composition["engine2"]
 	    			var ln = composition["ln"]
 
-					if ("trans" in value)
-						if (compkey in value["trans"])
-							trans[compkey] = value["trans"][compkey]
-					
 					if (!(compkey in trans))
 					{
-						async_tran.tran(engine1, ln, engine2, value["utt"], function(err, out){
+						async_tran.tran(engine1, ln, engine2, value["input"]["text"], function(err, out){
 							out = out.replace(/\n$/, '')
 							trans[compkey] = out
 							callback3()
@@ -79,7 +81,7 @@ if (parsing)
 					callback3()	
 
 			}, function(err){
-				data[keyd]["trans"] = JSON.parse(JSON.stringify(trans))
+				data[keyd]["input"]["trans"] = JSON.parse(JSON.stringify(trans))
 				fs.writeFileSync("./buffer_dial_switch2.json", JSON.stringify(data, null, 4))
 				callback2()
 			})
@@ -232,3 +234,17 @@ if (stand)
 	console.log(JSON.stringify(data, null, 4))
 	process.exit(0)
 }
+
+if (dist)
+{
+       var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.gold.final.std.json"))
+
+       var dst = _.countBy(data, function(num) {return num["output"][0] });
+       console.log(JSON.stringify(dst, null, 4))
+       data = _.filter(data, function(num){ return ["Yesanswers", "Conventionalclosing", "Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate"].indexOf(num[
+
+       var dst = _.countBy(data, function(num) {return num["output"][0] });
+       console.log(JSON.stringify(dst, null, 4))
+       console.log(JSON.stringify(data.length, null, 4))
+}
+
