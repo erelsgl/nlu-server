@@ -13,6 +13,7 @@
 	var parsing = true
 	var convert = false
 	var stand = false
+	var dist = false
 
 	function generator()
 	{
@@ -22,7 +23,7 @@
 		French:"fr",
 		German:"de",
 		Portuguese: "pt",
-		Hebrew:"he",
+		//Hebrew:"he",
 		Arabic:"ar",
 		Russian:"ru",
 		Chinese:"zh",
@@ -237,14 +238,13 @@ if (stand)
 
 if (dist)
 {
-       var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.gold.final.std.json"))
+      // var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.gold.final.std.json"))
+    //   var dst = _.countBy(data, function(num) {return num["output"][0] });
+  //     console.log(JSON.stringify(dst, null, 4))
+//       data = _.filter(data, function(num){ return ["Yesanswers", "Conventionalclosing", "Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate"].indexOf(num[
 
-       var dst = _.countBy(data, function(num) {return num["output"][0] });
-       console.log(JSON.stringify(dst, null, 4))
-       data = _.filter(data, function(num){ return ["Yesanswers", "Conventionalclosing", "Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate"].indexOf(num[
-
-       var dst = _.countBy(data, function(num) {return num["output"][0] });
-       console.log(JSON.stringify(dst, null, 4))
-       console.log(JSON.stringify(data.length, null, 4))
+//       var dst = _.countBy(data, function(num) {return num["output"][0] });
+  //     console.log(JSON.stringify(dst, null, 4))
+    //   console.log(JSON.stringify(data.length, null, 4))
 }
 
