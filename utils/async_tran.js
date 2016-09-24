@@ -1,6 +1,6 @@
 var async = require('async');
 
-const translate = require('google-translate-api');
+const translategoo = require('google-translate-api');
 var microsoftT = require('mstranslator');
 
 var fs = require('fs')
@@ -55,9 +55,10 @@ function translate(engine, fromln, toln, text, callback)
 */
 
 
-		translate(text, {from: fromln, to: toln}).then(res => {
+		translategoo(text, {from: fromln, to: toln}).then(res => {
    			 console.log(res.text);
 			translated = res.text
+			callback(null, null);
 		}).catch(err => {
     			console.error(err);
 		})
