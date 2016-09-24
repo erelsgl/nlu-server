@@ -44,27 +44,34 @@ function translate(engine, fromln, toln, text, callback)
         }
     },
   function(callback){
-	
+
         if(["google", "g", "G"].indexOf(engine)!=-1) {
-/*                googleTranslate.translate(text, fromln, toln, function(err, data) {
-				console.log(err)
-				console.log(data)
-                                translated = data.translatedText
-                        callback(null, null);
-                        });
+
+          var map = {
+            "he": "iw",
+            "zh": "zh-cn"
+          }
+
+          if (fromln in map) fromln = map[fromln]
+          if (toln in map) toln = map[toln]
+/*   
+          googleTranslate.translate(text, fromln, toln, function(err, data) {
+  				  console.log(err)
+            console.log(data)
+            translated = data.translatedText
+            callback(null, null);
+          });
 */
-
-
-		translategoo(text, {from: fromln, to: toln}).then(res => {
-   			 console.log(res.text);
-			translated = res.text
-			callback(null, null);
-		}).catch(err => {
-    			console.error(err);
-		})
-        } else {
-          callback(null, null);
-        }
+		      translategoo(text, {from: fromln, to: toln}).then(res => {
+   			    console.log(res.text);
+			      translated = res.text
+			      callback(null, null);
+	       	  }).catch(err => {
+    		  	 console.error(err);
+		        })
+          } else {
+            callback(null, null);
+          }
     }
 ], function () {
     console.vlog("DEBUGTRAN: inside: "+translated)
