@@ -5,11 +5,11 @@ var microsoftT = require('mstranslator');
 
 var fs = require('fs')
 var keys = JSON.parse(fs.readFileSync(__dirname+"/keys.json"))
-var baidu = require('./baidu');
+var baidu = require(__dirname+'/baidu');
 
 var yandex = require('yandex-translate')(keys.yandex); 
 var microsoft = new microsoftT({
-    client_id: "abcbcaacb", 
+    client_id: "aaasdccc", 
     client_secret: keys.microsoft
 }, true);
 
@@ -26,7 +26,7 @@ function translate(engine, fromln, toln, text, callback)
   var translated = ""
   var command_string = engine+"_"+fromln+"_"+toln+"_"+text
 
-  console.vlog("DEBUGTRAN: inside: engine:"+engine+" fromln:"+fromln+" toln:"+toln+" text:"+text)
+  console.log("DEBUGTRAN: inside: engine:"+engine+" fromln:"+fromln+" toln:"+toln+" text:"+text)
 
   async.series([
     
@@ -43,6 +43,7 @@ function translate(engine, fromln, toln, text, callback)
     },
     function(callback){
         if ((["yandex","Y","y"].indexOf(engine)!=-1) && (translated == "")) {
+		console.log("yandex")
 			    yandex.translate(text, { to: toln, from: fromln }, function(err, res) {
 				    translated = res.text[0]
           	callback(null, null);
@@ -51,6 +52,7 @@ function translate(engine, fromln, toln, text, callback)
     },
     function(callback){
         if ((["microsoft", "M", "m"].indexOf(engine)!=-1) && (translated == "")) {
+		console.log("microsoft")
         	microsoft.translate({ text:  text, from: fromln, to: toln }, function(err, data) {
 				    translated = data
           	callback(null, null);
@@ -59,12 +61,13 @@ function translate(engine, fromln, toln, text, callback)
     },
     function(callback){
        if ((["baidu", "B", "b"].indexOf(engine)!=-1) && (translated == "")) {
-        var map = { "fr": "fra", "fi": "fin", "ar": "ara" }
+	console.log("baidu")
+        var map = { "fr": "fra", "fi": "fin", "ar": "ara", "es": "spa", "ja": "jp" }
         if (fromln in map) fromln = map[fromln]
         if (toln in map) toln = map[toln]
       
         baidu({from: fromln, to: toln, query: text}, function(result) {
-          console.log(result)
+        //  console.log(result)
           translated = result
           callback(null, null)  
         })
@@ -74,6 +77,7 @@ function translate(engine, fromln, toln, text, callback)
 
         if ((["google", "g", "G"].indexOf(engine)!=-1) && (translated == "")) {
 
+		console.log("google")
           var map = { "he": "iw", "zh": "zh-cn" }
 
           if (fromln in map) fromln = map[fromln]
@@ -87,7 +91,7 @@ function translate(engine, fromln, toln, text, callback)
           });
 */
 		      translategoo(text, {from: fromln, to: toln}).then(res => {
-   			    console.log(res.text);
+   			  //  console.log(res.text);
 			      translated = res.text
 			      callback(null, null);
 	       	  }).catch(err => {
@@ -105,7 +109,7 @@ function translate(engine, fromln, toln, text, callback)
     if (min%5==0)
       fs.writeFileSync(__dirname+"/buffer_tran.json", JSON.stringify(buffer_tran, null, 4))
     
-    console.vlog("DEBUGTRAN: inside: "+translated)
+    console.log("DEBUGTRAN: inside: "+translated)
     callback(null, translated)
 })
 }
@@ -124,11 +128,11 @@ node utils/async_tran.js 'microsoft' 'microsoft' 'de' 'I am starting doing stuff
 
 function tran(engine1, ln, engine2, text, callback)
 {
-	console.log("DEBUGTRAN: engine1: "+engine1+ " engine2:"+ engine2+" ln:"+ln+" text:"+text)
+//	console.log("DEBUGTRAN: engine1: "+engine1+ " engine2:"+ engine2+" ln:"+ln+" text:"+text)
 	translate(engine1, 'en', ln, text, function(err, translated){
-  		console.log("DEBUGTRAN: err: "+err+" to: "+translated) 
+  		//console.log("DEBUGTRAN: err: "+err+" to: "+translated) 
   		translate(engine2, ln, 'en', translated, function(err, result){
-    			console.log(result)
+    		//	console.log(result)
 			callback(null, result)
   		})
 	})
