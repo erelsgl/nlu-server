@@ -27,10 +27,9 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 
-
 var signif = false
 // output the blue average
-var correlation = false
+var correlation = true
 
 var latex_plot = false
 
@@ -72,7 +71,7 @@ var finalization = false
 var simple_naive_test_train = false
 
 //  the same but to calculate intents
-var simple_naive_intent_test_train_intents = true
+var simple_naive_intent_test_train_intents = false
 
 // check the accuracy of regular expression identification
 var check_regexp = false
@@ -126,7 +125,10 @@ var do_serialization = false
 var verbosity = 0;
 var explain = 0;
 
+
 var classifier = require(__dirname+'/classifiers')
+
+console.log(JSON.stringify(, null, 4))
 
 var regexpNormalizer = ftrs.RegexpNormalizer(
 		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json')));
@@ -310,9 +312,31 @@ console.log("if "+ a + " > "+ b)
 if (correlation)
 {
 	var lang = {}
+	var division = {
+		'de':0,
+		'fr':0,
+		'pt':0,
+
+		'he':1,
+		'es':1,
+		'ar':1,
+		
+		'zh':2,
+		'hu':2,
+		'fi':2,
+	}
+
+	var cluster = {
+		0:[],
+		1:[],
+		2:[]
+	}
+
+	var total_ln={}
 
 	// among all language MM for some reason  
-  	var omitlang = ["ar", "es"]
+  	// var omitlang = ["ar", "es"]
+  	var omitlang = []
 
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
 
@@ -331,8 +355,8 @@ if (correlation)
 							var engine1 = key.substr(0,1)
 							var engine2 = key.substr(-1,1)
 							
-							var par = engine1+engine2
-							// var par = ln
+							// var par = engine1+engine2
+							var par = ln
 
 							if (omitlang.indexOf(ln)==-1)
 							{
@@ -345,19 +369,28 @@ if (correlation)
 							    // var language = key.substr(2,2)
 
 								if (!(par in lang))
-									// lang[par] = {}
-									lang[par] = []
+									lang[par] = {}
+
+								if (!(par in total_ln))
+									total_ln[par] = []
 
 
-								// if (intents.length == 1)
-								// {	
-
-									// if (!(intents[0] in lang[par]))
-									// lang[par][intents[0]] = [] 
+								/*var dst1 = bars.distances(text, turn["input"]["text"])
+								if (!isNaN(parseFloat(dst1)) && isFinite(dst1))
+									{
+										total_ln[par].push(dst1)
+		   							
+									if (par in division)
+										cluster[division[par]].push(dst1)
+									}	
+*/
+								if ((intents.length == 1) && (turn["input"]["sentences"].length == 1))
+								{	
+									if (!(intents[0] in lang[par]))
+									lang[par][intents[0]] = [] 
 
 									var dst = bars.distances(text, turn["input"]["text"])
-		   							// temp[par] = dst
-
+		   							
 		   							if (isNaN(parseFloat(dst)) || !isFinite(dst))
 		   								{
 		   								console.log("FUCK")
@@ -366,9 +399,12 @@ if (correlation)
 		   								console.log(dst)
 		   								}
 		   							else
-										lang[par].push(dst)
-										// lang[par][intents[0]].push(dst)
-								// }
+		   								{	
+										// lang[par].push(dst)
+										lang[par][intents[0]].push(dst)
+										total_ln[par].push(dst)
+										}
+								}
 							}
 						
 						}, this)
@@ -388,16 +424,41 @@ if (correlation)
 
 	}, this)
 
-	var aver = {}
+	console.log(JSON.stringify(lang, null, 4))
 
-	_.each(lang, function(value, ln, list){
-		aver[ln] = distances.average(value)
+	var lang_copy = JSON.parse(JSON.stringify(lang))
+
+	_.each(lang_copy, function(value, ln, list){
+		_.each(value, function(value1, intent, list){
+			lang_copy[ln][intent] = distances.average(value1)
+		}, this)
 	}, this)
 
-	var arr = _.pairs(aver)
-	arr = _.sortBy(arr, function(num){ return num[1] });
+	var total = {}
+	_.each(lang_copy, function(value, ln, list){
+		var buf = []
+		_.each(value, function(value1, intent, list){
+			buf = buf.concat(value1)
+			// lang_copy[ln][intent] = distances.average(value1)
+		}, this)
+		total[ln] = distances.average(_.flatten(buf))
+	}, this)
 
-	console.log(JSON.stringify(arr, null, 4))
+	total = _.pairs(total)
+	total = _.sortBy(total, function(num){ return num[1] });
+
+	// _.each(cluster, function(value, key, list){
+		// cluster[key] = distances.average(_.flatten(value))
+	// }, this)
+	
+	_.each(total_ln, function(value, key, list){
+		total_ln[key] = distances.average(_.flatten(value))
+	}, this)
+
+	console.log(JSON.stringify(lang_copy, null, 4))
+	console.log(JSON.stringify(_.sortBy(_.pairs(total_ln), function(num){ return num[1] }), null, 4))
+	// console.log(JSON.stringify(cluster, null, 4))
+	
 	process.exit(0)
 }
 
@@ -568,7 +629,6 @@ if (check_num_dial_utt)
 	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
 	var utterset = bars.getsetcontext(data, false)
 	var dialogues = utterset["test"].concat(utterset["train"])
-
 
 
 	console.log(dialogues.length)
