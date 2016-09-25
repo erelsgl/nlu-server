@@ -29,10 +29,16 @@
 		Chinese:"zh",
 		Hungarian:"hu",
 		Finish:"fi",
+
+		Spanish:"es",
+		Italian: "it",
+		Poland: "pl",
+		Dutch: "nl",
+		Japanese: "jp"
 		}
 
 		//var sys = { "yandex": "Y", "microsoft": "M", "google": "G" }
-		var sys = { "google": "G", "microsoft": "M" }
+		var sys = { "google": "G", "yandex": "Y" }
 
 		_.each(sys, function(engine1liter, engine1, list){
 			_.each(sys, function(engine2liter, engine2, list){
@@ -55,7 +61,7 @@ if (parsing)
 	//var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.json"))
 	var data = JSON.parse(fs.readFileSync("./buffer_dial_switch2.gold.final.std.json"))
 	
-	async.eachOfSeries(data, function(value, keyd, callback2){ 
+		async.eachOfSeries(data, function(value, keyd, callback2){ 
 		
 			var trans = {}
 			if ("trans" in value["input"])
@@ -77,9 +83,16 @@ if (parsing)
 							callback3()
 						})
 					}
+					else if (trans[compkey].indexOf("TranslateApiException")!=-1)
+					{
+						async_tran.tran(engine1, ln, engine2, value["input"]["text"], function(err, out){
+							out = out.replace(/\n$/, '')
+							trans[compkey] = out
+							callback3()
+						})	
+					}
 					else
-
-					callback3()	
+						callback3()	
 
 			}, function(err){
 				data[keyd]["input"]["trans"] = JSON.parse(JSON.stringify(trans))
@@ -89,7 +102,6 @@ if (parsing)
 	}, 
 		function(err){
 	})
-
 }
 
 if (correlation)
