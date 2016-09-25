@@ -17,6 +17,7 @@ var trainutils = require('./utils/bars')
 var wikipedia = require('./utils/wikipedia')
 var bars = require('./utils/bars')
 var distance = require('./utils/distance')
+var async_tran = require('./utils/async_tran')
 var rules = require("./research/rule-based/rules.js")
 var cheapest_paths = require('limdu/node_modules/graph-paths').cheapest_paths;
 var natural = require('natural');
@@ -127,8 +128,6 @@ var explain = 0;
 
 
 var classifier = require(__dirname+'/classifiers')
-
-console.log(JSON.stringify(, null, 4))
 
 var regexpNormalizer = ftrs.RegexpNormalizer(
 		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json')));
@@ -482,11 +481,11 @@ function generator()
 		Italian: "it",
 		Poland: "pl",
 		Dutch: "nl",
-		Japanese: "jp"
+		Japanese: "ja"
 		}
 
-		var sys = { "yandex": "Y", "microsoft": "M", "google": "G" }
-		// var sys = { "google": "G", "yandex": "Y" }
+//		var sys = { "yandex": "Y", "microsoft": "M", "google": "G" }
+		var sys = { "microsoft": "M", "google": "G", "yandex": "Y", "baidu": "B" }
 
 		_.each(sys, function(engine1liter, engine1, list){
 			_.each(sys, function(engine2liter, engine2, list){
@@ -513,7 +512,7 @@ if (make_tr)
 	
 		async.eachOfSeries(dialogue["turns"], function(value, keyt, callback2){ 
 	
-			if (turn.role == "Employer")
+			if (value["role"] == "Employer")
 			{
 
 				var trans = {}
@@ -548,8 +547,8 @@ if (make_tr)
 						callback3()	
 
 				}, function(err){
-					data[keyd][keyt]["input"]["trans"] = JSON.parse(JSON.stringify(trans))
-					// fs.writeFileSync("./buffer_dial_switch2.json", JSON.stringify(data, null, 4))
+					value["input"]["trans"] = JSON.parse(JSON.stringify(trans))
+					fs.writeFileSync("/tmp/buffer_dial_gl.json", JSON.stringify(data, null, 4))
 					callback2()
 				})
 			}
@@ -560,9 +559,11 @@ if (make_tr)
 			fs.writeFileSync("/tmp/buffer_dial_gl.json", JSON.stringify(data, null, 4))
 			callback1()
 		})
-	
+	}, function(err){
 	console.log(JSON.stringify(data, null, 4))
 	process.exit(0)	
+            })
+	
 }
 
 
