@@ -5,6 +5,7 @@ var microsoftT = require('mstranslator');
 
 var fs = require('fs')
 var keys = JSON.parse(fs.readFileSync(__dirname+"/keys.json"))
+var baidu = require('./baidu');
 
 var yandex = require('yandex-translate')(keys.yandex); 
 var microsoft = new microsoftT({
@@ -18,10 +19,11 @@ console.vlog = function(data) {
   fs.appendFileSync("/tmp/logs/tran", data + '\n', 'utf8')
 };
 
+var buffer_tran = JSON.parse(fs.readFileSync(__dirname+"/buffer_tran.json"))
+
 function translate(engine, fromln, toln, text, callback)
 {
   var translated = ""
-  var buffer_tran = {}
   var command_string = engine+"_"+fromln+"_"+toln+"_"+text
 
   console.vlog("DEBUGTRAN: inside: engine:"+engine+" fromln:"+fromln+" toln:"+toln+" text:"+text)
@@ -29,7 +31,7 @@ function translate(engine, fromln, toln, text, callback)
   async.series([
     
     function(callback){
-        buffer_tran = JSON.parse(fs.readFileSync(__dirname+"/buffer_tran.json"))
+
         if (command_string in buffer_tran)
         {
           console.log("LOADED") 
@@ -55,14 +57,24 @@ function translate(engine, fromln, toln, text, callback)
 			    });
         } else callback(null, null)
     },
-  function(callback){
+    function(callback){
+       if ((["baidu", "B", "b"].indexOf(engine)!=-1) && (translated == "")) {
+        var map = { "fr": "fra", "fi": "fin", "ar": "ara" }
+        if (fromln in map) fromln = map[fromln]
+        if (toln in map) toln = map[toln]
+      
+        baidu({from: fromln, to: toln, query: text}, function(result) {
+          console.log(result)
+          translated = result
+          callback(null, null)  
+        })
+      } else callback(null, null)
+    },
+    function(callback){
 
         if ((["google", "g", "G"].indexOf(engine)!=-1) && (translated == "")) {
 
-          var map = {
-            "he": "iw",
-            "zh": "zh-cn"
-          }
+          var map = { "he": "iw", "zh": "zh-cn" }
 
           if (fromln in map) fromln = map[fromln]
           if (toln in map) toln = map[toln]
@@ -86,7 +98,13 @@ function translate(engine, fromln, toln, text, callback)
 ], function () {
 
     buffer_tran[command_string] = translated
-    fs.writeFileSync(__dirname+"/buffer_tran.json", JSON.stringify(buffer_tran, null, 4))
+
+    var date = new Date();
+    var min = date.getMinutes();
+
+    if (min%5==0)
+      fs.writeFileSync(__dirname+"/buffer_tran.json", JSON.stringify(buffer_tran, null, 4))
+    
     console.vlog("DEBUGTRAN: inside: "+translated)
     callback(null, translated)
 })
