@@ -44,11 +44,11 @@ if (cluster.isWorker)
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
 
-	var index = 20
+	var index = 10
 
 	async.whilst(
-	    //function () { return index < train.length },
-	    function () { return index < 150 },
+	    function () { return index <= train.length },
+	    //function () { return index < 150 },
 	    function (callbackwhilst) {
 
 		async.waterfall([
@@ -57,9 +57,10 @@ if (cluster.isWorker)
         		//if (index == 0) index = 3
 			//if (index < 10) index +=5
 			//else index += 5
-			index += 10
 	
     		var mytrain = train.slice(0, index)
+		index += 10
+		
 		var mytrainex = JSON.parse(JSON.stringify(mytrain))
     		var mytestex = JSON.parse(JSON.stringify(test))
 
@@ -230,7 +231,7 @@ if (cluster.isMaster)
 	//var classifiers = [ "Natural","NLU_Tran_GGFinish"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Emb_100", "Hungarian", "Emb_100_Hungarian", "Emb_100_All"]
 		
-	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
+	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin.json")))
  	var utterset1 = bars.getsetcontext(data1, false)
 	var train1 = utterset1["train"].concat(utterset1["test"])
 
