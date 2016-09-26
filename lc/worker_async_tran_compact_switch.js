@@ -208,6 +208,14 @@ if (cluster.isMaster)
 	var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "French", "Portuguese", "Russian", "Arabic", "Portuguese"]
 	//var classifiers = [ "Natural_Neg", "Hungarian"]
 	var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../switch/buffer_dial_switch2.gold.final.std.json")))
+
+	train1 = _.shuffle(train1)
+
+	_.each(train1, function(value, key, list){
+		if (_.keys(value["input"]["trans"]).length != 81)
+			throw new Error("len anomaly: "+_.keys(value["input"]["trans"]).length)
+	}, this)
+
  
 	cluster.setupMaster({
   	exec: __filename,
