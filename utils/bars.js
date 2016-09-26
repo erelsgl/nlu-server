@@ -25,6 +25,8 @@ var md5 = require('md5');
 var classifiers = require(__dirname+'/../classifiers');
 var limdu = require("limdu");
 var ftrs = limdu.features;
+var sbd = require('sbd');
+
 
 const walker = require('walker-sample');
 
@@ -4520,10 +4522,16 @@ function gettrans(turns, pat)
           }
           else
           {
-            if (fs.readFileSync(__dirname+"/../json/"+md5(tran)+".json"))
-              _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+md5(tran)+".json")))
-            else
-              throw new Error("sentence file not found for md5")
+            record["input"]["sentences"] = new Array(sbd.sentences(record["input"]["text"], { "newline_boundaries" : false,
+                                                                                              "html_boundaries"    : false,
+                                                                                              "sanitize"           : false,
+                                                                                              "allowed_tags"       : false,
+                                                                                              "abbreviations"      : null
+                                                                                            }).length)
+            // if (fs.readFileSync(__dirname+"/../json/"+md5(tran)+".json"))
+              // _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+md5(tran)+".json")))
+            // else
+              // throw new Error("sentence file not found for md5")
           }
 
           record["input"]["source"] = turn.translation_id

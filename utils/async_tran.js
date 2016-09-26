@@ -144,3 +144,7 @@ module.exports = {
   translate:translate
 }
 
+//translate("Y", "en", "ru", "Hello", function(err, response){
+//console.log(response)
+//})
+

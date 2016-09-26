@@ -28,17 +28,17 @@
 		Russian:"ru",
 		Chinese:"zh",
 		Hungarian:"hu",
-		Finish:"fi",
+		Finish:"fi"
 
-		Spanish:"es",
-		Italian: "it",
-		Poland: "pl",
-		Dutch: "nl",
-		Japanese: "jp"
+//		Spanish:"es",
+//		Italian: "it",
+//		Poland: "pl",
+//		Dutch: "nl",
+//		Japanese: "jp"
 		}
 
 		//var sys = { "yandex": "Y", "microsoft": "M", "google": "G" }
-		var sys = { "google": "G", "yandex": "Y" }
+		var sys = { "google": "G", "yandex": "Y", "microsoft": "M" }
 
 		_.each(sys, function(engine1liter, engine1, list){
 			_.each(sys, function(engine2liter, engine2, list){
@@ -64,6 +64,8 @@ if (parsing)
 		async.eachOfSeries(data, function(value, keyd, callback2){ 
 		
 			var trans = {}
+
+			console.log(keyd)
 			if ("trans" in value["input"])
                         	trans = value["input"]["trans"]     
                         else throw new Error("anomaly")
@@ -96,7 +98,12 @@ if (parsing)
 
 			}, function(err){
 				data[keyd]["input"]["trans"] = JSON.parse(JSON.stringify(trans))
-				fs.writeFileSync("./buffer_dial_switch2.json", JSON.stringify(data, null, 4))
+				
+				if (keyd%10 == 0)
+				{
+					fs.writeFileSync("./buffer_dial_switch2.json", JSON.stringify(data, null, 4))
+					console.log("saved")
+				}
 				callback2()
 			})
 	}, 
