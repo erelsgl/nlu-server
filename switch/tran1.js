@@ -99,16 +99,20 @@ if (parsing)
 			}, function(err){
 				data[keyd]["input"]["trans"] = JSON.parse(JSON.stringify(trans))
 				
-				if (keyd%10 == 0)
-				{
-					fs.writeFileSync("./buffer_dial_switch2.json", JSON.stringify(data, null, 4))
-					console.log("saved")
-				}
+			//	if (keyd%10 == 0)
+			//	{
+				//fs.writeFileSync("./buffer_dial_switch2.json", JSON.stringify(data, null, 4))
+				//console.log("saved")
+			//	}
 				callback2()
 			})
 	}, 
 		function(err){
+
+	console.log(JSON.stringify(data, null, 4))
+
 	})
+
 }
 
 if (correlation)

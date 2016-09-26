@@ -30,7 +30,7 @@ var ftrs = limdu.features;
 
 var signif = false
 // output the blue average
-var correlation = false
+var correlation = true
 
 var latex_plot = false
 
@@ -40,7 +40,7 @@ var unidis = false
 
 // translate and org parsed
 var check_rephrase = false
-var make_tr = true
+var make_tr = false
 var make_tr_seeds = false
 var make_tr_fix = false
 // check the ration of single vs all utterances
@@ -337,7 +337,7 @@ if (correlation)
   	// var omitlang = ["ar", "es"]
   	var omitlang = []
 
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin.json"))
 
 	_.each(data, function(dialogue, key, list){
 
@@ -357,10 +357,10 @@ if (correlation)
 							// var par = engine1+engine2
 							var par = ln
 
-							if (omitlang.indexOf(ln)==-1)
+							if ((omitlang.indexOf(ln)==-1) && (engine1 == engine2) && (engine1!="B") && (engine2!="B"))
 							{
 
-								console.log("language:"+ln)
+								console.log("language:"+ln + " engine1: "+engine1+ " engine2:"+engine2)
 								console.log("par:"+par)
 						
 								var intents = _.keys(turn["output"])
