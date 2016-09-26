@@ -123,6 +123,9 @@ if (cluster.isWorker)
 				case "_Japanese": callbacks(null, bars.gettrans(mytrainex, "((G:ja:G)|(M:ja:M)|(Y:ja:Y))"), mytestex, mytrainex.length); break;
 				case "_Hungarian": callbacks(null, bars.gettrans(mytrainex, "((G:hu:G)|(M:hu:M)|(Y:hu:Y))"), mytestex, mytrainex.length); break;
 				case "_Finish": callbacks(null, bars.gettrans(mytrainex, "((G:fi:G)|(M:fi:M)|(Y:fi:Y))"), mytestex, mytrainex.length); break;
+				case "_Chinese": callbacks(null, bars.gettrans(mytrainex, "((G:zh:G)|(M:zh:M)|(Y:zh:Y))"), mytestex, mytrainex.length); break;
+				case "_Russian": callbacks(null, bars.gettrans(mytrainex, "((G:ru:G)|(M:ru:M)|(Y:ru:Y))"), mytestex, mytrainex.length); break;
+				case "_All_together": callbacks(null, bars.gettrans(mytrainex, "((G:.*:G)|(M:.*:M)|(Y:.*:Y))"), mytestex, mytrainex.length); break;
 
 //				case "Natural_trans": 
 //
@@ -225,7 +228,7 @@ if (cluster.isMaster)
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "French+German+Potuguese", "Russian+Spanish+Arabic", "Finish+Hungarian+Hebrew", "Urdu+Chinese+Hungarian"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "French+German+Potuguese", "Russian+Hebrew+Arabic", "Finish+Hungarian+Chinese", "Spanish+Hebrew+Arabic", "Finish+Hungarian+Urdu", "Hungarian", "Finish"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "French+Potuguese",  "Finish+Hungarian", "Arabic+Hebrew", "Hungarian", "Finish", "Portuguese", "Arabic", "Russian"]
-	var classifiers = [ "Natural_Neg", "_Hungarian", "_Japanese", "_Finish"]
+	var classifiers = [ "Natural_Neg", "_Hungarian", "_Japanese", "_Finish", "_Chinese", "_Russian", "_All_together"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Hungarian", "Hungarian_Google", "Hungarian_Yandex", "Hungarian_Microsoft"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Hungarian", "Finish", "Best"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Finish+Hungarian+Chinese", "Finish", "Hungarian", "Chinese"]
