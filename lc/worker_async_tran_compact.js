@@ -238,10 +238,9 @@ if (cluster.isMaster)
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Emb_100", "Hungarian", "Emb_100_Hungarian", "Emb_100_All"]
 		
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin.json")))
+	data1 = bars.enrichparse(data1)
  	var utterset1 = bars.getsetcontext(data1, false)
 	var train1 = utterset1["train"].concat(utterset1["test"])
-
-	train1 = bars.enrichparse(train1)
 
 	cluster.setupMaster({
   	exec: __filename,
