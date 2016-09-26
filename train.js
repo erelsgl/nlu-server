@@ -485,7 +485,8 @@ function generator()
 		}
 
 //		var sys = { "yandex": "Y", "microsoft": "M", "google": "G" }
-		var sys = { "microsoft": "M", "google": "G", "yandex": "Y", "baidu": "B" }
+		//var sys = { "microsoft": "M", "google": "G", "yandex": "Y", "baidu": "B" }
+		var sys = { "microsoft": "M", "google": "G", "yandex": "Y" }
 
 		_.each(sys, function(engine1liter, engine1, list){
 			_.each(sys, function(engine2liter, engine2, list){
@@ -509,7 +510,8 @@ if (make_tr)
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin.json"))
 
 	async.eachOfSeries(data, function(dialogue, keyd, callback1){ 
-	
+
+		console.log("Dialogue: "+keyd)	
 		async.eachOfSeries(dialogue["turns"], function(value, keyt, callback2){ 
 	
 			if (value["role"] == "Employer")
@@ -548,7 +550,7 @@ if (make_tr)
 
 				}, function(err){
 					value["input"]["trans"] = JSON.parse(JSON.stringify(trans))
-					fs.writeFileSync("/tmp/buffer_dial_gl.json", JSON.stringify(data, null, 4))
+					//fs.writeFileSync("/tmp/buffer_dial_gl.json", JSON.stringify(data, null, 4))
 					callback2()
 				})
 			}
@@ -556,6 +558,7 @@ if (make_tr)
 				callback2()
 
 		}, function(err){
+			console.log("Saved")
 			fs.writeFileSync("/tmp/buffer_dial_gl.json", JSON.stringify(data, null, 4))
 			callback1()
 		})
