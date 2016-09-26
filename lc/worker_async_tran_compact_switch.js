@@ -37,8 +37,8 @@ if (cluster.isWorker)
 	var index = 20
 
 	async.whilst(
-	    //function () { return index < train.length },
-	    function () { return index < 150 },
+	    function () { return index <= train.length },
+	   // function () { return index < 150 },
 	    function (callbackwhilst) {
 
 		async.waterfall([
@@ -47,9 +47,9 @@ if (cluster.isWorker)
         		//if (index == 0) index = 3
 			//if (index < 10) index +=5
 			//else index += 5
-			index += 10
 	
     		var mytrain = train.slice(0, index)
+			index += 20
 			var mytrainex = JSON.parse(JSON.stringify(mytrain))
     		var mytestex = JSON.parse(JSON.stringify(test))
 
