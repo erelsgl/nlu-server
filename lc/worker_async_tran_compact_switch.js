@@ -205,7 +205,7 @@ if (cluster.isMaster)
 
 	var folds = 5
 	
-	var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "French", "Portuguese", "Russian", "Arabic", "Portuguese"]
+	var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "French", "Portuguese", "Russian", "Arabic", "Portuguese", "German"]
 	//var classifiers = [ "Natural_Neg", "Hungarian"]
 	var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../switch/buffer_dial_switch2.gold.final.std.json")))
 
