@@ -4513,15 +4513,15 @@ function gettrans(turns, pat)
   		    delete record["input"]["sentences"]
   		    delete record["input"]["trans"]
 
-          if ("translation_id" in turn)
+         /* if ("translation_id" in turn)
           {
             if (fs.existsSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json"))
               _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json")));
-  		      else
-              throw new Error("sentence file is not found")
+  	      else
+             throw new Error("sentence file is not found")
           }
           else
-          {
+          { */
             record["input"]["sentences"] = new Array(sbd.sentences(record["input"]["text"], { "newline_boundaries" : false,
                                                                                               "html_boundaries"    : false,
                                                                                               "sanitize"           : false,
@@ -4532,7 +4532,7 @@ function gettrans(turns, pat)
               // _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+md5(tran)+".json")))
             // else
               // throw new Error("sentence file not found for md5")
-          }
+          //}
 
           record["input"]["source"] = turn.translation_id
           	output.push(record)
