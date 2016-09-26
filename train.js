@@ -27,10 +27,13 @@ var trainAndTest = require('./utils/trainAndTest');
 var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
+var md5 = require('md5');
+
 
 var signif = false
 // output the blue average
-var correlation = true
+var correlation = false
+var separ = true
 
 var latex_plot = false
 
@@ -503,6 +506,26 @@ function generator()
 		return output
 	}
 
+
+if (separ)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin.json"))
+
+	_.each(data, function(dialogue, key, list){
+
+		console.log(key)
+		_.each(dialogue["turns"], function(turn, key, list){
+			if (turn.role == "Employer")
+			{
+				fs.writeFileSync("./json_main/"+turn["translation_id"]+".json", JSON.stringify(turn["input"]["sentences"], null, 4), 'utf-8')
+				delete turn["input"]["sentences"]
+			}
+		}, this)
+	}, this)
+
+	console.log(JSON.stringify(data, null, 4))
+	process.exit(0)
+}
 
 if (make_tr)
 {
