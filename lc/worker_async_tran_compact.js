@@ -241,6 +241,8 @@ if (cluster.isMaster)
  	var utterset1 = bars.getsetcontext(data1, false)
 	var train1 = utterset1["train"].concat(utterset1["test"])
 
+	train1 = enrichparse(train1)
+
 	cluster.setupMaster({
   	exec: __filename,
 	// args: [JSON.stringify({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len})],
