@@ -44,7 +44,7 @@ if (cluster.isWorker)
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
 
-	var index = 10
+	var index = 20
 
 	async.whilst(
 	    function () { return index <= train.length },
@@ -59,7 +59,7 @@ if (cluster.isWorker)
 			//else index += 5
 	
     		var mytrain = train.slice(0, index)
-		index += 10
+		index += 20
 		
 		var mytrainex = JSON.parse(JSON.stringify(mytrain))
     		var mytestex = JSON.parse(JSON.stringify(test))
