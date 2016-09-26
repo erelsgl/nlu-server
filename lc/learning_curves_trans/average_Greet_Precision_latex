@@ -24,6 +24,16 @@
 \addlegendentry{\_Finish}
 
 \addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,0.8649019607843137)(170,0.9558110516934046)(180,0.9558110516934046)(190,0.9558110516934046)(200,0.9558110516934046)(210,0.9558110516934046)
+};
+\addlegendentry{\_Chinese}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,0.8675757575757576)(170,0.9592424242424243)(180,0.9592424242424243)(190,0.9592424242424243)(200,0.9592424242424243)(210,0.9588801054018447)
+};
+\addlegendentry{\_Russian}
+
+\addplot[color=green,mark=*] coordinates {
 (10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,0.9635281385281385)(180,0.9635281385281385)(190,0.9635281385281385)(200,0.9635281385281385)(210,0.9635281385281385)
 };
 \addlegendentry{\_All\_together}
