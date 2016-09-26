@@ -4028,7 +4028,6 @@ function getsetcontext(dataset)
 
         var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
         var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
-        
 	
         if (rephrase)
           turn['type'] = "rephrase"
@@ -5869,6 +5868,17 @@ function vecextremum(matrix)
   return resultvec
 }
 
+function enrichparse(dataset)
+{
+_.each(dataset, function(dialogue, key, list){
+  _.each(dialogue["turns"], function(turn, key, list){
+    if (turn["role"] == "Employer")
+      _.extend(turn["input"], JSON.parse(fs.readFileSync(__dirname+"/../json_main/"+turn.translation_id+".json")));
+  }, this)
+}, this)
+
+return dataset
+}
 
 module.exports = {
   parseoutput:parseoutput,
@@ -6015,5 +6025,6 @@ vectorextremum:vectorextremum,
 vecextremum:vecextremum,
 cleanRecord:cleanRecord,
 write_wilcoxon:write_wilcoxon,
-gettransbest:gettransbest
+gettransbest:gettransbest,
+enrichparse:enrichparse
 }
