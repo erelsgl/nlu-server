@@ -5873,12 +5873,15 @@ function enrichparse(dataset)
 _.each(dataset, function(dialogue, key, list){
   _.each(dialogue["turns"], function(turn, key, list){
     if (turn["role"] == "Employer")
-      
-      if (!fs.existsSync(__dirname+"/../json_main/"+turn.translation_id+".json"))
+     { 
+      if (!fs.existsSync(__dirname+"/../json_main/"+md5(turn["input"]["text"])+".json"))
         throw new Error("no file")
+	
+       _.extend(turn["input"], JSON.parse(fs.readFileSync(__dirname+"/../json_main/"+md5(turn["input"]["text"])+".json")));
 
-      _.extend(turn["input"], JSON.parse(fs.readFileSync(__dirname+"/../json_main/"+turn.translation_id+".json")));
-  }, this)
+//      turn["input"]["sentences"] =  JSON.parse(fs.readFileSync(__dirname+"/../json_main/"+turn.translation_id+".json"))
+     } 
+ }, this)
 }, this)
 
 return dataset
