@@ -101,10 +101,10 @@ if (cluster.isWorker)
     			case "Arabic": callbacks(null, bars.gettrans(mytrainex, ".*:ar:.*"), mytestex, mytrainex.length); break;
     			case "Chinese": callbacks(null, bars.gettrans(mytrainex, ".*:zh:.*"), mytestex, mytrainex.length); break;
     			case "Finish": callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); break;
-    			case "Russian": callbacks(null, bars.gettrans(mytrainex, ".*:ru:.*"), mytestex, mytrainex.length); break;
-    			case "Portuguese": callbacks(null, bars.gettrans(mytrainex, ".*:pt:.*"), mytestex, mytrainex.length); break;
-    			case "Hebrew": callbacks(null, bars.gettrans(mytrainex, ".*:he:.*"), mytestex, mytrainex.length); break;
-    			case "Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length);break;
+    			case "Russian": callbacks(null, bars.gettrans(mytrainex, "(G|Y|M):ru:(G|Y|M)"), mytestex, mytrainex.length); break;
+    			case "Portuguese": callbacks(null, bars.gettrans(mytrainex, "(G|Y|M):pt:(G|Y|M)"), mytestex, mytrainex.length); break;
+    			case "Hebrew": callbacks(null, bars.gettrans(mytrainex, "(G|Y|M):he:(G|Y|M)"), mytestex, mytrainex.length); break;
+    			case "Hungarian": callbacks(null, bars.gettrans(mytrainex, "(G|Y|M):hu:(G|Y|M)"), mytestex, mytrainex.length);break;
     			case "Hungarian_Yandex": callbacks(null, bars.gettrans(mytrainex, "Y:hu:Y"), mytestex, mytrainex.length);break;
     			case "Hungarian_Google": callbacks(null, bars.gettrans(mytrainex, "G:hu:G"), mytestex, mytrainex.length);break;
     			case "Hungarian_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:hu:M"), mytestex, mytrainex.length);break;
@@ -116,7 +116,7 @@ if (cluster.isWorker)
 				case "Finish+Hungarian+Urdu": callbacks(null, bars.gettrans(mytrainex, ".*:(fi|hu|ur):.*"), mytestex, mytrainex.length); break;
 				case "Spanish+Hebrew+Arabic": callbacks(null, bars.gettrans(mytrainex, ".*:(es|he|ar):.*"), mytestex, mytrainex.length); break;
 				case "Best": callbacks(null, bars.gettransbest(mytrainex), mytestex, mytrainex.length); break;
-				case "All_together": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|de|fr|ru|he|ar|fi|zh|hu):.*"), mytestex, mytrainex.length); break;
+				case "All_together": callbacks(null, bars.gettrans(mytrainex, "(G|Y|M):(pt|de|fr|ru|he|ar|fi|zh|hu):(G|Y|M)"), mytestex, mytrainex.length); break;
 				case "French+Potuguese": callbacks(null, bars.gettrans(mytrainex, ".*:(fr|pt):.*"), mytestex, mytrainex.length); break;
 				case "Finish+Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:(fi|hu):.*"), mytestex, mytrainex.length); break;
 				case "Arabic+Hebrew": callbacks(null, bars.gettrans(mytrainex, ".*:(he|ar):.*"), mytestex, mytrainex.length); break;
@@ -228,7 +228,8 @@ if (cluster.isMaster)
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "French+German+Potuguese", "Russian+Spanish+Arabic", "Finish+Hungarian+Hebrew", "Urdu+Chinese+Hungarian"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "French+German+Potuguese", "Russian+Hebrew+Arabic", "Finish+Hungarian+Chinese", "Spanish+Hebrew+Arabic", "Finish+Hungarian+Urdu", "Hungarian", "Finish"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "French+Potuguese",  "Finish+Hungarian", "Arabic+Hebrew", "Hungarian", "Finish", "Portuguese", "Arabic", "Russian"]
-	var classifiers = [ "Natural_Neg", "_Hungarian", "_Japanese", "_Finish", "_Chinese", "_Russian", "_All_together"]
+	//var classifiers = [ "Natural_Neg", "_Hungarian", "_Japanese", "_Finish", "_Chinese", "_Russian", "_All_together"]
+	var classifiers = [ "Natural_Neg", "Hungarian", "Portuguese", "Russian", "All_together"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Hungarian", "Hungarian_Google", "Hungarian_Yandex", "Hungarian_Microsoft"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Hungarian", "Finish", "Best"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Finish+Hungarian+Chinese", "Finish", "Hungarian", "Chinese"]
@@ -238,6 +239,7 @@ if (cluster.isMaster)
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Emb_100", "Hungarian", "Emb_100_Hungarian", "Emb_100_All"]
 		
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin.json")))
+	//var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
 	data1 = bars.enrichparse(data1)
  	var utterset1 = bars.getsetcontext(data1, false)
 	var train1 = utterset1["train"].concat(utterset1["test"])
@@ -250,6 +252,9 @@ if (cluster.isMaster)
 	
 	console.mlog("DEBUGMASTER: loaded: "+train1.length)
 
+	 async.timesSeries(10, function(n, next){
+
+	console.mlog("Assurance fold: "+n)
 	_(folds).times(function(fold){
 
 		var data = partitions.partitions_consistent_by_fold(train1, folds, fold)
@@ -257,9 +262,9 @@ if (cluster.isMaster)
 		_.each(classifiers, function(classifier, key, list){ 
 		
 			// worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
-			var worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier})
+			var worker = cluster.fork({'fold': fold+n*folds, 'classifier':classifier})
 			
-			console.mlog("DEBUGMASTER: class: "+classifier+" fold:"+ fold + " train size:"+data.train.length + " test size:" + data.test.length)
+			console.mlog("DEBUGMASTER: class: "+classifier+" fold:"+ (fold+n*folds) + " train size:"+data.train.length + " test size:" + data.test.length)
 			console.mlog("DEBUGMASTER: process.pid:"+worker.process.pid)
 
 			worker.send({ 		
@@ -269,12 +274,14 @@ if (cluster.isMaster)
 			
 			worker.on('disconnect', function(){
 			  	console.mlog("DEBUGMASTER: finished: workers.length: "+Object.keys(cluster.workers).length )
+                                if (Object.keys(cluster.workers).length == 1)
+                                  next()
 				//disc += 1
 			  	//if (Object.keys(cluster.workers).length == 1)
-			  	_.each(stat, function(data, param, list){
-					lc.plotlc('average', param, stat, lcfolder)
-				})
-				console.mlog(JSON.stringify(stat, null, 4))
+	//		  	_.each(stat, function(data, param, list){
+	//				lc.plotlc('average', param, stat, lcfolder)
+	//			})
+	//			console.mlog(JSON.stringify(stat, null, 4))
 			})
 
 			worker.on('message', function(message){
@@ -285,4 +292,10 @@ if (cluster.isMaster)
 			})
 		}, this)
 	}, this)
+	}, function(){
+                _.each(stat, function(data, param, list){
+                        lc.plotlc('average', param, stat, lcfolder)
+                })
+
+        })
 }
