@@ -184,7 +184,7 @@ function getRule(sen, text)
 		  'Salary': [['60000','60,000 USD'],['90000','90,000 USD'],['120000','120,000 USD']],
 		  'Pension Fund': [['0%','0%'],['10%','10%'],['15%','15%'],['20%','20%']],
 		  'Promotion Possibilities': [['fast','Fast promotion track'],['slow','Slow promotion track']],
-		  'Working Hours': [['8','8 hours'],['9','9 hours'],['10','10 hours']],
+		  'Working Hours': [['8','8 hours', '8 hour'],['9','9 hours', '9 hour'],['10','10 hours', '10 hour']],
 		  'Job Description': [['QA','QA'],['Programmer','Programmer'],['Team','Team Manager'],['Project','Project Manager']]
 		  // 'Job Description': ['QA','Programmer','Team Manager','Project Manager'],
 		   //'Leased Car': ['Without leased car', 'With leased car', 'No agreement']
@@ -194,7 +194,8 @@ function getRule(sen, text)
 	var arAttrVal = ['000','salary','pension','fund','promotion','possibilities','working','hours','hour',
 					'job','description','60000','90000','120000','usd','fast','slow','track','8','9','10',
 					'qa','programmer','team','project','manager','agreement',
-					'0%','10%','15%','20%', 'no agreement', 'position','workday', 'with', 'car', 'no car', 'leased', 'without']
+					'0%','10%','15%','20%', 'no agreement', 'position','workday', 'with', 'car', 'no car', 'leased', 'without',
+					'quick', 'rental']
 
 //	arAttrVal = arAttrVal.concat(['no car', "company car", "leased", "car", "leased", "with", "without"])
 
@@ -2049,7 +2050,10 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	}, this)
 */
 	if (featureOptions.clean)
+		{
 		sample.sentences = getRule(sample.sentences, sample.text).cleaned
+		console.vlog("feAsyncStanford: cleaned: "+JSON.stringify(sample.sentences, null, 4))
+		}
 	else
 		console.vlog("feAsyncStanford: ATTENTION: clean method")	
 
