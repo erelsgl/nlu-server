@@ -1,6 +1,8 @@
 [
   {"source": "\"", "target": ""}
 , {"source": "won't", "target": "will not"}
+, {"source": "\\(.*\\)", "target": ""}
+
 , {"source": "8hr", "target": "8 hours"}
 , {"source": "9hr", "target": "9 hours"}
 , {"source": "10hr", "target": "10 hours"}
@@ -22,9 +24,6 @@
 , {"source": " 60 ", "target": " 60000 "}
 , {"source": " 90 ", "target": " 90000 "}
 , {"source": " 120 ", "target": " 120000 "}
-
-
-
 
 , {"source": "\\. 0", "target": ".0"}
 , {"source": "\\, 0", "target": ",0"}
