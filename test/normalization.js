@@ -18,6 +18,8 @@ describe('normalization test', function() {
 
 	it('salary', function(){
 
+		regexpNormalizer("salary 60000 (S)").should.equal("salary 60000 ")
+		
 		regexpNormalizer("with leased car pension fund 10%").should.equal("with leased car pension fund 10%")
 
 		regexpNormalizer("60000-it").should.equal("60000-it")
