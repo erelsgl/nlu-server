@@ -1,45 +1,45 @@
 \addplot[color=green,mark=*] coordinates {
-(10,10)(20,20)(30,30)
+(10,10)(20,20)(30,30)(40,40)(50,50)
 };
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)
+(10,null)(20,null)(30,0.6231012162462248)(40,0.6537482103291693)(50,0.6665461640522922)
 };
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)
+(10,null)(20,null)(30,0.6883792557312067)(40,0.6857877738398339)(50,0.673488123869275)
 };
 \addlegendentry{Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)
+(10,null)(20,0.6551596330030894)(30,0.671171967204637)(40,0.6241592449838269)(50,0.6107952552794867)
 };
 \addlegendentry{Russian}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)
+(10,null)(20,null)(30,0.6812752593660755)(40,0.668202246215876)(50,0.6761474197692884)
 };
 \addlegendentry{\_Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)
+(10,null)(20,0.6485559163570354)(30,0.6624648830210152)(40,0.6659678367223656)(50,0.6456094316509737)
 };
 \addlegendentry{Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)
+(10,null)(20,0.6572367928104506)(30,0.6811822942577445)(40,0.6748389855419025)(50,0.6541554433719143)
 };
 \addlegendentry{\_Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)
+(10,null)(20,0.4909002368361829)(30,0.564441381376598)(40,0.6490886347486706)(50,0.6299011417951725)
 };
 \addlegendentry{All\_together}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)
+(10,null)(20,0.5709234643311929)(30,0.598423067855992)(40,0.6445559281292214)(50,0.6355589493406277)
 };
 \addlegendentry{\_All\_together}
 
