@@ -2,6 +2,8 @@
   {"source": "\"", "target": ""}
 , {"source": "won't", "target": "will not"}
 , {"source": "\\(.*\\)", "target": ""}
+, {"source": "man-hours", "target": "hours"}
+, {"source": "man-hours", "target": "hours"}
 
 , {"source": "8hr", "target": "8 hours"}
 , {"source": "9hr", "target": "9 hours"}
