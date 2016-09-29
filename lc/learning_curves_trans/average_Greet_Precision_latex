@@ -21,6 +21,16 @@
 \addplot[color=green,mark=*] coordinates {
 (10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)
 };
+\addlegendentry{Hebrew}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)
+};
+\addlegendentry{Arabic}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)
+};
 \addlegendentry{Portuguese}
 
 \addplot[color=green,mark=*] coordinates {

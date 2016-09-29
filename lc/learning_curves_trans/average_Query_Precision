@@ -1,10 +1,10 @@
-size	dial	Natural_Neg	Hungarian	Russian	Portuguese	All_together
-10	10	null	null	null	null	null
-20	20	null	null	null	null	null
-30	30	null	null	null	null	null
-40	40	null	null	null	null	null
-50	50	null	null	null	null	null
-60	60	null	null	null	null	null
-70	70	null	null	null	null	null
-80	80	null	null	null	null	null
-90	90	0.5393853625704805	0.5475056801073062	0.495129187223596	0.46770165351664195	0.560659514907245
+size	dial	Natural_Neg	Hungarian	Russian	Hebrew	Arabic	Portuguese	All_together
+10	10	null	null	null	null	null	null	null
+20	20	null	null	null	null	null	null	null
+30	30	null	null	null	null	null	null	null
+40	40	null	null	null	null	null	null	null
+50	50	null	null	null	null	null	null	null
+60	60	null	null	null	null	null	null	null
+70	70	0.6477774367924282	0.5441761426978818	0.5554616868750668	0.5788083177013652	0.5397193036468111	0.5274313654968168	0.5042581499752042
+80	80	0.622026046321259	0.5550346238764521	0.5622400747579734	0.5908056255522658	0.5397489216897007	0.5730655266622633	0.5461375318361531
+90	90	0.6072134232857918	0.5706601896704873	0.5419819640582866	0.6106429364087222	0.5509623387794185	0.5448425909953424	0.5347797104359526
