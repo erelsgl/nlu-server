@@ -195,7 +195,7 @@ function getRule(sen, text)
 					'job','description','60000','90000','120000','usd','fast','slow','track','8','9','10',
 					'qa','programmer','team','project','manager','agreement',
 					'0%','10%','15%','20%', 'no agreement', 'position','workday', 'with', 'car', 'no car', 'leased', 'without',
-					'quick', 'rental']
+					'quick', 'rental', 'taxi', 'vehicles', 'vehicle', 'rent-a-car', 'rented', 'wages', 'wage', 'pay', 'fee', 'non-rented']
 
 //	arAttrVal = arAttrVal.concat(['no car', "company car", "leased", "car", "leased", "with", "without"])
 
