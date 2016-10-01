@@ -404,6 +404,24 @@ labeltree = { Offer:
   Quit: { true: {} } }
 
 
+function walkSync(dir, filelist) {
+    files = fs.readdirSync(dir);
+    filelist = filelist || [];
+
+    files = _.without(files, ".git", "README.md");
+
+    files.forEach(function(file) {
+    if (fs.statSync(dir +"/"+ file).isDirectory()) {
+            filelist = walkSync(dir +"/"+ file + '/', filelist);
+    }
+    else {
+    filelist.push(dir+file);
+    }
+    })
+  return filelist;
+}
+
+
 function joinfolds(global_stats)
 {
   var output = {}
@@ -6033,5 +6051,6 @@ vecextremum:vecextremum,
 cleanRecord:cleanRecord,
 write_wilcoxon:write_wilcoxon,
 gettransbest:gettransbest,
-enrichparse:enrichparse
+enrichparse:enrichparse,
+walkSync:walkSync
 }
