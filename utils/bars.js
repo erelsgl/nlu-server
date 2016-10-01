@@ -3999,13 +3999,14 @@ function processdataset(dataset, options)
 function getsetcontext(dataset)
 {
   var rectypes = ['AskRepeat', 'AskRephrase' ,'Reprompt' ,'Notify', 'Yield', 'Help', 'YouCanSay', 'TerseYouCanSay']
-  var utteranceset = {'train':[], 'test':[], 'unable':[]}
+  var utteranceset = {'train':[], 'test':[], 'unable':[], 'biased': []}
   var context = []
   var rephrase = false
+  var trans_count = -1
  
-  _.each(dataset, function(dialogue, key, list){
+  _.each(dataset, function(dialogue, keyd, list){
     var processed_dialogue = []
-    _.each(dialogue['turns'], function(turn, key, list){
+    _.each(dialogue['turns'], function(turn, keyt, list){
 
       if ((turn.role == "Candidate") && (('data' in turn)))
         if (rectypes.indexOf(turn.data)!=-1)
@@ -4019,6 +4020,21 @@ function getsetcontext(dataset)
       // if  (addrepr)
       // {
         var record = {}
+
+	if ("trans" in turn['input'])
+	{
+		if (trans_count == -1)
+			trans_count = _.keys(turn['input']["trans"]).length
+		else
+			if (trans_count != _.keys(turn['input']["trans"]).length)
+				throw new Error("the num of trans is not the same dial:"+keyd+" turn:"+keyt+" trans_count:"+trans_count+" current: "+_.keys(turn['input']["trans"]).length)
+	
+	}
+	else
+	{
+		if (trans_count != -1)
+			throw new Error("trans in not defined")
+	}
         // record['input'] = {}
         // record['input']['text'] = turn.input
         // record['input']['context'] = context
@@ -4489,7 +4505,7 @@ function gettrans(turns, pat)
 	   var roots = _.filter(turn["input"]["sentences"]["basic-dependencies"], function(num){ return num["dep"] == "ROOT" }).length
  
     //if ((turn["output"].length == 1) && (roots == 1))
-    if ((turn["output"].length == 1) && (roots == 1))
+    //if ((turn["output"].length == 1) && (roots == 1))
     {
  
   	console.vlog("gettrans: turn " + key + " is applied")
@@ -4555,8 +4571,8 @@ function gettrans(turns, pat)
 	  //  output = output.concat(_.values(unique_trans))
 //	console.vlog("gettrans: "+_.keys(unique_trans).length +" was added among "+_.keys(turn["input"]["trans"]).length)
 	  }
-	else
-		console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"]+" sentences: "+roots)
+	//else
+	//	console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"]+" sentences: "+roots)
     
   }, this)
 
