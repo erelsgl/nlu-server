@@ -4,37 +4,22 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(20,null)(40,null)(60,null)(80,null)(100,null)(120,null)(140,null)(160,null)(180,null)
+(20,null)(40,null)(60,null)(80,null)(100,null)(120,null)(140,null)(160,null)(180,0.6769767972233625)
 };
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(20,null)(40,null)(60,null)(80,null)(100,null)(120,null)(140,null)(160,null)(180,null)
+(20,null)(40,null)(60,null)(80,null)(100,null)(120,null)(140,null)(160,null)(180,0.6399039262042937)
 };
-\addlegendentry{\_Hungarian}
+\addlegendentry{YY}
 
 \addplot[color=green,mark=*] coordinates {
-(20,null)(40,null)(60,null)(80,null)(100,null)(120,null)(140,null)(160,null)(180,null)
+(20,null)(40,null)(60,null)(80,null)(100,null)(120,null)(140,null)(160,null)(180,0.6833928239304962)
 };
-\addlegendentry{\_Japanese}
+\addlegendentry{MM}
 
 \addplot[color=green,mark=*] coordinates {
-(20,null)(40,null)(60,null)(80,null)(100,null)(120,null)(140,null)(160,null)(180,null)
+(20,null)(40,null)(60,null)(80,null)(100,null)(120,null)(140,null)(160,null)(180,0.6455268706674799)
 };
-\addlegendentry{\_Finish}
-
-\addplot[color=green,mark=*] coordinates {
-(20,null)(40,null)(60,null)(80,null)(100,null)(120,null)(140,null)(160,null)(180,null)
-};
-\addlegendentry{\_Chinese}
-
-\addplot[color=green,mark=*] coordinates {
-(20,null)(40,null)(60,null)(80,null)(100,null)(120,null)(140,null)(160,null)(180,null)
-};
-\addlegendentry{\_Russian}
-
-\addplot[color=green,mark=*] coordinates {
-(20,null)(40,null)(60,null)(80,null)(100,null)(120,null)(140,null)(160,null)(180,null)
-};
-\addlegendentry{\_All\_together}
+\addlegendentry{GG}
 
