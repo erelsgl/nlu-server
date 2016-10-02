@@ -25,10 +25,10 @@ if (cluster.isWorker)
 		var train = JSON.parse(message['train'])
 		var test  = JSON.parse(message['test'])
 
-	    var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate", "Yesanswers", "Conventionalclosing"], "filter":false})
-//	    var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
- 	    var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate", "Yesanswers", "Conventionalclosing"], "filter":true})
- 	    //var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
+//	    var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate", "Yesanswers", "Conventionalclosing"], "filter":false})
+	    var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
+// 	    var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate", "Yesanswers", "Conventionalclosing"], "filter":true})
+ 	    var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
 
     _.each(test, function(turn, key, list){	delete test[key]["input"]["trans"] }, this)
 
@@ -151,8 +151,8 @@ if (cluster.isWorker)
     		function(mytrainex, mytestex, trainsize, callback) {
 
 			//mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": ["Quit","Greet"], "filter":true})
-			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": ["Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate", "Yesanswers", "Conventionalclosing"], "filter":true})
-			//mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": [], "filter":true})
+			//mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": ["Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate", "Yesanswers", "Conventionalclosing"], "filter":true})
+			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": [], "filter":true})
     	
 			console.vlog("DEBUGPRETRAIN: classifier:"+classifier+" mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
 
@@ -207,14 +207,17 @@ if (cluster.isMaster)
 	
 	var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "French", "Portuguese", "Russian", "Arabic", "Portuguese", "German"]
 	//var classifiers = [ "Natural_Neg", "Hungarian"]
-	var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../switch/buffer_dial_switch2.gold.final.std.json")))
+	//var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../switch/buffer_dial_switch2.gold.final.std.json")))
+	var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../nps/dataset.json")))
+	
+	
 
 	train1 = _.shuffle(train1)
 
-	_.each(train1, function(value, key, list){
-		if (_.keys(value["input"]["trans"]).length != 81)
-			throw new Error("len anomaly: "+_.keys(value["input"]["trans"]).length)
-	}, this)
+	//_.each(train1, function(value, key, list){
+	//	if (_.keys(value["input"]["trans"]).length != 81)
+	//		throw new Error("len anomaly: "+_.keys(value["input"]["trans"]).length)
+	//}, this)
 
  
 	cluster.setupMaster({
