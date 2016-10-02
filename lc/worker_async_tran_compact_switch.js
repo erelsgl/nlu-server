@@ -210,8 +210,7 @@ if (cluster.isMaster)
 	//var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../switch/buffer_dial_switch2.gold.final.std.json")))
 	var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../nps/dataset.json")))
 	
-	
-
+	train1 = _.filter(train1, function(num){ return ("trans" in num["input"]) });
 	train1 = _.shuffle(train1)
 
 	//_.each(train1, function(value, key, list){
