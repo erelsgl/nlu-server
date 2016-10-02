@@ -90,64 +90,75 @@ function test()
 function trans()
 {	
 	var dataset = JSON.parse(fs.readFileSync("./dataset.json"))
+
+		async.eachOfSeries(dataset, function(value, keyd, callback2){ 
+		
+			if (!("trans" in value["input"])) callback2()
+			else
+			{
+				var trans = {}
+				console.log(keyd)
+				async.eachOfSeries(generator(), function(composition, key, callback3){ 
+
+		    			var compkey = composition["engine1"]+":"+composition["ln"]+":"+composition["engine2"]
+		    			var engine1 = composition["engine1"]
+		    			var engine2 = composition["engine2"]
+		    			var ln = composition["ln"]
+
+						if (!(compkey in trans))
+						{
+							async_tran.tran(engine1, ln, engine2, value["input"]["text"], function(err, out){
+								out = out.replace(/\n$/, '')
+								trans[compkey] = out
+								callback3()
+							})
+						}
+						else if (trans[compkey].indexOf("TranslateApiException")!=-1)
+						{
+							async_tran.tran(engine1, ln, engine2, value["input"]["text"], function(err, out){
+								out = out.replace(/\n$/, '')
+								trans[compkey] = out
+								callback3()
+							})	
+						}
+						else
+							callback3()	
+
+				}, function(err){
+					dataset[keyd]["input"]["trans"] = JSON.parse(JSON.stringify(trans))
+					
+					if (keyd%10 == 0)
+					{
+					fs.writeFileSync("./buffer_dial_switch2.json", JSON.stringify(dataset, null, 4))
+					console.log("saved")
+					}
+
+					callback2()
+				})
+			}
+	}, 
+		function(err){
+	console.log(JSON.stringify(dataset, null, 4))
+	})
+}
+
+function marktrans()
+{	
+	var dataset = JSON.parse(fs.readFileSync("./dataset.json"))
 	
 	var dataset_limited = _.sample(dataset, 2000)
 
-		async.eachOfSeries(dataset_limited, function(value, keyd, callback2){ 
-		
-			var trans = {}
-
-			console.log(keyd)
-			if ("trans" in value["input"])
-                trans = value["input"]["trans"]     
-
-			async.eachOfSeries(generator(), function(composition, key, callback3){ 
-
-	    			var compkey = composition["engine1"]+":"+composition["ln"]+":"+composition["engine2"]
-	    			var engine1 = composition["engine1"]
-	    			var engine2 = composition["engine2"]
-	    			var ln = composition["ln"]
-
-					if (!(compkey in trans))
-					{
-						async_tran.tran(engine1, ln, engine2, value["input"]["text"], function(err, out){
-							out = out.replace(/\n$/, '')
-							trans[compkey] = out
-							callback3()
-						})
-					}
-					else if (trans[compkey].indexOf("TranslateApiException")!=-1)
-					{
-						async_tran.tran(engine1, ln, engine2, value["input"]["text"], function(err, out){
-							out = out.replace(/\n$/, '')
-							trans[compkey] = out
-							callback3()
-						})	
-					}
-					else
-						callback3()	
-
-			}, function(err){
-				dataset_limited[keyd]["input"]["trans"] = JSON.parse(JSON.stringify(trans))
-				
-				if (keyd%10 == 0)
-				{
-				fs.writeFileSync("./buffer_dial_switch2.json", JSON.stringify(dataset, null, 4))
-				console.log("saved")
-				}
-
-				callback2()
-			})
-	}, 
-		function(err){
+	_.each(dataset_limited, function(value, key, list){
+		if (!("trans" in value["input"]) && value["output"][0]!="System" && value["input"]["text"].split(" ").length > 2)
+			value["input"]["trans"] = {}
+	}, this)
 
 	console.log(JSON.stringify(dataset, null, 4))
-
-	})
-
+	process.exit()
 }
 
 
 
 // test()
 trans()
+// marktrans()
