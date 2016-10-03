@@ -1,0 +1,45 @@
+\addplot[color=green,mark=*] coordinates {
+(20,20)(40,40)(60,60)(80,80)(100,100)(120,120)(140,140)(160,160)(180,180)(200,200)
+};
+\addlegendentry{dial}
+
+\addplot[color=green,mark=*] coordinates {
+(20,0)(40,0)(60,0)(80,0)(100,0)(120,0)(140,0)(160,0)(180,0)(200,0)
+};
+\addlegendentry{Natural\_Neg}
+
+\addplot[color=green,mark=*] coordinates {
+(20,0)(40,0)(60,0)(80,0.02)(100,0.02)(120,0)(140,0)(160,0)(180,0)(200,0)
+};
+\addlegendentry{All\_together}
+
+\addplot[color=green,mark=*] coordinates {
+(20,0)(40,0)(60,0)(80,0)(100,0)(120,0.025)(140,0)(160,0)(180,0)(200,0)
+};
+\addlegendentry{Hungarian}
+
+\addplot[color=green,mark=*] coordinates {
+(20,0)(40,0)(60,0)(80,0.02)(100,0.02)(120,0.045)(140,0.045)(160,0)(180,0)(200,0)
+};
+\addlegendentry{French}
+
+\addplot[color=green,mark=*] coordinates {
+(20,0)(40,0)(60,0)(80,0)(100,0)(120,0)(140,0)(160,0)(180,0)(200,0)
+};
+\addlegendentry{Portuguese}
+
+\addplot[color=green,mark=*] coordinates {
+(20,0)(40,0)(60,0)(80,0)(100,0)(120,0)(140,0)(160,0)(180,0)(200,0)
+};
+\addlegendentry{Russian}
+
+\addplot[color=green,mark=*] coordinates {
+(20,0)(40,0)(60,0)(80,0)(100,0)(120,0.025)(140,0)(160,0)(180,0)(200,0)
+};
+\addlegendentry{Arabic}
+
+\addplot[color=green,mark=*] coordinates {
+(20,0)(40,0.025)(60,0.025)(80,0.02)(100,0.02)(120,0.025)(140,0.025)(160,0)(180,0)(200,0)
+};
+\addlegendentry{German}
+
