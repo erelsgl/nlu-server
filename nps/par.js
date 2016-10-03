@@ -96,7 +96,7 @@ function trans()
 			if (!("trans" in value["input"])) callback2()
 			else
 			{
-				var trans = {}
+				var trans = value["input"]["trans"]
 				console.log(keyd)
 				async.eachOfSeries(generator(), function(composition, key, callback3){ 
 
@@ -146,7 +146,7 @@ function marktrans()
 {	
 	var dataset = JSON.parse(fs.readFileSync("./dataset.json"))
 	
-	var dataset_limited = _.sample(dataset, 2000)
+	var dataset_limited = _.sample(dataset, 1000)
 
 	_.each(dataset_limited, function(value, key, list){
 		if (!("trans" in value["input"]) && value["output"][0]!="System" && value["input"]["text"].split(" ").length > 2)
@@ -161,4 +161,4 @@ function marktrans()
 
 // test()
 trans()
-// marktrans()
+//marktrans()
