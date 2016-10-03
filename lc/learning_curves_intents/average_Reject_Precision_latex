@@ -14,12 +14,12 @@
 \addlegendentry{Unigram\_No\_Clean}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.6947577823889585)(70,0.6887190323649892)(80,0.6750849280312189)(90,0.702592611820911)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.697910540707398)(70,0.6910315274943908)(80,0.6743108805779647)(90,0.6881955213128494)
 };
 \addlegendentry{Unigram+Context}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.6688787033364741)(70,0.6661554706920498)(80,0.6737614916353905)(90,0.6841568481910579)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.6670762781633639)(70,0.662373507879837)(80,0.6641981378012681)(90,0.677715738196677)
 };
 \addlegendentry{Unigram\_No\_Clean+Context}
 
