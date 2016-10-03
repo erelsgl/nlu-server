@@ -9,4 +9,5 @@ size	dial	Natural_Neg	All_together	Hungarian	French	Portuguese	Russian	Arabic	Ge
 160	160	null	null	null	null	null	null	null	null
 180	180	null	null	null	null	null	null	null	null
 200	200	null	null	null	null	null	null	null	null
-220	220	null	null	null	null	null	null	null	null
+220	220	null	0.22272727272727275	null	null	0.2	0.2	null	0
+240	240	null	0.2357142857142857	null	0.1	0.3	0.2	null	null
