@@ -213,6 +213,16 @@ if (cluster.isMaster)
 	train1 = _.filter(train1, function(num){ return ("trans" in num["input"]) });
 	train1 = _.shuffle(train1)
 
+	_.each(train1, function(value, key, list){
+		
+		value["input"]["sentences"] = new Array(sbd.sentences(record["input"]["text"], { "newline_boundaries" : false,
+                                                                                              "html_boundaries"    : false,
+                                                                                              "sanitize"           : false,
+                                                                                              "allowed_tags"       : false,
+                                                                                              "abbreviations"      : null
+                                                                                            }).length)
+	}, this)
+
 	//_.each(train1, function(value, key, list){
 	//	if (_.keys(value["input"]["trans"]).length != 81)
 	//		throw new Error("len anomaly: "+_.keys(value["input"]["trans"]).length)
