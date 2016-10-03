@@ -223,24 +223,19 @@ if (cluster.isMaster)
                                                                                               "abbreviations"      : null
                                                                                             }).length)
 	}, this)
-
-	//_.each(train1, function(value, key, list){
-	//	if (_.keys(value["input"]["trans"]).length != 81)
-	//		throw new Error("len anomaly: "+_.keys(value["input"]["trans"]).length)
-	//}, this)
-
  
-	cluster.setupMaster({
-  	exec: __filename,
-	// args: [JSON.stringify({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len})],
-	// silent: false
-	});
+	cluster.setupMaster({ exec: __filename });
 	
+	var dist = _.countBy(train1, function(num) { return num["output"][0]});
+	console.mlog("DEBUGMASTER: dist: "+JSON.stringify(dist, null, 4))
+	console.mlog("DEBUGMASTER: loaded: "+train1.length)
 
-
+	var gr = _.groupBy(train1, function(num){ return num["output"][0] });
+	gr = _.pairs(gr)
+	gr = _.filter(gr, function(num){ return num[1].length > 20 });
+	train1 = _.shuffle(_.map(gr, function(num){ return num[1] }))
 
 	var dist = _.countBy(train1, function(num) { return num["output"][0]});
-
 	console.mlog("DEBUGMASTER: dist: "+JSON.stringify(dist, null, 4))
 	console.mlog("DEBUGMASTER: loaded: "+train1.length)
 
