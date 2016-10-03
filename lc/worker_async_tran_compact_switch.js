@@ -13,6 +13,7 @@ var fold = process.env["fold"]
 // var folds = process.env["folds"]
 var classifier = process.env["classifier"]
 var lcfolder = __dirname + "/learning_curves_trans_switch/"
+var sbd = require('sbd');
 
 console.vlog = function(data) { fs.appendFileSync("./logs/" + process.pid, data + '\n', 'utf8') };
 console.mlog = function(data) { fs.appendFileSync("./logs/master", data + '\n', 'utf8') };
@@ -26,15 +27,15 @@ if (cluster.isWorker)
 		var test  = JSON.parse(message['test'])
 
 //	    var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate", "Yesanswers", "Conventionalclosing"], "filter":false})
-	    var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
-// 	    var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate", "Yesanswers", "Conventionalclosing"], "filter":true})
- 	    var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
-
-    _.each(test, function(turn, key, list){	delete test[key]["input"]["trans"] }, this)
+	    var test  = bars.processdataset(_.flatten(test), {"intents": false, "filterIntent":[], "filter":false})
+ //	    var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate", "Yesanswers", "Conventionalclosing"], "filter":true})
+ 	    var train  = bars.processdataset(_.flatten(train), {"intents": false, "filterIntent":[], "filter":true})
+//
+   _.each(test, function(turn, key, list){	delete test[key]["input"]["trans"] }, this)
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
 
-	var index = 20
+	var index = 10
 
 	async.whilst(
 	    function () { return index <= train.length },
@@ -49,7 +50,7 @@ if (cluster.isWorker)
 			//else index += 5
 	
     		var mytrain = train.slice(0, index)
-			index += 20
+			index += 10
 			var mytrainex = JSON.parse(JSON.stringify(mytrain))
     		var mytestex = JSON.parse(JSON.stringify(test))
 
@@ -152,7 +153,7 @@ if (cluster.isWorker)
 
 			//mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": ["Quit","Greet"], "filter":true})
 			//mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": ["Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate", "Yesanswers", "Conventionalclosing"], "filter":true})
-			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": [], "filter":true})
+			mytrainex =  bars.processdataset(mytrainex, {"intents": false, "filterIntent": [], "filter":true})
     	
 			console.vlog("DEBUGPRETRAIN: classifier:"+classifier+" mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
 
@@ -203,7 +204,7 @@ if (cluster.isMaster)
 	bars.cleanFolder(lcfolder)
 	bars.cleanFolder("./logs")
 
-	var folds = 5
+	var folds = 10
 	
 	var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "French", "Portuguese", "Russian", "Arabic", "Portuguese", "German"]
 	//var classifiers = [ "Natural_Neg", "Hungarian"]
@@ -215,7 +216,7 @@ if (cluster.isMaster)
 
 	_.each(train1, function(value, key, list){
 		
-		value["input"]["sentences"] = new Array(sbd.sentences(record["input"]["text"], { "newline_boundaries" : false,
+		value["input"]["sentences"] = new Array(sbd.sentences(value["input"]["text"], { "newline_boundaries" : false,
                                                                                               "html_boundaries"    : false,
                                                                                               "sanitize"           : false,
                                                                                               "allowed_tags"       : false,
@@ -235,6 +236,12 @@ if (cluster.isMaster)
 	// silent: false
 	});
 	
+
+
+
+	var dist = _.countBy(train1, function(num) { return num["output"][0]});
+
+	console.mlog("DEBUGMASTER: dist: "+JSON.stringify(dist, null, 4))
 	console.mlog("DEBUGMASTER: loaded: "+train1.length)
 
 	_(folds).times(function(fold){
