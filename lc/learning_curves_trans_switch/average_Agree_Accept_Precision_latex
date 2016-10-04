@@ -1,30 +1,30 @@
 \addplot[color=green,mark=*] coordinates {
-(30,30)(60,60)(90,90)(120,120)(150,150)(180,180)(210,210)(240,240)(270,270)(300,300)(330,330)(360,360)
+(30,30)(60,60)(90,90)(120,120)(150,150)(180,180)(210,210)(240,240)
 };
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)(270,null)(300,null)(330,null)(360,null)
+(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
 };
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,null)(180,0.4336591054517057)(210,null)(240,null)(270,null)(300,null)(330,null)(360,null)
+(30,null)(60,null)(90,null)(120,null)(150,0.5156286806287015)(180,0.4660066711696263)(210,0.4671764066511159)(240,0.49665118356421384)
 };
 \addlegendentry{\_All\_together}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,null)(180,0.5351330666165156)(210,null)(240,null)(270,null)(300,null)(330,null)(360,null)
+(30,null)(60,0.2756776289948639)(90,null)(120,null)(150,0.5232476099136172)(180,null)(210,0.5951558800277621)(240,0.6070877186092789)
 };
 \addlegendentry{\_Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,null)(180,0.40842189941829493)(210,null)(240,null)(270,null)(300,null)(330,null)(360,null)
+(30,null)(60,null)(90,null)(120,null)(150,0.49505250895217384)(180,0.44042642404718696)(210,0.49235471712819906)(240,0.5315121677720018)
 };
 \addlegendentry{\_Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,null)(180,0.476466028245368)(210,null)(240,null)(270,null)(300,null)(330,null)(360,null)
+(30,null)(60,null)(90,null)(120,null)(150,0.5108706791001505)(180,0.4859585218837912)(210,0.5430379884806362)(240,0.575501471042193)
 };
 \addlegendentry{\_Russian}
 
