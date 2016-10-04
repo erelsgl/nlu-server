@@ -1,36 +1,13 @@
-size	dial	Natural_Neg	All_together	Hungarian	French	Portuguese	Russian	Arabic	German
-10	10	null	null	null	null	null	null	null	null
-20	20	null	null	null	null	null	null	null	null
-30	30	null	null	null	null	null	null	null	null
-40	40	null	null	null	null	null	null	null	null
-50	50	null	null	null	null	null	null	null	null
-60	60	null	null	null	null	null	null	null	null
-70	70	null	null	null	null	null	null	null	null
-80	80	null	null	null	null	null	null	null	null
-90	90	null	null	null	null	null	null	null	null
-100	100	null	null	null	null	null	null	null	null
-110	110	null	null	null	null	null	null	null	null
-120	120	null	null	null	null	null	null	null	null
-130	130	null	null	null	null	null	null	null	null
-140	140	null	null	null	null	null	null	null	null
-150	150	null	null	null	null	null	null	null	null
-160	160	null	null	null	null	null	null	null	null
-170	170	null	null	null	null	null	null	null	null
-180	180	null	null	null	null	null	null	null	null
-190	190	null	null	null	null	null	null	null	null
-200	200	null	null	null	null	null	null	null	null
-210	210	null	null	null	null	null	null	null	null
-220	220	null	null	null	null	null	null	null	null
-230	230	null	null	null	null	null	null	null	null
-240	240	null	null	null	null	null	null	null	null
-250	250	null	null	null	null	null	null	null	null
-260	260	null	null	null	null	null	null	null	null
-270	270	null	null	null	null	null	null	null	null
-280	280	null	null	null	null	null	null	null	null
-290	290	null	null	null	null	null	null	null	null
-300	300	null	null	null	null	null	null	null	null
-310	310	null	null	null	null	null	null	null	null
-320	320	null	null	null	null	null	null	null	null
-330	330	null	null	null	null	null	null	null	null
-340	340	null	null	null	null	null	null	null	null
-350	350	null	0.9059499601275917	0.834791750161809	0.8025858123569793	0.8047682709447417	0.8274242516861259	0.8685574229691877	0.8619098297213622
+size	dial	Natural_Neg	_All_together	_Hungarian	_Portuguese	_Russian
+30	30	null	null	null	null	null
+60	60	null	0.7090338164251208	null	null	0.6403068438914027
+90	90	null	0.7977847324496808	0.7610743041177825	0.7326749934946657	0.6670379760491962
+120	120	null	0.9014328437673385	0.8478803682193513	0.8187213324310099	0.7433511589974385
+150	150	0.6909112939713676	0.865436384347311	0.7693492063492063	0.7556747016424435	0.7092911221834567
+180	180	0.7920138888888889	0.8906131146598076	0.8593719424207229	0.7993431498079385	0.774124352274152
+210	210	0.850507332875754	0.9417724867724868	0.9530303030303029	0.8690474538481183	0.7953657149166821
+240	240	0.8778909966004905	0.8698467123318914	0.8872508980903762	0.8101674409601239	0.786538810972187
+270	270	0.9022800586510265	0.8735745428258938	0.903917564757043	0.8403404471544716	0.8176743088952392
+300	300	0.9485879629629629	0.875572443973215	0.9025995675088131	0.8541556599951383	0.8434142974142974
+330	330	0.924780580828968	0.8679141418233873	0.886524531433777	0.8432098690993725	0.8419314019314019
+360	360	0.9120672338414273	0.8894435215946844	0.9148318735528038	0.8786187578479667	0.8938744588744589
