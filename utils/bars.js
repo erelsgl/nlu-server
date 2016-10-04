@@ -3981,10 +3981,10 @@ function processdataset(dataset, options)
     if (_.isArray(record['input']['sentences']))
 	{
 	record['input']['sentences']= {}
-    record['input']['sentences']["tokens"] = _.flatten(_.pluck(utterance['input']['sentences'], 'tokens'))
-    record['input']['sentences']["basic-dependencies"] = _.flatten(_.pluck(utterance['input']['sentences'], 'basic-dependencies'))
-    record['input']['sentences']["collapsed-dependencies"]= _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-dependencies'))
-    record['input']['sentences']["collapsed-ccprocessed-dependencies"] = _.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-ccprocessed-dependencies'))
+    record['input']['sentences']["tokens"] = _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'tokens')))
+    record['input']['sentences']["basic-dependencies"] = _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'basic-dependencies')))
+    record['input']['sentences']["collapsed-dependencies"]= _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-dependencies')))
+    record['input']['sentences']["collapsed-ccprocessed-dependencies"] = _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-ccprocessed-dependencies')))
    	}
 // if ((output.indexOf("Greet")==-1)&&(output.indexOf("Quit")==-1))
     
@@ -4024,6 +4024,7 @@ function getsetcontext(dataset)
  
   _.each(dataset, function(dialogue, keyd, list){
     var processed_dialogue = []
+ 	var first_employer_turn = true
     _.each(dialogue['turns'], function(turn, keyt, list){
 
       if ((turn.role == "Candidate") && (('data' in turn)))
@@ -4059,7 +4060,12 @@ function getsetcontext(dataset)
         turn['input']['context'] = context
         turn['outputhash'] = turn.output
         turn['output'] = hashtoar(turn.output)
-
+	
+	if (first_employer_turn)
+	{
+		turn['input']['context'].push("Greet")
+		first_employer_turn = false
+	}
         var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
         var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
 	
@@ -4520,10 +4526,16 @@ function gettrans(turns, pat)
      delete temp_copy["input"]["trans"]
      output.push(temp_copy)
 
-	   var roots = _.filter(turn["input"]["sentences"]["basic-dependencies"], function(num){ return num["dep"] == "ROOT" }).length
+     var roots = 1
+
+     if ("sentences" in turn["input"])
+	if ("basic-dependencies" in turn["input"]["sentences"])
+	   if (turn["input"]["sentences"]["basic-dependencies"].length > 0)
+	//	throw new Error(JSON.stringify(turn["input"]["sentences"]["basic-dependencies"], null, 4))
+		var roots = _.filter(turn["input"]["sentences"]["basic-dependencies"], function(num){ return num["dep"] == "ROOT" }).length
  
     //if ((turn["output"].length == 1) && (roots == 1))
-    //if ((turn["output"].length == 1) && (roots == 1))
+    if ((turn["output"].length == 1) && (roots == 1))
     {
  
   	console.vlog("gettrans: turn " + key + " is applied")
@@ -4589,8 +4601,8 @@ function gettrans(turns, pat)
 	  //  output = output.concat(_.values(unique_trans))
 //	console.vlog("gettrans: "+_.keys(unique_trans).length +" was added among "+_.keys(turn["input"]["trans"]).length)
 	  }
-	//else
-	//	console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"]+" sentences: "+roots)
+	else
+		console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"]+" sentences: "+roots)
     
   }, this)
 
