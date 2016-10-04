@@ -4,27 +4,27 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(30,0.030979347101932043)(60,0.03185654008438819)(90,0.03185654008438819)(120,0.015189873417721518)(150,0.015189873417721518)(180,0.015189873417721518)(210,0.029224961137019764)(240,0.014035087719298244)
+(30,0.015286624203821656)(60,0.015286624203821656)(90,0.015286624203821656)(120,0)(150,0)(180,0)(210,0)(240,0)
 };
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
 (30,0)(60,0)(90,0)(120,0)(150,0)(180,0)(210,0)(240,0)
 };
-\addlegendentry{\_All\_together}
+\addlegendentry{All\_together}
 
 \addplot[color=green,mark=*] coordinates {
 (30,0)(60,0)(90,0)(120,0)(150,0)(180,0)(210,0)(240,0)
 };
-\addlegendentry{\_Hungarian}
+\addlegendentry{Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
 (30,0)(60,0)(90,0)(120,0)(150,0)(180,0)(210,0)(240,0)
 };
-\addlegendentry{\_Portuguese}
+\addlegendentry{Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
 (30,0)(60,0)(90,0)(120,0)(150,0)(180,0)(210,0)(240,0)
 };
-\addlegendentry{\_Russian}
+\addlegendentry{Russian}
 

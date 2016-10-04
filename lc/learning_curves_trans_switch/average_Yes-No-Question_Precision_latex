@@ -4,27 +4,27 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,null)(180,0.8522400309717383)(210,0.8685335742246312)(240,0.8372023483856902)
+(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
 };
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,0.8717884507358724)(180,0.8804444123453224)(210,0.8673574035666315)(240,0.8801564877704033)
+(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
 };
-\addlegendentry{\_All\_together}
+\addlegendentry{All\_together}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,0.9317073170731708)(180,0.8905057666855737)(210,0.9499164292357711)(240,0.89605456311853)
+(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
 };
-\addlegendentry{\_Hungarian}
+\addlegendentry{Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,0.8513708513708514)(180,0.8607142857142858)(210,0.8425049882366954)(240,0.8046532014747514)
+(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
 };
-\addlegendentry{\_Portuguese}
+\addlegendentry{Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,0.8556349206349206)(180,0.8243810952738184)(210,0.8318736986082617)(240,0.8154545454545455)
+(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
 };
-\addlegendentry{\_Russian}
+\addlegendentry{Russian}
 
