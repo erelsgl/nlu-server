@@ -1,6 +1,8 @@
 var _ = require('underscore')._;
 var fs = require('fs');
 var labels = JSON.parse(fs.readFileSync('./lab.json'));
+var async = require('async');
+var async_tran = require(__dirname + "/../utils/async_tran.js")
 
 function generator()
 {
