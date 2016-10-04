@@ -4,12 +4,12 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)(270,null)(300,null)(330,null)(360,null)
+(30,null)(60,null)(90,null)(120,null)(150,null)(180,0.48444688644688655)(210,null)(240,null)(270,null)(300,null)(330,null)(360,null)
 };
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)(270,null)(300,null)(330,null)(360,null)
+(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)(270,null)(300,null)(330,0.5039500179206062)(360,0.5381307395629646)
 };
 \addlegendentry{\_All\_together}
 
@@ -19,7 +19,7 @@
 \addlegendentry{\_Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)(270,null)(300,null)(330,null)(360,null)
+(30,null)(60,null)(90,null)(120,null)(150,null)(180,0.4071976901735124)(210,null)(240,null)(270,null)(300,null)(330,0.47806030957585877)(360,0.5336467627914996)
 };
 \addlegendentry{\_Portuguese}
 

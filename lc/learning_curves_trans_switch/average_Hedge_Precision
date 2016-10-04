@@ -4,10 +4,10 @@ size	dial	Natural_Neg	_All_together	_Hungarian	_Portuguese	_Russian
 90	90	null	null	null	null	null
 120	120	null	null	null	null	null
 150	150	null	null	null	null	null
-180	180	null	null	null	null	null
+180	180	0.48444688644688655	null	null	0.4071976901735124	null
 210	210	null	null	null	null	null
 240	240	null	null	null	null	null
 270	270	null	null	null	null	null
 300	300	null	null	null	null	null
-330	330	null	null	null	null	null
-360	360	null	null	null	null	null
+330	330	null	0.5039500179206062	null	0.47806030957585877	null
+360	360	null	0.5381307395629646	null	0.5336467627914996	null
