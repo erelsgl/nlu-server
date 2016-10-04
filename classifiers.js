@@ -1780,9 +1780,15 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 	// }
 
 	_.each(context, function(feat, key, list){ 
-		var obj = JSON.parse(feat)
-		if (_.keys(obj)[0] == "Offer")
-			values.push(_.values(_.values(obj)[0])[0])
+		
+		if (feat == "Greet")
+			features['GREET'] = 1
+		else
+		{
+			var obj = JSON.parse(feat)
+			if (_.keys(obj)[0] == "Offer")
+				values.push(_.values(_.values(obj)[0])[0])
+		}
 	}, this)
 
 //	console.vlog("DEBUGCONTEXT: values of the context "+ values)
@@ -2014,7 +2020,7 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	var sample = JSON.parse(JSON.stringify(sam))
 
 	if (!('clean' in featureOptions))
-		featureOptions["clean"] = true	
+		throw new Error("no clean option")
 
 	if (!('toextract' in featureOptions))
 	    throw new Error("toextract is not defined")
@@ -2041,6 +2047,18 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	if (_.isArray(sample['sentences']))
 	   throw new Error("feAsync is only for object sentences")
 
+	var tokenizer = new natural.RegexpTokenizer({pattern: /[^\%a-zA-Z0-9\-\?]+/});
+	text = regexpNormalizer(sample["text"].toLowerCase())
+        var tkns = natural.NGrams.ngrams(tokenizer.tokenize(text), 1)
+	sample['sentences'] = {"tokens":[]}
+
+	_.each(tkns, function(value, key, list){
+                sample['sentences']['tokens'].push({
+                        "word": value[0],
+                        "lemma": value[0]
+                        })
+        }, this)
+
 /*	var word_lemma = {}
 	_.each(sample['sentences']['tokens'], function(token, key, list){
 		word_lemma[token.word.toLowerCase()] = {
@@ -2055,7 +2073,9 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 		console.vlog("feAsyncStanford: cleaned: "+JSON.stringify(sample.sentences, null, 4))
 		}
 	else
-		console.vlog("feAsyncStanford: ATTENTION: clean method")	
+		console.vlog("feAsyncStanford: ATTENTION: no clean method")	
+
+	console.vlog("feAsyncStanford: tokens: "+JSON.stringify(sample['sentences']['tokens'], null, 4))
 
 	async.eachSeries(sample['sentences']['tokens'], function(token, callback_local) {
 
@@ -2628,7 +2648,7 @@ module.exports = {
 		"Natural+Context": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'offered':true, 'toextract':'word','unoffered':true}),
 		Natural: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'offered':true, 'toextract':'word','unoffered':true}),
 		
-		Natural_Neg: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false}),
+		Natural_Neg: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, "clean": false}),
 		
 		Natural_Neg_old: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false}),
 
@@ -2655,10 +2675,11 @@ module.exports = {
 		Emb_100_Hungarian: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feSalient], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 9, 'operation':'sum'}),
 		Emb_100_German: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feSalient], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 9, 'operation':'sum'}),
 		Emb_100_All: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feSalient], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, 'embdeddb': 9, 'operation':'sum'}),
-		
-		"Unigram": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {"neg":false, 'toextract':'word','unoffered':true, 'offered':true}),
+		"Unigram": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {"neg":false, 'toextract':'word','unoffered':true, 'offered':true, "clean":true}),
+		"Unigram_No_Clean": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {"neg":false, 'toextract':'word','unoffered':true, 'offered':true, "clean":false}),
         "Unigram_Lemma": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {"neg":false, 'toextract':'lemma','unoffered':true, 'offered':true}),
-        "Unigram+Context": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg": false}),
+        "Unigram+Context": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg": false, "clean": true}),
+        "Unigram_No_Clean+Context": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg": false, "clean":false}),
         "Context": enhance(SvmLinearBinaryRelevanceClassifier, [feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg": false}),
         "Unigram_Lemma+Context": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'lemma','unoffered':true, 'offered':true, "neg": false}),
         "Unigram+Neg": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":true}),
