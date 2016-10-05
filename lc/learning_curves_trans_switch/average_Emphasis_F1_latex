@@ -1,0 +1,35 @@
+\addplot[color=green,mark=*] coordinates {
+(30,30)(60,60)
+};
+\addlegendentry{dial}
+
+\addplot[color=green,mark=*] coordinates {
+(30,0.0052020202020202026)(60,0.007063767294088566)
+};
+\addlegendentry{Natural\_Neg}
+
+\addplot[color=green,mark=*] coordinates {
+(30,0.006385407472786113)(60,0.011818685578418614)
+};
+\addlegendentry{\_All\_together}
+
+\addplot[color=green,mark=*] coordinates {
+(30,0.008251276157342693)(60,0.01637738907273587)
+};
+\addlegendentry{\_Hungarian}
+
+\addplot[color=green,mark=*] coordinates {
+(30,0.007504068258785241)(60,0.008790794189775514)
+};
+\addlegendentry{\_Portuguese}
+
+\addplot[color=green,mark=*] coordinates {
+(30,0.008862953138815207)(60,0.011092151675485006)
+};
+\addlegendentry{\_Russian}
+
+\addplot[color=green,mark=*] coordinates {
+(30,0.013435374149659863)(60,0.024007167223651083)
+};
+\addlegendentry{\_Hungarian+\_Japanese+\_Chinese+\_Finish}
+
