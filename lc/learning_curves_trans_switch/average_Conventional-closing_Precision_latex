@@ -9,7 +9,7 @@
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,0.7389532580709052)(180,0.7892489435314166)(210,0.7816842855224165)(240,0.857234874626179)
+(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
 };
 \addlegendentry{All\_together}
 
@@ -19,12 +19,12 @@
 \addlegendentry{Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,0.7368462823725982)(180,0.80639807601908)(210,null)(240,null)
+(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
 };
 \addlegendentry{Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,0.7722435897435898)(180,0.8052178566158097)(210,0.8362533762533761)(240,0.7496046311835785)
+(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
 };
 \addlegendentry{Russian}
 

@@ -9,22 +9,22 @@
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
+(30,null)(60,null)(90,null)(120,null)(150,null)(180,0.42707028266419533)(210,0.49540126613985885)(240,0.5247177623951736)
 };
 \addlegendentry{All\_together}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
+(30,null)(60,null)(90,null)(120,null)(150,null)(180,0.3719539084211523)(210,0.41135449113595635)(240,0.4612345844973123)
 };
 \addlegendentry{Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
+(30,null)(60,null)(90,null)(120,null)(150,0.3801030394101513)(180,0.39351797595141036)(210,0.44836108918581935)(240,0.4939093629523888)
 };
 \addlegendentry{Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
-(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
+(30,null)(60,null)(90,null)(120,null)(150,null)(180,0.40243352673853877)(210,0.43533444455078385)(240,0.45381998878394375)
 };
 \addlegendentry{Russian}
 
