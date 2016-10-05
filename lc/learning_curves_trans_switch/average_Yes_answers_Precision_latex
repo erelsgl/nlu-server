@@ -11,20 +11,25 @@
 \addplot[color=green,mark=*] coordinates {
 (30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
 };
-\addlegendentry{All\_together}
+\addlegendentry{\_All\_together}
 
 \addplot[color=green,mark=*] coordinates {
 (30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
 };
-\addlegendentry{Hungarian}
+\addlegendentry{\_Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
 (30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
 };
-\addlegendentry{Portuguese}
+\addlegendentry{\_Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
 (30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
 };
-\addlegendentry{Russian}
+\addlegendentry{\_Russian}
+
+\addplot[color=green,mark=*] coordinates {
+(30,null)(60,null)(90,null)(120,null)(150,null)(180,null)(210,null)(240,null)
+};
+\addlegendentry{\_Hungarian+\_Japanese+\_Chinese+\_Finish}
 
