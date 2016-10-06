@@ -1,9 +1,11 @@
-size	dial	Natural_Neg	_Portuguese	_All_together	_Asia+_Uralic	_Romanic	_Polish
-10	10	null	null	null	null	null	null
-20	20	null	null	null	null	null	null
-30	30	null	null	null	null	null	null
-40	40	null	null	null	null	null	null
-50	50	null	null	null	null	null	null
-60	60	null	null	null	null	null	null
-70	70	null	null	null	null	null	null
-80	80	null	null	null	null	null	null
+size	dial	Natural_Neg	_Portuguese	_All_together	_Romanic	_Germanic	_Uralic	_Semitic
+10	10	null	null	null	null	null	null	null
+20	20	null	null	null	null	null	null	null
+30	30	null	null	null	null	null	null	null
+40	40	null	null	null	null	null	null	null
+50	50	null	null	null	null	null	null	null
+60	60	null	null	null	null	null	null	null
+70	70	null	null	null	null	null	null	null
+80	80	0.4842530848214753	0.5357822764314436	0.48022660578922893	0.4718647145430677	0.500850067473799	0.5113940753291766	0.5064586930704051
+90	90	0.5156652309143693	0.5346662633595483	0.4669117481560071	0.47988715145494815	0.49371447990928735	0.508254888392616	0.5592272508257926
+100	100	0.5260978230070447	0.5613561912209232	0.4598833571914026	0.4990872082014798	0.4974402677743462	0.546404493299721	0.5592721551545081
