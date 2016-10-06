@@ -4,37 +4,37 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,0.4842530848214753)(90,0.5156652309143693)(100,0.5260978230070447)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)
 };
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,0.5357822764314436)(90,0.5346662633595483)(100,0.5613561912209232)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)
 };
 \addlegendentry{\_Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,0.48022660578922893)(90,0.4669117481560071)(100,0.4598833571914026)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)
 };
 \addlegendentry{\_All\_together}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,0.4718647145430677)(90,0.47988715145494815)(100,0.4990872082014798)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)
 };
 \addlegendentry{\_Romanic}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,0.500850067473799)(90,0.49371447990928735)(100,0.4974402677743462)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)
 };
 \addlegendentry{\_Germanic}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,0.5113940753291766)(90,0.508254888392616)(100,0.546404493299721)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)
 };
 \addlegendentry{\_Uralic}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,0.5064586930704051)(90,0.5592272508257926)(100,0.5592721551545081)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)
 };
 \addlegendentry{\_Semitic}
 
