@@ -1,30 +1,30 @@
 \addplot[color=green,mark=*] coordinates {
-(3,3)(6,6)(9,9)(12,12)(15,15)(18,18)(21,21)(24,24)(27,27)(30,30)(33,33)(36,36)
+(3,3)(6,6)(9,9)(12,12)(15,15)(18,18)(21,21)(24,24)(27,27)(30,30)(33,33)
 };
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(3,null)(6,null)(9,null)(12,null)(15,null)(18,null)(21,null)(24,null)(27,null)(30,null)(33,null)(36,null)
+(3,null)(6,null)(9,null)(12,null)(15,null)(18,null)(21,null)(24,null)(27,0.6781045486479812)(30,0.655903019689455)(33,0.6577045525897204)
 };
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(3,null)(6,null)(9,null)(12,null)(15,null)(18,null)(21,null)(24,null)(27,null)(30,null)(33,null)(36,null)
+(3,null)(6,null)(9,null)(12,null)(15,null)(18,null)(21,null)(24,null)(27,0.697170123719246)(30,0.6630926741606669)(33,0.6626948306590623)
 };
 \addlegendentry{\_Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
-(3,null)(6,null)(9,null)(12,null)(15,null)(18,null)(21,null)(24,null)(27,null)(30,null)(33,null)(36,null)
+(3,null)(6,null)(9,null)(12,null)(15,null)(18,null)(21,null)(24,null)(27,0.6534436811673126)(30,0.6658116391039415)(33,0.6565624562817931)
 };
 \addlegendentry{\_All\_together}
 
 \addplot[color=green,mark=*] coordinates {
-(3,null)(6,null)(9,null)(12,null)(15,null)(18,null)(21,null)(24,null)(27,null)(30,null)(33,null)(36,null)
+(3,null)(6,null)(9,null)(12,null)(15,null)(18,null)(21,null)(24,null)(27,0.6555501203487875)(30,0.6663665098386821)(33,0.6617948691046164)
 };
 \addlegendentry{\_French}
 
 \addplot[color=green,mark=*] coordinates {
-(3,null)(6,null)(9,null)(12,null)(15,null)(18,null)(21,null)(24,null)(27,null)(30,null)(33,null)(36,null)
+(3,null)(6,null)(9,null)(12,null)(15,null)(18,null)(21,null)(24,null)(27,0.692027105932099)(30,0.674196856098106)(33,0.6748785796681526)
 };
 \addlegendentry{\_Hungarian}
 
