@@ -27,10 +27,10 @@ if (cluster.isWorker)
 	var test  = JSON.parse(message['test'])
 
 	//var train = _.flatten(train)
-//        var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Quit","Greet"], "filter":false})
-        var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
-  //      var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Quit","Greet"], "filter":true})
-        var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
+        var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Quit", "Greet"], "filter":false})
+        //var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
+        var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Quit", "Greet"], "filter":true})
+        //var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
 
     //    _.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"]}, this)
 
@@ -44,7 +44,7 @@ if (cluster.isWorker)
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
 
-	var index = 20
+	var index = 10
 
 	async.whilst(
 	    function () { return index <= train.length },
@@ -59,7 +59,7 @@ if (cluster.isWorker)
 			//else index += 5
 	
     		var mytrain = train.slice(0, index)
-		index += 20
+		index += 10
 		
 		var mytrainex = JSON.parse(JSON.stringify(mytrain))
     		var mytestex = JSON.parse(JSON.stringify(test))
@@ -104,10 +104,6 @@ if (cluster.isWorker)
     			case "Russian": callbacks(null, bars.gettrans(mytrainex, "(G|Y|M):ru:(G|Y|M)"), mytestex, mytrainex.length); break;
     			case "Portuguese": callbacks(null, bars.gettrans(mytrainex, "(G|Y|M):pt:(G|Y|M)"), mytestex, mytrainex.length); break;
     			case "Hebrew": callbacks(null, bars.gettrans(mytrainex, "(G|Y|M):he:(G|Y|M)"), mytestex, mytrainex.length); break;
-    			case "Hungarian": callbacks(null, bars.gettrans(mytrainex, "(G|Y|M):hu:(G|Y|M)"), mytestex, mytrainex.length);break;
-    			case "Hungarian_Yandex": callbacks(null, bars.gettrans(mytrainex, "Y:hu:Y"), mytestex, mytrainex.length);break;
-    			case "Hungarian_Google": callbacks(null, bars.gettrans(mytrainex, "G:hu:G"), mytestex, mytrainex.length);break;
-    			case "Hungarian_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:hu:M"), mytestex, mytrainex.length);break;
 				case "French+German+Potuguese": callbacks(null, bars.gettrans(mytrainex, ".*:(de|fr|pt):.*"), mytestex, mytrainex.length); break;
 				case "Russian+Spanish+Arabic": callbacks(null, bars.gettrans(mytrainex, ".*:(ru|es|ar):.*"), mytestex, mytrainex.length); break;
 				case "Russian+Hebrew+Arabic": callbacks(null, bars.gettrans(mytrainex, ".*:(ru|he|ar):.*"), mytestex, mytrainex.length); break;
@@ -121,11 +117,28 @@ if (cluster.isWorker)
 				case "Finish+Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:(fi|hu):.*"), mytestex, mytrainex.length); break;
 				case "Arabic+Hebrew": callbacks(null, bars.gettrans(mytrainex, ".*:(he|ar):.*"), mytestex, mytrainex.length); break;
 				case "_Japanese": callbacks(null, bars.gettrans(mytrainex, "((G:ja:G)|(M:ja:M)|(Y:ja:Y))"), mytestex, mytrainex.length); break;
+				case "_Portuguese": callbacks(null, bars.gettrans(mytrainex, "((G:pt:G)|(M:pt:M)|(Y:pt:Y))"), mytestex, mytrainex.length); break;
+				case "_French": callbacks(null, bars.gettrans(mytrainex, "((G:fr:G)|(M:fr:M)|(Y:fr:Y))"), mytestex, mytrainex.length); break;
 				case "_Hungarian": callbacks(null, bars.gettrans(mytrainex, "((G:hu:G)|(M:hu:M)|(Y:hu:Y))"), mytestex, mytrainex.length); break;
+				case "_Polish": callbacks(null, bars.gettrans(mytrainex, "((G:pl:G)|(M:pl:M)|(Y:pl:Y))"), mytestex, mytrainex.length); break;
 				case "_Finish": callbacks(null, bars.gettrans(mytrainex, "((G:fi:G)|(M:fi:M)|(Y:fi:Y))"), mytestex, mytrainex.length); break;
 				case "_Chinese": callbacks(null, bars.gettrans(mytrainex, "((G:zh:G)|(M:zh:M)|(Y:zh:Y))"), mytestex, mytrainex.length); break;
 				case "_Russian": callbacks(null, bars.gettrans(mytrainex, "((G:ru:G)|(M:ru:M)|(Y:ru:Y))"), mytestex, mytrainex.length); break;
-				case "_All_together": callbacks(null, bars.gettrans(mytrainex, "((G:.*:G)|(M:.*:M)|(Y:.*:Y))"), mytestex, mytrainex.length); break;
+				//case "_All_together": callbacks(null, bars.gettrans(mytrainex, "((G:.*:G)|(M:.*:M)|(Y:.*:Y))"), mytestex, mytrainex.length); break;
+				case "_All_together": callbacks(null, bars.gettrans(mytrainex, "((G:(pt|fr|ge|nl|ar|he):G)|(M:(pt|fr|ge|nl|ar|he):M)|(Y:(pt|fr|ge|nl|ar|he):Y))"), mytestex, mytrainex.length); break;
+				case "_Uralic": callbacks(null, bars.gettrans(mytrainex, "((G:(hu|fi):G)|(M:(hu|fi):M)|(Y:(hu|fi):Y))"), mytestex, mytrainex.length); break;
+				case "_Hungarian+_Japanese": callbacks(null, bars.gettrans(mytrainex, "((G:hu:G)|(M:hu:M)|(Y:hu:Y)|(G:ja:G)|(M:ja:M)|(Y:ja:Y))"), mytestex, mytrainex.length); break;
+				case "_Hungarian+_Japanese+_Chinese": callbacks(null, bars.gettrans(mytrainex, "((G:hu:G)|(M:hu:M)|(Y:hu:Y)|(G:ja:G)|(M:ja:M)|(Y:ja:Y)|(G:zh:G)|(M:zh:M)|(Y:zh:Y))"), mytestex, mytrainex.length); break;
+
+				case "_Hungarian+_Japanese+_Finish": callbacks(null, bars.gettrans(mytrainex, "((G:hu:G)|(M:hu:M)|(Y:hu:Y)|(G:ja:G)|(M:ja:M)|(Y:ja:Y)|(G:fi:G)|(M:fi:M)|(Y:fi:Y))"), mytestex, mytrainex.length); break;
+
+				case "_Asia+_Uralic": callbacks(null, bars.gettrans(mytrainex, "((G:(hu|ja|zh|fi):G)|(M:(huja|zh|fi):M)|(Y:(hu|ja|zh|fi):Y))"), mytestex, mytrainex.length); break;
+
+				case "_Slavic": callbacks(null, bars.gettrans(mytrainex, "((G:ru:G)|(M:ru:M)|(Y:ru:Y)|(G:pl:G)|(M:pl:M)|(Y:pl:Y))"), mytestex, mytrainex.length); break;
+				case "_Asia": callbacks(null, bars.gettrans(mytrainex, "((G:zh:G)|(M:zh:M)|(Y:zh:Y)|(G:ja:G)|(M:ja:M)|(Y:ja:Y))"), mytestex, mytrainex.length); break;
+				case "_Semitic": callbacks(null, bars.gettrans(mytrainex, "((G:(he|ar):G)|(M:(he|ar):M)|(Y:(he|ar):Y))"), mytestex, mytrainex.length); break;
+				case "_Germanic": callbacks(null, bars.gettrans(mytrainex, "((G:(de|nl):G)|(M:(de|nl):M)|(Y:(de|nl):Y))"), mytestex, mytrainex.length); break;
+				case "_Romanic": callbacks(null, bars.gettrans(mytrainex, "((G:(fr|pt):G)|(M:(fr|pt):M)|(Y:(fr|pt):Y))"), mytestex, mytrainex.length); break;
 
 //				case "Natural_trans": 
 //
@@ -167,8 +180,8 @@ if (cluster.isWorker)
     		},
     		function(mytrainex, mytestex, trainsize, callback) {
 
-			//mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": ["Quit","Greet"], "filter":true})
-			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": [], "filter":true})
+			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": ["Quit", "Greet"], "filter":true})
+			//mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": [], "filter":true})
     	
 			console.vlog("DEBUGPRETRAIN: classifier:"+classifier+" mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
 
@@ -219,18 +232,23 @@ if (cluster.isMaster)
 	bars.cleanFolder(lcfolder)
 	bars.cleanFolder("./logs")
 
-	var folds = 5
+	var folds = 10
 	
 	//var classifiers = [ "Natural_Neg", "Emb_100", "Emb_50", "NLU_Tran_All"]
 	//var classifiers = [ "Natural_Neg", "Emb_25", "Emb_50", "Emb_100", "Emb_200", "Emb_300"]
-//	var classifiers = [ "Natural_Neg", "YY", "MM", "GG", "YG", "GY", "YM", "MY", "GM", "MG"]
+	//var classifiers = ["Natural_Neg", "YY", "MM", "GG"]
 	//var classifiers = [ "Natural_Neg", "Russian", "Hebrew", "Hungarian", "NLU_Tran_All", "Portuguese", "Chinese", "Finish", "Urdu", "Finish+Hungarian", "Spanish", "Arabic"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "French+German+Potuguese", "Russian+Spanish+Arabic", "Finish+Hungarian+Hebrew", "Urdu+Chinese+Hungarian"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "French+German+Potuguese", "Russian+Hebrew+Arabic", "Finish+Hungarian+Chinese", "Spanish+Hebrew+Arabic", "Finish+Hungarian+Urdu", "Hungarian", "Finish"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "French+Potuguese",  "Finish+Hungarian", "Arabic+Hebrew", "Hungarian", "Finish", "Portuguese", "Arabic", "Russian"]
-	//var classifiers = [ "Natural_Neg", "_Hungarian", "_Japanese", "_Finish", "_Chinese", "_Russian", "_All_together"]
-	var classifiers = [ "Natural_Neg", "Hungarian", "Portuguese", "Russian", "All_together"]
-	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Hungarian", "Hungarian_Google", "Hungarian_Yandex", "Hungarian_Microsoft"]
+	//var classifiers = [ "Natural_Neg", "_Hungarian", "_Portuguese", "_Russian", "_Japanese", "_All_together", "_Hungarian+_Japanese", "_Hungarian+_Japanese+_Chinese", "_Hungarian+_Japanese+_Chinese+_Finish"]
+	//var classifiers = [ "Natural_Neg", "_Hungarian", "_Portuguese","_All_together_test"]
+	//var classifiers = [ "Natural_Neg", "_Portuguese", "_All_together", "_Romanic", "_Germanic", "_Uralic", "_Semitic"]
+	var classifiers = [ "Natural_Neg", "_Portuguese", "_All_together", "_French", "_Hungarian"]
+	//var classifiers = [ "Natural_Neg", "Hungarian", "Portuguese", "Russian", "All_together"]
+	//var classifiers = [ "Natural_Neg", "Hungarian", "Russian", "Hebrew", "Arabic", "Portuguese", "All_together", "German", "_Japanese" ]
+//	var classifiers = [ "Natural_Neg", "_Asia", "_Semitic", "_Slavic", "_Uralic", "_Germanic", "_Romanic", "_All_together"]
+//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Hungarian", "Hungarian_Google", "Hungarian_Yandex", "Hungarian_Microsoft"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Hungarian", "Finish", "Best"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Finish+Hungarian+Chinese", "Finish", "Hungarian", "Chinese"]
 	// var classifiers = [ "Natural_Neg", "NLU_Tran_All", "hu_GG", "hu_MY", "hu_YG", "hu_YY", "Hungarian"]
@@ -238,11 +256,6 @@ if (cluster.isMaster)
 	//var classifiers = [ "Natural","NLU_Tran_GGFinish"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Emb_100", "Hungarian", "Emb_100_Hungarian", "Emb_100_All"]
 		
-	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin.json")))
-	//var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
-	data1 = bars.enrichparse(data1)
- 	var utterset1 = bars.getsetcontext(data1, false)
-	var train1 = utterset1["train"].concat(utterset1["test"])
 
 	cluster.setupMaster({
   	exec: __filename,
@@ -250,11 +263,21 @@ if (cluster.isMaster)
 	// silent: false
 	});
 	
+
+	 async.timesSeries(1, function(n, next){
+
+
+		var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased_no_ur.json")))
+        	//var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
+                data1 = bars.enrichparse(data1)
+                var utterset1 = bars.getsetcontext(data1, false)
+                //var train1 = utterset1["train"].concat(utterset1["test"]).concat(utterset1["biased"])
+                var train1 = utterset1["train"].concat(utterset1["test"])
+		train1 = _.shuffle(train1)        
+
 	console.mlog("DEBUGMASTER: loaded: "+train1.length)
+	console.log("Assurance fold: "+n+" set: "+train1.length)
 
-	 async.timesSeries(10, function(n, next){
-
-	console.mlog("Assurance fold: "+n)
 	_(folds).times(function(fold){
 
 		var data = partitions.partitions_consistent_by_fold(train1, folds, fold)
