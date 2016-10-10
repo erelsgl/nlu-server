@@ -2047,9 +2047,11 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	if (_.isArray(sample['sentences']))
 	   throw new Error("feAsync is only for object sentences")
 
-	var tokenizer = new natural.RegexpTokenizer({pattern: /[^\%a-zA-Z0-9\-\?]+/});
-	text = regexpNormalizer(sample["text"].toLowerCase())
-        var tkns = natural.NGrams.ngrams(tokenizer.tokenize(text), 1)
+//	var tokenizer = new natural.RegexpTokenizer({pattern: /[^\%a-zA-Z0-9\-\?]+/});
+//	text = regexpNormalizer(sample["text"].toLowerCase())
+	
+	var text = sample["text"]  
+ 	var tkns = natural.NGrams.ngrams(tokenizer.tokenize(text), 1)
 	sample['sentences'] = {"tokens":[]}
 
 	_.each(tkns, function(value, key, list){
@@ -2648,7 +2650,7 @@ module.exports = {
 		"Natural+Context": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'offered':true, 'toextract':'word','unoffered':true}),
 		Natural: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'offered':true, 'toextract':'word','unoffered':true}),
 		
-		Natural_Neg: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, "clean": false}),
+		Natural_Neg: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false, "clean":false}),
 		
 		Natural_Neg_old: enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word','unoffered':true, 'offered':true, "neg":false}),
 
