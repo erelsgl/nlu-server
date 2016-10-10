@@ -36,9 +36,21 @@ function getembedall(db, callback)
 
 var client = new Redis(6379);
 
+
+function getembedarray(arr, db, callback)
+{
+	var embed = []
+	async.eachSeries(arr, function(string, callback1){
+		getembed(string, db, function(err, result){
+			embed.push(result)
+		})
+	}, function(err) {
+		callback(false, embed)
+	})
+}
+
 function getembed(string, db, callback)
 {
-
 
 async.series([
     function(callbacklocal){
@@ -605,7 +617,8 @@ module.exports = {
   getwordnetCache:getwordnetCache,
   getppdbCache:getppdbCache,
   getembed:getembed,
-  getembedall:getembedall
+  getembedall:getembedall,
+  getembedarray:getembedarray
 }
 
 //getembed("home", 9, function(err, emb){
