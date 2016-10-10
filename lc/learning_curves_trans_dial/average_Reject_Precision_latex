@@ -34,7 +34,7 @@
 \addlegendentry{Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,0.7273401594264298)(8,0.6751923597598686)(9,0.7438870778366203)(10,0.7214717930759427)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,0.7294818030155463)(8,0.6699212174663222)(9,0.6967077142026687)(10,0.7232727071148296)
 };
 \addlegendentry{All\_together}
 
@@ -47,4 +47,14 @@
 (1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,0.6950589426053821)
 };
 \addlegendentry{German}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,0.6571151350286424)
+};
+\addlegendentry{Finish}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,0.7112143805759441)
+};
+\addlegendentry{Uralic}
 
