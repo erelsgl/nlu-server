@@ -1,11 +1,11 @@
-size	dial	Natural_Neg	Portuguese	Russian	French	Hebrew	Hungarian	All_together	Arabic	German	Finish	Uralic
-1	1	null	null	null	null	null	null	null	null	null	null	null
-2	2	null	null	null	null	null	null	null	null	null	null	null
-3	3	null	null	null	null	null	null	null	null	null	null	null
-4	4	null	null	null	null	null	null	null	null	null	null	null
-5	5	null	null	null	null	null	null	null	null	null	null	null
-6	6	null	null	null	null	null	null	null	null	null	null	null
-7	7	null	null	null	null	null	null	0.7294818030155463	null	null	null	null
-8	8	null	0.5990395542034784	0.5828060382325642	null	null	0.685751904472688	0.6699212174663222	null	null	null	null
-9	9	null	0.6035653822509689	0.5974570430946257	null	null	0.6456031534098268	0.6967077142026687	null	null	null	null
-10	10	0.6944673258341859	0.6970321314132726	0.6790890446968506	0.6859785814193611	0.6969467681759796	0.7205765308851173	0.7232727071148296	0.6857627211399063	0.6950589426053821	0.6571151350286424	0.7112143805759441
+size	dial	_Hungarian	Natural_Neg	Portuguese	Russian	French	Hebrew	Hungarian	All_together	Arabic	German	Finish	Uralic
+1	1	null	null	null	null	null	null	null	null	null	null	null	null
+2	2	null	null	null	null	null	null	null	null	null	null	null	null
+3	3	null	null	null	null	null	null	null	null	null	null	null	null
+4	4	null	null	null	null	null	null	null	null	null	null	null	null
+5	5	null	null	null	null	null	null	null	null	null	null	null	null
+6	6	null	null	null	null	null	null	null	null	null	null	null	null
+7	7	null	null	null	null	null	null	null	0.7294818030155463	null	null	null	null
+8	8	null	null	0.5990395542034784	0.5828060382325642	null	null	0.685751904472688	0.6699212174663222	null	null	null	null
+9	9	null	null	0.6035653822509689	0.5974570430946257	null	null	0.6456031534098268	0.6967077142026687	null	null	null	null
+10	10	0.7291162092475507	0.6944673258341859	0.6970321314132726	0.6790890446968506	0.6859785814193611	0.6969467681759796	0.7205765308851173	0.7232727071148296	0.6857627211399063	0.6950589426053821	0.6571151350286424	0.7112143805759441
