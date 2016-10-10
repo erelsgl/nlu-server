@@ -14,7 +14,7 @@
 \addlegendentry{\_Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,0.6745068614804384)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.5715915761781167)(10,0.6729491522969784)
 };
 \addlegendentry{\_All\_together}
 
@@ -37,4 +37,9 @@
 (1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,0.6694756270502695)
 };
 \addlegendentry{Hungarian}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,0.5563068444964996)
+};
+\addlegendentry{All\_together}
 
