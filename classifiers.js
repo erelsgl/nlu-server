@@ -2047,11 +2047,9 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	if (_.isArray(sample['sentences']))
 	   throw new Error("feAsync is only for object sentences")
 
-//	var tokenizer = new natural.RegexpTokenizer({pattern: /[^\%a-zA-Z0-9\-\?]+/});
-//	text = regexpNormalizer(sample["text"].toLowerCase())
-	
-	var text = sample["text"]  
- 	var tkns = natural.NGrams.ngrams(tokenizer.tokenize(text), 1)
+	var tokenizer = new natural.RegexpTokenizer({pattern: /[^\%a-zA-Z0-9\-\?]+/});
+	text = regexpNormalizer(sample["text"].toLowerCase())
+    var tkns = natural.NGrams.ngrams(tokenizer.tokenize(text), 1)
 	sample['sentences'] = {"tokens":[]}
 
 	_.each(tkns, function(value, key, list){
@@ -2077,8 +2075,20 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	else
 		console.vlog("feAsyncStanford: ATTENTION: no clean method")	
 
+
 	console.vlog("feAsyncStanford: tokens: "+JSON.stringify(sample['sentences']['tokens'], null, 4))
 
+	_.each(sample['sentences']['tokens'], function(token, key, list){
+		switch(featureOptions.toextract) {
+    		case "lemma": features[token.lemma.toLowerCase()] = 1; break;
+    		case "word": features[token.word.toLowerCase()] = 1; break;
+        }
+	}, this)
+	
+	console.vlog("DEBUGASYNCSTANFORD:"+JSON.stringify(features, null, 4))
+ 	callback(null, features)
+
+/*
 	async.eachSeries(sample['sentences']['tokens'], function(token, callback_local) {
 
 		switch(featureOptions.toextract) {
@@ -2122,7 +2132,7 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 
 	    console.vlog("DEBUGASYNCSTANFORD:"+JSON.stringify(features, null, 4))
  		callback(null, features)
-	})
+	})*/
 }
 
 function feAsync(sam, features, train, featureOptions, callback) {
