@@ -1,11 +1,11 @@
-size	dial	Natural_Neg	_Portuguese	_All_together	_French	_Hungarian	_Japanese	Hungarian	All_together
-1	1	null	null	null	null	null	null	null	null
-2	2	null	null	null	null	null	null	null	null
-3	3	null	null	null	null	null	null	null	null
-4	4	null	null	null	null	null	null	null	null
-5	5	null	null	null	null	null	null	null	null
-6	6	null	null	null	null	null	null	null	null
-7	7	null	null	null	null	null	null	null	0.7393642127695077
-8	8	null	0.5999336024353619	0.6664792812488274	null	null	0.5947911939940276	0.685751904472688	0.6797640738624886
-9	9	null	0.6067385661899113	0.6852057462404648	null	null	0.6082621005928781	0.6456031534098268	0.6951230221329144
-10	10	0.6944673258341859	0.6959488898030667	0.7255293295433056	0.677322393518599	0.7291162092475507	0.6934232516234802	0.7205765308851173	0.7147654884861285
+size	dial	Natural_Neg	Portuguese	Russian	French	Hebrew	Hungarian	All_together
+1	1	null	null	null	null	null	null	null
+2	2	null	null	null	null	null	null	null
+3	3	null	null	null	null	null	null	null
+4	4	null	null	null	null	null	null	null
+5	5	null	null	null	null	null	null	null
+6	6	null	null	null	null	null	null	null
+7	7	null	null	null	null	null	null	0.7273401594264298
+8	8	null	0.5990395542034784	0.5828060382325642	null	null	0.685751904472688	0.6751923597598686
+9	9	null	0.6035653822509689	0.5974570430946257	null	null	0.6456031534098268	0.7438870778366203
+10	10	0.6944673258341859	0.6970321314132726	0.6790890446968506	0.6859785814193611	0.6969467681759796	0.7205765308851173	0.7214717930759427
