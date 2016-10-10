@@ -4,27 +4,27 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,0.7029378541437364)(8,0.7139262820512821)(9,null)(10,null)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,0.6329602030313595)(9,0.6397943333727943)(10,0.6801704752686296)
 };
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.5897415110798379)(10,0.632687688885123)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,0.5832686184090823)(9,0.5664648873383344)(10,0.6295022661789682)
 };
 \addlegendentry{\_Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,0.6322885994585736)(8,0.6157186147186147)(9,0.6130922341111021)(10,0.6018556051965662)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,0.6398713569314513)(9,0.6386527893987385)(10,0.6391342387089636)
 };
 \addlegendentry{\_All\_together}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,0.6371166081306152)(8,0.6957416437442694)(9,0.6430338548765197)(10,0.6584227945142886)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,0.6036438468611433)(9,0.592762296199595)(10,0.6267547868797708)
 };
 \addlegendentry{\_French}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,0.6411130724883993)(8,0.6879004908522981)(9,0.6623297086511373)(10,0.6684815121215525)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,0.6662761393196176)(9,0.6815137001030522)(10,0.676419837618222)
 };
 \addlegendentry{\_Hungarian}
 
