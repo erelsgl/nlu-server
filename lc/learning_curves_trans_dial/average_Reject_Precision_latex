@@ -28,3 +28,13 @@
 };
 \addlegendentry{\_Hungarian}
 
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,0.5947911939940276)(9,0.6082621005928781)(10,0.6934232516234802)
+};
+\addlegendentry{\_Japanese}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,0.685751904472688)(9,0.6456031534098268)(10,0.7205765308851173)
+};
+\addlegendentry{Hungarian}
+
