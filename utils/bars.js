@@ -3977,7 +3977,7 @@ function processdataset(dataset, options)
 
     if (options.intents)
       record['output'] = _.unique(_.keys(utterance.outputhash))
-	
+
     if (_.isArray(record['input']['sentences']))
 	{
 	record['input']['sentences']= {}
@@ -4528,15 +4528,18 @@ function gettrans(turns, pat)
 
      var roots = 1
 
-     if ("sentences" in turn["input"])
-	if ("basic-dependencies" in turn["input"]["sentences"])
-	   if (turn["input"]["sentences"]["basic-dependencies"].length > 0)
+	
+
+    // if ("sentences" in turn["input"])
+//	if ("basic-dependencies" in turn["input"]["sentences"])
+//	   if (turn["input"]["sentences"]["basic-dependencies"].length > 0)
 	//	throw new Error(JSON.stringify(turn["input"]["sentences"]["basic-dependencies"], null, 4))
-		var roots = _.filter(turn["input"]["sentences"]["basic-dependencies"], function(num){ return num["dep"] == "ROOT" }).length
+//		var roots = _.filter(turn["input"]["sentences"]["basic-dependencies"], function(num){ return num["dep"] == "ROOT" }).length
  
     //if ((turn["output"].length == 1) && (roots == 1))
-    if ((turn["output"].length == 1) && (roots == 1))
-    {
+//    if ((turn["output"].length == 1) && (roots == 1))
+	if (true)  
+  {
  
   	console.vlog("gettrans: turn " + key + " is applied")
 		//  var unique_trans = {}
@@ -4555,8 +4558,8 @@ function gettrans(turns, pat)
           console.vlog("gettrans: add: "+key + " text: "+tran)
           var record= copyobj(turn)
           record["input"]["text"] = tran
-  		    delete record["input"]["sentences"]
-  		    delete record["input"]["trans"]
+  		   delete record["input"]["sentences"]
+  		   delete record["input"]["trans"]
 
          /* if ("translation_id" in turn)
           {
@@ -4567,12 +4570,15 @@ function gettrans(turns, pat)
           }
           else
           { */
-            record["input"]["sentences"] = new Array(sbd.sentences(record["input"]["text"], { "newline_boundaries" : false,
-                                                                                              "html_boundaries"    : false,
-                                                                                              "sanitize"           : false,
-                                                                                              "allowed_tags"       : false,
-                                                                                              "abbreviations"      : null
-                                                                                            }).length)
+	record["input"]["sentences"] = {}  
+         /*
+ 	 record["input"]["sentences"] = new Array(sbd.sentences(tran, { "newline_boundaries" : false,
+                                                                           "html_boundaries"    : false,
+                                                                           "sanitize"           : false,
+                                                                           "allowed_tags"       : false,
+                                                                           "abbreviations"      : null
+                                                                          }).length)
+*/
             // if (fs.readFileSync(__dirname+"/../json/"+md5(tran)+".json"))
               // _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+md5(tran)+".json")))
             // else
@@ -4607,7 +4613,7 @@ function gettrans(turns, pat)
   }, this)
 
   console.vlog("gettrans: output.length: " + output.length)  
-//  console.vlog(JSON.stringify(output, null, 4))
+ console.vlog(JSON.stringify(output, null, 4))
   
   return output
 }
@@ -5920,10 +5926,17 @@ _.each(dataset, function(dialogue, key, list){
   _.each(dialogue["turns"], function(turn, key, list){
     if ((turn["role"] == "Employer") && !("sentences" in turn["input"]))
      { 
-      if (!fs.existsSync(__dirname+"/../json_main/"+md5(turn["input"]["text"])+".json"))
-        throw new Error("no file")
+	turn["input"]["sentences"] = new Array(sbd.sentences(turn["input"]["text"], { "newline_boundaries" : false,
+                                                                                              "html_boundaries"    : false,
+                                                                                              "sanitize"           : false,
+                                                                                              "allowed_tags"       : false,
+                                                                                              "abbreviations"      : null
+                                                                                            }).length)
+
+      //if (!fs.existsSync(__dirname+"/../json_main/"+md5(turn["input"]["text"])+".json"))
+        //throw new Error("no file")
 	
-       _.extend(turn["input"], JSON.parse(fs.readFileSync(__dirname+"/../json_main/"+md5(turn["input"]["text"])+".json")));
+       //_.extend(turn["input"], JSON.parse(fs.readFileSync(__dirname+"/../json_main/"+md5(turn["input"]["text"])+".json")));
 
 //      turn["input"]["sentences"] =  JSON.parse(fs.readFileSync(__dirname+"/../json_main/"+turn.translation_id+".json"))
      } 
