@@ -1,11 +1,11 @@
-size	dial	_Hungarian	Natural_Neg	Portuguese	Russian	French	Hebrew	Hungarian	All_together	Arabic	German	Finish	Uralic
-1	1	null	null	null	null	null	null	null	null	null	null	null	null
-2	2	null	null	null	null	null	null	null	null	null	null	null	null
-3	3	null	null	null	null	null	null	null	null	null	null	null	null
-4	4	null	null	null	null	null	null	null	null	null	null	null	null
-5	5	null	null	null	null	null	null	null	null	null	null	null	null
-6	6	null	null	null	null	null	null	null	null	null	null	null	null
-7	7	null	null	null	null	null	null	null	null	null	null	null	null
-8	8	null	null	null	null	null	null	null	null	null	null	null	null
-9	9	null	null	null	null	null	null	null	null	null	null	null	null
-10	10	null	null	null	null	null	null	null	null	null	null	null	null
+size	dial	Hungarian+Russian	_Hungarian	Natural_Neg	Portuguese	Russian	French	Hebrew	Hungarian	All_together	Arabic	German	Finish	Uralic
+1	1	null	null	null	null	null	null	null	null	null	null	null	null	null
+2	2	null	null	null	null	null	null	null	null	null	null	null	null	null
+3	3	null	null	null	null	null	null	null	null	null	null	null	null	null
+4	4	null	null	null	null	null	null	null	null	null	null	null	null	null
+5	5	null	null	null	null	null	null	null	null	null	null	null	null	null
+6	6	null	null	null	null	null	null	null	null	null	null	null	null	null
+7	7	null	null	null	null	null	null	null	null	null	null	null	null	null
+8	8	null	null	null	null	null	null	null	null	null	null	null	null	null
+9	9	null	null	null	null	null	null	null	null	null	null	null	null	0.5372097839158394
+10	10	0.6545198870008904	null	0.6187336707825242	null	0.5597201302415944	null	0.6195413983179939	0.6694756270502695	0.5718782281040344	null	0.6099709215907761	0.5815808142359622	0.6173120012704418
