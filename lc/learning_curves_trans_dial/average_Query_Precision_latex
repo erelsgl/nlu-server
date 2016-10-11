@@ -68,3 +68,8 @@
 };
 \addlegendentry{Uralic}
 
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.5123319795382338)(7,0.5474259941144457)(8,0.5525968428237826)(9,0.5783388805309232)(10,0.5906259180488168)
+};
+\addlegendentry{\_All\_together}
+
