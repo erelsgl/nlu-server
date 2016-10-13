@@ -28,3 +28,18 @@
 };
 \addlegendentry{Hungarian}
 
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,0.66288713623917)(120,0.6841954022988506)(130,0.638558201058201)(140,0.6436507936507936)(150,0.7225490196078431)
+};
+\addlegendentry{Finish}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,0.6662988513618974)(120,0.6603270609318996)(130,0.7119047619047619)(140,0.6391941391941391)(150,0.6687344913151365)
+};
+\addlegendentry{German}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,0.5840655489458758)(120,0.5875128161312372)(130,0.5890271132376395)(140,0.5793485793485793)(150,0.6679869524697111)
+};
+\addlegendentry{Chinese}
+
