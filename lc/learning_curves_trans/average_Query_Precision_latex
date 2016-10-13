@@ -43,3 +43,8 @@
 };
 \addlegendentry{Chinese}
 
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,0.5638915090007596)(120,0.5631944444444444)(130,0.5830597047975149)(140,0.5847953216374269)(150,0.6194736842105264)
+};
+\addlegendentry{French}
+
