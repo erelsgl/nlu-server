@@ -4527,18 +4527,10 @@ function gettrans(turns, pat)
 
     if (turn["output"].length == 1)
     {
- 
-  	console.vlog("gettrans: turn " + key + " is applied")
-    if (count_trans.length == 0)
-    {
-      count_trans = _.keys(turn["input"]["trans"])
-    }
-    else 
-    {
-        if (_.keys(turn["input"]["trans"]).length != count_trans.length)
-          throw new Error("inconsistency: count_trans: "+count_trans.sort()+ " cur: "+_.keys(turn["input"]["trans"]).sort())
-    }
-		
+
+      var output_temp = []
+  	  console.vlog("gettrans: turn " + key + " is applied")
+   	
       _.each(turn["input"]["trans"], function(tran, key, list){
         
         var proc = regex.test(key)
@@ -4557,9 +4549,19 @@ function gettrans(turns, pat)
           record["input"]["sentences"] = {}  
   		    delete record["input"]["trans"]
           record["input"]["source"] = turn.translation_id
-          output.push(record)
+          // output.push(record)
+          output_temp.push(record)
         }
       }, this)
+
+      if (count_trans == 0)
+        count_trans = output_temp.length
+      else
+        if (output_temp.length != count_trans)
+          throw new Error("inconsistency")
+
+      output = output.concat(output_temp)
+
 	  }
 	  else
 		  console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"]+" sentences: "+roots)
