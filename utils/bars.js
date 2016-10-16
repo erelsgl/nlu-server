@@ -4515,33 +4515,30 @@ function gettrans(turns, pat)
 {
   var output = []
   var regex =  new RegExp(pat)
-  //var omitlang = ["ar", "es"]
-  var omitlang = []
+  var count_trans = 0
 
   console.vlog("gettrans: input.length: " + turns.length)
 
   _.each(turns, function(turn, key, list){
 
-     var temp_copy = copyobj(turn)
-     delete temp_copy["input"]["trans"]
-     output.push(temp_copy)
+    var temp_copy = copyobj(turn)
+    delete temp_copy["input"]["trans"]
+    output.push(temp_copy)
 
-   //  var roots = 1
-
-    // if ("sentences" in turn["input"])
-//	if ("basic-dependencies" in turn["input"]["sentences"])
-//	   if (turn["input"]["sentences"]["basic-dependencies"].length > 0)
-	//	throw new Error(JSON.stringify(turn["input"]["sentences"]["basic-dependencies"], null, 4))
-//		var roots = _.filter(turn["input"]["sentences"]["basic-dependencies"], function(num){ return num["dep"] == "ROOT" }).length
- 
-    //if ((turn["output"].length == 1) && (roots == 1))
-    if ((turn["output"].length == 1)
-//	if (true)  
-  {
+    if (turn["output"].length == 1)
+    {
  
   	console.vlog("gettrans: turn " + key + " is applied")
-		//  var unique_trans = {}
-	  
+    if (count_trans == 0)
+    {
+      count_trans = _.keys(turn["input"]["trans"]).length
+    }
+    else 
+    {
+        if (_.keys(turn["input"]["trans"]).length != count_trans)
+          throw new Error("inconsistency")
+    }
+		
       _.each(turn["input"]["trans"], function(tran, key, list){
         
         var proc = regex.test(key)
@@ -4551,68 +4548,26 @@ function gettrans(turns, pat)
 	
         //console.vlog("gettrans: engine1: "+engine1+ " engine2: "+engine2+" pivotlang: "+pivotlang)
 
-        if ((proc) && (omitlang.indexOf(pivotlang)==-1))
+        if (proc)
         {
           console.vlog("gettrans: add: "+key + " text: "+tran)
           var record= copyobj(turn)
           record["input"]["text"] = tran
- 		delete record["input"]["sentences"]
-  		   delete record["input"]["trans"]
-
-         /* if ("translation_id" in turn)
-          {
-            if (fs.existsSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json"))
-              _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+turn.translation_id+"_"+key+".json")));
-  	      else
-             throw new Error("sentence file is not found")
-          }
-          else
-          { */
-	record["input"]["sentences"] = {}  
-         /*
- 	 record["input"]["sentences"] = new Array(sbd.sentences(tran, { "newline_boundaries" : false,
-                                                                           "html_boundaries"    : false,
-                                                                           "sanitize"           : false,
-                                                                           "allowed_tags"       : false,
-                                                                           "abbreviations"      : null
-                                                                          }).length)
-*/
-            // if (fs.readFileSync(__dirname+"/../json/"+md5(tran)+".json"))
-              // _.extend(record["input"], JSON.parse(fs.readFileSync(__dirname+"/../json/"+md5(tran)+".json")))
-            // else
-              // throw new Error("sentence file not found for md5")
-          //}
-
+          delete record["input"]["sentences"]
+          record["input"]["sentences"] = {}  
+  		    delete record["input"]["trans"]
           record["input"]["source"] = turn.translation_id
-          	output.push(record)
-  	  //	  unique_trans[record["input"]["text"]] = record
+          output.push(record)
         }
       }, this)
-
-     /* unique_trans[turn.input.text] = 
-      {
-        'input': {'text': turn.input.text,
-        'sentences': turn.input.sentences,
-        'context': turn.input.context},
-        'output': JSON.parse(JSON.stringify(turn.output)),
-        'outputhash': JSON.parse(JSON.stringify(turn.outputhash))
-      }*/
-
-  //    console.vlog("gettrans: there are unique records: "+_.values(unique_trans).length)
-    //  console.vlog("gettrans: unique strings: "+JSON.stringify(_.keys(unique_trans), null, 4))
-//		  console.vlog("gettrans: unique_trans: "+JSON.stringify(unique_trans, null, 4))
-
-	  //  output = output.concat(_.values(unique_trans))
-//	console.vlog("gettrans: "+_.keys(unique_trans).length +" was added among "+_.keys(turn["input"]["trans"]).length)
 	  }
-	else
-		console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"]+" sentences: "+roots)
-    
+	  else
+		  console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"]+" sentences: "+roots)
   }, this)
 
   console.vlog("gettrans: output.length: " + output.length)  
- console.vlog(JSON.stringify(output, null, 4))
-  
+  console.vlog(JSON.stringify(output, null, 4))
+
   return output
 }
 
