@@ -4,42 +4,42 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,0.8619340854248847)(80,0.8594974824230143)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)
 };
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.7852104330705343)(70,0.9040214514500382)(80,0.8751000861156186)
+(10,null)(20,null)(30,null)(40,0.812669415592324)(50,null)(60,0.83659465180504)(70,0.8335321362320794)(80,0.804494534354052)
 };
 \addlegendentry{All\_together}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,0.8423534380492775)(80,0.8599212807892103)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)
 };
 \addlegendentry{Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,0.8327956779126453)(80,0.8202437002555101)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.7684877020983831)(70,null)(80,null)
 };
 \addlegendentry{French}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.6733324625566005)(70,0.7924228950024162)(80,0.7878048038917604)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)
 };
 \addlegendentry{Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.6686431672884059)(70,0.7610645428103269)(80,0.785272660643731)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)
 };
 \addlegendentry{Russian}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,0.8809939709312837)(80,0.8765810934607714)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)
 };
 \addlegendentry{Arabic}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,0.8333150711920403)(80,0.8666952541550964)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)
 };
 \addlegendentry{German}
 
