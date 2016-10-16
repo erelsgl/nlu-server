@@ -23,13 +23,13 @@ if (cluster.isWorker)
 
     	console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
-		var train = JSON.parse(message['train'])
-		var test  = JSON.parse(message['test'])
+		var train = _.flatten(JSON.parse(message['train']))
+		var test  = _.flatten(JSON.parse(message['test']))
 
 //	    var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate", "Yesanswers", "Conventionalclosing"], "filter":false})
-	    var test  = bars.processdataset(_.flatten(test), {"intents": false, "filterIntent":[], "filter":false})
+	 //   var test  = bars.processdataset(_.flatten(test), {"intents": false, "filterIntent":[], "filter":false})
  //	    var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate", "Yesanswers", "Conventionalclosing"], "filter":true})
- 	    var train  = bars.processdataset(_.flatten(train), {"intents": false, "filterIntent":[], "filter":true})
+ 	   // var train  = bars.processdataset(_.flatten(train), {"intents": false, "filterIntent":[], "filter":true})
 //
    _.each(test, function(turn, key, list){	delete test[key]["input"]["trans"] }, this)
 
@@ -153,7 +153,7 @@ if (cluster.isWorker)
 
 			//mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": ["Quit","Greet"], "filter":true})
 			//mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent": ["Actiondirective", "Hedge", "WhQuestion", "Summarizereformulate", "Yesanswers", "Conventionalclosing"], "filter":true})
-			mytrainex =  bars.processdataset(mytrainex, {"intents": false, "filterIntent": [], "filter":true})
+//			mytrainex =  bars.processdataset(mytrainex, {"intents": false, "filterIntent": [], "filter":true})
     	
 			console.vlog("DEBUGPRETRAIN: classifier:"+classifier+" mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
 
@@ -217,7 +217,7 @@ if (cluster.isMaster)
 	
 //	train1 = _.shuffle(train1)
 
-	_.each(train1, function(value, key, list){
+/*	_.each(train1, function(value, key, list){
 		
 		value["input"]["sentences"] = _.compact(new Array(sbd.sentences(value["input"]["text"], { "newline_boundaries" : false,
                                                                                               "html_boundaries"    : false,
@@ -226,7 +226,7 @@ if (cluster.isMaster)
                                                                                               "abbreviations"      : null
                                                                                             }).length))
 	}, this)
- 
+ */
 	cluster.setupMaster({ exec: __filename });
 	
 	var dist = _.countBy(train1, function(num) { return num["output"][0]});
