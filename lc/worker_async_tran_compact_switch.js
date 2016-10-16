@@ -204,7 +204,7 @@ if (cluster.isMaster)
 	bars.cleanFolder(lcfolder)
 	bars.cleanFolder("./logs")
 
-	var folds = 10
+	var folds = 5
 	
 	var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "French", "Portuguese", "Russian", "Arabic", "German"]
 	//var classifiers = [ "Natural_Neg", "Hungarian"]
@@ -235,8 +235,8 @@ if (cluster.isMaster)
 
 	var gr = _.groupBy(train1, function(num){ return num["output"][0] });
 
-	delete gr["Acknowledge_Backchannel"]
     	gr["Statement-non-opinion"] = _.sample(gr["Statement-non-opinion"], 100)
+    	gr["Acknowledge_Backchannel"] = _.sample(gr["Acknowledge_Backchannel"], 100)
 
 	gr = _.pairs(gr)
 	gr = _.filter(gr, function(num){ return num[1].length > 20 });
