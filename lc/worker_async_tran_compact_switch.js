@@ -206,22 +206,25 @@ if (cluster.isMaster)
 
 	var folds = 10
 	
-	var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "French", "Portuguese", "Russian", "Arabic", "Portuguese", "German"]
+	var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "French", "Portuguese", "Russian", "Arabic", "German"]
 	//var classifiers = [ "Natural_Neg", "Hungarian"]
+	var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../switch/dataset.json")))
 	//var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../switch/buffer_dial_switch2.gold.final.std.json")))
-	var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../nps/dataset.json")))
+	//var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../nps/dataset.json")))
 	
-	train1 = _.filter(train1, function(num){ return ("trans" in num["input"]) });
-	train1 = _.shuffle(train1)
+	train1 = _.filter(train1, function(num){ return (("trans" in num["input"])&&("output" in num)&&(num["input"]["text"].length > 5)) });
+	train1 = _.filter(train1, function(num){ return (num["output"].length == 1) });
+	
+//	train1 = _.shuffle(train1)
 
 	_.each(train1, function(value, key, list){
 		
-		value["input"]["sentences"] = new Array(sbd.sentences(value["input"]["text"], { "newline_boundaries" : false,
+		value["input"]["sentences"] = _.compact(new Array(sbd.sentences(value["input"]["text"], { "newline_boundaries" : false,
                                                                                               "html_boundaries"    : false,
                                                                                               "sanitize"           : false,
                                                                                               "allowed_tags"       : false,
                                                                                               "abbreviations"      : null
-                                                                                            }).length)
+                                                                                            }).length))
 	}, this)
  
 	cluster.setupMaster({ exec: __filename });
@@ -231,17 +234,25 @@ if (cluster.isMaster)
 	console.mlog("DEBUGMASTER: loaded: "+train1.length)
 
 	var gr = _.groupBy(train1, function(num){ return num["output"][0] });
+
+	delete gr["Acknowledge_Backchannel"]
+    	gr["Statement-non-opinion"] = _.sample(gr["Statement-non-opinion"], 100)
+
 	gr = _.pairs(gr)
 	gr = _.filter(gr, function(num){ return num[1].length > 20 });
-	train1 = _.shuffle(_.map(gr, function(num){ return num[1] }))
+	train1 = _.flatten(_.map(gr, function(num){ return num[1] }))
 
 	var dist = _.countBy(train1, function(num) { return num["output"][0]});
 	console.mlog("DEBUGMASTER: dist: "+JSON.stringify(dist, null, 4))
 	console.mlog("DEBUGMASTER: loaded: "+train1.length)
+	
+	var train2 = _.shuffle(train1)
+	train2 = _.shuffle(train2)
+	train2 = _.shuffle(train2)
 
 	_(folds).times(function(fold){
 
-		var data = partitions.partitions_consistent_by_fold(train1, folds, fold)
+		var data = partitions.partitions_consistent_by_fold(train2, folds, fold)
 
 		_.each(classifiers, function(classifier, key, list){ 
 		

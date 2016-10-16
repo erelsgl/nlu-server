@@ -5,5 +5,5 @@ size	dial	Natural_Neg	All_together	Hungarian	French	Portuguese	Russian	Arabic	Ge
 40	40	null	null	null	null	null	null	null	null
 50	50	null	null	null	null	null	null	null	null
 60	60	null	null	null	null	null	null	null	null
-70	70	null	null	null	null	null	null	null	null
-80	80	null	null	null	null	null	null	null	null
+70	70	null	0.604514648019549	0.5376281392497808	0.5379440143600618	0.5367054338696129	0.5483585809111909	0.5382331972517396	0.5370488816806183
+80	80	0.5646080595913776	0.6864712765084339	0.6075114657063253	0.6133545373564055	0.5975132924506117	0.6198869369984753	0.6074116474779838	0.5699373069186404

@@ -4,42 +4,42 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,0.5646080595913776)
 };
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,0.604514648019549)(80,0.6864712765084339)
 };
 \addlegendentry{All\_together}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,0.5376281392497808)(80,0.6075114657063253)
 };
 \addlegendentry{Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,0.5379440143600618)(80,0.6133545373564055)
 };
 \addlegendentry{French}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,0.5367054338696129)(80,0.5975132924506117)
 };
 \addlegendentry{Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,0.5483585809111909)(80,0.6198869369984753)
 };
 \addlegendentry{Russian}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,0.5382331972517396)(80,0.6074116474779838)
 };
 \addlegendentry{Arabic}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,0.5370488816806183)(80,0.5699373069186404)
 };
 \addlegendentry{German}
 

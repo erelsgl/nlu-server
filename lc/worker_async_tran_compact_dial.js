@@ -26,12 +26,6 @@ if (cluster.isWorker)
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
 
-	
-	//_.each(test, function(turn, key, list){
-	//	//delete test[key]["input"]["sentences"]
-	//	delete test[key]["input"]["trans"]
-	//}, this)
-
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
 
 	var index = 1
@@ -54,10 +48,10 @@ if (cluster.isWorker)
 		var mytrainex = _.flatten(JSON.parse(JSON.stringify(mytrain)))
     		var mytestex = _.flatten(JSON.parse(JSON.stringify(test)))
 
-			var mytestex  = bars.processdataset(mytestex, {"intents": true, "filterIntent":["Quit", "Greet"], "filter":false})
-    		//var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
-	    	var mytrainex  = bars.processdataset(mytrainex, {"intents": true, "filterIntent":["Quit", "Greet"], "filter":false})
-    		//var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
+		//var mytestex  = bars.processdataset(mytestex, {"intents": true, "filterIntent":["Quit", "Greet"], "filter":false})
+    		var mytestex = bars.processdataset(mytestex, {"intents": true, "filterIntent":[], "filter":false})
+	    	//var mytrainex  = bars.processdataset(mytrainex, {"intents": true, "filterIntent":["Quit", "Greet"], "filter":false})
+    		var mytrainex  = bars.processdataset(mytrainex, {"intents": true, "filterIntent":[], "filter":true})
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+_.flatten(mytrainex).length+
@@ -68,12 +62,21 @@ if (cluster.isWorker)
     				
 				case "Natural_Neg":  callbacks(null, mytrainex, mytestex, mytrain.length); break;
 				case "Emb_25": case "Emb_50": case "Emb_100": case "Emb_200": case "Emb_300":  callbacks(null, mytrain, mytestex, mytrainex.length); break;
-    				case "German": callbacks(null, bars.gettrans(mytrainex, ".*:de:.*"), mytestex, mytrain.length); break;
+    				case "Finish": callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrain.length); break;	
+    				case "Uralic": callbacks(null, bars.gettrans(mytrainex, ".*:(fi|hu):.*"), mytestex, mytrain.length); break;
+				case "German": callbacks(null, bars.gettrans(mytrainex, ".*:de:.*"), mytestex, mytrain.length); break;
     				case "Spanish": callbacks(null, bars.gettrans(mytrainex, ".*:es:.*"), mytestex, mytrain.length); break;
+    				case "Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrain.length); break;
+    				case "Hebrew": callbacks(null, bars.gettrans(mytrainex, ".*:he:.*"), mytestex, mytrain.length); break;
+    				case "Russian": callbacks(null, bars.gettrans(mytrainex, ".*:ru:.*"), mytestex, mytrain.length); break;
     				case "Arabic": callbacks(null, bars.gettrans(mytrainex, ".*:ar:.*"), mytestex, mytrain.length); break;
     				case "Chinese": callbacks(null, bars.gettrans(mytrainex, ".*:zh:.*"), mytestex, mytrain.length); break;
     				case "Finish": callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrain.length); break;
-				case "All_together": callbacks(null, bars.gettrans(mytrainex, "(G|Y|M):(pt|de|fr|ru|he|ar|fi|zh|hu):(G|Y|M)"), mytestex, mytrain.length); break;
+    				case "French": callbacks(null, bars.gettrans(mytrainex, ".*:fr:.*"), mytestex, mytrain.length); break;
+    				case "Portuguese": callbacks(null, bars.gettrans(mytrainex, ".*:pt:.*"), mytestex, mytrain.length); break;
+				//case "All_together": callbacks(null, bars.gettrans(mytrainex, "(G|Y|M):(pt|de|fr|ru|he|ar|fi|zh|hu):(G|Y|M)"), mytestex, mytrain.length); break;
+				case "Hungarian+Russian": callbacks(null, bars.gettrans(mytrainex, ".*:(ru|hu):.*"), mytestex, mytrain.length); break;
+				
 				case "_Japanese": callbacks(null, bars.gettrans(mytrainex, "((G:ja:G)|(M:ja:M)|(Y:ja:Y))"), mytestex, mytrain.length); break;
 				case "_Portuguese": callbacks(null, bars.gettrans(mytrainex, "((G:pt:G)|(M:pt:M)|(Y:pt:Y))"), mytestex, mytrain.length); break;
 				case "_French": callbacks(null, bars.gettrans(mytrainex, "((G:fr:G)|(M:fr:M)|(Y:fr:Y))"), mytestex, mytrain.length); break;
@@ -83,11 +86,12 @@ if (cluster.isWorker)
 				case "_Chinese": callbacks(null, bars.gettrans(mytrainex, "((G:zh:G)|(M:zh:M)|(Y:zh:Y))"), mytestex, mytrain.length); break;
 				case "_Russian": callbacks(null, bars.gettrans(mytrainex, "((G:ru:G)|(M:ru:M)|(Y:ru:Y))"), mytestex, mytrain.length); break;
 				//case "_All_together": callbacks(null, bars.gettrans(mytrainex, "((G:.*:G)|(M:.*:M)|(Y:.*:Y))"), mytestex, mytrainex.length); break;
-				case "_All_together": callbacks(null, bars.gettrans(mytrainex, "((G:(pt|fr|ge|nl|ar|he):G)|(M:(pt|fr|ge|nl|ar|he):M)|(Y:(pt|fr|ge|nl|ar|he):Y))"), mytestex, mytrain.length); break;
+				case "_All_together": callbacks(null, bars.gettrans(mytrainex, "((G:(pt|fr|de|ru|ar|he|hu):G)|(M:(pt|fr|de|ru|ar|he|hu):M)|(Y:(pt|fr|de|ru|ar|he|hu):Y))"), mytestex, mytrain.length); break;
+				case "All_together": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi):.*"), mytestex, mytrain.length); break;
  
    				default:
 
-					throw new Error("no classifier")				
+					throw new Error("no classifier: "+classifier)				
        		}
 
     		},
@@ -147,7 +151,8 @@ if (cluster.isMaster)
 
 	var folds = 10
 	
-	var classifiers = [ "Natural_Neg", "_Portuguese", "_All_together", "_French", "_Hungarian"]
+	var classifiers = [ "Hungarian+Russian", "_Hungarian", "Natural_Neg", "Portuguese", "Russian", "French", "Hebrew", "Hungarian", "All_together", "Arabic", "German", "Finish", "Uralic", "_All_together"]
+	//var classifiers = [ "Natural_Neg", "_Portuguese", "_All_together", "_French", "_Hungarian", "_Japanese", "Hungarian", "All_together"]
 	//var classifiers = [ "_Portuguese", "_All_together", "_French", "_Hungarian"]
 
 	cluster.setupMaster({
@@ -159,12 +164,12 @@ if (cluster.isMaster)
 	async.timesSeries(1, function(n, next){
 
 
-		var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased_no_ur.json")))
+		var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased_no_ur_dial.json")))
        	data1 = bars.enrichparse(data1)
         var utterset1 = bars.getsetcontext(data1, false)
         //var train1 = utterset1["train"].concat(utterset1["test"]).concat(utterset1["biased"])
         var train1 = utterset1["train"].concat(utterset1["test"])
-		train1 = _.shuffle(train1)        
+//		train1 = _.shuffle(train1)        
 
 		console.mlog("DEBUGMASTER: loaded: "+train1.length)
 		console.log("Assurance fold: "+n+" set: "+train1.length)
