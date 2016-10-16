@@ -53,3 +53,13 @@
 };
 \addlegendentry{Portuguese+Russian+Hungarian}
 
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.66410623430814)(110,0.671656080729722)(120,0.6756085444610035)(130,0.5642857142857143)(140,0.5878378378378378)(150,0.6136363636363636)(160,0.5)
+};
+\addlegendentry{Hebrew}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.5983452569550968)(110,null)(120,null)(130,0.6583333333333333)(140,0.6626016260162602)(150,0.6547619047619048)(160,0.42857142857142855)
+};
+\addlegendentry{Arabic}
+
