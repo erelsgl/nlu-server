@@ -4535,8 +4535,8 @@ function gettrans(turns, pat)
 //		var roots = _.filter(turn["input"]["sentences"]["basic-dependencies"], function(num){ return num["dep"] == "ROOT" }).length
  
     //if ((turn["output"].length == 1) && (roots == 1))
-//    if ((turn["output"].length == 1)
-	if (true)  
+    if ((turn["output"].length == 1)
+//	if (true)  
   {
  
   	console.vlog("gettrans: turn " + key + " is applied")
@@ -4556,7 +4556,7 @@ function gettrans(turns, pat)
           console.vlog("gettrans: add: "+key + " text: "+tran)
           var record= copyobj(turn)
           record["input"]["text"] = tran
-  		   delete record["input"]["sentences"]
+ 		delete record["input"]["sentences"]
   		   delete record["input"]["trans"]
 
          /* if ("translation_id" in turn)
