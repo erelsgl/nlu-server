@@ -4515,7 +4515,7 @@ function gettrans(turns, pat)
 {
   var output = []
   var regex =  new RegExp(pat)
-  var count_trans = 0
+  var count_trans = []
 
   console.vlog("gettrans: input.length: " + turns.length)
 
@@ -4529,14 +4529,14 @@ function gettrans(turns, pat)
     {
  
   	console.vlog("gettrans: turn " + key + " is applied")
-    if (count_trans == 0)
+    if (count_trans.length == 0)
     {
-      count_trans = _.keys(turn["input"]["trans"]).length
+      count_trans = _.keys(turn["input"]["trans"])
     }
     else 
     {
-        if (_.keys(turn["input"]["trans"]).length != count_trans)
-          throw new Error("inconsistency")
+        if (_.keys(turn["input"]["trans"]).length != count_trans.length)
+          throw new Error("inconsistency: count_trans: "+count_trans.sort()+ " cur: "+_.keys(turn["input"]["trans"]).sort())
     }
 		
       _.each(turn["input"]["trans"], function(tran, key, list){
