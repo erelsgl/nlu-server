@@ -48,3 +48,8 @@
 };
 \addlegendentry{French}
 
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.604253226881654)(110,0.647103060287425)(120,0.6278965614331468)(130,0.6385869565217391)(140,0.6277173913043479)(150,0.6458333333333333)(160,0.625)
+};
+\addlegendentry{Portuguese+Russian+Hungarian}
+
