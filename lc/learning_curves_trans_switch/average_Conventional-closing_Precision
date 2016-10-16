@@ -1,12 +1,38 @@
-size	dial	Natural_Neg	_All_together	_Hungarian	_Portuguese	_Russian	_Hungarian+_Japanese+_Chinese+_Finish	_Hungarian+_Japanese+_Finish
-30	30	null	null	null	null	null	null	null
-60	60	null	null	null	null	null	null	null
-90	90	null	null	null	null	null	null	null
-120	120	null	null	null	null	null	null	null
-150	150	null	null	null	null	null	null	null
-180	180	null	null	null	null	null	null	null
-210	210	null	0.7124540106877063	0.6922987581524167	0.7379010137149672	0.6525895114917002	0.7271317829457364	0.6895453852021358
-240	240	null	0.7142171717171717	0.7068548118548119	0.7237445887445887	null	0.7447773279352228	0.6861636636636635
-270	270	null	0.7187675070028012	0.7074267837425732	null	null	0.7472319318219648	0.681936315496098
-300	300	null	0.7195934959349592	0.708305310788283	0.7037767094017094	0.7248749753290314	0.7487296276744994	0.693969298245614
-330	330	null	0.7157493718188261	0.7412272267206478	0.704375	0.7123506069094304	0.7709779422279422	0.7268368839163019
+size	dial	Natural_Neg	All_together	Hungarian	French	Portuguese	Russian	Arabic	German
+10	10	null	null	null	null	null	null	null	null
+20	20	null	null	null	null	null	null	null	null
+30	30	null	null	null	null	null	null	null	null
+40	40	null	null	null	null	null	null	null	null
+50	50	null	null	null	null	null	null	null	null
+60	60	null	null	null	null	null	null	null	null
+70	70	null	null	null	null	null	null	null	null
+80	80	null	null	null	null	null	null	null	null
+90	90	null	null	null	null	null	null	null	null
+100	100	null	null	null	null	null	null	null	null
+110	110	null	null	null	null	null	null	null	null
+120	120	null	null	null	null	null	null	null	null
+130	130	null	null	null	null	null	null	null	null
+140	140	null	null	null	null	null	null	null	null
+150	150	null	null	null	null	null	null	null	null
+160	160	null	null	null	null	null	null	null	null
+170	170	null	null	null	null	null	null	null	null
+180	180	null	null	null	null	null	null	null	null
+190	190	null	null	null	null	null	null	null	null
+200	200	null	null	null	null	null	null	null	null
+210	210	null	null	null	null	null	null	null	null
+220	220	null	null	null	null	null	null	null	null
+230	230	null	null	null	null	null	null	null	null
+240	240	null	null	null	null	null	null	null	null
+250	250	null	null	null	null	null	null	null	null
+260	260	null	null	null	null	null	null	null	null
+270	270	null	null	null	null	null	null	null	null
+280	280	null	null	null	null	null	null	null	null
+290	290	null	null	null	null	null	null	null	null
+300	300	null	null	null	null	null	null	null	null
+310	310	null	null	null	null	null	null	null	null
+320	320	null	null	null	null	null	null	null	null
+330	330	null	null	null	null	null	null	null	null
+340	340	null	null	null	null	null	null	null	null
+350	350	null	null	null	null	null	null	null	null
+360	360	null	null	null	null	null	null	null	null
+370	370	null	null	null	null	null	null	null	null

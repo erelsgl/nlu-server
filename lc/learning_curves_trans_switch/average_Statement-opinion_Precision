@@ -1,12 +1,38 @@
-size	dial	Natural_Neg	_All_together	_Hungarian	_Portuguese	_Russian	_Hungarian+_Japanese+_Chinese+_Finish	_Hungarian+_Japanese+_Finish
-30	30	null	0.4709420343669078	0.4323867041035716	0.4183555427424349	0.40985555150384867	0.44857411185109414	0.4372358976640057
-60	60	0.48142373896665686	0.4815145886544544	0.5094554536730008	0.4966959945959741	0.4795553576666651	0.4590219683682462	0.45795148997278223
-90	90	0.4736300240694102	0.47002876852356046	0.49483236446885515	0.48277861773834163	0.461632954708617	0.4786181117701135	0.5031128700035691
-120	120	0.4869088889701074	0.4900625469741093	0.49472687726815956	0.4940151234979383	0.46331152411937326	0.4961140642236326	0.5099551883674913
-150	150	0.49517846688515127	0.5194755614290258	0.5206254008595895	0.5028119892247455	0.47972506837827555	0.5152608792339431	0.523200321592686
-180	180	0.5193526393143203	0.5220852523511701	0.5297353175674286	0.5111291240984966	0.5096288430112301	0.5143839747332952	0.5239391147238205
-210	210	0.521779616705741	0.520778837517488	0.5233596428129702	0.5003010881634631	0.5074023643076729	0.5210775909654932	0.5242540416073564
-240	240	0.5182503039330663	0.5272071773158042	0.5341017980337142	0.5038591010522492	0.5113807026017184	0.5202704393076072	0.5328120473489579
-270	270	0.5107570287593772	0.5204826772622028	0.5373556361059936	0.4956587769971268	0.5030252387858176	0.5301507043294738	0.5278205433254384
-300	300	0.5115187661636214	0.5200542129286105	0.5410031471002504	0.5033874128770953	0.501600945252731	0.5268650652536917	0.5322956518023612
-330	330	0.5251353632506999	0.5272881524710338	0.5442638177874951	0.5076215977317065	0.509055940113721	0.5331886586753642	0.539069404494659
+size	dial	Natural_Neg	All_together	Hungarian	French	Portuguese	Russian	Arabic	German
+10	10	null	null	null	null	null	null	null	null
+20	20	null	null	null	null	null	null	null	null
+30	30	null	null	null	null	null	null	null	null
+40	40	null	null	null	null	null	null	null	null
+50	50	null	null	null	null	null	null	null	null
+60	60	null	null	null	null	null	null	null	null
+70	70	null	null	null	null	null	null	null	null
+80	80	null	null	null	null	null	null	null	null
+90	90	null	null	null	null	null	null	null	null
+100	100	null	null	null	null	null	null	null	null
+110	110	null	null	null	null	null	null	null	null
+120	120	null	null	null	null	null	null	null	null
+130	130	null	null	null	null	null	null	null	null
+140	140	null	null	null	null	null	null	null	null
+150	150	null	null	null	null	null	null	null	null
+160	160	null	null	null	null	null	null	null	null
+170	170	null	null	null	null	null	null	null	null
+180	180	null	null	null	null	null	null	null	null
+190	190	null	null	null	null	null	null	null	null
+200	200	null	null	null	null	null	null	null	null
+210	210	null	null	null	null	null	null	null	null
+220	220	null	null	null	null	null	null	null	null
+230	230	null	null	null	null	null	null	null	null
+240	240	null	null	null	null	null	null	null	null
+250	250	null	null	null	null	null	null	null	null
+260	260	null	null	null	null	null	null	null	null
+270	270	null	null	null	null	null	null	null	null
+280	280	null	null	null	null	null	null	null	null
+290	290	null	null	null	null	null	null	null	null
+300	300	null	null	null	null	null	null	null	null
+310	310	null	null	null	null	null	null	null	null
+320	320	null	null	null	null	null	null	null	null
+330	330	null	null	null	null	null	null	null	null
+340	340	null	null	null	null	null	null	null	null
+350	350	null	null	null	null	null	null	null	null
+360	360	null	null	null	null	null	null	null	null
+370	370	null	null	null	null	null	null	null	null

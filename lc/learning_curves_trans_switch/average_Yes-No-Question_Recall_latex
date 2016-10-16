@@ -1,40 +1,45 @@
 \addplot[color=green,mark=*] coordinates {
-(30,30)(60,60)(90,90)(120,120)(150,150)(180,180)(210,210)(240,240)(270,270)(300,300)(330,330)
+(10,10)(20,20)(30,30)(40,40)(50,50)(60,60)(70,70)(80,80)(90,90)(100,100)(110,110)(120,120)(130,130)(140,140)(150,150)(160,160)(170,170)(180,180)(190,190)(200,200)(210,210)(220,220)(230,230)(240,240)(250,250)(260,260)(270,270)(280,280)(290,290)(300,300)(310,310)(320,320)(330,330)(340,340)(350,350)(360,360)(370,370)
 };
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(30,0.0015384615384615385)(60,0.020244200244200244)(90,0.03708291708291708)(120,0.07860583860583861)(150,0.14093087675177227)(180,0.15939577330881677)(210,0.16974059756668453)(240,0.18285009676314026)(270,0.3114660146976825)(300,0.315110385324532)(330,0.377532888194796)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)(180,null)(190,null)(200,null)(210,null)(220,null)(230,null)(240,null)(250,null)(260,null)(270,null)(280,null)(290,null)(300,null)(310,null)(320,null)(330,null)(340,null)(350,null)(360,null)(370,null)
 };
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
-(30,0.06585533869115959)(60,0.17390228345452224)(90,0.18092052226380584)(120,0.21713997445340733)(150,0.31619743440638964)(180,0.4196592865638939)(210,0.44675888175563705)(240,0.4330348561237593)(270,0.5050122002879951)(300,0.5135170007006477)(330,0.5339746028000408)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)(180,null)(190,null)(200,null)(210,null)(220,null)(230,null)(240,null)(250,null)(260,null)(270,null)(280,null)(290,null)(300,null)(310,null)(320,null)(330,null)(340,null)(350,null)(360,null)(370,null)
 };
-\addlegendentry{\_All\_together}
+\addlegendentry{All\_together}
 
 \addplot[color=green,mark=*] coordinates {
-(30,0.06576349024110219)(60,0.15833980281741478)(90,0.17182076629837822)(120,0.23732748180509375)(150,0.3151968263908562)(180,0.3922069941018676)(210,0.41516316404051634)(240,0.3957374970548234)(270,0.46481477711847596)(300,0.457386263603006)(330,0.47654710276384504)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)(180,null)(190,null)(200,null)(210,null)(220,null)(230,null)(240,null)(250,null)(260,null)(270,null)(280,null)(290,null)(300,null)(310,null)(320,null)(330,null)(340,null)(350,null)(360,null)(370,null)
 };
-\addlegendentry{\_Hungarian}
+\addlegendentry{Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(30,0.02257175660160735)(60,0.06277003262077889)(90,0.07826495229480304)(120,0.12504399414847173)(150,0.2059568292404113)(180,0.23806727917694825)(210,0.2715449126545817)(240,0.2717014228110919)(270,0.37962554497921147)(300,0.3646005699542364)(330,0.4225496026793885)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)(180,null)(190,null)(200,null)(210,null)(220,null)(230,null)(240,null)(250,null)(260,null)(270,null)(280,null)(290,null)(300,null)(310,null)(320,null)(330,null)(340,null)(350,null)(360,null)(370,null)
 };
-\addlegendentry{\_Portuguese}
+\addlegendentry{French}
 
 \addplot[color=green,mark=*] coordinates {
-(30,0.006061997703788749)(60,0.09017330927778688)(90,0.08957612868060628)(120,0.19805181551450207)(150,0.24034063780332443)(180,0.2935736366884972)(210,0.32085496232803173)(240,0.3075760190490885)(270,0.3892977409784678)(300,0.3952799511397825)(330,0.444526369873547)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)(180,null)(190,null)(200,null)(210,null)(220,null)(230,null)(240,null)(250,null)(260,null)(270,null)(280,null)(290,null)(300,null)(310,null)(320,null)(330,null)(340,null)(350,null)(360,null)(370,null)
 };
-\addlegendentry{\_Russian}
+\addlegendentry{Portuguese}
 
 \addplot[color=green,mark=*] coordinates {
-(30,0.04626865671641791)(60,0.14232646292347786)(90,0.146913799301859)(120,0.20451772108488528)(150,0.2657284506538238)(180,0.34387967933717445)(210,0.36623329586989545)(240,0.36001426938480796)(270,0.4800886812372861)(300,0.48155860434900005)(330,0.5082189092182603)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)(180,null)(190,null)(200,null)(210,null)(220,null)(230,null)(240,null)(250,null)(260,null)(270,null)(280,null)(290,null)(300,null)(310,null)(320,null)(330,null)(340,null)(350,null)(360,null)(370,null)
 };
-\addlegendentry{\_Hungarian+\_Japanese+\_Chinese+\_Finish}
+\addlegendentry{Russian}
 
 \addplot[color=green,mark=*] coordinates {
-(30,0.050838117106773814)(60,0.1578204217010187)(90,0.15170887155961782)(120,0.19010172248978216)(150,0.2598612664284306)(180,0.34264561165274987)(210,0.37239991532009703)(240,0.36319506220220044)(270,0.4746573334373464)(300,0.47716294376904356)(330,0.4964658796391436)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)(180,null)(190,null)(200,null)(210,null)(220,null)(230,null)(240,null)(250,null)(260,null)(270,null)(280,null)(290,null)(300,null)(310,null)(320,null)(330,null)(340,null)(350,null)(360,null)(370,null)
 };
-\addlegendentry{\_Hungarian+\_Japanese+\_Finish}
+\addlegendentry{Arabic}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)(180,null)(190,null)(200,null)(210,null)(220,null)(230,null)(240,null)(250,null)(260,null)(270,null)(280,null)(290,null)(300,null)(310,null)(320,null)(330,null)(340,null)(350,null)(360,null)(370,null)
+};
+\addlegendentry{German}
 
