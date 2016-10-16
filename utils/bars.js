@@ -4526,9 +4526,7 @@ function gettrans(turns, pat)
      delete temp_copy["input"]["trans"]
      output.push(temp_copy)
 
-     var roots = 1
-
-	
+   //  var roots = 1
 
     // if ("sentences" in turn["input"])
 //	if ("basic-dependencies" in turn["input"]["sentences"])
@@ -4537,7 +4535,7 @@ function gettrans(turns, pat)
 //		var roots = _.filter(turn["input"]["sentences"]["basic-dependencies"], function(num){ return num["dep"] == "ROOT" }).length
  
     //if ((turn["output"].length == 1) && (roots == 1))
-//    if ((turn["output"].length == 1) && (roots == 1))
+//    if ((turn["output"].length == 1)
 	if (true)  
   {
  
