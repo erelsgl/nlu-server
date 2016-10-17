@@ -19,10 +19,10 @@ function generator()
 	Hungarian:"hu",
 	Finish:"fi",
 
-	Spanish:"es",
-	Italian: "it",
-	Poland: "pl",
-	Dutch: "nl"
+//	Spanish:"es",
+//	Italian: "it",
+//	Poland: "pl",
+//	Dutch: "nl"
 	// Japanese: "ja"
 	}
 
@@ -32,7 +32,7 @@ function generator()
 	_.each(sys, function(engine1liter, engine1, list){
 		_.each(sys, function(engine2liter, engine2, list){
 			_.each(lang, function(ln, lnkey, list){
-				if (engine1liter = engine2liter)						
+				//if (engine1liter = engine2liter)						
     					output.push({
     						'engine1':engine1liter,
     						'ln':ln,
@@ -47,7 +47,7 @@ function generator()
 function gettrans()
 {
 	var dataset = JSON.parse(fs.readFileSync("./dataset.json", "utf-8"))
-	var trans = JSON.parse(fs.readFileSync("./buffer_dial_switch2.gold.final.std.json", "utf-8"))
+	var trans = JSON.parse(fs.readFileSync("./dataset_temp.json", "utf-8"))
 
 	var trans_hash = {}
 
@@ -144,8 +144,10 @@ function trans()
 	var dataset = JSON.parse(fs.readFileSync("./dataset.json"))
 
 	async.eachOfSeries(dataset, function(value, keyd, callback2){ 
-		
-		if (!("trans" in value["input"])) callback2()
+			
+		if (value["input"]["text"].length < 5) callback2()
+		else if (!("trans" in value["input"])) callback2()
+//		if (["Yes-No-Question", "Agree_Accept", "Hedge", "Conventional-closing", "Appreciation", "Statement-opinion"].indexOf(value["output"][0])) 
 		else
 		{
 			var trans = value["input"]["trans"]
@@ -181,7 +183,7 @@ function trans()
 				
 				// if (keyd%10 == 0)
 				// {
-				fs.writeFileSync("./dataset_buff.json", JSON.stringify(dataset, null, 4))
+				fs.writeFileSync("./dataset_temp.json", JSON.stringify(dataset, null, 4))
 				console.log("saved")
 				// }
 
@@ -191,6 +193,7 @@ function trans()
 	}, 
 		function(err){
 		console.log(JSON.stringify(dataset, null, 4))
+		fs.writeFileSync("./dataset_temp.json", JSON.stringify(dataset, null, 4))
 	})
 }
 
