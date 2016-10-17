@@ -214,8 +214,6 @@ if (cluster.isMaster)
 	train1 = _.filter(train1, function(num){ return (("trans" in num["input"])&&("output" in num)&&(num["input"]["text"].length > 5)) });
 	train1 = _.filter(train1, function(num){ return (num["output"].length == 1) });
 	
-//	train1 = _.shuffle(train1)
-
 	_.each(train1, function(value, key, list){
 		
 /*		value["input"]["sentences"] = _.compact(new Array(sbd.sentences(value["input"]["text"], { "newline_boundaries" : false,
@@ -237,13 +235,13 @@ if (cluster.isMaster)
 	var gr = _.groupBy(train1, function(num){ return num["output"][0] });
 
 //    	gr["Statement-non-opinion"] = _.sample(gr["Statement-non-opinion"], 100)
-//  	gr["Acknowledge_Backchannel"] = _.sample(gr["Acknowledge_Backchannel"], 100)
+//	gr["Acknowledge_Backchannel"] = _.sample(gr["Acknowledge_Backchannel"], 100)
 
 	delete gr["Statement-non-opinion"]
 	delete gr["Acknowledge_Backchannel"]
 	
 	gr = _.pairs(gr)
-	gr = _.filter(gr, function(num){ return num[1].length > 20 });
+	gr = _.filter(gr, function(num){ return num[1].length > 10 });
 	train1 = _.flatten(_.map(gr, function(num){ return num[1] }))
 
 	var dist = _.countBy(train1, function(num) { return num["output"][0]});
