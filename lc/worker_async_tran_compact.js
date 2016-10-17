@@ -252,6 +252,8 @@ if (cluster.isMaster)
     var train1 = utterset1["train"].concat(utterset1["test"])
 
     train1 = _.flatten(train1)
+    train1 = _.filter(train1, function(num){ return _.keys(num.outputhash).length == 1 });
+
     _.each(train1, function(value, key, list){
     	value["output"] = _.unique(_.keys(value.outputhash))
     	value["input"]["sentences"] = {}
