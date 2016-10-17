@@ -1,38 +1,18 @@
-size	dial	Natural_Neg	All_together	Hungarian	French	Portuguese	Russian	Arabic	German
-10	10	null	null	null	null	null	null	null	null
-20	20	null	null	null	null	null	null	null	null
-30	30	null	null	null	null	null	null	null	null
-40	40	null	null	null	null	null	null	null	null
-50	50	null	null	null	null	null	null	null	null
-60	60	null	null	null	null	null	null	null	null
-70	70	null	null	null	null	null	null	null	null
-80	80	null	null	null	null	null	null	null	null
-90	90	null	null	null	null	null	null	null	null
-100	100	null	null	null	null	null	null	null	null
-110	110	null	null	null	null	null	null	null	null
-120	120	null	null	null	null	null	null	null	null
-130	130	null	null	null	null	null	null	null	null
-140	140	null	null	null	null	null	null	null	null
-150	150	null	null	null	null	null	null	null	null
-160	160	null	null	null	null	null	null	null	null
-170	170	null	null	null	null	null	null	null	null
-180	180	null	null	null	null	null	null	null	null
-190	190	null	null	null	null	null	null	null	null
-200	200	null	null	null	null	null	null	null	null
-210	210	null	null	null	null	null	null	null	null
-220	220	null	null	null	null	null	null	null	null
-230	230	null	null	null	null	null	null	null	null
-240	240	null	null	null	null	null	null	null	null
-250	250	null	null	null	null	null	null	null	null
-260	260	null	null	null	null	null	null	null	null
-270	270	null	null	null	null	null	null	null	null
-280	280	null	null	null	null	null	null	null	null
-290	290	null	null	null	null	null	null	null	null
-300	300	null	null	null	null	null	null	null	null
-310	310	null	null	null	null	null	null	null	null
-320	320	null	null	null	null	null	null	null	null
-330	330	null	null	null	null	null	null	null	null
-340	340	null	null	null	null	null	null	null	null
-350	350	null	null	null	null	null	null	null	null
-360	360	null	null	null	null	null	null	null	null
-370	370	null	null	null	null	null	null	null	null
+size	dial	Natural_Neg	All_together	Hungarian	Portuguese	Russian	Arabic
+10	10	null	null	null	null	null	null
+20	20	null	null	null	null	null	null
+30	30	null	null	null	null	null	null
+40	40	null	null	null	null	null	null
+50	50	null	null	null	null	null	null
+60	60	null	null	null	null	null	null
+70	70	null	null	null	null	null	null
+80	80	null	null	null	null	null	null
+90	90	null	null	null	null	null	null
+100	100	null	null	null	null	null	null
+110	110	null	null	null	null	null	null
+120	120	null	null	null	null	null	null
+130	130	null	null	null	null	null	null
+140	140	null	null	null	null	null	null
+150	150	null	null	null	null	null	null
+160	160	null	null	null	null	null	null
+170	170	null	null	null	null	null	null

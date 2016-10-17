@@ -1,38 +1,18 @@
-size	dial	Natural_Neg	All_together	Hungarian	French	Portuguese	Russian	Arabic	German
-10	10	0	0	0	0	0	0	0	0
-20	20	0	0	0	0	0	0	0	0
-30	30	0	0	0	0	0	0	0	0
-40	40	0	0	0	0	0	0	0	0
-50	50	0	0	0	0	0	0	0	0
-60	60	0	0	0	0	0	0	0	0
-70	70	0	0	0	0	0	0	0	0
-80	80	0	0	0	0	0	0	0	0
-90	90	0	0	0	0	0	0	0	0
-100	100	0	0	0	0	0	0	0	0
-110	110	0	0	0	0	0	0	0	0
-120	120	0	0	0	0	0	0	0	0
-130	130	0	0	0	0	0	0	0	0
-140	140	0	0	0	0	0	0	0	0
-150	150	null	null	null	null	null	null	null	null
-160	160	null	null	null	null	null	null	null	null
-170	170	null	null	null	null	null	null	null	null
-180	180	null	null	null	null	null	null	null	null
-190	190	null	null	null	null	null	null	null	null
-200	200	null	null	null	null	null	null	null	null
-210	210	null	null	null	null	null	null	null	null
-220	220	null	null	null	null	null	null	null	null
-230	230	null	null	null	null	null	null	null	null
-240	240	null	null	null	null	null	null	null	null
-250	250	null	null	null	null	null	null	null	null
-260	260	null	null	null	null	null	null	null	null
-270	270	null	null	null	null	null	null	null	null
-280	280	null	null	null	null	null	null	null	null
-290	290	null	null	null	null	null	null	null	null
-300	300	null	null	null	null	null	null	null	null
-310	310	null	null	null	null	null	null	null	null
-320	320	null	null	null	null	null	null	null	null
-330	330	null	null	null	null	null	null	null	null
-340	340	null	null	null	null	null	null	null	null
-350	350	null	null	null	null	null	null	null	null
-360	360	null	null	null	null	null	null	null	null
-370	370	null	null	null	null	null	null	null	null
+size	dial	Natural_Neg	All_together	Hungarian	Portuguese	Russian	Arabic
+10	10	0	0	0	0	0	0
+20	20	0	0	0	0	0	0
+30	30	0	0	0	0	0	0
+40	40	0	0	0	0	0	0
+50	50	0	0	0	0	0	0
+60	60	0	0	0	0	0	0
+70	70	0	0	0	0	0	0
+80	80	0	0	0	0	0	0
+90	90	0	0	0	0	0	0
+100	100	0	0	0	0	0	0
+110	110	0	0	0	0	0	0
+120	120	0	0	0	0	0	0
+130	130	0	0	0	0	0	0
+140	140	0	0	0	0	0	0
+150	150	0	0	0	0	0	0
+160	160	0	0	0	0	0	0
+170	170	0	0.16666666666666669	0.16666666666666669	0.16666666666666669	0.16666666666666669	0
