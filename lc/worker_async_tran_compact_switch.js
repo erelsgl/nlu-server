@@ -133,13 +133,12 @@ if (cluster.isWorker)
     	//			case "Root_Trans": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;	
     	//			case "Root_Trans_Emb": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;	
 	
-	//			case "NLU_Bal": callbacks(null, bars.gettransdist(mytrainex), mytestex, mytrainex.length); break;
-    	//			case "NLU_Oversample": callbacks(null, bars.oversample(mytrainex), mytestex, mytrainex.length); break;
-    	//			case "NLU_Tran_Oversample": callbacks(null, bars.tranoversam(mytrainex), mytestex, mytrainex.length); break;
 
-	//			case "NLU_Emb_Trans_Sum_100": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
-	//			case "NLU_Emb_Trans_Sum_50": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
-	//			//case "NLU_Emb_Trans_Ext_100": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
+				case "_Portuguese": callbacks(null, bars.gettrans(mytrainex, "((G:pt:G)|(M:pt:M)|(Y:pt:Y))"), mytestex, mytrainex.length); break;
+				case "_Arabic": callbacks(null, bars.gettrans(mytrainex, "((G:ar:G)|(M:ar:M)|(Y:ar:Y))"), mytestex, mytrainex.length); break;
+				case "_Russian": callbacks(null, bars.gettrans(mytrainex, "((G:ru:G)|(M:ru:M)|(Y:ru:Y))"), mytestex, mytrainex.length); break;
+				case "_Hungarian": callbacks(null, bars.gettrans(mytrainex, "((G:hu:G)|(M:hu:M)|(Y:hu:Y))"), mytestex, mytrainex.length); break;
+				case "_All_together": callbacks(null, bars.gettrans(mytrainex, "((G:(pt|fr|de|ru|ar|he|hu):G)|(M:(pt|fr|de|ru|ar|he|hu):M)|(Y:(pt|fr|de|ru|ar|he|hu):Y))"), mytestex, mytrain.length); break;
 
     				default:
 
@@ -206,10 +205,10 @@ if (cluster.isMaster)
 
 	var folds = 5
 	
-	var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "French", "Portuguese", "Russian", "Arabic", "German"]
+	//var classifiers = [ "Natural_Neg", "_All_together", "_Hungarian", "_Portuguese", "_Russian", "_Arabic"]
+	var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "Portuguese", "Russian", "Arabic"]
 	//var classifiers = [ "Natural_Neg", "Hungarian"]
 	var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../switch/dataset.json")))
-	//var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../switch/buffer_dial_switch2.gold.final.std.json")))
 	//var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../nps/dataset.json")))
 	
 	train1 = _.filter(train1, function(num){ return (("trans" in num["input"])&&("output" in num)&&(num["input"]["text"].length > 5)) });
@@ -217,16 +216,18 @@ if (cluster.isMaster)
 	
 //	train1 = _.shuffle(train1)
 
-/*	_.each(train1, function(value, key, list){
+	_.each(train1, function(value, key, list){
 		
-		value["input"]["sentences"] = _.compact(new Array(sbd.sentences(value["input"]["text"], { "newline_boundaries" : false,
+/*		value["input"]["sentences"] = _.compact(new Array(sbd.sentences(value["input"]["text"], { "newline_boundaries" : false,
                                                                                               "html_boundaries"    : false,
                                                                                               "sanitize"           : false,
                                                                                               "allowed_tags"       : false,
                                                                                               "abbreviations"      : null
                                                                                             }).length))
+*/	
+		value["input"]["sentences"] = {}
 	}, this)
- */
+ 
 	cluster.setupMaster({ exec: __filename });
 	
 	var dist = _.countBy(train1, function(num) { return num["output"][0]});
@@ -235,9 +236,12 @@ if (cluster.isMaster)
 
 	var gr = _.groupBy(train1, function(num){ return num["output"][0] });
 
-    	gr["Statement-non-opinion"] = _.sample(gr["Statement-non-opinion"], 100)
-    	gr["Acknowledge_Backchannel"] = _.sample(gr["Acknowledge_Backchannel"], 100)
+//    	gr["Statement-non-opinion"] = _.sample(gr["Statement-non-opinion"], 100)
+//  	gr["Acknowledge_Backchannel"] = _.sample(gr["Acknowledge_Backchannel"], 100)
 
+	delete gr["Statement-non-opinion"]
+	delete gr["Acknowledge_Backchannel"]
+	
 	gr = _.pairs(gr)
 	gr = _.filter(gr, function(num){ return num[1].length > 20 });
 	train1 = _.flatten(_.map(gr, function(num){ return num[1] }))
