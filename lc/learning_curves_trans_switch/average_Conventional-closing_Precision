@@ -1,20 +1,10 @@
-size	dial	Natural_Neg	All_together	Hungarian	French	Portuguese	Russian	Arabic	German
-10	10	null	null	null	null	null	null	null	null
-20	20	null	null	null	null	null	null	null	null
-30	30	null	null	null	null	null	null	null	null
-40	40	null	null	null	null	null	null	null	null
-50	50	null	null	null	null	null	null	null	null
-60	60	null	null	null	null	null	null	null	null
-70	70	null	null	null	null	null	null	null	null
-80	80	null	null	null	null	null	null	null	null
-90	90	null	null	null	null	null	null	null	null
-100	100	null	null	null	null	null	null	null	null
-110	110	null	null	null	null	null	null	null	null
-120	120	null	null	null	null	null	null	null	null
-130	130	null	null	null	null	null	null	null	null
-140	140	null	null	null	null	null	null	null	null
-150	150	null	null	null	null	null	null	null	null
-160	160	null	null	null	null	null	null	null	null
-170	170	null	null	null	null	null	null	null	null
-180	180	null	null	null	null	null	null	null	null
-190	190	1	null	null	null	null	null	null	null
+size	dial	Natural_Neg	_All_together	_Hungarian	_Portuguese	_Russian	_Arabic
+10	10	null	null	null	null	null	null
+20	20	null	null	null	null	null	null
+30	30	null	null	null	null	null	null
+40	40	null	null	null	null	null	null
+50	50	0.9084313725490197	0.820406162464986	0.7732843137254902	0.8488385598141697	0.8207420357420359	0.8626263414295868
+60	60	0.9587912087912087	0.8572457258765575	0.7750998463901689	0.8791184692500483	0.8470046620046621	0.8914835164835164
+70	70	0.8802419354838709	0.7924458874458874	0.7518061137498477	0.7820691853977364	0.769244035559825	0.8281718281718282
+80	80	0.8981180223285484	0.737169654906497	0.7377117646083164	0.7428514588859416	0.7500378434861193	0.7533449883449883
+90	90	null	0.7457405635300371	0.7560461107519931	0.7613392857142858	0.7608469350594589	0.7660644131696763
