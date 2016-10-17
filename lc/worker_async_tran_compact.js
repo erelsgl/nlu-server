@@ -265,19 +265,12 @@ if (cluster.isMaster)
 	});
 	
 
-	 async.timesSeries(1, function(n, next){
-
-
-		var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased_no_ur.json")))
-        	//var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json")))
-                data1 = bars.enrichparse(data1)
-                var utterset1 = bars.getsetcontext(data1, false)
-                //var train1 = utterset1["train"].concat(utterset1["test"]).concat(utterset1["biased"])
-                var train1 = utterset1["train"].concat(utterset1["test"])
-//		train1 = _.shuffle(train1)        
+	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased_no_ur.json")))
+    data1 = bars.enrichparse(data1)
+    var utterset1 = bars.getsetcontext(data1, false)
+    var train1 = utterset1["train"].concat(utterset1["test"])
 
 	console.mlog("DEBUGMASTER: loaded: "+train1.length)
-	console.log("Assurance fold: "+n+" set: "+train1.length)
 
 	_(folds).times(function(fold){
 
@@ -286,9 +279,11 @@ if (cluster.isMaster)
 		_.each(classifiers, function(classifier, key, list){ 
 		
 			// worker = cluster.fork({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len, 'datafile': datafile, 'thread': thr})
-			var worker = cluster.fork({'fold': fold+n*folds, 'classifier':classifier})
+			// var worker = cluster.fork({'fold': fold+n*folds, 'classifier':classifier})
+			var worker = cluster.fork({'fold': fold, 'classifier':classifier})
 			
-			console.mlog("DEBUGMASTER: class: "+classifier+" fold:"+ (fold+n*folds) + " train size:"+data.train.length + " test size:" + data.test.length)
+			// console.mlog("DEBUGMASTER: class: "+classifier+" fold:"+ (fold+n*folds) + " train size:"+data.train.length + " test size:" + data.test.length)
+			console.mlog("DEBUGMASTER: class: "+classifier+" fold:"+ fold + " train size:"+data.train.length + " test size:" + data.test.length)
 			console.mlog("DEBUGMASTER: process.pid:"+worker.process.pid)
 
 			worker.send({ 		
@@ -297,29 +292,21 @@ if (cluster.isMaster)
 		     		})
 			
 			worker.on('disconnect', function(){
-			  	console.mlog("DEBUGMASTER: finished: workers.length: "+Object.keys(cluster.workers).length )
-                                if (Object.keys(cluster.workers).length == 1)
-                                  next()
-				//disc += 1
-			  	//if (Object.keys(cluster.workers).length == 1)
-	//		  	_.each(stat, function(data, param, list){
-	//				lc.plotlc('average', param, stat, lcfolder)
-	//			})
-	//			console.mlog(JSON.stringify(stat, null, 4))
-			})
+            	console.mlog("DEBUGMASTER: finished: workers.length: "+Object.keys(cluster.workers).length )
+                //disc += 1
+                //if (Object.keys(cluster.workers).length == 1)
+                _.each(stat, function(data, param, list){
+                	lc.plotlc('average', param, stat, lcfolder)
+                })
+                console.mlog(JSON.stringify(stat, null, 4))
+            })
 
 			worker.on('message', function(message){
-				var workerstats = JSON.parse(message)
-				workerstats['classifiers'] = classifiers
-				console.mlog("DEBUGMASTER: on message: "+message)
-				lc.extractGlobal(workerstats, stat)
-			})
+            	var workerstats = JSON.parse(message)
+                workerstats['classifiers'] = classifiers
+                console.mlog("DEBUGMASTER: on message: "+message)
+                lc.extractGlobal(workerstats, stat)
+            })
 		}, this)
 	}, this)
-	}, function(){
-                _.each(stat, function(data, param, list){
-                        lc.plotlc('average', param, stat, lcfolder)
-                })
-
-        })
-}
+} 
