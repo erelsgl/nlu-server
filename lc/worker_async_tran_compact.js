@@ -22,25 +22,13 @@ if (cluster.isWorker)
 
     	console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
-	//var train = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")).concat(JSON.parse(message['train']))
-	var train = JSON.parse(message['train'])
-	var test  = JSON.parse(message['test'])
+	var train = _.flatten(JSON.parse(message['train']))
+	var test = _.flatten(JSON.parse(message['test']))
 
-	//var train = _.flatten(train)
-//        var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Quit", "Greet"], "filter":false})
-        var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
-        //var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Quit", "Greet"], "filter":true})
-        var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
-
-    //    _.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"]}, this)
-
-//	 _.each(train, function(turn, key, list){ train[key]["input"]["trans"] = {} }, this)
-    //    train = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/seeds_adv.json")).concat(train)
-
-	_.each(test, function(turn, key, list){
-		//delete test[key]["input"]["sentences"]
-		delete test[key]["input"]["trans"]
-	}, this)
+	// var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Quit", "Greet"], "filter":false})
+	// var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
+	// var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Quit", "Greet"], "filter":true})
+	// var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true}) 
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
 
@@ -53,17 +41,12 @@ if (cluster.isWorker)
 
 		async.waterfall([
     		function(callbacks) {
-
-        		//if (index == 0) index = 3
-			//if (index < 10) index +=5
-			//else index += 5
 	
     		var mytrain = train.slice(0, index)
-		index += 10
+			index += 10
 		
-		var mytrainex = JSON.parse(JSON.stringify(mytrain))
+			var mytrainex = JSON.parse(JSON.stringify(mytrain))
     		var mytestex = JSON.parse(JSON.stringify(test))
-
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+_.flatten(mytrainex).length+
@@ -104,7 +87,7 @@ if (cluster.isWorker)
     			case "Russian": callbacks(null, bars.gettrans(mytrainex, ".*:ru:.*"), mytestex, mytrainex.length); break;
     			case "Portuguese": callbacks(null, bars.gettrans(mytrainex, ".*:pt:.*"), mytestex, mytrainex.length); break;
     			case "Hebrew": callbacks(null, bars.gettrans(mytrainex, ".*:he:.*"), mytestex, mytrainex.length); break;
-			case "Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;
+				case "Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;
 				case "French+German+Potuguese": callbacks(null, bars.gettrans(mytrainex, ".*:(de|fr|pt):.*"), mytestex, mytrainex.length); break;
 				case "Russian+Spanish+Arabic": callbacks(null, bars.gettrans(mytrainex, ".*:(ru|es|ar):.*"), mytestex, mytrainex.length); break;
 				case "Russian+Hebrew+Arabic": callbacks(null, bars.gettrans(mytrainex, ".*:(ru|he|ar):.*"), mytestex, mytrainex.length); break;
@@ -154,11 +137,11 @@ if (cluster.isWorker)
 					
 
     				break;
-    				case "Google_Hungarian": callbacks(null, bars.gettrans(mytrainex, "G:hu:G"), mytestex, mytrainex.length); break;	
-    				case "NLU_Tran_Finish_Arabic:": callbacks(null, bars.gettrans(mytrainex, ".*:(ar|fi):.*"), mytestex, mytrainex.length); break;	
-    				case "huzh": callbacks(null, bars.gettrans(mytrainex, ".*:(hu|zh):.*"), mytestex, mytrainex.length); break;	
-    				case "huzhur": callbacks(null, bars.gettrans(mytrainex, ".*:(hu|zh|ur):.*"), mytestex, mytrainex.length); break;	
-    	//			case "NLU_Tran_Yandex_Microsoft_Finish": callbacks(null, bars.gettrans(mytrainex, "Y:fi:M"), mytestex, mytrainex.length); break;	
+    			case "Google_Hungarian": callbacks(null, bars.gettrans(mytrainex, "G:hu:G"), mytestex, mytrainex.length); break;	
+    			case "NLU_Tran_Finish_Arabic:": callbacks(null, bars.gettrans(mytrainex, ".*:(ar|fi):.*"), mytestex, mytrainex.length); break;	
+    			case "huzh": callbacks(null, bars.gettrans(mytrainex, ".*:(hu|zh):.*"), mytestex, mytrainex.length); break;	
+    			case "huzhur": callbacks(null, bars.gettrans(mytrainex, ".*:(hu|zh|ur):.*"), mytestex, mytrainex.length); break;	
+    	//		case "NLU_Tran_Yandex_Microsoft_Finish": callbacks(null, bars.gettrans(mytrainex, "Y:fi:M"), mytestex, mytrainex.length); break;	
     				case "NLU_Tran_All": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;	
     	//			case "Root_Trans": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;	
     	//			case "Root_Trans_Emb": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;	
@@ -224,8 +207,6 @@ if (cluster.isWorker)
 		})
 	});
 
-
-
 if (cluster.isMaster)
 {
 	var stat = {}
@@ -233,7 +214,7 @@ if (cluster.isMaster)
 	bars.cleanFolder(lcfolder)
 	bars.cleanFolder("./logs")
 
-	var folds = 10
+	var folds = 5
 	
 	//var classifiers = [ "Natural_Neg", "Emb_100", "Emb_50", "NLU_Tran_All"]
 	//var classifiers = [ "Natural_Neg", "Emb_25", "Emb_50", "Emb_100", "Emb_200", "Emb_300"]
@@ -248,12 +229,12 @@ if (cluster.isMaster)
 	var classifiers = [ "Natural_Neg", "Portuguese", "All_together", "Russian", "Hungarian", "Finish", "German", "Chinese", "French", "Portuguese+Russian+Hungarian", "Hebrew", "Arabic" ]
 	//var classifiers = [ "Natural_Neg", "Hungarian", "Portuguese", "Russian", "All_together"]
 	//var classifiers = [ "Natural_Neg", "Hungarian", "Russian", "Hebrew", "Arabic", "Portuguese", "All_together", "German", "_Japanese" ]
-//	var classifiers = [ "Natural_Neg", "_Asia", "_Semitic", "_Slavic", "_Uralic", "_Germanic", "_Romanic", "_All_together"]
-//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Hungarian", "Hungarian_Google", "Hungarian_Yandex", "Hungarian_Microsoft"]
+	//var classifiers = [ "Natural_Neg", "_Asia", "_Semitic", "_Slavic", "_Uralic", "_Germanic", "_Romanic", "_All_together"]
+	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Hungarian", "Hungarian_Google", "Hungarian_Yandex", "Hungarian_Microsoft"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Hungarian", "Finish", "Best"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Finish+Hungarian+Chinese", "Finish", "Hungarian", "Chinese"]
-	// var classifiers = [ "Natural_Neg", "NLU_Tran_All", "hu_GG", "hu_MY", "hu_YG", "hu_YY", "Hungarian"]
-	///var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Hungarian", "huzh", "huzhur"]
+	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "hu_GG", "hu_MY", "hu_YG", "hu_YY", "Hungarian"]
+	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Hungarian", "huzh", "huzhur"]
 	//var classifiers = [ "Natural","NLU_Tran_GGFinish"]
 	//var classifiers = [ "Natural_Neg", "NLU_Tran_All", "Emb_100", "Hungarian", "Emb_100_Hungarian", "Emb_100_All"]
 		
@@ -266,10 +247,20 @@ if (cluster.isMaster)
 	
 
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased_no_ur.json")))
-    data1 = bars.enrichparse(data1)
+    // data1 = bars.enrichparse(data1)
     var utterset1 = bars.getsetcontext(data1, false)
     var train1 = utterset1["train"].concat(utterset1["test"])
 
+    train1 = _.flatten(train1)
+    _.each(train1, function(value, key, list){
+    	value["output"] = _.unique(_.keys(value.outputhash))
+    	value["input"]["sentences"] = {}
+    }, this)
+		
+
+	var dist = _.countBy(train1, function(num) { return num["output"][0]});
+	console.mlog("DEBUGMASTER: dist: "+JSON.stringify(dist, null, 4))
+	
 	console.mlog("DEBUGMASTER: loaded: "+train1.length)
 
 	_(folds).times(function(fold){
