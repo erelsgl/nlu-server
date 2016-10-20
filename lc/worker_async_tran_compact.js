@@ -137,6 +137,12 @@ if (cluster.isWorker)
 					
 
     				break;
+    			case "Natural_Neg_10":
+    				var res = mytrainex.concat(mytrainex).concat(mytrainex).concat(mytrainex).concat(mytrainex)
+    				res = res.concat(res)
+    				console.vlog("Natural_Neg_10 size: "+res.length)
+					callbacks(null, _.shuffle(res), mytestex, mytrainex.length); break;	
+
     			case "Google_Hungarian": callbacks(null, bars.gettrans(mytrainex, "G:hu:G"), mytestex, mytrainex.length); break;	
     			case "NLU_Tran_Finish_Arabic:": callbacks(null, bars.gettrans(mytrainex, ".*:(ar|fi):.*"), mytestex, mytrainex.length); break;	
     			case "huzh": callbacks(null, bars.gettrans(mytrainex, ".*:(hu|zh):.*"), mytestex, mytrainex.length); break;	
@@ -226,7 +232,7 @@ if (cluster.isMaster)
 	//var classifiers = [ "Natural_Neg", "_Hungarian", "_Portuguese", "_Russian", "_Japanese", "_All_together", "_Hungarian+_Japanese", "_Hungarian+_Japanese+_Chinese", "_Hungarian+_Japanese+_Chinese+_Finish"]
 	//var classifiers = [ "Natural_Neg", "_Hungarian", "_Portuguese","_All_together_test"]
 	//var classifiers = [ "Natural_Neg", "_Portuguese", "_All_together", "_Romanic", "_Germanic", "_Uralic", "_Semitic"]
-	var classifiers = [ "Natural_Neg", "Portuguese", "All_together", "Russian", "Hungarian", "Finish", "German", "Chinese", "French", "Portuguese+Russian+Hungarian", "Hebrew", "Arabic" ]
+	var classifiers = [ "Natural_Neg", "Natural_Neg_10", "Portuguese", "All_together", "Russian", "Hungarian", "Finish", "German", "Chinese", "French", "Portuguese+Russian+Hungarian", "Hebrew", "Arabic" ]
 	//var classifiers = [ "Natural_Neg", "Hungarian", "Portuguese", "Russian", "All_together"]
 	//var classifiers = [ "Natural_Neg", "Hungarian", "Russian", "Hebrew", "Arabic", "Portuguese", "All_together", "German", "_Japanese" ]
 	//var classifiers = [ "Natural_Neg", "_Asia", "_Semitic", "_Slavic", "_Uralic", "_Germanic", "_Romanic", "_All_together"]
