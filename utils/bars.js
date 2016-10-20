@@ -4547,7 +4547,7 @@ function gettrans(turns, pat)
           record["input"]["text"] = tran
           delete record["input"]["sentences"]
           record["input"]["sentences"] = {}  
- 	  delete record["input"]["trans"]
+ 	        delete record["input"]["trans"]
           record["input"]["source"] = turn.translation_id
           // output.push(record)
           output_temp.push(record)
@@ -4568,7 +4568,7 @@ function gettrans(turns, pat)
   }, this)
 
   console.vlog("gettrans: output.length: " + output.length)  
-  console.vlog(JSON.stringify(output, null, 4))
+  // console.vlog(JSON.stringify(output, null, 4))
 
   return output
 }
