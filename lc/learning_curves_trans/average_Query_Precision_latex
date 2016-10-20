@@ -9,6 +9,11 @@
 \addlegendentry{Natural\_Neg}
 
 \addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)(180,null)(190,null)(200,null)(210,null)(220,0.61002886002886)(230,0.6003663003663003)(240,0.576688723462917)
+};
+\addlegendentry{Natural\_Neg\_10}
+
+\addplot[color=green,mark=*] coordinates {
 (10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)(180,null)(190,null)(200,null)(210,null)(220,0.6409133709981167)(230,0.6482259570494864)(240,0.6368443268443269)
 };
 \addlegendentry{Portuguese}
