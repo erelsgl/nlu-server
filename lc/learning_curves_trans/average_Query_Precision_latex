@@ -11,60 +11,45 @@
 \addplot[color=green,mark=*] coordinates {
 (10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)
 };
-\addlegendentry{Natural\_Neg\_10}
+\addlegendentry{YY}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.6243438978643391)(70,0.5885683871683871)(80,0.5821571483314528)(90,0.6101541396337399)(100,0.714608123569794)(110,0.6914291054586086)(120,0.6886628850077126)
+};
+\addlegendentry{MM}
 
 \addplot[color=green,mark=*] coordinates {
 (10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)
 };
-\addlegendentry{Portuguese}
+\addlegendentry{GG}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.5940854978354978)(70,0.5542050942211405)(80,0.5114331757577464)(90,0.5568680016696189)(100,0.6222824866825121)(110,null)(120,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.6007288054019803)(70,0.5608757211415709)(80,0.5702736749232076)(90,0.5907128288378288)(100,0.6856465224052434)(110,0.6947243160856396)(120,0.6902046527046526)
 };
-\addlegendentry{All\_together}
+\addlegendentry{YG}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.5805609668109668)(70,0.5491164247851372)(80,0.5373814603919687)(90,0.536938789222603)(100,0.6283289791487194)(110,null)(120,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.5820210491263124)(70,0.5001880276346728)(80,0.5120832104338836)(90,0.5529991365280187)(100,0.6680407061723281)(110,null)(120,null)
 };
-\addlegendentry{Russian}
+\addlegendentry{GY}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.6712414397197006)(70,0.6254385101674969)(80,0.6134430231102332)(90,0.6593511842148617)(100,0.718424386071445)(110,0.7453980350572135)(120,0.7146186502969981)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.6105082194426457)(70,0.5559161213892672)(80,0.5766818944056796)(90,0.5980535989094978)(100,0.6974841739039157)(110,0.6856374418264661)(120,0.7048120535861229)
 };
-\addlegendentry{Hungarian}
+\addlegendentry{YM}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.5293570843220061)(70,0.5349009910779409)(80,0.5428016902336859)(90,0.5958168197397757)(100,0.6822020966256098)(110,null)(120,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.561047560626508)(70,0.49559813137681985)(80,0.49363782860102495)(90,0.5309050544018358)(100,0.5925897566194506)(110,0.583858585858586)(120,0.6222051207324699)
 };
-\addlegendentry{Finish}
+\addlegendentry{MY}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.5915316924217853)(70,0.5475327959114938)(80,0.5732549329730738)(90,0.6062314425301769)(100,0.6624149167687248)(110,null)(120,null)
 };
-\addlegendentry{German}
+\addlegendentry{MG}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.5796539557004907)(70,0.5320373978956089)(80,0.5684423854345879)(90,0.5833082121567728)(100,0.6505074976292081)(110,null)(120,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.6102820089688299)(70,0.5286039265334748)(80,0.5145298892959286)(90,null)(100,null)(110,null)(120,null)
 };
-\addlegendentry{Chinese}
-
-\addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)
-};
-\addlegendentry{French}
-
-\addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.6338611859019954)(70,0.5894044983130128)(80,null)(90,null)(100,null)(110,null)(120,null)
-};
-\addlegendentry{Portuguese+Russian+Hungarian}
-
-\addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.5802767273846957)(70,0.5109885403484579)(80,0.512162857230632)(90,null)(100,0.6615973013509528)(110,0.651412194616529)(120,0.6640198132146286)
-};
-\addlegendentry{Hebrew}
-
-\addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)
-};
-\addlegendentry{Arabic}
+\addlegendentry{GM}
 
