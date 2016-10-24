@@ -39,9 +39,9 @@
 \addlegendentry{Finish}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.565708512133803)(70,0.5847004716723027)(80,0.6180544208713808)(90,0.6756799720567837)(100,0.7305936275593164)(110,0.7236701815218354)(120,0.7406337369724098)
 };
-\addlegendentry{German}
+\addlegendentry{Japanese}
 
 \addplot[color=green,mark=*] coordinates {
 (10,null)(20,null)(30,null)(40,null)(50,null)(60,0.5796539557004907)(70,0.5320373978956089)(80,0.5684423854345879)(90,0.5833082121567728)(100,0.6505074976292081)(110,null)(120,null)
