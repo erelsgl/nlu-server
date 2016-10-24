@@ -54,9 +54,9 @@
 \addlegendentry{French}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.6338611859019954)(70,0.5894044983130128)(80,null)(90,null)(100,null)(110,null)(120,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,0.6461010342352045)(70,0.6030989993456297)(80,0.6237610832289258)(90,0.6607753735981856)(100,0.7213605834199674)(110,0.7315547665608866)(120,0.7349085040546308)
 };
-\addlegendentry{Portuguese+Russian+Hungarian}
+\addlegendentry{Hungarian+Chinese}
 
 \addplot[color=green,mark=*] coordinates {
 (10,null)(20,null)(30,null)(40,null)(50,null)(60,0.5802767273846957)(70,0.5109885403484579)(80,0.512162857230632)(90,null)(100,0.6615973013509528)(110,0.651412194616529)(120,0.6640198132146286)
@@ -67,4 +67,9 @@
 (10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)
 };
 \addlegendentry{Arabic}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)
+};
+\addlegendentry{Emb\_100}
 
