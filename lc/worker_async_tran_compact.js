@@ -236,7 +236,7 @@ if (cluster.isMaster)
 	//var classifiers = [ "Natural_Neg", "_Hungarian", "_Portuguese", "_Russian", "_Japanese", "_All_together", "_Hungarian+_Japanese", "_Hungarian+_Japanese+_Chinese", "_Hungarian+_Japanese+_Chinese+_Finish"]
 	//var classifiers = [ "Natural_Neg", "_Hungarian", "_Portuguese","_All_together_test"]
 	//var classifiers = [ "Natural_Neg", "_Portuguese", "_All_together", "_Romanic", "_Germanic", "_Uralic", "_Semitic"]
-	var classifiers = [ "Natural_Neg", "Natural_Neg_10", "Portuguese", "Chinese", "All_together", "Arabic", "Russian",  "Hungarian1" ]
+	var classifiers = [ "Natural_Neg", "Natural_Neg_10", "Portuguese", "Chinese", "All_together", "Arabic", "Russian",  "Hungarian1", "Emb_100" ]
 	//var classifiers = [ "Natural_Neg", "Natural_Neg_10", "Portuguese", "All_together", "Russian", "Hungarian", "Finish", "Japanese", "Chinese", "French", "Hungarian+Chinese", "Hebrew", "Arabic", "Emb_100" ]
 	//var classifiers = [ "Natural_Neg", "YY", "MM", "GG", "YG", "GY", "YM", "MY", "MG", "GM" ]
 	//var classifiers = [ "Natural_Neg", "Hungarian", "Portuguese", "Russian", "All_together"]
