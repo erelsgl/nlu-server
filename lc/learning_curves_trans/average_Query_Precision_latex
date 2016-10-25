@@ -43,3 +43,8 @@
 };
 \addlegendentry{Hungarian1}
 
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,0.7956054987840532)(90,0.828023077889857)(100,0.8548087921755713)(110,0.8603516727184519)(120,0.8591281342062009)
+};
+\addlegendentry{Emb\_100}
+
