@@ -3,6 +3,8 @@ var fs = require('fs');
 var labels = JSON.parse(fs.readFileSync('./lab.json'));
 var async = require('async');
 var async_tran = require(__dirname + "/../utils/async_tran.js")
+var bars = require(__dirname + "/../utils/bars.js")
+var distances = require(__dirname + "/../utils/distance.js")
 
 function generator()
 {
@@ -197,7 +199,71 @@ function trans()
 	})
 }
 
+
+function correlation()
+{
+	var total_ln={}
+
+	var data = JSON.parse(fs.readFileSync("./dataset.json"))
+
+	_.each(data, function(turn, key, list){
+		if ("trans" in turn["input"])
+		{
+			_.each(turn["input"]["trans"], function(text, key, list){
+				
+				var ln = key.substr(2,2)
+				var engine1 = key.substr(0,1)
+				var engine2 = key.substr(-1,1)
+				
+				// var par = engine1+engine2
+				var par = ln
+
+				console.log("language:"+ln + " engine1: "+engine1+ " engine2:"+engine2)
+				console.log("par:"+par)
+													
+				// if (!(par in lang))
+					// lang[par] = {}
+
+				if (!(par in total_ln))
+				total_ln[par] = []
+				
+				var txt1 = text
+				var txt2 = turn["input"]["text"]
+
+				//var txt1 = regexpNormalizer(text.toLowerCase())
+				//var txt2 = regexpNormalizer(turn["input"]["text"].toLowerCase())
+
+				var dst = bars.distances(txt1, txt2)
+						
+				if (isNaN(parseFloat(dst)) || !isFinite(dst))
+					console.log("FUCK: " + txt1 + " " + txt2 + " " + dst)
+		  		else
+					{	
+						// lang[par][intents[0]].push(dst)
+						total_ln[par].push(dst)
+					}
+			})
+		}
+	}, this)
+
+	var chk = -1
+
+	_.each(total_ln, function(value, key, list){
+		if (chk == -1)
+			chk = value.length
+		else
+			if (chk != value.length)
+				throw new Error("anomaly: "+key)
+			
+		total_ln[key] = distances.average(_.flatten(value))
+	}, this)
+
+	console.log(JSON.stringify(_.sortBy(_.pairs(total_ln), function(num){ return num[1] }), null, 4))
+	process.exit(0)
+}
+
 // convert()
 // gettrans()
 // marktrans()
-trans()
+// trans()
+correlation()
