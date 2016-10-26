@@ -186,7 +186,7 @@ if (cluster.isMaster)
 	// silent: false
 	});
 
-		var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin.json"))
+		var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased.json"))
 		console.mlog("number of unprocessed dialogues: "+data.length)
 
 		var utterset = bars.getsetcontext(data)
