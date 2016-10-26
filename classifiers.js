@@ -114,7 +114,7 @@ function getRule(sen, text)
 		}
 */	var sentence = JSON.parse(JSON.stringify(sen))
  
-	console.vlog("getRule: "+sentence)
+	console.vlog("getRule: sentence: "+JSON.stringify(sentence, null, 4))
 
 	// change tokens 
   	var tokenizer = new natural.RegexpTokenizer({pattern: /[^\%a-zA-Z0-9\-\?]+/});
