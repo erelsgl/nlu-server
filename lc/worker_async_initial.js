@@ -76,20 +76,21 @@ if (cluster.isWorker)
         			var mapping = []
 					var test_set = []
 
-					// prepare single sentence testSet in usualy format  
+					// prepare single-sentenced testSet in usualy format  
 					_.each(mytestex, function(turn, vkey, list){
-
 						mytestex[vkey]["actual"] = []
 
-						_.each(turn["input"]["sentences"], function(value, key, list){
+						console.vlog("PREPARE TEST: text: "+turn["input"]["text"])
+						_.each(bars.sbd(turn["input"]["text"]), function(text, key, list){
+
 							var record = {"input":{"context":[]}}
-							var text = _.reduce(value["tokens"], function(memo, num){ return memo +" "+ num.word; }, "");
 							record["input"]["text"] = text
 							record["input"]["context"] = turn["input"]["context"]
-							record["input"]["sentences"] = {"tokens": value["tokens"],
-											"basic-dependencies": value["basic-dependencies"]}
 							test_set.push(record)
+							
+							console.vlog("PREPARE TEST: record: "+JSON.stringify(record, null, 4))
 							mapping.push(vkey)
+						
 						}, this)
 					}, this)
 
@@ -98,17 +99,24 @@ if (cluster.isWorker)
 					var classes = []
 					var currentStats = new PrecisionRecall()
 
+					console.vlog("TRAIN:"+JSON.stringify(realmytrainex, null, 4))
+
 					classif.trainBatchAsync(realmytrainex, function(err, results){
 						classif.classifyBatchAsync(test_set_copy, 50, function(error, test_results){
 		
 							_.each(test_results, function(value, key, list){
-								var attrval = classifiers.getRule(test_set[key]["input"]["sentences"], test_set[key]["input"]["text"]).labels
+								console.vlog("TEST: result: intents: "+JSON.stringify(value, null, 4))
+								var attrval = classifiers.getRule({}, test_set[key]["input"]["text"]).labels
+								console.vlog("TEST: result: attrval: "+JSON.stringify(attrval, null, 4))
 								var cl = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([value.output, attrval[0], attrval[1]])))
+								console.vlog("TEST: result: composition: "+JSON.stringify(cl, null, 4))
 								mytestex[mapping[key]]["actual"].push(cl)
 							}, this)
 
 							_.each(mytestex, function(value, key, list){
 								var cla = _.flatten(value["actual"])
+								console.vlog("EVAL: actual: "+JSON.stringify(cla, null, 4))
+								console.vlog("EVAL: expected: "+JSON.stringify(value.output, null, 4))
 								mytestex[key]["exp"] = currentStats.addCasesHash(value.output, cla, true)
 								currentStats.addIntentHash(value.output, cla, true)
 							}, this)
@@ -157,7 +165,8 @@ if (cluster.isMaster)
 
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	//var classifiers = [ "Natural", "Natural+Context", "Component", "Component+Context" ]
-	var classifiers = [ "Natural_SVM", "Natural_ADA", "Natural_RF", "Component", "Component+Context", "Natural_SVM_Context", "Natural_ADA_Context", "Natural_RF_Context" ]
+	// var classifiers = [ "Natural_SVM", "Natural_ADA", "Natural_RF", "Component", "Component+Context", "Natural_SVM_Context", "Natural_ADA_Context", "Natural_RF_Context" ]
+	var classifiers = [ "Component" ]
 
 	cluster.setupMaster({
   	exec: __filename,
