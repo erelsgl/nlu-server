@@ -20,38 +20,29 @@ console.mlog = function(data) { fs.appendFileSync("./logs/master", data + '\n', 
 if (cluster.isWorker)
 	process.on('message', function(message) {
 
-    	console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
+    console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
 
-        var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
-        //var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Quit","Greet"], "filter":false})
-        var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
-        //var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Quit","Greet"], "filter":true})
-   
-	_.each(test, function(turn, key, list){ delete test[key]["input"]["trans"] }, this)
-	_.each(train, function(turn, key, list){ delete test[key]["input"]["trans"] }, this)
-
+   	var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
+    var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
+    
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
 
 	var index = 5
 
 	async.whilst(
-	    function () { return index < train.length },
-	    //function () { return index < 70 },
+	    function () { return index <= train.length },
 	    function (callbackwhilst) {
 
 		async.waterfall([
     		function(callbacks) {
 
-        		//if (index == 0) index = 3
-			//if (index < 10) index +=1
-	
     		var mytrain = train.slice(0, index)
-		index += 5
+			index += 5
 	
-		var mytrainex = JSON.parse(JSON.stringify(mytrain))
+			var mytrainex = JSON.parse(JSON.stringify(mytrain))
     		var mytestex = JSON.parse(JSON.stringify(test))
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
@@ -67,7 +58,6 @@ if (cluster.isWorker)
 
     		},
     		function(mytrainex, mytestex, trainsize, callback) {
-
 		
 			console.vlog("DEBUGPRETRAIN: classifier:"+classifier+" mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
 			
@@ -120,7 +110,7 @@ if (cluster.isMaster)
 //	var classifiers = [ "Natural_SVM_Context", "Natural_RF_Context", "Natural_ADA_Context" ]
 
 	
-	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin.json")))
+	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased.json")))
  	var utterset1 = bars.getsetcontext(data1, false)
 	var train1 = utterset1["train"].concat(utterset1["test"])
 
@@ -144,10 +134,7 @@ if (cluster.isMaster)
 			console.mlog("DEBUGMASTER: class: "+classifier+" fold:"+ fold + " train size:"+data.train.length + " test size:" + data.test.length)
 			console.mlog("DEBUGMASTER: process.pid:"+worker.process.pid)
 
-			worker.send({ 		
-				'train': JSON.stringify(data.test), 
-				'test': JSON.stringify(data.train)
-		     		})
+			worker.send({'train': JSON.stringify(data.test),'test': JSON.stringify(data.train)})
 			
 			worker.on('disconnect', function(){
 			  	console.mlog("DEBUGMASTER: finished: workers.length: "+Object.keys(cluster.workers).length )
