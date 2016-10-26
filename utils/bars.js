@@ -5875,6 +5875,19 @@ function vecextremum(matrix)
   return resultvec
 }
 
+function sbd(longsentence)
+{
+  var options =  { 
+                   "newline_boundaries" : false,
+                   "html_boundaries"    : false,
+                   "sanitize"           : false,
+                   "allowed_tags"       : false,
+                   "abbreviations"      : null
+                 }
+  return sbd.sentences(longsentence, options)
+}
+
+
 function enrichparse(dataset)
 {
 _.each(dataset, function(dialogue, key, list){
@@ -6048,5 +6061,6 @@ cleanRecord:cleanRecord,
 write_wilcoxon:write_wilcoxon,
 gettransbest:gettransbest,
 enrichparse:enrichparse,
-walkSync:walkSync
+walkSync:walkSync,
+sbd:sbd
 }
