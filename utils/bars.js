@@ -5884,7 +5884,7 @@ function vecextremum(matrix)
   return resultvec
 }
 
-function sbd(longsentence)
+function sbdd(longsentence)
 {
   var options =  { 
                    "newline_boundaries" : false,
@@ -6071,5 +6071,5 @@ write_wilcoxon:write_wilcoxon,
 gettransbest:gettransbest,
 enrichparse:enrichparse,
 walkSync:walkSync,
-sbd:sbd
+sbdd:sbdd
 }
