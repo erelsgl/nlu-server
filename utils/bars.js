@@ -3961,8 +3961,6 @@ var outputset = []
 // - filter - filter multilabel utterances (for test set)
 function processdataset(dataset, options)
 {
-  var output = []
-
   if (!("filterIntent" in options))
     throw new Error("filterIntent not in options")
 
@@ -3970,47 +3968,72 @@ function processdataset(dataset, options)
     throw new Error("filterIntent not an array")
 
   console.vlog("processdataset: initial: "+ dataset.length + " option: "+JSON.stringify(options, null, 4))
+  var output = copyobj(dataset)
 
-  _.each(dataset, function(utterance, utterance_key, list){
-    
-    var record = copyobj(utterance)
-
-    if (options.intents)
-      record['output'] = _.unique(_.keys(utterance.outputhash))
-
-    if (_.isArray(record['input']['sentences']))
-	{
-	record['input']['sentences']= {}
-    record['input']['sentences']["tokens"] = _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'tokens')))
-    record['input']['sentences']["basic-dependencies"] = _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'basic-dependencies')))
-    record['input']['sentences']["collapsed-dependencies"]= _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-dependencies')))
-    record['input']['sentences']["collapsed-ccprocessed-dependencies"] = _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-ccprocessed-dependencies')))
-   	}
-// if ((output.indexOf("Greet")==-1)&&(output.indexOf("Quit")==-1))
-    
-    output.push(record)
-  })
-
-    console.vlog("processdataset: before filter: "+ output.length)
- 
- if (options.filter)
+  if (options.intents)
+    output = _.map(output, function(num){ num['output'] = _.unique(_.keys(num.outputhash)); return num });
+  
+  if (options.filter)
     output = _.filter(output, function(num){ return num["output"].length == 1; });
     
-  console.vlog("processdataset: after filter: "+ output.length)
-
   if (options["filterIntent"].length > 0)
-  {  
-    console.vlog("processdataset: filterIntent: "+options["filterIntent"])
-    console.vlog("processdataset: filterIntent: before: "+output.length)
     output = _.filter(output, function(num){ return _.intersection(num["output"], options["filterIntent"]).length == 0 });
-    console.vlog("processdataset: filterIntent: after: "+output.length)
-  }
-
+  
   console.vlog("processdataset: end: "+ output.length)
-
   return output
 }
 
+// function processdataset(dataset, options)
+// {
+//   var output = []
+
+//   if (!("filterIntent" in options))
+//     throw new Error("filterIntent not in options")
+
+//   if (!_.isArray(options["filterIntent"]))
+//     throw new Error("filterIntent not an array")
+
+//   console.vlog("processdataset: initial: "+ dataset.length + " option: "+JSON.stringify(options, null, 4))
+
+//   _.each(dataset, function(utterance, utterance_key, list){
+    
+//     var record = copyobj(utterance)
+
+//     if (options.intents)
+//       record['output'] = _.unique(_.keys(utterance.outputhash))
+
+//     if (_.isArray(record['input']['sentences']))
+//     {
+//     record['input']['sentences']= {}
+//     record['input']['sentences']["tokens"] = _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'tokens')))
+//     record['input']['sentences']["basic-dependencies"] = _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'basic-dependencies')))
+//     record['input']['sentences']["collapsed-dependencies"]= _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-dependencies')))
+//     record['input']['sentences']["collapsed-ccprocessed-dependencies"] = _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-ccprocessed-dependencies')))
+//     }
+// // if ((output.indexOf("Greet")==-1)&&(output.indexOf("Quit")==-1))
+    
+//     output.push(record)
+//   })
+
+//     console.vlog("processdataset: before filter: "+ output.length)
+ 
+//  if (options.filter)
+//     output = _.filter(output, function(num){ return num["output"].length == 1; });
+    
+//   console.vlog("processdataset: after filter: "+ output.length)
+
+//   if (options["filterIntent"].length > 0)
+//   {  
+//     console.vlog("processdataset: filterIntent: "+options["filterIntent"])
+//     console.vlog("processdataset: filterIntent: before: "+output.length)
+//     output = _.filter(output, function(num){ return _.intersection(num["output"], options["filterIntent"]).length == 0 });
+//     console.vlog("processdataset: filterIntent: after: "+output.length)
+//   }
+
+//   console.vlog("processdataset: end: "+ output.length)
+
+//   return output
+// }
 
 
 
