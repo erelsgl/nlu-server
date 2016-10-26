@@ -20,15 +20,13 @@ console.mlog = function(data) { fs.appendFileSync("./logs/master", data + '\n', 
 if (cluster.isWorker)
 	process.on('message', function(message) {
 
-    	console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
+    console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
 	var train = _.flatten(JSON.parse(message['train']))
 	var test = _.flatten(JSON.parse(message['test']))
 
-	// var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Quit", "Greet"], "filter":false})
-	// var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
-	// var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Quit", "Greet"], "filter":true})
-	// var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true}) 
+	var test  = bars.processdataset(test, {"intents": true, "filterIntent":["Quit", "Greet"], "filter":false})
+	var train = bars.processdataset(test, {"intents": true, "filterIntent":["Quit", "Greet"], "filter":true})
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
 
@@ -263,17 +261,17 @@ if (cluster.isMaster)
     var utterset1 = bars.getsetcontext(data1, false)
     var train1 = utterset1["train"].concat(utterset1["test"])
 
-    train1 = _.flatten(train1)
-    train1 = _.filter(train1, function(num){ return (_.keys(num.outputhash).length == 1 && !("Greet" in num.outputhash) && !("Quit" in num.outputhash)) });
+    // train1 = _.flatten(train1)
+    // train1 = _.filter(train1, function(num){ return (_.keys(num.outputhash).length == 1 && !("Greet" in num.outputhash) && !("Quit" in num.outputhash)) });
 
-    _.each(train1, function(value, key, list){
-    	value["output"] = _.unique(_.keys(value.outputhash))
-    	value["input"]["sentences"] = {}
-    }, this)
+    // _.each(train1, function(value, key, list){
+    	// value["output"] = _.unique(_.keys(value.outputhash))
+    	// value["input"]["sentences"] = {}
+    // }, this)
 		
 
-	var dist = _.countBy(train1, function(num) { return num["output"][0]});
-	console.mlog("DEBUGMASTER: dist: "+JSON.stringify(dist, null, 4))
+	// var dist = _.countBy(train1, function(num) { return num["output"][0]});
+	// console.mlog("DEBUGMASTER: dist: "+JSON.stringify(dist, null, 4))
 	
 	console.mlog("DEBUGMASTER: loaded: "+train1.length)
 
