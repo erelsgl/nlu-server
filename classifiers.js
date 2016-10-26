@@ -114,6 +114,8 @@ function getRule(sen, text)
 		}
 */	var sentence = JSON.parse(JSON.stringify(sen))
  
+	console.vlog("getRule: "+sentence)
+
 	// change tokens 
   	var tokenizer = new natural.RegexpTokenizer({pattern: /[^\%a-zA-Z0-9\-\?]+/});
 	
@@ -2038,9 +2040,9 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 /*	if (!('basic-dependencies' in sample['sentences']))
 		throw new Error("train:"+train+" basic-dependencies not in the sample "+JSON.stringify(sample))
 */	
-	if (!('sentences' in sample))
+/*	if (!('sentences' in sample))
 	   throw new Error("for some reason sentences not in sample "+JSON.stringify(sample))
-
+*/
 /*	if (!('tokens' in sample['sentences']))
 	   throw new Error("for some reason tokens not in sample"+JSON.stringify(sample, null, 4))
 */
