@@ -5801,7 +5801,7 @@ function convertObject(label)
   var obj = {}
   var param = ""
 
-	console.vlog("convertObject:"+label)	
+	console.mlog("convertObject:"+label)	
   
 if (label.indexOf("_")!=-1)
   {
@@ -5812,8 +5812,8 @@ if (label.indexOf("_")!=-1)
     return label
 
 
-	console.vlog("convertObject: obj: "+obj)	
-	console.vlog("convertObject: param: "+param)	
+	console.mlog("convertObject: obj: "+JSON.stringify(obj, null, 4))	
+	console.mlog("convertObject: param: "+param)	
 	
 
   try {
@@ -5824,7 +5824,7 @@ if (label.indexOf("_")!=-1)
     return label
     }
 	
-console.vlog("convertObject: obj: "+obj)	
+console.mlog("convertObject: obj: "+JSON.stringify(obj, null, 4))	
  
   if (_.isObject(obj))
   {
@@ -5833,20 +5833,29 @@ console.vlog("convertObject: obj: "+obj)
     if (_.isObject(obj[intent]))
     {
       attr = _.keys(obj[intent])[0]
-      value = obj[intent][attr].replace(/ /g,"-")
+      value = obj[intent][attr]
     }
     else
     attr = obj[intent]
 
-
-// workaround for true
+    if (!_.isString(attr))
 	attr = JSON.stringify(attr)
 
-    return intent.replace(/ /g,"-") + "-" + attr.replace(/ /g,"-") + "-" + value+"_"+param
+	
+	console.mlog("convertObject: intent: "+intent+" attr:"+attr+" value:"+value)
+
+	var ret = intent.replace(/ /g,"-") + "-" + attr.replace(/ /g,"-") + "-" + value.replace(/ /g,"-")+"_"+param
+	console.mlog("convertObject: return: "+JSON.stringify(ret, null, 4))
+
+    return ret
     
   }
   else
-    return label+"_"+param
+	{
+	var ret = label+"_"+param
+	console.mlog("convertObject: return: "+JSON.stringify(ret, null, 4))
+    return ret
+	}
 }
 
 function compactStats(stats)
@@ -5898,7 +5907,7 @@ function vecextremum(matrix)
   return resultvec
 }
 
-function sbd(longsentence)
+function sbdd(longsentence)
 {
   var options =  { 
                    "newline_boundaries" : false,
@@ -6085,5 +6094,5 @@ write_wilcoxon:write_wilcoxon,
 gettransbest:gettransbest,
 enrichparse:enrichparse,
 walkSync:walkSync,
-sbd:sbd
+sbdd:sbdd
 }

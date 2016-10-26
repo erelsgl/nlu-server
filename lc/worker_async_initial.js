@@ -81,7 +81,7 @@ if (cluster.isWorker)
 						mytestex[vkey]["actual"] = []
 
 						console.vlog("PREPARE TEST: text: "+turn["input"]["text"])
-						_.each(bars.sbd(turn["input"]["text"]), function(text, key, list){
+						_.each(bars.sbdd(turn["input"]["text"]), function(text, key, list){
 
 							var record = {"input":{"context":[]}}
 							record["input"]["text"] = text
@@ -105,7 +105,8 @@ if (cluster.isWorker)
 						classif.classifyBatchAsync(test_set_copy, 50, function(error, test_results){
 		
 							_.each(test_results, function(value, key, list){
-								console.vlog("TEST: result: intents: "+JSON.stringify(value, null, 4))
+								console.vlog("TEST: result: text: "+test_set_copy[key]["input"]["text"])
+								console.vlog("TEST: result: intents: "+JSON.stringify(value.output, null, 4))
 								var attrval = classifiers.getRule({}, test_set[key]["input"]["text"]).labels
 								console.vlog("TEST: result: attrval: "+JSON.stringify(attrval, null, 4))
 								var cl = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([value.output, attrval[0], attrval[1]])))
