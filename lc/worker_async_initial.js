@@ -107,7 +107,7 @@ if (cluster.isWorker)
 							_.each(test_results, function(value, key, list){
 								console.vlog("TEST: result: text: "+test_set_copy[key]["input"]["text"])
 								console.vlog("TEST: result: intents: "+JSON.stringify(value.output, null, 4))
-								var attrval = classifiers.getRule({}, test_set[key]["input"]["text"]).labels
+								var attrval = classifiers.getRule(test_set[key]["input"]["text"]).labels
 								console.vlog("TEST: result: attrval: "+JSON.stringify(attrval, null, 4))
 								var cl = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([value.output, attrval[0], attrval[1]])))
 								console.vlog("TEST: result: composition: "+JSON.stringify(cl, null, 4))
@@ -166,8 +166,8 @@ if (cluster.isMaster)
 
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	//var classifiers = [ "Natural", "Natural+Context", "Component", "Component+Context" ]
-	// var classifiers = [ "Natural_SVM", "Natural_ADA", "Natural_RF", "Component", "Component+Context", "Natural_SVM_Context", "Natural_ADA_Context", "Natural_RF_Context" ]
-	var classifiers = [ "Component" ]
+	var classifiers = [ "Natural_SVM", "Natural_ADA", "Natural_RF", "Natural_SVM_Context", "Natural_ADA_Context", "Natural_RF_Context", "Component_SVM+Context", "Component_SVM", "Component_ADA+Context", "Component_ADA" ]
+	//var classifiers = [ "Component" ]
 
 	cluster.setupMaster({
   	exec: __filename,
@@ -204,7 +204,7 @@ if (cluster.isMaster)
 			worker.on('message', function(message){
 				var workerstats = JSON.parse(message)
 				workerstats['classifiers'] = classifiers
-				//console.mlog("DEBUGMASTER: on message: "+message)
+				console.vlog("DEBUGMASTER: on message: "+message)
 				lc.extractGlobal(workerstats, statt)
 			})
 		})
