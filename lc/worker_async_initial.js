@@ -150,16 +150,19 @@ if (cluster.isWorker)
 							console.vlog("TEST: result: attrval: "+JSON.stringify(attrval, null, 4))
 							var cl = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([value.output, attrval[0], attrval[1]])))
 							console.vlog("TEST: result: composition: "+JSON.stringify(cl, null, 4))
-							mytestex[key]["actual"] = cl
+							console.vlog("EVAL: expected: "+JSON.stringify(value.output, null, 4))
+							var st = currentStats.addIntentHash(value.output, _.flatten(cl), true)
+							console.log("STATS: "+JSON.stringify(st, null, 4))
+							// mytestex[key]["actual"] = cl
 						}, this)
 
-						_.each(mytestex, function(value, key, list){
-							var cla = _.flatten(value["actual"])
-							console.vlog("EVAL: actual: "+JSON.stringify(cla, null, 4))
-							console.vlog("EVAL: expected: "+JSON.stringify(value.output, null, 4))
-							mytestex[key]["exp"] = currentStats.addCasesHash(value.output, cla, true)
-							currentStats.addIntentHash(value.output, cla, true)
-						}, this)
+						// _.each(mytestex, function(value, key, list){
+						// 	var cla = _.flatten(value["actual"])
+						// 	console.vlog("EVAL: actual: "+JSON.stringify(cla, null, 4))
+						// 	console.vlog("EVAL: expected: "+JSON.stringify(value.output, null, 4))
+						// 	mytestex[key]["exp"] = currentStats.addCasesHash(value.output, cla, true)
+						// 	currentStats.addIntentHash(value.output, cla, true)
+						// }, this)
 
 						currentStats.calculateStats()
 
