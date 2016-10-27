@@ -19,27 +19,12 @@
 \addlegendentry{Natural\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(1,0.034902159244264506)(2,0.0891548463356974)(3,0.09567460317460316)(4,0.1378893122701172)(5,0.17212565212565212)(6,0.2253074703074703)(7,0.22937950937950938)(8,0.20245140480434598)(9,0.2472625413801884)(10,0.26216153127917835)
 };
-\addlegendentry{Component}
+\addlegendentry{Component\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(1,0.003076923076923077)(2,0.08140512942765758)(3,0.11600751100751101)(4,0.18891193036354323)(5,0.1546031746031746)(6,0.20126984126984127)(7,0.1949724132077073)(8,0.2095058536235007)(9,0.22653364179679966)(10,0.23841269841269835)
 };
-\addlegendentry{Component+Context}
-
-\addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0.05)(6,0)(7,0)(8,0)(9,0)(10,0)
-};
-\addlegendentry{Natural\_SVM\_Context}
-
-\addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0.06666666666666667)(6,0)(7,0)(8,0)(9,0.1)(10,0.1)
-};
-\addlegendentry{Natural\_ADA\_Context}
-
-\addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
-};
-\addlegendentry{Natural\_RF\_Context}
+\addlegendentry{Component\_ADA}
 

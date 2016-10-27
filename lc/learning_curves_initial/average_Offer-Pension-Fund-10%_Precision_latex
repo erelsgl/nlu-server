@@ -9,37 +9,22 @@
 \addlegendentry{Natural\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,0.8512702905183624)(6,0.8495471450855396)(7,0.9432313556118552)(8,null)(9,0.9449727461251756)(10,0.9449727461251756)
+(1,null)(2,null)(3,null)(4,null)(5,0.9449545010446782)(6,null)(7,0.9431798198460338)(8,0.9432313556118552)(9,0.9448686120004229)(10,0.9449727461251756)
 };
 \addlegendentry{Natural\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,0.9414209956709957)
 };
 \addlegendentry{Natural\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(1,0.9335926615815936)(2,0.9462789220042638)(3,0.9473974034655266)(4,0.9478101071431411)(5,0.9527746251203336)(6,0.9474765465948725)(7,0.9500384295298396)(8,0.9500632715809193)(9,0.947046059482628)(10,0.9427503748469295)
 };
-\addlegendentry{Component}
+\addlegendentry{Component\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(1,0.9284750391281931)(2,0.9372759173747657)(3,0.9462333927981318)(4,0.9477783437526538)(5,0.9482621227540328)(6,0.9437047733666546)(7,0.951488122106775)(8,0.9510484163537963)(9,0.9485736008023998)(10,0.9433273064489622)
 };
-\addlegendentry{Component+Context}
-
-\addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.9492675883693868)(10,0.9479944428920162)
-};
-\addlegendentry{Natural\_SVM\_Context}
-
-\addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.9473002769618827)(7,0.9453615014516785)(8,0.853616066435567)(9,0.9515108032776721)(10,0.9515108032776721)
-};
-\addlegendentry{Natural\_ADA\_Context}
-
-\addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,0.9582400664071411)
-};
-\addlegendentry{Natural\_RF\_Context}
+\addlegendentry{Component\_ADA}
 

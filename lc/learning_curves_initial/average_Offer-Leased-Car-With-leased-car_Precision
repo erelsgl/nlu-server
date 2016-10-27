@@ -1,11 +1,11 @@
-size	dial	Natural_SVM	Natural_ADA	Natural_RF	Component	Component+Context	Natural_SVM_Context	Natural_ADA_Context	Natural_RF_Context
-1	1	null	null	null	null	null	null	null	null
-2	2	null	null	null	null	null	null	null	null
-3	3	null	null	null	null	null	null	null	null
-4	4	null	null	null	null	null	null	null	null
-5	5	null	null	null	null	null	null	null	null
-6	6	null	null	null	null	null	null	null	null
-7	7	null	null	null	null	null	null	null	null
-8	8	null	null	null	null	null	null	null	null
-9	9	null	null	null	null	null	null	null	null
-10	10	null	0.5475136578793355	null	null	null	null	0.5824566188838417	null
+size	dial	Natural_SVM	Natural_ADA	Natural_RF	Component_SVM	Component_ADA
+1	1	null	null	null	0.5281168336038009	0.5314761393955421
+2	2	null	null	null	0.5451225959153738	0.5255030035669294
+3	3	null	null	null	0.5407287439075109	0.5139972804822596
+4	4	null	null	null	0.5427633042622235	0.523981239975558
+5	5	null	null	null	0.5213670190775315	0.49076062160096157
+6	6	null	null	null	0.5426608771234169	0.5158244317398314
+7	7	null	null	null	0.5432523765905444	0.5081867523867786
+8	8	null	null	null	0.5540732458481851	0.5123090465450693
+9	9	null	null	null	0.5607532225201896	0.5168910878032218
+10	10	null	0.5506088959745735	null	0.5688226229359643	0.5247496859735551

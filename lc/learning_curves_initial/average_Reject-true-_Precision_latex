@@ -9,37 +9,22 @@
 \addlegendentry{Natural\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.33599965792414793)(7,0.31731143084820485)(8,0.3906553363286301)(9,0.43144274360250556)(10,0.5188031423520327)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.3124063238233362)(7,0.3631320126154167)(8,0.38880693467481614)(9,0.4664353425971692)(10,0.5231345332470226)
 };
 \addlegendentry{Natural\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.5769091227400052)(10,0.6353812126570747)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.5922594005917805)(10,0.620222138972139)
 };
 \addlegendentry{Natural\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.5123307407122153)(10,0.5101930156816862)
 };
-\addlegendentry{Component}
+\addlegendentry{Component\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(1,null)(2,0.4666903577351338)(3,0.3333456624599022)(4,0.3776810327876884)(5,0.3505939894299027)(6,null)(7,0.48038977109165765)(8,0.5015260341689125)(9,0.5435108970857228)(10,0.5690491177323869)
 };
-\addlegendentry{Component+Context}
-
-\addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.511332509164442)(10,0.5370215977635066)
-};
-\addlegendentry{Natural\_SVM\_Context}
-
-\addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.3403802219761754)(7,0.3603255135497502)(8,0.40982528039237476)(9,0.4556157595069704)(10,0.5163576673951623)
-};
-\addlegendentry{Natural\_ADA\_Context}
-
-\addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.6257148257576286)(10,0.7768328121269297)
-};
-\addlegendentry{Natural\_RF\_Context}
+\addlegendentry{Component\_ADA}
 

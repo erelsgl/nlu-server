@@ -9,7 +9,7 @@
 \addlegendentry{Natural\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,0.5761830857483801)(5,0.6436908487094627)(6,0.6350341124074312)(7,0.6511281295139248)(8,0.7328752205729799)(9,0.7216540684783481)(10,0.725539429440915)
+(1,null)(2,null)(3,0.5852312260160116)(4,0.5941403551595318)(5,0.6341139784787527)(6,0.6403750252985454)(7,0.6295108191288169)(8,0.7080577174557485)(9,0.7346227101292702)(10,0.7424215649467791)
 };
 \addlegendentry{Natural\_ADA}
 
@@ -19,27 +19,12 @@
 \addlegendentry{Natural\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(1,0.7699825562122103)(2,0.7764982112980519)(3,0.7697987727756505)(4,0.782484200793291)(5,0.7945114107883662)(6,0.7956340330796018)(7,0.8046261751431099)(8,0.8035288540524632)(9,0.802418439922367)(10,0.8009239171902521)
 };
-\addlegendentry{Component}
+\addlegendentry{Component\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(1,0.7453811994638808)(2,0.7791635604686593)(3,0.7914085589696833)(4,0.789439869734841)(5,0.7962903065717898)(6,0.8053971606351503)(7,0.8062579146700577)(8,0.8028676203452857)(9,0.8026768042376917)(10,0.8091221716484569)
 };
-\addlegendentry{Component+Context}
-
-\addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,0.7938307300636058)(9,0.8016881703402513)(10,0.7971072518980309)
-};
-\addlegendentry{Natural\_SVM\_Context}
-
-\addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,0.5249952090113258)(4,0.5149740803692083)(5,0.6625778303457934)(6,0.6657781857041181)(7,0.664201341178098)(8,0.7624785472601822)(9,0.7789001998159064)(10,0.7568093748322531)
-};
-\addlegendentry{Natural\_ADA\_Context}
-
-\addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
-};
-\addlegendentry{Natural\_RF\_Context}
+\addlegendentry{Component\_ADA}
 
