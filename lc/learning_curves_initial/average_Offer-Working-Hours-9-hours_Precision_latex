@@ -1,0 +1,45 @@
+\addplot[color=green,mark=*] coordinates {
+(1,1)(2,2)(3,3)(4,4)(5,5)(6,6)(7,7)(8,8)(9,9)(10,10)
+};
+\addlegendentry{dial}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,0.9458319050754845)(4,0.9457796937744298)(5,0.9589432998077045)(6,0.9672847542579006)(7,0.9690937085266391)(8,0.9717614401390936)(9,0.9713614403367326)(10,0.9749133870721283)
+};
+\addlegendentry{Natural\_SVM}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,0.8397513839779116)(4,0.9684577802509592)(5,0.9636665820188103)(6,0.9636436952321151)(7,0.9636357938414705)(8,0.9687794595477003)(9,0.9619703309614994)(10,0.9619327953491463)
+};
+\addlegendentry{Natural\_ADA}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,0.9433333333333334)(6,null)(7,0.8938930491551458)(8,0.9645181069677011)(9,0.9970588235294118)(10,0.9623899379763013)
+};
+\addlegendentry{Natural\_RF}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+};
+\addlegendentry{Component}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+};
+\addlegendentry{Component+Context}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,0.9643642809949993)(4,0.962716338020282)(5,0.9685516204187351)(6,0.9728141825045423)(7,0.9723727938725929)(8,0.971852077208669)(9,0.9739902596181642)(10,0.9749629244649659)
+};
+\addlegendentry{Natural\_SVM\_Context}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,0.8435472479942117)(4,0.9731122385025399)(5,0.967816241882756)(6,0.9782658884880246)(7,0.9678236099935724)(8,0.9701263970722058)(9,0.9620981101571802)(10,0.9550091066363418)
+};
+\addlegendentry{Natural\_ADA\_Context}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,0.9461439226049654)(6,0.9332460540984568)(7,0.9360165866871997)(8,0.9638503682589323)(9,0.9826688607676081)(10,0.963630677601266)
+};
+\addlegendentry{Natural\_RF\_Context}
+

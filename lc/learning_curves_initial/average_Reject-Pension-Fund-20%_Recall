@@ -1,0 +1,11 @@
+size	dial	Natural_SVM	Natural_ADA	Natural_RF	Component	Component+Context	Natural_SVM_Context	Natural_ADA_Context	Natural_RF_Context
+1	1	0	0	0	null	null	0	0	0
+2	2	0	0	0	null	null	0	0	0
+3	3	0	0	0	null	null	0	0	0
+4	4	0	0	0	null	null	0.016666666666666666	0	0
+5	5	0	0	0	null	null	0.016666666666666666	0.1	0
+6	6	0	0	0	null	null	0	0	0
+7	7	0	0	0	null	null	0	0	0
+8	8	0	0	0	null	null	0	0.025	0
+9	9	0	0	0	null	null	0	0.06999999999999999	0
+10	10	0	0.025	0	null	null	0	0.045	0

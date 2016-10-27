@@ -1,0 +1,45 @@
+\addplot[color=green,mark=*] coordinates {
+(1,1)(2,2)(3,3)(4,4)(5,5)(6,6)(7,7)(8,8)(9,9)(10,10)
+};
+\addlegendentry{dial}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0.05)(3,0.08909090909090908)(4,0.07575757575757576)(5,0.06575757575757575)(6,0.1213131313131313)(7,0.13131313131313133)(8,0.13131313131313133)(9,0.13131313131313133)(10,0.12297979797979797)
+};
+\addlegendentry{Natural\_SVM}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0.05)(3,0.2190909090909091)(4,0.23575757575757575)(5,0.23575757575757575)(6,0.24686868686868685)(7,0.20464646464646466)(8,0.20464646464646466)(9,0.20464646464646466)(10,0.21575757575757576)
+};
+\addlegendentry{Natural\_ADA}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0.01)(3,0.019090909090909092)(4,0)(5,0)(6,0.04444444444444444)(7,0)(8,0)(9,0.01111111111111111)(10,0)
+};
+\addlegendentry{Natural\_RF}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+};
+\addlegendentry{Component}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+};
+\addlegendentry{Component+Context}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0.04)(3,0.06999999999999999)(4,0.07575757575757576)(5,0.06575757575757575)(6,0.1213131313131313)(7,0.11222222222222222)(8,0.10111111111111111)(9,0.09)(10,0.09909090909090908)
+};
+\addlegendentry{Natural\_SVM\_Context}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0.05)(3,0.20393939393939392)(4,0.20949494949494948)(5,0.2539393939393939)(6,0.23777777777777778)(7,0.19555555555555554)(8,0.19555555555555554)(9,0.19555555555555554)(10,0.20464646464646466)
+};
+\addlegendentry{Natural\_ADA\_Context}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0.01)(3,0)(4,0)(5,0)(6,0.02222222222222222)(7,0.01111111111111111)(8,0.02222222222222222)(9,0)(10,0)
+};
+\addlegendentry{Natural\_RF\_Context}
+

@@ -1,0 +1,45 @@
+\addplot[color=green,mark=*] coordinates {
+(1,1)(2,2)(3,3)(4,4)(5,5)(6,6)(7,7)(8,8)(9,9)(10,10)
+};
+\addlegendentry{dial}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,0.942634724357492)(4,0.9344018553510383)(5,0.9434043477394933)(6,0.9461870529444021)(7,0.9424069895125469)(8,0.9394826925994965)(9,0.9383594194693765)(10,0.9380388009833114)
+};
+\addlegendentry{Natural\_SVM}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,0.5921297012598276)(3,0.8446219852953272)(4,0.9232566856350422)(5,0.9258571253925411)(6,0.9267085294373587)(7,0.9271103889271657)(8,0.9287931267103324)(9,0.9341275556709977)(10,0.9320839998716082)
+};
+\addlegendentry{Natural\_ADA}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,0.9464062323278745)(6,0.9408009552630039)(7,null)(8,0.9538057572419876)(9,0.9458099334825087)(10,0.9451126096209255)
+};
+\addlegendentry{Natural\_RF}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+};
+\addlegendentry{Component}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+};
+\addlegendentry{Component+Context}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,0.939888368687021)(4,0.9390723668684128)(5,0.9434664263430441)(6,0.943899897271614)(7,0.9424338163092525)(8,0.9407846573989321)(9,0.9399361637764974)(10,0.9400966519093832)
+};
+\addlegendentry{Natural\_SVM\_Context}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,0.6238408472566878)(3,0.7616493892301783)(4,0.9243140475171463)(5,0.9251665260618444)(6,0.9267203024512094)(7,0.924692379904679)(8,0.9286497575347052)(9,0.9341275556709977)(10,0.9326652682243951)
+};
+\addlegendentry{Natural\_ADA\_Context}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.9416067329885269)(7,0.9061032587440344)(8,0.921006962806165)(9,0.8699620130548146)(10,0.9315081769475766)
+};
+\addlegendentry{Natural\_RF\_Context}
+
