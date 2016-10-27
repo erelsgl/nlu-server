@@ -19,8 +19,6 @@ console.mlog = function(data) { fs.appendFileSync("./logs/master", data + '\n', 
 
 if (cluster.isWorker)
 	process.on('message', function(message) {
-
-    console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
@@ -28,7 +26,7 @@ if (cluster.isWorker)
    	var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
     var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
     
-	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
+	console.vlog("DEBUG: train.length="+train.length + " test.length="+test.length)
 
 	var index = 5
 
@@ -108,7 +106,6 @@ if (cluster.isMaster)
 	var classifiers = [ "Unigram", "Unigram+Context", "Context" ]
 //	var classifiers = [ "Natural_Neg", "Natural_Neg_Svm" ]
 //	var classifiers = [ "Natural_SVM_Context", "Natural_RF_Context", "Natural_ADA_Context" ]
-
 	
 	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased.json")))
  	var utterset1 = bars.getsetcontext(data1, false)
