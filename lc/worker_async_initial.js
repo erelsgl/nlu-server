@@ -43,7 +43,7 @@ if (cluster.isWorker)
 			mytestex  = bars.processdataset(_.flatten(bars.copyobj(test)), {"intents": false, "filter":false, "filterIntent":[]})
 		}             
         
-        if (classifier.indexOf("Component")!=-1)
+        if (classifier.indexOf("Component")!=-1 || classifier.indexOf("MYMO")!=-1)
 		{                
 	    	mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": true, "filter":false, "filterIntent":[]})
 		    mytestex  = _.flatten(bars.copyobj(test))
@@ -144,13 +144,13 @@ if (cluster.isWorker)
 					classif.classifyBatchAsync(mytestex, 50, function(error, test_results){
 	
 						_.each(test_results, function(value, key, list){
-							console.vlog("TEST: result: text: "+test_set_copy[key]["input"]["text"])
+							console.vlog("TEST: result: text: "+mytestex[key]["input"]["text"])
 							console.vlog("TEST: result: intents: "+JSON.stringify(value.output, null, 4))
 							var attrval = classifiers.getRule(mytestex[key]["input"]["text"]).labels
 							console.vlog("TEST: result: attrval: "+JSON.stringify(attrval, null, 4))
 							var cl = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([value.output, attrval[0], attrval[1]])))
 							console.vlog("TEST: result: composition: "+JSON.stringify(cl, null, 4))
-							mytestex[key]["actual"].push(cl)
+							mytestex[key]["actual"] = cl
 						}, this)
 
 						_.each(mytestex, function(value, key, list){
@@ -171,8 +171,7 @@ if (cluster.isWorker)
         	else 
           		callback(null, null);
       	
-        }
-		], function () {
+        }], function () {
 
 				console.mlog("global_stats: "+_.keys(global_stats['stats'], null, 4).length)
 	
@@ -207,7 +206,7 @@ if (cluster.isMaster)
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	//var classifiers = [ "Natural", "Natural+Context", "Component", "Component+Context" ]
 	// var classifiers = [ "Natural_SVM", "Natural_ADA", "Natural_RF", "Natural_SVM_Context", "Natural_ADA_Context", "Natural_RF_Context", "Component_SVM+Context", "Component_SVM", "Component_ADA+Context", "Component_ADA" ]
-	var classifiers = [ "MYMO" ]
+	var classifiers = [ "MYMO", "Component_SVM", "Natural_ADA" ]
 
 	cluster.setupMaster({
   	exec: __filename,
