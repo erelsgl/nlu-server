@@ -27,8 +27,8 @@ if (cluster.isWorker)
 	
 	console.vlog("BEFORE: train.length="+train.length + " test.length="+test.length)
 
-	var test  = bars.processdataset(test, {"intents": true, "filterIntent":["Quit", "Greet"], "filter":false})
-	var train = bars.processdataset(train, {"intents": true, "filterIntent":["Quit", "Greet"], "filter":true})
+	// var test  = bars.processdataset(test, {"intents": true, "filterIntent":["Quit", "Greet"], "filter":false})
+	// var train = bars.processdataset(train, {"intents": true, "filterIntent":["Quit", "Greet"], "filter":true})
 
 	console.vlog("AFTER: train.length="+train.length + " test.length="+test.length)
 
@@ -179,8 +179,9 @@ if (cluster.isMaster)
     // data1 = bars.enrichparse(data1)
     var utterset1 = bars.getsetcontext(data1, false)
     var train1 = utterset1["train"].concat(utterset1["test"])
+    train1 = _.flatten(train1)
+	train1  = bars.processdataset(train1, {"intents": true, "filterIntent":["Quit", "Greet"], "filter":true})
 
-    // train1 = _.flatten(train1)
     // train1 = _.filter(train1, function(num){ return (_.keys(num.outputhash).length == 1 && !("Greet" in num.outputhash) && !("Quit" in num.outputhash)) });
 
     // _.each(train1, function(value, key, list){
@@ -189,8 +190,8 @@ if (cluster.isMaster)
     // }, this)
 		
 
-	// var dist = _.countBy(train1, function(num) { return num["output"][0]});
-	// console.mlog("DEBUGMASTER: dist: "+JSON.stringify(dist, null, 4))
+	var dist = _.countBy(train1, function(num) { return num["output"][0]});
+	console.mlog("DEBUGMASTER: dist: "+JSON.stringify(dist, null, 4))
 	
 	console.mlog("DEBUGMASTER: loaded: "+train1.length)
 
