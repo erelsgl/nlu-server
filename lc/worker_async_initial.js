@@ -55,7 +55,8 @@ if (cluster.isWorker)
 			" classifier="+classifier+ " fold="+fold)
 
 		var realmytrainex = bars.copyobj(mytrainex)	
-		console.vlog("DIST: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(realmytrainex), null, 4))
+		console.vlog("DIST TRAIN: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(realmytrainex), null, 4))
+		console.vlog("DIST TEST: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(mytestex), null, 4))
 	
 		var global_stats = {}
 
@@ -66,9 +67,8 @@ if (cluster.isWorker)
      		   			global_stats = bars.copyobj(stats)
           				callback(null, null);     		   		
      		   		})
-     		   	} else {
+     		   	} else 
           			callback(null, null);
-        		}
    	 		},
   		  	function(callback){
         		if (classifier.indexOf("Component")!=-1) {
@@ -118,14 +118,15 @@ if (cluster.isWorker)
 								var cla = _.flatten(value["actual"])
 								console.vlog("EVAL: actual: "+JSON.stringify(cla, null, 4))
 								console.vlog("EVAL: expected: "+JSON.stringify(value.output, null, 4))
-								mytestex[key]["exp"] = currentStats.addCasesHash(value.output, cla, true)
+							//	mytestex[key]["exp"] = currentStats.addCasesHash(value.output, cla, true)
 								currentStats.addIntentHash(value.output, cla, true)
+								currentStats.addCasesHash(value.output, cla, true)
 							}, this)
 
 							currentStats.calculateStats()
 
 							global_stats = {'stats': currentStats}
-		          			callback(null, null);
+		          				callback(null, null);
 						})
 					})
 
@@ -138,21 +139,23 @@ if (cluster.isWorker)
 
         		var classif = new classifiers[classifier]
 				var classes = []
-				var currentStats = new PrecisionRecall()
+				var currentStats1 = new PrecisionRecall()
         	
 				classif.trainBatchAsync(realmytrainex, function(err, results){
 					classif.classifyBatchAsync(mytestex, 50, function(error, test_results){
 	
 						_.each(test_results, function(value, key, list){
 							console.vlog("TEST: result: text: "+mytestex[key]["input"]["text"])
-							console.vlog("TEST: result: intents: "+JSON.stringify(value.output, null, 4))
+							console.vlog("TEST: result: full output: "+JSON.stringify(value, null, 4))
+							console.vlog("TEST: result: actual intents: "+JSON.stringify(value.output, null, 4))
 							var attrval = classifiers.getRule(mytestex[key]["input"]["text"]).labels
 							console.vlog("TEST: result: attrval: "+JSON.stringify(attrval, null, 4))
 							var cl = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([value.output, attrval[0], attrval[1]])))
 							console.vlog("TEST: result: composition: "+JSON.stringify(cl, null, 4))
-							console.vlog("EVAL: expected: "+JSON.stringify(value.output, null, 4))
-							var st = currentStats.addIntentHash(value.output, _.flatten(cl), true)
-							console.log("STATS: "+JSON.stringify(st, null, 4))
+							console.vlog("EVAL: expected: "+JSON.stringify(mytestex[key].output, null, 4))
+							currentStats1.addIntentHash(mytestex[key].output, _.flatten(cl), true)
+							currentStats1.addCasesHash(mytestex[key].output, _.flatten(cl), true)
+							//console.log("STATS: "+JSON.stringify(st, null, 4))
 							// mytestex[key]["actual"] = cl
 						}, this)
 
@@ -164,9 +167,9 @@ if (cluster.isWorker)
 						// 	currentStats.addIntentHash(value.output, cla, true)
 						// }, this)
 
-						currentStats.calculateStats()
+						currentStats1.calculateStats()
 
-						global_stats = {'stats': currentStats}
+						global_stats = {'stats': currentStats1}
 	          			callback(null, null);
 					})
 				})
@@ -176,7 +179,7 @@ if (cluster.isWorker)
       	
         }], function () {
 
-				console.mlog("global_stats: "+_.keys(global_stats['stats'], null, 4).length)
+				console.vlog("global_stats: "+_.keys(global_stats['stats'], null, 4).length)
 	
 				var results = {
 					'classifier': classifier,
@@ -186,7 +189,7 @@ if (cluster.isWorker)
 					'stats': bars.compactStats(global_stats)
 				}
 
-				console.mlog("worker send message: "+JSON.stringify(results, null, 4))
+				console.vlog("worker send message: "+JSON.stringify(results, null, 4))
 
 				process.send(JSON.stringify(results))
 		   		callbackwhilst()
@@ -209,7 +212,8 @@ if (cluster.isMaster)
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	//var classifiers = [ "Natural", "Natural+Context", "Component", "Component+Context" ]
 	// var classifiers = [ "Natural_SVM", "Natural_ADA", "Natural_RF", "Natural_SVM_Context", "Natural_ADA_Context", "Natural_RF_Context", "Component_SVM+Context", "Component_SVM", "Component_ADA+Context", "Component_ADA" ]
-	var classifiers = [ "MYMO", "Component_SVM", "Natural_ADA" ]
+	var classifiers = [ "MYMO", "Component_SVM" ]
+	//var classifiers = [ "MYMO", "Natural_SVM", "Natural_ADA", "Component_ADA" ]
 
 	cluster.setupMaster({
   	exec: __filename,
@@ -236,7 +240,8 @@ if (cluster.isMaster)
 
 			worker.on('disconnect', function(){
   				console.mlog("DEBUGMASTER: finished: number of clusters: " + Object.keys(cluster.workers).length)
-  				console.mlog("DEBUGMASTER: "+_.keys(statt))
+  			//	console.mlog("DEBUGMASTER: "+_.keys(statt))
+				if (Object.keys(cluster.workers).length == 1)
 				_.each(statt, function(data, param, list){ 
   					console.mlog("plotlc")
 					lc.plotlc('average', param, statt, lcfolder) 
