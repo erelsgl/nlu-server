@@ -2295,10 +2295,10 @@ if (composite_ds)
 {
     bars.cleanFolder("/tmp/logs")
 
-	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
+	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json"))
     var utterset = bars.getsetcontext(data1, /*rephrase*/true)
 
-	utterset["train"] = bars.processdataset(_.flatten(utterset["train"]), {"intents": true, "filter":true})
+	utterset["train"] = bars.processdataset(_.flatten(utterset["train"]), {"intents": true, "filterIntent": [], "filter":true})
 	utterset["test"] = _.flatten(utterset["test"])
 	
 	var mapping = []
@@ -2327,15 +2327,17 @@ if (composite_ds)
 	}, this)
 
 	var test_set_copy = bars.copyobj(test_set)
-	var classif = new classifier.composite_SVM
+	var classif = new classifier.Component_SVM
 	var classes = []
 	var currentStats = new PrecisionRecall()
 
 	classif.trainBatchAsync(utterset["train"], function(err, results){
-		classif.classifyBatchAsync(test_set_copy, 50, function(error, test_results){
+		classif.classifyBatchAsync(utterset["test"] , 50, function(error, test_results){
 		
 
 			console.log(JSON.stringify(test_results, null, 4))
+			console.log(utterset["test"].length)
+			console.log(test_results.length)
 			process.exit(0)
 
 			_.each(test_results, function(value, key, list){
