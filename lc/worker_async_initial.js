@@ -35,7 +35,7 @@ if (cluster.isWorker)
 	    index += 1
 
 	    var mytestex  = []
-		var mytrainex = []
+		var mytrainex = _.flatten(bars.copyobj(test))
 		
 		if (classifier.indexOf("Natural")!=-1)
 		{
@@ -43,12 +43,12 @@ if (cluster.isWorker)
 			mytestex  = bars.processdataset(_.flatten(bars.copyobj(test)), {"intents": false, "filter":false, "filterIntent":[]})
 		}             
         
-        if (classifier.indexOf("Component")!=-1 || classifier.indexOf("MYMO")!=-1)
-		{                
-	    	mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": true, "filter":false, "filterIntent":[]})
-		    mytestex  = _.flatten(bars.copyobj(test))
-		}
+        if (classifier.indexOf("Component")!=-1)
+        	mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": true, "filter":true, "filterIntent":[]})
 
+		if (classifier.indexOf("Component")!=-1)
+			mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": true, "filter":false, "filterIntent":[]})
+		  		
 		console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 			" train_dialogue="+mytrain.length+" train_turns="+mytrainex.length+
 			" test_dialogue="+test.length +" test_turns="+mytestex.length+
@@ -106,10 +106,10 @@ if (cluster.isWorker)
 		
 							_.each(test_results, function(value, key, list){
 								console.vlog("TEST: result: text: "+test_set_copy[key]["input"]["text"])
-								console.vlog("TEST: result: intents: "+JSON.stringify(value.output, null, 4))
+								console.vlog("TEST: result: intents: "+JSON.stringify(value, null, 4))
 								var attrval = classifiers.getRule(test_set[key]["input"]["text"]).labels
 								console.vlog("TEST: result: attrval: "+JSON.stringify(attrval, null, 4))
-								var cl = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([value.output, attrval[0], attrval[1]])))
+								var cl = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([[value], attrval[0], attrval[1]])))
 								console.vlog("TEST: result: composition: "+JSON.stringify(cl, null, 4))
 								mytestex[mapping[key]]["actual"].push(cl)
 							}, this)
