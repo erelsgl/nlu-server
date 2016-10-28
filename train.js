@@ -28,12 +28,22 @@ var serialization = require('serialization');
 var limdu = require("limdu");
 var ftrs = limdu.features;
 var md5 = require('md5');
+var sbd = require('sbd');
 
+var sortlang = false
+var omitbaidu = false
 
 var signif = false
 // output the blue average
+
+var check_trans = false
 var correlation = false
-var separ = true
+var remove_urdu = false
+var fix_order = false
+
+var separ = false
+var countst = false
+var merge = false
 
 var latex_plot = false
 
@@ -67,7 +77,7 @@ var check_version4 = false
 
 var best_dial = false
 
-var composite_ds = false
+var composite_ds = true
 
 var finalization = false
 
@@ -201,6 +211,23 @@ function walkSync(dir, filelist) {
   return filelist;
 }
 
+if (remove_urdu)
+{
+	var dataset = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json"))
+	_.each(dataset, function(dialogue, keyd, list){
+		_.each(dialogue["turns"], function(turn, keyt, list){
+			if (turn.role == "Employer")
+			{
+				_.each(turn["input"]["trans"], function(value, keytr, list){
+					if (keytr.indexOf(":ur:") != -1)
+						delete dataset[keyd]["turns"][keyt]["input"]["trans"][keytr]
+				}, this)			
+			}
+		}, this)
+	}, this)
+	console.log(JSON.stringify(dataset, null, 4))
+	process.exit(0)
+}
 
 /*if (check_bar)
 {
@@ -209,7 +236,7 @@ function walkSync(dir, filelist) {
 	bars.generateoppositeversion2(_.flatten(dataset["train"]).concat(_.flatten(dataset["test"])))
 	process.exit(0)
 }
-*/
+
 /*if (check_stats)
 {
 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed.json"))
@@ -311,36 +338,113 @@ var b = distance.tvd(without_rephrase, uniform)
 console.log("if "+ a + " > "+ b)
 }
 
+
+if (merge)
+{
+	var biased = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_trans.json"))
+	var limited = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full.json"))
+
+	_.each(biased, function(dialogue, key, list){
+		if (!("set" in dialogue))
+			dialogue["set"] = "biased"
+	}, this)
+
+	limited = limited.concat(biased)
+
+	console.log(JSON.stringify(limited, null, 4))
+	process.exit(0)
+}
+
+if (countst)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_trans_new.json"))
+
+	var count = 0
+	_.each(data, function(dialogue, key, list){
+
+		if ("set" in dialogue)
+			if (dialogue["set"] == 'unable')
+				count += 1
+	}, this)
+
+	console.log(JSON.stringify(data.length, null, 4))
+	console.log(count)
+	process.exit(0)
+}
+
+if (fix_order)
+{
+	var dataset_right_order = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased_no_ur.json"))
+	
+	var dataset_wrong_order = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json"))
+
+	var dataset_wrong_order_hash = {}
+
+	var dataset_fixed_order = []
+
+	_.each(dataset_wrong_order, function(value, key, list){
+		if (!("gameid" in value)) throw new Error("anomaly")
+		dataset_wrong_order_hash[value["gameid"]] = value
+	}, this)
+
+	_.each(dataset_right_order, function(value, key, list){
+		if (!("gameid" in value)) throw new Error("anomaly")
+		dataset_fixed_order.push(dataset_wrong_order_hash[value["gameid"]])
+	}, this)
+
+	console.log(JSON.stringify(dataset_fixed_order, null, 4))
+	process.exit(0)
+}
+
+
+// if (check_trans)
+// {
+// 	var total_ln={}
+// 	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json"))
+// 	_.each(data, function(dialogue, key, list){
+// 		console.log("dialogue: "+key)
+// 		_.each(dialogue["turns"], function(turn, key, list){
+// 			if (turn.role == "Employer")
+// 				if ("trans" in turn["input"])
+// 					{
+// 						var langs = _.flatten(_.keys(turn["input"]["trans"]))
+// 						langs = _.map(langs, function(num){ return num.substr(2,2) });
+// 						// console.log(JSON.stringify(langs, null, 4))
+// 						var cnt = _.countBy(langs, function(num) {return num})
+// 						// console.log(JSON.stringify(cnt, null, 4))
+// 						if (_.uniq(_.flatten(_.values(cnt))).length != 1)
+// 						{
+// 							console.log(JSON.stringify(cnt, null, 4))
+// 							console.log(JSON.stringify(turn["input"]["trans"], null, 4))
+// 						}
+
+// 					}
+// 		},this)
+// 	},this)
+// 	process.exit(0)
+// }
+
+function englishString(s){
+    var i, charCode;
+    for (i = s.length; i--;) {
+        charCode = s.charCodeAt(i);
+        if (charCode < 32 || charCode > 122) 
+        {	
+        	console.log(charCode)
+        	console.log(s[i])
+            return false;
+        }
+    }
+    return true;
+}
+
 if (correlation)
 {
-	var lang = {}
-	var division = {
-		'de':0,
-		'fr':0,
-		'pt':0,
 
-		'he':1,
-		'es':1,
-		'ar':1,
-		
-		'zh':2,
-		'hu':2,
-		'fi':2,
-	}
-
-	var cluster = {
-		0:[],
-		1:[],
-		2:[]
-	}
-
+	var re =  /[^A-Za-z0-9_.,-]./i
+	var ascii = /^[ -~]+$/;
 	var total_ln={}
-
-	// among all language MM for some reason  
-  	// var omitlang = ["ar", "es"]
-  	var omitlang = []
-
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json"))
 
 	_.each(data, function(dialogue, key, list){
 
@@ -348,7 +452,6 @@ if (correlation)
 			if (turn.role == "Employer")
 				if ("trans" in turn["input"])
 					{
-
 						var temp = {}
 
 						_.each(turn["input"]["trans"], function(text, key, list){
@@ -357,110 +460,64 @@ if (correlation)
 							var engine1 = key.substr(0,1)
 							var engine2 = key.substr(-1,1)
 							
-							// var par = engine1+engine2
+							//var par = engine1+engine2
 							var par = ln
-
-							if ((omitlang.indexOf(ln)==-1) && (engine1 == engine2) && (engine1!="B") && (engine2!="B"))
-							{
-
-								console.log("language:"+ln + " engine1: "+engine1+ " engine2:"+engine2)
-								console.log("par:"+par)
+					
+							console.log("language:"+ln + " engine1: "+engine1+ " engine2:"+engine2)
+							console.log("par:"+par)
 						
-								var intents = _.keys(turn["output"])
-								// var ln = key.substr(0,1) + key.substr(-1,1)
-							    // var language = key.substr(2,2)
+							var intents = _.keys(turn["output"])
+							
+							// if (!(par in lang))
+								// lang[par] = {}
 
-								if (!(par in lang))
-									lang[par] = {}
+							if (!(par in total_ln))
+								total_ln[par] = []
+	
+							var txt1 = text
+							var txt2 = turn["input"]["text"]
 
-								if (!(par in total_ln))
-									total_ln[par] = []
+							if (!englishString(txt2))
+								throw new Error("|"+txt2+"|")
+		   					//	console.log("TEST: "+txt2)
 
+							//var txt1 = regexpNormalizer(text.toLowerCase())
+							//var txt2 = regexpNormalizer(turn["input"]["text"].toLowerCase())
 
-								/*var dst1 = bars.distances(text, turn["input"]["text"])
-								if (!isNaN(parseFloat(dst1)) && isFinite(dst1))
-									{
-										total_ln[par].push(dst1)
-		   							
-									if (par in division)
-										cluster[division[par]].push(dst1)
-									}	
-*/
-								if ((intents.length == 1) && (turn["input"]["sentences"].length == 1))
-								{	
-									if (!(intents[0] in lang[par]))
-									lang[par][intents[0]] = [] 
-
-									var dst = bars.distances(text, turn["input"]["text"])
-		   							
-		   							if (isNaN(parseFloat(dst)) || !isFinite(dst))
-		   								{
-		   								console.log("FUCK")
-		   								console.log(text)
-		   								console.log(turn["input"]["text"])
-		   								console.log(dst)
-		   								}
-		   							else
-		   								{	
-										// lang[par].push(dst)
-										lang[par][intents[0]].push(dst)
-										total_ln[par].push(dst)
-										}
-								}
-							}
-						
+							var dst = bars.distances(txt1, txt2)
+									
+		   					if (isNaN(parseFloat(dst)) || !isFinite(dst))
+		   						console.log("ERROR:"+turn.translation_id+"|"+txt1+"|"+txt2+"|"+dst+"|"+par)
+		   					else
+		   						total_ln[par].push(dst)
+									
 						}, this)
 
-						/*if ((temp['MY'] > temp['MM'])
-							&&
-							(temp['MG'] > temp['MM']))
-						{
-							console.log("CASE")
-							console.log("text:"+turn["input"]["text"])
-							console.log("MM:"+turn["input"]["trans"]["M:fi:M"])
-							console.log("MY:"+turn["input"]["trans"]["M:fi:Y"])
-							console.log("MG:"+turn["input"]["trans"]["M:fi:G"])
-						}*/
 					}
 		}, this)
 
 	}, this)
 
-	console.log(JSON.stringify(lang, null, 4))
 
-	var lang_copy = JSON.parse(JSON.stringify(lang))
-
-	_.each(lang_copy, function(value, ln, list){
-		_.each(value, function(value1, intent, list){
-			lang_copy[ln][intent] = distances.average(value1)
-		}, this)
-	}, this)
-
-	var total = {}
-	_.each(lang_copy, function(value, ln, list){
-		var buf = []
-		_.each(value, function(value1, intent, list){
-			buf = buf.concat(value1)
-			// lang_copy[ln][intent] = distances.average(value1)
-		}, this)
-		total[ln] = distances.average(_.flatten(buf))
-	}, this)
-
-	total = _.pairs(total)
-	total = _.sortBy(total, function(num){ return num[1] });
-
-	// _.each(cluster, function(value, key, list){
-		// cluster[key] = distances.average(_.flatten(value))
-	// }, this)
-	
 	_.each(total_ln, function(value, key, list){
+		console.log(key+":"+value.length)
+	}, this)
+
+	var chk = -1
+
+	_.each(total_ln, function(value, key, list){
+	
+		if (chk == -1)
+			chk = value.length
+		else
+			if (chk != value.length)
+				throw new Error("anomaly: "+key)
+			
 		total_ln[key] = distances.average(_.flatten(value))
 	}, this)
 
-	console.log(JSON.stringify(lang_copy, null, 4))
+	// console.log(JSON.stringify(lang_copy, null, 4))
 	console.log(JSON.stringify(_.sortBy(_.pairs(total_ln), function(num){ return num[1] }), null, 4))
-	// console.log(JSON.stringify(cluster, null, 4))
-	
 	process.exit(0)
 }
 
@@ -506,10 +563,50 @@ function generator()
 		return output
 	}
 
+if (sortlang)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json"))
+
+	_.each(data, function(dialogue, key, list){
+		console.log(key)
+		_.each(dialogue["turns"], function(turn, key, list){
+			if (turn.role == "Employer")
+			{
+				var ar = _.pairs(turn["input"]["trans"])
+				ar = _.sortBy(ar, function(num){ return  num[0].substr(2,2) + num[0].substr(0,1) + num[0].substr(-1,1)});
+				turn["input"]["trans"] = _.object(ar)
+			}
+		}, this)
+	}, this)
+
+	console.log(JSON.stringify(data, null, 4))
+	process.exit(0)
+}
+
+if (omitbaidu)
+{
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin.json"))
+
+	_.each(data, function(dialogue, key, list){
+		console.log(key)
+		_.each(dialogue["turns"], function(turn, key, list){
+			if (turn.role == "Employer")
+			{
+				_.each(turn["input"]["trans"], function(value, lang, list){
+					if (lang[0] == "B")
+						delete turn["input"]["trans"][lang]
+				}, this)
+			}
+		}, this)
+	}, this)
+
+	console.log(JSON.stringify(data, null, 4))
+	process.exit(0)
+}
 
 if (separ)
 {
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json"))
 
 	_.each(data, function(dialogue, key, list){
 
@@ -517,8 +614,11 @@ if (separ)
 		_.each(dialogue["turns"], function(turn, key, list){
 			if (turn.role == "Employer")
 			{
-				fs.writeFileSync("./json_main/"+turn["translation_id"]+".json", JSON.stringify(turn["input"]["sentences"], null, 4), 'utf-8')
-				delete turn["input"]["sentences"]
+				if ("sentences" in turn["input"])
+				{
+					fs.writeFileSync("./json_bia/"+md5(turn["input"]["text"])+".json", JSON.stringify({ "sentences": turn["input"]["sentences"] }, null, 4), 'utf-8')
+					delete turn["input"]["sentences"]
+				}
 			}
 		}, this)
 	}, this)
@@ -2227,13 +2327,17 @@ if (composite_ds)
 	}, this)
 
 	var test_set_copy = bars.copyobj(test_set)
-	var classif = new classifier.Natural
+	var classif = new classifier.composite_SVM
 	var classes = []
 	var currentStats = new PrecisionRecall()
 
 	classif.trainBatchAsync(utterset["train"], function(err, results){
 		classif.classifyBatchAsync(test_set_copy, 50, function(error, test_results){
 		
+
+			console.log(JSON.stringify(test_results, null, 4))
+			process.exit(0)
+
 			_.each(test_results, function(value, key, list){
 				var attrval = classifier.getRule(test_set[key]["input"]["sentences"]).labels
 				var cl = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([value.output, attrval[0], attrval[1]])))
