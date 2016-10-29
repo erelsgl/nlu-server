@@ -14,17 +14,17 @@
 \addlegendentry{Natural\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.47492919875148687)(7,0.45821969204198015)(8,0.5269125667348549)(9,0.6153812347666588)(10,0.5788436917211308)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+};
+\addlegendentry{Natural\_SVM+Context}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.47326253208482016)(7,0.44912878295107106)(8,0.5287070691813043)(9,0.6181440914158307)(10,0.585677328636735)
 };
 \addlegendentry{Natural\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.5061448660628989)(7,0.45768725224814216)(8,0.5535550124592679)(9,0.5978070431844823)(10,0.6103666025501469)
 };
-\addlegendentry{Component\_ADA}
-
-\addplot[color=green,mark=*] coordinates {
-(1,0.66900533275996)(2,0.7204994779253924)(3,0.704114616649863)(4,0.7260168407779125)(5,0.7166761579713179)(6,0.7164500592371883)(7,0.7369073380640366)(8,0.7421690082347132)(9,0.7439378689516987)(10,0.7404664698695813)
-};
-\addlegendentry{Component\_SVM}
+\addlegendentry{Natural\_ADA+Context}
 

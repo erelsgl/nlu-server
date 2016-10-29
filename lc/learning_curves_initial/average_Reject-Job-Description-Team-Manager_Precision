@@ -1,4 +1,4 @@
-size	dial	MYMO	Natural_SVM	Natural_ADA	Component_ADA	Component_SVM
+size	dial	MYMO	Natural_SVM	Natural_SVM+Context	Natural_ADA	Natural_ADA+Context
 1	1	null	null	null	null	null
 2	2	null	null	null	null	null
 3	3	null	null	null	null	null
@@ -7,5 +7,5 @@ size	dial	MYMO	Natural_SVM	Natural_ADA	Component_ADA	Component_SVM
 6	6	0.28761904761904755	null	null	null	null
 7	7	0.4459523809523809	null	null	null	null
 8	8	0.3488095238095238	null	null	null	null
-9	9	0.3620238095238095	null	null	null	0.5816666666666667
-10	10	0.25761904761904764	null	null	null	0.5702380952380952
+9	9	0.3620238095238095	null	null	null	null
+10	10	0.25761904761904764	null	null	null	null

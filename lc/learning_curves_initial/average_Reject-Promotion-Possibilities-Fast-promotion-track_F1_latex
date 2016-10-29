@@ -16,15 +16,15 @@
 \addplot[color=green,mark=*] coordinates {
 (1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,null)(8,0)(9,null)(10,null)
 };
+\addlegendentry{Natural\_SVM+Context}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,null)(8,0)(9,null)(10,null)
+};
 \addlegendentry{Natural\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
 (1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,null)(8,0)(9,null)(10,null)
 };
-\addlegendentry{Component\_ADA}
-
-\addplot[color=green,mark=*] coordinates {
-(1,0.133801785975699)(2,0.16137566137566137)(3,0.21164021164021163)(4,0.3111111111111111)(5,0.31339031339031337)(6,0.3194163860830528)(7,0.440952380952381)(8,0.4786596119929454)(9,null)(10,null)
-};
-\addlegendentry{Component\_SVM}
+\addlegendentry{Natural\_ADA+Context}
 

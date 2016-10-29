@@ -14,17 +14,17 @@
 \addlegendentry{Natural\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0.05)(8,0)(9,0)(10,0)
+(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
+};
+\addlegendentry{Natural\_SVM+Context}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0.15)(8,0)(9,0)(10,0)
 };
 \addlegendentry{Natural\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
+(1,0)(2,0)(3,0)(4,0)(5,0)(6,0.1)(7,0.15)(8,0)(9,0)(10,0)
 };
-\addlegendentry{Component\_ADA}
-
-\addplot[color=green,mark=*] coordinates {
-(1,0.5999999999999999)(2,0.6333333333333333)(3,0.6499999999999999)(4,0.6499999999999999)(5,0.8666666666666668)(6,0.7666666666666667)(7,0.6666666666666667)(8,0.6333333333333333)(9,0.7666666666666666)(10,0.8)
-};
-\addlegendentry{Component\_SVM}
+\addlegendentry{Natural\_ADA+Context}
 
