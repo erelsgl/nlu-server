@@ -24,7 +24,7 @@
 \addlegendentry{Unigram\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,0.4337216646277032)(90,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)
 };
 \addlegendentry{Unigram+Context\_ADA}
 
