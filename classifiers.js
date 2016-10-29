@@ -2253,24 +2253,52 @@ var SvmPerfBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bi
         // debug: true
 });
 */
-var SvmLinearBinaryClassifier = classifiers.SvmLinear.bind(0, {
-        
-        model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearBinary",
-        multiclass: false,
+var SvmLinearBinaryClassifier = classifiers.SvmLinear.bind(0, {        
+	model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearBinary",
+	multiclass: false,
+	learn_args: "-c 100 -t 0",	
+	train_command: "svm-train",
+	test_command: "svm-predict"
+});
 
-        learn_args: "-c 100 -t 0",
-        // learn_args: "-c 100 -t 2",
+var SvmPolynomialBinaryClassifier = classifiers.SvmLinear.bind(0, {        
+	model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearBinary",
+	multiclass: false,
+	learn_args: "-c 100 -t 1",	
+	train_command: "svm-train",
+	test_command: "svm-predict"
+});
 
-        train_command: "svm-train",
-        test_command: "svm-predict"
+var SvmRadialBinaryClassifier = classifiers.SvmLinear.bind(0, {        
+	model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearBinary",
+	multiclass: false,
+	learn_args: "-c 100 -t 2",	
+	train_command: "svm-train",
+	test_command: "svm-predict"
+});
 
-        // learn_args: "-c 100",
-        // train_command: "liblinear_train",
-        // test_command: "liblinear_test"
+var SvmSigmoidBinaryClassifier = classifiers.SvmLinear.bind(0, {        
+	model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearBinary",
+	multiclass: false,
+	learn_args: "-c 100 -t 3",	
+	train_command: "svm-train",
+	test_command: "svm-predict"
 });
 
 var SvmLinearBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
-        binaryClassifierType: SvmLinearBinaryClassifier,
+    binaryClassifierType: SvmLinearBinaryClassifier,
+});
+
+var SvmPolynomialBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
+    binaryClassifierType: SvmPolynomialBinaryClassifier,
+});
+
+var SvmRadialBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
+    binaryClassifierType: SvmRadialBinaryClassifier,
+});
+
+var SvmSigmoidBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bind(0, {
+    binaryClassifierType: SvmSigmoidBinaryClassifier,
 });
 
 var scikitsvm = classifiers.multilabel.BinaryRelevance.bind(0, {
@@ -2580,6 +2608,10 @@ module.exports = {
 		"Component": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': true}),		
 		"MYMO": enhance(SvmLinearBinaryRelevanceClassifier, [ feAsyncStanford ], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': false}),
 		"Natural_SVM": enhance(SvmLinearBinaryRelevanceClassifier, [ feAsyncStanford ], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': false}),
+		"Natural_PolynomialSVM": enhance(SvmPolynomialBinaryRelevanceClassifier, [ feAsyncStanford ], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': false}),
+		"Natural_RadialSVM": enhance(SvmRadialBinaryRelevanceClassifier, [ feAsyncStanford ], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': false}),
+		"Natural_SigmoidSVM": enhance(SvmSigmoidBinaryRelevanceClassifier, [ feAsyncStanford ], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': false}),
+		
 		"Natural_SVM+Context": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': false, 'unoffered':true, 'offered':true,}),
 		"Natural_ADA": enhance(scikitadaboost, [ feAsyncStanford ], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': false}),
 		"Natural_ADA+Context": enhance(scikitadaboost, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': false, 'unoffered':true, 'offered':true,}),
