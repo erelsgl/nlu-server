@@ -6,25 +6,25 @@
 \addplot[color=green,mark=*] coordinates {
 (1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
 };
-\addlegendentry{MYMO}
-
-\addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
-};
 \addlegendentry{Natural\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
 (1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
 };
-\addlegendentry{Natural\_SVM+Context}
+\addlegendentry{Natural\_PolynomialSVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0.05)(2,0)(3,0.1)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
+(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
+};
+\addlegendentry{Natural\_RadialSVM}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
+};
+\addlegendentry{Natural\_SigmoidSVM}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0)(3,0.05)(4,0.05)(5,0.05)(6,0.1)(7,0)(8,0)(9,0)(10,0)
 };
 \addlegendentry{Natural\_ADA}
-
-\addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0.1)(4,0)(5,0.1)(6,0)(7,0)(8,0)(9,0)(10,0)
-};
-\addlegendentry{Natural\_ADA+Context}
 

@@ -4,27 +4,27 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0.9774343532610331)(2,0.9708457083200439)(3,0.9781214792526821)(4,0.9762620150771351)(5,0.9735655117196476)(6,0.9734300192216635)(7,0.9735335948367041)(8,0.9747710922723567)(9,0.9738137998063623)(10,0.9748398806874355)
-};
-\addlegendentry{MYMO}
-
-\addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.9737369759352237)(10,0.9707481709245533)
 };
 \addlegendentry{Natural\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.9744803384854823)(10,0.973762193928845)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
-\addlegendentry{Natural\_SVM+Context}
+\addlegendentry{Natural\_PolynomialSVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,0.8960388167193105)(5,0.9102806056780807)(6,0.9102806056780807)(7,null)(8,0.9102806056780807)(9,0.9769109878745006)(10,0.9741751201386328)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.9747595471585335)(10,0.9732596797120641)
+};
+\addlegendentry{Natural\_RadialSVM}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.9758158212303277)(10,0.9752203945737223)
+};
+\addlegendentry{Natural\_SigmoidSVM}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,0.9102806056780807)(6,0.9102806056780807)(7,0.8969472723447472)(8,0.8969472723447472)(9,0.9769109878745006)(10,0.9751275010910139)
 };
 \addlegendentry{Natural\_ADA}
-
-\addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.9102339028945948)(7,0.9102806056780807)(8,null)(9,0.9768732804838521)(10,0.9750247758985644)
-};
-\addlegendentry{Natural\_ADA+Context}
 

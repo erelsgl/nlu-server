@@ -1,10 +1,10 @@
-size	dial	MYMO	Natural_SVM	Natural_SVM+Context	Natural_ADA	Natural_ADA+Context
-1	1	0	0	0	0.05	0
+size	dial	Natural_SVM	Natural_PolynomialSVM	Natural_RadialSVM	Natural_SigmoidSVM	Natural_ADA
+1	1	0	0	0	0	0
 2	2	0	0	0	0	0
-3	3	0	0	0	0.1	0.1
-4	4	0	0	0	0	0
-5	5	0	0	0	0	0.1
-6	6	0	0	0	0	0
+3	3	0	0	0	0	0.05
+4	4	0	0	0	0	0.05
+5	5	0	0	0	0	0.05
+6	6	0	0	0	0	0.1
 7	7	0	0	0	0	0
 8	8	0	0	0	0	0
 9	9	0	0	0	0	0
