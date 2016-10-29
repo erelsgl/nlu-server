@@ -160,9 +160,16 @@ function plotlcagrlenaverge(stat)
 //										else
 //
 //											return num}, this)
+	console.mlog("plotlcagrlenaverge: input: "+JSON.stringify(stat, null, 4))
+	console.mlog("plotlcagrlenaverge: "+JSON.stringify(values, null, 4))
 
-	if (isVectorNumber(values)) 
-		return distance.average(values)
+	if (isVectorNumber(values))
+	{
+	 	var result = distance.average(values)
+		console.mlog("plotlcagrlenaverge: result:"+result)
+		
+		return result
+	}
 	else
 		{
 		console.vlog("DEBUGMASTER: plotlcagrlenaverge: "+JSON.stringify(stat))
@@ -257,7 +264,10 @@ console.vlog("stat: "+ JSON.stringify(stat, null, 4))
 				*/
 
 				// classifier_hash[clas].push(plotlcagrlenaverge(folds))
+				{
+				console.vlog("plotlcagrlenaverge: "+clas)
 				classifier_hash[clas] = plotlcagrlenaverge(folds)
+				}
 			else 
 				// throw new Error("for some reason we don't have stats for this fold")
 				// classifier_hash[clas].push(undefined)
@@ -373,6 +383,7 @@ function latexplot(fold, parameter, stat, lcfolder)
 {
 	var results = {}
 	console.mlog("Latexplot")
+	console.mlog("Latexplot: parameter:" +parameter + " fold: "+fold)
 
 	_.each(stat[parameter], function(sta, size, list){
 		var classifiers = plotlcagrlen(fold, stat[parameter][size])
