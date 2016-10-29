@@ -4,7 +4,7 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.8805963773069034)(10,0.8976274018379282)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.808264652014652)(10,0.8335317460317458)
 };
 \addlegendentry{MYMO}
 

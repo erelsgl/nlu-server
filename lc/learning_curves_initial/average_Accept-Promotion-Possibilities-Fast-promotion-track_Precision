@@ -1,11 +1,11 @@
 size	dial	MYMO	Natural_SVM	Natural_SVM+Context	Natural_ADA	Natural_ADA+Context
 1	1	null	null	null	null	null
 2	2	null	null	null	null	null
-3	3	null	null	null	null	null
+3	3	0.4072924297924298	null	null	null	null
 4	4	null	null	null	null	null
 5	5	null	null	null	null	null
-6	6	0.6650572082379863	null	null	null	null
-7	7	null	null	null	null	null
-8	8	null	null	null	null	null
-9	9	0.6394096669613911	null	null	null	null
-10	10	0.7112538427755819	null	null	null	null
+6	6	0.5845904242845632	null	null	null	null
+7	7	0.6142728845228845	null	null	null	null
+8	8	0.6181996548772865	null	null	null	null
+9	9	0.6244871794871795	null	null	null	null
+10	10	0.6984273504273504	null	null	null	null

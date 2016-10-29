@@ -4,7 +4,7 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0.6238104238965232)(2,0.5996324210870063)(3,0.5930644780499454)(4,0.5860813843016018)(5,0.5860074832440285)(6,0.6023049317167919)(7,0.6105095085232846)(8,0.6056858009421865)(9,0.6206570454668272)(10,0.6223100780406977)
+(1,0.6070258600234638)(2,0.6050187348101599)(3,0.598058156405882)(4,0.5863374822080629)(5,0.5757163832256611)(6,0.5826856744638024)(7,0.5817269253354423)(8,0.583394348402771)(9,0.5812190611285819)(10,0.5783835685513405)
 };
 \addlegendentry{MYMO}
 
@@ -14,17 +14,17 @@
 \addlegendentry{Natural\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,0.6139239533842169)
 };
 \addlegendentry{Natural\_SVM+Context}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,0.5648946102602878)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,0.5486209441673446)
 };
 \addlegendentry{Natural\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,0.5649429448642842)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,0.554680300684747)
 };
 \addlegendentry{Natural\_ADA+Context}
 
