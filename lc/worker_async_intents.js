@@ -28,7 +28,7 @@ if (cluster.isWorker)
     
 	console.vlog("DEBUG: train.length="+train.length + " test.length="+test.length)
 
-	var index = 5
+	var index = 10
 
 	async.whilst(
 	    function () { return index <= train.length },
@@ -38,7 +38,7 @@ if (cluster.isWorker)
     		function(callbacks) {
 
     		var mytrain = train.slice(0, index)
-			index += 5
+			index += 10
 	
 			var mytrainex = JSON.parse(JSON.stringify(mytrain))
     		var mytestex = JSON.parse(JSON.stringify(test))
@@ -103,7 +103,7 @@ if (cluster.isMaster)
 
 //	var classifiers = ["Unigram", "Unigram_Lemma", "Unigram+Context", "Unigram_Lemma+Context", "Unigram+Context+Neg", 'Unigram+Neg']
 //	var classifiers = [ "Unigram", "Unigram+Context", "Unigram+Neg", "Unigram+Context+Neg" ]
-	var classifiers = [ "Unigram_SVM", "Unigram+Context_SVM", "Unigram_ADA", "Unigram+Context_ADA" ]
+	var classifiers = [ "Unigram_SVM", "Unigram+Context_SVM", "Unigram_ADA", "Unigram+Context_ADA", "Unigram_RF", "Unigram+Context_RF" ]
 //	var classifiers = [ "Natural_Neg", "Natural_Neg_Svm" ]
 //	var classifiers = [ "Natural_SVM_Context", "Natural_RF_Context", "Natural_ADA_Context" ]
 	
@@ -136,7 +136,7 @@ if (cluster.isMaster)
 			worker.on('disconnect', function(){
 			  	console.mlog("DEBUGMASTER: finished: workers.length: "+Object.keys(cluster.workers).length )
 				//disc += 1
-			  	//if (Object.keys(cluster.workers).length == 1)
+			  	if (Object.keys(cluster.workers).length == 1)
 			  	_.each(stat, function(data, param, list){
 					lc.plotlc('average', param, stat, lcfolder)
 				})
