@@ -6,6 +6,11 @@
 \addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
+\addlegendentry{MYMO}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+};
 \addlegendentry{Natural\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
@@ -16,15 +21,10 @@
 \addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
-\addlegendentry{Natural\_RF}
+\addlegendentry{Component\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
 \addlegendentry{Component\_SVM}
-
-\addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,0.2833333333333333)
-};
-\addlegendentry{Component\_ADA}
 

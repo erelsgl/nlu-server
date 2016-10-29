@@ -4,6 +4,11 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
+(1,0.017320261437908498)(2,0.005)(3,0)(4,0)(5,0.05)(6,0.04)(7,0.04)(8,0.07333333333333333)(9,0)(10,0)
+};
+\addlegendentry{MYMO}
+
+\addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,0)(4,0)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
 \addlegendentry{Natural\_SVM}
@@ -16,15 +21,10 @@
 \addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
-\addlegendentry{Natural\_RF}
+\addlegendentry{Component\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0.02143790849673203)(2,0.0047619047619047615)(3,0)(4,0)(5,0.04)(6,0.02857142857142857)(7,0.05833333333333333)(8,0.09047619047619046)(9,0.08571428571428572)(10,0.06190476190476191)
+(1,null)(2,0.01781853753974077)(3,0.02205128205128205)(4,0.01838235294117647)(5,0.07373737373737374)(6,0.025)(7,0.06617826617826618)(8,0.09728937728937728)(9,0.14722222222222223)(10,0.15357142857142855)
 };
 \addlegendentry{Component\_SVM}
-
-\addplot[color=green,mark=*] coordinates {
-(1,null)(2,0.005)(3,0.007692307692307693)(4,0)(5,0.0404040404040404)(6,0.01818181818181818)(7,0.08484848484848484)(8,0.08666666666666667)(9,0.09166666666666666)(10,0.08888888888888888)
-};
-\addlegendentry{Component\_ADA}
 

@@ -1,11 +1,11 @@
-size	dial	Natural_SVM	Natural_ADA	Natural_RF	Component_SVM	Component_ADA
+size	dial	MYMO	Natural_SVM	Natural_ADA	Component_ADA	Component_SVM
 1	1	null	null	null	null	null
 2	2	null	null	null	null	null
 3	3	null	null	null	null	null
 4	4	null	null	null	null	null
 5	5	null	null	null	null	null
-6	6	null	null	null	0.6166666666666666	0.7333333333333333
-7	7	null	null	null	0.625	0.8
-8	8	null	null	null	0.6583333333333333	0.7833333333333333
-9	9	null	null	null	0.7166666666666666	0.8333333333333333
-10	10	null	null	null	0.75	0.85
+6	6	null	null	null	null	null
+7	7	null	null	null	null	null
+8	8	0.8099999999999999	null	null	null	0.6900000000000001
+9	9	0.7766666666666666	null	null	null	0.7833333333333334
+10	10	0.8433333333333334	null	null	null	0.8666666666666666
