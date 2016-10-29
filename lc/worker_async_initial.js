@@ -34,8 +34,8 @@ if (cluster.isWorker)
 	    var mytrain = bars.copyobj(train.slice(0, index))
 	    index += 1
 
-	    var mytestex  = []
-		var mytrainex = _.flatten(bars.copyobj(test))
+	    	var mytestex  = _.flatten(bars.copyobj(test))
+		var mytrainex = []
 		
 		if (classifier.indexOf("Natural")!=-1)
 		{
@@ -43,10 +43,10 @@ if (cluster.isWorker)
 			mytestex  = bars.processdataset(_.flatten(bars.copyobj(test)), {"intents": false, "filter":false, "filterIntent":[]})
 		}             
         
-        if (classifier.indexOf("Component")!=-1)
-        	mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": true, "filter":true, "filterIntent":[]})
+        	if (classifier.indexOf("Component")!=-1)
+        		mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": true, "filter":true, "filterIntent":[]})
 
-		if (classifier.indexOf("Component")!=-1)
+		if (classifier.indexOf("MYMO")!=-1)
 			mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": true, "filter":false, "filterIntent":[]})
 		  		
 		console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
@@ -99,7 +99,7 @@ if (cluster.isWorker)
 					var classes = []
 					var currentStats = new PrecisionRecall()
 
-					console.vlog("TRAIN:"+JSON.stringify(realmytrainex, null, 4))
+					console.vlog("TEST: size"+JSON.stringify(test_set_copy.length, null, 4))
 
 					classif.trainBatchAsync(realmytrainex, function(err, results){
 						classif.classifyBatchAsync(test_set_copy, 50, function(error, test_results){
@@ -107,7 +107,7 @@ if (cluster.isWorker)
 							_.each(test_results, function(value, key, list){
 								console.vlog("TEST: result: text: "+test_set_copy[key]["input"]["text"])
 								console.vlog("TEST: result: intents: "+JSON.stringify(value, null, 4))
-								var attrval = classifiers.getRule(test_set[key]["input"]["text"]).labels
+								var attrval = classifiers.getRule({},test_set[key]["input"]["text"]).labels
 								console.vlog("TEST: result: attrval: "+JSON.stringify(attrval, null, 4))
 								var cl = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([[value], attrval[0], attrval[1]])))
 								console.vlog("TEST: result: composition: "+JSON.stringify(cl, null, 4))
@@ -148,7 +148,7 @@ if (cluster.isWorker)
 							console.vlog("TEST: result: text: "+mytestex[key]["input"]["text"])
 							console.vlog("TEST: result: full output: "+JSON.stringify(value, null, 4))
 							console.vlog("TEST: result: actual intents: "+JSON.stringify(value.output, null, 4))
-							var attrval = classifiers.getRule(mytestex[key]["input"]["text"]).labels
+							var attrval = classifiers.getRule({},mytestex[key]["input"]["text"]).labels
 							console.vlog("TEST: result: attrval: "+JSON.stringify(attrval, null, 4))
 							var cl = bars.coverfilter(bars.generate_possible_labels(bars.resolve_emptiness_rule([value.output, attrval[0], attrval[1]])))
 							console.vlog("TEST: result: composition: "+JSON.stringify(cl, null, 4))
@@ -212,8 +212,8 @@ if (cluster.isMaster)
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	//var classifiers = [ "Natural", "Natural+Context", "Component", "Component+Context" ]
 	// var classifiers = [ "Natural_SVM", "Natural_ADA", "Natural_RF", "Natural_SVM_Context", "Natural_ADA_Context", "Natural_RF_Context", "Component_SVM+Context", "Component_SVM", "Component_ADA+Context", "Component_ADA" ]
-	var classifiers = [ "MYMO", "Component_SVM" ]
-	//var classifiers = [ "MYMO", "Natural_SVM", "Natural_ADA", "Component_ADA" ]
+//	var classifiers = [ "MYMO", "Component_SVM" ]
+	var classifiers = [ "MYMO", "Natural_SVM", "Natural_SVM+Context", "Natural_ADA", "Natural_ADA+Context" ]
 
 	cluster.setupMaster({
   	exec: __filename,
