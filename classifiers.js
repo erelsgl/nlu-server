@@ -1681,10 +1681,7 @@ function feSalient(sample_or, features, train, featureOptions, callback) {
 }
 
 function feContext(sample_or, features, train, featureOptions, callback) {
-	// offered
-	// unoffered
-	// both
-	
+
 	var sample = JSON.parse(JSON.stringify(sample_or)) 
 
 	if (_.isArray(features))	
@@ -1706,11 +1703,14 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 		features["INTENT_"+intent] = 0
 	}, this)
 
-	// _.each(context, function(value, key, list){
-		
-	// }, this)		
+	_.each(context, function(label, key, list){
+		features["INTENT_"+label] = 1
+		label = JSON.parse(label)
+		var intent = _.keys(label)[0]
+		features["INTENT_"+intent] = 1
+	}, this)		
 
-	var attrval = getRule(sample.text).labels
+	var attrval = getRule({}, sample.text).labels
 
 	var intents = []
 	var values = [] 
@@ -1722,85 +1722,21 @@ function feContext(sample_or, features, train, featureOptions, callback) {
     else
     	features['THERE_IS_NO_ATTRIBUTES'] = 1
 
-
     if (attrval[1].length > 0)
         features['THERE_IS_VALUES'] = 1
     else
         features['THERE_IS_NO_VALUES'] = 1
-
 	
-
-	/*if (featureOptions.previous_intent)
-	{
-		var IntentsOrig = ['Offer','Accept','Reject','Quit','Greet','Query']
-		var IntentsContext = _.map(context, function(num){ return _.keys(JSON.parse(num))[0]; });
-
-		_.each(['Offer','Accept','Reject','Quit','Greet','Query'], function(lab, key, list){
-			if (IntentsContext.indexOf(lab) == -1)
-				features['PREV_NO_'+lab] = 1
-			else
-				features['PREV_YES_'+lab] = 1
-		}, this)
-	}*/
-
-	// if (featureOptions.car)
-	// {
-	// 	var offer_car = false
-	// 	if (sentence.indexOf("car")!=-1)
-	// 	{
-	// 		_.each(context, function(value, key, list){
-	// 			var lab = JSON.parse(value)
-	// 			if (_.keys(lab)[0]=="Offer")
-	// 			{
-	// 				if (_.keys(_.values(lab)[0])[0] == "Leased Car")
-	// 					features['CON_OFFER_CAR'] = 1
-	// 				else
-	// 					features['CON_OFFER_NO_CAR'] = 1
-	// 			}
-	// 			else
-	// 				features['CON_OFFER_NO_CAR'] = 1
-	// 		}, this)
-	// 	}
-	// }
-
 	_.each(context, function(feat, key, list){ 
-		
-		if (feat == "Greet")
-			features['GREET'] = 1
-		else
-		{
-			var obj = JSON.parse(feat)
-			if (_.keys(obj)[0] == "Offer")
-				values.push(_.values(_.values(obj)[0])[0])
-		}
+		var obj = JSON.parse(feat)
+		if (_.keys(obj)[0] == "Offer")
+			values.push(_.values(_.values(obj)[0])[0])
 	}, this)
 
-//	console.vlog("DEBUGCONTEXT: values of the context "+ values)
-
-//	console.log(JSON.stringify(values, null, 4))
-//	console.log(JSON.stringify(attrval, null, 4))
-	
 	_.each(attrval[1], function(value, key, list){
-//		console.vlog("DEBUGCONTEXT: check value "+ value)
-
-		if (values.indexOf(value)!=-1)
-		{
-//			console.vlog("DEBUGCONTEXT: value "+ value + " is in the context")
-			if (featureOptions.offered) 
-				features['OFFEREDVALUE'] = 1
-		}
-		else
-		{
-//			console.vlog("DEBUGCONTEXT: value "+ value + " is not in the context")
-			if (featureOptions.unoffered)
-				features['UNOFFEREDVALUE'] = 1
-		}
+		features['OFFEREDVALUE'] = 1
+		features['UNOFFEREDVALUE'] = 1
 	}, this)
-
-	// if (attrval[1].length == 0)
-	// 	features['UNMENTIONED_VALUE'] = 1
-
-	// features['END'] = 1
 
 	console.vlog("DEBUGCONTEXT: " + JSON.stringify(features))	
 	callback(null, features)
