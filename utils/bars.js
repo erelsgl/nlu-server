@@ -4047,8 +4047,7 @@ function getsetcontext(dataset)
  
   _.each(dataset, function(dialogue, keyd, list){
     var processed_dialogue = []
- 	var first_employer_turn = true
-    _.each(dialogue['turns'], function(turn, keyt, list){
+ 	  _.each(dialogue['turns'], function(turn, keyt, list){
 
       if ((turn.role == "Candidate") && (('data' in turn)))
         if (rectypes.indexOf(turn.data)!=-1)
@@ -4084,12 +4083,7 @@ function getsetcontext(dataset)
         turn['outputhash'] = turn.output
         turn['output'] = hashtoar(turn.output)
 	
-	if (first_employer_turn)
-	{
-		turn['input']['context'].push("Greet")
-		first_employer_turn = false
-	}
-        var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
+	      var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
         var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
 	
         if (rephrase)
@@ -4246,6 +4240,72 @@ function hashtoar(hash)
 
 // {\"Reject\":true}",
 // "{\"Reject\":{\"Leased Car\":\"With leased car\"}}"
+
+
+function logicfilter(labels)
+{
+var hash = {
+  'Offer':{},
+  'Accept':{},
+  'Reject':{},
+  'Query':{},
+  'Greet':{},
+  'Quit':{}
+}
+ 
+ var issues = {
+  'Salary': ['60,000 USD','90,000 USD','120,000 USD'],
+  'Pension Fund': ['0%','10%','15%','20%'],
+  'Promotion Possibilities': ['Slow promotion track','Fast promotion track'],
+  'Working Hours': ['10 hours', '9 hours', '8 hours'],
+  'Job Description': ['QA','Programmer','Team Manager','Project Manager'],
+  'Leased Car': ['Without leased car', 'No agreement', 'With leased car']
+}
+
+var rigthOrder = {"Offer":1, "Accept":1}
+
+_.each(labels, function(label, key, list){
+  label = JSON.parse(label)
+  console.log(JSON.stringify(label, null, 4))
+  var intent = _.keys(label)[0]
+  var attval = _.values(label)[0]
+  console.log("intent:" + intent + "attr: "+attr)
+  if (_.isObject(attval))
+  {
+    var attr = _.keys(attval)[0]
+    var val = _.values(attval)[0]
+   if (!(attr in hash[intent]))
+    hash[intent][attr] = []
+   hash[intent][attr].push([val, issues[attr].indexOf(val)])
+  }
+  else
+  {
+    var attr = label[intent]
+    hash[intent][attr] = 1
+  }
+}, this)
+
+// console.log(JSON.stringify(hash, null, 4))
+
+var labels = []
+
+_.each(hash, function(value, intent, list){
+  if (_.isObject(value))
+  {
+    _.each(value, function(values, attr, list){
+        if (intent in rigthOrder)
+          hash[intent][attr] = _.sortBy(hash[intent][attr], function(num){ return num[1] })
+        else
+          hash[intent][attr] = _.sortBy(hash[intent][attr], function(num){ return num[1] }).reverse()
+        
+        labels.push({intent:{attr:hash[intent][attr][0]}})
+
+    }, this)
+  }
+}, this)
+
+return hash
+}
 
 function coverfilter(labels)
 {
@@ -6094,5 +6154,6 @@ write_wilcoxon:write_wilcoxon,
 gettransbest:gettransbest,
 enrichparse:enrichparse,
 walkSync:walkSync,
-sbdd:sbdd
+sbdd:sbdd,
+logicfilter:logicfilter
 }
