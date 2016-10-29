@@ -213,7 +213,8 @@ if (cluster.isMaster)
 	//var classifiers = [ "Natural", "Natural+Context", "Component", "Component+Context" ]
 	// var classifiers = [ "Natural_SVM", "Natural_ADA", "Natural_RF", "Natural_SVM_Context", "Natural_ADA_Context", "Natural_RF_Context", "Component_SVM+Context", "Component_SVM", "Component_ADA+Context", "Component_ADA" ]
 //	var classifiers = [ "MYMO", "Component_SVM" ]
-	var classifiers = [ "MYMO", "Natural_SVM", "Natural_SVM+Context", "Natural_ADA", "Natural_ADA+Context" ]
+	// var classifiers = [ "MYMO", "Natural_SVM", "Natural_SVM+Context", "Natural_ADA", "Natural_ADA+Context" ]
+	var classifiers = [ "Natural_SVM", "Natural_PolynomialSVM", "Natural_RadialSVM", "Natural_SigmoidSVM", "Natural_ADA" ]
 
 	cluster.setupMaster({
   	exec: __filename,
