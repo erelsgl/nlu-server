@@ -1,9 +1,9 @@
 size	dial	Natural_Unigram_SVM	Natural_Unigram+Context_SVM	Natural_Unigram_ADA	Natural_Unigram+Context_ADA	Natural_Unigram_RF	Natural_Unigram+Context_RF	Component
 10	10	null	null	null	null	null	null	0.9552205882352942
 20	20	null	null	null	null	null	null	0.9418872549019609
-30	30	null	null	null	null	null	null	0.9472934173669468
+30	30	null	null	null	null	null	null	0.954436274509804
 40	40	null	null	null	null	null	null	0.9484243697478993
-50	50	null	null	null	null	null	null	0.9410754686489982
+50	50	null	null	null	null	null	null	0.9416249191984487
 60	60	null	null	null	null	null	null	0.9416844430079726
 70	70	null	null	null	null	null	null	0.9431267507002803
 80	80	null	null	null	null	null	null	0.9430672268907564
@@ -11,7 +11,8 @@ size	dial	Natural_Unigram_SVM	Natural_Unigram+Context_SVM	Natural_Unigram_ADA	Na
 100	100	null	null	null	null	null	null	null
 110	110	null	null	null	null	null	null	null
 120	120	null	null	null	null	null	null	null
-130	130	null	null	0.94906045751634	0.7830065359477124	null	null	null
-140	140	0.95	0.9	0.7513725490196078	0.939607843137255	null	null	null
-150	150	1	0.9166666666666666	0.9539215686274509	0.9539215686274509	null	null	null
+130	130	null	null	null	null	null	null	null
+140	140	0.95	0.9	0.7513725490196078	0.7513725490196078	null	null	null
+150	150	1	0.9375	0.7186274509803922	0.7186274509803922	null	null	null
 160	160	1	0.8888888888888888	0.9385620915032679	0.9385620915032679	null	null	null
+170	170	1	0.6666666666666666	0.9411764705882353	0.9411764705882353	1	null	null
