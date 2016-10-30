@@ -1,8 +1,10 @@
-size	dial	Unigram_SVM	Unigram+Context_SVM	Unigram+ContextFull_SVM	Unigram_ADA	Unigram+Context_ADA
-10	10	null	null	null	null	null
-20	20	null	null	null	null	null
-30	30	null	null	null	null	null
-40	40	null	null	null	null	null
-50	50	null	null	null	null	null
-60	60	null	null	null	null	null
-70	70	null	null	null	null	null
+size	dial	Unigram_SVM	Unigram+Context_SVM	Unigram+ContextFull_SVM	Unigram_ADA	Unigram+Context_ADA	Unigram+ContextFull_ADA
+10	10	null	null	null	null	null	null
+20	20	null	null	null	null	null	null
+30	30	null	null	null	null	null	null
+40	40	null	null	null	null	null	null
+50	50	null	null	null	null	null	null
+60	60	null	null	null	null	null	null
+70	70	0.4700193219984693	0.6924549174003168	0.7188790667218086	0.47962277134638764	0.5042475842011445	0.5103253217803275
+80	80	0.49385386883489335	0.7211051296219576	0.7309097739178384	0.4912931783573519	0.5429212916541684	0.5627795680913922
+90	90	0.5325061056774812	0.6857505996509755	0.6974030300421421	0.5898023632863449	0.5567493616889261	0.5795259479083008
