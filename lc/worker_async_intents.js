@@ -24,11 +24,13 @@ if (cluster.isWorker)
 	var test  = JSON.parse(message['test'])
 
    	var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":['Quit', 'Greet'], "filter":false})
-    var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":['Quit', 'Greet'], "filter":true})
+   	//var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
+    	var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":['Quit', 'Greet'], "filter":true})
+    	//var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
     
 	console.vlog("DEBUG: train.length="+train.length + " test.length="+test.length)
 
-	var index = 10
+	var index = 1
 
 	async.whilst(
 	    function () { return index <= train.length },
@@ -38,10 +40,10 @@ if (cluster.isWorker)
     		function(callbacks) {
 
     		var mytrain = train.slice(0, index)
-			index += 10
+			index += 1
 	
-			var mytrainex = JSON.parse(JSON.stringify(mytrain))
-    		var mytestex = JSON.parse(JSON.stringify(test))
+			var mytrainex = _.flatten(JSON.parse(JSON.stringify(mytrain)))
+    			var mytestex = _.flatten(JSON.parse(JSON.stringify(test)))
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+_.flatten(mytrainex).length+
@@ -103,7 +105,8 @@ if (cluster.isMaster)
 
 //	var classifiers = ["Unigram", "Unigram_Lemma", "Unigram+Context", "Unigram_Lemma+Context", "Unigram+Context+Neg", 'Unigram+Neg']
 //	var classifiers = [ "Unigram", "Unigram+Context", "Unigram+Neg", "Unigram+Context+Neg" ]
-	var classifiers = [ "Unigram_SVM", "Unigram+Context_SVM", "Unigram+ContextFull_SVM","Unigram_ADA", "Unigram+Context_ADA"]
+	//var classifiers = [ "Unigram_SVM", "Unigram+Context_SVM", "Unigram+ContextFull_SVM","Unigram_ADA", "Unigram+Context_ADA", "Unigram+ContextFull_ADA"]
+	var classifiers = [ "Unigram_SVM", "Unigram+Context_SVM", "Unigram_ADA", "Unigram+Context_ADA", "Unigram_RF", "Unigram+Context_RF"]
 // "Unigram_RF", "Unigram+Context_RF" ]
 //	var classifiers = [ "Natural_Neg", "Natural_Neg_Svm" ]
 //	var classifiers = [ "Natural_SVM_Context", "Natural_RF_Context", "Natural_ADA_Context" ]
