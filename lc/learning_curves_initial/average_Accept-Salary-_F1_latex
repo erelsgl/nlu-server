@@ -4,37 +4,37 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
+(1,null)(2,null)(3,null)(4,0)(5,null)(6,null)(7,0)(8,0)(9,0)(10,0)
 };
 \addlegendentry{Natural\_Unigram\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
+(1,null)(2,null)(3,null)(4,0)(5,null)(6,null)(7,0)(8,0)(9,0)(10,0)
 };
 \addlegendentry{Natural\_Unigram+Context\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
+(1,null)(2,null)(3,null)(4,0)(5,null)(6,null)(7,0)(8,0)(9,0)(10,0)
 };
 \addlegendentry{Natural\_Unigram\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,null)(8,null)(9,null)(10,null)
+(1,null)(2,null)(3,null)(4,0)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
 \addlegendentry{Natural\_Unigram+Context\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,null)(8,null)(9,null)(10,null)
+(1,null)(2,null)(3,null)(4,0)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
 \addlegendentry{Natural\_Unigram\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,null)(8,null)(9,null)(10,null)
+(1,null)(2,null)(3,null)(4,0)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
 \addlegendentry{Natural\_Unigram+Context\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,null)(8,null)(9,null)(10,null)
+(1,0.07927750410509031)(2,0.058581871345029235)(3,0.10016519428284135)(4,0.1085137085137085)(5,0.14083850931677017)(6,0.1505469381428461)(7,0.16412698412698412)(8,0.17689976689976694)(9,0.17722222222222223)(10,0.2134004884004884)
 };
 \addlegendentry{Component}
 

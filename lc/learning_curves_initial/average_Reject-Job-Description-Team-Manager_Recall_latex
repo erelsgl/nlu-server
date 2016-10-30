@@ -14,12 +14,12 @@
 \addlegendentry{Natural\_Unigram+Context\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
+(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0.1)
 };
 \addlegendentry{Natural\_Unigram\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0.1)(10,0)
+(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0.1)(8,0.1)(9,0)(10,0)
 };
 \addlegendentry{Natural\_Unigram+Context\_ADA}
 
@@ -34,7 +34,7 @@
 \addlegendentry{Natural\_Unigram+Context\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
+(1,0)(2,0)(3,0.1)(4,0)(5,0)(6,0.05)(7,0.1)(8,0.05)(9,0.1)(10,0.1)
 };
 \addlegendentry{Component}
 

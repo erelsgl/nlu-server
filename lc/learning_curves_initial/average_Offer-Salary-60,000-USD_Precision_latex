@@ -14,27 +14,27 @@
 \addlegendentry{Natural\_Unigram+Context\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,0.8760913754860198)(5,0.9760913754860198)(6,0.9752178685166515)(7,0.9742755498416086)(8,0.9752649164620433)(9,0.9752649164620433)(10,0.9752649164620433)
+(1,null)(2,null)(3,null)(4,null)(5,0.9761283611540733)(6,0.9742565131006987)(7,0.9742755498416086)(8,0.9752649164620433)(9,0.9752649164620433)(10,0.9752649164620433)
 };
 \addlegendentry{Natural\_Unigram\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,0.8989895224962474)(5,0.9761283611540733)(6,0.9752178685166515)(7,0.9742755498416086)(8,0.9752649164620433)(9,0.9752649164620433)(10,0.9752479269955124)
+(1,null)(2,null)(3,null)(4,0.8761283611540733)(5,0.9760913754860198)(6,0.9752178685166515)(7,0.9752369052575615)(8,0.9752649164620433)(9,0.9752649164620433)(10,0.9752649164620433)
 };
 \addlegendentry{Natural\_Unigram+Context\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.9779143643550423)(10,0.986041263700838)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,0.9481176718018824)(9,0.9680290492028296)(10,0.9692261904761905)
 };
 \addlegendentry{Natural\_Unigram\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.9450176362384373)(10,0.9744379452474844)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.9692424242424243)(10,0.9868747010999522)
 };
 \addlegendentry{Natural\_Unigram+Context\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(1,null)(2,0.9741073438254209)(3,0.977948004294084)(4,0.9726220019399536)(5,0.9749927002495848)(6,0.9756733678427242)(7,0.9746980283798512)(8,0.9746103309474176)(9,0.9753328379733542)(10,0.9754070560823379)
 };
 \addlegendentry{Component}
 

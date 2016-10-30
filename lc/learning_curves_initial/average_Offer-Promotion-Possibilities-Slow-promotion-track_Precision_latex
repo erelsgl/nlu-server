@@ -34,7 +34,7 @@
 \addlegendentry{Natural\_Unigram+Context\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(1,null)(2,0.9414110644257704)(3,0.9493767507002803)(4,0.9484838935574231)(5,0.9487677763413058)(6,0.9435434173669469)(7,0.9430672268907564)(8,0.9426505602240898)(9,0.9424019607843139)(10,0.9419257703081234)
 };
 \addlegendentry{Component}
 
