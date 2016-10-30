@@ -25,12 +25,12 @@ if (cluster.isWorker)
 
    	var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":['Quit', 'Greet'], "filter":false})
    	//var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
-    	var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":['Quit', 'Greet'], "filter":true})
-    	//var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
+    var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":['Quit', 'Greet'], "filter":true})
+    //var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
     
 	console.vlog("DEBUG: train.length="+train.length + " test.length="+test.length)
 
-	var index = 1
+	var index = 10
 
 	async.whilst(
 	    function () { return index <= train.length },
@@ -40,10 +40,10 @@ if (cluster.isWorker)
     		function(callbacks) {
 
     		var mytrain = train.slice(0, index)
-			index += 1
+			index += 10
 	
 			var mytrainex = _.flatten(JSON.parse(JSON.stringify(mytrain)))
-    			var mytestex = _.flatten(JSON.parse(JSON.stringify(test)))
+    		var mytestex = _.flatten(JSON.parse(JSON.stringify(test)))
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+_.flatten(mytrainex).length+
