@@ -1,30 +1,40 @@
 \addplot[color=green,mark=*] coordinates {
-(1,1)(2,2)(3,3)(4,4)(5,5)(6,6)(7,7)(8,8)(9,9)(10,10)
+(10,10)(40,40)
 };
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(10,null)(40,null)
 };
-\addlegendentry{MYMO}
+\addlegendentry{Natural\_Unigram\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(10,null)(40,null)
 };
-\addlegendentry{Natural\_SVM}
+\addlegendentry{Natural\_Unigram+Context\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(10,null)(40,null)
 };
-\addlegendentry{Natural\_SVM+Context}
+\addlegendentry{Natural\_Unigram\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(10,null)(40,null)
 };
-\addlegendentry{Natural\_ADA}
+\addlegendentry{Natural\_Unigram+Context\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+(10,null)(40,null)
 };
-\addlegendentry{Natural\_ADA+Context}
+\addlegendentry{Natural\_Unigram\_RF}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(40,null)
+};
+\addlegendentry{Natural\_Unigram+Context\_RF}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(40,null)
+};
+\addlegendentry{Component}
 
