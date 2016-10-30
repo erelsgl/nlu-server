@@ -4,27 +4,37 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0.0625)(2,0.05)(3,0.05)(4,0.025)(5,0.025)(6,0.0375)(7,0.0375)(8,0.0375)(9,0.0375)(10,0.0375)
+(1,0)(2,0.05)(3,0.025)(4,0.0125)(5,0.0125)(6,0.0125)(7,0.0125)(8,0.0125)(9,0.0125)(10,0.0325)
 };
-\addlegendentry{Natural\_SVM}
+\addlegendentry{Natural\_Unigram\_SVM}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0.0625)(3,0.025)(4,0)(5,0)(6,0)(7,0.0125)(8,0.0125)(9,0.025)(10,0.045)
+};
+\addlegendentry{Natural\_Unigram+Context\_SVM}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0.0125)(3,0.0125)(4,0.0125)(5,0.0125)(6,0.0125)(7,0.0125)(8,0.0375)(9,0.025)(10,0.045)
+};
+\addlegendentry{Natural\_Unigram\_ADA}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0.0875)(3,0.0375)(4,0.0125)(5,0.0125)(6,0.0125)(7,0.0125)(8,0.025)(9,0.025)(10,0.045)
+};
+\addlegendentry{Natural\_Unigram+Context\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
 (1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
 };
-\addlegendentry{Natural\_PolynomialSVM}
+\addlegendentry{Natural\_Unigram\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0.05)(2,0.05)(3,0.05)(4,0.025)(5,0.025)(6,0.025)(7,0)(8,0)(9,0)(10,0.025)
+(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
 };
-\addlegendentry{Natural\_RadialSVM}
+\addlegendentry{Natural\_Unigram+Context\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0.0625)(2,0.05)(3,0.05)(4,0.025)(5,0.025)(6,0.0375)(7,0.0375)(8,0.0375)(9,0.0375)(10,0.0375)
+(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
 };
-\addlegendentry{Natural\_SigmoidSVM}
-
-\addplot[color=green,mark=*] coordinates {
-(1,0.1)(2,0.1875)(3,0.05)(4,0)(5,0.0375)(6,0.0125)(7,0.0375)(8,0.05)(9,0.0375)(10,0.0375)
-};
-\addlegendentry{Natural\_ADA}
+\addlegendentry{Component}
 

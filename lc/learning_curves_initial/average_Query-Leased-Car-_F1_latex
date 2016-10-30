@@ -4,27 +4,37 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0.02222222222222222)(4,0)(5,0)(6,0)(7,0.02)(8,0.02)(9,0.02)(10,0.06444444444444444)
+(1,0)(2,0.04444444444444444)(3,0.025)(4,0.025)(5,0.06136363636363636)(6,0.06136363636363636)(7,0.06136363636363636)(8,0.06493506493506493)(9,0.06493506493506493)(10,0.06493506493506493)
 };
-\addlegendentry{Natural\_SVM}
+\addlegendentry{Natural\_Unigram\_SVM}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0.02857142857142857)(3,0)(4,0)(5,0.03333333333333333)(6,0.025)(7,0.025)(8,0.04318181818181818)(9,0.04318181818181818)(10,0.04318181818181818)
+};
+\addlegendentry{Natural\_Unigram+Context\_SVM}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0.014035087719298244)(3,0.015)(4,0.04444444444444444)(5,0.04444444444444444)(6,0.04444444444444444)(7,0.06666666666666667)(8,0.038011695906432746)(9,0.0327485380116959)(10,0.03303303303303303)
+};
+\addlegendentry{Natural\_Unigram\_ADA}
+
+\addplot[color=green,mark=*] coordinates {
+(1,0)(2,0.015)(3,0)(4,0)(5,0.01818181818181818)(6,0.025)(7,0)(8,0)(9,0)(10,0)
+};
+\addlegendentry{Natural\_Unigram+Context\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
 (1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
 };
-\addlegendentry{Natural\_PolynomialSVM}
+\addlegendentry{Natural\_Unigram\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0.02)(8,0.02222222222222222)(9,0.025)(10,0.04444444444444444)
+(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
 };
-\addlegendentry{Natural\_RadialSVM}
+\addlegendentry{Natural\_Unigram+Context\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0.02222222222222222)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
+(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0)(8,0)(9,0)(10,0)
 };
-\addlegendentry{Natural\_SigmoidSVM}
-
-\addplot[color=green,mark=*] coordinates {
-(1,0)(2,0)(3,0)(4,0)(5,0)(6,0)(7,0.02857142857142857)(8,0.026666666666666665)(9,0.03333333333333333)(10,0.060606060606060594)
-};
-\addlegendentry{Natural\_ADA}
+\addlegendentry{Component}
 

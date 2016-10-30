@@ -1,11 +1,11 @@
-size	dial	Natural_SVM	Natural_PolynomialSVM	Natural_RadialSVM	Natural_SigmoidSVM	Natural_ADA
-1	1	0	0	0	0	0
-2	2	0	0	0	0	0.1
-3	3	0	0	0	0	0.1
-4	4	0	0	0	0	0
-5	5	0	0	0	0	0
-6	6	0	0	0	0	0
-7	7	0	0	0	0	0
-8	8	0	0	0	0	0
-9	9	0	0	0	0	0
-10	10	0	0	0	0	0
+size	dial	Natural_Unigram_SVM	Natural_Unigram+Context_SVM	Natural_Unigram_ADA	Natural_Unigram+Context_ADA	Natural_Unigram_RF	Natural_Unigram+Context_RF	Component
+1	1	0	0	0	0	0	0	0
+2	2	0	0	0	0.1	0	0	0
+3	3	0	0	0	0.1	0	0	0
+4	4	0	0	0	0.1	0	0	0
+5	5	0	0	0	0.1	0	0	0
+6	6	0	0	0	0.1	0	0	0
+7	7	0	0	0	0.1	0	0	0
+8	8	0	0	0	0	0	0	0
+9	9	0	0	0	0	0	0	0
+10	10	0	0	0	0	0	0	0

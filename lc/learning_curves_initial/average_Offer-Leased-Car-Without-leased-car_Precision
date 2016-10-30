@@ -1,11 +1,11 @@
-size	dial	Natural_SVM	Natural_PolynomialSVM	Natural_RadialSVM	Natural_SigmoidSVM	Natural_ADA
-1	1	null	null	null	null	null
-2	2	null	null	null	null	null
-3	3	null	null	null	null	null
-4	4	null	null	null	null	null
-5	5	null	null	null	null	null
-6	6	null	null	null	null	null
-7	7	null	null	null	null	0.5226163710563813
-8	8	null	null	null	null	0.5652367456513978
-9	9	0.5473695029535762	null	0.63871559161909	0.7020186841539581	0.561254848987954
-10	10	0.5814640684857265	null	0.6325511508116372	0.7175800077115867	0.591769624938639
+size	dial	Natural_Unigram_SVM	Natural_Unigram+Context_SVM	Natural_Unigram_ADA	Natural_Unigram+Context_ADA	Natural_Unigram_RF	Natural_Unigram+Context_RF	Component
+1	1	null	null	null	null	null	null	null
+2	2	null	null	null	null	null	null	null
+3	3	null	null	null	null	null	null	null
+4	4	null	null	null	null	null	null	null
+5	5	null	null	null	null	null	null	null
+6	6	0.5024174466643985	0.4635334679982773	0.44170642129936377	0.3889696922296456	null	null	null
+7	7	0.5540735482134759	0.5842960792759604	0.517719854846306	0.5365552224083435	null	null	null
+8	8	0.546493388119956	0.5857976268688249	0.6152193134847093	0.5934118345422693	null	null	null
+9	9	0.5736345168342023	0.6081628801457867	0.5853027547987171	0.5451537269209903	null	null	null
+10	10	0.5668171498982982	0.5935391432934459	0.5726571993234301	0.5434724403373367	null	null	null

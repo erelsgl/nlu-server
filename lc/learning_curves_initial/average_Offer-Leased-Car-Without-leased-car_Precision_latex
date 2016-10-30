@@ -4,27 +4,37 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.5473695029535762)(10,0.5814640684857265)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.5024174466643985)(7,0.5540735482134759)(8,0.546493388119956)(9,0.5736345168342023)(10,0.5668171498982982)
 };
-\addlegendentry{Natural\_SVM}
+\addlegendentry{Natural\_Unigram\_SVM}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.4635334679982773)(7,0.5842960792759604)(8,0.5857976268688249)(9,0.6081628801457867)(10,0.5935391432934459)
+};
+\addlegendentry{Natural\_Unigram+Context\_SVM}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.44170642129936377)(7,0.517719854846306)(8,0.6152193134847093)(9,0.5853027547987171)(10,0.5726571993234301)
+};
+\addlegendentry{Natural\_Unigram\_ADA}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.3889696922296456)(7,0.5365552224083435)(8,0.5934118345422693)(9,0.5451537269209903)(10,0.5434724403373367)
+};
+\addlegendentry{Natural\_Unigram+Context\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
-\addlegendentry{Natural\_PolynomialSVM}
+\addlegendentry{Natural\_Unigram\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.63871559161909)(10,0.6325511508116372)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
-\addlegendentry{Natural\_RadialSVM}
+\addlegendentry{Natural\_Unigram+Context\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.7020186841539581)(10,0.7175800077115867)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
-\addlegendentry{Natural\_SigmoidSVM}
-
-\addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,0.5226163710563813)(8,0.5652367456513978)(9,0.561254848987954)(10,0.591769624938639)
-};
-\addlegendentry{Natural\_ADA}
+\addlegendentry{Component}
 

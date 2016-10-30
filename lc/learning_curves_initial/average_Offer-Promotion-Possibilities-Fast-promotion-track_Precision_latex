@@ -4,27 +4,37 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,0.7449002575213586)(9,0.7600803792530837)(10,0.7618373748242961)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
-\addlegendentry{Natural\_SVM}
+\addlegendentry{Natural\_Unigram\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
-\addlegendentry{Natural\_PolynomialSVM}
+\addlegendentry{Natural\_Unigram+Context\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,0.7450678480303657)(9,0.7583531742677748)(10,0.7533854897477827)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.619345909554671)(7,0.7114692641660184)(8,0.7185608247052883)(9,0.7230069550618616)(10,0.7213240784111934)
 };
-\addlegendentry{Natural\_RadialSVM}
+\addlegendentry{Natural\_Unigram\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,0.6969784192903099)(9,0.7154027087923435)(10,0.7129702653921247)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.6757571449394288)(7,0.7237280233905651)(8,0.7192010686077273)(9,0.7312225279762298)(10,0.7366394723884626)
 };
-\addlegendentry{Natural\_SigmoidSVM}
+\addlegendentry{Natural\_Unigram+Context\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,0.5341386244568664)(5,0.645076346310691)(6,0.634706997818254)(7,0.6390394302473487)(8,0.7096375400721565)(9,0.7250045839422656)(10,0.7289601045155842)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
-\addlegendentry{Natural\_ADA}
+\addlegendentry{Natural\_Unigram\_RF}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+};
+\addlegendentry{Natural\_Unigram+Context\_RF}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
+};
+\addlegendentry{Component}
 

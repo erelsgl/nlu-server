@@ -4,27 +4,37 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.4650044662207241)(10,0.44177105966474867)
+(1,null)(2,null)(3,null)(4,null)(5,0.33631336592275035)(6,0.36894283274400663)(7,0.43262813185309684)(8,0.435434952586509)(9,0.44532034532753045)(10,0.4704329002896368)
 };
-\addlegendentry{Natural\_SVM}
+\addlegendentry{Natural\_Unigram\_SVM}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,null)(4,null)(5,0.4831471354622313)(6,0.45354459456802926)(7,0.4990382229341952)(8,0.5147771122861776)(9,0.5418739898516525)(10,0.5221927995726622)
+};
+\addlegendentry{Natural\_Unigram+Context\_SVM}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,0.2340501328736623)(4,0.28508864940991224)(5,0.342355250361451)(6,0.3855764484759997)(7,0.46641563058638924)(8,0.48488078555970204)(9,0.45487968791012606)(10,0.4785996774539152)
+};
+\addlegendentry{Natural\_Unigram\_ADA}
+
+\addplot[color=green,mark=*] coordinates {
+(1,null)(2,null)(3,0.23497081482646123)(4,0.2566947032618544)(5,0.3341904880690504)(6,0.40222027103304525)(7,0.4118032895902006)(8,0.4709980879255512)(9,0.5263962028370165)(10,0.49944257999504205)
+};
+\addlegendentry{Natural\_Unigram+Context\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
 (1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
-\addlegendentry{Natural\_PolynomialSVM}
+\addlegendentry{Natural\_Unigram\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.49819987644655583)(10,0.4635098033685042)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
-\addlegendentry{Natural\_RadialSVM}
+\addlegendentry{Natural\_Unigram+Context\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,0.5255376194842626)(10,0.48028791061879295)
+(1,null)(2,null)(3,null)(4,null)(5,null)(6,null)(7,null)(8,null)(9,null)(10,null)
 };
-\addlegendentry{Natural\_SigmoidSVM}
-
-\addplot[color=green,mark=*] coordinates {
-(1,null)(2,null)(3,null)(4,null)(5,null)(6,0.37180688734824074)(7,0.3215025540708386)(8,0.38638344394631374)(9,0.448280154429965)(10,0.5283287864992492)
-};
-\addlegendentry{Natural\_ADA}
+\addlegendentry{Component}
 
