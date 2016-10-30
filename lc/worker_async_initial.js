@@ -25,36 +25,37 @@ if (cluster.isWorker)
 	var test = JSON.parse(message['test'])
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " classifier "+classifier)
-	var index = 1
+
+	if (classifier.indexOf("Natural")!=-1)
+	{
+		train =  bars.processdataset(_.flatten(bars.copyobj(train)), {"intents": false, "filter":false, "filterIntent":[]})
+		test  = bars.processdataset(_.flatten(bars.copyobj(test)), {"intents": false, "filter":false, "filterIntent":[]})
+	}             
+        
+    if (classifier.indexOf("Component")!=-1)
+   		train =  bars.processdataset(_.flatten(bars.copyobj(train)), {"intents": true, "filter":true, "filterIntent":[]})
+
+	if (classifier.indexOf("MYMO")!=-1)
+		train =  bars.processdataset(_.flatten(bars.copyobj(train)), {"intents": true, "filter":false, "filterIntent":[]})
+		
+	var index = 10
 
 	async.whilst(
 	    function () { return index <= train.length },
 	    function (callbackwhilst) {
 
 	    var mytrain = bars.copyobj(train.slice(0, index))
-	    index += 1
+	    index += 10
 
-	    	var mytestex  = _.flatten(bars.copyobj(test))
-		var mytrainex = []
+	    var mytestex  = _.flatten(bars.copyobj(test))
+	    var mytrainex = bars.copyobj(mytrain)
+		var realmytrainex = bars.copyobj(mytrain)
 		
-		if (classifier.indexOf("Natural")!=-1)
-		{
-			mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": false, "filter":false, "filterIntent":[]})
-			mytestex  = bars.processdataset(_.flatten(bars.copyobj(test)), {"intents": false, "filter":false, "filterIntent":[]})
-		}             
-        
-        	if (classifier.indexOf("Component")!=-1)
-        		mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": true, "filter":true, "filterIntent":[]})
-
-		if (classifier.indexOf("MYMO")!=-1)
-			mytrainex =  bars.processdataset(_.flatten(bars.copyobj(mytrain)), {"intents": true, "filter":false, "filterIntent":[]})
-		  		
 		console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 			" train_dialogue="+mytrain.length+" train_turns="+mytrainex.length+
 			" test_dialogue="+test.length +" test_turns="+mytestex.length+
 			" classifier="+classifier+ " fold="+fold)
 
-		var realmytrainex = bars.copyobj(mytrainex)	
 		console.vlog("DIST TRAIN: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(realmytrainex), null, 4))
 		console.vlog("DIST TEST: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(mytestex), null, 4))
 	
