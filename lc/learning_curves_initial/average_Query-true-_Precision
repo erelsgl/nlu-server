@@ -14,5 +14,4 @@ size	dial	Natural_Unigram_SVM	Natural_Unigram+Context_SVM	Natural_Unigram_ADA	Na
 130	130	null	null	null	null	null	null	null
 140	140	null	null	null	null	null	null	null
 150	150	null	null	null	null	null	null	null
-160	160	null	null	null	null	null	null	null
-170	170	null	null	null	null	null	null	null
+160	160	0.17647058823529413	0.36363636363636365	0.17647058823529413	0.38461538461538464	0.6	1	null

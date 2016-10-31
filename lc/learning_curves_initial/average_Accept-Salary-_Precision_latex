@@ -1,40 +1,40 @@
 \addplot[color=green,mark=*] coordinates {
-(10,10)(20,20)(30,30)(40,40)(50,50)(60,60)(70,70)(80,80)(90,90)(100,100)(110,110)(120,120)(130,130)(140,140)(150,150)(160,160)(170,170)
+(10,10)(20,20)(30,30)(40,40)(50,50)(60,60)(70,70)(80,80)(90,90)(100,100)(110,110)(120,120)(130,130)(140,140)(150,150)(160,160)
 };
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)
 };
 \addlegendentry{Natural\_Unigram\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)
 };
 \addlegendentry{Natural\_Unigram+Context\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)
 };
 \addlegendentry{Natural\_Unigram\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)
 };
 \addlegendentry{Natural\_Unigram+Context\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)
 };
 \addlegendentry{Natural\_Unigram\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)
 };
 \addlegendentry{Natural\_Unigram+Context\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,0.0530952380952381)(50,0.07176767676767677)(60,0.08488255571588904)(70,0.08342840063854556)(80,0.07941239316239317)(90,0.09631313131313132)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)(170,null)
+(10,null)(20,0.16059782608695652)(30,0.14310897435897435)(40,0.13479853479853482)(50,0.176395173453997)(60,0.11875)(70,0.15222663139329806)(80,0.1171957671957672)(90,0.18299097416744475)(100,0.10902777777777779)(110,0.11089285714285715)(120,null)(130,null)(140,null)(150,null)(160,null)
 };
 \addlegendentry{Component}
 

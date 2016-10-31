@@ -1,8 +1,8 @@
 size	dial	Natural_Unigram_SVM	Natural_Unigram+Context_SVM	Natural_Unigram_ADA	Natural_Unigram+Context_ADA	Natural_Unigram_RF	Natural_Unigram+Context_RF	Component
-10	10	0	0	0	0	0	0	0.1111111111111111
+10	10	null	null	null	null	null	null	null
 20	20	null	null	null	null	null	null	null
-30	30	null	null	null	null	null	null	null
-40	40	null	null	null	null	null	null	null
+30	30	0	0	0	0	0	0	0
+40	40	0	0	0	0	0	0	0
 50	50	null	null	null	null	null	null	null
 60	60	null	null	null	null	null	null	null
 70	70	null	null	null	null	null	null	null
@@ -14,5 +14,4 @@ size	dial	Natural_Unigram_SVM	Natural_Unigram+Context_SVM	Natural_Unigram_ADA	Na
 130	130	null	null	null	null	null	null	null
 140	140	null	null	null	null	null	null	null
 150	150	0	0	0	0	0	0	null
-160	160	null	null	null	null	null	null	null
-170	170	null	null	null	null	null	null	null
+160	160	0	0	0	0	0	0	null
