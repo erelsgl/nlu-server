@@ -60,6 +60,22 @@ process.on('message', function(message) {
 
 			switch(classifier) {
 
+
+				case "Biased_with_rephrase":
+					
+					console.vlog("Biased_with_rephrase: train len: "+mytrainex.length)
+					var newtrain = []
+					_.each(mytrainex, function(value, key, list){
+						newtrain.push(value)
+						newtrain = newtrain.concat(value["rephrases"])
+					}, this)
+					newtrain = _.compact(newtrain)
+					console.vlog("Biased_with_rephrase: train len: "+newtrain.length)
+
+					callbacks(null, newtrain, mytestex, mytrainex.length)
+
+
+
    				case "Biased_no_rephrase_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi|zh):.*"), mytestex, mytrainex.length); break;
 				case "Natural_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi|zh):.*"), mytestex, mytrainex.length); break;				
 				
@@ -155,8 +171,8 @@ if (cluster.isMaster)
 	//var classifiers = [ 'Natural', 'Balanced', 'Natural_Hungarian', 'Balanced_Hungarian', 'Emb_100', 'Balanced_Emb_100', 'Emb_100_Hungarian', 'Balanced_Emb_100_Hungarian']
 //var classifiers = [ 'Natural', 'Balanced',  'Natural_Trans_Emb', 'Balanced_Trans_Emb']
 	//var classifiers = [ 'Natural', 'Biased_no_rephrase', 'Trans_Google', 'Trans_Microsoft', 'Trans_Yandex']
-	var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase', 
-						'Natural_All_Lang', 'Biased_no_rephrase_All_Lang']
+	var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase']
+						// 'Natural_All_Lang', 'Biased_no_rephrase_All_Lang']
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	//var classifiers = [ 'Natural','Natural_trans']
 	
