@@ -1,0 +1,30 @@
+\addplot[color=green,mark=*] coordinates {
+(10,10)(20,20)(30,30)(40,40)(50,50)(60,60)(70,70)
+};
+\addlegendentry{dial}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)
+};
+\addlegendentry{Natural}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)
+};
+\addlegendentry{Undersampled}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)
+};
+\addlegendentry{Oversampled}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)
+};
+\addlegendentry{Biased\_with\_rephrase}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)
+};
+\addlegendentry{Biased\_no\_rephrase}
+
