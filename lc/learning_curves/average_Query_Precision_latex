@@ -1,40 +1,40 @@
 \addplot[color=green,mark=*] coordinates {
-(5,5)(10,10)(15,15)(20,20)(25,25)(30,30)(35,35)(40,40)(45,45)(50,50)(55,55)(60,60)(65,65)(70,70)
+(10,10)(20,20)(30,30)(40,40)(50,50)(60,60)(70,70)(80,80)(90,90)(100,100)(110,110)(120,120)
 };
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.7237152622296325)(110,0.6842778848669859)(120,null)
 };
 \addlegendentry{Natural}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.36778294370024966)(110,0.34074919337795223)(120,null)
 };
 \addlegendentry{Undersampled}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.7237152622296325)(110,0.6842778848669859)(120,null)
 };
 \addlegendentry{Oversampled}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)
 };
 \addlegendentry{Biased\_with\_rephrase}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)
 };
 \addlegendentry{Biased\_no\_rephrase}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.5929963843052017)(110,0.5872474061385924)(120,null)
 };
 \addlegendentry{Natural\_All\_Lang}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)
 };
 \addlegendentry{Biased\_no\_rephrase\_All\_Lang}
 
