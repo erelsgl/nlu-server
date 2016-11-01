@@ -28,8 +28,8 @@ process.on('message', function(message) {
 	//_.each(test, function(turn, key, list){ delete test[key]["input"]["sentences"] }, this)
 	// var max = 70
 
-	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " max="+max + " classifier "+classifier)
-	var index = 5
+	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " classifier "+classifier)
+	var index = 10
 
 	async.whilst(
 	    function () { return index <= train.length },
@@ -49,7 +49,7 @@ process.on('message', function(message) {
 	       	var mytrain = bars.copyobj(train.slice(0, index))
 	       	var mytrainex =  bars.copyobj(mytrain)
 			var mytestex  = bars.copyobj(test)
-			index += 5 
+			index += 10
 	
 		
 			console.vlog("DIST: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(mytrain), null, 4))
@@ -60,8 +60,9 @@ process.on('message', function(message) {
 
 			switch(classifier) {
 
-   				case "Biased_no_rephrase_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi):.*"), mytestex, mytrainex.length); break;
-				case "Natural_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi):.*"), mytestex, mytrainex.length); break;				
+   				case "Biased_no_rephrase_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi|zh):.*"), mytestex, mytrainex.length); break;
+				case "Natural_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi|zh):.*"), mytestex, mytrainex.length); break;				
+				
 				case "Natural_Trans_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
 				case "Balanced_Trans_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
 				case "Balanced_Trans_Microsoft_Google": callbacks(null, bars.gettrans(mytrainex, "M:.*:G"), mytestex, mytrainex.length); break;
@@ -87,7 +88,7 @@ process.on('message', function(message) {
 
 			// mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent":["Greet", "Quit"], "filter":true})
 	
-		var baseline_cl = classifiers.Natural_Neg
+		var baseline_cl = classifiers.Natural_Unigram_SVM
 
 /*		if (classifier.indexOf("25")!=-1)
                      baseline_cl = classifiers.NLU_Emb_25
@@ -181,7 +182,9 @@ if (cluster.isMaster)
 
 		var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased.json"))
 		console.mlog("number of unprocessed dialogues: "+data.length)
-		var utterset = bars.getsetcontext(data)
+		//var utterset = bars.getsetcontext(data)
+		var utterset = bars.getsetcontextadv(data)
+		
 		var train1 = utterset["train"].concat(utterset["test"])
 		var train2 = utterset["biased"]
 		console.mlog("number of the dialogues: train1: " + train1.length + " train2: " + train2.length)
