@@ -9,7 +9,7 @@ var baidu = require(__dirname+'/baidu');
 
 var yandex = require('yandex-translate')(keys.yandex); 
 var microsoft = new microsoftT({
-    client_id: "aaasdcccccc", 
+    client_id: "aaasdcccccc",
     client_secret: keys.microsoft
 }, true);
 
@@ -32,18 +32,21 @@ function translate(engine, fromln, toln, text, callback)
     
     function(callback){
 
-        if (command_string in buffer_tran)
+       /* if (command_string in buffer_tran)
         {
           console.log("LOADED") 
           translated = buffer_tran[command_string]
           callback(null, null);
         }
-        else
+        else*/
           callback(null, null);          
     },
     function(callback){
         if ((["yandex","Y","y"].indexOf(engine)!=-1) && (translated == "")) {
 		console.log("yandex")
+		var map = { "hu1": "hu" }
+                if (fromln in map) fromln = map[fromln]
+                if (toln in map) toln = map[toln]
 			    yandex.translate(text, { to: toln, from: fromln }, function(err, res) {
 				    translated = res.text[0]
           	callback(null, null);
@@ -52,7 +55,10 @@ function translate(engine, fromln, toln, text, callback)
     },
     function(callback){
         if ((["microsoft", "M", "m"].indexOf(engine)!=-1) && (translated == "")) {
-		console.log("microsoft")
+		console.log("microsofti")
+		var map = { "hu1": "hu" }
+		if (fromln in map) fromln = map[fromln]
+	        if (toln in map) toln = map[toln]
         	microsoft.translate({ text:  text, from: fromln, to: toln }, function(err, data) {
 				    translated = data
           	callback(null, null);
@@ -62,7 +68,7 @@ function translate(engine, fromln, toln, text, callback)
     function(callback){
        if ((["baidu", "B", "b"].indexOf(engine)!=-1) && (translated == "")) {
 	console.log("baidu")
-        var map = { "fr": "fra", "fi": "fin", "ar": "ara", "es": "spa", "ja": "jp" }
+        var map = { "hu1": "hu", "fr": "fra", "fi": "fin", "ar": "ara", "es": "spa", "ja": "jp" }
         if (fromln in map) fromln = map[fromln]
         if (toln in map) toln = map[toln]
       
@@ -78,7 +84,7 @@ function translate(engine, fromln, toln, text, callback)
         if ((["google", "g", "G"].indexOf(engine)!=-1) && (translated == "")) {
 
 		console.log("google")
-          var map = { "he": "iw", "zh": "zh-cn" }
+          var map = { "hu1": "hu", "he": "iw", "zh": "zh-cn" }
 
           if (fromln in map) fromln = map[fromln]
           if (toln in map) toln = map[toln]

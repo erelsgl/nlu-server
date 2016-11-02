@@ -40,6 +40,7 @@ var signif = false
 
 var check_trans = false
 var correlation = false
+var separ = false
 var remove_urdu = false
 var fix_order = false
 
@@ -55,7 +56,7 @@ var unidis = false
 
 // translate and org parsed
 var check_rephrase = false
-var make_tr = false
+var make_tr = true
 var make_tr_seeds = false
 var make_tr_fix = false
 // check the ration of single vs all utterances
@@ -536,14 +537,15 @@ function generator()
 		Arabic:"ar",
 		Russian:"ru",
 		Chinese:"zh",
-		Hungarian:"hu",
+	//	Hungarian:"hu",
 		Finish:"fi",
 
-		Spanish:"es",
-		Italian: "it",
-		Poland: "pl",
-		Dutch: "nl",
+	//	Spanish:"es",
+		//Italian: "it",
+	//	Poland: "pl",
+	//	Dutch: "nl",
 		Japanese: "ja"
+	//	Hungarian: "hu1"
 		}
 
 //		var sys = { "yandex": "Y", "microsoft": "M", "google": "G" }
@@ -553,7 +555,7 @@ function generator()
 		_.each(sys, function(engine1liter, engine1, list){
 			_.each(sys, function(engine2liter, engine2, list){
 				_.each(lang, function(ln, lnkey, list){
-					if (engine1liter == engine2liter)						
+				//	if (engine1liter == engine2liter)						
 	    					output.push({
 	    						'engine1':engine1liter,
 	    						'ln':ln,
@@ -632,7 +634,7 @@ if (separ)
 if (make_tr)
 {
 	
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json"))
 
 	async.eachOfSeries(data, function(dialogue, keyd, callback1){ 
 
@@ -662,7 +664,7 @@ if (make_tr)
 							callback3()
 						})
 					}
-					else if (trans[compkey].indexOf("TranslateApiException")!=-1)
+					else if ((trans[compkey].indexOf("TranslateApiException")!=-1) || (trans[compkey].indexOf("ArgumentException")!=-1) || (trans[compkey]==".") || (trans[compkey]==",") || (trans[compkey]=="'"))
 					{
 						async_tran.tran(engine1, ln, engine2, value["input"]["text"], function(err, out){
 							out = out.replace(/\n$/, '')

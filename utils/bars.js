@@ -3972,13 +3972,14 @@ function processdataset(dataset, options)
 
   if (options.intents)
     output = _.map(output, function(num){ num['output'] = _.unique(_.keys(num.outputhash)); return num });
-  
+ 
   if (options.filter)
     output = _.filter(output, function(num){ return num["output"].length == 1; });
     
   if (options["filterIntent"].length > 0)
     output = _.filter(output, function(num){ return _.intersection(num["output"], options["filterIntent"]).length == 0 });
   
+  console.log(JSON.stringify(output, null, 4))
   console.vlog("processdataset: end: "+ output.length)
   return output
 }
@@ -4103,7 +4104,14 @@ function getsetcontext(dataset)
 
     if (!("set" in dialogue))
       dialogue["set"] = "train"
-    
+
+   if (dialogue["set"] == "test")
+      dialogue["set"] = "train"	
+   
+   fs.writeFileSync("/tmp/dials/"+dialogue.gameid+"_normal", JSON.stringify(dialogue, null, 4), 'utf-8')
+   fs.writeFileSync("/tmp/dials/"+dialogue.gameid+"_proc", JSON.stringify(processed_dialogue, null, 4), 'utf-8')
+
+ 
     utteranceset[dialogue.set].push(processed_dialogue)
   }, this)
 
@@ -4115,7 +4123,7 @@ function getsetcontext(dataset)
 function getsetcontextadv(dataset)
 {
   var rectypes = ['AskRepeat', 'AskRephrase' ,'Reprompt' ,'Notify', 'Yield', 'Help', 'YouCanSay', 'TerseYouCanSay']
-  var utteranceset = {'train':[], 'test':[], 'unable':[]}
+  var utteranceset = {'train':[], 'test':[], 'unable':[], 'biased':[]}
   var context = []
  
   _.each(dataset, function(dialogue, key, list){
@@ -4147,6 +4155,7 @@ _.each(dialogue['turns'], function(turn, key, list){
         record['input']['context'] = context
         record['outputhash'] = turn.output
         record['output'] = hashtoar(turn.output)
+        record['type'] = "normal"
           
         if  (nextrepr)
         {
@@ -4169,20 +4178,23 @@ _.each(dialogue['turns'], function(turn, key, list){
     //    var QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab)).indexOf('Query') == -1});
 	
           //if ((QuitIndex==-1) && (GreetIndex==-1))
-          if ((_.keys(record['outputhash']).indexOf("Greet")==-1) && (_.keys(record['outputhash']).indexOf("Quit")==-1))
-          {
+ //         if ((_.keys(record['outputhash']).indexOf("Greet")==-1) && (_.keys(record['outputhash']).indexOf("Quit")==-1))
+   //       {
           processed_dialogue.push(record)
           mainturn = record
-          }
+     //     }
 
 	nextrepr = false
         }
       }
     },  this)
 
-    if (!("set" in dialogue))
+   if (!("set" in dialogue))
       dialogue["set"] = "train"
-    
+
+   if (dialogue["set"] == "test")
+      dialogue["set"] = "train"
+
     utteranceset[dialogue.set].push(processed_dialogue)
   }, this)
 
@@ -4647,7 +4659,7 @@ function gettrans(turns, pat)
 
 	  }
 	  else
-		  console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"]+" sentences: "+roots)
+		  console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"]+" sentences: ")
   }, this)
 
   console.vlog("gettrans: output.length: " + output.length)  
