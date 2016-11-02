@@ -24,8 +24,8 @@ process.on('message', function(message) {
 
    	console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
-	var test  = bars.processdataset(_.flatten(JSON.parse(message['test'])), {"intents":true, "filter": false, "filter_Quit_Greet":true})
-	var train = bars.processdataset(_.flatten(JSON.parse(message['train'])), {"intents":true, "filter": true, "filter_Quit_Greet":true})
+	var test  = bars.processdataset(_.flatten(JSON.parse(message['test'])), {"intents":true, "filter": false, "filterIntent":['Quit','Greet']})
+	var train = bars.processdataset(_.flatten(JSON.parse(message['train'])), {"intents":true, "filter": true, "filterIntent":['Quit','Greet']})
 
 //	_.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"] }, this)
 //	_.each(test, function(turn, key, list){ delete test[key]["input"]["sentences"] }, this)
@@ -95,9 +95,10 @@ process.on('message', function(message) {
 		},
     		function(mytrainex, mytestex, trainsize, callback) {
 
-			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filter_Quit_Greet":true, "filter":true})
+//			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filter_Quit_Greet":true, "filter":true})
 	
-		var baseline_cl = classifiers.Natural_Neg
+//		var baseline_cl = classifiers.Natural_Neg
+		var baseline_cl = classifiers["Natural_Unigram+Context_SVM"]
 
 /*		if (classifier.indexOf("25")!=-1)
                      baseline_cl = classifiers.NLU_Emb_25
@@ -169,22 +170,29 @@ if (cluster.isMaster)
 	// silent: false
 	});
 
-	async.timesSeries(2, function(n, next){
+	async.timesSeries(10, function(n, next){
 
-		var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json"))
-		console.mlog("number of unprocessed dialogues: "+data1.length)
-		var utterset1 = bars.getsetcontext(data1, false)
-		var train1 = utterset1["train"].concat(utterset1["test"])
-		console.mlog("number of the dialogues: "+train1.length)
+	//	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json"))
+	//	console.mlog("number of unprocessed dialogues: "+data1.length)
+	//	var utterset1 = bars.getsetcontext(data1, false)
+	//	var train1 = utterset1["train"].concat(utterset1["test"])
+	//	console.mlog("number of the dialogues: "+train1.length)
 
 //		train1 = bars.processdataset(train1)
 
-		var data2 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7_trans.json"))
-		var utterset2 = bars.getsetcontextadv(data2)//COLLING
-		//var utterset2 = bars.getsetcontext(data2)
-		var train2 = utterset2["train"].concat(utterset2["test"])
-		
-		console.mlog("number of the dialogues2: "+train2.length)
+	//	var data2 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/version7_trans.json"))
+	//	var utterset2 = bars.getsetcontextadv(data2)//COLLING
+	//	//var utterset2 = bars.getsetcontext(data2)
+	//	var train2 = utterset2["train"].concat(utterset2["test"])
+	//	
+	//	console.mlog("number of the dialogues2: "+train2.length)
+
+		var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased.json"))
+		console.mlog("number of unprocessed dialogues: "+data.length)
+		var utterset = bars.getsetcontextadv(data)
+		var train1 = utterset["train"].concat(utterset["test"])
+		var train2 = utterset["biased"]
+		console.mlog("number of the dialogues: train1: " + train1.length + " train2: " + train2.length)
 
 		_.each(classifiers, function(classifier, key, list){ 
 			_(folds).times(function(fold){
