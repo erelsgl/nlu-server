@@ -3972,26 +3972,32 @@ function processdataset(dataset, options)
 
   if (options.lemma)
   {
+console.vlog("processdataset:: fetch lemmas")
     _.each(dataset, function(turn, key, list){
-      if (!fs.existsSync(__dirname+"/../json/"+md5(turn["input"]["text"])+".json"))
+	var path = __dirname+"/../json/"+md5(turn["input"]["text"])+".json"
+      //if (!fs.existsSync(path))
       {
         var lemmas = []
         var word = []
         
-        var sen = JSON.parse(fs.readFileSync(__dirname+"/../json/"+md5(turn["input"]["text"])+".json"))
+        var sen = JSON.parse(fs.readFileSync(path))
 
         _.each(sen["sentences"], function(senten, key, list){
           lemmas = lemmas.concat(_.pluck(senten["tokens"], "lemma"))
           word = word.concat(_.pluck(senten["tokens"], "word"))
         }, this)
 
-        dataset["key"]["input"]["lemma"] = _.flatten(lemmas)  
-        dataset["key"]["input"]["word"] = _.flatten(word)  
+        turn["input"]["lemma"] = _.flatten(lemmas)  
+        turn["input"]["word"] = _.flatten(word)  
+
+	console.vlog("processdataset: lemmas: "+lemmas)
+	console.vlog("processdataset: word: "+word)
+
       }
-      else
-      {
-        throw new Error("no file")
-      }
+     // else
+     // {
+       // throw new Error("no file "+path + " " + turn["input"]["text"]) 
+     // }
     }, this)
   }
 
@@ -4004,7 +4010,7 @@ function processdataset(dataset, options)
   if (options["filterIntent"].length > 0)
     output = _.filter(output, function(num){ return _.intersection(num["output"], options["filterIntent"]).length == 0 });
   
-  console.log(JSON.stringify(output, null, 4))
+  console.vlog(JSON.stringify(output, null, 4))
   console.vlog("processdataset: end: "+ output.length)
   return output
 }
