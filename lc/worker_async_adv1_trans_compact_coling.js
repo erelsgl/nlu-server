@@ -21,8 +21,8 @@ process.on('message', function(message) {
 	var classifier = process.env["classifier"]
 	var fold = process.env["fold"]
 	
-	var test  = bars.processdataset(_.flatten(JSON.parse(message['test'])), {"intents":true, "filter": false, "filterIntent":['Quit','Greet']})
-	var train = bars.processdataset(_.flatten(JSON.parse(message['train'])), {"intents":true, "filter": true, "filterIntent":['Quit','Greet']})
+	var test  = bars.processdataset(_.flatten(JSON.parse(message['test'])), {"intents":true, "filter": false, "lemma": true, "filterIntent":['Quit','Greet']})
+	var train = bars.processdataset(_.flatten(JSON.parse(message['train'])), {"intents":true, "filter": true, "lemma": true, "filterIntent":['Quit','Greet']})
    	
 //	_.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"] }, this)
 //	_.each(test, function(turn, key, list){ delete test[key]["input"]["sentences"] }, this)
@@ -279,4 +279,3 @@ if (cluster.isMaster)
 	})
 
 }
-
