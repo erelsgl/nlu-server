@@ -60,8 +60,10 @@ process.on('message', function(message) {
 
 			switch(classifier) {
 
-   				case "Biased_no_rephrase_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi|zh):.*"), mytestex, mytrainex.length); break;
-				case "Natural_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi|zh):.*"), mytestex, mytrainex.length); break;				
+   				//case "Biased_no_rephrase_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi|zh):.*"), mytestex, mytrainex.length); break;
+   				case "Biased_no_rephrase_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;
+				//case "Natural_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi|zh):.*"), mytestex, mytrainex.length); break;				
+				case "Natural_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;				
 				
 				case "Natural_Trans_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
 				case "Balanced_Trans_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
@@ -167,7 +169,7 @@ if (cluster.isMaster)
 	// silent: false
 	});
 
-	async.timesSeries(3, function(n, next){
+	async.timesSeries(10, function(n, next){
 
 		// var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json"))
 		// console.mlog("number of unprocessed dialogues: "+data1.length)
