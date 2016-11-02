@@ -1685,7 +1685,7 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 	var sample = JSON.parse(JSON.stringify(sample_or)) 
 
 	if (!("full" in featureOptions))
-		featureOptions["full"] = false
+		throw new Error("For some reason full is not in")
 
 	if (_.isArray(features))	
 		throw new Error("For some reason features is an array")
@@ -1707,7 +1707,7 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 	}, this)
 
 	_.each(context, function(label, key, list){
-		if (featureOptions.full)
+	if (featureOptions.full)
 			features["INTENT_"+label] = 1
 		
 		label = JSON.parse(label)
@@ -1715,6 +1715,7 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 		features["INTENT_"+intent] = 1
 	}, this)		
 */
+
 	var attrval = getRule({}, sample.text).labels
 
 	var intents = []
@@ -1738,11 +1739,14 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 			values.push(_.values(_.values(obj)[0])[0])
 	}, this)
 
-	values = _.map(values, function(num){ return num.toLowerCase() });
-	console.vlog("DEBUGCONTEXT: extracted values "+values)
+	console.vlog("DEBUGCONTEXT: extracted values from teh context: "+ JSON.stringify(values))
+	console.vlog("DEBUGCONTEXT: the current sample "+ JSON.stringify(attrval[1]))
+	
 
 	_.each(attrval[1], function(value, key, list){
-	if (values.indexOf(value[0].toLowerCase())!=-1)
+
+	if (_.isArray(value)) throw new Error("context error")
+	if (values.indexOf(value)!=-1)
 		features['OFFEREDVALUE'] = 1
 	else
 		features['UNOFFEREDVALUE'] = 1
