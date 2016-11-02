@@ -19,7 +19,7 @@
 \addlegendentry{Oversampled}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,0.655990954587183)(65,0.6526576212538497)(70,0.6616164577819345)
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
 };
 \addlegendentry{Biased\_with\_rephrase}
 
@@ -34,7 +34,7 @@
 \addlegendentry{Natural\_All\_Lang}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,0.6524339041745588)(50,0.6315112633708453)(55,0.6373573437818347)(60,0.6591791740784317)(65,0.6551364070478599)(70,0.6723676626937497)
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)
 };
 \addlegendentry{Biased\_no\_rephrase\_All\_Lang}
 
