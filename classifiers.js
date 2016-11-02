@@ -1701,7 +1701,7 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 	console.vlog("DEBUGCONTEXT: text : "+ sample.text)	
 	console.vlog("DEBUGCONTEXT: context " + JSON.stringify(context) + " train "+train+" featureOptions "+JSON.stringify(featureOptions))
 
-/*	var intents = ["Offer", "Accept", "Reject", "Query", "Greet", "Quit"]
+	var intents = ["Offer", "Accept", "Reject", "Query", "Greet", "Quit"]
 	_.each(intents, function(intent, key, list){
 		features["INTENT_"+intent] = 0
 	}, this)
@@ -1714,7 +1714,7 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 		var intent = _.keys(label)[0]
 		features["INTENT_"+intent] = 1
 	}, this)		
-*/
+
 	var attrval = getRule({}, sample.text).labels
 
 	var intents = []
@@ -1955,6 +1955,7 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	if (["word","lemma"].indexOf(featureOptions.toextract)==-1)
 	    throw new Error("toextract value is unknown")
 	
+	featureOptions["clean"] = true
 	// apply negation
 //	if (!('neg' in featureOptions))
 //	    throw new Error("neg is not defined")
