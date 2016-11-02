@@ -21,9 +21,11 @@ if (cluster.isWorker)
 	
 	var classifier = process.env["classifier"]
 	var fold = process.env["fold"]		
-	var train = JSON.parse(message['train'])
-	var test = JSON.parse(message['test'])
+	var train = _.flatten(JSON.parse(message['train']))
+	var test = _.flatten(JSON.parse(message['test']))
 
+	test  = bars.processdataset(_.flatten(bars.copyobj(test)), {"intents": false, "filter":false, "filterIntent":[]})
+	
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " classifier "+classifier)
 
 	if (classifier.indexOf("Natural")!=-1)
@@ -32,7 +34,7 @@ if (cluster.isWorker)
 		test  = bars.processdataset(_.flatten(bars.copyobj(test)), {"intents": false, "filter":false, "filterIntent":[]})
 	}             
         
-    if (classifier.indexOf("Component")!=-1)
+   	 if (classifier.indexOf("Component")!=-1)
    		train =  bars.processdataset(_.flatten(bars.copyobj(train)), {"intents": true, "filter":true, "filterIntent":[]})
 
 	if (classifier.indexOf("MYMO")!=-1)
