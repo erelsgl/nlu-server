@@ -26,8 +26,6 @@ var async_adapter = require('./utils/async_adapter')
 var async = require('async');
 var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
 var log_file = "./logs/" + process.pid
-var Lemmer = require('node-lemmer').Lemmer;
-var lemmerEng = new Lemmer('english');
 
 var antonyms = {}
 //var data = fs.readFileSync("./antonyms.txt", 'utf8').split("\n")
@@ -1990,7 +1988,8 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	_.each(tkns, function(value, key, list){
                 sample['sentences']['tokens'].push({
                         "word": value[0],
-                        "lemma": lemmerEng.lemmatize(value[0])
+                        "lemma": natural.PorterStemmer.stem(value[0])
+                       // "lemma": lemmerEng.lemmatize(value[0])
                         })
         }, this)
 
