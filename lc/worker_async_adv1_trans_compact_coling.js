@@ -20,12 +20,10 @@ process.on('message', function(message) {
 	
 	var classifier = process.env["classifier"]
 	var fold = process.env["fold"]
-
-   	console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
 	var test  = bars.processdataset(_.flatten(JSON.parse(message['test'])), {"intents":true, "filter": false, "filterIntent":['Quit','Greet']})
 	var train = bars.processdataset(_.flatten(JSON.parse(message['train'])), {"intents":true, "filter": true, "filterIntent":['Quit','Greet']})
-
+   	
 //	_.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"] }, this)
 //	_.each(test, function(turn, key, list){ delete test[key]["input"]["sentences"] }, this)
 
@@ -70,14 +68,16 @@ process.on('message', function(message) {
 						if ("rephrases" in value)
 							out = out.concat(value["rephrases"])
 					}, this)		
-					out = _.compact(out)
+					out = _.compact(_.flatten(out))
 					console.vlog("COLLING: with rephrases "+out.length);
 		
 					console.vlog(JSON.stringify(out, null, 4))
 					callbacks(null, out, mytestex, mytrainex.length);
 					break;
 				case "Biased_no_rephrase_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi|zh):.*"), mytestex, mytrainex.length); break;
+				case "Biased_no_rephrase_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;
 				case "Natural_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi|zh):.*"), mytestex, mytrainex.length); break;
+				case "Natural_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;
 				case "Natural_Trans_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
 				case "Balanced_Trans_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
 				case "Balanced_Trans_Microsoft_Google": callbacks(null, bars.gettrans(mytrainex, "M:.*:G"), mytestex, mytrainex.length); break;
@@ -96,10 +96,10 @@ process.on('message', function(message) {
 		},
     		function(mytrainex, mytestex, trainsize, callback) {
 
-//			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filter_Quit_Greet":true, "filter":true})
+		mytrainex = bars.processdataset(mytrainex, {"intents":true, "filter": true, "filterIntent":['Quit','Greet']})
 	
 //		var baseline_cl = classifiers.Natural_Neg
-		var baseline_cl = classifiers["Natural_Unigram+Context_SVM"]
+		var baseline_cl = classifiers["Unigram+Context+Lemma_SVM"]
 
 /*		if (classifier.indexOf("25")!=-1)
                      baseline_cl = classifiers.NLU_Emb_25
@@ -109,7 +109,7 @@ process.on('message', function(message) {
                      baseline_cl = classifiers.NLU_Emb_100
 */  
 
-		if (classifier.indexOf("Emb")!=-1)
+/*		if (classifier.indexOf("Emb")!=-1)
 		{
 
 			if (!(classifier in classifiers))
@@ -117,6 +117,7 @@ process.on('message', function(message) {
 			else	
 				baseline_cl = classifiers[classifier]
               	}
+*/
 	    	// trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
     		trainAndTest.trainAndTest_async(baseline_cl, bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
 
@@ -173,7 +174,6 @@ if (cluster.isMaster)
 	// silent: false
 	});
 
-	async.timesSeries(10, function(n, next){
 
 	//	var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json"))
 	//	console.mlog("number of unprocessed dialogues: "+data1.length)
@@ -190,19 +190,23 @@ if (cluster.isMaster)
 	//	
 	//	console.mlog("number of the dialogues2: "+train2.length)
 
-		var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased.json"))
-		console.mlog("number of unprocessed dialogues: "+data.length)
-		var utterset = bars.getsetcontextadv(data)
-		var train1 = utterset["train"].concat(utterset["test"])
-		train1 = _.shuffle(train1)
-		var train2 = utterset["biased"]
-		console.mlog("number of the dialogues: train1: " + train1.length + " train2: " + train2.length)
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased.json"))
+	console.mlog("number of unprocessed dialogues: "+data.length)
+	var utterset = bars.getsetcontextadv(data)
+	var train1 = utterset["train"].concat(utterset["test"])
+	train1 = _.shuffle(train1)
+		
+	var train2 = utterset["biased"]
+	console.mlog("number of the dialogues: train1: " + train1.length + " train2: " + train2.length)
 
-		_(folds).times(function(fold){
+//	_(folds).times(function(fold){
+	async.timesSeries(10, function(fold, next){
 
-			var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
+		var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
 
-			_.each(classifiers, function(classifier, key, list){ 
+		_(5).times(function(n){
+	
+		_.each(classifiers, function(classifier, key, list){ 
 			
 				var worker = cluster.fork({'fold': fold+n*folds, 'classifier':classifier, /*'thread': thr*/})
 		
