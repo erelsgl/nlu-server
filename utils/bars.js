@@ -3961,8 +3961,6 @@ var outputset = []
 // - filter - filter multilabel utterances (for test set)
 function processdataset(dataset, options)
 {
-  var output = []
-
   if (!("filterIntent" in options))
     throw new Error("filterIntent not in options")
 
@@ -3970,47 +3968,73 @@ function processdataset(dataset, options)
     throw new Error("filterIntent not an array")
 
   console.vlog("processdataset: initial: "+ dataset.length + " option: "+JSON.stringify(options, null, 4))
+  var output = copyobj(dataset)
 
-  _.each(dataset, function(utterance, utterance_key, list){
-    
-    var record = copyobj(utterance)
-
-    if (options.intents)
-      record['output'] = _.unique(_.keys(utterance.outputhash))
-
-    if (_.isArray(record['input']['sentences']))
-	{
-	record['input']['sentences']= {}
-    record['input']['sentences']["tokens"] = _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'tokens')))
-    record['input']['sentences']["basic-dependencies"] = _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'basic-dependencies')))
-    record['input']['sentences']["collapsed-dependencies"]= _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-dependencies')))
-    record['input']['sentences']["collapsed-ccprocessed-dependencies"] = _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-ccprocessed-dependencies')))
-   	}
-// if ((output.indexOf("Greet")==-1)&&(output.indexOf("Quit")==-1))
-    
-    output.push(record)
-  })
-
-    console.vlog("processdataset: before filter: "+ output.length)
+  if (options.intents)
+    output = _.map(output, function(num){ num['output'] = _.unique(_.keys(num.outputhash)); return num });
  
- if (options.filter)
+  if (options.filter)
     output = _.filter(output, function(num){ return num["output"].length == 1; });
     
-  console.vlog("processdataset: after filter: "+ output.length)
-
   if (options["filterIntent"].length > 0)
-  {  
-    console.vlog("processdataset: filterIntent: "+options["filterIntent"])
-    console.vlog("processdataset: filterIntent: before: "+output.length)
     output = _.filter(output, function(num){ return _.intersection(num["output"], options["filterIntent"]).length == 0 });
-    console.vlog("processdataset: filterIntent: after: "+output.length)
-  }
-
+  
+  console.log(JSON.stringify(output, null, 4))
   console.vlog("processdataset: end: "+ output.length)
-
   return output
 }
 
+// function processdataset(dataset, options)
+// {
+//   var output = []
+
+//   if (!("filterIntent" in options))
+//     throw new Error("filterIntent not in options")
+
+//   if (!_.isArray(options["filterIntent"]))
+//     throw new Error("filterIntent not an array")
+
+//   console.vlog("processdataset: initial: "+ dataset.length + " option: "+JSON.stringify(options, null, 4))
+
+//   _.each(dataset, function(utterance, utterance_key, list){
+    
+//     var record = copyobj(utterance)
+
+//     if (options.intents)
+//       record['output'] = _.unique(_.keys(utterance.outputhash))
+
+//     if (_.isArray(record['input']['sentences']))
+//     {
+//     record['input']['sentences']= {}
+//     record['input']['sentences']["tokens"] = _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'tokens')))
+//     record['input']['sentences']["basic-dependencies"] = _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'basic-dependencies')))
+//     record['input']['sentences']["collapsed-dependencies"]= _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-dependencies')))
+//     record['input']['sentences']["collapsed-ccprocessed-dependencies"] = _.compact(_.flatten(_.pluck(utterance['input']['sentences'], 'collapsed-ccprocessed-dependencies')))
+//     }
+// // if ((output.indexOf("Greet")==-1)&&(output.indexOf("Quit")==-1))
+    
+//     output.push(record)
+//   })
+
+//     console.vlog("processdataset: before filter: "+ output.length)
+ 
+//  if (options.filter)
+//     output = _.filter(output, function(num){ return num["output"].length == 1; });
+    
+//   console.vlog("processdataset: after filter: "+ output.length)
+
+//   if (options["filterIntent"].length > 0)
+//   {  
+//     console.vlog("processdataset: filterIntent: "+options["filterIntent"])
+//     console.vlog("processdataset: filterIntent: before: "+output.length)
+//     output = _.filter(output, function(num){ return _.intersection(num["output"], options["filterIntent"]).length == 0 });
+//     console.vlog("processdataset: filterIntent: after: "+output.length)
+//   }
+
+//   console.vlog("processdataset: end: "+ output.length)
+
+//   return output
+// }
 
 
 
@@ -4024,8 +4048,7 @@ function getsetcontext(dataset)
  
   _.each(dataset, function(dialogue, keyd, list){
     var processed_dialogue = []
- 	var first_employer_turn = true
-    _.each(dialogue['turns'], function(turn, keyt, list){
+ 	  _.each(dialogue['turns'], function(turn, keyt, list){
 
       if ((turn.role == "Candidate") && (('data' in turn)))
         if (rectypes.indexOf(turn.data)!=-1)
@@ -4061,12 +4084,7 @@ function getsetcontext(dataset)
         turn['outputhash'] = turn.output
         turn['output'] = hashtoar(turn.output)
 	
-	if (first_employer_turn)
-	{
-		turn['input']['context'].push("Greet")
-		first_employer_turn = false
-	}
-        var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
+	      var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
         var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
 	
         if (rephrase)
@@ -4086,7 +4104,14 @@ function getsetcontext(dataset)
 
     if (!("set" in dialogue))
       dialogue["set"] = "train"
-    
+
+   if (dialogue["set"] == "test")
+      dialogue["set"] = "train"	
+   
+   fs.writeFileSync("/tmp/dials/"+dialogue.gameid+"_normal", JSON.stringify(dialogue, null, 4), 'utf-8')
+   fs.writeFileSync("/tmp/dials/"+dialogue.gameid+"_proc", JSON.stringify(processed_dialogue, null, 4), 'utf-8')
+
+ 
     utteranceset[dialogue.set].push(processed_dialogue)
   }, this)
 
@@ -4098,7 +4123,7 @@ function getsetcontext(dataset)
 function getsetcontextadv(dataset)
 {
   var rectypes = ['AskRepeat', 'AskRephrase' ,'Reprompt' ,'Notify', 'Yield', 'Help', 'YouCanSay', 'TerseYouCanSay']
-  var utteranceset = {'train':[], 'test':[], 'unable':[]}
+  var utteranceset = {'train':[], 'test':[], 'unable':[], 'biased':[]}
   var context = []
  
   _.each(dataset, function(dialogue, key, list){
@@ -4130,6 +4155,7 @@ _.each(dialogue['turns'], function(turn, key, list){
         record['input']['context'] = context
         record['outputhash'] = turn.output
         record['output'] = hashtoar(turn.output)
+        record['type'] = "normal"
           
         if  (nextrepr)
         {
@@ -4152,20 +4178,23 @@ _.each(dialogue['turns'], function(turn, key, list){
     //    var QueryIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab)).indexOf('Query') == -1});
 	
           //if ((QuitIndex==-1) && (GreetIndex==-1))
-          if ((_.keys(record['outputhash']).indexOf("Greet")==-1) && (_.keys(record['outputhash']).indexOf("Quit")==-1))
-          {
+ //         if ((_.keys(record['outputhash']).indexOf("Greet")==-1) && (_.keys(record['outputhash']).indexOf("Quit")==-1))
+   //       {
           processed_dialogue.push(record)
           mainturn = record
-          }
+     //     }
 
 	nextrepr = false
         }
       }
     },  this)
 
-    if (!("set" in dialogue))
+   if (!("set" in dialogue))
       dialogue["set"] = "train"
-    
+
+   if (dialogue["set"] == "test")
+      dialogue["set"] = "train"
+
     utteranceset[dialogue.set].push(processed_dialogue)
   }, this)
 
@@ -4223,6 +4252,72 @@ function hashtoar(hash)
 
 // {\"Reject\":true}",
 // "{\"Reject\":{\"Leased Car\":\"With leased car\"}}"
+
+
+function logicfilter(labels)
+{
+var hash = {
+  'Offer':{},
+  'Accept':{},
+  'Reject':{},
+  'Query':{},
+  'Greet':{},
+  'Quit':{}
+}
+ 
+ var issues = {
+  'Salary': ['60,000 USD','90,000 USD','120,000 USD'],
+  'Pension Fund': ['0%','10%','15%','20%'],
+  'Promotion Possibilities': ['Slow promotion track','Fast promotion track'],
+  'Working Hours': ['10 hours', '9 hours', '8 hours'],
+  'Job Description': ['QA','Programmer','Team Manager','Project Manager'],
+  'Leased Car': ['Without leased car', 'No agreement', 'With leased car']
+}
+
+var rigthOrder = {"Offer":1, "Accept":1}
+
+_.each(labels, function(label, key, list){
+  label = JSON.parse(label)
+  console.log(JSON.stringify(label, null, 4))
+  var intent = _.keys(label)[0]
+  var attval = _.values(label)[0]
+  console.log("intent:" + intent + "attr: "+attr)
+  if (_.isObject(attval))
+  {
+    var attr = _.keys(attval)[0]
+    var val = _.values(attval)[0]
+   if (!(attr in hash[intent]))
+    hash[intent][attr] = []
+   hash[intent][attr].push([val, issues[attr].indexOf(val)])
+  }
+  else
+  {
+    var attr = label[intent]
+    hash[intent][attr] = 1
+  }
+}, this)
+
+// console.log(JSON.stringify(hash, null, 4))
+
+var labels = []
+
+_.each(hash, function(value, intent, list){
+  if (_.isObject(value))
+  {
+    _.each(value, function(values, attr, list){
+        if (intent in rigthOrder)
+          hash[intent][attr] = _.sortBy(hash[intent][attr], function(num){ return num[1] })
+        else
+          hash[intent][attr] = _.sortBy(hash[intent][attr], function(num){ return num[1] }).reverse()
+        
+        labels.push({intent:{attr:hash[intent][attr][0]}})
+
+    }, this)
+  }
+}, this)
+
+return hash
+}
 
 function coverfilter(labels)
 {
@@ -4564,7 +4659,7 @@ function gettrans(turns, pat)
 
 	  }
 	  else
-		  console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"]+" sentences: "+roots)
+		  console.vlog("gettrans: turn "+key+ " is skipped intents: "+turn["output"]+" sentences: ")
   }, this)
 
   console.vlog("gettrans: output.length: " + output.length)  
@@ -5778,7 +5873,7 @@ function convertObject(label)
   var obj = {}
   var param = ""
 
-	console.vlog("convertObject:"+label)	
+	console.mlog("convertObject:"+label)	
   
 if (label.indexOf("_")!=-1)
   {
@@ -5789,8 +5884,8 @@ if (label.indexOf("_")!=-1)
     return label
 
 
-	console.vlog("convertObject: obj: "+obj)	
-	console.vlog("convertObject: param: "+param)	
+	console.mlog("convertObject: obj: "+JSON.stringify(obj, null, 4))	
+	console.mlog("convertObject: param: "+param)	
 	
 
   try {
@@ -5801,7 +5896,7 @@ if (label.indexOf("_")!=-1)
     return label
     }
 	
-console.vlog("convertObject: obj: "+obj)	
+console.mlog("convertObject: obj: "+JSON.stringify(obj, null, 4))	
  
   if (_.isObject(obj))
   {
@@ -5810,20 +5905,29 @@ console.vlog("convertObject: obj: "+obj)
     if (_.isObject(obj[intent]))
     {
       attr = _.keys(obj[intent])[0]
-      value = obj[intent][attr].replace(/ /g,"-")
+      value = obj[intent][attr]
     }
     else
     attr = obj[intent]
 
-
-// workaround for true
+    if (!_.isString(attr))
 	attr = JSON.stringify(attr)
 
-    return intent.replace(/ /g,"-") + "-" + attr.replace(/ /g,"-") + "-" + value+"_"+param
+	
+	console.mlog("convertObject: intent: "+intent+" attr:"+attr+" value:"+value)
+
+	var ret = intent.replace(/ /g,"-") + "-" + attr.replace(/ /g,"-") + "-" + value.replace(/ /g,"-")+"_"+param
+	console.mlog("convertObject: return: "+JSON.stringify(ret, null, 4))
+
+    return ret
     
   }
   else
-    return label+"_"+param
+	{
+	var ret = label+"_"+param
+	console.mlog("convertObject: return: "+JSON.stringify(ret, null, 4))
+    return ret
+	}
 }
 
 function compactStats(stats)
@@ -5874,6 +5978,19 @@ function vecextremum(matrix)
 
   return resultvec
 }
+
+function sbdd(longsentence)
+{
+  var options =  { 
+                   "newline_boundaries" : false,
+                   "html_boundaries"    : false,
+                   "sanitize"           : false,
+                   "allowed_tags"       : false,
+                   "abbreviations"      : null
+                 }
+  return sbd.sentences(longsentence, options)
+}
+
 
 function enrichparse(dataset)
 {
@@ -6048,5 +6165,7 @@ cleanRecord:cleanRecord,
 write_wilcoxon:write_wilcoxon,
 gettransbest:gettransbest,
 enrichparse:enrichparse,
-walkSync:walkSync
+walkSync:walkSync,
+sbdd:sbdd,
+logicfilter:logicfilter
 }

@@ -206,7 +206,7 @@ if (cluster.isMaster)
 	var folds = 5
 	
 	//var classifiers = [ "Natural_Neg", "_All_together", "_Hungarian", "_Portuguese", "_Russian", "_Arabic"]
-	var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "Portuguese", "Russian", "Arabic"]
+	var classifiers = [ "Natural_Neg", "All_together", "Hungarian", "Portuguese", "Russian", "Arabic", "Chinese"]
 	//var classifiers = [ "Natural_Neg", "Hungarian"]
 	var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../switch/dataset.json")))
 	//var train1 = (JSON.parse(fs.readFileSync(__dirname+"/../nps/dataset.json")))
@@ -251,6 +251,8 @@ if (cluster.isMaster)
 	var train2 = _.shuffle(train1)
 	train2 = _.shuffle(train2)
 	train2 = _.shuffle(train2)
+
+        fs.writeFileSync("/tmp/switch.json", JSON.stringify(train2, null, 4))
 
 	_(folds).times(function(fold){
 

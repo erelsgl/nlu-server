@@ -19,40 +19,31 @@ console.mlog = function(data) { fs.appendFileSync("./logs/master", data + '\n', 
 
 if (cluster.isWorker)
 	process.on('message', function(message) {
-
-    	console.vlog('DEBUG: worker ' + process.pid + ' received message from master.')
 	
 	var train = JSON.parse(message['train'])
 	var test  = JSON.parse(message['test'])
 
-        var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
-        //var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Quit","Greet"], "filter":false})
-        var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
-        //var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Quit","Greet"], "filter":true})
-   
-	_.each(test, function(turn, key, list){ delete test[key]["input"]["trans"] }, this)
-	_.each(train, function(turn, key, list){ delete test[key]["input"]["trans"] }, this)
+   	var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":['Quit', 'Greet'], "filter":false})
+   	//var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
+    	var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":['Quit', 'Greet'], "filter":true})
+    	//var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
+    
+	console.vlog("DEBUG: train.length="+train.length + " test.length="+test.length)
 
-	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length)
-
-	var index = 5
+	var index = 10
 
 	async.whilst(
-	    function () { return index < train.length },
-	    //function () { return index < 70 },
+	    function () { return index <= train.length },
 	    function (callbackwhilst) {
 
 		async.waterfall([
     		function(callbacks) {
 
-        		//if (index == 0) index = 3
-			//if (index < 10) index +=1
-	
     		var mytrain = train.slice(0, index)
-		index += 5
+			index += 10
 	
-		var mytrainex = JSON.parse(JSON.stringify(mytrain))
-    		var mytestex = JSON.parse(JSON.stringify(test))
+			var mytrainex = _.flatten(JSON.parse(JSON.stringify(mytrain)))
+    		var mytestex = _.flatten(JSON.parse(JSON.stringify(test)))
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
 				" train_dialogue="+mytrain.length+" train_turns="+_.flatten(mytrainex).length+
@@ -67,7 +58,6 @@ if (cluster.isWorker)
 
     		},
     		function(mytrainex, mytestex, trainsize, callback) {
-
 		
 			console.vlog("DEBUGPRETRAIN: classifier:"+classifier+" mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
 			
@@ -115,12 +105,13 @@ if (cluster.isMaster)
 
 //	var classifiers = ["Unigram", "Unigram_Lemma", "Unigram+Context", "Unigram_Lemma+Context", "Unigram+Context+Neg", 'Unigram+Neg']
 //	var classifiers = [ "Unigram", "Unigram+Context", "Unigram+Neg", "Unigram+Context+Neg" ]
-	var classifiers = [ "Unigram", "Unigram+Context", "Context" ]
+	//var classifiers = [ "Unigram_SVM", "Unigram+Context_SVM", "Unigram+ContextFull_SVM","Unigram_ADA", "Unigram+Context_ADA", "Unigram+ContextFull_ADA"]
+	var classifiers = [ "Unigram+Context_SVM", "Unigram_SVM", "Unigram+Context_ADA", "Unigram_ADA", "Unigram+Context_RF", "Unigram_RF"]
+// "Unigram_RF", "Unigram+Context_RF" ]
 //	var classifiers = [ "Natural_Neg", "Natural_Neg_Svm" ]
 //	var classifiers = [ "Natural_SVM_Context", "Natural_RF_Context", "Natural_ADA_Context" ]
-
 	
-	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin.json")))
+	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased.json")))
  	var utterset1 = bars.getsetcontext(data1, false)
 	var train1 = utterset1["train"].concat(utterset1["test"])
 
@@ -144,15 +135,12 @@ if (cluster.isMaster)
 			console.mlog("DEBUGMASTER: class: "+classifier+" fold:"+ fold + " train size:"+data.train.length + " test size:" + data.test.length)
 			console.mlog("DEBUGMASTER: process.pid:"+worker.process.pid)
 
-			worker.send({ 		
-				'train': JSON.stringify(data.test), 
-				'test': JSON.stringify(data.train)
-		     		})
+			worker.send({'train': JSON.stringify(data.test),'test': JSON.stringify(data.train)})
 			
 			worker.on('disconnect', function(){
 			  	console.mlog("DEBUGMASTER: finished: workers.length: "+Object.keys(cluster.workers).length )
 				//disc += 1
-			  	//if (Object.keys(cluster.workers).length == 1)
+			  	if (Object.keys(cluster.workers).length == 1)
 			  	_.each(stat, function(data, param, list){
 					lc.plotlc('average', param, stat, lcfolder)
 				})
