@@ -145,12 +145,15 @@ function trans()
 
 	async.eachOfSeries(dataset, function(value, keyd, callback2){ 
 			
-		if (value["input"]["text"].length < 5) callback2()
-		else if (!("trans" in value["input"])) callback2()
+//		if (value["input"]["text"].length < 5) callback2()
+//		else if (!("trans" in value["input"])) callback2()
 //		if (["Yes-No-Question", "Agree_Accept", "Hedge", "Conventional-closing", "Appreciation", "Statement-opinion"].indexOf(value["output"][0])) 
-		else
+//		else
 		{
-			var trans = value["input"]["trans"]
+			var trans = {}
+			if ("trans" in value["input"])
+				trans = value["input"]["trans"]
+				
 			console.log(keyd)
 			async.eachOfSeries(generator(), function(composition, key, callback3){
 
