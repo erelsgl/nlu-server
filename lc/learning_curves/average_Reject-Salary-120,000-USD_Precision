@@ -1,4 +1,7 @@
 size	dial	Natural	Undersampled	Oversampled	Biased_with_rephrase	Biased_no_rephrase
+10	10	null	null	null	0	null
+15	15	null	null	null	0	null
+20	20	null	null	null	0	null
 25	25	null	null	null	0	null
 30	30	null	null	null	0	null
 35	35	null	null	null	0	null

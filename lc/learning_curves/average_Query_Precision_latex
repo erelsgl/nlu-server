@@ -19,7 +19,7 @@
 \addlegendentry{Oversampled}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,0.6451995798319328)
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)
 };
 \addlegendentry{Biased\_with\_rephrase}
 
