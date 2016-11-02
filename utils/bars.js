@@ -4084,8 +4084,8 @@ function getsetcontext(dataset)
         turn['outputhash'] = turn.output
         turn['output'] = hashtoar(turn.output)
 	
-	      var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
-        var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
+//	      var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
+  //      var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
 	
         if (rephrase)
           turn['type'] = "rephrase"
@@ -4099,6 +4099,7 @@ function getsetcontext(dataset)
         // }
         // else
           rephrase = false
+	  context = []
       }
     }, this)
 
@@ -4108,9 +4109,6 @@ function getsetcontext(dataset)
    if (dialogue["set"] == "test")
       dialogue["set"] = "train"	
    
-   fs.writeFileSync("/tmp/dials/"+dialogue.gameid+"_normal", JSON.stringify(dialogue, null, 4), 'utf-8')
-   fs.writeFileSync("/tmp/dials/"+dialogue.gameid+"_proc", JSON.stringify(processed_dialogue, null, 4), 'utf-8')
-
  
     utteranceset[dialogue.set].push(processed_dialogue)
   }, this)
@@ -4642,7 +4640,7 @@ function gettrans(turns, pat)
           record["input"]["text"] = tran
           delete record["input"]["sentences"]
           record["input"]["sentences"] = {}  
- 	        delete record["input"]["trans"]
+ 	  delete record["input"]["trans"]
           record["input"]["source"] = turn.translation_id
           // output.push(record)
           output_temp.push(record)
