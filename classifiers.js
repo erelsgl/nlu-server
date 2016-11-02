@@ -1738,10 +1738,11 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 			values.push(_.values(_.values(obj)[0])[0])
 	}, this)
 
+	values = _.map(values, function(num){ return num.toLowerCase() });
 	console.vlog("DEBUGCONTEXT: extracted values "+values)
 
 	_.each(attrval[1], function(value, key, list){
-	if (values.indexOf(value[0])!=-1)
+	if (values.indexOf(value[0].toLowerCase())!=-1)
 		features['OFFEREDVALUE'] = 1
 	else
 		features['UNOFFEREDVALUE'] = 1
