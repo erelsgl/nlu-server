@@ -90,7 +90,7 @@ process.on('message', function(message) {
 
 			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent":["Greet", "Quit"], "filter":true})
 	
-		var baseline_cl = classifiers["Unigram+Context_SVM"]
+		var baseline_cl = classifiers["Unigram+Context+Lemma_SVM"]
 
 /*		if (classifier.indexOf("25")!=-1)
                      baseline_cl = classifiers.NLU_Emb_25
