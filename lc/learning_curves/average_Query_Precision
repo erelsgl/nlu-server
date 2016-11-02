@@ -7,9 +7,9 @@ size	dial	Natural	Undersampled	Oversampled	Biased_with_rephrase	Biased_no_rephra
 30	30	null	null	null	null	null	null	null
 35	35	null	null	null	null	null	null	null
 40	40	null	null	null	null	null	null	null
-45	45	null	null	null	null	null	null	null
-50	50	null	null	null	0.5551550659700758	null	null	null
-55	55	null	null	null	0.5573795196777886	null	null	null
-60	60	null	null	null	0.5641642511371249	0.5943338949273201	null	null
-65	65	null	null	null	0.568282879471781	0.6110878263058636	null	null
-70	70	0.6248188405797102	0.40954479834750324	0.6248188405797102	0.5822100383865562	0.6187652691375833	0.5147800695587745	null
+45	45	null	null	null	null	null	null	0.6524339041745588
+50	50	null	null	null	null	null	null	0.6315112633708453
+55	55	null	null	null	null	null	null	0.6373573437818347
+60	60	null	null	null	0.655990954587183	null	null	0.6591791740784317
+65	65	null	null	null	0.6526576212538497	null	null	0.6551364070478599
+70	70	null	null	null	0.6616164577819345	null	null	0.6723676626937497
