@@ -1,6 +1,5 @@
 // this is the coling version of bias collection
 
-
 var cluster = require('cluster');
 var async = require('async')
 var _ = require('underscore')._;
@@ -42,13 +41,15 @@ process.on('message', function(message) {
 	    async.waterfall([
     	function(callbacks) {
 
-			if (index < 5)
-			{ index +=5 }
-			else if (index<10)
-			{ index += 5} 
-			else if (index<20)
-			{ index += 5 }
-			else index += 5
+    		index += 5
+
+			// if (index < 5)
+			// { index +=5 }
+			// else if (index<10)
+			// { index += 5} 
+			// else if (index<20)
+			// { index += 5 }
+			// else index += 5
 
 	       	var mytrain = bars.copyobj(train.slice(0, index))
 	       	var mytrainex =  bars.copyobj(mytrain)
@@ -77,6 +78,8 @@ process.on('message', function(message) {
 					console.vlog(JSON.stringify(out, null, 4))
 					callbacks(null, out, mytestex, mytrainex.length);
 					break;
+				case "Biased_no_rephrase_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi|zh):.*"), mytestex, mytrainex.length); break;
+				case "Natural_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi|zh):.*"), mytestex, mytrainex.length); break;
 				case "Natural_Trans_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
 				case "Balanced_Trans_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
 				case "Balanced_Trans_Microsoft_Google": callbacks(null, bars.gettrans(mytrainex, "M:.*:G"), mytestex, mytrainex.length); break;
@@ -159,7 +162,9 @@ if (cluster.isMaster)
 	//var classifiers = [ 'Natural', 'Balanced', 'Balanced_Embed_25', 'Balanced_Embed_50', 'Balanced_Embed_100']
 	//var classifiers = [ 'Natural', 'Balanced', 'Natural_Trans', 'Balanced_Trans', 'Natural_Emb', 'Balanced_Emb', 'Natural_Trans_Emb', 'Balanced_Trans_Emb']
 	//var classifiers = [ 'Natural', 'Biased_no_rephrase', 'Trans_Google', 'Trans_Microsoft', 'Trans_Yandex']
-	var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase']
+	var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase'
+						,'Biased_no_rephrase_All_Lang', 'Natural_All_Lang']
+	
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	//var classifiers = [ 'Natural','Natural_trans']
 	
@@ -205,15 +210,20 @@ if (cluster.isMaster)
                          " process: "+worker.process.id)
 
 				var train2sam = _.flatten(_.sample(bars.copyobj(train2), 10))
+
 				//var train2sam_no_reph = _.filter(bars.copyobj(train2sam), function(num){ return num.type == "normal" });
-
 				//console.mlog("DEBUGMASTER: with rephrases: "+train2sam.length + " without:"+train2sam_no_reph.length)
-
-				_.each(train2sam, function(value, key, list){ delete value["trans"]}, this)
+				// _.each(train2sam, function(value, key, list){ delete value["trans"]}, this)
 			
 				var train = []
 
-				if (classifier == "Biased_with_rephrase")
+				if (classifier.indexOf("Biased")!=-1)
+					train = bars.copyobj(train2sam)
+				else
+					train = bars.copyobj(data.test)
+
+
+/*				if (classifier == "Biased_with_rephrase")
 					train = bars.copyobj(train2sam)
 				else if (classifier == "Biased_no_rephrase")
 					//train = bars.copyobj(train2sam_no_reph)	
@@ -226,7 +236,7 @@ if (cluster.isMaster)
 					}		
 				else
 					train = bars.copyobj(data.test)
-
+*/
 				//var max = _.min([_.flatten(data.test).length, _.flatten(train2sam_no_reph).length])
 				// var max = _.min([_.flatten(data.test).length, _.flatten(train2sam).length])
 			//	max = max - max % 10			
