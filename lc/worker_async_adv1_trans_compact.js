@@ -60,22 +60,6 @@ process.on('message', function(message) {
 
 			switch(classifier) {
 
-
-				case "Biased_with_rephrase":
-					
-					console.vlog("Biased_with_rephrase: train len: "+mytrainex.length)
-					var newtrain = []
-					_.each(mytrainex, function(value, key, list){
-						newtrain.push(value)
-						newtrain = newtrain.concat(value["rephrases"])
-					}, this)
-					newtrain = _.compact(newtrain)
-					console.vlog("Biased_with_rephrase: train len: "+newtrain.length)
-
-					callbacks(null, newtrain, mytestex, mytrainex.length)
-
-
-
    				case "Biased_no_rephrase_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi|zh):.*"), mytestex, mytrainex.length); break;
 				case "Natural_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi|zh):.*"), mytestex, mytrainex.length); break;				
 				
@@ -102,9 +86,9 @@ process.on('message', function(message) {
 		},
     		function(mytrainex, mytestex, trainsize, callback) {
 
-			// mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent":["Greet", "Quit"], "filter":true})
+			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent":["Greet", "Quit"], "filter":true})
 	
-		var baseline_cl = classifiers["Natural_Unigram+Context_SVM"]
+		var baseline_cl = classifiers["Unigram+Context_SVM"]
 
 /*		if (classifier.indexOf("25")!=-1)
                      baseline_cl = classifiers.NLU_Emb_25
@@ -114,7 +98,7 @@ process.on('message', function(message) {
                      baseline_cl = classifiers.NLU_Emb_100
 */  
 
-		if (classifier.indexOf("Emb")!=-1)
+		/*if (classifier.indexOf("Emb")!=-1)
 		{
 
 			if (!(classifier in classifiers))
@@ -125,7 +109,7 @@ process.on('message', function(message) {
 				console.vlog("WORKER: "+classifier+" is applied")
 				}
               	}
-	    	// trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
+	    */	// trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
     		trainAndTest.trainAndTest_async(baseline_cl, bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
 
 		    	console.vlog("DEBUG: worker "+process["pid"]+": traintime="+
@@ -183,7 +167,7 @@ if (cluster.isMaster)
 	// silent: false
 	});
 
-	async.timesSeries(10, function(n, next){
+	async.timesSeries(3, function(n, next){
 
 		// var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json"))
 		// console.mlog("number of unprocessed dialogues: "+data1.length)
@@ -198,10 +182,11 @@ if (cluster.isMaster)
 
 		var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased.json"))
 		console.mlog("number of unprocessed dialogues: "+data.length)
-		//var utterset = bars.getsetcontext(data)
-		var utterset = bars.getsetcontextadv(data)
-		
+		var utterset = bars.getsetcontext(data)
+
 		var train1 = utterset["train"].concat(utterset["test"])
+		train1 = _.shuffle(train1)
+
 		var train2 = utterset["biased"]
 		console.mlog("number of the dialogues: train1: " + train1.length + " train2: " + train2.length)
 
@@ -218,24 +203,22 @@ if (cluster.isMaster)
                          		     " process: "+worker.process.id)
 
 				var train2sam = _.flatten(_.sample(bars.copyobj(train2), 10))
-				//var train2sam_no_reph = _.filter(bars.copyobj(train2sam), function(num){ return num.type == "normal" });
+				var train2sam_no_reph = _.filter(bars.copyobj(train2sam), function(num){ return num.type == "normal" });
 
-				console.mlog("DEBUGMASTER: with rephrases: "+train2sam.length)
-				//console.mlog("DEBUGMASTER: with rephrases: "+train2sam.length + " without:"+train2sam_no_reph.length)
+				console.mlog("DEBUGMASTER: with rephrases: "+train2sam.length + " without:"+train2sam_no_reph.length)
 
 				var train = []
 
 				if (classifier.indexOf("with_rephrase") != -1)
 					train = bars.copyobj(train2sam)
 				else if (classifier.indexOf("no_rephrase") != -1)
-					//train = bars.copyobj(train2sam_no_reph)	
-					train = bars.copyobj(train2sam)	
-				else if (classifier.indexOf("Balance")!=-1)
-					{
-					console.mlog("DEBUGMASTER: classifier: "+classifier+" its balanced")
+					train = bars.copyobj(train2sam_no_reph)	
+				// else if (classifier.indexOf("Balance")!=-1)
+					// {
+// /					console.mlog("DEBUGMASTER: classifier: "+classifier+" its balanced")
 					//train = bars.copyobj(train2sam_no_reph)
-					train = bars.copyobj(train2sam)
-					}		
+					// train = bars.copyobj(train2sam)
+					// }		
 				else
 					train = bars.copyobj(data.test)
 
