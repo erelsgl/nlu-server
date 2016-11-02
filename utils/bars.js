@@ -3970,6 +3970,31 @@ function processdataset(dataset, options)
   console.vlog("processdataset: initial: "+ dataset.length + " option: "+JSON.stringify(options, null, 4))
   var output = copyobj(dataset)
 
+  if (options.lemma)
+  {
+    _.each(dataset, function(turn, key, list){
+      if (!fs.existsSync(__dirname+"/../json/"+md5(turn["input"]["text"])+".json"))
+      {
+        var lemmas = []
+        var word = []
+        
+        var sen = JSON.parse(fs.readFileSync(__dirname+"/../json/"+md5(turn["input"]["text"])+".json"))
+
+        _.each(sen["sentences"], function(senten, key, list){
+          lemmas = lemmas.concat(_.pluck(senten["tokens"], "lemma"))
+          word = word.concat(_.pluck(senten["tokens"], "word"))
+        }, this)
+
+        dataset["key"]["input"]["lemma"] = _.flatten(lemmas)  
+        dataset["key"]["input"]["word"] = _.flatten(word)  
+      }
+      else
+      {
+        throw new Error("no file")
+      }
+    }, this)
+  }
+
   if (options.intents)
     output = _.map(output, function(num){ num['output'] = _.unique(_.keys(num.outputhash)); return num });
  
@@ -4084,8 +4109,8 @@ function getsetcontext(dataset)
         turn['outputhash'] = turn.output
         turn['output'] = hashtoar(turn.output)
 	
-//	      var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
-  //      var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
+	      var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
+        var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
 	
         if (rephrase)
           turn['type'] = "rephrase"
@@ -4099,7 +4124,6 @@ function getsetcontext(dataset)
         // }
         // else
           rephrase = false
-	  context = []
       }
     }, this)
 
@@ -4109,6 +4133,9 @@ function getsetcontext(dataset)
    if (dialogue["set"] == "test")
       dialogue["set"] = "train"	
    
+   fs.writeFileSync("/tmp/dials/"+dialogue.gameid+"_normal", JSON.stringify(dialogue, null, 4), 'utf-8')
+   fs.writeFileSync("/tmp/dials/"+dialogue.gameid+"_proc", JSON.stringify(processed_dialogue, null, 4), 'utf-8')
+
  
     utteranceset[dialogue.set].push(processed_dialogue)
   }, this)
@@ -4640,7 +4667,7 @@ function gettrans(turns, pat)
           record["input"]["text"] = tran
           delete record["input"]["sentences"]
           record["input"]["sentences"] = {}  
- 	  delete record["input"]["trans"]
+ 	        delete record["input"]["trans"]
           record["input"]["source"] = turn.translation_id
           // output.push(record)
           output_temp.push(record)
@@ -5988,7 +6015,6 @@ function sbdd(longsentence)
                  }
   return sbd.sentences(longsentence, options)
 }
-
 
 function enrichparse(dataset)
 {
