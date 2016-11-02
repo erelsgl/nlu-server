@@ -30,6 +30,8 @@ var ftrs = limdu.features;
 var md5 = require('md5');
 var sbd = require('sbd');
 
+var setorder = true
+// var shuf = true
 var sortlang = false
 var omitbaidu = false
 
@@ -77,7 +79,7 @@ var check_version4 = false
 
 var best_dial = false
 
-var composite_ds = true
+var composite_ds = false
 
 var finalization = false
 
@@ -2361,6 +2363,178 @@ if (composite_ds)
 	})
 }
 
+
+if (setorder)
+{
+
+	var ord = [
+    "2015-09-17T18:41:18.693Z",
+    "2015-09-12T13:05:29.853Z",
+    "2015-10-07T11:13:41.079Z",
+    "2015-10-10T11:39:30.205Z",
+    "2015-09-13T17:16:18.140Z",
+    "2015-09-19T12:19:36.703Z",
+    "2015-09-19T11:58:06.364Z",
+    "2015-10-05T07:44:11.307Z",
+    "2015-10-09T04:57:02.346Z",
+    "2015-09-19T09:23:15.848Z",
+    "2015-10-06T10:50:24.770Z",
+    "2015-10-05T05:55:13.987Z",
+    "2015-09-16T10:56:44.191Z",
+    "2015-10-10T12:01:41.675Z",
+    "2015-09-25T13:09:15.348Z",
+    "2015-10-08T11:11:24.713Z",
+    "2015-09-21T07:43:08.168Z",
+    "2015-10-05T06:07:59.616Z",
+    "2015-09-13T16:30:38.172Z",
+    "2015-10-04T12:14:35.468Z",
+    "2015-09-28T06:58:22.802Z",
+    "2015-09-24T12:16:53.429Z",
+    "2015-10-10T09:27:09.800Z",
+    "2015-10-09T05:22:54.474Z",
+    "2015-10-05T15:38:07.972Z",
+    "2015-09-15T09:40:14.287Z",
+    "2015-09-16T17:05:19.262Z",
+    "2015-09-13T16:18:49.506Z",
+    "2015-10-08T10:18:51.601Z",
+    "2015-09-18T15:24:16.541Z",
+    "2015-09-19T13:54:19.834Z",
+    "2015-10-03T16:13:03.997Z",
+    "2015-09-17T16:28:43.721Z",
+    "2015-09-30T13:47:38.287Z",
+    "2015-09-23T12:09:37.307Z",
+    "2015-10-08T11:58:32.222Z",
+    "2015-10-02T19:41:23.280Z",
+    "2015-10-09T05:08:30.159Z",
+    "2015-10-10T10:34:50.918Z",
+    "2015-09-15T15:10:27.812Z",
+    "2015-09-30T10:49:12.637Z",
+    "2015-09-23T13:05:13.325Z",
+    "2015-09-14T07:03:58.292Z",
+    "2015-09-11T17:35:26.992Z",
+    "2015-09-17T16:14:31.318Z",
+    "2015-10-09T12:48:22.053Z",
+    "2015-09-14T07:18:37.035Z",
+    "2015-09-18T04:38:09.084Z",
+    "2015-10-05T07:25:51.560Z",
+    "2015-10-05T08:33:59.270Z",
+    "2015-09-30T04:15:04.939Z",
+    "2015-09-14T13:47:20.459Z",
+    "2015-09-14T17:29:57.683Z",
+    "2015-10-06T08:51:03.680Z",
+    "2015-09-25T17:43:05.825Z",
+    "2015-10-09T17:52:52.340Z",
+    "2015-09-16T09:01:10.966Z",
+    "2015-10-02T19:14:46.922Z",
+    "2015-09-25T11:05:29.581Z",
+    "2015-09-29T09:50:19.502Z",
+    "2015-10-10T11:00:58.122Z",
+    "2015-10-07T18:44:02.089Z",
+    "2015-09-15T05:11:50.908Z",
+    "2015-09-20T09:35:57.906Z",
+    "2015-09-26T13:26:21.444Z",
+    "2015-09-30T04:49:50.455Z",
+    "2015-10-08T11:52:32.763Z",
+    "2015-09-17T08:44:34.166Z",
+    "2015-09-20T16:55:21.830Z",
+    "2015-10-01T14:34:28.345Z",
+    "2015-10-05T05:34:58.243Z",
+    "2015-09-15T08:39:42.258Z",
+    "2015-09-25T13:22:58.001Z",
+    "2015-09-24T12:38:05.222Z",
+    "2015-10-09T18:32:33.022Z",
+    "2015-10-09T17:43:21.445Z",
+    "2015-09-23T09:08:01.722Z",
+    "2015-09-25T11:56:07.822Z",
+    "2015-09-11T16:13:59.161Z",
+    "2015-10-04T11:39:15.034Z",
+    "2015-10-03T05:14:02.719Z",
+    "2015-09-14T07:30:42.527Z",
+    "2015-09-20T04:48:19.275Z",
+    "2015-10-04T19:34:42.100Z",
+    "2015-10-04T19:52:47.352Z",
+    "2015-09-14T10:46:52.370Z",
+    "2015-09-19T14:57:19.855Z",
+    "2015-09-26T08:22:12.018Z",
+    "2015-09-30T08:39:27.547Z",
+    "2015-09-25T10:40:58.954Z",
+    "2015-09-30T13:36:43.523Z",
+    "2015-09-14T10:01:35.995Z",
+    "2015-09-30T14:30:57.372Z",
+    "2015-09-23T13:20:05.605Z",
+    "2015-09-23T07:30:27.834Z",
+    "2015-09-19T14:11:23.061Z",
+    "2015-10-06T11:55:52.347Z",
+    "2015-09-15T07:22:25.346Z",
+    "2015-09-20T08:47:16.558Z",
+    "2015-09-28T13:07:03.687Z"
+]
+
+
+	var hashdial = {}
+	var data = (JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json")))
+	var dials = []
+
+	_.each(data, function(dialogue, key, list){
+		hashdial[dialogue.gameid] = dialogue
+	}, this)
+
+	_.each(ord, function(value, key, list){
+		dials.push(bars.copyobj(hashdial[value]))
+		delete hashdial[value]
+	}, this)
+
+	dials = dials.concat(_.values(hashdial))
+	
+	console.log(JSON.stringify(dials.length, null, 4))
+	console.log(JSON.stringify(dials, null, 4))
+	process.exit(0)
+}
+
+
+if (shuf)
+{
+	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json")))
+	var utterset1 = bars.getsetcontext(data1, false)
+	var train = utterset1["train"].concat(utterset1["test"])
+	var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":['Quit', 'Greet'], "filter":true})
+
+	console.log(JSON.stringify(train.length, null, 4))
+	var stats = _.countBy(train, function(num) { return num.gameid });
+	console.log(JSON.stringify(stats, null, 4))
+	console.log(_.keys(stats).length)
+
+	var ar = _.pairs(stats)
+	console.log(JSON.stringify(ar, null, 4))
+
+	// process.exit(0)
+
+	var OK=false
+	while (!OK)
+	{
+		ar = _.shuffle(ar)
+		console.log(JSON.stringify(ar, null, 4))
+		var temar = bars.copyobj(ar)
+
+		var realOK = true
+		_(10).times(function(n){ 
+
+			var b = temar.splice(0,10)
+			var sum = _.reduce(b, function(memo, num){ return memo + num[1]; }, 0);
+			console.log("time: " +n +" sum: "+sum)
+			if (sum < 115) realOK=false
+		});
+
+		if (realOK)
+		{
+			ar = _.map(ar, function(num){ return num[0] });
+			console.log(JSON.stringify(ar, null, 4))
+			process.exit(0)
+		}
+
+
+	}
+}
 
 if (check_ds)
 {
