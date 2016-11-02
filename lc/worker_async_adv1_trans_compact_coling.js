@@ -72,9 +72,7 @@ process.on('message', function(message) {
 					}, this)		
 					out = _.compact(out)
 					console.vlog("COLLING: with rephrases "+out.length);
-	
-					_.each(out, function(value, key, list){ delete value["input"]["trans"]}, this)
-	
+		
 					console.vlog(JSON.stringify(out, null, 4))
 					callbacks(null, out, mytestex, mytrainex.length);
 					break;
