@@ -1701,7 +1701,7 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 	console.vlog("DEBUGCONTEXT: text : "+ sample.text)	
 	console.vlog("DEBUGCONTEXT: context " + JSON.stringify(context) + " train "+train+" featureOptions "+JSON.stringify(featureOptions))
 
-	var intents = ["Offer", "Accept", "Reject", "Query", "Greet", "Quit"]
+/*	var intents = ["Offer", "Accept", "Reject", "Query", "Greet", "Quit"]
 	_.each(intents, function(intent, key, list){
 		features["INTENT_"+intent] = 0
 	}, this)
@@ -1714,7 +1714,7 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 		var intent = _.keys(label)[0]
 		features["INTENT_"+intent] = 1
 	}, this)		
-
+*/
 	var attrval = getRule({}, sample.text).labels
 
 	var intents = []
@@ -2608,13 +2608,12 @@ module.exports = {
 		// INITIAL
 		//"Component+Context": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': true, 'unoffered':true, 'offered':true,}),
 		"Component": enhance(SvmLinearBinaryClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': true, 'full':true}),		
-		"MYMO": enhance(SvmLinearBinaryRelevanceClassifier, [ feAsyncStanford ], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': false}),
-		"Natural_Unigram_SVM": enhance(SvmLinearBinaryRelevanceClassifier, [ feAsyncStanford ], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': false}),
-		"Natural_Unigram+Context_SVM": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': false, 'full':true,}),
-		"Natural_Unigram_ADA": enhance(scikitadaboost, [ feAsyncStanford ], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': false}),
-		"Natural_Unigram+Context_ADA": enhance(scikitadaboost, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': false, 'full':true}),
-		"Natural_Unigram_RF": enhance(scikitrandomforest, [ feAsyncStanford ], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': false}),
-		"Natural_Unigram+Context_RF": enhance(scikitrandomforest, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': false, 'full': true}),
+		"Natural_Unigram_SVM": enhance(SvmLinearBinaryRelevanceClassifier, [ feAsyncStanford ], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': true}),
+		"Natural_Unigram+Context_SVM": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': true, 'full':false,}),
+		"Natural_Unigram_ADA": enhance(scikitadaboost, [ feAsyncStanford ], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': true}),
+		"Natural_Unigram+Context_ADA": enhance(scikitadaboost, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': true, 'full':true}),
+		"Natural_Unigram_RF": enhance(scikitrandomforest, [ feAsyncStanford ], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': true}),
+		"Natural_Unigram+Context_RF": enhance(scikitrandomforest, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'neg':false, 'toextract':'word', 'clean': true, 'full': true}),
 		// INITIAL END
 
 
