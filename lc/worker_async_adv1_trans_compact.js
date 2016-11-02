@@ -26,13 +26,13 @@ process.on('message', function(message) {
 
 	//_.each(train, function(turn, key, list){ delete train[key]["input"]["sentences"] }, this)
 	//_.each(test, function(turn, key, list){ delete test[key]["input"]["sentences"] }, this)
-	// var max = 70
+	var max = 70
 
 	console.vlog("DEBUG: worker "+process.pid+" : train.length="+train.length + " test.length="+test.length + " classifier "+classifier)
-	var index = 10
+	var index = 5
 
 	async.whilst(
-	    function () { return index <= train.length },
+	    function () { return index <= 70 },
 	    function (callbackwhilst) {
 
 	    async.waterfall([
@@ -49,7 +49,7 @@ process.on('message', function(message) {
 	       	var mytrain = bars.copyobj(train.slice(0, index))
 	       	var mytrainex =  bars.copyobj(mytrain)
 			var mytestex  = bars.copyobj(test)
-			index += 10
+			index += 5
 	
 		
 			console.vlog("DIST: class: " + classifier + " DIST:"+JSON.stringify(bars.returndist(mytrain), null, 4))
@@ -104,7 +104,7 @@ process.on('message', function(message) {
 
 			// mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent":["Greet", "Quit"], "filter":true})
 	
-		var baseline_cl = classifiers.Natural_Unigram_SVM
+		var baseline_cl = classifiers["Natural_Unigram+Context_SVM"]
 
 /*		if (classifier.indexOf("25")!=-1)
                      baseline_cl = classifiers.NLU_Emb_25
@@ -171,8 +171,8 @@ if (cluster.isMaster)
 	//var classifiers = [ 'Natural', 'Balanced', 'Natural_Hungarian', 'Balanced_Hungarian', 'Emb_100', 'Balanced_Emb_100', 'Emb_100_Hungarian', 'Balanced_Emb_100_Hungarian']
 //var classifiers = [ 'Natural', 'Balanced',  'Natural_Trans_Emb', 'Balanced_Trans_Emb']
 	//var classifiers = [ 'Natural', 'Biased_no_rephrase', 'Trans_Google', 'Trans_Microsoft', 'Trans_Yandex']
-	var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase']
-						// 'Natural_All_Lang', 'Biased_no_rephrase_All_Lang']
+	var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase',
+						 'Natural_All_Lang', 'Biased_no_rephrase_All_Lang']
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	//var classifiers = [ 'Natural','Natural_trans']
 	
@@ -218,28 +218,31 @@ if (cluster.isMaster)
                          		     " process: "+worker.process.id)
 
 				var train2sam = _.flatten(_.sample(bars.copyobj(train2), 10))
-				var train2sam_no_reph = _.filter(bars.copyobj(train2sam), function(num){ return num.type == "normal" });
+				//var train2sam_no_reph = _.filter(bars.copyobj(train2sam), function(num){ return num.type == "normal" });
 
-				console.mlog("DEBUGMASTER: with rephrases: "+train2sam.length + " without:"+train2sam_no_reph.length)
+				console.mlog("DEBUGMASTER: with rephrases: "+train2sam.length)
+				//console.mlog("DEBUGMASTER: with rephrases: "+train2sam.length + " without:"+train2sam_no_reph.length)
 
 				var train = []
 
 				if (classifier.indexOf("with_rephrase") != -1)
 					train = bars.copyobj(train2sam)
 				else if (classifier.indexOf("no_rephrase") != -1)
-					train = bars.copyobj(train2sam_no_reph)	
+					//train = bars.copyobj(train2sam_no_reph)	
+					train = bars.copyobj(train2sam)	
 				else if (classifier.indexOf("Balance")!=-1)
 					{
 					console.mlog("DEBUGMASTER: classifier: "+classifier+" its balanced")
-					train = bars.copyobj(train2sam_no_reph)
+					//train = bars.copyobj(train2sam_no_reph)
+					train = bars.copyobj(train2sam)
 					}		
 				else
 					train = bars.copyobj(data.test)
 
-				var max = _.min([_.flatten(data.test).length, _.flatten(train2sam_no_reph).length])
+				//var max = _.min([_.flatten(data.test).length, _.flatten(train2sam_no_reph).length])
 				// var max = _.min([_.flatten(data.test).length, _.flatten(train2sam).length])
-				max = max - max % 10			
-				
+				//max = max - max % 10			
+				var max = 70	
 				//console.mlog("DEBUGMASTER: train1.len="+_.flatten(data.test).length+ " train2.len="+ _.flatten(train2sam).length + " max="+max)
 				console.mlog("DEBUGMASTER: class="+classifier+ " fold="+ (fold+n*folds) + " train.sen.len="+ _.flatten(train).length+" train.len="+train.length + " test.len=" + data.train.length + " max: "+max)
 				worker.send({ 		
