@@ -1,4 +1,5 @@
 size	dial	Natural	Undersampled	Oversampled	Biased_with_rephrase	Biased_no_rephrase	Biased_no_rephrase_All_Lang	Natural_All_Lang
+30	30	null	null	null	0	null	null	null
 35	35	null	null	null	0	null	null	null
 40	40	null	null	null	0	null	null	null
 45	45	null	null	null	0	null	null	null
