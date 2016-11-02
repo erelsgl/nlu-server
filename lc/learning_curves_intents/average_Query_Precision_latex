@@ -4,7 +4,7 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.7637644823035967)(110,0.7274955978004221)(120,0.6834537185660781)(130,0.4942528735632184)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.7399332843493933)(110,0.7083638320743584)(120,0.708079459631954)(130,0.524390243902439)
 };
 \addlegendentry{Unigram+Context\_SVM}
 
@@ -14,22 +14,22 @@
 \addlegendentry{Unigram\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.5696603033816656)(110,0.5593271713857798)(120,0.36292912513842746)(130,0.29838709677419356)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.5422266014546555)(110,0.540521578027436)(120,0.39837662337662333)(130,0.62)
 };
 \addlegendentry{Unigram+Context\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.4759572565909906)(110,0.4894649852671372)(120,0.2910164835164835)(130,0.3135593220338983)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.4980846240216555)(110,0.4763730239059186)(120,0.28861263736263737)(130,0.3135593220338983)
 };
 \addlegendentry{Unigram\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,0.85)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,0.7973484848484849)(130,0.7)
 };
 \addlegendentry{Unigram+Context\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,0.8235294117647058)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,0.6123897300855826)(130,0.41379310344827586)
 };
 \addlegendentry{Unigram\_RF}
 
