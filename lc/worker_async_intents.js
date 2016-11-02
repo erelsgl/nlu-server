@@ -25,8 +25,8 @@ if (cluster.isWorker)
 
    	var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":['Quit', 'Greet'], "filter":false})
    	//var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":[], "filter":false})
-    var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":['Quit', 'Greet'], "filter":true})
-    //var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
+    	var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":['Quit', 'Greet'], "filter":true})
+    	//var train  = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":[], "filter":true})
     
 	console.vlog("DEBUG: train.length="+train.length + " test.length="+test.length)
 
@@ -106,7 +106,7 @@ if (cluster.isMaster)
 //	var classifiers = ["Unigram", "Unigram_Lemma", "Unigram+Context", "Unigram_Lemma+Context", "Unigram+Context+Neg", 'Unigram+Neg']
 //	var classifiers = [ "Unigram", "Unigram+Context", "Unigram+Neg", "Unigram+Context+Neg" ]
 	//var classifiers = [ "Unigram_SVM", "Unigram+Context_SVM", "Unigram+ContextFull_SVM","Unigram_ADA", "Unigram+Context_ADA", "Unigram+ContextFull_ADA"]
-	var classifiers = [ "Unigram_SVM", "Unigram+Context_SVM", "Unigram_ADA", "Unigram+Context_ADA", "Unigram_RF", "Unigram+Context_RF"]
+	var classifiers = [ "Unigram+Context_SVM", "Unigram_SVM", "Unigram+Context_ADA", "Unigram_ADA", "Unigram+Context_RF", "Unigram_RF"]
 // "Unigram_RF", "Unigram+Context_RF" ]
 //	var classifiers = [ "Natural_Neg", "Natural_Neg_Svm" ]
 //	var classifiers = [ "Natural_SVM_Context", "Natural_RF_Context", "Natural_ADA_Context" ]
