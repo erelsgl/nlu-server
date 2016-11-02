@@ -196,14 +196,17 @@ if (cluster.isMaster)
 		console.mlog("number of unprocessed dialogues: "+data.length)
 		var utterset = bars.getsetcontextadv(data)
 		var train1 = utterset["train"].concat(utterset["test"])
+		train1 = _.shuffle(train1)
 		var train2 = utterset["biased"]
 		console.mlog("number of the dialogues: train1: " + train1.length + " train2: " + train2.length)
 
-		_.each(classifiers, function(classifier, key, list){ 
-			_(folds).times(function(fold){
+		_(folds).times(function(fold){
+
+			var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
+
+			_.each(classifiers, function(classifier, key, list){ 
 			
 				var worker = cluster.fork({'fold': fold+n*folds, 'classifier':classifier, /*'thread': thr*/})
-				var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
 		
 				console.mlog("DEBUGMASTER: classifier: "+classifier+" fold: "+ (fold+n*folds) + 
 					     " train size "+data.train.length + " test size " + data.test.length+
@@ -263,8 +266,8 @@ if (cluster.isMaster)
 					//fs.appendFileSync(statusfile, JSON.stringify(workerstats, null, 4))
 					lc.extractGlobal(workerstats, stat)
 				})
-			})
-		}, this)
+			}, this)
+		})
 	}, function(){
 		_.each(stat, function(data, param, list){
 			lc.plotlc('average', param, stat, lcfolder)
