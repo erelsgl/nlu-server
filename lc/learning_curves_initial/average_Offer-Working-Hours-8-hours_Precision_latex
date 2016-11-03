@@ -4,22 +4,22 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,0.6232638888888888)(150,0.5972222222222222)(160,0.46153846153846156)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)
 };
 \addlegendentry{Natural\_Unigram\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,0.7142857142857143)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,null)
 };
 \addlegendentry{Natural\_Unigram+Context\_SVM}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,0.3297034746623516)(150,0.2920634920634921)(160,0.4594594594594595)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,null)(150,null)(160,0.5)
 };
 \addlegendentry{Natural\_Unigram\_ADA}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,0.27212758172060497)(150,null)(160,0.47619047619047616)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,null)(130,null)(140,0.1322822822822823)(150,0.08333333333333333)(160,0.5)
 };
 \addlegendentry{Natural\_Unigram+Context\_ADA}
 
@@ -34,7 +34,7 @@
 \addlegendentry{Natural\_Unigram+Context\_RF}
 
 \addplot[color=green,mark=*] coordinates {
-(10,0.4118069674311542)(20,0.4409845344858182)(30,0.440802613755117)(40,0.445471224903189)(50,0.4497871202396235)(60,0.4523395245250188)(70,0.4570857341492772)(80,0.456173044420798)(90,0.4517635026756827)(100,0.45629861366703467)(110,0.46485236985236983)(120,null)(130,null)(140,null)(150,null)(160,null)
+(10,0.4545147657271878)(20,0.49476322458029776)(30,0.49262515262515266)(40,0.5051331496108371)(50,0.49898097516518564)(60,0.5226961432175897)(70,0.5387519076286174)(80,0.5564959035690743)(90,0.5513568382046643)(100,0.5685503041777493)(110,0.5733030833360668)(120,null)(130,null)(140,null)(150,null)(160,null)
 };
 \addlegendentry{Component}
 
