@@ -2124,26 +2124,25 @@ if (check_init)
 }
 
 // simple composite labeling with test/train
+// use bigger test
 if (simple_naive_test_train)
 {
  	bars.cleanFolder("/tmp/logs")
 
 	var data = (JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json")))
     var utterset = bars.getsetcontext(data, false)
+    var sett = utterset["train"].concat(utterset["test"])
 
-    console.log(utterset["train"].length)
-    console.log(utterset["test"].length)
+    var dataset = partitions.partition(sett, 0, sett.length/10);
 
-	utterset["train"] = _.flatten(utterset["train"])
-	utterset["test"] = _.flatten(utterset["test"])
+    console.log(dataset.train.length)
+    console.log(dataset.test.length)
 
-	console.log(utterset["train"].length)
-    console.log(utterset["test"].length)
+    dataset.train = bars.processdataset(_.flatten(dataset.train),{"intents": true, "filterIntent":['Quit', 'Greet'], "filter":false})
+	dataset.test = bars.processdataset(_.flatten(dataset.test),  {"intents": true, "filterIntent":['Quit', 'Greet'], "filter":false})
 
-    utterset["train"] = bars.processdataset(utterset["train"],{"intents": true, "filterIntent":['Quit', 'Greet'], "filter":false})
-	utterset["test"] = bars.processdataset(utterset["test"],{"intents": true, "filterIntent":['Quit', 'Greet'], "filter":false})
-
-	trainAndTest.trainAndTest_async(classifier["Unigram+Context_SVM"], bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	// trainAndTest.trainAndTest_async(classifier["Unigram_SVM"], bars.copyobj(dataset.test), bars.copyobj(dataset.train), function(err, results){
+	trainAndTest.trainAndTest_async(classifier["Unigram+Context_SVM_false"], bars.copyobj(dataset.train), bars.copyobj(dataset.test), function(err, results){
 		console.log(JSON.stringify(results, null, 4))
 		process.exit(0)
 	}, this)	
@@ -2872,6 +2871,8 @@ if (do_serialization_prod) {
             process.exit()
         })
 }
+
+
 
 if (do_serialization) {
 	verbosity=0;
