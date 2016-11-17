@@ -30,8 +30,8 @@ var ftrs = limdu.features;
 var md5 = require('md5');
 var sbd = require('sbd');
 
-var setorder = true
-// var shuf = true
+var setorder = false
+var shuf = false
 var sortlang = false
 var omitbaidu = false
 
@@ -39,7 +39,6 @@ var signif = false
 // output the blue average
 
 var check_trans = false
-var correlation = false
 var separ = false
 var remove_urdu = false
 var fix_order = false
@@ -56,7 +55,9 @@ var unidis = false
 
 // translate and org parsed
 var check_rephrase = false
-var make_tr = true
+// bet BLEU of diff languages
+var correlation = true
+var make_tr = false
 var make_tr_seeds = false
 var make_tr_fix = false
 // check the ration of single vs all utterances
@@ -447,7 +448,7 @@ if (correlation)
 	var re =  /[^A-Za-z0-9_.,-]./i
 	var ascii = /^[ -~]+$/;
 	var total_ln={}
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased_ukr.json"))
 
 	_.each(data, function(dialogue, key, list){
 
@@ -510,11 +511,11 @@ if (correlation)
 
 	_.each(total_ln, function(value, key, list){
 	
-		if (chk == -1)
-			chk = value.length
-		else
-			if (chk != value.length)
-				throw new Error("anomaly: "+key)
+//		if (chk == -1)
+//			chk = value.length
+//		else
+//			if (chk != value.length)
+//				throw new Error("anomaly: "+key)
 			
 		total_ln[key] = distances.average(_.flatten(value))
 	}, this)
@@ -527,24 +528,28 @@ if (correlation)
 
 function generator()
 	{
+
+//	console.log("start generator")
 		var output = []
 
 		var lang = {
-		French:"fr",
-		German:"de",
-		Portuguese: "pt",
+//		French:"fr",
+//		German:"de",
+//		Portuguese: "pt",
 		// Hebrew:"he",
-		Arabic:"ar",
-		Russian:"ru",
-		Chinese:"zh",
+//		Arabic:"ar",
+//		Russian:"ru",
+//		Chinese:"zh",
 	//	Hungarian:"hu",
-		Finish:"fi",
+//		Finish:"fi",
 
 	//	Spanish:"es",
 		//Italian: "it",
 	//	Poland: "pl",
 	//	Dutch: "nl",
-		Japanese: "ja"
+//		Japanese: "ja"
+		Ukrainian: "uk"
+//
 	//	Hungarian: "hu1"
 		}
 
@@ -563,6 +568,8 @@ function generator()
 				}, this)
 			}, this)
 		}, this)
+
+//		console.log("generator:" + output)
 		
 		return output
 	}
@@ -651,6 +658,7 @@ if (make_tr)
 
 				async.eachOfSeries(generator(), function(composition, key, callback3){ 
 
+//				console.log("composition:"+composition)
 		    		var compkey = composition["engine1"]+":"+composition["ln"]+":"+composition["engine2"]
 		    		var engine1 = composition["engine1"]
 		    		var engine2 = composition["engine2"]
