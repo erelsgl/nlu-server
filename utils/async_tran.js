@@ -9,7 +9,8 @@ var baidu = require(__dirname+'/baidu');
 
 var yandex = require('yandex-translate')(keys.yandex); 
 var microsoft = new microsoftT({
-    client_id: "aaasdcccccc",
+    //client_id: "aaasdcccccc",
+    client_id: "rrttyy",
     client_secret: keys.microsoft
 }, true);
 

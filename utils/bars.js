@@ -3977,21 +3977,25 @@ console.vlog("processdataset:: fetch lemmas")
 	var path = __dirname+"/../json/"+md5(turn["input"]["text"])+".json"
       //if (!fs.existsSync(path))
       {
-        var lemmas = []
-        var word = []
+        //var lemmas = []
+        //var word = []
         
         var sen = JSON.parse(fs.readFileSync(path))
+	
 
-        _.each(sen["sentences"], function(senten, key, list){
-          lemmas = lemmas.concat(_.pluck(senten["tokens"], "lemma"))
-          word = word.concat(_.pluck(senten["tokens"], "word"))
-        }, this)
+      //  _.each(sen["sentences"], function(senten, key, list){
+   	//  tokens = tokens.concat(senten["tokens"])
 
-        turn["input"]["lemma"] = _.flatten(lemmas)  
-        turn["input"]["word"] = _.flatten(word)  
+//          lemmas = lemmas.concat(_.pluck(senten["tokens"], "lemma"))
+  //        word = word.concat(_.pluck(senten["tokens"], "word"))
+       // }, this)
 
-	console.vlog("processdataset: lemmas: "+lemmas)
-	console.vlog("processdataset: word: "+word)
+        //turn["input"]["lemma"] = _.flatten(lemmas)  
+        //turn["input"]["word"] = _.flatten(word)  
+        turn["input"]["token"] = _.flatten(_.pluck(sen["sentences"], "tokens"))  
+
+//	console.vlog("processdataset: lemmas: "+lemmas)
+//	console.vlog("processdataset: word: "+word)
 
       }
      // else
@@ -4010,7 +4014,7 @@ console.vlog("processdataset:: fetch lemmas")
   if (options["filterIntent"].length > 0)
     output = _.filter(output, function(num){ return _.intersection(num["output"], options["filterIntent"]).length == 0 });
   
-  console.vlog(JSON.stringify(output, null, 4))
+  //console.vlog(JSON.stringify(output, null, 4))
   console.vlog("processdataset: end: "+ output.length)
   return output
 }
@@ -4094,7 +4098,7 @@ function getsetcontext(dataset)
       // {
         var record = {}
 
-	if ("trans" in turn['input'])
+/*	if ("trans" in turn['input'])
 	{
 		if (trans_count == -1)
 			trans_count = _.keys(turn['input']["trans"]).length
@@ -4108,7 +4112,8 @@ function getsetcontext(dataset)
 		if (trans_count != -1)
 			throw new Error("trans in not defined")
 	}
-        // record['input'] = {}
+*/  
+      // record['input'] = {}
         // record['input']['text'] = turn.input
         // record['input']['context'] = context
         turn['input']['context'] = context
@@ -4194,9 +4199,9 @@ _.each(dialogue['turns'], function(turn, key, list){
             mainturn["rephrases"] = []
 
           record["typerephrase"] = "1"
-          record["outputhash"] = mainturn["outputhash"]
-          record["output"] = mainturn["output"]
-          record['input']['context'] = mainturn['input']['context']
+          //record["outputhash"] = mainturn["outputhash"]
+          //record["output"] = mainturn["output"]
+         // record['input']['context'] = mainturn['input']['context']
 
           mainturn["rephrases"].push(record)
           nextrepr = false
@@ -4694,7 +4699,7 @@ function gettrans(turns, pat)
   }, this)
 
   console.vlog("gettrans: output.length: " + output.length)  
-  // console.vlog(JSON.stringify(output, null, 4))
+  console.vlog(JSON.stringify(output, null, 4))
 
   return output
 }

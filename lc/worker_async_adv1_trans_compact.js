@@ -65,23 +65,10 @@ process.on('message', function(message) {
 				//case "Natural_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi|zh):.*"), mytestex, mytrainex.length); break;				
 				case "Natural_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;				
 				
-				case "Natural_Trans_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
-				case "Balanced_Trans_Microsoft": callbacks(null, bars.gettrans(mytrainex, "M:.*:M"), mytestex, mytrainex.length); break;
-				case "Balanced_Trans_Microsoft_Google": callbacks(null, bars.gettrans(mytrainex, "M:.*:G"), mytestex, mytrainex.length); break;
-				case "Balanced_Trans_Google_Microsoft": callbacks(null, bars.gettrans(mytrainex, "G:.*:M"), mytestex, mytrainex.length); break;
-				case "Natural_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;
-				case "Balanced_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;
-				case "Balanced_Emb_100_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;
-				case "Emb_100_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;
-				case "Balanced_Trans_Yandex_Microsoft": callbacks(null, bars.gettrans(mytrainex, "Y:.*:M"), mytestex, mytrainex.length); break;
-				case "Balanced_Trans_Microsoft_Yandex": callbacks(null, bars.gettrans(mytrainex, "M:.*:Y"), mytestex, mytrainex.length); break;
-				case "Natural_Trans": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
-				case "Balanced_Trans": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
-				case "Natural_Trans_Emb": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
-				case "Balanced_Trans_Emb": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
+				case "Natural_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:(zh|hu):.*"), mytestex, mytrainex.length); break;
+				case "Biased_no_rephrase_Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:(zh|hu):.*"), mytestex, mytrainex.length); break;
 				case "Oversampled": callbacks(null, bars.oversample(bars.copyobj(mytrainex)), mytestex, mytrainex.length); break;
 				case "Undersampled": callbacks(null, bars.undersample(bars.copyobj(mytrainex)), mytestex, mytrainex.length); break;
-				case "Balanced_Trans_Emb_Neg": callbacks(null, bars.gettrans(mytrainex, ".*"), mytestex, mytrainex.length); break;
 				default:
 					callbacks(null, mytrainex, mytestex, mytrainex.length)
     		}
@@ -90,7 +77,7 @@ process.on('message', function(message) {
 
 			mytrainex =  bars.processdataset(mytrainex, {"intents": true, "filterIntent":["Greet", "Quit"], "filter":true})
 	
-		var baseline_cl = classifiers["Unigram+Context+Lemma_SVM"]
+		var baseline_cl = classifiers["Unigram+Context_SVM"]
 
 /*		if (classifier.indexOf("25")!=-1)
                      baseline_cl = classifiers.NLU_Emb_25
@@ -157,7 +144,7 @@ if (cluster.isMaster)
 	//var classifiers = [ 'Natural', 'Balanced', 'Natural_Hungarian', 'Balanced_Hungarian', 'Emb_100', 'Balanced_Emb_100', 'Emb_100_Hungarian', 'Balanced_Emb_100_Hungarian']
 //var classifiers = [ 'Natural', 'Balanced',  'Natural_Trans_Emb', 'Balanced_Trans_Emb']
 	//var classifiers = [ 'Natural', 'Biased_no_rephrase', 'Trans_Google', 'Trans_Microsoft', 'Trans_Yandex']
-	var classifiers = [ 'Natural', 'Undersampled', 'Oversampled', 'Biased_with_rephrase', 'Biased_no_rephrase',
+	var classifiers = [ 'Natural', 'Biased_with_rephrase', 'Biased_no_rephrase', 'Oversampled', 'Undersampled',
 						 'Natural_All_Lang', 'Biased_no_rephrase_All_Lang']
 	//var classifiers = [ 'Natural','Natural_trans','Biased_no_rephrase','Biased_no_rephrase_trans']
 	//var classifiers = [ 'Natural','Natural_trans']
@@ -168,8 +155,17 @@ if (cluster.isMaster)
 	// args: [JSON.stringify({'fold': fold, 'folds':folds, 'classifier':classifier, 'len':len})],
 	// silent: false
 	});
+	
+	 var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased.json"))
+         console.mlog("number of unprocessed dialogues: "+data.length)
+         var utterset = bars.getsetcontext(data)
 
-	async.timesSeries(10, function(n, next){
+         const train1 = _.shuffle(utterset["train"].concat(utterset["test"]))
+
+         const train2 = utterset["biased"]
+         console.mlog("number of the dialogues: train1: " + train1.length + " train2: " + train2.length)
+
+	async.timesSeries(10, function(fold, next){
 
 		// var data1 = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized.json"))
 		// console.mlog("number of unprocessed dialogues: "+data1.length)
@@ -182,20 +178,10 @@ if (cluster.isMaster)
 		// var train2 = utterset2["train"].concat(utterset2["test"])	
 		// console.mlog("number of the dialogues2: "+train2.length)
 
-		var data = JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased.json"))
-		console.mlog("number of unprocessed dialogues: "+data.length)
-		var utterset = bars.getsetcontext(data)
+		var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
 
-		var train1 = utterset["train"].concat(utterset["test"])
-		train1 = _.shuffle(train1)
-
-		var train2 = utterset["biased"]
-		console.mlog("number of the dialogues: train1: " + train1.length + " train2: " + train2.length)
-
-		_(folds).times(function(fold){
+		_(10).times(function(n){
 	
-			var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
-
 			_.each(classifiers, function(classifier, key, list){ 
 			
 				var worker = cluster.fork({'fold': fold+n*folds, 'classifier':classifier, /*'thread': thr*/})
