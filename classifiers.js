@@ -1699,7 +1699,7 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 
 	console.vlog("DEBUGCONTEXT: text : "+ sample.text)	
 	console.vlog("DEBUGCONTEXT: context " + JSON.stringify(context) + " train "+train+" featureOptions "+JSON.stringify(featureOptions))
-/*
+
 	var intents = ["Offer", "Accept", "Reject", "Query", "Greet", "Quit"]
 	_.each(intents, function(intent, key, list){
 		features["INTENT_"+intent] = 0
@@ -1713,7 +1713,6 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 		var intent = _.keys(label)[0]
 		features["INTENT_"+intent] = 1
 	}, this)		
-*/
 
 	var attrval = getRule({}, sample.text).labels
 
@@ -1988,7 +1987,8 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	_.each(tkns, function(value, key, list){
                 sample['sentences']['tokens'].push({
                         "word": value[0],
-                        "lemma": natural.PorterStemmer.stem(value[0])
+                        "lemma": value[0]
+           //             "lemma": natural.PorterStemmer.stem(value[0])
                        // "lemma": lemmerEng.lemmatize(value[0])
                         })
         }, this)
