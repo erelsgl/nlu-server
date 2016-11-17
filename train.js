@@ -30,7 +30,7 @@ var ftrs = limdu.features;
 var md5 = require('md5');
 var sbd = require('sbd');
 
-var setorder = true
+var setorder = false
 // var shuf = true
 var sortlang = false
 var omitbaidu = false
@@ -40,7 +40,6 @@ var signif = false
 
 var check_trans = false
 var correlation = false
-var separ = false
 var remove_urdu = false
 var fix_order = false
 
@@ -55,8 +54,7 @@ var check_con = false
 var unidis = false 
 
 // translate and org parsed
-var check_rephrase = false
-var make_tr = true
+var make_tr = false
 var make_tr_seeds = false
 var make_tr_fix = false
 // check the ration of single vs all utterances
@@ -67,6 +65,8 @@ var embedproc = false
 
 var extractbyid = false
 
+var shuf = false
+
 // number of human utterances
 var check_human = false
 
@@ -75,8 +75,6 @@ var check_intent_issue_dst = false
 
 var check_num_dial_utt = false
 
-// check rephrase strategies
-var check_version4 = false
 
 var best_dial = false
 
@@ -85,7 +83,7 @@ var composite_ds = false
 var finalization = false
 
 // simlple naive multi label classification with train/test split
-var simple_naive_test_train = false
+var simple_naive_test_train = true
 
 //  the same but to calculate intents
 var simple_naive_intent_test_train_intents = false
@@ -97,13 +95,16 @@ var consistent_query = false
 
 var reshuffle = false
 
-var check_version7 = false
+// check rephrase strategies
+// var check_version4 = true
+// var check_version7 = false
 
 // check the Ido's approach, we sample the strategy uniformly, then just see the reaction in intents
 // prefereably to do so in rations
 var check_version7_1 = false
-
-var getsetcontextadv = false
+var check_version4 = false
+var check_version7 = false
+var check_rephrase = false
 
 // simple template to check performance on test and train even with simple multi-label binary relevance SVM
 var check_ds = false
@@ -341,7 +342,6 @@ var b = distance.tvd(without_rephrase, uniform)
 console.log("if "+ a + " > "+ b)
 }
 
-
 if (merge)
 {
 	var biased = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_trans.json"))
@@ -537,15 +537,14 @@ function generator()
 		Arabic:"ar",
 		Russian:"ru",
 		Chinese:"zh",
-	//	Hungarian:"hu",
+		Hungarian:"hu",
 		Finish:"fi",
 
-	//	Spanish:"es",
-		//Italian: "it",
-	//	Poland: "pl",
-	//	Dutch: "nl",
+		Spanish:"es",
+		Italian: "it",
+		Poland: "pl",
+		Dutch: "nl",
 		Japanese: "ja"
-	//	Hungarian: "hu1"
 		}
 
 //		var sys = { "yandex": "Y", "microsoft": "M", "google": "G" }
@@ -555,7 +554,7 @@ function generator()
 		_.each(sys, function(engine1liter, engine1, list){
 			_.each(sys, function(engine2liter, engine2, list){
 				_.each(lang, function(ln, lnkey, list){
-				//	if (engine1liter == engine2liter)						
+					if (engine1liter == engine2liter)						
 	    					output.push({
 	    						'engine1':engine1liter,
 	    						'ln':ln,
@@ -634,7 +633,7 @@ if (separ)
 if (make_tr)
 {
 	
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin.json"))
 
 	async.eachOfSeries(data, function(dialogue, keyd, callback1){ 
 
@@ -664,7 +663,7 @@ if (make_tr)
 							callback3()
 						})
 					}
-					else if ((trans[compkey].indexOf("TranslateApiException")!=-1) || (trans[compkey].indexOf("ArgumentException")!=-1) || (trans[compkey]==".") || (trans[compkey]==",") || (trans[compkey]=="'"))
+					else if (trans[compkey].indexOf("TranslateApiException")!=-1)
 					{
 						async_tran.tran(engine1, ln, engine2, value["input"]["text"], function(err, out){
 							out = out.replace(/\n$/, '')
@@ -1357,7 +1356,7 @@ if (check_version4)
 	process.exit(0)
 }
 
-
+// used in thesis
 // let's assume we sample a strategy
 // the question is if we sampled the good startegy for specific issue. what intent we will get in return
 if (check_version7_1)
@@ -1367,10 +1366,10 @@ if (check_version7_1)
 					'Reject': {}
 					}
 
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_neww.json"))
-	console.log(data.length)
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_neww.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json"))
+	data = _.filter(data, function(num){ return num.set == "biased" });
 
-	var data = _.filter(data, function(num){ return ["train","test"].indexOf(num.set)!=-1 });
 	console.log(data.length)
 
 	_.each(data, function(dialogue, key, list){
@@ -1392,14 +1391,14 @@ if (check_version7_1)
 
 				if (turn.data.indexOf(":")!=-1)
 				{
-					var intent = turn.data.split(":")[1];
-					var issue = turn.data.split(":")[0];
+					var intent = turn.data.split(":")[1];//desired intent
+					var issue = turn.data.split(":")[0];// for desired issue
 
 					iss[issue] = intent
 
-					console.log("intent: "+ intent + " issue: "+issue)
-					console.log("strategies:"+JSON.stringify(strategy))
-					console.log("iss:"+JSON.stringify(iss))
+					console.log("CT: desired intent: "+ intent + " for issue: "+issue)
+					console.log("CT: strategies:"+JSON.stringify(strategy))
+					console.log("CT: iss:"+JSON.stringify(iss))
 				}
 			}
 
@@ -1416,14 +1415,17 @@ if (check_version7_1)
 				// [['Accept', 'Salary'], ['Reject', 'Job']]
 				
 				// check the work of turnoutput
-				console.log("ET: "+JSON.stringify(curintents) + " output "+JSON.stringify(turn.output))
+				console.log("ET check the string: "+JSON.stringify(curintents) + " output "+JSON.stringify(turn.output))
 						
 				_.each(curintents, function(value, key, list){
 
-					// 
-					if (["true", true, "Offer"].indexOf(value[1])==-1)
+					// if (["Offer", "Accept", "Reject", "Query"].indexOf(value[0])!=-1)
 					{
-						console.log("each:" +value+ " in startegy: "+iss[value[1]])
+
+					// 
+					if ([true, "true", "Offer"].indexOf(value[1])==-1)
+					{
+						console.log("each:" +value+ " in startegy currently: "+iss[value[1]])
 
 						if (iss[value[1]]!='')
 						{
@@ -1436,6 +1438,23 @@ if (check_version7_1)
 							iss[value[1]] = ""
 						}
 					}
+
+					if ([true, "true"].indexOf(value[1])!=-1)
+					{
+						var intent = value[0]
+
+						_.each(iss, function(inte, issue, list){
+							if (inte!="")
+							{
+								if (!(intent in strategy[inte]))
+									strategy[inte][intent] = 0
+								
+								strategy[inte][intent] += 1
+								iss[issue] = ""
+							}						
+						}, this)
+					}
+				}
 				}, this)
 
 				console.log("iss:"+JSON.stringify(iss))
@@ -1809,22 +1828,18 @@ if (check_con)
     process.exit(0)
 }
 
+// thesis
 if (check_rephrase)
 {
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_neww.json"))
-    var data = _.filter(data, function(num){ return ["train"].indexOf(num.set)!=-1 });
+	
+	// var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/version7_neww.json"))
+	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json"))
+    // var data = _.filter(data, function(num){ return ["train"].indexOf(num.set)!=-1 });
+	var data = _.filter(data, function(num){ return num.set == "biased" });
 
     console.log(JSON.stringify(data.length, null, 4))
 
-	/*var intentshash = {
-		"Accept":[],
-		"Reject":[],
-		"Offer":[],
-		"Query":[]
-	}
-*/
 	var intentshash = {}
-
 
 	var lastintent = ""
 	var lasttext = false
@@ -1854,7 +1869,6 @@ if (check_rephrase)
 						// intentshash[lastintent][intents[0]]['examples'].push([lasttext, turn.input.text])
 
 						strem = false
-
 					}
 					else
 					{	
@@ -1870,10 +1884,10 @@ if (check_rephrase)
 					if (turn.data == "AskRephrase")
 						strem = true
 				}
-				else
-				{
-					strem = false
-				}
+				// else
+				// {
+					// strem = false
+				// }
 				
 		}, this)
 	}, this)
@@ -2114,8 +2128,8 @@ if (simple_naive_test_train)
 {
  	bars.cleanFolder("/tmp/logs")
 
-	var data = JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized.json"))
-    var utterset = bars.getsetcontext(data)
+	var data = (JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json")))
+    var utterset = bars.getsetcontext(data, false)
 
     console.log(utterset["train"].length)
     console.log(utterset["test"].length)
@@ -2126,10 +2140,10 @@ if (simple_naive_test_train)
 	console.log(utterset["train"].length)
     console.log(utterset["test"].length)
 
-    utterset["train"] = bars.processdataset(utterset["train"],{"intents": false, "filter":false})
-	utterset["test"] = bars.processdataset(utterset["test"],{"intents": false, "filter":false})
+    utterset["train"] = bars.processdataset(utterset["train"],{"intents": true, "filterIntent":['Quit', 'Greet'], "filter":false})
+	utterset["test"] = bars.processdataset(utterset["test"],{"intents": true, "filterIntent":['Quit', 'Greet'], "filter":false})
 
-	trainAndTest.trainAndTest_async(classifier.Natural_no_con, bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
+	trainAndTest.trainAndTest_async(classifier["Unigram+Context_SVM"], bars.copyobj(utterset["train"]), bars.copyobj(utterset["test"]), function(err, results){
 		console.log(JSON.stringify(results, null, 4))
 		process.exit(0)
 	}, this)	
