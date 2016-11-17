@@ -27,8 +27,8 @@ if (cluster.isWorker)
 	
 	console.vlog("BEFORE: train.length="+train.length + " test.length="+test.length)
 
-	// var test  = bars.processdataset(test, {"intents": true, "filterIntent":["Quit", "Greet"], "filter":false})
-	// var train = bars.processdataset(train, {"intents": true, "filterIntent":["Quit", "Greet"], "filter":true})
+	var test  = bars.processdataset(_.flatten(test), {"intents": true, "filterIntent":["Quit", "Greet"], "filter":true})
+	var train = bars.processdataset(_.flatten(train), {"intents": true, "filterIntent":["Quit", "Greet"], "filter":true})
 
 	console.vlog("AFTER: train.length="+train.length + " test.length="+test.length)
 
@@ -73,7 +73,8 @@ if (cluster.isWorker)
     			case "Chinese": callbacks(null, bars.gettrans(mytrainex, ".*:zh:.*"), mytestex, mytrainex.length); break;
     			case "Finish": callbacks(null, bars.gettrans(mytrainex, ".*:fi:.*"), mytestex, mytrainex.length); break;
     			case "Russian": callbacks(null, bars.gettrans(mytrainex, ".*:ru:.*"), mytestex, mytrainex.length); break;
-    			case "Portuguese": callbacks(null, bars.gettrans(mytrainex, ".*:pt:.*"), mytestex, mytrainex.length); break;
+			case "Ukrainian": callbacks(null, bars.gettrans(mytrainex, ".*:uk:.*"), mytestex, mytrainex.length); break;
+			case "Portuguese": callbacks(null, bars.gettrans(mytrainex, ".*:pt:.*"), mytestex, mytrainex.length); break;
     			case "Hebrew": callbacks(null, bars.gettrans(mytrainex, ".*:he:.*"), mytestex, mytrainex.length); break;
 				case "Hungarian": callbacks(null, bars.gettrans(mytrainex, ".*:hu:.*"), mytestex, mytrainex.length); break;
 				case "Hungarian1": callbacks(null, bars.gettrans(mytrainex, ".*:hu1:.*"), mytestex, mytrainex.length); break;
@@ -102,7 +103,7 @@ if (cluster.isWorker)
     	
 			console.vlog("DEBUGPRETRAIN: classifier:"+classifier+" mytrainex: "+mytrainex.length+" mytestex: "+mytestex.length+ " reportedtrainsize:"+trainsize)
 
-			var baseline_cl = classifiers.Natural_Neg
+			var baseline_cl = classifiers.Natural_Unigram_SVM
 			
 			// if (classifier.indexOf("Root")!=-1) baseline_cl = classifiers.Natural_Root
 			if (classifier.indexOf("Emb")!=-1)  baseline_cl = classifiers[classifier]
@@ -159,7 +160,7 @@ if (cluster.isMaster)
 	//var classifiers = [ "Natural_Neg", "_Hungarian", "_Portuguese", "_Russian", "_Japanese", "_All_together", "_Hungarian+_Japanese", "_Hungarian+_Japanese+_Chinese", "_Hungarian+_Japanese+_Chinese+_Finish"]
 	//var classifiers = [ "Natural_Neg", "_Hungarian", "_Portuguese","_All_together_test"]
 	//var classifiers = [ "Natural_Neg", "_Portuguese", "_All_together", "_Romanic", "_Germanic", "_Uralic", "_Semitic"]
-	var classifiers = [ "Natural_Neg", "Natural_Neg_10", "Portuguese", "Chinese", "All_together", "Arabic", "Russian",  "Hungarian1" ]
+	var classifiers = [ "Natural_Neg", "Natural_Neg_10", "Portuguese", "Chinese", "All_together", "Arabic", "Russian",  "Hungarian1", "Ukrainian"]
 	//var classifiers = [ "Natural_Neg", "Natural_Neg_10", "Portuguese", "All_together", "Russian", "Hungarian", "Finish", "Japanese", "Chinese", "French", "Hungarian+Chinese", "Hebrew", "Arabic", "Emb_100" ]
 	//var classifiers = [ "Natural_Neg", "YY", "MM", "GG", "YG", "GY", "YM", "MY", "MG", "GM" ]
 	//var classifiers = [ "Natural_Neg", "Hungarian", "Portuguese", "Russian", "All_together"]
@@ -181,25 +182,24 @@ if (cluster.isMaster)
 	});
 	
 
-	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased.json")))
+	var data1 = (JSON.parse(fs.readFileSync(__dirname+"/../../negochat_private/parsed_finalized_fin_full_biased_ukr.json")))
     // data1 = bars.enrichparse(data1)
     var utterset1 = bars.getsetcontext(data1, false)
     var train1 = utterset1["train"].concat(utterset1["test"])
-    train1 = _.flatten(train1)
-//	train1  = bars.processdataset(train1, {"intents": true, "filterIntent":["Quit", "Greet"], "filter":true})
+    //train1 = _.flatten(train1)
 
-     train1 = _.filter(train1, function(num){ return (_.keys(num.outputhash).length == 1 && !("Greet" in num.outputhash) && !("Quit" in num.outputhash)) });
+    // train1 = _.filter(train1, function(num){ return (_.keys(num.outputhash).length == 1 && !("Greet" in num.outputhash) && !("Quit" in num.outputhash)) });
 
-     _.each(train1, function(value, key, list){
-    	 value["output"] = _.unique(_.keys(value.outputhash))
-    	 value["input"]["sentences"] = {}
-     }, this)
+ //    _.each(train1, function(value, key, list){
+   // 	 value["output"] = _.unique(_.keys(value.outputhash))
+   // 	 value["input"]["sentences"] = {}
+   //  }, this)
 		
 
-	var dist = _.countBy(train1, function(num) { return num["output"][0]});
-	console.mlog("DEBUGMASTER: dist: "+JSON.stringify(dist, null, 4))
+//	var dist = _.countBy(train1, function(num) { return num["output"][0]});
+//	console.mlog("DEBUGMASTER: dist: "+JSON.stringify(dist, null, 4))
 	
-	console.mlog("DEBUGMASTER: loaded: "+train1.length)
+//	console.mlog("DEBUGMASTER: loaded: "+train1.length)
 
 	_(folds).times(function(fold){
 
@@ -223,7 +223,7 @@ if (cluster.isMaster)
 			worker.on('disconnect', function(){
             	console.mlog("DEBUGMASTER: finished: workers.length: "+Object.keys(cluster.workers).length )
                 //disc += 1
-                //if (Object.keys(cluster.workers).length == 1)
+                if (Object.keys(cluster.workers).length == 1)
                 _.each(stat, function(data, param, list){
                 	lc.plotlc('average', param, stat, lcfolder)
                 })
