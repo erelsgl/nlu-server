@@ -196,7 +196,7 @@ function getRule(sen, text)
 					'job','description','60000','90000','120000','usd','fast','slow','track','8','9','10',
 					'qa','programmer','team','project','manager','agreement',
 					'0%','10%','15%','20%', 'no agreement', 'position','workday', 'with', 'car', 'no car', 'leased', 'without',
-					'quick', 'rental', 'taxi', 'vehicles', 'vehicle', 'rent-a-car', 'rented', 'wages', 'wage', 'pay', 'fee', 'non-rented']
+					'quick', 'rental', 'taxi', 'vehicles', 'vehicle', 'rent-a-car', 'rented', 'wages', 'wage', 'pay', 'fee', 'non-rented', "programmers", "cars", "managers", "managers", "cars", "programmers", "promosions", "opportunities", "positions", "lease", "position", "positions"]
 
 //	arAttrVal = arAttrVal.concat(['no car', "company car", "leased", "car", "leased", "with", "without"])
 
@@ -1701,13 +1701,13 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 	console.vlog("DEBUGCONTEXT: context " + JSON.stringify(context) + " train "+train+" featureOptions "+JSON.stringify(featureOptions))
 
 	var intents = ["Offer", "Accept", "Reject", "Query", "Greet", "Quit"]
-	_.each(intents, function(intent, key, list){
-		features["INTENT_"+intent] = 0
-	}, this)
+//	_.each(intents, function(intent, key, list){
+//		features["INTENT_"+intent] = 0
+//	}, this)
 
 	_.each(context, function(label, key, list){
 	if (featureOptions.full)
-			features["INTENT_"+label] = 1
+		features["INTENT_"+label] = 1
 		
 		label = JSON.parse(label)
 		var intent = _.keys(label)[0]
@@ -1721,7 +1721,7 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 
 	console.vlog("DEBUGCONTEXT: labels of the sample "+JSON.stringify(attrval))
 	
-	if (attrval[0].length > 0)	
+/*	if (attrval[0].length > 0)	
         features['THERE_IS_ATTRIBUTES'] = 1
     else
     	features['THERE_IS_NO_ATTRIBUTES'] = 1
@@ -1730,7 +1730,7 @@ function feContext(sample_or, features, train, featureOptions, callback) {
         features['THERE_IS_VALUES'] = 1
     else
         features['THERE_IS_NO_VALUES'] = 1
-	
+*/	
 	_.each(context, function(feat, key, list){ 
 		var obj = JSON.parse(feat)
 		if (_.keys(obj)[0] == "Offer")
@@ -1740,7 +1740,6 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 	console.vlog("DEBUGCONTEXT: extracted values from teh context: "+ JSON.stringify(values))
 	console.vlog("DEBUGCONTEXT: the current sample "+ JSON.stringify(attrval[1]))
 	
-
 	_.each(attrval[1], function(value, key, list){
 
 	if (_.isArray(value)) throw new Error("context error")
@@ -1749,6 +1748,13 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 	else
 		features['UNOFFEREDVALUE'] = 1
 	}, this)
+
+
+//	if (("OFFEREDVALUE" in features) && ("UNOFFEREDVALUE" in features))
+//	{
+//		delete features['OFFEREDVALUE']
+//		delete features['UNOFFEREDVALUE']
+//	}
 
 	console.vlog("DEBUGCONTEXT: " + JSON.stringify(features))	
 	callback(null, features)
@@ -2265,9 +2271,12 @@ var SvmPerfBinaryRelevanceClassifier = classifiers.multilabel.BinaryRelevance.bi
 var SvmLinearBinaryClassifier = classifiers.SvmLinear.bind(0, {        
 	model_file_prefix: "trainedClassifiers/tempfiles/SvmLinearBinary",
 	multiclass: false,
-	learn_args: "-c 100 -t 0",	
-	train_command: "svm-train",
-	test_command: "svm-predict"
+	//learn_args: "-c 100 -t 0",	
+	learn_args: "-c 100",	
+	train_command: "/u/ir/konovav/liblinear-2.1/train",
+	//train_command: "svm-train",
+	test_command: "/u/ir/konovav/liblinear-2.1/predict"
+	//test_command: "svm-predict"
 });
 
 var SvmPolynomialBinaryClassifier = classifiers.SvmLinear.bind(0, {        
@@ -2647,6 +2656,12 @@ module.exports = {
 		
 		// INTENTS
 		"Unigram_SVM": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {"neg":false, 'toextract':'word', "clean":true}),
+
+
+		"Unigram_SVM_false": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":false}),
+		"Unigram+Context_SVM_false": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":false}),
+
+
 		"Unigram+Context_SVM": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":true}),
 		"Unigram_ADA": enhance(scikitadaboost, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {"neg":false, 'toextract':'word', "clean":true}),
         "Unigram+Context_ADA": enhance(scikitadaboost, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {"neg":false, 'toextract':'word', "full":true, "clean":true}),
