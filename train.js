@@ -2159,7 +2159,7 @@ if (check_init)
 if (simple_naive_test_train)
 {
  	bars.cleanFolder("/tmp/logs")
-// 	bars.cleanFolder("./logs")
+ 	bars.cleanFolder("./logs")
 
 	var data = (JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json")))
 	var utterset = bars.getsetcontext(data, false)
