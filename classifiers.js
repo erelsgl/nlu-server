@@ -1960,6 +1960,10 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	if (!('clean' in featureOptions))
 		throw new Error("no clean option")
 
+	// either 1 oor 2
+	if (!('ngrams' in featureOptions))
+		throw new Error("no ngrams option")
+
 	if (!('toextract' in featureOptions))
 	    throw new Error("toextract is not defined")
 
@@ -1987,17 +1991,24 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 
 	var tokenizer = new natural.RegexpTokenizer({pattern: /[^\%a-zA-Z0-9\-\?]+/});
 	text = regexpNormalizer(sample["text"].toLowerCase())
-    var tkns = natural.NGrams.ngrams(tokenizer.tokenize(text), 1)
+	
+	// the array of tokens
+	var tokenized = tokenizer.tokenize(text)
+
+	console.vlog("feAsyncStanford: tokenized: "+JSON.stringify(tokenized, null, 4))
+
 	sample['sentences'] = {"tokens":[]}
 
-	_.each(tkns, function(value, key, list){
+	_.each(tokenized, function(value, key, list){
                 sample['sentences']['tokens'].push({
                         "word": value[0],
-                        "lemma": value[0]
+                        // "lemma": value[0]
            //             "lemma": natural.PorterStemmer.stem(value[0])
-                       // "lemma": lemmerEng.lemmatize(value[0])
+                       "lemma": lemmerEng.lemmatize(value[0])
                         })
-        }, this)
+    }, this)
+
+    console.vlog("feAsyncStanford: sentenced: "+JSON.stringify(sample['sentences']['tokens'], null, 4))
 
 /*	var word_lemma = {}
 	_.each(sample['sentences']['tokens'], function(token, key, list){
@@ -2015,15 +2026,27 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	else
 		console.vlog("feAsyncStanford: ATTENTION: no clean method")	
 
+	console.vlog("feAsyncStanford: cleaned sentenced: "+JSON.stringify(sample['sentences']['tokens'], null, 4))	
 
-	console.vlog("feAsyncStanford: tokens: "+JSON.stringify(sample['sentences']['tokens'], null, 4))
+	var toextract = _.pluck(sample['sentences']['tokens'], featureOptions.toextract);
 
-	_.each(sample['sentences']['tokens'], function(token, key, list){
-		switch(featureOptions.toextract) {
-    		case "lemma": features[token.lemma.toLowerCase()] = 1; break;
-    		case "word": features[token.word.toLowerCase()] = 1; break;
-        }
+	console.vlog("feAsyncStanford: toextract: " + featureOptions.toextract + ":" + JSON.stringify(sample['sentences']['tokens'], null, 4))	
+
+	var tkns = natural.NGrams.ngrams(toextract, featureOptions.ngrams)
+
+	console.vlog("feAsyncStanford: tokens: " + featureOptions.ngrams + " : " + tkns)
+
+	_.each(tkns, function(tkn, key, list){
+		features[tkn.toLowerCase()] = 1; break;
 	}, this)
+
+
+	// _.each(sample['sentences']['tokens'], function(token, key, list){
+	// 	switch(featureOptions.toextract) {
+ //    		case "lemma": features[token.lemma.toLowerCase()] = 1; break;
+ //    		case "word": features[token.word.toLowerCase()] = 1; break;
+ //        }
+	// }, this)
 	
 	console.vlog("DEBUGASYNCSTANFORD:"+JSON.stringify(features, null, 4))
  	callback(null, features)
@@ -2659,7 +2682,7 @@ module.exports = {
 
 
 		"Unigram_SVM_false": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":false}),
-		"Unigram+Context_SVM_false": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":false}),
+		"Unigram+Context_SVM_false": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":false, "ngrams": 1}),
 
 
 		"Unigram+Context_SVM": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":true}),
