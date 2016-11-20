@@ -116,18 +116,18 @@ function getRule(sen, text)
 	console.vlog("getRule: sentence: "+JSON.stringify(sentence, null, 4))
 
 	// change tokens 
-  	var tokenizer = new natural.RegexpTokenizer({pattern: /[^\%a-zA-Z0-9\-\?]+/});
+  	// var tokenizer = new natural.RegexpTokenizer({pattern: /[^\%a-zA-Z0-9\-\?]+/});
 	
-	text = regexpNormalizer(text.toLowerCase())
-	var tkns = natural.NGrams.ngrams(tokenizer.tokenize(text), 1)
-	sentence['tokens'] = []
+	// text = regexpNormalizer(text.toLowerCase())
+	// var tkns = natural.NGrams.ngrams(tokenizer.tokenize(text), 1)
+	// sentence['tokens'] = []
 
-	_.each(tkns, function(value, key, list){
-		sentence['tokens'].push({
-			"word": value[0],
-			"lemma": value[0]
-			})
-	}, this)
+	// _.each(tkns, function(value, key, list){
+		// sentence['tokens'].push({
+			// "word": value[0],
+			// "lemma": natural.PorterStemmer.stem(value[0])
+			// })
+	// }, this)
 
 	// first fix % sign
 	_.each(sentence['tokens'], function(token, key, list){
@@ -1960,7 +1960,7 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	if (!('clean' in featureOptions))
 		throw new Error("no clean option")
 
-	// either 1 oor 2
+	// either 1 or 2
 	if (!('ngrams' in featureOptions))
 		throw new Error("no ngrams option")
 
@@ -1990,25 +1990,24 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	   throw new Error("feAsync is only for object sentences")
 
 	var tokenizer = new natural.RegexpTokenizer({pattern: /[^\%a-zA-Z0-9\-\?]+/});
-	text = regexpNormalizer(sample["text"].toLowerCase())
+	var text = regexpNormalizer(sample["text"].toLowerCase())
 	
 	// the array of tokens
 	var tokenized = tokenizer.tokenize(text)
-
 	console.vlog("feAsyncStanford: tokenized: "+JSON.stringify(tokenized, null, 4))
 
 	sample['sentences'] = {"tokens":[]}
 
 	_.each(tokenized, function(value, key, list){
-                sample['sentences']['tokens'].push({
-                        "word": value[0],
-                        // "lemma": value[0]
-                       "lemma": natural.PorterStemmer.stem(value[0])
-          //             "lemma": lemmerEng.lemmatize(value[0])
-                        })
+    	sample['sentences']['tokens'].push({
+            "word": value,
+            // "lemma": value[0]
+            "lemma": natural.PorterStemmer.stem(value)
+        	// "lemma": lemmerEng.lemmatize(value[0])
+        })
     }, this)
 
-    console.vlog("feAsyncStanford: sentenced: "+JSON.stringify(sample['sentences']['tokens'], null, 4))
+ //    console.vlog("feAsyncStanford: sentenced: "+JSON.stringify(sample['sentences']['tokens'], null, 4))
 
 /*	var word_lemma = {}
 	_.each(sample['sentences']['tokens'], function(token, key, list){
@@ -2018,6 +2017,16 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 								}
 	}, this)
 */
+
+	// if (featureOptions.toextract == "lemma")
+	// {
+	// 	_.each(tokenized, function(value, key, list){
+	// 		tokenized[key] = natural.PorterStemmer.stem(value)
+	// 	}, this)
+	// }
+
+	// console.vlog("feAsyncStanford: tokenized after word or lemma: "+JSON.stringify(tokenized, null, 4))
+
 	if (featureOptions.clean)
 		{
 		sample.sentences = getRule(sample.sentences, sample.text).cleaned
