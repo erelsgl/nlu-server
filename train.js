@@ -154,6 +154,13 @@ var classifier = require(__dirname+'/classifiers')
 var regexpNormalizer = ftrs.RegexpNormalizer(
 		JSON.parse(fs.readFileSync(__dirname+'/knowledgeresources/BiuNormalizations.json')));
 
+var log_file = "./logs/" + process.pid
+
+console.vlog = function(data) {
+    console.log(data)
+    fs.appendFileSync(log_file, data + '\n', 'utf8')
+};
+
 var stringifyClass = function (aClass) {
   	return (_(aClass).isString()? aClass: JSON.stringify(aClass));
   };
@@ -2152,22 +2159,23 @@ if (check_init)
 if (simple_naive_test_train)
 {
  	bars.cleanFolder("/tmp/logs")
+// 	bars.cleanFolder("./logs")
 
 	var data = (JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json")))
-    var utterset = bars.getsetcontext(data, false)
-    var sett = utterset["train"].concat(utterset["test"])
+	var utterset = bars.getsetcontext(data, false)
+	var sett = utterset["train"].concat(utterset["test"])
 
-    var dataset = partitions.partition(sett, 0, sett.length/10);
+	var dataset = partitions.partition(sett, 0, sett.length/10);
 
-    console.log(dataset.train.length)
-    console.log(dataset.test.length)
+	console.vlog(dataset.train.length)
+	console.vlog(dataset.test.length)
 
-    dataset.train = bars.processdataset(_.flatten(dataset.train),{"intents": true, "filterIntent":['Quit', 'Greet'], "filter":false})
+	dataset.train = bars.processdataset(_.flatten(dataset.train),{"intents": true, "filterIntent":['Quit', 'Greet'], "filter":false})
 	dataset.test = bars.processdataset(_.flatten(dataset.test),  {"intents": true, "filterIntent":['Quit', 'Greet'], "filter":false})
 
 	// trainAndTest.trainAndTest_async(classifier["Unigram_SVM"], bars.copyobj(dataset.test), bars.copyobj(dataset.train), function(err, results){
 	trainAndTest.trainAndTest_async(classifier["Unigram+Context_SVM_false"], bars.copyobj(dataset.train), bars.copyobj(dataset.test), function(err, results){
-		console.log(JSON.stringify(results, null, 4))
+		console.vlog(JSON.stringify(results, null, 4))
 		process.exit(0)
 	}, this)	
 }
