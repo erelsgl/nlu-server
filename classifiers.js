@@ -2003,8 +2003,8 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
                 sample['sentences']['tokens'].push({
                         "word": value[0],
                         // "lemma": value[0]
-           //             "lemma": natural.PorterStemmer.stem(value[0])
-                       "lemma": lemmerEng.lemmatize(value[0])
+                       "lemma": natural.PorterStemmer.stem(value[0])
+          //             "lemma": lemmerEng.lemmatize(value[0])
                         })
     }, this)
 
@@ -2037,7 +2037,7 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	console.vlog("feAsyncStanford: tokens: " + featureOptions.ngrams + " : " + tkns)
 
 	_.each(tkns, function(tkn, key, list){
-		features[tkn.toLowerCase()] = 1; break;
+		features[tkn.join(" ").toLowerCase()] = 1
 	}, this)
 
 
@@ -2682,7 +2682,7 @@ module.exports = {
 
 
 		"Unigram_SVM_false": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":false}),
-		"Unigram+Context_SVM_false": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":false, "ngrams": 1}),
+		"Unigram+Context_SVM_false": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'lemma',"clean":true, "full":false, "ngrams": 2}),
 
 
 		"Unigram+Context_SVM": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":true}),
