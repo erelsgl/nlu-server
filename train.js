@@ -65,39 +65,28 @@ var make_tr_fix = false
 // check the ration of single vs all utterances
 var check_ration_all = false
 
-
 var embedproc = false
-
 var extractbyid = false
-
 var shuf = false
 
 // number of human utterances
 var check_human = false
-
 var check_intent_issue_dst = false
-
-
 var check_num_dial_utt = false
+var check_intent_distribution = true
 
 
 var best_dial = false
-
 var composite_ds = false
-
 var finalization = false
 
 // simlple naive multi label classification with train/test split
-var simple_naive_test_train = true
-
+var simple_naive_test_train = false
 //  the same but to calculate intents
 var simple_naive_intent_test_train_intents = false
-
 // check the accuracy of regular expression identification
 var check_regexp = false
-
 var consistent_query = false
-
 var reshuffle = false
 
 // check rephrase strategies
@@ -147,7 +136,6 @@ var do_serialization = false
 
 var verbosity = 0;
 var explain = 0;
-
 
 var classifier = require(__dirname+'/classifiers')
 
@@ -210,7 +198,6 @@ function parse_filter(parse)
 
         return parse
 }
-
 		
 function walkSync(dir, filelist) {
 	files = fs.readdirSync(dir);
@@ -1040,9 +1027,9 @@ if (check_word)
 if (check_intent_issue_dst)
 {
 	var result = {
+				"Offer": {},
 				"Accept": {},
-				"Reject": {},
-				"Query": {}
+				"Reject": {}
 				}
 
 	
@@ -2151,6 +2138,61 @@ if (check_init)
 	console.log("Length: "+ JSON.stringify(leng, null, 4))
 	console.log("mean_variance: "+ JSON.stringify(bars.mean_variance(leng), null, 4))
 
+	process.exit(0)
+}
+
+
+if (check_intent_distribution)
+{
+	var data = (JSON.parse(fs.readFileSync(__dirname+"/../negochat_private/parsed_finalized_fin_full_biased.json")))
+	var utterset = bars.getsetcontext(data, false)
+	var sett = utterset["train"].concat(utterset["test"])
+
+	var multi = []
+	var single = []
+	var zerocnt = 0
+	var multiint = 0
+	var singleint = 0
+	var dist = []
+
+	console.log("DIALOGUES:"+sett.length)
+
+	_.each(_.flatten(sett), function(value, key, list){
+
+		if (_.keys(value.outputhash).length > 1)
+		{
+			multi.push(_.keys(value.outputhash).sort())
+			multiint += 1
+		}
+
+		if (_.keys(value.outputhash).length == 1)
+		{
+			single.push(_.keys(value.outputhash))
+			singleint += 1
+		}
+
+		if (_.keys(value.outputhash).length == 0)
+			zerocnt += 1
+
+		dist.push(_.keys(value.outputhash))
+	}, this)
+
+	var multicnt = _.countBy(multi, function(num) { return num });
+	_.each(multicnt, function(value, key, list){ multicnt[key] = value/multi.length }, this)
+
+	var singlecnt = _.countBy(single, function(num) { return num });
+	_.each(singlecnt, function(value, key, list){ singlecnt[key] = value/single.length }, this)
+
+	var distcnt = _.countBy(_.flatten(dist), function(num) { return num });
+	_.each(distcnt, function(value, key, list){ distcnt[key] = value/dist.length }, this)
+
+	console.log("SINGLE:"+JSON.stringify(singlecnt, null, 4))
+	console.log("MULTI:"+JSON.stringify(multicnt, null, 4))
+	console.log("DIST:"+JSON.stringify(distcnt, null, 4))
+
+	console.log("ZERO:"+zerocnt)
+	console.log("multi:"+multiint)
+	console.log("single:"+singleint)
 	process.exit(0)
 }
 
