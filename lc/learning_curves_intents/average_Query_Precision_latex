@@ -4,32 +4,22 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.7399332843493933)(110,0.7083638320743584)(120,0.708079459631954)(130,0.524390243902439)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,0.5979166666666667)(130,0.6666666666666666)
 };
-\addlegendentry{Unigram+Context\_SVM}
+\addlegendentry{Unigram+Context\_SVM\_word\_2}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.6011186268306083)(110,0.5376108085151563)(120,0.4961556603773585)(130,0.32432432432432434)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.6518430761114385)(110,0.6123878152126053)(120,0.5744679987004548)(130,0.4691358024691358)
 };
-\addlegendentry{Unigram\_SVM}
+\addlegendentry{Unigram+Context\_SVM\_word\_1}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.5422266014546555)(110,0.540521578027436)(120,0.39837662337662333)(130,0.62)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,0.5911064425770308)(130,0.5882352941176471)
 };
-\addlegendentry{Unigram+Context\_ADA}
+\addlegendentry{Unigram+Context\_SVM\_lemma\_2}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.4980846240216555)(110,0.4763730239059186)(120,0.28861263736263737)(130,0.3135593220338983)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.6168751701647216)(110,0.6041836897202593)(120,0.585842398721098)(130,0.4625)
 };
-\addlegendentry{Unigram\_ADA}
-
-\addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,0.7973484848484849)(130,0.7)
-};
-\addlegendentry{Unigram+Context\_RF}
-
-\addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,null)(110,null)(120,0.6123897300855826)(130,0.41379310344827586)
-};
-\addlegendentry{Unigram\_RF}
+\addlegendentry{Unigram+Context\_SVM\_lemma\_1}
 
