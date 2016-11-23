@@ -27,6 +27,9 @@ var async = require('async');
 var stopwords = JSON.parse(fs.readFileSync(__dirname+'/stopwords.txt', 'UTF-8')).concat(JSON.parse(fs.readFileSync(__dirname+'/smart.json', 'UTF-8')))
 var log_file = "./logs/" + process.pid
 
+var Lemmatizer = require('javascript-lemmatizer')
+var lemmatizer = new Lemmatizer();
+
 var antonyms = {}
 //var data = fs.readFileSync("./antonyms.txt", 'utf8').split("\n")
 
@@ -105,7 +108,6 @@ var regexpNormalizer = ftrs.RegexpNormalizer(
 // lemma and pos are required
 function getRule(text)
 {
-
 /*	if (!('tokens' in sen))
 		{
 		console.vlog("DEBUGRULE: for some reason tokens is not in the sentence " + JSON.stringify(sen, null, 4))
@@ -128,9 +130,12 @@ function getRule(text)
 	_.each(tkns, function(value, key, list){
 		sentence['tokens'].push({
 			"word": value[0],
-			"lemma": value[0]
+//			"lemma": value[0]
+			"lemma": (lemmatizer.only_lemmas(value[0]).length > 0 ? lemmatizer.only_lemmas(value[0])[0]: value[0])
 			})
 	}, this)
+
+	console.vlog("getRule: enrich lemma: "+JSON.stringify(sentence['tokens'], null, 4))
 
 	// first fix % sign
 	_.each(sentence['tokens'], function(token, key, list){
@@ -1717,7 +1722,8 @@ function feContext(sample_or, features, train, featureOptions, callback) {
 		features["INTENT_"+intent] = 1
 	}, this)		
 
-	var attrval = getRule({}, sample.text).labels
+	//var attrval = getRule({}, sample.text).labels
+	var attrval = getRule(sample.text).labels
 
 	var intents = []
 	var values = [] 
@@ -1972,6 +1978,8 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 
 	if (["word","lemma"].indexOf(featureOptions.toextract)==-1)
 	    throw new Error("toextract value is unknown")
+
+	console.vlog("feAsyncStanford: clean: "+featureOptions.clean + " ngrams: "+featureOptions.ngrams+ " toextract: "+featureOptions.toextract)
 	
 	// apply negation
 //	if (!('neg' in featureOptions))
@@ -2018,7 +2026,8 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 		{
 		// sample.sentences = getRule(sample.sentences, sample.text).cleaned
 		text_cleaned = _.pluck(getRule(text).cleaned["tokens"], 'word');
-		console.vlog("feAsyncStanford: cleaned: "+text_cleaned)
+		console.vlog("feAsyncStanford: cleaned: "+JSON.stringify(text_cleaned, null, 4))
+		text_cleaned = text_cleaned.join(" ")
 		}
 	else
 		console.vlog("feAsyncStanford: ATTENTION: no clean method")	
@@ -2029,7 +2038,7 @@ function feAsyncStanford(sam, features, train, featureOptions, callback) {
 	if (featureOptions.toextract == "lemma")
 	{
 		_.each(tokenized, function(value, key, list){
-			tokenized[key] = natural.PorterStemmer.stem(value)
+			tokenized[key] = (lemmatizer.only_lemmas(value).length > 0 ? lemmatizer.only_lemmas(value)[0]: value)
 		}, this)
 	}
 
@@ -2677,7 +2686,10 @@ module.exports = {
 
 
 		"Unigram_SVM_false": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":false}),
-		"Unigram+Context_SVM_false": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'lemma',"clean":true, "full":false, "ngrams": 2}),
+		"Unigram+Context_SVM_word_2": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":false, "ngrams": 2}),
+		"Unigram+Context_SVM_word_1": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":false, "ngrams": 1}),
+		"Unigram+Context_SVM_lemma_2": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'lemma',"clean":true, "full":false, "ngrams": 2}),
+		"Unigram+Context_SVM_lemma_1": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'lemma',"clean":true, "full":false, "ngrams": 1}),
 
 
 		"Unigram+Context_SVM": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":true}),
