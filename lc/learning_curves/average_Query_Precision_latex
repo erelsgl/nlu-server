@@ -4,7 +4,7 @@
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,0.6802982744583476)(80,0.6325966859837828)(85,null)(90,null)(95,null)(100,null)
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,null)(80,null)(85,null)(90,null)(95,null)(100,null)
 };
 \addlegendentry{Natural}
 
@@ -24,7 +24,7 @@
 \addlegendentry{Biased\_no\_rephrase\_Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,0.5827491372724638)(80,0.5644183537458128)(85,null)(90,null)(95,null)(100,null)
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,null)(80,null)(85,null)(90,null)(95,null)(100,null)
 };
 \addlegendentry{Natural\_Hungarian}
 
