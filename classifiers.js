@@ -1308,8 +1308,10 @@ function feWordnet(sample, features, train, featureOptions, callback) {
 
 
 function feEmbed(sample, features, train, featureOptions, callback) {
+	
+	if (featureOptions.ngrams != 1)
+		throw new Error("ngrams is not one")
 
-	console.vlog("DEBUGEMBED: sample: "+JSON.stringify(features, null, 4))
 
 /*	if (!("input" in sample))
 		{
@@ -1318,9 +1320,11 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 		}
 */	
 	if (!('operation' in featureOptions)) throw new Error("operation is not in the featureOptions")
-
+	if (!('embdeddb' in featureOptions)) throw new Error("embdeddb is not in the featureOptions")
 	if (["sum", "extremum"].indexOf(featureOptions.operation)==-1)
 		throw new Error("unknown value for featureOptions.operation")		
+	
+	console.vlog("DEBUGEMBED: operation: " + featureOptions.operation + " embdeddb: " + featureOptions.embdeddb + " sample: "+JSON.stringify(features, null, 4))
 
 	var bars = require('./utils/bars')
 	var embFeatures = {}
@@ -1347,12 +1351,12 @@ function feEmbed(sample, features, train, featureOptions, callback) {
 
 		console.vlog("feEmbed: "+word)
 		
-		if (word=="ca") word = "can"
-		if (word=="n't") word = "not"
+/*		if (word=="ca") word = "can"
+ 		if (word=="n't") word = "not"
 		if (word=="wo") word = "will"
 		if (word=="'m") word = "am"
 		if (word=="'s") word = "us"
-		
+*/		
 		async_adapter.getembed(word, featureOptions.embdeddb, function(err, emb){
 
 			if (emb.length != 0)
@@ -1653,7 +1657,8 @@ function feSalient(sample_or, features, train, featureOptions, callback) {
 
 	console.vlog("DEBUGSALIENT: text : "+ sample.text)	
 
-	var attrval = getRule(sample.sentences, sample.text).labels
+	//var attrval = getRule(sample.sentences, sample.text).labels
+	var attrval = getRule(sample.text).labels
 	var tokenizer = new natural.RegexpTokenizer({pattern: /[^a-zA-Z0-9\-\?]+/});
 
 	text = regexpNormalizer(sample.text.toLowerCase())
@@ -2688,11 +2693,13 @@ module.exports = {
 		"Unigram_SVM_false": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":false}),
 		"Unigram+Context_SVM_word_2": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":false, "ngrams": 2}),
 		"Unigram+Context_SVM_word_1": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":false, "ngrams": 1}),
+		"Unigram+Context_SVM_word_1_embed": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":false, "ngrams": 1, "operation": "sum", 'embdeddb': 9}),
+		"Unigram+Context_SVM_word_1_embed_salient": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feEmbed, feSalient, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":false, "ngrams": 1, "operation": "sum", 'embdeddb': 9}),
 		"Unigram+Context_SVM_lemma_2": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'lemma',"clean":true, "full":false, "ngrams": 2}),
 		"Unigram+Context_SVM_lemma_1": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'lemma',"clean":true, "full":false, "ngrams": 1}),
 
 
-		"Unigram+Context_SVM": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":true}),
+		"Unigram+Context_SVM": enhance(SvmLinearBinaryRelevanceClassifier, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {'toextract':'word',"clean":true, "full":false, "ngrams":1}),
 		"Unigram_ADA": enhance(scikitadaboost, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {"neg":false, 'toextract':'word', "clean":true}),
         "Unigram+Context_ADA": enhance(scikitadaboost, [feAsyncStanford, feContext], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {"neg":false, 'toextract':'word', "full":true, "clean":true}),
 		"Unigram_RF": enhance(scikitrandomforest, [feAsyncStanford], inputSplitter, new ftrs.FeatureLookupTable(), undefined, undefined/*preProcessor_onlyIntent*/, /*postProcessor*/ false, undefined, false, {"neg":false, 'toextract':'word', "clean":true}),
