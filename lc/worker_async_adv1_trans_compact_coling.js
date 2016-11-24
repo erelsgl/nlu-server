@@ -161,8 +161,8 @@ if (cluster.isMaster)
 	//var classifiers = [ 'Natural', 'Balanced', 'Balanced_Embed_25', 'Balanced_Embed_50', 'Balanced_Embed_100']
 	//var classifiers = [ 'Natural', 'Balanced', 'Natural_Trans', 'Balanced_Trans', 'Natural_Emb', 'Balanced_Emb', 'Natural_Trans_Emb', 'Balanced_Trans_Emb']
 	//var classifiers = [ 'Natural', 'Biased_no_rephrase', 'Trans_Google', 'Trans_Microsoft', 'Trans_Yandex']
-	var classifiers = [ 	'Natural', 'Biased_with_rephrase', 'Biased_no_rephrase',
-				'Oversampled', 'Undersampled'
+	var classifiers = [ 	'Natural', 'Biased_with_rephrase', 'Biased_no_rephrase'
+//				'Oversampled', 'Undersampled'
 				//,'Biased_no_rephrase_All_Lang', 'Natural_All_Lang'
 				,'Biased_no_rephrase_Hungarian', 'Natural_Hungarian'	]
 	
@@ -205,7 +205,7 @@ if (cluster.isMaster)
 
 		var data = partitions.partitions_consistent_by_fold(bars.copyobj(train1), folds, fold)
 
-		_(10).times(function(n){
+		_(5).times(function(n){
 	
 		_.each(classifiers, function(classifier, key, list){ 
 			
