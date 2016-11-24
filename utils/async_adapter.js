@@ -24,7 +24,6 @@ console.vlog = function(data) {
 
 function getembedall(db, callback)
 {
-	var client = new Redis(6379);
 	client.select(db, function(err, response) {
 		if (err) callback(err)
 
@@ -34,7 +33,6 @@ function getembedall(db, callback)
 	})
 }
 
-var client = new Redis(6379);
 
 
 function getembedarray(arr, db, callback)
@@ -49,9 +47,12 @@ function getembedarray(arr, db, callback)
 	})
 }
 
+var client = new Redis(6379);
+
 function getembed(string, db, callback)
 {
 
+console.vlog("string: "+string+" db:"+db)
 async.series([
     function(callbacklocal){
         if (_.isUndefined(string) || _.isNaN(string) || _.isEmpty(string))
