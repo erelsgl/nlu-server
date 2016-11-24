@@ -1,40 +1,30 @@
 \addplot[color=green,mark=*] coordinates {
-(5,5)(10,10)(15,15)(20,20)(25,25)(30,30)(35,35)(40,40)(45,45)(50,50)(55,55)(60,60)(65,65)(70,70)(72,72)(75,75)(76,76)(78,78)(79,79)(80,80)(81,81)(82,82)(85,85)(86,86)(87,87)(88,88)(89,89)(90,90)(91,91)(92,92)(93,93)(94,94)(95,95)(96,96)(97,97)(98,98)(99,99)(100,100)
+(5,5)(10,10)(15,15)(20,20)(25,25)(30,30)(35,35)(40,40)(45,45)(50,50)(55,55)(60,60)(65,65)(70,70)(75,75)(80,80)(85,85)(90,90)(95,95)(100,100)
 };
 \addlegendentry{dial}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(72,null)(75,null)(76,null)(78,null)(79,null)(80,null)(81,null)(82,null)(85,null)(86,null)(87,null)(88,null)(89,null)(90,null)(91,null)(92,null)(93,null)(94,null)(95,null)(96,null)(97,null)(98,null)(99,null)(100,null)
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,0.6802982744583476)(80,0.6325966859837828)(85,null)(90,null)(95,null)(100,null)
 };
 \addlegendentry{Natural}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(72,null)(75,null)(76,0.6779661016949152)(78,null)(79,0.5058823529411764)(80,null)(81,0.8260869565217391)(82,null)(85,null)(86,null)(87,null)(88,null)(89,null)(90,null)(91,null)(92,null)(93,null)(94,null)(95,null)(96,null)(97,null)(98,null)(99,null)(100,null)
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,null)(80,null)(85,null)(90,null)(95,null)(100,null)
 };
 \addlegendentry{Biased\_with\_rephrase}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(72,0.7777777777777778)(75,null)(76,null)(78,null)(79,null)(80,null)(81,null)(82,0.90625)(85,null)(86,null)(87,null)(88,null)(89,null)(90,null)(91,null)(92,null)(93,null)(94,null)(95,null)(96,null)(97,null)(98,null)(99,null)(100,null)
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,null)(80,null)(85,null)(90,null)(95,null)(100,null)
 };
 \addlegendentry{Biased\_no\_rephrase}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(72,null)(75,null)(76,null)(78,null)(79,null)(80,null)(81,null)(82,null)(85,null)(86,null)(87,null)(88,null)(89,null)(90,null)(91,null)(92,null)(93,null)(94,null)(95,null)(96,null)(97,null)(98,null)(99,null)(100,null)
-};
-\addlegendentry{Oversampled}
-
-\addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(72,null)(75,null)(76,null)(78,null)(79,null)(80,null)(81,null)(82,null)(85,null)(86,null)(87,null)(88,null)(89,null)(90,null)(91,null)(92,null)(93,null)(94,null)(95,null)(96,null)(97,null)(98,null)(99,null)(100,null)
-};
-\addlegendentry{Undersampled}
-
-\addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(72,null)(75,null)(76,null)(78,null)(79,null)(80,null)(81,null)(82,null)(85,null)(86,0.9473684210526315)(87,null)(88,null)(89,null)(90,null)(91,null)(92,null)(93,null)(94,null)(95,null)(96,null)(97,null)(98,null)(99,null)(100,null)
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,null)(80,null)(85,null)(90,null)(95,null)(100,null)
 };
 \addlegendentry{Biased\_no\_rephrase\_Hungarian}
 
 \addplot[color=green,mark=*] coordinates {
-(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(72,null)(75,null)(76,null)(78,null)(79,null)(80,null)(81,null)(82,null)(85,null)(86,null)(87,null)(88,null)(89,null)(90,null)(91,null)(92,null)(93,null)(94,null)(95,null)(96,null)(97,null)(98,null)(99,null)(100,null)
+(5,null)(10,null)(15,null)(20,null)(25,null)(30,null)(35,null)(40,null)(45,null)(50,null)(55,null)(60,null)(65,null)(70,null)(75,0.5827491372724638)(80,0.5644183537458128)(85,null)(90,null)(95,null)(100,null)
 };
 \addlegendentry{Natural\_Hungarian}
 
