@@ -4120,7 +4120,7 @@ function getsetcontext(dataset)
         turn['outputhash'] = turn.output
         turn['output'] = hashtoar(turn.output)
 	
-	      var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
+	var GreetIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Greet'});
         var QuitIndex = _.findIndex(turn['output'], function(lab){ return _.keys(JSON.parse(lab))[0]=='Quit'});
 	
         if (rephrase)
@@ -4155,7 +4155,8 @@ function getsetcontext(dataset)
 }
 
 // implements the idea that rephrases we get for free
-// annotate rephrases as a source utterance
+// annotate rephrases as a source utterance - NO
+// annotate it as gold annotation
 function getsetcontextadv(dataset)
 {
   var rectypes = ['AskRepeat', 'AskRephrase' ,'Reprompt' ,'Notify', 'Yield', 'Help', 'YouCanSay', 'TerseYouCanSay']
@@ -5974,7 +5975,7 @@ function compactStats(stats)
 		throw new Error("compactStats error")
 	
   _.each(stats['stats'], function(value, key, list){ 
-    if ((key.indexOf("Precision") != -1) || (key.indexOf("Recall") != -1 ) || (key.indexOf("F1") != -1) || (key.indexOf("Accuracy") != -1))
+    if ((key.indexOf("Precision") != -1) || (key.indexOf("Recall") != -1 ) || (key.indexOf("F1") != -1) || (key.indexOf("Accuracy") != -1) || (key.indexOf("Coverage") != -1))
       stats1[key] = value
   }, this)
 
