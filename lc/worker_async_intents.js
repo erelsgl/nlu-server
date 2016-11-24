@@ -40,9 +40,9 @@ if (cluster.isWorker)
     		function(callbacks) {
 
     		var mytrain = train.slice(0, index)
-			index += 10
+		index += 10
 	
-			var mytrainex = _.flatten(JSON.parse(JSON.stringify(mytrain)))
+		var mytrainex = _.flatten(JSON.parse(JSON.stringify(mytrain)))
     		var mytestex = _.flatten(JSON.parse(JSON.stringify(test)))
 
 			console.vlog("DEBUG: worker "+process["pid"]+": index=" + index +
@@ -107,7 +107,8 @@ if (cluster.isMaster)
 //	var classifiers = [ "Unigram", "Unigram+Context", "Unigram+Neg", "Unigram+Context+Neg" ]
 	//var classifiers = [ "Unigram_SVM", "Unigram+Context_SVM", "Unigram+ContextFull_SVM","Unigram_ADA", "Unigram+Context_ADA", "Unigram+ContextFull_ADA"]
 	//var classifiers = [ "Unigram+Context_SVM", "Unigram_SVM", "Unigram+Context_ADA", "Unigram_ADA", "Unigram+Context_RF", "Unigram_RF"]
-	var classifiers = [ "Unigram+Context_SVM_word_2", "Unigram+Context_SVM_word_1", "Unigram+Context_SVM_lemma_2", "Unigram+Context_SVM_lemma_1"]
+	//var classifiers = [ "Unigram+Context_SVM_word_2", "Unigram+Context_SVM_word_1", "Unigram+Context_SVM_lemma_2", "Unigram+Context_SVM_lemma_1"]
+	var classifiers = [ "Unigram+Context_SVM_word_1", "Unigram+Context_SVM_word_1_embed", "Unigram+Context_SVM_word_1_embed_salient"]
 // "Unigram_RF", "Unigram+Context_RF" ]
 //	var classifiers = [ "Natural_Neg", "Natural_Neg_Svm" ]
 //	var classifiers = [ "Natural_SVM_Context", "Natural_RF_Context", "Natural_ADA_Context" ]
