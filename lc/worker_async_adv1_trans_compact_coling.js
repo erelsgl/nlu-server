@@ -70,8 +70,6 @@ process.on('message', function(message) {
 					}, this)		
 					out = _.compact(_.flatten(out))
 					console.vlog("COLLING: with rephrases "+out.length);
-		
-					console.vlog(JSON.stringify(out, null, 4))
 					callbacks(null, out, mytestex, mytrainex.length);
 					break;
 				case "Biased_no_rephrase_All_Lang": callbacks(null, bars.gettrans(mytrainex, ".*:(pt|fr|de|ru|ar|he|hu|fi|zh):.*"), mytestex, mytrainex.length); break;
@@ -96,7 +94,16 @@ process.on('message', function(message) {
 		},
     		function(mytrainex, mytestex, trainsize, callback) {
 
-		mytrainex = bars.processdataset(mytrainex, {"intents":true, "filter": true, "filterIntent":['Quit','Greet']})
+		
+		var trainwith = bars.copyobj(mytrainex)
+		_.each(trainwith, function(value, key, list){
+			delete trainwith[key]["rephrases"]
+			delete trainwith[key]["input"]["trans"]
+		}, this)
+
+		console.vlog(JSON.stringify(trainwith, null, 4))
+
+		trainwith = bars.processdataset(trainwith, {"intents":true, "filter": true, "filterIntent":['Quit','Greet']})
 	
 //		var baseline_cl = classifiers.Natural_Neg
 		var baseline_cl = classifiers["Unigram+Context_SVM"]
@@ -119,7 +126,7 @@ process.on('message', function(message) {
               	}
 */
 	    	// trainAndTest.trainAndTest_async(classifiers[classifier], bars.copyobj(realmytrainex), bars.copyobj(mytestex), function(err, stats){
-    		trainAndTest.trainAndTest_async(baseline_cl, bars.copyobj(mytrainex), bars.copyobj(mytestex), function(err, stats){
+    		trainAndTest.trainAndTest_async(baseline_cl, bars.copyobj(trainwith), bars.copyobj(mytestex), function(err, stats){
 
 		    	console.vlog("DEBUG: worker "+process["pid"]+": traintime="+
 		    		stats['traintime']/1000 + " testtime="+ 
