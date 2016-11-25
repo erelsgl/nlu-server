@@ -38,3 +38,8 @@
 };
 \addlegendentry{Unigram+Context\_SVM\_word\_1\_embed\_600}
 
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.40982322908673396)(110,0.40205950770218857)
+};
+\addlegendentry{Unigram+Context\_SVM\_lemma\_1\_embed\_600}
+
