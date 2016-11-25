@@ -1,12 +1,12 @@
-size	dial	Unigram+Context_SVM_word_1	Unigram+Context_SVM_word_1_embed_300	Unigram+Context_SVM_word_1_embed_100	Unigram+Context_SVM_word_1_embed_50	Unigram+Context_SVM_word_1_embed_25
-10	10	null	null	null	null	null
-20	20	null	null	null	null	null
-30	30	null	null	null	null	null
-40	40	null	null	null	null	null
-50	50	null	null	null	null	null
-60	60	null	null	null	null	null
-70	70	null	null	null	null	null
-80	80	null	null	null	null	null
-90	90	null	null	null	null	null
-100	100	0.6518430761114385	0.41433375798735617	0.38178305366796306	0.34918725724885874	0.3023761794186816
-110	110	0.6123878152126053	0.41230671617792564	0.36339082384017785	0.33344028840331413	0.28577968552274113
+size	dial	Unigram+Context_SVM_word_1	Unigram+Context_SVM_word_1_embed_300	Unigram+Context_SVM_word_1_embed_100	Unigram+Context_SVM_word_1_embed_50	Unigram+Context_SVM_word_1_embed_25	Unigram+Context_SVM_word_1_embed_200	Unigram+Context_SVM_word_1_embed_600
+10	10	null	null	null	null	null	null	null
+20	20	null	null	null	null	null	null	null
+30	30	null	null	null	null	null	null	null
+40	40	null	null	null	null	null	null	null
+50	50	null	null	null	null	null	null	null
+60	60	null	null	null	null	null	null	null
+70	70	null	null	null	null	null	null	null
+80	80	null	null	null	null	null	null	null
+90	90	null	null	null	null	null	null	null
+100	100	0.6518430761114385	0.44171081292580466	0.38178305366796306	0.34918725724885874	0.3023761794186816	0.41433375798735617	0.44590041092209987
+110	110	0.6123878152126053	0.4243085269137536	0.36339082384017785	0.33344028840331413	0.28577968552274113	0.41230671617792564	0.44114798350562745

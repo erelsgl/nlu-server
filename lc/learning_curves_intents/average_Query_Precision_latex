@@ -9,7 +9,7 @@
 \addlegendentry{Unigram+Context\_SVM\_word\_1}
 
 \addplot[color=green,mark=*] coordinates {
-(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.41433375798735617)(110,0.41230671617792564)
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.44171081292580466)(110,0.4243085269137536)
 };
 \addlegendentry{Unigram+Context\_SVM\_word\_1\_embed\_300}
 
@@ -27,4 +27,14 @@
 (10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.3023761794186816)(110,0.28577968552274113)
 };
 \addlegendentry{Unigram+Context\_SVM\_word\_1\_embed\_25}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.41433375798735617)(110,0.41230671617792564)
+};
+\addlegendentry{Unigram+Context\_SVM\_word\_1\_embed\_200}
+
+\addplot[color=green,mark=*] coordinates {
+(10,null)(20,null)(30,null)(40,null)(50,null)(60,null)(70,null)(80,null)(90,null)(100,0.44590041092209987)(110,0.44114798350562745)
+};
+\addlegendentry{Unigram+Context\_SVM\_word\_1\_embed\_600}
 
